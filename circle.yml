@@ -8,20 +8,13 @@ machine:
 
 dependencies:
     pre:
-        - echo y | android update sdk --no-ui --all --filter "tools,android-26,build-tools-26.0.0,platform-tools,extra-android-m2repository,extra-android-support,extra-google-m2repository,extra-google-google_play_services"
+        - echo y | android update sdk --no-ui --all --filter "tools,android-25,build-tools-25.0.0,platform-tools,extra-android-m2repository,extra-android-support,extra-google-m2repository,extra-google-google_play_services"
         - echo y | $ANDROID_HOME/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
     cache_directories:
         - /usr/local/android-sdk-linux/tools
-        - /usr/local/android-sdk-linux/build-tools/26.0.0
+        - /usr/local/android-sdk-linux/build-tools/25.0.0
 test:
   override:
-    # start the emulator
-    - emulator -avd circleci-android24 -no-window:
-        background: true
-        parallel: true
-    # wait for it to have booted
-    - circle-android wait-for-boot
-    # run tests  against the emulator.
-    - ./gradlew connectedAndroidTest
+    - ./gradlew testDebug
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/debug/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
