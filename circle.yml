@@ -22,7 +22,10 @@ test:
     - ./gradlew testDebug
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/debug/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-    - find . -type f -regex ".*/build/outputs" -exec cp {} $CIRCLE_ARTIFACTS \;
+#    - find . -type f -regex ".*/build/outputs" -exec cp {} $CIRCLE_ARTIFACTS \;
+  post:
+      - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+      - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
 
 #deployment:
 #  staging:
