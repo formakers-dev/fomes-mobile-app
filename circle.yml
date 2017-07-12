@@ -31,4 +31,4 @@ deployment:
   staging:
     branch: master
     commands:
-      - aws s3 sync app/build/outputs s3://tiffany-circleci/ --delete
+      - aws s3 sync app/build/outputs s3://appbee-circleci/ --delete --region ap-south-1
