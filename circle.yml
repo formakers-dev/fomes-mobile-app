@@ -30,5 +30,5 @@ test:
 deployment:
   staging:
     branch: master
-    heroku:
-      appname: appbee
+      commands:
+        - aws s3 sync app/build/outputs s3://tiffany-circleci --delete
