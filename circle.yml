@@ -31,4 +31,4 @@ deployment:
   staging:
       branch: master
       commands:
-        - echo "This is the message body" | mutt -a "app/build/outputs/apk/*" -s "subject of message" -- appbee0627@gmail.com
+        - sendemail -f appbee0627@gmail.com -t appbee0627@gmail.com -m "Here are your files!" -a app/build/outputs/apk/app-debug.apk
