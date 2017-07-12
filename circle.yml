@@ -1,6 +1,6 @@
 general:
     artifacts:
-        - /Users/appbee.dev1/Developer/appbeemobile/app/build/outputs/apk/
+        - "apk"
 machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
