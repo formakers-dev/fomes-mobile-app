@@ -29,6 +29,23 @@ test:
 
 deployment:
   staging:
-      branch: master
-      commands:
-        - sendemail -f appbee0627@gmail.com -t appbee0627@gmail.com -m "Here are your files!" -a app/build/outputs/apk/app-debug.apk
+    branch: master
+    heroku:
+      appname: appbee # appname must not include upper-case characters
+    commands:
+        - |
+          cat >~/.netrc <<EOF
+          machine api.heroku.com
+            login $HEROKU_EMAIL
+            password $HEROKU_TOKEN
+          machine git.heroku.com
+            login $HEROKU_EMAIL
+            password $HEROKU_TOKEN
+          EOF
+        - chmod 600 ~/.netrc # Heroku cli complains about permissions without this
+        - heroku maintenance:on --app appbee
+        - heroku scale worker=0 --app appbee
+        - git push git@heroku.com:appbee.git $CIRCLE_SHA1:refs/heads/master
+        - heroku run rake db:migrate --app appbee
+        - heroku scale worker=x --app appbee
+        - heroku maintenance:off --app appbee
