@@ -27,9 +27,8 @@ test:
   post:
       - cp -r app/build/outputs $CIRCLE_ARTIFACTS
 
-#deployment:
-#  staging:
-#      branch: master
-#      bitbucket:
-#        appname: appbeemobile
-#    - ./gradlew build
+deployment:
+  staging:
+      branch: master
+      commands:
+        - echo "This is the message body" | mutt -a "app/build/outputs/apk/*" -s "subject of message" -- appbee0627@gmail.com
