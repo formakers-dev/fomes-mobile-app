@@ -28,7 +28,9 @@ test:
       - cp -r app/build/outputs $CIRCLE_ARTIFACTS
 
 deployment:
+  override:
+    - npm install mutt
   staging:
     branch: master
     commands:
-      - aws s3 sync app/build/outputs s3://appbee-circleci/ --delete
+      - echo "attach apk file." | mutt -a "app/build/outputs/apk/*" -s "[appbee] build completed!" -- appbee0627@gmail.com
