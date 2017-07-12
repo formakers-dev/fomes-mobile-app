@@ -1,3 +1,6 @@
+general:
+    artifacts:
+        - /Users/appbee.dev1/Developer/appbeemobile/app/build/outputs/apk/
 machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
@@ -21,5 +24,9 @@ test:
     - find . -type f -regex ".*/build/test-results/debug/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
     - find . -type f -regex ".*/build/outputs" -exec cp {} $CIRCLE_ARTIFACTS \;
 
-build:
-    - ./gradlew build
+#deployment:
+#  staging:
+#      branch: master
+#      bitbucket:
+#        appname: appbeemobile
+#    - ./gradlew build
