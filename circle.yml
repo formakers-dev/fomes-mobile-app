@@ -31,7 +31,7 @@ test:
 deployment:
   override:
     - npm install mail
-  staging:
-    branch: master
-    commands:
-      - echo "this is a test" | mail -s "hello" -a message.txt appbee0627@gmail.com
+    - echo "this is a test" | mail -s "hello" -a message.txt appbee0627@gmail.com
+#  staging:
+#    branch: master
+#    commands:
