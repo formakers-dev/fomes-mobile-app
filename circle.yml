@@ -19,16 +19,14 @@ dependencies:
 
 test:
   override:
-    - ./gradlew testDebug
+    - ./gradlew testDebugUnitTest assembleDebug
+  post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/debug/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-    - ./gradlew assemble
-#    - find . -type f -regex ".*/build/outputs" -exec cp {} $CIRCLE_ARTIFACTS \;
-  post:
-      - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
 
 deployment:
   prod:
     branch: master
     commands:
-      - aws s3 sync app/build/outputs s3://appbeepkg/test/ --delete
+      - aws s3 sync app/build/outputs/apk s3://appbeepkg/test/ --delete
