@@ -28,9 +28,7 @@ test:
       - cp -r app/build/outputs $CIRCLE_ARTIFACTS
 
 deployment:
-  override:
-    - npm install -g firebase-tools
-    - firebase deploy --token=$FIREBASE_TOKEN --non-interactive
-#  staging:
-#    branch: master
-#    commands:
+  prod:
+    branch: master
+    commands:
+      - aws s3 sync app/build/outputs s3://appbeepkg/test/ --delete
