@@ -29,7 +29,7 @@ test:
       - cp -r app/build/outputs $CIRCLE_ARTIFACTS
 
 deployment:
-  pre:
+  override:
     - npm install mail
   staging:
     branch: master
