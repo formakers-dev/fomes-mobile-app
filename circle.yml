@@ -29,8 +29,8 @@ test:
 
 deployment:
   override:
-    - npm install mutt
+    - npm install sendmail
   staging:
     branch: master
     commands:
-      - echo "attach apk file." | mutt -a "app/build/outputs/apk/*" -s "[appbee] build completed!" -- appbee0627@gmail.com
+      - sendmail -t appbee0627@gmail.com -m "[appbee] apk file" -a /app/build/outputs/apk/app-debug.apk
