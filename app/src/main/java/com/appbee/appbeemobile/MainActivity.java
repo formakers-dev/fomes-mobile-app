@@ -1,12 +1,14 @@
 package com.appbee.appbeemobile;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,19 +34,23 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void confirmAuth() {
         boolean granted;
         AppOpsManager appOps = (AppOpsManager) getSystemService(APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
-        if(mode == AppOpsManager.MODE_DEFAULT) {
-            granted = checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS)== PackageManager.PERMISSION_GRANTED;
-        }else {
-            granted = (mode == AppOpsManager.MODE_ALLOWED);
-        }
-        if(!granted) {
-            // 마시멜로 이상 버전에서는, 사용정보 접근 허용창에서 해당 어플리케이션의 시스템 접근을 허용해야 함
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            startActivityForResult(intent, 0);
+
+        if(appOps != null) {
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
+            if(mode == AppOpsManager.MODE_DEFAULT) {
+                granted = checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS)== PackageManager.PERMISSION_GRANTED;
+            }else {
+                granted = (mode == AppOpsManager.MODE_ALLOWED);
+            }
+            if(!granted) {
+                // 마시멜로 이상 버전에서는, 사용정보 접근 허용창에서 해당 어플리케이션의 시스템 접근을 허용해야 함
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                startActivityForResult(intent, 0);
+            }
         }
     }
 
@@ -58,17 +64,19 @@ public class MainActivity extends AppCompatActivity {
     public void getUserAppUsage() {
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
-        long startTime = endTime - 1000*60*60;
+        long startTime = endTime - 1000*60*60*24*7;
 
         UsageStatsManager usm = (UsageStatsManager) getSystemService(USAGE_STATS_SERVICE);
-        UsageEvents usageEvents = usm.queryEvents(startTime, endTime);
+        if (usm != null) {
+            UsageEvents usageEvents = usm.queryEvents(startTime, endTime);
 
-        while(usageEvents.hasNextEvent()) {
-            UsageEvents.Event event = new UsageEvents.Event();
-            usageEvents.getNextEvent(event);
+            while (usageEvents.hasNextEvent()) {
+                UsageEvents.Event event = new UsageEvents.Event();
+                boolean hasNextEvent = usageEvents.getNextEvent(event);
 
-            if(event != null) {
-                Log.d(TAG, "[" + event.getEventType() +"]" +year.format(event.getTimeStamp()) +"\t"+ event.getPackageName());
+                if (hasNextEvent) {
+                    Log.d(TAG, "[" + event.getEventType() + "]" + year.format(event.getTimeStamp()) + "\t" + event.getPackageName());
+                }
             }
         }
     }
@@ -80,15 +88,18 @@ public class MainActivity extends AppCompatActivity {
         long startTime = calendar.getTimeInMillis();
 
         UsageStatsManager usm = (UsageStatsManager) getSystemService(USAGE_STATS_SERVICE);
-        List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
 
-        Log.d(TAG, "size : " + usageStatsList.size());
-        for (UsageStats stats : usageStatsList) {
-            if(stats.getTotalTimeInForeground() > 0) {
-                Log.d(TAG, "[YEAR] " + stats.getPackageName() + " / " + year.format(stats.getFirstTimeStamp())
-                        + " / "  + year.format(stats.getLastTimeStamp())
-                        + " / " + year.format(stats.getLastTimeUsed())
-                        + " / " + hour.format(stats.getTotalTimeInForeground()));
+        if (usm != null) {
+            List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
+
+            Log.d(TAG, "size : " + usageStatsList.size());
+            for (UsageStats stats : usageStatsList) {
+                if(stats.getTotalTimeInForeground() > 0) {
+                    Log.d(TAG, "[YEAR] " + stats.getPackageName() + " / " + year.format(stats.getFirstTimeStamp())
+                            + " / "  + year.format(stats.getLastTimeStamp())
+                            + " / " + year.format(stats.getLastTimeUsed())
+                            + " / " + hour.format(stats.getTotalTimeInForeground()));
+                }
             }
         }
     }
