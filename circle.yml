@@ -33,4 +33,4 @@ deployment:
   staging:
     branch: master
     commands:
-      - sendmail -t appbee0627@gmail.com -m "[appbee] apk file" -a /app/build/outputs/apk/app-debug.apk
+      - sendmail appbee0627@gmail.com -m < message.txt
