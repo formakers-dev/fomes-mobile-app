@@ -6,10 +6,14 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.util.Log;
 
+import com.appbee.appbeemobile.model.DailyUsageStat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.content.Context.USAGE_STATS_SERVICE;
 
@@ -18,7 +22,7 @@ public class StatManager {
     private static final String TAG = StatManager.class.getSimpleName();
 
     private static final SimpleDateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.KOREA);
-    private static final SimpleDateFormat HOUR_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss.SSS", Locale.KOREA);
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
     private Context context;
 
@@ -50,8 +54,9 @@ public class StatManager {
         return usm.queryEvents(startTime, endTime);
     }
 
-    // TODO: 일년간 통계정보 가져오기
-    public List<UsageStats> getUserAppUsageStats() {
+    public Map<String, DailyUsageStat> getUserAppDailyUsageStatsForYear() {
+        Map<String, DailyUsageStat> dailyUsageStatMap = new HashMap<>();
+
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
         calendar.add(Calendar.YEAR, -1);
@@ -60,7 +65,7 @@ public class StatManager {
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
         if (usm != null) {
-            List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
+            List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
 
             Log.d(TAG, "size : " + usageStatsList.size());
             for (UsageStats stats : usageStatsList) {
@@ -68,11 +73,23 @@ public class StatManager {
                     Log.d(TAG, "[YEAR] " + stats.getPackageName() + " / " + YEAR_DATE_FORMAT.format(stats.getFirstTimeStamp())
                             + " / "  + YEAR_DATE_FORMAT.format(stats.getLastTimeStamp())
                             + " / " + YEAR_DATE_FORMAT.format(stats.getLastTimeUsed())
-                            + " / " + HOUR_DATE_FORMAT.format(stats.getTotalTimeInForeground()));
+                            + " / " + stats.getTotalTimeInForeground() / 1000);
+
+                    String packageName = stats.getPackageName();
+                    long usedLastTime = stats.getLastTimeUsed();
+                    long totalUsedTime = stats.getTotalTimeInForeground();
+                    String mapKey = packageName + DATE_FORMAT.format(usedLastTime);
+
+                    DailyUsageStat stat = dailyUsageStatMap.get(mapKey);
+                    if (stat != null) {
+                        stat.setTotalUsedTime(stat.getTotalUsedTime() + totalUsedTime);
+                    } else {
+                        stat = new DailyUsageStat(packageName, usedLastTime, totalUsedTime);
+                        dailyUsageStatMap.put(mapKey, stat);
+                    }
                 }
             }
-            return usageStatsList;
         }
-        return null;
+        return dailyUsageStatMap;
     }
 }

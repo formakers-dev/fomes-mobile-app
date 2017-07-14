@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
-import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -57,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void init() {
         // TODO: 일주일동안 사용정보 가져오기
-        UsageEvents usageEvents = mStatManager.getUserAppUsageInDetail();
+//        UsageEvents usageEvents = mStatManager.getUserAppUsageInDetail();
 
         // TODO: 일년간 통계정보 가져오기
-//        List<UsageStats> usageStatsList = mStatManager.getUserAppUsageStats();
+        mStatManager.getUserAppDailyUsageStatsForYear();
 
     }
 

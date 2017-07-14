@@ -31,7 +31,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void 앱시작시_일별통계데이터를_조회한다() throws Exception {
-        verify(statManager).getUserAppUsageInDetail();
+    public void 앱시작시_연간일별통계데이터를_조회한다() throws Exception {
+        verify(statManager).getUserAppDailyUsageStatsForYear();
     }
 }
