@@ -51,7 +51,7 @@ public class StatManager {
             return usageEvents;
         }
 
-        return usm.queryEvents(startTime, endTime);
+        return null;
     }
 
     public Map<String, DailyUsageStat> getUserAppDailyUsageStatsForYear() {
@@ -76,15 +76,15 @@ public class StatManager {
                             + " / " + stats.getTotalTimeInForeground() / 1000);
 
                     String packageName = stats.getPackageName();
-                    long usedLastTime = stats.getLastTimeUsed();
+                    String usedLastDate = DATE_FORMAT.format(stats.getLastTimeUsed());
                     long totalUsedTime = stats.getTotalTimeInForeground();
-                    String mapKey = packageName + DATE_FORMAT.format(usedLastTime);
+                    String mapKey = packageName + usedLastDate;
 
                     DailyUsageStat stat = dailyUsageStatMap.get(mapKey);
                     if (stat != null) {
                         stat.setTotalUsedTime(stat.getTotalUsedTime() + totalUsedTime);
                     } else {
-                        stat = new DailyUsageStat(packageName, usedLastTime, totalUsedTime);
+                        stat = new DailyUsageStat(packageName, usedLastDate, totalUsedTime);
                         dailyUsageStatMap.put(mapKey, stat);
                     }
                 }
