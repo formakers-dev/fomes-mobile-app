@@ -9,10 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.manager.StatManager;
+import com.appbee.appbeemobile.model.DailyUsageStat;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -58,9 +62,11 @@ public class MainActivity extends AppCompatActivity {
         // TODO: 일주일동안 사용정보 가져오기
 //        UsageEvents usageEvents = mStatManager.getUserAppUsageInDetail();
 
-        // TODO: 일년간 통계정보 가져오기
-        mStatManager.getUserAppDailyUsageStatsForYear();
+        Map<String, DailyUsageStat> userAppDailyUsageStatsForYear = mStatManager.getUserAppDailyUsageStatsForYear();
 
+        userAppDailyUsageStatsForYear.forEach((key, value) ->
+                Log.d(TAG, value.getPackageName() + "," + value.getLastUsedDate() + "," + value.getTotalUsedTime())
+        );
     }
 
 }

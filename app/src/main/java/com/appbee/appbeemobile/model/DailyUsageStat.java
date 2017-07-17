@@ -2,12 +2,12 @@ package com.appbee.appbeemobile.model;
 
 public class DailyUsageStat {
     private String packageName;
-    private long lastUsedDateTime;
+    private String lastUsedDate;
     private long totalUsedTime;
 
-    public DailyUsageStat(String packageName, long lastUsedDateTime, long totalUsedTime) {
+    public DailyUsageStat(String packageName, String lastUsedDate, long totalUsedTime) {
         setPackageName(packageName);
-        setLastUsedDateTime(lastUsedDateTime);
+        setLastUsedDate(lastUsedDate);
         setTotalUsedTime(totalUsedTime);
     }
 
@@ -19,12 +19,12 @@ public class DailyUsageStat {
         this.packageName = packageName;
     }
 
-    public long getLastUsedDateTime() {
-        return lastUsedDateTime;
+    public String getLastUsedDate() {
+        return lastUsedDate;
     }
 
-    public void setLastUsedDateTime(long lastUsedDateTime) {
-        this.lastUsedDateTime = lastUsedDateTime;
+    public void setLastUsedDate(String lastUsedDate) {
+        this.lastUsedDate = lastUsedDate;
     }
 
     public long getTotalUsedTime() {
