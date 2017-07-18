@@ -71,4 +71,9 @@ public class MainActivityTest {
                 .anyMatch(t -> t.type == Log.DEBUG && t.msg.contains("anyPackage,20170717,1000"));
         assertThat(isLogContainingStat).isTrue();
     }
+
+    @Test
+    public void onCreate앱시작시_단기통계데이터를_조회하여_출력한다() throws Exception {
+        //TODO : 단기통계 출력
+    }
 }

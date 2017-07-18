@@ -9,8 +9,11 @@ import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
+import com.appbee.appbeemobile.model.DetailUsageStat;
+import com.appbee.appbeemobile.model.UsageStatEvent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +26,8 @@ import org.robolectric.shadows.ShadowPackageManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -39,12 +44,16 @@ public class StatManagerTest {
     private StatManager subject;
     private UsageStatsManager mockUsageStatsManager;
 
+    @Inject
+    SystemServiceBridge mockSystemServiceBridge;
+
     @Before
     public void setUp() throws Exception {
-        subject = new StatManager(application.getApplicationContext());
-
+        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
         mockUsageStatsManager = mock(UsageStatsManager.class);
         shadowOf(RuntimeEnvironment.application).setSystemService(Context.USAGE_STATS_SERVICE, mockUsageStatsManager);
+
+        subject = new StatManager(application.getApplicationContext());
     }
 
     @Test
@@ -93,6 +102,22 @@ public class StatManagerTest {
         assertEquals(actualResult.size(), 2);
         assertEquals(actualResult.get("aaaaa20170713").getTotalUsedTime(), 300L);
         assertEquals(actualResult.get("aaaaa20170714").getTotalUsedTime(), 400L);
+    }
+
+    @Test
+    public void getDetailUsageStat호출시_앱사용정보를_시간대별로_조회하여_리턴한다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        mockUsageStatEventList.add(new UsageStatEvent("package_name", 1, 1000L));
+        mockUsageStatEventList.add(new UsageStatEvent("package_name", 2, 1100L));
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        List<DetailUsageStat> detailUsageStats = subject.getDetailUsageStats();
+
+        assertThat(detailUsageStats.size()).isEqualTo(1);
+        assertThat(detailUsageStats.get(0).getPackageName()).isEqualTo("package_name");
+        assertThat(detailUsageStats.get(0).getStartTimeStamp()).isEqualTo(1000L);
+        assertThat(detailUsageStats.get(0).getEndTimeStamp()).isEqualTo(1100L);
+        assertThat(detailUsageStats.get(0).getTotalUsedTime()).isEqualTo(100L);
     }
 
     @NonNull
