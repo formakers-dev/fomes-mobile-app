@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         statManager.getUserAppDailyUsageStatsForYear().forEach((key, value) ->
                 Log.d(TAG, "[YearlyStats] " + value.getPackageName() + "," + value.getLastUsedDate() + "," + value.getTotalUsedTime())
         );
+
+        statManager.getDetailUsageStats();
     }
 
 }

@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.dagger;
 import android.app.Application;
 
 import com.appbee.appbeemobile.activity.MainActivity;
+import com.appbee.appbeemobile.manager.StatManager;
 
 import javax.inject.Singleton;
 import dagger.Component;
@@ -12,4 +13,5 @@ import dagger.Component;
 public interface ApplicationComponent {
     void inject(Application appBeeApplication);
     void inject(MainActivity mainActivity);
+    void inject(StatManager statManager);
 }

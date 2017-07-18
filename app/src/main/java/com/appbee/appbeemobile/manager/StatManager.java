@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
+import com.appbee.appbeemobile.model.DetailUsageStat;
+import com.appbee.appbeemobile.model.UsageStatEvent;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,42 +22,52 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import static android.content.Context.USAGE_STATS_SERVICE;
 
 public class StatManager {
+    private static final String TAG = StatManager.class.getSimpleName();
     private static final SimpleDateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.KOREA);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
-    private Context context;
+    @Inject
+    SystemServiceBridge systemServiceBridge;
+
     private UsageStatsManager usageStatsManger;
     private PackageManager packageManager;
 
     public StatManager(Context context) {
-        this.context = context;
+        ((AppBeeApplication)context.getApplicationContext()).getComponent().inject(this);
+
         usageStatsManger = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
         packageManager = context.getPackageManager();
     }
 
-    // TODO: 일주일동안 사용정보 가져오기
-    public UsageEvents getUserAppUsageInDetail() {
+    public List<DetailUsageStat> getDetailUsageStats() {
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
         long startTime = endTime - 1000*60*60*24*7;
-        if (usageStatsManger != null) {
-            UsageEvents usageEvents = usageStatsManger.queryEvents(startTime, endTime);
 
-            while (usageEvents.hasNextEvent()) {
-                UsageEvents.Event event = new UsageEvents.Event();
-                boolean hasNextEvent = usageEvents.getNextEvent(event);
+        List<UsageStatEvent> usageStatEvents = systemServiceBridge.getUsageStatEvents(startTime, endTime);
+        List<DetailUsageStat> detailUsageStats = new ArrayList<>();
 
-//                if (hasNextEvent) {
-//                    Log.d(TAG, "[" + event.getEventType() + "]" + YEAR_DATE_FORMAT.format(event.getTimeStamp()) + "\t" + event.getPackageName());
-//                }
+        String previousForegroundPackageName = null;
+        long previousTimeStamp = 0L;
+
+        for(UsageStatEvent usageStatEvent : usageStatEvents) {
+            if(usageStatEvent.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                previousForegroundPackageName = usageStatEvent.getPackageName();
+                previousTimeStamp = usageStatEvent.getTimeStamp();
+            } else if(usageStatEvent.getEventType() == UsageEvents.Event.MOVE_TO_BACKGROUND) {
+                if(usageStatEvent.getPackageName().equals(previousForegroundPackageName)) {
+                    long period = usageStatEvent.getTimeStamp() - previousTimeStamp;
+                    detailUsageStats.add(new DetailUsageStat(usageStatEvent.getPackageName(), previousTimeStamp, usageStatEvent.getTimeStamp(), period));
+                }
             }
-            return usageEvents;
         }
 
-        return null;
+        return detailUsageStats;
     }
 
     public Map<String, DailyUsageStat> getUserAppDailyUsageStatsForYear() {
@@ -65,10 +78,8 @@ public class StatManager {
         calendar.add(Calendar.YEAR, -1);
         long startTime = calendar.getTimeInMillis();
 
-        UsageStatsManager usm = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
-
-        if (usm != null) {
-            List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        if (usageStatsManger != null) {
+            List<UsageStats> usageStatsList = usageStatsManger.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
 
             for (UsageStats stats : usageStatsList) {
                 if(stats.getTotalTimeInForeground() > 0) {

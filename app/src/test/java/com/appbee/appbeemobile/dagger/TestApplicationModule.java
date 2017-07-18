@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.manager.SystemServiceBridge;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 
@@ -22,5 +23,11 @@ public class TestApplicationModule {
     @Singleton
     StatManager provideStatManager() {
         return mock(StatManager.class);
+    }
+
+    @Provides
+    @Singleton
+    SystemServiceBridge provideSystemServiceBridge() {
+        return mock(SystemServiceBridge.class);
     }
 }
