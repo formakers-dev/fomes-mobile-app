@@ -22,6 +22,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
+import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -75,17 +77,70 @@ public class StatManagerTest {
     @Test
     public void getDetailUsageStat호출시_앱사용정보를_시간대별로_조회하여_리턴한다() throws Exception {
         List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
-        mockUsageStatEventList.add(new UsageStatEvent("package_name", 1, 1000L));
-        mockUsageStatEventList.add(new UsageStatEvent("package_name", 2, 1100L));
+        mockUsageStatEventList.add(new UsageStatEvent("package_name", MOVE_TO_FOREGROUND, 1000L));
+        mockUsageStatEventList.add(new UsageStatEvent("package_name", MOVE_TO_BACKGROUND, 1100L));
         when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
 
         List<DetailUsageStat> detailUsageStats = subject.getDetailUsageStats();
 
         assertThat(detailUsageStats.size()).isEqualTo(1);
-        assertThat(detailUsageStats.get(0).getPackageName()).isEqualTo("package_name");
-        assertThat(detailUsageStats.get(0).getStartTimeStamp()).isEqualTo(1000L);
-        assertThat(detailUsageStats.get(0).getEndTimeStamp()).isEqualTo(1100L);
-        assertThat(detailUsageStats.get(0).getTotalUsedTime()).isEqualTo(100L);
+        assertConfirmDetailUsageStat(detailUsageStats.get(0), "package_name", 1000L, 1100L);
+    }
+
+    @Test
+    public void getDetailUsageStat호출시_A앱이_떠있는상태에서_백그라운드로_가지않고_B앱이_실행된경우_A앱의_종료시간은_B앱의_시작시간으로_리턴한다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        mockUsageStatEventList.add(new UsageStatEvent("packageA", MOVE_TO_FOREGROUND, 1000L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageB", MOVE_TO_FOREGROUND, 1100L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageB", MOVE_TO_BACKGROUND, 1250L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageA", MOVE_TO_BACKGROUND, 1300L));
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        List<DetailUsageStat> detailUsageStats = subject.getDetailUsageStats();
+
+        assertThat(detailUsageStats.size()).isEqualTo(2);
+        assertConfirmDetailUsageStat(detailUsageStats.get(0), "packageA", 1000L, 1100L);
+        assertConfirmDetailUsageStat(detailUsageStats.get(1), "packageB", 1100L, 1250L);
+    }
+
+    @Test
+    public void getDetailUsageStat호출시_A앱이_떠있는상태에서_백그라운드로_가지않고_기록이_종료된_경우_A앱의_사용기록은_무시한다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        mockUsageStatEventList.add(new UsageStatEvent("packageB", MOVE_TO_FOREGROUND, 1000L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageB", MOVE_TO_BACKGROUND, 1100L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageA", MOVE_TO_FOREGROUND, 1300L));
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        List<DetailUsageStat> detailUsageStats = subject.getDetailUsageStats();
+
+        assertThat(detailUsageStats.size()).isEqualTo(1);
+        assertThat(detailUsageStats.get(0).getPackageName()).isEqualTo("packageB");
+    }
+
+    @Test
+    public void getDetailUsageStat호출시_A앱이_떠있는상태에서_백그라운드로_가지않고_B앱이_실행되고_B앱이_떠있는상태에서_C앱이_실행될경우_A앱의_종료시간은_B앱의_시작시간으로_B앱의종료시간은_C앱의_시작시간으로리턴한다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        mockUsageStatEventList.add(new UsageStatEvent("packageA", MOVE_TO_FOREGROUND, 1000L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageB", MOVE_TO_FOREGROUND, 1100L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageC", MOVE_TO_FOREGROUND, 1200L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageA", MOVE_TO_BACKGROUND, 1250L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageC", MOVE_TO_BACKGROUND, 1375L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageB", MOVE_TO_BACKGROUND, 1400L));
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        List<DetailUsageStat> detailUsageStats = subject.getDetailUsageStats();
+
+        assertThat(detailUsageStats.size()).isEqualTo(3);
+        assertConfirmDetailUsageStat(detailUsageStats.get(0), "packageA", 1000L, 1100L);
+        assertConfirmDetailUsageStat(detailUsageStats.get(1), "packageB", 1100L, 1200L);
+        assertConfirmDetailUsageStat(detailUsageStats.get(2), "packageC", 1200L, 1375L);
+    }
+
+    private void assertConfirmDetailUsageStat(DetailUsageStat detailUsageStat, String packageName, long startTimeStamp, long endTimeStamp) {
+        assertThat(detailUsageStat.getPackageName()).isEqualTo(packageName);
+        assertThat(detailUsageStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
+        assertThat(detailUsageStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
+        assertThat(detailUsageStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
     }
 
     @Test
