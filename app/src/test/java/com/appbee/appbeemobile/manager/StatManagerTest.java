@@ -1,16 +1,10 @@
 package com.appbee.appbeemobile.manager;
 
 import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.DetailUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
@@ -21,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowPackageManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,18 +24,16 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class StatManagerTest {
     private StatManager subject;
-    private UsageStatsManager mockUsageStatsManager;
 
     @Inject
     SystemServiceBridge mockSystemServiceBridge;
@@ -50,31 +41,8 @@ public class StatManagerTest {
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
-        mockUsageStatsManager = mock(UsageStatsManager.class);
-        shadowOf(RuntimeEnvironment.application).setSystemService(Context.USAGE_STATS_SERVICE, mockUsageStatsManager);
 
         subject = new StatManager(application.getApplicationContext());
-    }
-
-    @Test
-    public void getAppList_설치된_앱리스트를_리턴한다() throws Exception {
-        List<ResolveInfo> mockReturnList = new ArrayList<>();
-        ResolveInfo resolveInfo = new ResolveInfo();
-        resolveInfo.isDefault = true;
-        resolveInfo.activityInfo = new ActivityInfo();
-        resolveInfo.activityInfo.packageName =  "package";
-        shadowOf(resolveInfo).setLabel("app_name");
-        mockReturnList.add(resolveInfo);
-
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        ShadowPackageManager shadowPackageManager = shadowOf(RuntimeEnvironment.application.getPackageManager());
-        shadowPackageManager.addResolveInfoForIntent(intent, mockReturnList);
-
-        List<AppInfo> appList = subject.getAppList();
-        assertThat(appList.size()).isEqualTo(1);
-        assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
-        assertThat(appList.get(0).getPakageName()).isEqualTo("package");
     }
 
     @Test
@@ -82,7 +50,7 @@ public class StatManagerTest {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
-        when(mockUsageStatsManager.queryUsageStats(anyInt(),anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        when(mockSystemServiceBridge.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
 
         Map<String, DailyUsageStat> actualResult = subject.getUserAppDailyUsageStatsForYear();
 
@@ -95,7 +63,7 @@ public class StatManagerTest {
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 200L, 1499934615000L));    //2017-07-13 17:30:15
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 400L, 1500001200000L));    //2017-07-14 12:00:00
-        when(mockUsageStatsManager.queryUsageStats(anyInt(),anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        when(mockSystemServiceBridge.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
 
         Map<String, DailyUsageStat> actualResult = subject.getUserAppDailyUsageStatsForYear();
 
@@ -118,6 +86,13 @@ public class StatManagerTest {
         assertThat(detailUsageStats.get(0).getStartTimeStamp()).isEqualTo(1000L);
         assertThat(detailUsageStats.get(0).getEndTimeStamp()).isEqualTo(1100L);
         assertThat(detailUsageStats.get(0).getTotalUsedTime()).isEqualTo(100L);
+    }
+
+    @Test
+    public void getAppList호출시_설치된_앱리스트조회를_요청한다() throws Exception {
+        subject.getAppList();
+
+        verify(mockSystemServiceBridge).getInstalledLaunchableApps();
     }
 
     @NonNull
