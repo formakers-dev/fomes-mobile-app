@@ -4,10 +4,15 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +26,13 @@ public class StatManager {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
     private Context context;
+    private UsageStatsManager usageStatsManger;
+    private PackageManager packageManager;
 
     public StatManager(Context context) {
         this.context = context;
+        usageStatsManger = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
+        packageManager = context.getPackageManager();
     }
 
     // TODO: 일주일동안 사용정보 가져오기
@@ -31,10 +40,8 @@ public class StatManager {
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
         long startTime = endTime - 1000*60*60*24*7;
-
-        UsageStatsManager usm = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
-        if (usm != null) {
-            UsageEvents usageEvents = usm.queryEvents(startTime, endTime);
+        if (usageStatsManger != null) {
+            UsageEvents usageEvents = usageStatsManger.queryEvents(startTime, endTime);
 
             while (usageEvents.hasNextEvent()) {
                 UsageEvents.Event event = new UsageEvents.Event();
@@ -81,5 +88,17 @@ public class StatManager {
             }
         }
         return dailyUsageStatMap;
+    }
+
+    public List<AppInfo> getAppList() {
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(intent, PackageManager.GET_META_DATA);
+
+        List<AppInfo> appInfoList = new ArrayList<>();
+        for(ResolveInfo resolveInfo : resolveInfoList) {
+            appInfoList.add(new AppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
+        }
+        return appInfoList;
     }
 }

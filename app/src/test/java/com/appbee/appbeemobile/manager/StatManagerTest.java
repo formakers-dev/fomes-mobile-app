@@ -3,9 +3,13 @@ package com.appbee.appbeemobile.manager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 
 import org.junit.Before;
@@ -14,11 +18,13 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowPackageManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -42,19 +48,25 @@ public class StatManagerTest {
     }
 
     @Test
-    public void getUserAppUsageInDetail() throws Exception {
-        //TODO : add test code for the method
-//        UsageStatsManager mockUsageStatsManager = mock(UsageStatsManager.class);
-//        shadowOf(RuntimeEnvironment.application).setSystemService(Context.USAGE_STATS_SERVICE, mockUsageStatsManager);
-//
-//        UsageEvents usageEvents = mock(UsageEvents.class);
-//
-//        when(mockUsageStatsManager.queryEvents(anyLong(), anyLong())).thenReturn(usageEvents);
-//
-//        UsageEvents actualResult = subject.getUserAppUsageInDetail();
-//        assertNotNull(actualResult);
-    }
+    public void getAppList_설치된_앱리스트를_리턴한다() throws Exception {
+        List<ResolveInfo> mockReturnList = new ArrayList<>();
+        ResolveInfo resolveInfo = new ResolveInfo();
+        resolveInfo.isDefault = true;
+        resolveInfo.activityInfo = new ActivityInfo();
+        resolveInfo.activityInfo.packageName =  "package";
+        shadowOf(resolveInfo).setLabel("app_name");
+        mockReturnList.add(resolveInfo);
 
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        ShadowPackageManager shadowPackageManager = shadowOf(RuntimeEnvironment.application.getPackageManager());
+        shadowPackageManager.addResolveInfoForIntent(intent, mockReturnList);
+
+        List<AppInfo> appList = subject.getAppList();
+        assertThat(appList.size()).isEqualTo(1);
+        assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
+        assertThat(appList.get(0).getPakageName()).isEqualTo("package");
+    }
 
     @Test
     public void getUserAppDailyUsageStatsForYear호출시_1년간_일별통계정보를_리턴한다() throws Exception {
