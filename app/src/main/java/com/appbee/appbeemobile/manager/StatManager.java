@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.manager;
 
-import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.content.Context;
 
@@ -17,8 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.inject.Inject;
+
+import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
+import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 
 public class StatManager {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
@@ -38,22 +39,36 @@ public class StatManager {
         List<UsageStatEvent> usageStatEvents = systemServiceBridge.getUsageStatEvents(startTime, endTime);
         List<DetailUsageStat> detailUsageStats = new ArrayList<>();
 
-        String previousForegroundPackageName = null;
-        long previousTimeStamp = 0L;
+        UsageStatEvent beforeForegroundEvent = null;
 
         for(UsageStatEvent usageStatEvent : usageStatEvents) {
-            if(usageStatEvent.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                previousForegroundPackageName = usageStatEvent.getPackageName();
-                previousTimeStamp = usageStatEvent.getTimeStamp();
-            } else if(usageStatEvent.getEventType() == UsageEvents.Event.MOVE_TO_BACKGROUND) {
-                if(usageStatEvent.getPackageName().equals(previousForegroundPackageName)) {
-                    long period = usageStatEvent.getTimeStamp() - previousTimeStamp;
-                    detailUsageStats.add(new DetailUsageStat(usageStatEvent.getPackageName(), previousTimeStamp, usageStatEvent.getTimeStamp(), period));
-                }
+            switch (usageStatEvent.getEventType()) {
+                case MOVE_TO_FOREGROUND :
+                    if(isDifferentBeforeForegroundApp(beforeForegroundEvent, usageStatEvent)) {
+                        detailUsageStats.add(createDetailUsageStat(beforeForegroundEvent.getPackageName(), beforeForegroundEvent.getTimeStamp(), usageStatEvent.getTimeStamp()));
+                    }
+
+                    beforeForegroundEvent = usageStatEvent;
+                    break;
+
+                case MOVE_TO_BACKGROUND :
+                    if(beforeForegroundEvent != null && usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
+                        detailUsageStats.add(createDetailUsageStat(usageStatEvent.getPackageName(), beforeForegroundEvent.getTimeStamp(), usageStatEvent.getTimeStamp()));
+                        beforeForegroundEvent = null;
+                    }
+                    break;
             }
         }
 
         return detailUsageStats;
+    }
+
+    private DetailUsageStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
+        return new DetailUsageStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
+    }
+
+    private boolean isDifferentBeforeForegroundApp(UsageStatEvent beforeForegroundEvent, UsageStatEvent usageStatEvent) {
+        return beforeForegroundEvent != null && beforeForegroundEvent.getEventType() == MOVE_TO_FOREGROUND && !usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName());
     }
 
     public Map<String, DailyUsageStat> getUserAppDailyUsageStatsForYear() {
