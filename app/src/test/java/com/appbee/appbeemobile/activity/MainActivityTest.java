@@ -5,7 +5,6 @@ import android.util.Log;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.manager.StatManager;
-import com.appbee.appbeemobile.manager.UsingPackageManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 
@@ -27,7 +26,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -38,9 +36,6 @@ public class MainActivityTest {
 
     @Inject
     StatManager statManager;
-
-    @Inject
-    UsingPackageManager usingPackageManager;
 
     @Before
     public void setUp() throws Exception {
@@ -53,7 +48,7 @@ public class MainActivityTest {
         List<AppInfo> mockAppInfoList = new ArrayList<>();
         AppInfo appInfo = new AppInfo("package_name", "app_name");
         mockAppInfoList.add(appInfo);
-        when(usingPackageManager.getAppList()).thenReturn(mockAppInfoList);
+        when(statManager.getAppList()).thenReturn(mockAppInfoList);
 
         activityController.create();
 

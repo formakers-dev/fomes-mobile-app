@@ -2,9 +2,6 @@ package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.manager.UsingPackageManager;
-
-import org.mockito.Mockito;
 
 import javax.inject.Singleton;
 
@@ -25,11 +22,5 @@ public class TestApplicationModule {
     @Singleton
     StatManager provideStatManager() {
         return mock(StatManager.class);
-    }
-
-    @Provides
-    @Singleton
-    UsingPackageManager provideUsingPackageManager() {
-        return  mock(UsingPackageManager.class);
     }
 }

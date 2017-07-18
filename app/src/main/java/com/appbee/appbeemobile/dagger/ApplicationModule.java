@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.dagger;
 import android.app.Application;
 
 import com.appbee.appbeemobile.manager.StatManager;
-import com.appbee.appbeemobile.manager.UsingPackageManager;
 
 import javax.inject.Singleton;
 
@@ -22,11 +21,5 @@ public class ApplicationModule {
     @Singleton
     StatManager provideStatManager() {
         return new StatManager(application.getApplicationContext());
-    }
-
-    @Provides
-    @Singleton
-    UsingPackageManager provideUsingPackageManager() {
-        return new UsingPackageManager(application.getApplicationContext());
     }
 }
