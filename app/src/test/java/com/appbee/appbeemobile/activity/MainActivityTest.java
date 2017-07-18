@@ -7,6 +7,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
+import com.appbee.appbeemobile.model.DetailUsageStat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,16 +47,12 @@ public class MainActivityTest {
     @Test
     public void onCreate앱시작시_앱목록데이터를_조회하여_출력한다() throws Exception {
         List<AppInfo> mockAppInfoList = new ArrayList<>();
-        AppInfo appInfo = new AppInfo("package_name", "app_name");
-        mockAppInfoList.add(appInfo);
+        mockAppInfoList.add(new AppInfo("package_name", "app_name"));
         when(statManager.getAppList()).thenReturn(mockAppInfoList);
 
         activityController.create();
 
-        List<ShadowLog.LogItem> logs = ShadowLog.getLogs();
-        boolean isLogContainingAppInfo = logs.stream()
-                .anyMatch(t -> t.type == Log.DEBUG && t.msg.contains("package_name, app_name"));
-        assertThat(isLogContainingAppInfo).isTrue();
+        assertThat(isLogContains("package_name, app_name")).isTrue();
     }
 
     @Test
@@ -66,14 +63,21 @@ public class MainActivityTest {
 
         activityController.create();
 
-        List<ShadowLog.LogItem> logs = ShadowLog.getLogs();
-        boolean isLogContainingStat = logs.stream()
-                .anyMatch(t -> t.type == Log.DEBUG && t.msg.contains("anyPackage,20170717,1000"));
-        assertThat(isLogContainingStat).isTrue();
+        assertThat(isLogContains("anyPackage,20170717,1000")).isTrue();
     }
 
     @Test
     public void onCreate앱시작시_단기통계데이터를_조회하여_출력한다() throws Exception {
-        //TODO : 단기통계 출력
+        List<DetailUsageStat> mockDetailUsageStatList = new ArrayList<>();
+        mockDetailUsageStatList.add(new DetailUsageStat("package_name", 1000L, 1100L, 100L));
+        when(statManager.getDetailUsageStats()).thenReturn(mockDetailUsageStatList);
+
+        activityController.create();
+
+        assertThat(isLogContains("package_name, 1000, 1100, 100")).isTrue();
+    }
+
+    private boolean isLogContains(String containedMessage) {
+        return ShadowLog.getLogs().stream().anyMatch(t -> t.type== Log.DEBUG && t.msg.contains(containedMessage));
     }
 }

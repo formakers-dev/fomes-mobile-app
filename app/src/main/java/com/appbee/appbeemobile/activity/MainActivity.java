@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
         confirmAuth();
-        init();
+        loadData();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void init() {
+    public void loadData() {
         // 앱 리스트
         statManager.getAppList().forEach(elem ->
                 Log.d(TAG, "[AppInfo] " + elem.getPakageName() + ", " + elem.getAppName()));
@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "[YearlyStats] " + value.getPackageName() + "," + value.getLastUsedDate() + "," + value.getTotalUsedTime())
         );
 
-        statManager.getDetailUsageStats();
+        statManager.getDetailUsageStats().forEach(elem ->
+            Log.d(TAG, "[DetailUsageStats] " + elem.getPackageName() + ", " + elem.getStartTimeStamp() + ", " + elem.getEndTimeStamp() + ", " + elem.getTotalUsedTime())
+        );
     }
-
 }
