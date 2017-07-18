@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.manager.UsingPackageManager;
 
 import org.mockito.Mockito;
 
@@ -9,6 +10,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+
+import static org.mockito.Mockito.mock;
 
 @Module
 public class TestApplicationModule {
@@ -21,6 +24,12 @@ public class TestApplicationModule {
     @Provides
     @Singleton
     StatManager provideStatManager() {
-        return Mockito.mock(StatManager.class);
+        return mock(StatManager.class);
+    }
+
+    @Provides
+    @Singleton
+    UsingPackageManager provideUsingPackageManager() {
+        return  mock(UsingPackageManager.class);
     }
 }
