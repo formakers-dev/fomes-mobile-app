@@ -14,10 +14,7 @@ import android.util.Log;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.manager.StatManager;
-import com.appbee.appbeemobile.model.DailyUsageStat;
-
-import java.util.Map;
-
+import com.appbee.appbeemobile.manager.UsingPackageManager;
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     StatManager mStatManager;
+
+    @Inject
+    UsingPackageManager usingPackageManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init() {
-        // TODO: 일주일동안 사용정보 가져오기
-//        UsageEvents usageEvents = mStatManager.getUserAppUsageInDetail();
+        // 앱 리스트
+        usingPackageManager.getAppList().forEach(elem ->
+                Log.d(TAG, "[AppInfo] " + elem.getPakageName() + ", " + elem.getAppName()));
 
-        Map<String, DailyUsageStat> userAppDailyUsageStatsForYear = mStatManager.getUserAppDailyUsageStatsForYear();
-
-        userAppDailyUsageStatsForYear.forEach((key, value) ->
-                Log.d(TAG, value.getPackageName() + "," + value.getLastUsedDate() + "," + value.getTotalUsedTime())
+        // 연간 통계정보
+        mStatManager.getUserAppDailyUsageStatsForYear().forEach((key, value) ->
+                Log.d(TAG, "[YearlyStats] " + value.getPackageName() + "," + value.getLastUsedDate() + "," + value.getTotalUsedTime())
         );
     }
 

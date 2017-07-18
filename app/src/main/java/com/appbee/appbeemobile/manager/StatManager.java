@@ -4,7 +4,6 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.util.Log;
 
 import com.appbee.appbeemobile.model.DailyUsageStat;
 
@@ -18,9 +17,6 @@ import java.util.Map;
 import static android.content.Context.USAGE_STATS_SERVICE;
 
 public class StatManager {
-
-    private static final String TAG = StatManager.class.getSimpleName();
-
     private static final SimpleDateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.KOREA);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
@@ -44,9 +40,9 @@ public class StatManager {
                 UsageEvents.Event event = new UsageEvents.Event();
                 boolean hasNextEvent = usageEvents.getNextEvent(event);
 
-                if (hasNextEvent) {
-                    Log.d(TAG, "[" + event.getEventType() + "]" + YEAR_DATE_FORMAT.format(event.getTimeStamp()) + "\t" + event.getPackageName());
-                }
+//                if (hasNextEvent) {
+//                    Log.d(TAG, "[" + event.getEventType() + "]" + YEAR_DATE_FORMAT.format(event.getTimeStamp()) + "\t" + event.getPackageName());
+//                }
             }
             return usageEvents;
         }
@@ -67,14 +63,8 @@ public class StatManager {
         if (usm != null) {
             List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
 
-            Log.d(TAG, "size : " + usageStatsList.size());
             for (UsageStats stats : usageStatsList) {
                 if(stats.getTotalTimeInForeground() > 0) {
-                    Log.d(TAG, "[YEAR] " + stats.getPackageName() + " / " + YEAR_DATE_FORMAT.format(stats.getFirstTimeStamp())
-                            + " / "  + YEAR_DATE_FORMAT.format(stats.getLastTimeStamp())
-                            + " / " + YEAR_DATE_FORMAT.format(stats.getLastTimeUsed())
-                            + " / " + stats.getTotalTimeInForeground() / 1000);
-
                     String packageName = stats.getPackageName();
                     String usedLastDate = DATE_FORMAT.format(stats.getLastTimeUsed());
                     long totalUsedTime = stats.getTotalTimeInForeground();
