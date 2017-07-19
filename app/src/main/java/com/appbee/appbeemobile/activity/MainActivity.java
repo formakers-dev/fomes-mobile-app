@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.DetailUsageStat;
+import com.appbee.appbeemobile.receiver.ScreenOffReceiver;
 
 import java.util.Map;
 
@@ -38,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
         confirmAuth();
         loadData();
+
+        registerScreenOffReceiver();
+    }
+
+    private void registerScreenOffReceiver() {
+        ScreenOffReceiver screenOffReceiver = new ScreenOffReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(screenOffReceiver, intentFilter);
     }
 
     @TargetApi(Build.VERSION_CODES.M)

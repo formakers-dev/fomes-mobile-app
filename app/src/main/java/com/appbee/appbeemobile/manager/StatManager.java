@@ -2,13 +2,16 @@ package com.appbee.appbeemobile.manager;
 
 import android.app.usage.UsageStats;
 import android.content.Context;
-import android.util.Log;
+import android.content.SharedPreferences;
+import android.support.annotation.VisibleForTesting;
 
 import com.appbee.appbeemobile.AppBeeApplication;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.DetailUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
+import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,17 +28,20 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 public class StatManager {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
+    @VisibleForTesting
+    final Context context;
+
     @Inject
     SystemServiceBridge systemServiceBridge;
 
     public StatManager(Context context) {
         ((AppBeeApplication)context.getApplicationContext()).getComponent().inject(this);
+        this.context = context;
     }
 
     public List<DetailUsageStat> getDetailUsageStats() {
-        Calendar calendar = Calendar.getInstance();
-        long endTime = calendar.getTimeInMillis();
-        long startTime = endTime - 1000*60*60*24*7;
+        long endTime = TimeUtil.getCurrentTime();
+        long startTime = getStartTime();
 
         List<UsageStatEvent> usageStatEvents = systemServiceBridge.getUsageStatEvents(startTime, endTime);
         List<DetailUsageStat> detailUsageStats = new ArrayList<>();
@@ -57,19 +63,25 @@ public class StatManager {
             }
         }
 
+        updateEndTimeInSharedPreferences(endTime);
+
         return detailUsageStats;
+    }
+
+    private long getStartTime() {
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
+        return sharedPref.getLong(context.getString(R.string.shared_prefereces_key_last_usage_time), TimeUtil.getCurrentTime() - 1000*60*60*24*7);
+    }
+
+    private void updateEndTimeInSharedPreferences(long endTime) {
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(context.getString(R.string.shared_prefereces_key_last_usage_time), endTime);
+        editor.commit();
     }
 
     private DetailUsageStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
         return new DetailUsageStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
-    }
-
-    private boolean isDifferentWithBeforeForegroundApp(UsageStatEvent beforeForegroundEvent, UsageStatEvent usageStatEvent) {
-        return beforeForegroundEvent != null && !usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName());
-    }
-
-    private boolean isSameWithBeforeForegroundApp(UsageStatEvent beforeForegroundEvent, UsageStatEvent usageStatEvent) {
-        return beforeForegroundEvent != null && usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName());
     }
 
     public Map<String, DailyUsageStat> getUserAppDailyUsageStatsForYear() {
