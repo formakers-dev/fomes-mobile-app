@@ -8,15 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.util.Log;
 
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.UsageStatEvent;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static android.content.Context.USAGE_STATS_SERVICE;
 
