@@ -14,6 +14,11 @@ import android.util.Log;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.manager.StatManager;
+import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.DailyUsageStat;
+import com.appbee.appbeemobile.model.DetailUsageStat;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -57,16 +62,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadData() {
         // 앱 리스트
-        statManager.getAppList().forEach(elem ->
-                Log.d(TAG, "[AppInfo] " + elem.getPakageName() + ", " + elem.getAppName()));
+        for (AppInfo appInfo : statManager.getAppList()) {
+            Log.d(TAG, "[AppInfo] " + appInfo.getPakageName() + ", " + appInfo.getAppName());
+        }
 
         // 연간 통계정보
-        statManager.getUserAppDailyUsageStatsForYear().forEach((key, value) ->
-                Log.d(TAG, "[YearlyStats] " + value.getPackageName() + "," + value.getLastUsedDate() + "," + value.getTotalUsedTime())
-        );
+        Map<String, DailyUsageStat> userAppDailyUsageStatsForYear = statManager.getUserAppDailyUsageStatsForYear();
+        for(String key : userAppDailyUsageStatsForYear.keySet()) {
+            DailyUsageStat dailyUsageStat = userAppDailyUsageStatsForYear.get(key);
+            Log.d(TAG, "[YearlyStats] " + dailyUsageStat.getPackageName() + "," + dailyUsageStat.getLastUsedDate() + "," + dailyUsageStat.getTotalUsedTime());
+        }
 
-        statManager.getDetailUsageStats().forEach(elem ->
-            Log.d(TAG, "[DetailUsageStats] " + elem.getPackageName() + ", " + elem.getStartTimeStamp() + ", " + elem.getEndTimeStamp() + ", " + elem.getTotalUsedTime())
-        );
+        for (DetailUsageStat detailUsageStat : statManager.getDetailUsageStats()) {
+            Log.d(TAG, "[DetailUsageStats] " + detailUsageStat.getPackageName() + ", " + detailUsageStat.getStartTimeStamp() + ", " + detailUsageStat.getEndTimeStamp() + ", " + detailUsageStat.getTotalUsedTime());
+        }
     }
 }
