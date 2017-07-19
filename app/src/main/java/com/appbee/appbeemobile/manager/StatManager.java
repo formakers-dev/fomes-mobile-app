@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.manager;
 
 import android.app.usage.UsageStats;
 import android.content.Context;
+import android.util.Log;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.model.AppInfo;
@@ -44,10 +45,6 @@ public class StatManager {
         for(UsageStatEvent usageStatEvent : usageStatEvents) {
             switch (usageStatEvent.getEventType()) {
                 case MOVE_TO_FOREGROUND :
-                    if(isDifferentBeforeForegroundApp(beforeForegroundEvent, usageStatEvent)) {
-                        detailUsageStats.add(createDetailUsageStat(beforeForegroundEvent.getPackageName(), beforeForegroundEvent.getTimeStamp(), usageStatEvent.getTimeStamp()));
-                    }
-
                     beforeForegroundEvent = usageStatEvent;
                     break;
 
@@ -67,8 +64,12 @@ public class StatManager {
         return new DetailUsageStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
     }
 
-    private boolean isDifferentBeforeForegroundApp(UsageStatEvent beforeForegroundEvent, UsageStatEvent usageStatEvent) {
-        return beforeForegroundEvent != null && beforeForegroundEvent.getEventType() == MOVE_TO_FOREGROUND && !usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName());
+    private boolean isDifferentWithBeforeForegroundApp(UsageStatEvent beforeForegroundEvent, UsageStatEvent usageStatEvent) {
+        return beforeForegroundEvent != null && !usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName());
+    }
+
+    private boolean isSameWithBeforeForegroundApp(UsageStatEvent beforeForegroundEvent, UsageStatEvent usageStatEvent) {
+        return beforeForegroundEvent != null && usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName());
     }
 
     public Map<String, DailyUsageStat> getUserAppDailyUsageStatsForYear() {
