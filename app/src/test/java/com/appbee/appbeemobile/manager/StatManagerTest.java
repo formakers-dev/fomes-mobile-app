@@ -1,17 +1,23 @@
 package com.appbee.appbeemobile.manager;
 
 import android.app.usage.UsageStats;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.DetailUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
+import com.appbee.appbeemobile.util.TimeUtil;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -39,6 +45,9 @@ public class StatManagerTest {
 
     @Inject
     SystemServiceBridge mockSystemServiceBridge;
+
+    @Captor
+    ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
     @Before
     public void setUp() throws Exception {
@@ -160,18 +169,59 @@ public class StatManagerTest {
         assertThat(detailUsageStats.size()).isEqualTo(0);
     }
 
-    private void assertConfirmDetailUsageStat(DetailUsageStat detailUsageStat, String packageName, long startTimeStamp, long endTimeStamp) {
-        assertThat(detailUsageStat.getPackageName()).isEqualTo(packageName);
-        assertThat(detailUsageStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
-        assertThat(detailUsageStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
-        assertThat(detailUsageStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
-    }
-
     @Test
     public void getAppList호출시_설치된_앱리스트조회를_요청한다() throws Exception {
         subject.getAppList();
 
         verify(mockSystemServiceBridge).getInstalledLaunchableApps();
+    }
+
+    @Test
+    public void getDetailUsageStats호출시_SharedPreferences에_endTime을_기록한다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        SharedPreferences sharedPreferences = RuntimeEnvironment.application.getSharedPreferences(subject.context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
+        long endTime1 = sharedPreferences.getLong(subject.context.getString(R.string.shared_prefereces_key_last_usage_time), 0L);
+
+        subject.getDetailUsageStats();
+
+        long endTime2 = sharedPreferences.getLong(subject.context.getString(R.string.shared_prefereces_key_last_usage_time), 0L);
+        assertThat(endTime2).isGreaterThan(endTime1);
+    }
+
+    @Test
+    public void getDetailUsageStats호출시_SharedPreference에_LAST_USAGE_TIME이_있을경우_startTime은_LAST_USAGE_TIME로_대체된다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        SharedPreferences sharedPreferences = RuntimeEnvironment.application.getSharedPreferences(subject.context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
+        sharedPreferences.edit().putLong(subject.context.getString(R.string.shared_prefereces_key_last_usage_time), 200L).commit();
+
+        subject.getDetailUsageStats();
+
+        verify(mockSystemServiceBridge).getUsageStatEvents(startTimeCaptor.capture(), anyLong());
+        assertThat(startTimeCaptor.getValue()).isEqualTo(200L);
+    }
+
+    @Test
+    public void getDetailUsageStats호출시_SharedPreference에_LAST_USAGE_TIME이_없을경우_startTime은_ms단위는_절삭한_일주일전시간으로_세팅된다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        subject.getDetailUsageStats();
+
+        verify(mockSystemServiceBridge).getUsageStatEvents(startTimeCaptor.capture(), anyLong());
+        long padding = Math.abs(startTimeCaptor.getValue() - (TimeUtil.getCurrentTime()-1000*60*60*24*7));
+
+        assertThat(padding).isLessThan(1000L);
+    }
+
+    private void assertConfirmDetailUsageStat(DetailUsageStat detailUsageStat, String packageName, long startTimeStamp, long endTimeStamp) {
+        assertThat(detailUsageStat.getPackageName()).isEqualTo(packageName);
+        assertThat(detailUsageStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
+        assertThat(detailUsageStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
+        assertThat(detailUsageStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
     }
 
     @NonNull
@@ -182,4 +232,5 @@ public class StatManagerTest {
         when(mockUsageStats.getLastTimeUsed()).thenReturn(lastTimeUsed);
         return mockUsageStats;
     }
+
 }
