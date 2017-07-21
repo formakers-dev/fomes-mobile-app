@@ -18,11 +18,21 @@ import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.DetailUsageStat;
+import com.appbee.appbeemobile.network.HTTPService;
 import com.appbee.appbeemobile.receiver.ScreenOffReceiver;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     StatManager statManager;
+
+    ScreenOffReceiver screenOffReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +56,14 @@ public class MainActivity extends AppCompatActivity {
         registerScreenOffReceiver();
     }
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(screenOffReceiver);
+        super.onDestroy();
+    }
+
     private void registerScreenOffReceiver() {
-        ScreenOffReceiver screenOffReceiver = new ScreenOffReceiver();
+        screenOffReceiver = new ScreenOffReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(screenOffReceiver, intentFilter);
@@ -84,8 +102,44 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "[YearlyStats] " + dailyUsageStat.getPackageName() + "," + dailyUsageStat.getLastUsedDate() + "," + dailyUsageStat.getTotalUsedTime());
         }
 
-        for (DetailUsageStat detailUsageStat : statManager.getDetailUsageStats()) {
+        final List<DetailUsageStat> detailUsageStatList = statManager.getDetailUsageStats();
+        for (DetailUsageStat detailUsageStat : detailUsageStatList) {
             Log.d(TAG, "[DetailUsageStats] " + detailUsageStat.getPackageName() + ", " + detailUsageStat.getStartTimeStamp() + ", " + detailUsageStat.getEndTimeStamp() + ", " + detailUsageStat.getTotalUsedTime());
         }
+
+        sendDetailUsageStats(detailUsageStatList);
+    }
+
+    private void sendDetailUsageStats(final List<DetailUsageStat> detailUsageStatList) {
+        // TODO : will move to netModule
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(interceptor);
+        OkHttpClient okHttpClient = builder.build();
+
+        // TODO : will move to netModule
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://172.16.0.164:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)   // for logs
+                .build();
+
+        retrofit.create(HTTPService.class).sendDetailUsageStat(detailUsageStatList).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Success to send DetailUsageStats");
+                } else {
+                    Log.d(TAG, "Fail to send DetailUsageStats");
+                }
+            }
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e(TAG, "failure!!! t=" + t.toString());
+            }
+        });
     }
 }
