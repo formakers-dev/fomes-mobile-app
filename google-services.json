@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1011092046994",
+    "firebase_url": "https://appbeemobile.firebaseio.com",
+    "project_id": "appbeemobile",
+    "storage_bucket": "appbeemobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011092046994:android:8567e569f61e8011",
+        "android_client_info": {
+          "package_name": "com.appbee.appbeemobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1011092046994-qdvlddoem775qt59sm5b2sqfp3iq0etf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeLCbz4TOSP7UjLyH_69m2grV2sZV_eXw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
