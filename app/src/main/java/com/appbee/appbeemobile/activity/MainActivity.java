@@ -18,7 +18,9 @@ import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.DetailUsageStat;
+import com.appbee.appbeemobile.model.UsageStatEvent;
 import com.appbee.appbeemobile.network.HTTPService;
+import com.appbee.appbeemobile.network.RetrofitCreator;
 import com.appbee.appbeemobile.receiver.ScreenOffReceiver;
 
 import java.util.List;
@@ -26,13 +28,9 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     StatManager statManager;
 
     ScreenOffReceiver screenOffReceiver;
+    
+    HTTPService httpService = RetrofitCreator.createRetrofit().create(HTTPService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,45 +91,92 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadData() {
         // 앱 리스트
-        for (AppInfo appInfo : statManager.getAppList()) {
-            Log.d(TAG, "[AppInfo] " + appInfo.getPakageName() + ", " + appInfo.getAppName());
+        final List<AppInfo> appInfoList = statManager.getAppList();
+        for (AppInfo appInfo : appInfoList) {
+            Log.d(TAG, "[AppInfo] " + appInfo.getPackageName() + ", " + appInfo.getAppName());
         }
+        sendAppList(appInfoList);
 
         // 연간 통계정보
-        Map<String, DailyUsageStat> userAppDailyUsageStatsForYear = statManager.getUserAppDailyUsageStatsForYear();
+        final Map<String, DailyUsageStat> userAppDailyUsageStatsForYear = statManager.getUserAppDailyUsageStatsForYear();
         for(String key : userAppDailyUsageStatsForYear.keySet()) {
             DailyUsageStat dailyUsageStat = userAppDailyUsageStatsForYear.get(key);
             Log.d(TAG, "[YearlyStats] " + dailyUsageStat.getPackageName() + "," + dailyUsageStat.getLastUsedDate() + "," + dailyUsageStat.getTotalUsedTime());
         }
+        sendDailyUsageStats(userAppDailyUsageStatsForYear);
 
-        final List<DetailUsageStat> detailUsageStatList = statManager.getDetailUsageStats();
-        for (DetailUsageStat detailUsageStat : detailUsageStatList) {
-            Log.d(TAG, "[DetailUsageStats] " + detailUsageStat.getPackageName() + ", " + detailUsageStat.getStartTimeStamp() + ", " + detailUsageStat.getEndTimeStamp() + ", " + detailUsageStat.getTotalUsedTime());
+        // 주간 통계정보 - 가공전
+        final List<UsageStatEvent> usageStatEventsList = statManager.getDetailUsageEvents();
+        for (UsageStatEvent usageStatEvent: usageStatEventsList) {
+            Log.d(TAG, "[DetailStatEvent] " + usageStatEvent.getPackageName() + ", " + usageStatEvent.getEventType() + ", " + usageStatEvent.getTimeStamp());
         }
+        sendDetailUsageStatsByEvent(usageStatEventsList);
 
-        sendDetailUsageStats(detailUsageStatList);
+        // 주간 통계정보 - 가공후
+//        final List<DetailUsageStat> detailUsageStatList = statManager.getDetailUsageStats();
+//        for (DetailUsageStat detailUsageStat : detailUsageStatList) {
+//            Log.d(TAG, "[DetailUsageStats] " + detailUsageStat.getPackageName() + ", " + detailUsageStat.getStartTimeStamp() + ", " + detailUsageStat.getEndTimeStamp() + ", " + detailUsageStat.getTotalUsedTime());
+//        }
+//        sendDetailUsageStats(detailUsageStatList);
+    }
+
+    private void sendAppList(final List<AppInfo> appInfoList) {
+        httpService.sendAppInfoList(appInfoList).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Success to send appList");
+                } else {
+                    Log.d(TAG, "Fail to send appList");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e(TAG, "failure!!! t=" + t.toString());
+            }
+        });
+    }
+
+    private void sendDailyUsageStats(final Map<String, DailyUsageStat> userAppDailyUsageStatsForYear) {
+        httpService.sendDailyUsageStats(userAppDailyUsageStatsForYear).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Success to send dailyUsageStats");
+                } else {
+                    Log.d(TAG, "Fail to send dailyUsageStats");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e(TAG, "failure!!! t=" + t.toString());
+            }
+        });
+    }
+
+    private void sendDetailUsageStatsByEvent(final List<UsageStatEvent> detailUsageStatsByEvent) {
+        httpService.sendDetailUsageStatsByEvent(detailUsageStatsByEvent).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Success to send DetailUsageStatsByEvent");
+                } else {
+                    Log.d(TAG, "Fail to send DetailUsageStatsByEvent");
+                }
+            }
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e(TAG, "failure!!! t=" + t.toString());
+            }
+        });
     }
 
     private void sendDetailUsageStats(final List<DetailUsageStat> detailUsageStatList) {
-        // TODO : will move to netModule
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        builder.addInterceptor(interceptor);
-        OkHttpClient okHttpClient = builder.build();
-
-        // TODO : will move to netModule
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.16.0.164:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)   // for logs
-                .build();
-
-        retrofit.create(HTTPService.class).sendDetailUsageStat(detailUsageStatList).enqueue(new Callback<Boolean>() {
+        httpService.sendDetailUsageStat(detailUsageStatList).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
-
                 if (response.isSuccessful()) {
                     Log.d(TAG, "Success to send DetailUsageStats");
                 } else {

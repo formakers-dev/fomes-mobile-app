@@ -217,6 +217,21 @@ public class StatManagerTest {
         assertThat(padding).isLessThan(1000L);
     }
 
+    @Test
+    public void getDetailUsageEvents호출시_가공되지_않은_앱사용정보를_리턴한다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        mockUsageStatEventList.add(new UsageStatEvent("packageA", MOVE_TO_FOREGROUND, 1000L));
+        mockUsageStatEventList.add(new UsageStatEvent("packageA", MOVE_TO_BACKGROUND, 1100L));
+        when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockUsageStatEventList);
+
+        List<UsageStatEvent> usageStatEventList = subject.getDetailUsageEvents();
+
+        assertThat(usageStatEventList.size()).isEqualTo(2);
+        assertThat(usageStatEventList.get(0).getPackageName()).isEqualTo("packageA");
+        assertThat(usageStatEventList.get(0).getEventType()).isEqualTo(MOVE_TO_FOREGROUND);
+        assertThat(usageStatEventList.get(0).getTimeStamp()).isEqualTo(1000L);
+    }
+
     private void assertConfirmDetailUsageStat(DetailUsageStat detailUsageStat, String packageName, long startTimeStamp, long endTimeStamp) {
         assertThat(detailUsageStat.getPackageName()).isEqualTo(packageName);
         assertThat(detailUsageStat.getStartTimeStamp()).isEqualTo(startTimeStamp);

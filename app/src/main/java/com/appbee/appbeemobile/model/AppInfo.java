@@ -1,20 +1,20 @@
 package com.appbee.appbeemobile.model;
 
 public class AppInfo {
-    String pakageName;
+    String packageName;
     String appName;
 
     public AppInfo(String resolvePackageName, String appName) {
-        this.pakageName = resolvePackageName;
+        this.packageName = resolvePackageName;
         this.appName = appName;
     }
 
-    public String getPakageName() {
-        return pakageName;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setPakageName(String pakageName) {
-        this.pakageName = pakageName;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public String getAppName() {

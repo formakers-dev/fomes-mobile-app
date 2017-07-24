@@ -7,7 +7,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
-import com.appbee.appbeemobile.model.DetailUsageStat;
+import com.appbee.appbeemobile.model.UsageStatEvent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,15 +66,26 @@ public class MainActivityTest {
         assertThat(isLogContains("anyPackage,20170717,1000")).isTrue();
     }
 
+//    @Test
+//    public void onCreate앱시작시_단기통계데이터를_조회하여_출력한다() throws Exception {
+//        List<DetailUsageStat> mockDetailUsageStatList = new ArrayList<>();
+//        mockDetailUsageStatList.add(new DetailUsageStat("package_name", 1000L, 1100L, 100L));
+//        when(statManager.getDetailUsageStats()).thenReturn(mockDetailUsageStatList);
+//
+//        activityController.create();
+//
+//        assertThat(isLogContains("package_name, 1000, 1100, 100")).isTrue();
+//    }
+
     @Test
-    public void onCreate앱시작시_단기통계데이터를_조회하여_출력한다() throws Exception {
-        List<DetailUsageStat> mockDetailUsageStatList = new ArrayList<>();
-        mockDetailUsageStatList.add(new DetailUsageStat("package_name", 1000L, 1100L, 100L));
-        when(statManager.getDetailUsageStats()).thenReturn(mockDetailUsageStatList);
+    public void onCreate앱시작시_가공되지_않은_단기통계데이터를_조회하여_출력한다() throws Exception {
+        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
+        mockUsageStatEventList.add(new UsageStatEvent("package_name", 1, 1000L));
+        when(statManager.getDetailUsageEvents()).thenReturn(mockUsageStatEventList);
 
         activityController.create();
 
-        assertThat(isLogContains("package_name, 1000, 1100, 100")).isTrue();
+        assertThat(isLogContains("package_name, 1, 1000")).isTrue();
     }
 
     private boolean isLogContains(String containedMessage) {
