@@ -68,6 +68,12 @@ public class StatManager {
         return detailUsageStats;
     }
 
+    public List<UsageStatEvent> getDetailUsageEvents(){
+        long endTime = TimeUtil.getCurrentTime();
+        long startTime = getStartTime();
+        return systemServiceBridge.getUsageStatEvents(startTime, endTime);
+    }
+
     private long getStartTime() {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
         return sharedPref.getLong(context.getString(R.string.shared_prefereces_key_last_usage_time), TimeUtil.getCurrentTime() - 1000*60*60*24*7);

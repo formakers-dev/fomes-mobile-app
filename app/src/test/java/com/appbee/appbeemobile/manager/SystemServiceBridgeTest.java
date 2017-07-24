@@ -88,7 +88,7 @@ public class SystemServiceBridgeTest {
         List<AppInfo> appList = subject.getInstalledLaunchableApps();
         assertThat(appList.size()).isEqualTo(1);
         assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
-        assertThat(appList.get(0).getPakageName()).isEqualTo("package");
+        assertThat(appList.get(0).getPackageName()).isEqualTo("package");
     }
 
     @Test
