@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     StatManager statManager;
 
+    @Inject
     ScreenOffReceiver screenOffReceiver;
     
     HTTPService httpService = RetrofitCreator.createRetrofit().create(HTTPService.class);
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerScreenOffReceiver() {
-        screenOffReceiver = new ScreenOffReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(screenOffReceiver, intentFilter);

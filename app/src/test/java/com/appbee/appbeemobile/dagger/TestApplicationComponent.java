@@ -9,9 +9,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = TestApplicationModule.class)
+@Component(modules = { TestApplicationModule.class, TestContextModule.class })
 public interface TestApplicationComponent extends ApplicationComponent {
     void inject(MainActivityTest mainActivity);
-    void inject(StatManagerTest statManagerTest);
-    void inject(ScreenOffReceiverTest screenOffReceiverTest);
 }

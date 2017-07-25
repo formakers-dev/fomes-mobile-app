@@ -6,6 +6,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@Ignore
 public class HTTPServiceTest {
 
     @Before

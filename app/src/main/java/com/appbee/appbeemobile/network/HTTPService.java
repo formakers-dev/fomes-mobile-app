@@ -4,6 +4,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.DetailUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
+import com.appbee.appbeemobile.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface HTTPService {
+    @POST("/user")
+    Call<Boolean> insertUser(@Body User user);
+
     @POST("appInfoList")
     Call<Boolean> sendAppInfoList(@Body List<AppInfo> appInfoList);
 

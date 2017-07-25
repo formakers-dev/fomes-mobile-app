@@ -13,11 +13,15 @@ import javax.inject.Inject;
 
 public class ScreenOffReceiver extends BroadcastReceiver {
     private static final String TAG = ScreenOffReceiver.class.getSimpleName();
+    private final StatManager statManager;
+
     @Inject
-    StatManager statManager;
+    public ScreenOffReceiver(StatManager statManager) {
+        this.statManager = statManager;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        ((AppBeeApplication)context.getApplicationContext()).getComponent().inject(this);
         for(DetailUsageStat detailUsageStat: statManager.getDetailUsageStats()){
             Log.d(TAG, "[DetailUsageState] " + detailUsageStat.getPackageName() + ", " + detailUsageStat.getStartTimeStamp() + ", " + detailUsageStat.getEndTimeStamp() +", " + detailUsageStat.getTotalUsedTime());
         }

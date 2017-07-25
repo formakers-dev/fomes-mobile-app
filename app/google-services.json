@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1011092046994-jsinpvnsssev54icups0d5ee8cnh7hk7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appbee.appbeemobile",
+            "certificate_hash": "d8aa1bc25393fc70f756ceba2b111d83520881f4"
+          }
+        },
+        {
           "client_id": "1011092046994-deh2fceumbfo9quv2qcsf0cp36nou6bj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
