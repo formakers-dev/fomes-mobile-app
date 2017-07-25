@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.DetailUsageStat;
 
@@ -19,9 +18,8 @@ import org.robolectric.shadows.ShadowLog;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,13 +28,11 @@ import static org.mockito.Mockito.when;
 public class ScreenOffReceiverTest {
     private ScreenOffReceiver subject;
 
-    @Inject
-    StatManager statManager;
+    private StatManager statManager = mock(StatManager.class);
 
     @Before
     public void setUp() throws Exception {
-        subject = new ScreenOffReceiver();
-        ((TestAppBeeApplication) RuntimeEnvironment.application.getApplicationContext()).getComponent().inject(this);
+        subject = new ScreenOffReceiver(statManager);
     }
 
     @Test

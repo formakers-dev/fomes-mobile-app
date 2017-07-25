@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.appbee.appbeemobile.manager.SystemServiceBridge;
 import com.appbee.appbeemobile.manager.StatManager;
@@ -20,8 +21,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    StatManager provideStatManager() {
-        return new StatManager(application.getApplicationContext());
+    StatManager provideStatManager(Context context, SystemServiceBridge systemServiceBridge) {
+        return new StatManager(application.getApplicationContext(), systemServiceBridge);
     }
 
     @Provides

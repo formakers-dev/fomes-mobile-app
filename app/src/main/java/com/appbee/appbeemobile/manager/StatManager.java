@@ -31,12 +31,12 @@ public class StatManager {
     @VisibleForTesting
     final Context context;
 
-    @Inject
-    SystemServiceBridge systemServiceBridge;
+    private SystemServiceBridge systemServiceBridge;
 
-    public StatManager(Context context) {
-        ((AppBeeApplication)context.getApplicationContext()).getComponent().inject(this);
+    @Inject
+    public StatManager(Context context, SystemServiceBridge systemServiceBridge) {
         this.context = context;
+        this.systemServiceBridge = systemServiceBridge;
     }
 
     public List<DetailUsageStat> getDetailUsageStats() {

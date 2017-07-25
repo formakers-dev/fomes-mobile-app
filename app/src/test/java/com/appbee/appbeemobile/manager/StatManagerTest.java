@@ -43,17 +43,15 @@ import static org.robolectric.RuntimeEnvironment.application;
 public class StatManagerTest {
     private StatManager subject;
 
-    @Inject
-    SystemServiceBridge mockSystemServiceBridge;
-
     @Captor
     ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
+    private SystemServiceBridge mockSystemServiceBridge;
+
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
-
-        subject = new StatManager(application.getApplicationContext());
+        mockSystemServiceBridge = mock(SystemServiceBridge.class);
+        subject = new StatManager(RuntimeEnvironment.application.getApplicationContext(), mockSystemServiceBridge);
     }
 
     @Test

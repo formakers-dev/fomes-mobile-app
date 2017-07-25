@@ -8,6 +8,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.HTTPService;
+import com.appbee.appbeemobile.network.RetrofitCreator;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -82,14 +85,22 @@ public class LoginActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
+
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
+                            User user = new User(task.getResult().getUser().getDisplayName(),task.getResult().getUser().getEmail());
+                            saveUserInfo(user);
                         } else {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                         }
                     }
                 });
+    }
+
+    private void saveUserInfo(User user) {
+
     }
 }
