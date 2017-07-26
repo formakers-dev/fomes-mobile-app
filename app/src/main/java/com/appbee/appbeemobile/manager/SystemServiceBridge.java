@@ -15,11 +15,16 @@ import com.appbee.appbeemobile.model.UsageStatEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import static android.content.Context.USAGE_STATS_SERVICE;
 
+@Singleton
 public class SystemServiceBridge {
     private Context context;
 
+    @Inject
     public SystemServiceBridge(Context context) {
         this.context = context;
     }
