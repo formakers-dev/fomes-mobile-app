@@ -5,7 +5,6 @@ import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
-import com.appbee.appbeemobile.model.UserApps;
 import com.appbee.appbeemobile.network.HTTPService;
 
 import org.junit.Before;
@@ -37,7 +36,7 @@ public class AppStatServiceManagerTest {
     private HTTPService mockHttpService;
 
     @Captor
-    ArgumentCaptor<UserApps> userAppsCaptor = ArgumentCaptor.forClass(UserApps.class);
+    ArgumentCaptor<List<AppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
 
     @Captor
     ArgumentCaptor<List<UsageStatEvent>> usageStateEventsCaptor = ArgumentCaptor.forClass(List.class);
@@ -57,15 +56,14 @@ public class AppStatServiceManagerTest {
         mockAppInfoList.add(new AppInfo("package_name", "app_name"));
         when(mockStatManager.getAppList()).thenReturn(mockAppInfoList);
 
-        when(mockHttpService.sendAppInfoList(anyString(), any(UserApps.class))).thenReturn(mock(Call.class));
+        when(mockHttpService.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendAppList();
 
-        verify(mockHttpService).sendAppInfoList(any(String.class), userAppsCaptor.capture());
-        UserApps actualUserApps = userAppsCaptor.getValue();
-        assertEquals(actualUserApps.getUserId(), "testUser");
-        assertEquals(actualUserApps.getApps().get(0).getPackageName(), "package_name");
-        assertEquals(actualUserApps.getApps().get(0).getAppName(), "app_name");
+        verify(mockHttpService).sendAppInfoList(any(String.class), appInfos.capture());
+        List<AppInfo> actualAppInfos = appInfos.getValue();
+        assertEquals(actualAppInfos.get(0).getPackageName(), "package_name");
+        assertEquals(actualAppInfos.get(0).getAppName(), "app_name");
     }
 
     @Test
