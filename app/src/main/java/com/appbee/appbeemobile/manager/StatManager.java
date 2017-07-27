@@ -7,9 +7,9 @@ import android.support.annotation.VisibleForTesting;
 
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.AppInfo;
-import com.appbee.appbeemobile.model.DailyUsageStat;
-import com.appbee.appbeemobile.model.DetailUsageStat;
-import com.appbee.appbeemobile.model.UsageStatEvent;
+import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.ShortTermStat;
+import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.text.SimpleDateFormat;
@@ -43,24 +43,24 @@ public class StatManager {
         this.systemServiceBridge = systemServiceBridge;
     }
 
-    public List<DetailUsageStat> getDetailUsageStats() {
+    public List<ShortTermStat> getShortTermStats() {
         long endTime = TimeUtil.getCurrentTime();
-        long startTime = getStartTime();
+        long startTime = getAnWeekAgo();
 
-        List<UsageStatEvent> usageStatEvents = systemServiceBridge.getUsageStatEvents(startTime, endTime);
-        List<DetailUsageStat> detailUsageStats = new ArrayList<>();
+        List<EventStat> eventStats = systemServiceBridge.getUsageStatEvents(startTime, endTime);
+        List<ShortTermStat> shortTermStats = new ArrayList<>();
 
-        UsageStatEvent beforeForegroundEvent = null;
+        EventStat beforeForegroundEvent = null;
 
-        for(UsageStatEvent usageStatEvent : usageStatEvents) {
-            switch (usageStatEvent.getEventType()) {
+        for(EventStat eventStat : eventStats) {
+            switch (eventStat.getEventType()) {
                 case MOVE_TO_FOREGROUND :
-                    beforeForegroundEvent = usageStatEvent;
+                    beforeForegroundEvent = eventStat;
                     break;
 
                 case MOVE_TO_BACKGROUND :
-                    if(beforeForegroundEvent != null && usageStatEvent.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
-                        detailUsageStats.add(createDetailUsageStat(usageStatEvent.getPackageName(), beforeForegroundEvent.getTimeStamp(), usageStatEvent.getTimeStamp()));
+                    if(beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
+                        shortTermStats.add(createDetailUsageStat(eventStat.getPackageName(), beforeForegroundEvent.getTimeStamp(), eventStat.getTimeStamp()));
                         beforeForegroundEvent = null;
                     }
                     break;
@@ -69,16 +69,16 @@ public class StatManager {
 
         updateEndTimeInSharedPreferences(endTime);
 
-        return detailUsageStats;
+        return shortTermStats;
     }
 
-    public List<UsageStatEvent> getDetailUsageEvents(){
+    public List<EventStat> getEventStats(){
         long endTime = TimeUtil.getCurrentTime();
-        long startTime = getStartTime();
+        long startTime = getAnWeekAgo();
         return systemServiceBridge.getUsageStatEvents(startTime, endTime);
     }
 
-    private long getStartTime() {
+    private long getAnWeekAgo() {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
         return sharedPref.getLong(context.getString(R.string.shared_prefereces_key_last_usage_time), TimeUtil.getCurrentTime() - 1000*60*60*24*7);
     }
@@ -90,12 +90,12 @@ public class StatManager {
         editor.apply();
     }
 
-    private DetailUsageStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
-        return new DetailUsageStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
+    private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
+        return new ShortTermStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
     }
 
-    public List<DailyUsageStat> getUserAppDailyUsageStatsForYear() {
-        Map<String, DailyUsageStat> dailyUsageStatMap = new LinkedHashMap<>();
+    public List<LongTermStat> getLongTermStatsForYear() {
+        Map<String, LongTermStat> dailyUsageStatMap = new LinkedHashMap<>();
 
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
@@ -111,11 +111,11 @@ public class StatManager {
                 long totalUsedTime = stats.getTotalTimeInForeground();
                 String mapKey = packageName + usedLastDate;
 
-                DailyUsageStat stat = dailyUsageStatMap.get(mapKey);
+                LongTermStat stat = dailyUsageStatMap.get(mapKey);
                 if (stat != null) {
                     stat.setTotalUsedTime(stat.getTotalUsedTime() + totalUsedTime);
                 } else {
-                    stat = new DailyUsageStat(packageName, usedLastDate, totalUsedTime);
+                    stat = new LongTermStat(packageName, usedLastDate, totalUsedTime);
                     dailyUsageStatMap.put(mapKey, stat);
                 }
             }

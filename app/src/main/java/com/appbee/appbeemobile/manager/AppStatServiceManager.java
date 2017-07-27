@@ -2,8 +2,9 @@ package com.appbee.appbeemobile.manager;
 
 import android.util.Log;
 
-import com.appbee.appbeemobile.model.DailyUsageStat;
-import com.appbee.appbeemobile.model.UsageStatEvent;
+import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.ShortTermStat;
+import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.network.HTTPService;
 
 import java.util.List;
@@ -44,15 +45,15 @@ public class AppStatServiceManager {
         });
     }
 
-    public void sendDetailUsageStatsByEvent() {
-        final List<UsageStatEvent> usageStatEventsList = statManager.getDetailUsageEvents();
-        httpService.sendDetailUsageStatsByEvent(TEST_USER_ID, usageStatEventsList).enqueue(new Callback<Boolean>() {
+    public void sendEventStats() {
+        final List<EventStat> eventStats = statManager.getEventStats();
+        httpService.sendEventStats(TEST_USER_ID, eventStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Success to send DetailUsageStatsByEvent");
+                    Log.d(TAG, "Success to send EventStats");
                 } else {
-                    Log.d(TAG, "Fail to send DetailUsageStatsByEvent");
+                    Log.d(TAG, "Fail to send EventStats");
                 }
             }
             @Override
@@ -62,21 +63,40 @@ public class AppStatServiceManager {
         });
     }
 
-    public void sendDailyUsageStats() {
-        final List<DailyUsageStat> userAppDailyUsageStatsForYear = statManager.getUserAppDailyUsageStatsForYear();
-        httpService.sendDailyUsageStats(TEST_USER_ID, userAppDailyUsageStatsForYear).enqueue(new Callback<Boolean>() {
+    public void sendLongTermStats() {
+        final List<LongTermStat> longTermStats = statManager.getLongTermStatsForYear();
+        httpService.sendLongTermStats(TEST_USER_ID, longTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
-                    Log.d(TAG, "Success to send dailyUsageStats");
+                    Log.d(TAG, "Success to send LongTermStats");
                 } else {
-                    Log.d(TAG, "Fail to send dailyUsageStats");
+                    Log.d(TAG, "Fail to send LongTermStats");
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 Log.e(TAG, "failure!!! t=" + t.toString());
+            }
+        });
+    }
+
+    public void sendShortTermStats() {
+        List<ShortTermStat> shortTermStats = statManager.getShortTermStats();
+        httpService.sendShortTermStats(TEST_USER_ID, shortTermStats).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Success to send shortTermStats");
+                } else {
+                    Log.d(TAG, "Fail to send shortTermStats");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.d(TAG, "failure!!! t=" + t.toString());
             }
         });
     }

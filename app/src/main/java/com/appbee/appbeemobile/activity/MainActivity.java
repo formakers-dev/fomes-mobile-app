@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,15 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.receiver.ScreenOffReceiver;
 import com.appbee.appbeemobile.manager.AppStatServiceManager;
 
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
-    @Inject
-    ScreenOffReceiver screenOffReceiver;
-
     @Inject
     AppStatServiceManager appStatServiceManager;
 
@@ -34,20 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         confirmAuth();
         sendData();
-
-        registerScreenOffReceiver();
-    }
-
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(screenOffReceiver);
-        super.onDestroy();
-    }
-
-    private void registerScreenOffReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(screenOffReceiver, intentFilter);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -72,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendData() {
         appStatServiceManager.sendAppList();
-        appStatServiceManager.sendDailyUsageStats();
-        appStatServiceManager.sendDetailUsageStatsByEvent();
+        appStatServiceManager.sendLongTermStats();
+        appStatServiceManager.sendEventStats();
+        appStatServiceManager.sendShortTermStats();
     }
 }

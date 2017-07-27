@@ -10,7 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.appbee.appbeemobile.model.AppInfo;
-import com.appbee.appbeemobile.model.UsageStatEvent;
+import com.appbee.appbeemobile.model.EventStat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +29,10 @@ public class SystemServiceBridge {
         this.context = context;
     }
 
-    public List<UsageStatEvent> getUsageStatEvents(long startTime, long endTime) {
+    public List<EventStat> getUsageStatEvents(long startTime, long endTime) {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
-        List<UsageStatEvent> usageStatEvents = new ArrayList<>();
+        List<EventStat> eventStats = new ArrayList<>();
 
         UsageEvents usageEvents = usageStatsManager.queryEvents(startTime, endTime);
 
@@ -41,11 +41,11 @@ public class SystemServiceBridge {
             boolean hasNextEvent = usageEvents.getNextEvent(event);
 
             if (hasNextEvent) {
-                usageStatEvents.add(new UsageStatEvent(event.getPackageName(), event.getEventType(), event.getTimeStamp()));
+                eventStats.add(new EventStat(event.getPackageName(), event.getEventType(), event.getTimeStamp()));
             }
         }
 
-        return usageStatEvents;
+        return eventStats;
     }
 
     public List<AppInfo> getInstalledLaunchableApps() {

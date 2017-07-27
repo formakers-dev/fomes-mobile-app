@@ -1,11 +1,11 @@
 package com.appbee.appbeemobile.model;
 
-public class UsageStatEvent {
+public class EventStat {
     private String packageName;
     private int eventType;
     private long timeStamp;
 
-    public UsageStatEvent(String packageName, int eventType, long timeStamp) {
+    public EventStat(String packageName, int eventType, long timeStamp) {
         this.packageName = packageName;
         this.eventType = eventType;
         this.timeStamp = timeStamp;

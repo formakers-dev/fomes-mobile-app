@@ -1,18 +1,12 @@
 package com.appbee.appbeemobile.model;
 
-import com.google.gson.annotations.SerializedName;
-
-public class DetailUsageStat {
-    @SerializedName("packageName")
+public class ShortTermStat {
     private String packageName;
-    @SerializedName("startTimeStamp")
     private long startTimeStamp;
-    @SerializedName("endTimeStamp")
     private long endTimeStamp;
-    @SerializedName("totalUsedTime")
     private long totalUsedTime;
 
-    public DetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp, long totalUsedTime) {
+    public ShortTermStat(String packageName, long startTimeStamp, long endTimeStamp, long totalUsedTime) {
         this.packageName = packageName;
         this.startTimeStamp = startTimeStamp;
         this.endTimeStamp = endTimeStamp;
