@@ -1,11 +1,11 @@
 package com.appbee.appbeemobile.model;
 
-public class DailyUsageStat {
+public class LongTermStat {
     private String packageName;
     private String lastUsedDate;
     private long totalUsedTime;
 
-    public DailyUsageStat(String packageName, String lastUsedDate, long totalUsedTime) {
+    public LongTermStat(String packageName, String lastUsedDate, long totalUsedTime) {
         setPackageName(packageName);
         setLastUsedDate(lastUsedDate);
         setTotalUsedTime(totalUsedTime);

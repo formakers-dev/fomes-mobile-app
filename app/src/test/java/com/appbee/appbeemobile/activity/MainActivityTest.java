@@ -43,14 +43,20 @@ public class MainActivityTest {
     public void onCreate앱시작시_연간일별통계데이터를_전송요청한다() throws Exception {
         activityController.create();
 
-        verify(appStatServiceManager).sendDailyUsageStats();
+        verify(appStatServiceManager).sendLongTermStats();
     }
 
     @Test
-    public void onCreate앱시작시_가공되지_않은_단기통계데이터를_전송요청한다() throws Exception {
+    public void onCreate앱시작시_단기통계데이터를_전송요청한다() throws Exception {
         activityController.create();
 
-        verify(appStatServiceManager).sendDetailUsageStatsByEvent();
+        verify(appStatServiceManager).sendEventStats();
     }
 
+    @Test
+    public void onCreate앱시작시_가공된_단기통계데이터를_전송요청한다() throws Exception {
+        activityController.create();
+
+        verify(appStatServiceManager).sendShortTermStats();
+    }
 }

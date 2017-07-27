@@ -3,8 +3,9 @@ package com.appbee.appbeemobile.service;
 import com.appbee.appbeemobile.manager.AppStatServiceManager;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
-import com.appbee.appbeemobile.model.DailyUsageStat;
-import com.appbee.appbeemobile.model.UsageStatEvent;
+import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.ShortTermStat;
+import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.network.HTTPService;
 
 import org.junit.Before;
@@ -39,10 +40,13 @@ public class AppStatServiceManagerTest {
     ArgumentCaptor<List<AppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
 
     @Captor
-    ArgumentCaptor<List<UsageStatEvent>> usageStateEventsCaptor = ArgumentCaptor.forClass(List.class);
+    ArgumentCaptor<List<EventStat>> eventStatsCaptor = ArgumentCaptor.forClass(List.class);
 
     @Captor
-    ArgumentCaptor<List<DailyUsageStat>> dailyUsageStatsCaptor = ArgumentCaptor.forClass(List.class);
+    ArgumentCaptor<List<ShortTermStat>> shortTermStatsCaptor = ArgumentCaptor.forClass(List.class);
+
+    @Captor
+    ArgumentCaptor<List<LongTermStat>> longTermStatsCaptor = ArgumentCaptor.forClass(List.class);
 
     @Before
     public void setUp() throws Exception {
@@ -67,34 +71,51 @@ public class AppStatServiceManagerTest {
     }
 
     @Test
-    public void sendDetailUsageStatsByEvent호출시_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
-        List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
-        mockUsageStatEventList.add(new UsageStatEvent("package_name", 1, 1000L));
-        when(mockStatManager.getDetailUsageEvents()).thenReturn(mockUsageStatEventList);
-        when(mockHttpService.sendDetailUsageStatsByEvent(anyString(), any(List.class))).thenReturn(mock(Call.class));
+    public void sendEventStats호출시_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
+        List<EventStat> mockEventStatList = new ArrayList<>();
+        mockEventStatList.add(new EventStat("package_name", 1, 1000L));
+        when(mockStatManager.getEventStats()).thenReturn(mockEventStatList);
+        when(mockHttpService.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
-        subject.sendDetailUsageStatsByEvent();
+        subject.sendEventStats();
 
-        verify(mockHttpService).sendDetailUsageStatsByEvent(anyString(), usageStateEventsCaptor.capture());
-        UsageStatEvent actualUsageStatEvent = usageStateEventsCaptor.getValue().get(0);
-        assertEquals(actualUsageStatEvent.getPackageName(), "package_name");
-        assertEquals(actualUsageStatEvent.getEventType(), 1);
-        assertEquals(actualUsageStatEvent.getTimeStamp(), 1000L);
+        verify(mockHttpService).sendEventStats(anyString(), eventStatsCaptor.capture());
+        EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
+        assertEquals(actualEventStat.getPackageName(), "package_name");
+        assertEquals(actualEventStat.getEventType(), 1);
+        assertEquals(actualEventStat.getTimeStamp(), 1000L);
     }
 
     @Test
-    public void sendDailyUsageStats호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
-        List<DailyUsageStat> mockDailyUsageStats = new ArrayList<>();
-        mockDailyUsageStats.add(new DailyUsageStat("anyPackage", "20170717", 1000L));
-        when(mockStatManager.getUserAppDailyUsageStatsForYear()).thenReturn(mockDailyUsageStats);
-        when(mockHttpService.sendDailyUsageStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+    public void sendLongTermStats호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
+        List<LongTermStat> mockLongTermStats = new ArrayList<>();
+        mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
+        when(mockStatManager.getLongTermStatsForYear()).thenReturn(mockLongTermStats);
+        when(mockHttpService.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
-        subject.sendDailyUsageStats();
+        subject.sendLongTermStats();
 
-        verify(mockHttpService).sendDailyUsageStats(anyString(), dailyUsageStatsCaptor.capture());
-        DailyUsageStat actualDailyUsageStat = dailyUsageStatsCaptor.getValue().get(0);
-        assertEquals(actualDailyUsageStat.getPackageName(), "anyPackage");
-        assertEquals(actualDailyUsageStat.getLastUsedDate(), "20170717");
-        assertEquals(actualDailyUsageStat.getTotalUsedTime(), 1000L);
+        verify(mockHttpService).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
+        LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
+        assertEquals(actualLongTermStat.getPackageName(), "anyPackage");
+        assertEquals(actualLongTermStat.getLastUsedDate(), "20170717");
+        assertEquals(actualLongTermStat.getTotalUsedTime(), 1000L);
+    }
+
+    @Test
+    public void sendShortTermStats호출시_가공된_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
+        List<ShortTermStat> mockShortTermStats = new ArrayList<>();
+        mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
+        when(mockStatManager.getShortTermStats()).thenReturn(mockShortTermStats);
+        when(mockHttpService.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+
+        subject.sendShortTermStats();
+
+        verify(mockHttpService).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
+        ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
+        assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
+        assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
+        assertEquals(actualShortTermStat.getEndTimeStamp(), 3000L);
+        assertEquals(actualShortTermStat.getTotalUsedTime(), 2000L);
     }
 }
