@@ -61,7 +61,7 @@ public class StatManagerTest {
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
         when(mockSystemServiceBridge.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
 
-        Map<String, DailyUsageStat> actualResult = subject.getUserAppDailyUsageStatsForYear();
+        List<DailyUsageStat> actualResult = subject.getUserAppDailyUsageStatsForYear();
 
         assertEquals(actualResult.size(), 2);
     }
@@ -74,11 +74,11 @@ public class StatManagerTest {
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 400L, 1500001200000L));    //2017-07-14 12:00:00
         when(mockSystemServiceBridge.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
 
-        Map<String, DailyUsageStat> actualResult = subject.getUserAppDailyUsageStatsForYear();
+        List<DailyUsageStat> actualResult = subject.getUserAppDailyUsageStatsForYear();
 
         assertEquals(actualResult.size(), 2);
-        assertEquals(actualResult.get("aaaaa20170713").getTotalUsedTime(), 300L);
-        assertEquals(actualResult.get("aaaaa20170714").getTotalUsedTime(), 400L);
+        assertEquals(actualResult.get(0).getTotalUsedTime(), 300L);
+        assertEquals(actualResult.get(1).getTotalUsedTime(), 400L);
     }
 
     @Test

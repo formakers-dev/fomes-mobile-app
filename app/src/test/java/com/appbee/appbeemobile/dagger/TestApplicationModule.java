@@ -1,8 +1,10 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.manager.AppStatServiceManager;
 import com.appbee.appbeemobile.manager.SystemServiceBridge;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.network.HTTPService;
 
 import javax.inject.Singleton;
 
@@ -29,5 +31,17 @@ public class TestApplicationModule {
     @Singleton
     SystemServiceBridge provideSystemServiceBridge() {
         return mock(SystemServiceBridge.class);
+    }
+
+    @Provides
+    @Singleton
+    AppStatServiceManager provideUserAppsService() {
+        return mock(AppStatServiceManager.class);
+    }
+
+    @Provides
+    @Singleton
+    HTTPService provideHTTPService() {
+        return mock(HTTPService.class);
     }
 }
