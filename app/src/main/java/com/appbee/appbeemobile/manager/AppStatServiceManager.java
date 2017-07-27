@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
-import com.appbee.appbeemobile.model.UserApps;
 import com.appbee.appbeemobile.network.HTTPService;
 
 import java.util.List;
@@ -28,9 +27,7 @@ public class AppStatServiceManager {
     }
 
     public void sendAppList() {
-        final UserApps userApps = new UserApps(TEST_USER_ID, statManager.getAppList());
-
-        httpService.sendAppInfoList(userApps.getUserId(), userApps).enqueue(new Callback<Boolean>() {
+        httpService.sendAppInfoList(TEST_USER_ID, statManager.getAppList()).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {

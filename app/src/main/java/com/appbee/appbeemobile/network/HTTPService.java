@@ -1,9 +1,9 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
 import com.appbee.appbeemobile.model.User;
-import com.appbee.appbeemobile.model.UserApps;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ public interface HTTPService {
     Call<Boolean> insertUser(@Body User user);
 
     @POST("/apps/{userId}")
-    Call<Boolean> sendAppInfoList(@Path("userId") String userId, @Body UserApps userApps);
+    Call<Boolean> sendAppInfoList(@Path("userId") String userId, @Body List<AppInfo> appInfos);
 
     @POST("/stats/long/{userId}")
-    Call<Boolean> sendDailyUsageStats(@Path("userId") String userId, @Body List<DailyUsageStat> userAppDailyUsageStatsForYear);
+    Call<Boolean> sendDailyUsageStats(@Path("userId") String userId, @Body List<DailyUsageStat> dailyUsageStats);
 
     @POST("/stats/short/{userId}")
-    Call<Boolean> sendDetailUsageStatsByEvent(@Path("userId") String userId, @Body List<UsageStatEvent> detailUsageStatsByEvent);
+    Call<Boolean> sendDetailUsageStatsByEvent(@Path("userId") String userId, @Body List<UsageStatEvent> usageStatEvents);
 }
