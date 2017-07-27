@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
 
-import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
@@ -16,7 +15,7 @@ import com.appbee.appbeemobile.util.TimeUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -85,15 +84,15 @@ public class StatManager {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(context.getString(R.string.shared_prefereces_key_last_usage_time), endTime);
-        editor.commit();
+        editor.apply();
     }
 
     private DetailUsageStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
         return new DetailUsageStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
     }
 
-    public Map<String, DailyUsageStat> getUserAppDailyUsageStatsForYear() {
-        Map<String, DailyUsageStat> dailyUsageStatMap = new HashMap<>();
+    public List<DailyUsageStat> getUserAppDailyUsageStatsForYear() {
+        Map<String, DailyUsageStat> dailyUsageStatMap = new LinkedHashMap<>();
 
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
@@ -119,7 +118,9 @@ public class StatManager {
             }
         }
 
-        return dailyUsageStatMap;
+        List<DailyUsageStat> dailyUsageStatsList = new ArrayList<>();
+        dailyUsageStatMap.values().stream().forEachOrdered((dailyUsageStat) -> dailyUsageStatsList.add(dailyUsageStat));
+        return dailyUsageStatsList;
     }
 
     public List<AppInfo> getAppList() {

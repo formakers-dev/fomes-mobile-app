@@ -1,8 +1,8 @@
 package com.appbee.appbeemobile.model;
 
 public class AppInfo {
-    String packageName;
-    String appName;
+    private String packageName;
+    private String appName;
 
     public AppInfo(String resolvePackageName, String appName) {
         this.packageName = resolvePackageName;

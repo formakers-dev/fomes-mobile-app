@@ -1,31 +1,26 @@
 package com.appbee.appbeemobile.network;
 
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.DailyUsageStat;
-import com.appbee.appbeemobile.model.DetailUsageStat;
 import com.appbee.appbeemobile.model.UsageStatEvent;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.model.UserApps;
 
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface HTTPService {
     @POST("/user")
     Call<Boolean> insertUser(@Body User user);
 
-    @POST("appInfoList")
-    Call<Boolean> sendAppInfoList(@Body List<AppInfo> appInfoList);
+    @POST("/apps/{userId}")
+    Call<Boolean> sendAppInfoList(@Path("userId") String userId, @Body UserApps userApps);
 
-    //@POST("{id}/detailUsageStats")
-    @POST("detailUsageStats")
-    Call<Boolean> sendDetailUsageStat(@Body List<DetailUsageStat> detailUsageStats);
-
-    @POST("dailyUsageStats")
-    Call<Boolean> sendDailyUsageStats(@Body Map<String, DailyUsageStat> userAppDailyUsageStatsForYear);
+    @POST("/stats/long/{userId}")
+    Call<Boolean> sendDailyUsageStats(@Path("userId") String userId, @Body List<DailyUsageStat> userAppDailyUsageStatsForYear);
 
     @POST("dailyUsageStatsByEvent")
     Call<Boolean> sendDetailUsageStatsByEvent(@Body List<UsageStatEvent> detailUsageStatsByEvent);
