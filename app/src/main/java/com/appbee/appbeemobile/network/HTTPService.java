@@ -22,6 +22,6 @@ public interface HTTPService {
     @POST("/stats/long/{userId}")
     Call<Boolean> sendDailyUsageStats(@Path("userId") String userId, @Body List<DailyUsageStat> userAppDailyUsageStatsForYear);
 
-    @POST("dailyUsageStatsByEvent")
-    Call<Boolean> sendDetailUsageStatsByEvent(@Body List<UsageStatEvent> detailUsageStatsByEvent);
+    @POST("/stats/short/{userId}")
+    Call<Boolean> sendDetailUsageStatsByEvent(@Path("userId") String userId, @Body List<UsageStatEvent> detailUsageStatsByEvent);
 }

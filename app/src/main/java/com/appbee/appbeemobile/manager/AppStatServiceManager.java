@@ -49,7 +49,7 @@ public class AppStatServiceManager {
 
     public void sendDetailUsageStatsByEvent() {
         final List<UsageStatEvent> usageStatEventsList = statManager.getDetailUsageEvents();
-        httpService.sendDetailUsageStatsByEvent(usageStatEventsList).enqueue(new Callback<Boolean>() {
+        httpService.sendDetailUsageStatsByEvent(TEST_USER_ID, usageStatEventsList).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()) {

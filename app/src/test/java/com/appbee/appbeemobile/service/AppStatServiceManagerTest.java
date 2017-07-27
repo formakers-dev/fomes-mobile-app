@@ -73,11 +73,11 @@ public class AppStatServiceManagerTest {
         List<UsageStatEvent> mockUsageStatEventList = new ArrayList<>();
         mockUsageStatEventList.add(new UsageStatEvent("package_name", 1, 1000L));
         when(mockStatManager.getDetailUsageEvents()).thenReturn(mockUsageStatEventList);
-        when(mockHttpService.sendDetailUsageStatsByEvent(any(List.class))).thenReturn(mock(Call.class));
+        when(mockHttpService.sendDetailUsageStatsByEvent(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendDetailUsageStatsByEvent();
 
-        verify(mockHttpService).sendDetailUsageStatsByEvent(usageStateEventsCaptor.capture());
+        verify(mockHttpService).sendDetailUsageStatsByEvent(anyString(), usageStateEventsCaptor.capture());
         UsageStatEvent actualUsageStatEvent = usageStateEventsCaptor.getValue().get(0);
         assertEquals(actualUsageStatEvent.getPackageName(), "package_name");
         assertEquals(actualUsageStatEvent.getEventType(), 1);
