@@ -1,14 +1,15 @@
 package com.appbee.appbeemobile.dagger;
 
-import com.appbee.appbeemobile.activity.LoginActivity;
+import android.app.Application;
+
 import com.appbee.appbeemobile.activity.MainActivity;
 
 import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { ApplicationModule.class, ContextModule.class, NetworkModule.class })
+@Component(modules = { ApplicationModule.class, ContextModule.class })
 public interface ApplicationComponent {
+    void inject(Application appBeeApplication);
     void inject(MainActivity mainActivity);
-    void inject(LoginActivity loginActivity);
 }

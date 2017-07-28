@@ -1,27 +1,27 @@
 package com.appbee.appbeemobile.model;
 
 public class User {
-    private String userId;
-    private String name;
+    private String userName;
+    private String email;
 
-    public User(String userId, String name) {
-        this.userId = userId;
-        this.name = name;
+    public User(String userName, String email) {
+        this.userName = userName;
+        this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

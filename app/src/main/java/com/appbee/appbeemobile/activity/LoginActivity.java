@@ -7,39 +7,34 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.manager.AppBeeAccountManager;
-import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
-import com.appbee.appbeemobile.manager.SignInResultCallback;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.HTTPService;
+import com.appbee.appbeemobile.network.RetrofitCreator;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-
-import javax.inject.Inject;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private static final int RC_SIGN_IN = 9001;
     private GoogleApiClient mGoogleApiClient;
-
-    @Inject
-    AppBeeAccountManager appBeeAccountManager;
-
-    @Inject
-    GoogleSignInAPIManager googleSignInAPIManager;
+    private FirebaseAuth mAuth;
+    private static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -51,11 +46,13 @@ public class LoginActivity extends AppCompatActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        mAuth = FirebaseAuth.getInstance();
+
         signIn();
     }
 
     private void signIn() {
-        Intent signInIntent = googleSignInAPIManager.getSignInIntent(mGoogleApiClient);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -64,13 +61,10 @@ public class LoginActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = googleSignInAPIManager.getSignInResult(data);
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
-                if (account != null) {
-                    User user = new User(account.getId(), account.getDisplayName());
-                    saveUserInfo(user);
-                }
+                firebaseAuthWithGoogle(account);
             }
         }
     }
@@ -81,19 +75,32 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
-    private void saveUserInfo(User user) {
-        appBeeAccountManager.signIn(user, new SignInResultCallback() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "saveUserInfo success");
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
-            @Override
-            public void onFail() {
-                Log.d(TAG, "saveUserInfo Failed");
-            }
-        });
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
+                            User user = new User(task.getResult().getUser().getDisplayName(),task.getResult().getUser().getEmail());
+                            saveUserInfo(user);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+    }
+
+    private void saveUserInfo(User user) {
+
     }
 }
