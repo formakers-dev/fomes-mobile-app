@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements
                 GoogleSignInAccount account = result.getSignInAccount();
                 if (account != null) {
                     User user = new User(account.getId(), account.getDisplayName());
-                    saveUserInfo(user);
+                    saveUserInfo(user, account.getIdToken());
                 }
             }
         }
@@ -90,12 +90,13 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
-    private void saveUserInfo(final User user) {
+    private void saveUserInfo(final User user, final String idToken) {
         appBeeAccountService.signIn(user, new SignInResultCallback() {
             @Override
             public void onSuccess() {
                 Log.d(TAG, "saveUserInfo success");
                 propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_USER_ID, user.getUserId());
+                propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "testToken");
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
