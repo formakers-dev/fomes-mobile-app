@@ -2,7 +2,7 @@ package com.appbee.appbeemobile.activity;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.manager.AppStatServiceManager;
+import com.appbee.appbeemobile.network.AppStatService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class MainActivityTest {
     private ActivityController<MainActivity> activityController;
 
     @Inject
-    AppStatServiceManager appStatServiceManager;
+    AppStatService appStatService;
 
     @Before
     public void setUp() throws Exception {
@@ -36,27 +36,27 @@ public class MainActivityTest {
     public void onCreate앱시작시_앱목록데이터를_전송요청한다() throws Exception {
         activityController.create();
 
-        verify(appStatServiceManager).sendAppList();
+        verify(appStatService).sendAppList();
     }
 
     @Test
     public void onCreate앱시작시_연간일별통계데이터를_전송요청한다() throws Exception {
         activityController.create();
 
-        verify(appStatServiceManager).sendLongTermStats();
+        verify(appStatService).sendLongTermStats();
     }
 
     @Test
     public void onCreate앱시작시_단기통계데이터를_전송요청한다() throws Exception {
         activityController.create();
 
-        verify(appStatServiceManager).sendEventStats();
+        verify(appStatService).sendEventStats();
     }
 
     @Test
     public void onCreate앱시작시_가공된_단기통계데이터를_전송요청한다() throws Exception {
         activityController.create();
 
-        verify(appStatServiceManager).sendShortTermStats();
+        verify(appStatService).sendShortTermStats();
     }
 }

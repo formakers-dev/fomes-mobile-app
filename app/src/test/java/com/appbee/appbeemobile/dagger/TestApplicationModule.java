@@ -1,12 +1,12 @@
 package com.appbee.appbeemobile.dagger;
 
-import com.appbee.appbeemobile.manager.AppBeeAccountManager;
-import com.appbee.appbeemobile.manager.AppStatServiceManager;
+import com.appbee.appbeemobile.network.AppBeeAccountService;
+import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.manager.SystemServiceBridge;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.network.HTTPService;
+import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 
 import javax.inject.Singleton;
@@ -37,14 +37,14 @@ public class TestApplicationModule {
 
     @Provides
     @Singleton
-    AppStatServiceManager provideUserAppsService() {
-        return mock(AppStatServiceManager.class);
+    AppStatService provideUserAppsService() {
+        return mock(AppStatService.class);
     }
 
     @Provides
     @Singleton
-    HTTPService provideHTTPService() {
-        return mock(HTTPService.class);
+    StatAPI provideHTTPService() {
+        return mock(StatAPI.class);
     }
 
     @Singleton
@@ -55,8 +55,8 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    AppBeeAccountManager provideAppBeeAccountManager() {
-        return mock(AppBeeAccountManager.class);
+    AppBeeAccountService provideAppBeeAccountManager() {
+        return mock(AppBeeAccountService.class);
     }
 
     @Singleton

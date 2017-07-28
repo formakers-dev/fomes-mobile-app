@@ -9,9 +9,9 @@ import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.manager.AppBeeAccountManager;
+import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
-import com.appbee.appbeemobile.manager.SignInResultCallback;
+import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.model.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
 
     @Inject
-    AppBeeAccountManager appBeeAccountManager;
+    AppBeeAccountService appBeeAccountService;
 
     @Inject
     GoogleSignInAPIManager googleSignInAPIManager;
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void signIn() {
-        Intent signInIntent = googleSignInAPIManager.getSignInIntent(mGoogleApiClient);
+        Intent signInIntent = googleSignInAPIManager.requestSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = googleSignInAPIManager.getSignInResult(data);
+            GoogleSignInResult result = googleSignInAPIManager.requestSignInResult(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 if (account != null) {
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void saveUserInfo(User user) {
-        appBeeAccountManager.signIn(user, new SignInResultCallback() {
+        appBeeAccountService.signIn(user, new SignInResultCallback() {
             @Override
             public void onSuccess() {
                 Log.d(TAG, "saveUserInfo success");

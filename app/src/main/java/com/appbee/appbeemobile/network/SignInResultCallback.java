@@ -1,4 +1,4 @@
-package com.appbee.appbeemobile.manager;
+package com.appbee.appbeemobile.network;
 
 public interface SignInResultCallback {
     void onSuccess();

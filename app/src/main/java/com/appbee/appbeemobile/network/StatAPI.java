@@ -12,7 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface HTTPService {
+public interface StatAPI {
     @POST("/apps/{userId}")
     Call<Boolean> sendAppInfoList(@Path("userId") String userId, @Body List<AppInfo> appInfos);
 

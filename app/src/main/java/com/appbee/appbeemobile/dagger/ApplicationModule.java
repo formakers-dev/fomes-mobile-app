@@ -2,7 +2,7 @@ package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
-import com.appbee.appbeemobile.network.HTTPService;
+import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 
 import javax.inject.Singleton;
@@ -20,8 +20,9 @@ public class ApplicationModule {
     }
 
     @Singleton
-    @Provides HTTPService provideHTTPService(Retrofit retrofit) {
-        return retrofit.create(HTTPService.class);
+    @Provides
+    StatAPI provideHTTPService(Retrofit retrofit) {
+        return retrofit.create(StatAPI.class);
     }
 
     @Singleton
