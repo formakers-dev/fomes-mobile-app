@@ -1,9 +1,8 @@
-package com.appbee.appbeemobile.manager;
+package com.appbee.appbeemobile.network;
 
 import android.util.Log;
 
 import com.appbee.appbeemobile.model.User;
-import com.appbee.appbeemobile.network.UserAPI;
 
 import javax.inject.Inject;
 
@@ -11,13 +10,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AppBeeAccountManager {
+public class AppBeeAccountService {
 
-    private static final String TAG = AppBeeAccountManager.class.getSimpleName();
+    private static final String TAG = AppBeeAccountService.class.getSimpleName();
     private UserAPI userAPI;
 
     @Inject
-    public AppBeeAccountManager(UserAPI userAPI) {
+    public AppBeeAccountService(UserAPI userAPI) {
         this.userAPI = userAPI;
     }
 

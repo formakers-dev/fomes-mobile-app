@@ -7,10 +7,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class GoogleSignInAPIManager {
-    public Intent getSignInIntent(GoogleApiClient googleApiClient) {
+    public Intent requestSignInIntent(GoogleApiClient googleApiClient) {
         return Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
     }
-    public GoogleSignInResult getSignInResult(Intent data) {
+    public GoogleSignInResult requestSignInResult(Intent data) {
         return Auth.GoogleSignInApi.getSignInResultFromIntent(data);
     }
 }

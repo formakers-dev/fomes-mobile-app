@@ -1,12 +1,12 @@
 package com.appbee.appbeemobile.service;
 
-import com.appbee.appbeemobile.manager.AppStatServiceManager;
+import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.network.HTTPService;
+import com.appbee.appbeemobile.network.StatAPI;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,14 +27,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AppStatServiceManagerTest {
-    private AppStatServiceManager subject;
+public class AppStatServiceTest {
+    private AppStatService subject;
 
     @Mock
     private StatManager mockStatManager;
 
     @Mock
-    private HTTPService mockHttpService;
+    private StatAPI mockStatAPI;
 
     @Captor
     ArgumentCaptor<List<AppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
@@ -51,7 +51,7 @@ public class AppStatServiceManagerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new AppStatServiceManager(mockStatManager, mockHttpService);
+        subject = new AppStatService(mockStatManager, mockStatAPI);
     }
 
     @Test
@@ -60,11 +60,11 @@ public class AppStatServiceManagerTest {
         mockAppInfoList.add(new AppInfo("package_name", "app_name"));
         when(mockStatManager.getAppList()).thenReturn(mockAppInfoList);
 
-        when(mockHttpService.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendAppList();
 
-        verify(mockHttpService).sendAppInfoList(any(String.class), appInfos.capture());
+        verify(mockStatAPI).sendAppInfoList(any(String.class), appInfos.capture());
         List<AppInfo> actualAppInfos = appInfos.getValue();
         assertEquals(actualAppInfos.get(0).getPackageName(), "package_name");
         assertEquals(actualAppInfos.get(0).getAppName(), "app_name");
@@ -75,11 +75,11 @@ public class AppStatServiceManagerTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("package_name", 1, 1000L));
         when(mockStatManager.getEventStats()).thenReturn(mockEventStatList);
-        when(mockHttpService.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendEventStats();
 
-        verify(mockHttpService).sendEventStats(anyString(), eventStatsCaptor.capture());
+        verify(mockStatAPI).sendEventStats(anyString(), eventStatsCaptor.capture());
         EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
         assertEquals(actualEventStat.getPackageName(), "package_name");
         assertEquals(actualEventStat.getEventType(), 1);
@@ -91,11 +91,11 @@ public class AppStatServiceManagerTest {
         List<LongTermStat> mockLongTermStats = new ArrayList<>();
         mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
         when(mockStatManager.getLongTermStatsForYear()).thenReturn(mockLongTermStats);
-        when(mockHttpService.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendLongTermStats();
 
-        verify(mockHttpService).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
+        verify(mockStatAPI).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
         LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
         assertEquals(actualLongTermStat.getPackageName(), "anyPackage");
         assertEquals(actualLongTermStat.getLastUsedDate(), "20170717");
@@ -107,11 +107,11 @@ public class AppStatServiceManagerTest {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
         when(mockStatManager.getShortTermStats()).thenReturn(mockShortTermStats);
-        when(mockHttpService.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendShortTermStats();
 
-        verify(mockHttpService).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
+        verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
         assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);

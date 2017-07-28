@@ -12,13 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.manager.AppStatServiceManager;
+import com.appbee.appbeemobile.network.AppStatService;
 
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
     @Inject
-    AppStatServiceManager appStatServiceManager;
+    AppStatService appStatService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendData() {
-        appStatServiceManager.sendAppList();
-        appStatServiceManager.sendLongTermStats();
-        appStatServiceManager.sendEventStats();
-        appStatServiceManager.sendShortTermStats();
+        appStatService.sendAppList();
+        appStatService.sendLongTermStats();
+        appStatService.sendEventStats();
+        appStatService.sendShortTermStats();
     }
 }

@@ -1,11 +1,11 @@
-package com.appbee.appbeemobile.manager;
+package com.appbee.appbeemobile.network;
 
 import android.util.Log;
 
+import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.network.HTTPService;
 
 import java.util.List;
 
@@ -15,20 +15,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AppStatServiceManager {
-    private static final String TAG = AppStatServiceManager.class.getSimpleName();
+public class AppStatService {
+    private static final String TAG = AppStatService.class.getSimpleName();
     private static final String TEST_USER_ID = "testUser";
     private StatManager statManager;
-    private HTTPService httpService;
+    private StatAPI StatAPI;
 
     @Inject
-    public AppStatServiceManager(StatManager statManager, HTTPService httpService) {
+    public AppStatService(StatManager statManager, StatAPI StatAPI) {
         this.statManager = statManager;
-        this.httpService = httpService;
+        this.StatAPI = StatAPI;
     }
 
     public void sendAppList() {
-        httpService.sendAppInfoList(TEST_USER_ID, statManager.getAppList()).enqueue(new Callback<Boolean>() {
+        StatAPI.sendAppInfoList(TEST_USER_ID, statManager.getAppList()).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
@@ -47,7 +47,7 @@ public class AppStatServiceManager {
 
     public void sendEventStats() {
         final List<EventStat> eventStats = statManager.getEventStats();
-        httpService.sendEventStats(TEST_USER_ID, eventStats).enqueue(new Callback<Boolean>() {
+        StatAPI.sendEventStats(TEST_USER_ID, eventStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()) {
@@ -65,7 +65,7 @@ public class AppStatServiceManager {
 
     public void sendLongTermStats() {
         final List<LongTermStat> longTermStats = statManager.getLongTermStatsForYear();
-        httpService.sendLongTermStats(TEST_USER_ID, longTermStats).enqueue(new Callback<Boolean>() {
+        StatAPI.sendLongTermStats(TEST_USER_ID, longTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
@@ -84,7 +84,7 @@ public class AppStatServiceManager {
 
     public void sendShortTermStats() {
         List<ShortTermStat> shortTermStats = statManager.getShortTermStats();
-        httpService.sendShortTermStats(TEST_USER_ID, shortTermStats).enqueue(new Callback<Boolean>() {
+        StatAPI.sendShortTermStats(TEST_USER_ID, shortTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {

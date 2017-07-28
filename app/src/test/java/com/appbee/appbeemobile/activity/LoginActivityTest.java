@@ -4,9 +4,9 @@ import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.manager.AppBeeAccountManager;
+import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
-import com.appbee.appbeemobile.manager.SignInResultCallback;
+import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -16,8 +16,6 @@ import com.google.android.gms.common.api.Status;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -45,14 +43,14 @@ public class LoginActivityTest {
     GoogleSignInAPIManager googleSignInAPIManager;
 
     @Inject
-    AppBeeAccountManager appBeeAccountManager;
+    AppBeeAccountService appBeeAccountService;
 
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
-        when(googleSignInAPIManager.getSignInIntent(any())).thenReturn(intent);
+        when(googleSignInAPIManager.requestSignInIntent(any())).thenReturn(intent);
 
 
 
@@ -78,12 +76,12 @@ public class LoginActivityTest {
 
         GoogleSignInResult googleSignInResult = new GoogleSignInResult(account, Status.zzayh);
         GoogleSignInResult spy = spy(googleSignInResult);
-        when(googleSignInAPIManager.getSignInResult(any())).thenReturn(spy);
+        when(googleSignInAPIManager.requestSignInResult(any())).thenReturn(spy);
         doReturn(true).when(spy).isSuccess();
 
         subject.onActivityResult(9001, 0, null);
 
-        verify(appBeeAccountManager).signIn(any(User.class), any(SignInResultCallback.class));
+        verify(appBeeAccountService).signIn(any(User.class), any(SignInResultCallback.class));
     }
 
     @Test
@@ -94,16 +92,13 @@ public class LoginActivityTest {
 
         GoogleSignInResult googleSignInResult = new GoogleSignInResult(account, Status.zzayh);
         GoogleSignInResult spy = spy(googleSignInResult);
-        when(googleSignInAPIManager.getSignInResult(any())).thenReturn(spy);
+        when(googleSignInAPIManager.requestSignInResult(any())).thenReturn(spy);
         doReturn(true).when(spy).isSuccess();
 
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
+        doAnswer(invocation -> {
                 ((SignInResultCallback) invocation.getArguments()[1]).onSuccess();
                 return null;
-            }
-        }).when(appBeeAccountManager).signIn(any(User.class), any(SignInResultCallback.class));
+        }).when(appBeeAccountService).signIn(any(User.class), any(SignInResultCallback.class));
 
         ShadowActivity shadowActivity = shadowOf(subject);
         Intent intent = shadowActivity.getNextStartedActivity();
