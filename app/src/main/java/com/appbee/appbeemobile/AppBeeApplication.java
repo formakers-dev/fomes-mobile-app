@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.dagger.ApplicationComponent;
 import com.appbee.appbeemobile.dagger.ApplicationModule;
 import com.appbee.appbeemobile.dagger.ContextModule;
 import com.appbee.appbeemobile.dagger.DaggerApplicationComponent;
+import com.appbee.appbeemobile.dagger.NetworkModule;
 
 public class AppBeeApplication extends Application {
     protected ApplicationComponent applicationComponent;
@@ -18,9 +19,8 @@ public class AppBeeApplication extends Application {
                 .builder()
                 .applicationModule(new ApplicationModule(this))
                 .contextModule(new ContextModule(getApplicationContext()))
+                .networkModule(new NetworkModule())
                 .build();
-
-        applicationComponent.inject(this);
     }
 
     public ApplicationComponent getComponent() {
