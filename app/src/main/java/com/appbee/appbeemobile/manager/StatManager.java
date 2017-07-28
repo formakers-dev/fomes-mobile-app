@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.manager;
 
 import android.app.usage.UsageStats;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
 
 import com.appbee.appbeemobile.R;
@@ -10,6 +9,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.util.PropertyUtil;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.text.SimpleDateFormat;
@@ -35,12 +35,14 @@ public class StatManager {
     @VisibleForTesting
     final Context context;
 
-    private SystemServiceBridge systemServiceBridge;
+    private final SystemServiceBridge systemServiceBridge;
+    private final PropertyUtil propertyUtil;
 
     @Inject
-    public StatManager(Context context, SystemServiceBridge systemServiceBridge) {
+    public StatManager(Context context, SystemServiceBridge systemServiceBridge, PropertyUtil propertyUtil) {
         this.context = context;
         this.systemServiceBridge = systemServiceBridge;
+        this.propertyUtil = propertyUtil;
     }
 
     public List<ShortTermStat> getShortTermStats() {
@@ -79,15 +81,12 @@ public class StatManager {
     }
 
     private long getAnWeekAgo() {
-        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
-        return sharedPref.getLong(context.getString(R.string.shared_prefereces_key_last_usage_time), TimeUtil.getCurrentTime() - 1000*60*60*24*7);
+        return propertyUtil.getLong(context.getString(R.string.shared_preferences_key_last_usage_time), TimeUtil.getCurrentTime() - 1000*60*60*24*7);
+
     }
 
     private void updateEndTimeInSharedPreferences(long endTime) {
-        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putLong(context.getString(R.string.shared_prefereces_key_last_usage_time), endTime);
-        editor.apply();
+        propertyUtil.putLong(context.getString(R.string.shared_preferences_key_last_usage_time), endTime);
     }
 
     private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {

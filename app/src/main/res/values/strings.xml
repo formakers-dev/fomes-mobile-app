@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">AppBeeMobile</string>
-    <string name="shared_prefereces">APP_BEE_SHARED_PREFERENCES</string>
-    <string name="shared_prefereces_key_last_usage_time">LAST_USAGE_TIME</string>
+
+    <!-- for Key of Shared Preferences -->
+    <string name="shared_preferences">APP_BEE_SHARED_PREFERENCES</string>
+    <string name="shared_preferences_key_user_id">USER_ID</string>
+    <string name="shared_preferences_key_last_usage_time">LAST_USAGE_TIME</string>
 </resources>

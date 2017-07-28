@@ -3,11 +3,13 @@ package com.appbee.appbeemobile.activity;
 import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.util.PropertyUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
@@ -45,14 +47,15 @@ public class LoginActivityTest {
     @Inject
     AppBeeAccountService appBeeAccountService;
 
+    @Inject
+    PropertyUtil propertyUtil;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
         when(googleSignInAPIManager.requestSignInIntent(any())).thenReturn(intent);
-
-
 
         subject = Robolectric.setupActivity(LoginActivity.class);
     }
@@ -85,7 +88,7 @@ public class LoginActivityTest {
     }
 
     @Test
-    public void user정보저장이_성공하면_MainActivity를_시작한다() throws Exception {
+    public void user정보저장이_성공하면_userID를_sharedPreferences에_저장하고_MainActivity를_시작한다() throws Exception {
         GoogleSignInAccount account = mock(GoogleSignInAccount.class);
         when(account.getId()).thenReturn("testId");
         when(account.getDisplayName()).thenReturn("testName");
@@ -106,6 +109,8 @@ public class LoginActivityTest {
 
         subject.onActivityResult(9001, 0, null);
 
+        String storedUserId = propertyUtil.getString(RuntimeEnvironment.application.getString(R.string.shared_preferences_key_user_id), null);
+        assertThat(storedUserId).isEqualTo("testId");
 
         intent = shadowActivity.getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(MainActivity.class.getSimpleName());

@@ -1,10 +1,11 @@
 package com.appbee.appbeemobile;
 
-import com.appbee.appbeemobile.dagger.ApplicationComponent;
 import com.appbee.appbeemobile.dagger.DaggerTestApplicationComponent;
 import com.appbee.appbeemobile.dagger.TestApplicationComponent;
 import com.appbee.appbeemobile.dagger.TestApplicationModule;
 import com.appbee.appbeemobile.dagger.TestContextModule;
+
+import org.robolectric.RuntimeEnvironment;
 
 public class TestAppBeeApplication extends AppBeeApplication {
     private TestApplicationComponent testApplicationComponent;
@@ -15,7 +16,7 @@ public class TestAppBeeApplication extends AppBeeApplication {
 
         testApplicationComponent = DaggerTestApplicationComponent.builder()
                 .testApplicationModule(new TestApplicationModule(this))
-                .testContextModule(new TestContextModule(this))
+                .testContextModule(new TestContextModule(RuntimeEnvironment.application.getApplicationContext()))
                 .build();
     }
 
