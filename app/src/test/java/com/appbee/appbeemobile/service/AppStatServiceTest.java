@@ -69,6 +69,7 @@ public class AppStatServiceTest {
         propertyUtil = new PropertyUtil(RuntimeEnvironment.application);
         subject = new AppStatService(mockStatManager, mockStatAPI, propertyUtil);
         propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_USER_ID, "TEST_USER_ID");
+        propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "TEST_TOKEN");
     }
 
     @Test
@@ -77,11 +78,11 @@ public class AppStatServiceTest {
         mockAppInfoList.add(new AppInfo("package_name", "app_name"));
         when(mockStatManager.getAppList()).thenReturn(mockAppInfoList);
 
-        when(mockStatAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendAppInfoList(anyString(), anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendAppList();
 
-        verify(mockStatAPI).sendAppInfoList(userIdCaptor.capture(), appInfos.capture());
+        verify(mockStatAPI).sendAppInfoList(anyString(), userIdCaptor.capture(), appInfos.capture());
         List<AppInfo> actualAppInfos = appInfos.getValue();
         assertEquals(actualAppInfos.get(0).getPackageName(), "package_name");
         assertEquals(actualAppInfos.get(0).getAppName(), "app_name");
@@ -96,11 +97,11 @@ public class AppStatServiceTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("package_name", 1, 1000L));
         when(mockStatManager.getEventStats()).thenReturn(mockEventStatList);
-        when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendEventStats(anyString(), anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendEventStats();
 
-        verify(mockStatAPI).sendEventStats(userIdCaptor.capture(), eventStatsCaptor.capture());
+        verify(mockStatAPI).sendEventStats(anyString(), userIdCaptor.capture(), eventStatsCaptor.capture());
         EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
         assertEquals(actualEventStat.getPackageName(), "package_name");
         assertEquals(actualEventStat.getEventType(), 1);
@@ -116,11 +117,11 @@ public class AppStatServiceTest {
         List<LongTermStat> mockLongTermStats = new ArrayList<>();
         mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
         when(mockStatManager.getLongTermStatsForYear()).thenReturn(mockLongTermStats);
-        when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendLongTermStats(anyString(), anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendLongTermStats();
 
-        verify(mockStatAPI).sendLongTermStats(userIdCaptor.capture(), longTermStatsCaptor.capture());
+        verify(mockStatAPI).sendLongTermStats(anyString(), userIdCaptor.capture(), longTermStatsCaptor.capture());
         LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
         assertEquals(actualLongTermStat.getPackageName(), "anyPackage");
         assertEquals(actualLongTermStat.getLastUsedDate(), "20170717");
@@ -136,11 +137,11 @@ public class AppStatServiceTest {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
         when(mockStatManager.getShortTermStats()).thenReturn(mockShortTermStats);
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendShortTermStats(anyString(), anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendShortTermStats();
 
-        verify(mockStatAPI).sendShortTermStats(userIdCaptor.capture(), shortTermStatsCaptor.capture());
+        verify(mockStatAPI).sendShortTermStats(anyString(), userIdCaptor.capture(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
         assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);

@@ -69,8 +69,6 @@ public class LoginActivityTest {
         assertThat(nextStartedActivityForResult.intent.getComponent().getClassName()).contains("SignInHubActivity");
     }
 
-
-
     @Test
     public void onActivityResult_GoogleSign성공시_user정보를_저장하는API를_호출한다() throws Exception {
         GoogleSignInAccount account = mock(GoogleSignInAccount.class);
@@ -90,6 +88,7 @@ public class LoginActivityTest {
     @Test
     public void user정보저장이_성공하면_userID를_sharedPreferences에_저장하고_MainActivity를_시작한다() throws Exception {
         GoogleSignInAccount account = mock(GoogleSignInAccount.class);
+        when(account.getIdToken()).thenReturn("testToken");
         when(account.getId()).thenReturn("testId");
         when(account.getDisplayName()).thenReturn("testName");
 
@@ -111,6 +110,9 @@ public class LoginActivityTest {
 
         String storedUserId = propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null);
         assertThat(storedUserId).isEqualTo("testId");
+
+        String storedIdToken = propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null);
+        assertThat(storedIdToken).isEqualTo("testToken");
 
         intent = shadowActivity.getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(MainActivity.class.getSimpleName());
