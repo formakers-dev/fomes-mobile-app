@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.PropertyUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onSuccess() {
                 Log.d(TAG, "saveUserInfo success");
-                propertyUtil.putString(context.getString(R.string.shared_preferences_key_user_id), user.getUserId());
+                propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_USER_ID, user.getUserId());
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

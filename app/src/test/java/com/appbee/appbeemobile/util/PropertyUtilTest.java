@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.R;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class PropertyUtilTest {
     public void setUp() throws Exception {
         subject = new PropertyUtil(RuntimeEnvironment.application);
 
-        sf = RuntimeEnvironment.application.getSharedPreferences(RuntimeEnvironment.application.getString(R.string.shared_preferences), Context.MODE_PRIVATE);
+        sf = RuntimeEnvironment.application.getSharedPreferences(AppBeeConstants.SharedPreference.NAME, Context.MODE_PRIVATE);
         sf.edit()
                 .putString("TEST_STRING_KEY", "TEST_STRING_VALUE")
                 .putLong("TEST_LONG_KEY", 1234567890L)
@@ -54,5 +54,13 @@ public class PropertyUtilTest {
     public void putLongTest() throws Exception {
         subject.putLong("TEST_LONG_KEY", 9876543210L);
         assertThat(sf.getLong("TEST_LONG_KEY", 0L)).isEqualTo(9876543210L);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        sf.edit()
+                .remove("TEST_STRING_KEY")
+                .remove("TEST_LONG_KEY")
+                .apply();
     }
 }

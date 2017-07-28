@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.service;
 
+import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.AppInfo;
@@ -7,13 +8,19 @@ import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.network.StatAPI;
+import com.appbee.appbeemobile.util.AppBeeConstants;
+import com.appbee.appbeemobile.util.PropertyUtil;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +34,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class AppStatServiceTest {
+
     private AppStatService subject;
+
+    private PropertyUtil propertyUtil;
 
     @Mock
     private StatManager mockStatManager;
@@ -48,10 +60,15 @@ public class AppStatServiceTest {
     @Captor
     ArgumentCaptor<List<LongTermStat>> longTermStatsCaptor = ArgumentCaptor.forClass(List.class);
 
+    @Captor
+    ArgumentCaptor<String> userIdCaptor = ArgumentCaptor.forClass(String.class);
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new AppStatService(mockStatManager, mockStatAPI);
+        propertyUtil = new PropertyUtil(RuntimeEnvironment.application);
+        subject = new AppStatService(mockStatManager, mockStatAPI, propertyUtil);
+        propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_USER_ID, "TEST_USER_ID");
     }
 
     @Test
@@ -64,10 +81,14 @@ public class AppStatServiceTest {
 
         subject.sendAppList();
 
-        verify(mockStatAPI).sendAppInfoList(any(String.class), appInfos.capture());
+        verify(mockStatAPI).sendAppInfoList(userIdCaptor.capture(), appInfos.capture());
         List<AppInfo> actualAppInfos = appInfos.getValue();
         assertEquals(actualAppInfos.get(0).getPackageName(), "package_name");
         assertEquals(actualAppInfos.get(0).getAppName(), "app_name");
+
+        String expectedUserId = propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null);
+        String actualUserId = userIdCaptor.getValue();
+        assertEquals(actualUserId, expectedUserId);
     }
 
     @Test
@@ -79,11 +100,15 @@ public class AppStatServiceTest {
 
         subject.sendEventStats();
 
-        verify(mockStatAPI).sendEventStats(anyString(), eventStatsCaptor.capture());
+        verify(mockStatAPI).sendEventStats(userIdCaptor.capture(), eventStatsCaptor.capture());
         EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
         assertEquals(actualEventStat.getPackageName(), "package_name");
         assertEquals(actualEventStat.getEventType(), 1);
         assertEquals(actualEventStat.getTimeStamp(), 1000L);
+
+        String expectedUserId = propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null);
+        String actualUserId = userIdCaptor.getValue();
+        assertEquals(actualUserId, expectedUserId);
     }
 
     @Test
@@ -95,11 +120,15 @@ public class AppStatServiceTest {
 
         subject.sendLongTermStats();
 
-        verify(mockStatAPI).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
+        verify(mockStatAPI).sendLongTermStats(userIdCaptor.capture(), longTermStatsCaptor.capture());
         LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
         assertEquals(actualLongTermStat.getPackageName(), "anyPackage");
         assertEquals(actualLongTermStat.getLastUsedDate(), "20170717");
         assertEquals(actualLongTermStat.getTotalUsedTime(), 1000L);
+
+        String expectedUserId = propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null);
+        String actualUserId = userIdCaptor.getValue();
+        assertEquals(actualUserId, expectedUserId);
     }
 
     @Test
@@ -111,11 +140,15 @@ public class AppStatServiceTest {
 
         subject.sendShortTermStats();
 
-        verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
+        verify(mockStatAPI).sendShortTermStats(userIdCaptor.capture(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
         assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
         assertEquals(actualShortTermStat.getEndTimeStamp(), 3000L);
         assertEquals(actualShortTermStat.getTotalUsedTime(), 2000L);
+
+        String expectedUserId = propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null);
+        String actualUserId = userIdCaptor.getValue();
+        assertEquals(actualUserId, expectedUserId);
     }
 }

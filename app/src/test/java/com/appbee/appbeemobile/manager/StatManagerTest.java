@@ -1,15 +1,13 @@
 package com.appbee.appbeemobile.manager;
 
 import android.app.usage.UsageStats;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.PropertyUtil;
 import com.appbee.appbeemobile.util.TimeUtil;
 
@@ -49,7 +47,7 @@ public class StatManagerTest {
     public void setUp() throws Exception {
         this.mockSystemServiceBridge = mock(SystemServiceBridge.class);
         this.propertyUtil = new PropertyUtil(RuntimeEnvironment.application);
-        subject = new StatManager(RuntimeEnvironment.application.getApplicationContext(), mockSystemServiceBridge, propertyUtil);
+        subject = new StatManager(mockSystemServiceBridge, propertyUtil);
     }
 
     @Test
@@ -177,11 +175,11 @@ public class StatManagerTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        long endTime1 = propertyUtil.getLong(subject.context.getString(R.string.shared_preferences_key_last_usage_time), 0L);
+        long endTime1 = propertyUtil.getLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, 0L);
 
         subject.getShortTermStats();
 
-        long endTime2 = propertyUtil.getLong(subject.context.getString(R.string.shared_preferences_key_last_usage_time), 0L);
+        long endTime2 = propertyUtil.getLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, 0L);
         assertThat(endTime2).isGreaterThan(endTime1);
     }
 
@@ -190,7 +188,7 @@ public class StatManagerTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        propertyUtil.putLong(subject.context.getString(R.string.shared_preferences_key_last_usage_time), 200L);
+        propertyUtil.putLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, 200L);
 
         subject.getShortTermStats();
 

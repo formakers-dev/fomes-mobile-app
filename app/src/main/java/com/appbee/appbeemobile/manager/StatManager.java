@@ -1,14 +1,12 @@
 package com.appbee.appbeemobile.manager;
 
 import android.app.usage.UsageStats;
-import android.content.Context;
-import android.support.annotation.VisibleForTesting;
 
-import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.PropertyUtil;
 import com.appbee.appbeemobile.util.TimeUtil;
 
@@ -32,15 +30,11 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 public class StatManager {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
-    @VisibleForTesting
-    final Context context;
-
     private final SystemServiceBridge systemServiceBridge;
     private final PropertyUtil propertyUtil;
 
     @Inject
-    public StatManager(Context context, SystemServiceBridge systemServiceBridge, PropertyUtil propertyUtil) {
-        this.context = context;
+    public StatManager(SystemServiceBridge systemServiceBridge, PropertyUtil propertyUtil) {
         this.systemServiceBridge = systemServiceBridge;
         this.propertyUtil = propertyUtil;
     }
@@ -81,12 +75,12 @@ public class StatManager {
     }
 
     private long getAnWeekAgo() {
-        return propertyUtil.getLong(context.getString(R.string.shared_preferences_key_last_usage_time), TimeUtil.getCurrentTime() - 1000*60*60*24*7);
+        return propertyUtil.getLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, TimeUtil.getCurrentTime() - 1000*60*60*24*7);
 
     }
 
     private void updateEndTimeInSharedPreferences(long endTime) {
-        propertyUtil.putLong(context.getString(R.string.shared_preferences_key_last_usage_time), endTime);
+        propertyUtil.putLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, endTime);
     }
 
     private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
