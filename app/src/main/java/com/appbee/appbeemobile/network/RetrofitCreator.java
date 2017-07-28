@@ -1,32 +1,19 @@
-package com.appbee.appbeemobile.dagger;
+package com.appbee.appbeemobile.network;
 
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module
-public class NetworkModule {
-
-    private static final String SERVER_BASE_URL = "http://172.16.0.164:8080/";
-
-    @Singleton
-    @Provides OkHttpClient okHttpClient() {
+public class RetrofitCreator {
+    public static Retrofit createRetrofit() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(interceptor);
-        return builder.build();
-    }
-
-    @Singleton
-    @Provides Retrofit retrofit(OkHttpClient okHttpClient) {
+        OkHttpClient okHttpClient = builder.build();
         return new Retrofit.Builder()
-                .baseUrl(SERVER_BASE_URL)
+                .baseUrl("http://172.16.0.164:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)   // for logs
                 .build();
