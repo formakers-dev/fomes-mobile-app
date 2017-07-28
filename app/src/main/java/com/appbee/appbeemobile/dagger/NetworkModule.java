@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetworkModule {
 
-    private static final String SERVER_BASE_URL = "http://172.16.0.164:8080/";
+    private static final String SERVER_BASE_URL = "https://appbeesvr.herokuapp.com/";
 
     @Singleton
     @Provides OkHttpClient okHttpClient() {
