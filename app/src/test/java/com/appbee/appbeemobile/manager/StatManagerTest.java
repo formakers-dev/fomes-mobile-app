@@ -10,6 +10,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.util.PropertyUtil;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import org.junit.Before;
@@ -42,11 +43,13 @@ public class StatManagerTest {
     ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
     private SystemServiceBridge mockSystemServiceBridge;
+    private PropertyUtil propertyUtil;
 
     @Before
     public void setUp() throws Exception {
-        mockSystemServiceBridge = mock(SystemServiceBridge.class);
-        subject = new StatManager(RuntimeEnvironment.application.getApplicationContext(), mockSystemServiceBridge);
+        this.mockSystemServiceBridge = mock(SystemServiceBridge.class);
+        this.propertyUtil = new PropertyUtil(RuntimeEnvironment.application);
+        subject = new StatManager(RuntimeEnvironment.application.getApplicationContext(), mockSystemServiceBridge, propertyUtil);
     }
 
     @Test
@@ -174,12 +177,11 @@ public class StatManagerTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        SharedPreferences sharedPreferences = RuntimeEnvironment.application.getSharedPreferences(subject.context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
-        long endTime1 = sharedPreferences.getLong(subject.context.getString(R.string.shared_prefereces_key_last_usage_time), 0L);
+        long endTime1 = propertyUtil.getLong(subject.context.getString(R.string.shared_preferences_key_last_usage_time), 0L);
 
         subject.getShortTermStats();
 
-        long endTime2 = sharedPreferences.getLong(subject.context.getString(R.string.shared_prefereces_key_last_usage_time), 0L);
+        long endTime2 = propertyUtil.getLong(subject.context.getString(R.string.shared_preferences_key_last_usage_time), 0L);
         assertThat(endTime2).isGreaterThan(endTime1);
     }
 
@@ -188,8 +190,7 @@ public class StatManagerTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        SharedPreferences sharedPreferences = RuntimeEnvironment.application.getSharedPreferences(subject.context.getString(R.string.shared_prefereces), Context.MODE_PRIVATE);
-        sharedPreferences.edit().putLong(subject.context.getString(R.string.shared_prefereces_key_last_usage_time), 200L).commit();
+        propertyUtil.putLong(subject.context.getString(R.string.shared_preferences_key_last_usage_time), 200L);
 
         subject.getShortTermStats();
 
