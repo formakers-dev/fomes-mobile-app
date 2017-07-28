@@ -4,21 +4,17 @@ package com.appbee.appbeemobile.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.appbee.appbeemobile.R;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class PropertyUtil {
 
-    private Context context;
     private SharedPreferences sf;
 
     @Inject
     public PropertyUtil(Context context) {
-        this.context = context;
-        this.sf = context.getSharedPreferences(context.getString(R.string.shared_preferences), Context.MODE_PRIVATE);
+        this.sf = context.getSharedPreferences(AppBeeConstants.SharedPreference.NAME, Context.MODE_PRIVATE);
     }
 
     public String getString(String key, String defaultValue) {

@@ -3,12 +3,12 @@ package com.appbee.appbeemobile.activity;
 import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.PropertyUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -109,7 +109,7 @@ public class LoginActivityTest {
 
         subject.onActivityResult(9001, 0, null);
 
-        String storedUserId = propertyUtil.getString(RuntimeEnvironment.application.getString(R.string.shared_preferences_key_user_id), null);
+        String storedUserId = propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null);
         assertThat(storedUserId).isEqualTo("testId");
 
         intent = shadowActivity.getNextStartedActivity();
