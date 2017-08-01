@@ -91,12 +91,13 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void saveUserInfo(final User user, final String idToken) {
-        appBeeAccountService.signIn(user, new SignInResultCallback() {
+        appBeeAccountService.signIn(idToken, user, new SignInResultCallback() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(String token) {
                 Log.d(TAG, "saveUserInfo success");
                 propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_USER_ID, user.getUserId());
-                propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "testToken");
+                // propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "testToken");
+                propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, token);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

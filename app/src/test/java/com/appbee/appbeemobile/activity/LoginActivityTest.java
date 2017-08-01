@@ -28,6 +28,7 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -98,7 +99,7 @@ public class LoginActivityTest {
         doReturn(true).when(spy).isSuccess();
 
         doAnswer(invocation -> {
-                ((SignInResultCallback) invocation.getArguments()[1]).onSuccess();
+                ((SignInResultCallback) invocation.getArguments()[1]).onSuccess(anyString());
                 return null;
         }).when(appBeeAccountService).signIn(any(User.class), any(SignInResultCallback.class));
 

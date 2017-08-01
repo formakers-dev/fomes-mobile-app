@@ -1,6 +1,6 @@
 package com.appbee.appbeemobile.network;
 
 public interface SignInResultCallback {
-    void onSuccess();
+    void onSuccess(String token);
     void onFail();
 }

@@ -20,23 +20,24 @@ public class AppBeeAccountService {
         this.userAPI = userAPI;
     }
 
-    public void signIn(User user, SignInResultCallback signInResultCallback) {
-        userAPI.signInUser(user).enqueue(new Callback<Boolean>() {
+    public void signIn(String token, User user, SignInResultCallback signInResultCallback) {
+        userAPI.signInUser(token, user).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "Success to send appList");
                 } else {
                     Log.d(TAG, "Fail to send appList");
                 }
-                signInResultCallback.onSuccess();
+                signInResultCallback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 signInResultCallback.onFail();
                 Log.e(TAG, "failure!!! t=" + t.toString());
             }
         });
+
     }
 }
