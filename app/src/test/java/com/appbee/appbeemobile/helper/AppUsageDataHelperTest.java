@@ -4,12 +4,9 @@ import android.app.usage.UsageStats;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
-import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import org.junit.Before;
@@ -58,7 +55,7 @@ public class AppUsageDataHelperTest {
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
         when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
 
-        List<LongTermStat> actualResult = subject.getLongTermStatsForYear();
+        List<LongTermStat> actualResult = subject.getLongTermStats();
 
         assertEquals(actualResult.size(), 2);
     }
@@ -71,7 +68,7 @@ public class AppUsageDataHelperTest {
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 400L, 1500001200000L));    //2017-07-14 12:00:00
         when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
 
-        List<LongTermStat> actualResult = subject.getLongTermStatsForYear();
+        List<LongTermStat> actualResult = subject.getLongTermStats();
 
         assertEquals(actualResult.size(), 2);
         assertEquals(actualResult.get(0).getTotalUsedTime(), 300L);

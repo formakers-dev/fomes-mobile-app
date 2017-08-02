@@ -39,7 +39,7 @@ public class AppUsageDataHelper {
 
     public List<ShortTermStat> getShortTermStats() {
         long endTime = TimeUtil.getCurrentTime();
-        long startTime = getAnWeekAgo();
+        long startTime = getAnWeekAgo(endTime);
 
         List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
@@ -61,39 +61,35 @@ public class AppUsageDataHelper {
             }
         }
 
-        updateEndTimeInSharedPreferences(endTime);
+        localStorageHelper.setLastUsageTime(endTime);
 
         return shortTermStats;
     }
 
     public List<EventStat> getEventStats(){
         long endTime = TimeUtil.getCurrentTime();
-        long startTime = getAnWeekAgo();
+        long startTime = getAnWeekAgo(endTime);
         return appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
     }
 
-    private long getAnWeekAgo() {
+    private long getAnWeekAgo(long from) {
         long lastUsageTime = localStorageHelper.getLastUsageTime();
         if (lastUsageTime <= 0) {
-            lastUsageTime = TimeUtil.getCurrentTime() - 1000*60*60*24*7;
+            lastUsageTime = from - 1000*60*60*24*7;
         }
         return lastUsageTime;
-    }
-
-    private void updateEndTimeInSharedPreferences(long endTime) {
-        localStorageHelper.setLastUsageTime(endTime);
     }
 
     private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
         return new ShortTermStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
     }
 
-    public List<LongTermStat> getLongTermStatsForYear() {
+    public List<LongTermStat> getLongTermStats() {
         Map<String, LongTermStat> dailyUsageStatMap = new LinkedHashMap<>();
 
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.YEAR, -1);
+        calendar.add(Calendar.MONTH, -6);
         long startTime = calendar.getTimeInMillis();
 
         List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
