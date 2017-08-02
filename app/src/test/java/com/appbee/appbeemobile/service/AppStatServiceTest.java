@@ -106,7 +106,7 @@ public class AppStatServiceTest {
     public void sendLongTermStats호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
         List<LongTermStat> mockLongTermStats = new ArrayList<>();
         mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
-        when(mockAppUsageDataHelper.getLongTermStatsForYear()).thenReturn(mockLongTermStats);
+        when(mockAppUsageDataHelper.getLongTermStats()).thenReturn(mockLongTermStats);
         when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendLongTermStats();

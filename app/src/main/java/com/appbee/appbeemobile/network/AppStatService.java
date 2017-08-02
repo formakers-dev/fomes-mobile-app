@@ -67,7 +67,7 @@ public class AppStatService {
     }
 
     public void sendLongTermStats() {
-        final List<LongTermStat> longTermStats = appUsageDataHelper.getLongTermStatsForYear();
+        final List<LongTermStat> longTermStats = appUsageDataHelper.getLongTermStats();
         StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), longTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
