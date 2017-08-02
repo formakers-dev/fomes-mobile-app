@@ -20,8 +20,8 @@ public class AppBeeAccountService {
         this.userAPI = userAPI;
     }
 
-    public void signIn(String token, User user, SignInResultCallback signInResultCallback) {
-        userAPI.signInUser(token, user).enqueue(new Callback<String>() {
+    public void signIn(String token, SignInResultCallback signInResultCallback) {
+        userAPI.signInUser(token).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()) {

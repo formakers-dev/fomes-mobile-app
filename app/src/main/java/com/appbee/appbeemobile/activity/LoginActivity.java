@@ -13,7 +13,6 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.network.SignInResultCallback;
-import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.PropertyUtil;
 import com.google.android.gms.auth.api.Auth;
@@ -30,7 +29,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
-    private GoogleApiClient mGoogleApiClient;
 
     @Inject
     AppBeeAccountService appBeeAccountService;
@@ -50,20 +48,20 @@ public class LoginActivity extends AppCompatActivity implements
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
+        signIn();
+    }
+
+    private void signIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        signIn();
-    }
-
-    private void signIn() {
         Intent signInIntent = googleSignInAPIManager.requestSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -77,8 +75,7 @@ public class LoginActivity extends AppCompatActivity implements
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 if (account != null) {
-                    User user = new User(account.getId(), account.getDisplayName());
-                    saveUserInfo(user, account.getIdToken());
+                    signInUser(account.getIdToken());
                 }
             }
         }
@@ -90,22 +87,20 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
-    private void saveUserInfo(final User user, final String idToken) {
-        appBeeAccountService.signIn(idToken, user, new SignInResultCallback() {
+    void signInUser(final String idToken) {
+        appBeeAccountService.signIn(idToken, new SignInResultCallback() {
             @Override
             public void onSuccess(String token) {
-                Log.d(TAG, "saveUserInfo success");
-                propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_USER_ID, user.getUserId());
-                // propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "testToken");
+                Log.d(TAG, "signInUser success");
                 propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, token);
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             }
 
             @Override
             public void onFail() {
-                Log.d(TAG, "saveUserInfo Failed");
+                Log.d(TAG, "signInUser Failed");
             }
         });
     }

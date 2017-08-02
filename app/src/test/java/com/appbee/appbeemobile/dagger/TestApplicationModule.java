@@ -8,6 +8,7 @@ import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
+import com.appbee.appbeemobile.util.PropertyUtil;
 
 import javax.inject.Singleton;
 
@@ -55,7 +56,7 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    AppBeeAccountService provideAppBeeAccountManager() {
+    AppBeeAccountService provideAppBeeAccountService() {
         return mock(AppBeeAccountService.class);
     }
 
@@ -63,5 +64,11 @@ public class TestApplicationModule {
     @Provides
     GoogleSignInAPIManager provideGoogleSignInAPIManger() {
         return mock(GoogleSignInAPIManager.class);
+    }
+
+    @Singleton
+    @Provides
+    PropertyUtil providePropertyUtil() {
+        return mock(PropertyUtil.class);
     }
 }
