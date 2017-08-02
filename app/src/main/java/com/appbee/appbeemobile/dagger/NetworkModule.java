@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.BuildConfig;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -11,8 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-
-    private static final String SERVER_BASE_URL = "http://172.16.0.209:8080/";
 
     @Singleton
     @Provides OkHttpClient okHttpClient() {
@@ -26,7 +26,7 @@ public class NetworkModule {
     @Singleton
     @Provides Retrofit retrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-                .baseUrl(SERVER_BASE_URL)
+                .baseUrl(BuildConfig.SERVER_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)   // for logs
                 .build();
