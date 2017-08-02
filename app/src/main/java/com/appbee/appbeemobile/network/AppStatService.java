@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.network;
 
 import android.util.Log;
 
-import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
@@ -32,8 +31,8 @@ public class AppStatService {
     }
 
     public void sendAppList() {
-        StatAPI.sendAppInfoList(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null), propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null)
-                , statManager.getAppList()).enqueue(new Callback<Boolean>() {
+        StatAPI.sendAppInfoList(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null),
+                statManager.getAppList()).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
@@ -52,7 +51,7 @@ public class AppStatService {
 
     public void sendEventStats() {
         final List<EventStat> eventStats = statManager.getEventStats();
-        StatAPI.sendEventStats(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null), propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null), eventStats).enqueue(new Callback<Boolean>() {
+        StatAPI.sendEventStats(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null), eventStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()) {
@@ -70,7 +69,7 @@ public class AppStatService {
 
     public void sendLongTermStats() {
         final List<LongTermStat> longTermStats = statManager.getLongTermStatsForYear();
-        StatAPI.sendLongTermStats(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null), propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null), longTermStats).enqueue(new Callback<Boolean>() {
+        StatAPI.sendLongTermStats(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null), longTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
@@ -89,7 +88,7 @@ public class AppStatService {
 
     public void sendShortTermStats() {
         List<ShortTermStat> shortTermStats = statManager.getShortTermStats();
-        StatAPI.sendShortTermStats(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null), propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_USER_ID, null), shortTermStats).enqueue(new Callback<Boolean>() {
+        StatAPI.sendShortTermStats(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, null), shortTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
