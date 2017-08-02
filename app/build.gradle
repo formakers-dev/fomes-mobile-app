@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.appbee.appbeemobile"
         minSdkVersion 22
@@ -15,9 +15,15 @@ android {
         }
     }
     buildTypes {
+        debug {
+            debuggable true
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://'+ InetAddress.getLocalHost().getCanonicalHostName() + ':8080/"';
+        }
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbeesvr.herokuapp.com/"';
         }
     }
     compileOptions {
