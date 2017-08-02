@@ -8,8 +8,7 @@ import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.network.StatAPI;
-import com.appbee.appbeemobile.util.AppBeeConstants;
-import com.appbee.appbeemobile.util.PropertyUtil;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class AppStatServiceTest {
 
     private AppStatService subject;
 
-    private PropertyUtil propertyUtil;
+    private LocalStorageHelper localStorageHelper;
 
     @Mock
     private StatManager mockStatManager;
@@ -66,10 +65,9 @@ public class AppStatServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        propertyUtil = new PropertyUtil(RuntimeEnvironment.application);
-        subject = new AppStatService(mockStatManager, mockStatAPI, propertyUtil);
-        propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_USER_ID, "TEST_USER_ID");
-        propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "TEST_TOKEN");
+        localStorageHelper = new LocalStorageHelper(RuntimeEnvironment.application);
+        subject = new AppStatService(mockStatManager, mockStatAPI, localStorageHelper);
+        localStorageHelper.setAccessToken("TEST_TOKEN");
     }
 
     @Test

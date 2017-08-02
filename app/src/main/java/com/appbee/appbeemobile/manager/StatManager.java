@@ -6,8 +6,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.util.AppBeeConstants;
-import com.appbee.appbeemobile.util.PropertyUtil;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.text.SimpleDateFormat;
@@ -31,12 +30,12 @@ public class StatManager {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
     private final SystemServiceBridge systemServiceBridge;
-    private final PropertyUtil propertyUtil;
+    private final LocalStorageHelper localStorageHelper;
 
     @Inject
-    public StatManager(SystemServiceBridge systemServiceBridge, PropertyUtil propertyUtil) {
+    public StatManager(SystemServiceBridge systemServiceBridge, LocalStorageHelper localStorageHelper) {
         this.systemServiceBridge = systemServiceBridge;
-        this.propertyUtil = propertyUtil;
+        this.localStorageHelper = localStorageHelper;
     }
 
     public List<ShortTermStat> getShortTermStats() {
@@ -75,12 +74,15 @@ public class StatManager {
     }
 
     private long getAnWeekAgo() {
-        return propertyUtil.getLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, TimeUtil.getCurrentTime() - 1000*60*60*24*7);
-
+        long lastUsageTime = localStorageHelper.getLastUsageTime();
+        if (lastUsageTime <= 0) {
+            lastUsageTime = TimeUtil.getCurrentTime() - 1000*60*60*24*7;
+        }
+        return lastUsageTime;
     }
 
     private void updateEndTimeInSharedPreferences(long endTime) {
-        propertyUtil.putLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, endTime);
+        localStorageHelper.setLastUsageTime(endTime);
     }
 
     private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {

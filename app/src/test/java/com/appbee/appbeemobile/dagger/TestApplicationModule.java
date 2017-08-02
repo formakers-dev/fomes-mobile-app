@@ -8,7 +8,7 @@ import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
-import com.appbee.appbeemobile.util.PropertyUtil;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
 import javax.inject.Singleton;
 
@@ -68,7 +68,7 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    PropertyUtil providePropertyUtil() {
-        return mock(PropertyUtil.class);
+    LocalStorageHelper providePropertyUtil() {
+        return mock(LocalStorageHelper.class);
     }
 }

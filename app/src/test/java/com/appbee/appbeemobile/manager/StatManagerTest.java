@@ -7,8 +7,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.util.AppBeeConstants;
-import com.appbee.appbeemobile.util.PropertyUtil;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import org.junit.Before;
@@ -41,13 +40,13 @@ public class StatManagerTest {
     ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
     private SystemServiceBridge mockSystemServiceBridge;
-    private PropertyUtil propertyUtil;
+    private LocalStorageHelper localStorageHelper;
 
     @Before
     public void setUp() throws Exception {
         this.mockSystemServiceBridge = mock(SystemServiceBridge.class);
-        this.propertyUtil = new PropertyUtil(RuntimeEnvironment.application);
-        subject = new StatManager(mockSystemServiceBridge, propertyUtil);
+        this.localStorageHelper = new LocalStorageHelper(RuntimeEnvironment.application);
+        subject = new StatManager(mockSystemServiceBridge, localStorageHelper);
     }
 
     @Test
@@ -175,11 +174,11 @@ public class StatManagerTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        long endTime1 = propertyUtil.getLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, 0L);
+        long endTime1 = localStorageHelper.getLastUsageTime();
 
         subject.getShortTermStats();
 
-        long endTime2 = propertyUtil.getLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, 0L);
+        long endTime2 = localStorageHelper.getLastUsageTime();
         assertThat(endTime2).isGreaterThan(endTime1);
     }
 
@@ -188,7 +187,7 @@ public class StatManagerTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         when(mockSystemServiceBridge.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        propertyUtil.putLong(AppBeeConstants.SharedPreference.KEY_LAST_USAGE_TIME, 200L);
+        localStorageHelper.setLastUsageTime(200L);
 
         subject.getShortTermStats();
 

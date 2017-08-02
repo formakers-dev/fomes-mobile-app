@@ -7,8 +7,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.network.SignInResultCallback;
-import com.appbee.appbeemobile.util.AppBeeConstants;
-import com.appbee.appbeemobile.util.PropertyUtil;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
@@ -51,7 +50,7 @@ public class LoginActivityTest {
     AppBeeAccountService appBeeAccountService;
 
     @Inject
-    PropertyUtil propertyUtil;
+    LocalStorageHelper localStorageHelper;
 
     @Before
     public void setUp() throws Exception {
@@ -64,7 +63,7 @@ public class LoginActivityTest {
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
         when(googleSignInAPIManager.requestSignInIntent(any())).thenReturn(intent);
 
-        when(propertyUtil.getString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "")).thenReturn("");
+        when(localStorageHelper.getAccessToken()).thenReturn("");
 
         return activityController.create().get();
     }
@@ -113,7 +112,7 @@ public class LoginActivityTest {
 
         subject.signInUser("testIdToken");
 
-        verify(propertyUtil).putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, "testAccessToken");
+        verify(localStorageHelper).setAccessToken("testAccessToken");
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(MainActivity.class.getSimpleName());
