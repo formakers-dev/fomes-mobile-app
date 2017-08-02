@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
-import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.google.android.gms.auth.api.Auth;
@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements
     AppBeeAccountService appBeeAccountService;
 
     @Inject
-    GoogleSignInAPIManager googleSignInAPIManager;
+    GoogleSignInAPIHelper googleSignInAPIHelper;
 
     @Inject
     Context context;
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        Intent signInIntent = googleSignInAPIManager.requestSignInIntent(mGoogleApiClient);
+        Intent signInIntent = googleSignInAPIHelper.requestSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = googleSignInAPIManager.requestSignInResult(data);
+            GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 if (account != null) {

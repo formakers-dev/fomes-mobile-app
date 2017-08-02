@@ -1,10 +1,10 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
+import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
-import com.appbee.appbeemobile.manager.SystemServiceBridge;
-import com.appbee.appbeemobile.manager.StatManager;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
@@ -26,14 +26,14 @@ public class TestApplicationModule {
 
     @Provides
     @Singleton
-    StatManager provideStatManager() {
-        return mock(StatManager.class);
+    AppUsageDataHelper provideAppUsageDataHelper() {
+        return mock(AppUsageDataHelper.class);
     }
 
     @Provides
     @Singleton
-    SystemServiceBridge provideSystemServiceBridge() {
-        return mock(SystemServiceBridge.class);
+    AppBeeAndroidNativeHelper provideAppBeeAndroidNativeHelper() {
+        return mock(AppBeeAndroidNativeHelper.class);
     }
 
     @Provides
@@ -44,7 +44,7 @@ public class TestApplicationModule {
 
     @Provides
     @Singleton
-    StatAPI provideHTTPService() {
+    StatAPI provideStatAPI() {
         return mock(StatAPI.class);
     }
 
@@ -62,13 +62,13 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    GoogleSignInAPIManager provideGoogleSignInAPIManger() {
-        return mock(GoogleSignInAPIManager.class);
+    GoogleSignInAPIHelper provideGoogleSignInAPIHelper() {
+        return mock(GoogleSignInAPIHelper.class);
     }
 
     @Singleton
     @Provides
-    LocalStorageHelper providePropertyUtil() {
+    LocalStorageHelper provideLocalStorageHelper() {
         return mock(LocalStorageHelper.class);
     }
 }

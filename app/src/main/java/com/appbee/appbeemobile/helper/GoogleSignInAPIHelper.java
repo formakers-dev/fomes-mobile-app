@@ -1,4 +1,4 @@
-package com.appbee.appbeemobile.manager;
+package com.appbee.appbeemobile.helper;
 
 import android.content.Intent;
 
@@ -6,7 +6,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class GoogleSignInAPIManager {
+public class GoogleSignInAPIHelper {
     public Intent requestSignInIntent(GoogleApiClient googleApiClient) {
         return Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
     }

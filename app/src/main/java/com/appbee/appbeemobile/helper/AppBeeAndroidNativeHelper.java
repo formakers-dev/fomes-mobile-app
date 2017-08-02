@@ -1,4 +1,4 @@
-package com.appbee.appbeemobile.manager;
+package com.appbee.appbeemobile.helper;
 
 
 import android.app.usage.UsageEvents;
@@ -21,11 +21,11 @@ import javax.inject.Singleton;
 import static android.content.Context.USAGE_STATS_SERVICE;
 
 @Singleton
-public class SystemServiceBridge {
+public class AppBeeAndroidNativeHelper {
     private Context context;
 
     @Inject
-    public SystemServiceBridge(Context context) {
+    public AppBeeAndroidNativeHelper(Context context) {
         this.context = context;
     }
 

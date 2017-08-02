@@ -2,7 +2,7 @@ package com.appbee.appbeemobile.network;
 
 import android.util.Log;
 
-import com.appbee.appbeemobile.manager.StatManager;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
@@ -18,20 +18,20 @@ import retrofit2.Response;
 
 public class AppStatService {
     private static final String TAG = AppStatService.class.getSimpleName();
-    private StatManager statManager;
+    private AppUsageDataHelper appUsageDataHelper;
     private StatAPI StatAPI;
     private final LocalStorageHelper localStorageHelper;
 
     @Inject
-    public AppStatService(StatManager statManager, StatAPI StatAPI, LocalStorageHelper localStorageHelper) {
-        this.statManager = statManager;
+    public AppStatService(AppUsageDataHelper appUsageDataHelper, StatAPI StatAPI, LocalStorageHelper localStorageHelper) {
+        this.appUsageDataHelper = appUsageDataHelper;
         this.StatAPI = StatAPI;
         this.localStorageHelper = localStorageHelper;
     }
 
     public void sendAppList() {
         StatAPI.sendAppInfoList(localStorageHelper.getAccessToken(),
-                statManager.getAppList()).enqueue(new Callback<Boolean>() {
+                appUsageDataHelper.getAppList()).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
@@ -49,7 +49,7 @@ public class AppStatService {
     }
 
     public void sendEventStats() {
-        final List<EventStat> eventStats = statManager.getEventStats();
+        final List<EventStat> eventStats = appUsageDataHelper.getEventStats();
         StatAPI.sendEventStats(localStorageHelper.getAccessToken(), eventStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -67,7 +67,7 @@ public class AppStatService {
     }
 
     public void sendLongTermStats() {
-        final List<LongTermStat> longTermStats = statManager.getLongTermStatsForYear();
+        final List<LongTermStat> longTermStats = appUsageDataHelper.getLongTermStatsForYear();
         StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), longTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -86,7 +86,7 @@ public class AppStatService {
     }
 
     public void sendShortTermStats() {
-        List<ShortTermStat> shortTermStats = statManager.getShortTermStats();
+        List<ShortTermStat> shortTermStats = appUsageDataHelper.getShortTermStats();
         StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), shortTermStats).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {

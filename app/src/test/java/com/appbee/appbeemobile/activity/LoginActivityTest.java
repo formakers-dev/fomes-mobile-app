@@ -4,8 +4,8 @@ import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
-import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -44,7 +44,7 @@ public class LoginActivityTest {
     private ActivityController<LoginActivity> activityController;
 
     @Inject
-    GoogleSignInAPIManager googleSignInAPIManager;
+    GoogleSignInAPIHelper googleSignInAPIHelper;
 
     @Inject
     AppBeeAccountService appBeeAccountService;
@@ -61,7 +61,7 @@ public class LoginActivityTest {
     private LoginActivity getSubjectAfterSetupGoogleSignIn() {
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
-        when(googleSignInAPIManager.requestSignInIntent(any())).thenReturn(intent);
+        when(googleSignInAPIHelper.requestSignInIntent(any())).thenReturn(intent);
 
         when(localStorageHelper.getAccessToken()).thenReturn("");
 
@@ -90,7 +90,7 @@ public class LoginActivityTest {
 
         GoogleSignInResult googleSignInResult = new GoogleSignInResult(account, Status.zzayh);
         GoogleSignInResult spy = spy(googleSignInResult);
-        when(googleSignInAPIManager.requestSignInResult(any())).thenReturn(spy);
+        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(spy);
         doReturn(true).when(spy).isSuccess();
 
         subject.onActivityResult(9001, 0, null);
@@ -100,7 +100,7 @@ public class LoginActivityTest {
 
     @Test
     public void user정보저장이_성공하면_userID를_sharedPreferences에_저장하고_MainActivity를_시작한다() throws Exception {
-        when(googleSignInAPIManager.requestSignInIntent(any(GoogleApiClient.class))).thenReturn(mock(Intent.class));
+        when(googleSignInAPIHelper.requestSignInIntent(any(GoogleApiClient.class))).thenReturn(mock(Intent.class));
 
         doAnswer((invocation) -> {
             ((SignInResultCallback) invocation.getArguments()[1]).onSuccess("testAccessToken");

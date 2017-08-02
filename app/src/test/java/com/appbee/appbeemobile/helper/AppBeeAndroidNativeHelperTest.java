@@ -1,4 +1,4 @@
-package com.appbee.appbeemobile.manager;
+package com.appbee.appbeemobile.helper;
 
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ResolveInfo;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 
 import org.junit.Before;
@@ -34,8 +35,8 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class SystemServiceBridgeTest {
-    private SystemServiceBridge subject;
+public class AppBeeAndroidNativeHelperTest {
+    private AppBeeAndroidNativeHelper subject;
 
     private UsageStatsManager mockUsageStatsManager;
 
@@ -44,7 +45,7 @@ public class SystemServiceBridgeTest {
         mockUsageStatsManager = mock(UsageStatsManager.class);
         shadowOf(RuntimeEnvironment.application).setSystemService(Context.USAGE_STATS_SERVICE, mockUsageStatsManager);
 
-        subject = new SystemServiceBridge(RuntimeEnvironment.application.getApplicationContext());
+        subject = new AppBeeAndroidNativeHelper(RuntimeEnvironment.application.getApplicationContext());
     }
 
     @Test
