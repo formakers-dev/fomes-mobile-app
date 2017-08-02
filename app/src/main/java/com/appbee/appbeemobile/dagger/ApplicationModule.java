@@ -1,7 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.AppBeeApplication;
-import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 
@@ -32,7 +32,7 @@ public class ApplicationModule {
 
     @Singleton
     @Provides
-    GoogleSignInAPIManager provideSignInManger() {
-        return new GoogleSignInAPIManager();
+    GoogleSignInAPIHelper provideSignInManger() {
+        return new GoogleSignInAPIHelper();
     }
 }

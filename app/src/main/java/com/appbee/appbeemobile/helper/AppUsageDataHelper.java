@@ -1,4 +1,4 @@
-package com.appbee.appbeemobile.manager;
+package com.appbee.appbeemobile.helper;
 
 import android.app.usage.UsageStats;
 
@@ -6,7 +6,6 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.text.SimpleDateFormat;
@@ -26,15 +25,15 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 
 @Singleton
-public class StatManager {
+public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
-    private final SystemServiceBridge systemServiceBridge;
+    private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final LocalStorageHelper localStorageHelper;
 
     @Inject
-    public StatManager(SystemServiceBridge systemServiceBridge, LocalStorageHelper localStorageHelper) {
-        this.systemServiceBridge = systemServiceBridge;
+    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper) {
+        this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
         this.localStorageHelper = localStorageHelper;
     }
 
@@ -42,7 +41,7 @@ public class StatManager {
         long endTime = TimeUtil.getCurrentTime();
         long startTime = getAnWeekAgo();
 
-        List<EventStat> eventStats = systemServiceBridge.getUsageStatEvents(startTime, endTime);
+        List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
 
         EventStat beforeForegroundEvent = null;
@@ -70,7 +69,7 @@ public class StatManager {
     public List<EventStat> getEventStats(){
         long endTime = TimeUtil.getCurrentTime();
         long startTime = getAnWeekAgo();
-        return systemServiceBridge.getUsageStatEvents(startTime, endTime);
+        return appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
     }
 
     private long getAnWeekAgo() {
@@ -97,7 +96,7 @@ public class StatManager {
         calendar.add(Calendar.YEAR, -1);
         long startTime = calendar.getTimeInMillis();
 
-        List<UsageStats> usageStatsList = systemServiceBridge.getUsageStats(startTime, endTime);
+        List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
 
         for (UsageStats stats : usageStatsList) {
             if(stats.getTotalTimeInForeground() > 0) {
@@ -123,6 +122,6 @@ public class StatManager {
     }
 
     public List<AppInfo> getAppList() {
-        return systemServiceBridge.getInstalledLaunchableApps();
+        return appBeeAndroidNativeHelper.getInstalledLaunchableApps();
     }
 }

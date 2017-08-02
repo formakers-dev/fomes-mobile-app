@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.manager.StatManager;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.ShortTermStat;
 
 import org.junit.Before;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class ScreenOffReceiverTest {
     private ScreenOffReceiver subject;
 
-    private StatManager statManager = mock(StatManager.class);
+    private AppUsageDataHelper appUsageDataHelper = mock(AppUsageDataHelper.class);
 
     @Before
     public void setUp() throws Exception {
@@ -41,12 +41,12 @@ public class ScreenOffReceiverTest {
     public void onReceive수행시_detailUsageStat을_조회한다() throws Exception {
         List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
         mockShortTermStatList.add(new ShortTermStat("package_name", 1000L, 1100L, 100L));
-        when(statManager.getShortTermStats()).thenReturn(mockShortTermStatList);
+        when(appUsageDataHelper.getShortTermStats()).thenReturn(mockShortTermStatList);
 
         Intent intent = new Intent(Intent.ACTION_SCREEN_OFF);
         subject.onReceive(RuntimeEnvironment.application, intent);
 
-        verify(statManager).getShortTermStats();
+        verify(appUsageDataHelper).getShortTermStats();
         assertThat(isLogContains("package_name, 1000, 1100, 100")).isTrue();
     }
 

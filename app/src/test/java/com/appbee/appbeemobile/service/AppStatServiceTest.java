@@ -2,7 +2,7 @@ package com.appbee.appbeemobile.service;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.manager.StatManager;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
@@ -42,7 +42,7 @@ public class AppStatServiceTest {
     private LocalStorageHelper localStorageHelper;
 
     @Mock
-    private StatManager mockStatManager;
+    private AppUsageDataHelper mockAppUsageDataHelper;
 
     @Mock
     private StatAPI mockStatAPI;
@@ -66,7 +66,7 @@ public class AppStatServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         localStorageHelper = new LocalStorageHelper(RuntimeEnvironment.application);
-        subject = new AppStatService(mockStatManager, mockStatAPI, localStorageHelper);
+        subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, localStorageHelper);
         localStorageHelper.setAccessToken("TEST_TOKEN");
     }
 
@@ -74,7 +74,7 @@ public class AppStatServiceTest {
     public void sendAppList호출시_설치앱리스트를_조회하여_서버로_전송한다() throws Exception {
         List<AppInfo> mockAppInfoList = new ArrayList<>();
         mockAppInfoList.add(new AppInfo("package_name", "app_name"));
-        when(mockStatManager.getAppList()).thenReturn(mockAppInfoList);
+        when(mockAppUsageDataHelper.getAppList()).thenReturn(mockAppInfoList);
 
         when(mockStatAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
@@ -90,7 +90,7 @@ public class AppStatServiceTest {
     public void sendEventStats호출시_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("package_name", 1, 1000L));
-        when(mockStatManager.getEventStats()).thenReturn(mockEventStatList);
+        when(mockAppUsageDataHelper.getEventStats()).thenReturn(mockEventStatList);
         when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendEventStats();
@@ -106,7 +106,7 @@ public class AppStatServiceTest {
     public void sendLongTermStats호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
         List<LongTermStat> mockLongTermStats = new ArrayList<>();
         mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
-        when(mockStatManager.getLongTermStatsForYear()).thenReturn(mockLongTermStats);
+        when(mockAppUsageDataHelper.getLongTermStatsForYear()).thenReturn(mockLongTermStats);
         when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendLongTermStats();
@@ -122,7 +122,7 @@ public class AppStatServiceTest {
     public void sendShortTermStats호출시_가공된_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
-        when(mockStatManager.getShortTermStats()).thenReturn(mockShortTermStats);
+        when(mockAppUsageDataHelper.getShortTermStats()).thenReturn(mockShortTermStats);
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendShortTermStats();
