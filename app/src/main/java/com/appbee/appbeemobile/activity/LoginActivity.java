@@ -13,8 +13,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.network.AppBeeAccountService;
 import com.appbee.appbeemobile.manager.GoogleSignInAPIManager;
 import com.appbee.appbeemobile.network.SignInResultCallback;
-import com.appbee.appbeemobile.util.AppBeeConstants;
-import com.appbee.appbeemobile.util.PropertyUtil;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -40,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements
     Context context;
 
     @Inject
-    PropertyUtil propertyUtil;
+    LocalStorageHelper localStorageHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onSuccess(String token) {
                 Log.d(TAG, "signInUser success");
-                propertyUtil.putString(AppBeeConstants.SharedPreference.KEY_ACCESS_TOKEN, token);
+                localStorageHelper.setAccessToken(token);
 
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
