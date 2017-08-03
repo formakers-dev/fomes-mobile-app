@@ -33,7 +33,7 @@ android {
 
     testOptions {
         unitTests.all {
-            forkEvery = 10
+            forkEvery = 5
         }
     }
 }
