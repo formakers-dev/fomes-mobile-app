@@ -9,14 +9,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.network.AppStatServiceCallback;
 
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     @Inject
     AppStatService appStatService;
 
@@ -52,9 +56,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendData() {
-        appStatService.sendAppList();
-        appStatService.sendLongTermStats();
-        appStatService.sendEventStats();
-        appStatService.sendShortTermStats();
+        appStatService.sendAppList(appStatServiceCallback);
+        appStatService.sendLongTermStats(appStatServiceCallback);
+        appStatService.sendEventStats(appStatServiceCallback);
+        appStatService.sendShortTermStats(appStatServiceCallback);
     }
+
+    AppStatServiceCallback appStatServiceCallback = new AppStatServiceCallback() {
+        @Override
+        public void onSuccess() {
+            Log.d(TAG, "api call success");
+        }
+
+        @Override
+        public void onFail(String resultCode) {
+            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+    };
 }

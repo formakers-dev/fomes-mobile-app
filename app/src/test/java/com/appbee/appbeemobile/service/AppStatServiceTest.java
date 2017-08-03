@@ -7,6 +7,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.network.AppStatServiceCallback;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
@@ -78,7 +79,7 @@ public class AppStatServiceTest {
 
         when(mockStatAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
-        subject.sendAppList();
+        subject.sendAppList(mock(AppStatServiceCallback.class));
 
         verify(mockStatAPI).sendAppInfoList(anyString(), appInfos.capture());
         List<AppInfo> actualAppInfos = appInfos.getValue();
@@ -93,7 +94,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getEventStats()).thenReturn(mockEventStatList);
         when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
-        subject.sendEventStats();
+        subject.sendEventStats(mock(AppStatServiceCallback.class));
 
         verify(mockStatAPI).sendEventStats(anyString(), eventStatsCaptor.capture());
         EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
@@ -109,7 +110,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getLongTermStats()).thenReturn(mockLongTermStats);
         when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
-        subject.sendLongTermStats();
+        subject.sendLongTermStats(mock(AppStatServiceCallback.class));
 
         verify(mockStatAPI).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
         LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
@@ -125,7 +126,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getShortTermStats()).thenReturn(mockShortTermStats);
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
-        subject.sendShortTermStats();
+        subject.sendShortTermStats(mock(AppStatServiceCallback.class));
 
         verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
