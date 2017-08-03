@@ -3,12 +3,8 @@ package com.appbee.appbeemobile.network;
 import android.util.Log;
 
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
-import com.appbee.appbeemobile.model.LongTermStat;
-import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-
-import java.util.List;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import javax.inject.Inject;
 
@@ -29,78 +25,38 @@ public class AppStatService {
         this.localStorageHelper = localStorageHelper;
     }
 
-    public void sendAppList() {
-        StatAPI.sendAppInfoList(localStorageHelper.getAccessToken(),
-                appUsageDataHelper.getAppList()).enqueue(new Callback<Boolean>() {
+    public void sendAppList(AppStatServiceCallback appStatServiceCallback) {
+        StatAPI.sendAppInfoList(localStorageHelper.getAccessToken(), appUsageDataHelper.getAppList()).enqueue(getStatCallback(appStatServiceCallback));
+    }
+
+    public void sendEventStats(AppStatServiceCallback appStatServiceCallback) {
+        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats()).enqueue(getStatCallback(appStatServiceCallback));
+    }
+
+    public void sendLongTermStats(AppStatServiceCallback appStatServiceCallback) {
+        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats()).enqueue(getStatCallback(appStatServiceCallback));
+    }
+
+    public void sendShortTermStats(AppStatServiceCallback appStatServiceCallback) {
+        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats()).enqueue(getStatCallback(appStatServiceCallback));
+    }
+
+    private Callback<Boolean> getStatCallback(AppStatServiceCallback appStatServiceCallback) {
+        return new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.isSuccessful()) {
-                    Log.d(TAG, "Success to send appList");
+                    appStatServiceCallback.onSuccess();
                 } else {
-                    Log.d(TAG, "Fail to send appList");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.e(TAG, "failure!!! t=" + t.toString());
-            }
-        });
-    }
-
-    public void sendEventStats() {
-        final List<EventStat> eventStats = appUsageDataHelper.getEventStats();
-        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), eventStats).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "Success to send EventStats");
-                } else {
-                    Log.d(TAG, "Fail to send EventStats");
-                }
-            }
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.e(TAG, "failure!!! t=" + t.toString());
-            }
-        });
-    }
-
-    public void sendLongTermStats() {
-        final List<LongTermStat> longTermStats = appUsageDataHelper.getLongTermStats();
-        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), longTermStats).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if(response.isSuccessful()) {
-                    Log.d(TAG, "Success to send LongTermStats");
-                } else {
-                    Log.d(TAG, "Fail to send LongTermStats");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.e(TAG, "failure!!! t=" + t.toString());
-            }
-        });
-    }
-
-    public void sendShortTermStats() {
-        List<ShortTermStat> shortTermStats = appUsageDataHelper.getShortTermStats();
-        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), shortTermStats).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if(response.isSuccessful()) {
-                    Log.d(TAG, "Success to send shortTermStats");
-                } else {
-                    Log.d(TAG, "Fail to send shortTermStats");
+                    appStatServiceCallback.onFail(String.valueOf(response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
                 Log.d(TAG, "failure!!! t=" + t.toString());
+                appStatServiceCallback.onFail(AppBeeConstants.API_RESPONSE_CODE.FORBIDDEN);
             }
-        });
+        };
     }
 }
