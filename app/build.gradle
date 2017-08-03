@@ -17,7 +17,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            buildConfigField 'String', 'SERVER_BASE_URL', '"http://'+ InetAddress.getLocalHost().getCanonicalHostName() + ':8080/"';
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://'+ InetAddress.getLocalHost().getHostAddress() + ':8080/"';
         }
         release {
             debuggable false
