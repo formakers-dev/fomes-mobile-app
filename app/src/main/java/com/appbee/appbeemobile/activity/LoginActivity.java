@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements
 
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
