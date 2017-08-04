@@ -65,13 +65,6 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_단기통계데이터를_전송요청한다() throws Exception {
-        activityController.create();
-
-        verify(appStatService).sendEventStats(any(AppStatServiceCallback.class));
-    }
-
-    @Test
     public void onCreate호출시_Stat접근권한이_있는_경우_가공된_단기통계데이터를_전송요청한다() throws Exception {
         activityController.create();
 
@@ -79,47 +72,36 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 앱테이터를_전송하였지만토큰만료로실패한경우_LoginActivity로_이동한다() throws Exception {
+    public void 앱테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
         doAnswer(setApiResultToUnauthorized()).when(appStatService).sendAppList(any(AppStatServiceCallback.class));
 
         MainActivity subject = activityController.create().get();
 
         verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
 
-        assertLaunchingLoginActivity(subject);
+        assertRestartApp(subject);
     }
 
     @Test
-    public void 단기통계테이터를_전송하였지만토큰만료로실패한경우_LoginActivity로_이동한다() throws Exception {
+    public void 단기통계테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
         doAnswer(setApiResultToUnauthorized()).when(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
 
         MainActivity subject = activityController.create().get();
 
         verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
 
-        assertLaunchingLoginActivity(subject);
+        assertRestartApp(subject);
     }
 
     @Test
-    public void 장기통계테이터를_전송하였지만토큰만료로실패한경우_LoginActivity로_이동한다() throws Exception {
+    public void 장기통계테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
         doAnswer(setApiResultToUnauthorized()).when(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
 
         MainActivity subject = activityController.create().get();
 
         verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
 
-        assertLaunchingLoginActivity(subject);
-    }
-
-    @Test
-    public void 가공전단기통계테이터를_전송하였지만토큰만료로실패한경우_LoginActivity로_이동한다() throws Exception {
-        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendEventStats(any(AppStatServiceCallback.class));
-
-        MainActivity subject = activityController.create().get();
-
-        verify(appStatService).sendEventStats(any(AppStatServiceCallback.class));
-
-        assertLaunchingLoginActivity(subject);
+        assertRestartApp(subject);
     }
 
     @NonNull
@@ -130,9 +112,10 @@ public class MainActivityTest extends ActivityTest {
         };
     }
 
-    private void assertLaunchingLoginActivity(MainActivity subject) {
+    private void assertRestartApp(MainActivity subject) {
         ShadowActivity shadowActivity = shadowOf(subject);
         Intent nextStartedActivity = shadowActivity.getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName()).contains(LoginActivity.class.getSimpleName());
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }
