@@ -1,6 +1,8 @@
 package com.appbee.appbeemobile.helper;
 
 
+import android.Manifest;
+import android.app.AppOpsManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -8,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
+import android.os.Process;
 
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
@@ -18,6 +22,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import static android.content.Context.APP_OPS_SERVICE;
 import static android.content.Context.USAGE_STATS_SERVICE;
 
 @Singleton
@@ -68,5 +73,23 @@ public class AppBeeAndroidNativeHelper {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
         return usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+    }
+
+    //TODO : 테스트 필요
+    public boolean hasUsageStatsPermission() {
+        AppOpsManager appOps = (AppOpsManager) context.getSystemService(APP_OPS_SERVICE);
+
+        if (appOps != null) {
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.getPackageName());
+
+            if (mode == AppOpsManager.MODE_ALLOWED) {
+                return true;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return context.checkSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED;
+            }
+        }
+        return false;
     }
 }
