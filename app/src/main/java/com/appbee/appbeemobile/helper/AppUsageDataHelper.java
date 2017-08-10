@@ -29,17 +29,14 @@ public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
-    private final LocalStorageHelper localStorageHelper;
 
     @Inject
-    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper) {
+    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
-        this.localStorageHelper = localStorageHelper;
     }
 
-    public List<ShortTermStat> getShortTermStats() {
+    public List<ShortTermStat> getShortTermStats(long startTime) {
         long endTime = TimeUtil.getCurrentTime();
-        long startTime = getAnWeekAgo(endTime);
 
         List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
@@ -61,23 +58,12 @@ public class AppUsageDataHelper {
             }
         }
 
-        localStorageHelper.setLastUsageTime(endTime);
-
         return shortTermStats;
     }
 
-    public List<EventStat> getEventStats(){
+    public List<EventStat> getEventStats(long startTime){
         long endTime = TimeUtil.getCurrentTime();
-        long startTime = getAnWeekAgo(endTime);
         return appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
-    }
-
-    private long getAnWeekAgo(long from) {
-        long lastUsageTime = localStorageHelper.getLastUsageTime();
-        if (lastUsageTime <= 0) {
-            lastUsageTime = from - 1000*60*60*24*7;
-        }
-        return lastUsageTime;
     }
 
     private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {

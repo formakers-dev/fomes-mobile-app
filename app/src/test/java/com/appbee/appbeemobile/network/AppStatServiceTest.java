@@ -1,15 +1,13 @@
-package com.appbee.appbeemobile.service;
+package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.network.AppStatServiceCallback;
-import com.appbee.appbeemobile.network.StatAPI;
-import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.util.TimeUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,8 +25,10 @@ import java.util.List;
 
 import retrofit2.Call;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -40,7 +40,8 @@ public class AppStatServiceTest {
 
     private AppStatService subject;
 
-    private LocalStorageHelper localStorageHelper;
+    @Mock
+    private LocalStorageHelper mockLocalStorageHelper;
 
     @Mock
     private AppUsageDataHelper mockAppUsageDataHelper;
@@ -66,9 +67,8 @@ public class AppStatServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        localStorageHelper = new LocalStorageHelper(RuntimeEnvironment.application);
-        subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, localStorageHelper);
-        localStorageHelper.setAccessToken("TEST_TOKEN");
+        subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper);
+        when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_TOKEN");
     }
 
     @Test
@@ -91,7 +91,7 @@ public class AppStatServiceTest {
     public void sendEventStats호출시_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("package_name", 1, 1000L));
-        when(mockAppUsageDataHelper.getEventStats()).thenReturn(mockEventStatList);
+        when(mockAppUsageDataHelper.getEventStats(anyLong())).thenReturn(mockEventStatList);
         when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendEventStats(mock(AppStatServiceCallback.class));
@@ -123,7 +123,7 @@ public class AppStatServiceTest {
     public void sendShortTermStats호출시_가공된_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
-        when(mockAppUsageDataHelper.getShortTermStats()).thenReturn(mockShortTermStats);
+        when(mockAppUsageDataHelper.getShortTermStats(anyLong())).thenReturn(mockShortTermStats);
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
 
         subject.sendShortTermStats(mock(AppStatServiceCallback.class));
@@ -134,5 +134,17 @@ public class AppStatServiceTest {
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
         assertEquals(actualShortTermStat.getEndTimeStamp(), 3000L);
         assertEquals(actualShortTermStat.getTotalUsedTime(), 2000L);
+    }
+
+    @Test
+    public void getStartDate호출시_LocalStorageHelper에_저장된_lastUsageTime이_없으면_현시점에서_일주일전_시간을_리턴한다() throws Exception {
+        assertThat(subject.getStartTime()).isEqualTo(TimeUtil.getCurrentTime() - 7*24*60*60*1000);
+    }
+
+    @Test
+    public void getStartDate호출시_LocalStorageHelper에_저장된_lastUsageTime이_있으면_저장된_시간을_리턴한다() throws Exception {
+        when(mockLocalStorageHelper.getLastUsageTime()).thenReturn(2000L);
+
+        assertThat(subject.getStartTime()).isEqualTo(2000L);
     }
 }
