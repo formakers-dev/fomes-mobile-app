@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.helper;
 
+import android.app.AppOpsManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -8,7 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ResolveInfo;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 
 import org.junit.Before;
@@ -26,7 +26,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -39,11 +42,15 @@ public class AppBeeAndroidNativeHelperTest {
     private AppBeeAndroidNativeHelper subject;
 
     private UsageStatsManager mockUsageStatsManager;
+    private AppOpsManager mockAppOpsManager;
 
     @Before
     public void setUp() throws Exception {
         mockUsageStatsManager = mock(UsageStatsManager.class);
+        mockAppOpsManager = mock(AppOpsManager.class);
+
         shadowOf(RuntimeEnvironment.application).setSystemService(Context.USAGE_STATS_SERVICE, mockUsageStatsManager);
+        shadowOf(RuntimeEnvironment.application).setSystemService(Context.APP_OPS_SERVICE, mockAppOpsManager);
 
         subject = new AppBeeAndroidNativeHelper(RuntimeEnvironment.application.getApplicationContext());
     }
@@ -97,5 +104,24 @@ public class AppBeeAndroidNativeHelperTest {
         subject.getUsageStats(1000L, 1100L);
 
         verify(mockUsageStatsManager).queryUsageStats(UsageStatsManager.INTERVAL_DAILY, 1000L, 1100L);
+    }
+
+    @Test
+    public void hasUsageStatsPermission호출시_사용통계조회_권한이_없는_경우_false를_리턴한다() throws Exception {
+        when(mockAppOpsManager.checkOpNoThrow(eq(AppOpsManager.OPSTR_GET_USAGE_STATS), anyInt(), anyString())).thenReturn(AppOpsManager.MODE_IGNORED);
+        assertThat(subject.hasUsageStatsPermission()).isFalse();
+
+        when(mockAppOpsManager.checkOpNoThrow(eq(AppOpsManager.OPSTR_GET_USAGE_STATS), anyInt(), anyString())).thenReturn(AppOpsManager.MODE_DEFAULT);
+        assertThat(subject.hasUsageStatsPermission()).isFalse();
+
+        when(mockAppOpsManager.checkOpNoThrow(eq(AppOpsManager.OPSTR_GET_USAGE_STATS), anyInt(), anyString())).thenReturn(AppOpsManager.MODE_ERRORED);
+        assertThat(subject.hasUsageStatsPermission()).isFalse();
+    }
+
+    @Test
+    public void hasUsageStatsPermission호출시_사용통계조회_권한이_있는_경우_true를_리턴한다() throws Exception {
+        when(mockAppOpsManager.checkOpNoThrow(eq(AppOpsManager.OPSTR_GET_USAGE_STATS), anyInt(), anyString())).thenReturn(AppOpsManager.MODE_ALLOWED);
+
+        assertThat(subject.hasUsageStatsPermission()).isTrue();
     }
 }
