@@ -1,7 +1,5 @@
 package com.appbee.appbeemobile.helper;
 
-
-import android.Manifest;
 import android.app.AppOpsManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
@@ -10,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.Build;
 import android.os.Process;
 
 import com.appbee.appbeemobile.model.AppInfo;
@@ -75,21 +72,14 @@ public class AppBeeAndroidNativeHelper {
         return usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
     }
 
-    //TODO : 테스트 필요
     public boolean hasUsageStatsPermission() {
         AppOpsManager appOps = (AppOpsManager) context.getSystemService(APP_OPS_SERVICE);
 
         if (appOps != null) {
             int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.getPackageName());
-
-            if (mode == AppOpsManager.MODE_ALLOWED) {
-                return true;
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return context.checkSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED;
-            }
+            return mode == AppOpsManager.MODE_ALLOWED;
         }
+
         return false;
     }
 }
