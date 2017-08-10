@@ -2,8 +2,6 @@ package com.appbee.appbeemobile.network;
 
 import android.util.Log;
 
-import com.appbee.appbeemobile.model.User;
-
 import javax.inject.Inject;
 
 import retrofit2.Call;

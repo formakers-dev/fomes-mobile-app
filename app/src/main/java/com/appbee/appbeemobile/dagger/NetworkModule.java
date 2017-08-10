@@ -1,6 +1,8 @@
 package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.network.StatAPI;
+import com.appbee.appbeemobile.network.UserAPI;
 
 import javax.inject.Singleton;
 
@@ -15,7 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkModule {
 
     @Singleton
-    @Provides OkHttpClient okHttpClient() {
+    @Provides
+    OkHttpClient okHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -24,11 +27,25 @@ public class NetworkModule {
     }
 
     @Singleton
-    @Provides Retrofit retrofit(OkHttpClient okHttpClient) {
+    @Provides
+    Retrofit retrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.SERVER_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)   // for logs
                 .build();
     }
+
+    @Singleton
+    @Provides
+    StatAPI starAPI(Retrofit retrofit) {
+        return retrofit.create(StatAPI.class);
+    }
+
+    @Singleton
+    @Provides
+    UserAPI userAPI(Retrofit retrofit) {
+        return retrofit.create(UserAPI.class);
+    }
+
 }

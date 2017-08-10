@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
+import android.content.Context;
+
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
@@ -24,51 +26,57 @@ public class TestApplicationModule {
         this.application = application;
     }
 
+    @Singleton
+    @Provides
+    Context context() {
+        return application.getApplicationContext();
+    }
+
     @Provides
     @Singleton
-    AppUsageDataHelper provideAppUsageDataHelper() {
+    AppUsageDataHelper appUsageDataHelper() {
         return mock(AppUsageDataHelper.class);
     }
 
     @Provides
     @Singleton
-    AppBeeAndroidNativeHelper provideAppBeeAndroidNativeHelper() {
+    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper() {
         return mock(AppBeeAndroidNativeHelper.class);
     }
 
     @Provides
     @Singleton
-    AppStatService provideUserAppsService() {
+    AppStatService appStatService() {
         return mock(AppStatService.class);
     }
 
     @Provides
     @Singleton
-    StatAPI provideStatAPI() {
+    StatAPI statAPI() {
         return mock(StatAPI.class);
     }
 
     @Singleton
     @Provides
-    UserAPI provideUserAPI() {
+    UserAPI userAPI() {
         return mock(UserAPI.class);
     }
 
     @Singleton
     @Provides
-    AppBeeAccountService provideAppBeeAccountService() {
+    AppBeeAccountService appBeeAccountService() {
         return mock(AppBeeAccountService.class);
     }
 
     @Singleton
     @Provides
-    GoogleSignInAPIHelper provideGoogleSignInAPIHelper() {
+    GoogleSignInAPIHelper googleSignInAPIHelper() {
         return mock(GoogleSignInAPIHelper.class);
     }
 
     @Singleton
     @Provides
-    LocalStorageHelper provideLocalStorageHelper() {
+    LocalStorageHelper localStorageHelper() {
         return mock(LocalStorageHelper.class);
     }
 }
