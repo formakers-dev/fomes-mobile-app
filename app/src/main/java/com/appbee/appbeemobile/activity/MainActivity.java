@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
             sendData();
         } else {
-            //TODO: 테스트 필요
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
         }
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //TODO: 테스트 필요
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION) {
             if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
                 sendData();
