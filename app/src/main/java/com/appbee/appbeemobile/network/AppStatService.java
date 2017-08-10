@@ -5,6 +5,7 @@ import android.util.Log;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants;
+import com.appbee.appbeemobile.util.TimeUtil;
 
 import javax.inject.Inject;
 
@@ -30,7 +31,7 @@ public class AppStatService {
     }
 
     public void sendEventStats(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats()).enqueue(getStatCallback(appStatServiceCallback));
+        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime())).enqueue(getStatCallback(appStatServiceCallback));
     }
 
     public void sendLongTermStats(AppStatServiceCallback appStatServiceCallback) {
@@ -38,7 +39,17 @@ public class AppStatService {
     }
 
     public void sendShortTermStats(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats()).enqueue(getStatCallback(appStatServiceCallback));
+        //TODO : 단기데이터 저장 완료 시 localStorageHelper의 lastUsageTime업데이트
+        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime())).enqueue(getStatCallback(appStatServiceCallback));
+    }
+
+    long getStartTime() {
+        long lastUsageTime = localStorageHelper.getLastUsageTime();
+        if (lastUsageTime == 0L) {
+            return TimeUtil.getCurrentTime() - 7*24*60*60*1000;
+        } else {
+            return lastUsageTime;
+        }
     }
 
     private Callback<Boolean> getStatCallback(AppStatServiceCallback appStatServiceCallback) {

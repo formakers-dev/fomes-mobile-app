@@ -39,13 +39,11 @@ public class AppUsageDataHelperTest {
     ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
-    private LocalStorageHelper localStorageHelper;
 
     @Before
     public void setUp() throws Exception {
         this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
-        this.localStorageHelper = new LocalStorageHelper(RuntimeEnvironment.application);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, localStorageHelper);
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper);
     }
 
     @Test
@@ -82,7 +80,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1100L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats();
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageA", 1000L, 1100L);
@@ -97,7 +95,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats();
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageB", 1100L, 1250L);
@@ -111,7 +109,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats();
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertThat(shortTermStats.get(0).getPackageName()).isEqualTo("packageB");
@@ -128,7 +126,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1400L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats();
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageC", 1200L, 1375L);
@@ -142,7 +140,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats();
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageA", 1100L, 1300L);
@@ -156,7 +154,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats();
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
 
         assertThat(shortTermStats.size()).isEqualTo(0);
     }
@@ -169,42 +167,13 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getShortTermStats호출시_SharedPreferences에_endTime을_기록한다() throws Exception {
-        List<EventStat> mockEventStatList = new ArrayList<>();
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+    public void getShortTermStats호출시_파라미터로_넘어온_조회시작시간을_기준으로_통계데이터를_조회한다() throws Exception {
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
 
-        long endTime1 = localStorageHelper.getLastUsageTime();
-
-        subject.getShortTermStats();
-
-        long endTime2 = localStorageHelper.getLastUsageTime();
-        assertThat(endTime2).isGreaterThan(endTime1);
-    }
-
-    @Test
-    public void getShortTermStats호출시_SharedPreference에_LAST_USAGE_TIME이_있을경우_startTime은_LAST_USAGE_TIME로_대체된다() throws Exception {
-        List<EventStat> mockEventStatList = new ArrayList<>();
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
-
-        localStorageHelper.setLastUsageTime(200L);
-
-        subject.getShortTermStats();
+        subject.getShortTermStats(200L);
 
         verify(mockAppBeeAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), anyLong());
         assertThat(startTimeCaptor.getValue()).isEqualTo(200L);
-    }
-
-    @Test
-    public void getShortTermStats호출시_SharedPreference에_LAST_USAGE_TIME이_없을경우_startTime은_ms단위는_절삭한_일주일전시간으로_세팅된다() throws Exception {
-        List<EventStat> mockEventStatList = new ArrayList<>();
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
-
-        subject.getShortTermStats();
-
-        verify(mockAppBeeAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), anyLong());
-        long padding = Math.abs(startTimeCaptor.getValue() - (TimeUtil.getCurrentTime()-1000*60*60*24*7));
-
-        assertThat(padding).isLessThan(1000L);
     }
 
     @Test
@@ -214,7 +183,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1100L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<EventStat> eventStatList = subject.getEventStats();
+        List<EventStat> eventStatList = subject.getEventStats(0L);
 
         assertThat(eventStatList.size()).isEqualTo(2);
         assertThat(eventStatList.get(0).getPackageName()).isEqualTo("packageA");
