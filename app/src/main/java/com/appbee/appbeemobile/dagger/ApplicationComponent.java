@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { ApplicationModule.class, ContextModule.class, NetworkModule.class })
+@Component(modules = { ApplicationModule.class, NetworkModule.class })
 public interface ApplicationComponent {
     void inject(MainActivity mainActivity);
     void inject(LoginActivity loginActivity);
