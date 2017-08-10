@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -51,24 +52,28 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_앱목록데이터를_전송요청한다() throws Exception {
-        activityController.create();
+    public void onCreate호출시_Stat접근권한이_없는_경우_권한요청_Activity를_호출한다() throws Exception {
+        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
-        verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
+        MainActivity subject = activityController.create().get();
+
+        ShadowActivity.IntentForResult nextStartedActivityForResult = shadowOf(subject).getNextStartedActivityForResult();
+        assertThat(nextStartedActivityForResult.intent.getAction()).isEqualTo(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        assertThat(nextStartedActivityForResult.requestCode).isEqualTo(1001);
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_연간일별통계데이터를_전송요청한다() throws Exception {
-        activityController.create();
+    public void onCreate호출시_Stat접근권한이_있는_경우_권한요청_Activity를_호출하지_않는다() throws Exception {
+        MainActivity subject = activityController.create().get();
 
-        verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
+        assertThat(shadowOf(subject).getNextStartedActivityForResult()).isNull();
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_가공된_단기통계데이터를_전송요청한다() throws Exception {
+    public void onCreate호출시_Stat접근권한이_있는_경우_앱목록_및_통계데이터를_전송요청한다() throws Exception {
         activityController.create();
 
-        verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
+        assertSendAppListAndStatData();
     }
 
     @Test
@@ -78,7 +83,6 @@ public class MainActivityTest extends ActivityTest {
         MainActivity subject = activityController.create().get();
 
         verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
-
         assertRestartApp(subject);
     }
 
@@ -89,7 +93,6 @@ public class MainActivityTest extends ActivityTest {
         MainActivity subject = activityController.create().get();
 
         verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
-
         assertRestartApp(subject);
     }
 
@@ -100,8 +103,28 @@ public class MainActivityTest extends ActivityTest {
         MainActivity subject = activityController.create().get();
 
         verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
-
         assertRestartApp(subject);
+    }
+
+    @Test
+    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_데이터를_전송한다() throws Exception {
+        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        MainActivity subject = activityController.create().get();
+
+        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        subject.onActivityResult(1001, 0, null);
+
+        assertSendAppListAndStatData();
+    }
+
+    @Test
+    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여되지_않은_경우_앱을_종료한다() throws Exception {
+        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        MainActivity subject = activityController.create().get();
+
+        subject.onActivityResult(1001, 0, null);
+
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 
     @NonNull
@@ -110,6 +133,12 @@ public class MainActivityTest extends ActivityTest {
             ((AppStatServiceCallback) invocation.getArguments()[0]).onFail(AppBeeConstants.API_RESPONSE_CODE.UNAUTHORIZED);
             return null;
         };
+    }
+
+    private void assertSendAppListAndStatData() {
+        verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
+        verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
+        verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
     }
 
     private void assertRestartApp(MainActivity subject) {
