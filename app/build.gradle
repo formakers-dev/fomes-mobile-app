@@ -20,7 +20,6 @@ android {
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://'+ InetAddress.getLocalHost().getHostAddress() + ':8080/"';
         }
         release {
-            initWith debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbeesvr.herokuapp.com/"';
