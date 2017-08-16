@@ -38,7 +38,7 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    StatAPI starAPI(Retrofit retrofit) {
+    StatAPI statAPI(Retrofit retrofit) {
         return retrofit.create(StatAPI.class);
     }
 

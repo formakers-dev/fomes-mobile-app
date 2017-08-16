@@ -17,20 +17,24 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.internal.http.RealResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -146,5 +150,32 @@ public class AppStatServiceTest {
         when(mockLocalStorageHelper.getLastUsageTime()).thenReturn(2000L);
 
         assertThat(subject.getStartTime()).isEqualTo(2000L);
+    }
+
+    @Test
+    public void sendShortTermStatsAPI호출후_성공시_현재시간을_LocalStorage에_저장한다() throws Exception {
+        mockingCall(retrofit2.Response.success(null));
+
+        subject.sendShortTermStats(mock(AppStatServiceCallback.class));
+
+        verify(mockLocalStorageHelper).setLastUsageTime(TimeUtil.getCurrentTime());
+    }
+
+    @Test
+    public void sendShortTermStatsAPI호출후_실패시_현재시간을_LocalStorage에_저장하지않는다() throws Exception {
+        mockingCall(retrofit2.Response.error(400, new RealResponseBody(null, null)));
+
+        subject.sendShortTermStats(mock(AppStatServiceCallback.class));
+
+        verify(mockLocalStorageHelper, times(0)).setLastUsageTime(anyLong());
+    }
+
+    private void mockingCall(Response<Boolean> response) {
+        Call<Boolean> mockCall = mock(Call.class);
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mockCall);
+        doAnswer(invocation -> {
+            ((Callback<Boolean>) invocation.getArguments()[0]).onResponse(mockCall, response);
+            return null;
+        }).when(mockCall).enqueue(any(Callback.class));
     }
 }
