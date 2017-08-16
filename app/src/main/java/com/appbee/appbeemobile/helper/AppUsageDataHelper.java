@@ -3,9 +3,9 @@ package com.appbee.appbeemobile.helper;
 import android.app.usage.UsageStats;
 
 import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.text.SimpleDateFormat;

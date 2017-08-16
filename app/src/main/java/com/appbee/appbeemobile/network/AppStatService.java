@@ -7,9 +7,10 @@ import com.appbee.appbeemobile.util.TimeUtil;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Observer;
+import rx.schedulers.Schedulers;
 
 public class AppStatService {
     private static final String TAG = AppStatService.class.getSimpleName();
@@ -25,19 +26,38 @@ public class AppStatService {
     }
 
     public void sendAppList(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendAppInfoList(localStorageHelper.getAccessToken(), appUsageDataHelper.getAppList()).enqueue(new StatAPICallback(appStatServiceCallback));
+        StatAPI.sendAppInfoList(localStorageHelper.getAccessToken(), appUsageDataHelper.getAppList())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new StatObserver(appStatServiceCallback));
     }
 
     public void sendEventStats(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime())).enqueue(new StatAPICallback(appStatServiceCallback));
+        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime()))
+                .subscribeOn(Schedulers.io())
+                .subscribe(new StatObserver(appStatServiceCallback));
     }
 
     public void sendLongTermStats(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats()).enqueue(new StatAPICallback(appStatServiceCallback));
+        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new StatObserver(appStatServiceCallback));
     }
 
-    public void sendShortTermStats(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime())).enqueue(new ShortTermStatAPICallback(appStatServiceCallback));
+    public Observable sendShortTermStats(AppStatServiceCallback appStatServiceCallback) {
+        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime()))
+            .subscribeOn(Schedulers.io())
+            .subscribe(new StatObserver(appStatServiceCallback) {
+                @Override
+                public void onNext(Response<Boolean> booleanResponse) {
+                    if(booleanResponse.isSuccessful()){
+                        appStatServiceCallback.onSuccess();
+                        localStorageHelper.setLastUsageTime(TimeUtil.getCurrentTime());
+                    }else {
+                        appStatServiceCallback.onFail(String.valueOf(booleanResponse.code()));
+                    }
+                }
+            });
+        return null;
     }
 
     long getStartTime() {
@@ -49,38 +69,28 @@ public class AppStatService {
         }
     }
 
-    private class StatAPICallback implements Callback<Boolean> {
-        private AppStatServiceCallback appStatServiceCallback;
+    private class StatObserver implements Observer<Response<Boolean>> {
+        protected AppStatServiceCallback appStatServiceCallback;
 
-        StatAPICallback(AppStatServiceCallback appStatServiceCallback) {
+        StatObserver(AppStatServiceCallback appStatServiceCallback) {
             this.appStatServiceCallback = appStatServiceCallback;
         }
 
         @Override
-        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-            if(response.isSuccessful()) {
-                appStatServiceCallback.onSuccess();
-            } else {
-                appStatServiceCallback.onFail(String.valueOf(response.code()));
-            }
+        public void onCompleted() {
         }
 
         @Override
-        public void onFailure(Call<Boolean> call, Throwable t) {
+        public void onError(Throwable e) {
             appStatServiceCallback.onFail(AppBeeConstants.API_RESPONSE_CODE.FORBIDDEN);
         }
-    }
-
-    private class ShortTermStatAPICallback extends StatAPICallback {
-        ShortTermStatAPICallback(AppStatServiceCallback appStatServiceCallback) {
-            super(appStatServiceCallback);
-        }
 
         @Override
-        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-            super.onResponse(call, response);
-            if(response.isSuccessful()) {
-                localStorageHelper.setLastUsageTime(TimeUtil.getCurrentTime());
+        public void onNext(Response<Boolean> booleanResponse) {
+            if(booleanResponse.isSuccessful()){
+                appStatServiceCallback.onSuccess();
+            }else {
+                appStatServiceCallback.onFail(String.valueOf(booleanResponse.code()));
             }
         }
     }

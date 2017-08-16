@@ -61,7 +61,6 @@ dependencies {
     testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.11'
     // rxJava
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
     // google auth
     compile 'com.google.android.gms:play-services-auth:10.0.1'
     testCompile 'junit:junit:4.12'

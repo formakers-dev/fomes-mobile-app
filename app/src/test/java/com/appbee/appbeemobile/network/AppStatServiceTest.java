@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.network;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AppInfo;
@@ -9,37 +8,35 @@ import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.util.TimeUtil;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.internal.http.RealResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Scheduler;
+import rx.plugins.RxJavaPlugins;
+import rx.plugins.RxJavaSchedulersHook;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class AppStatServiceTest {
 
     private AppStatService subject;
@@ -73,6 +70,18 @@ public class AppStatServiceTest {
         MockitoAnnotations.initMocks(this);
         subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper);
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_TOKEN");
+
+        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
+            @Override
+            public Scheduler getIOScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+    }
+
+    @After
+    public void tearDown() {
+        RxJavaPlugins.getInstance().reset();
     }
 
     @Test
@@ -81,7 +90,7 @@ public class AppStatServiceTest {
         mockAppInfoList.add(new AppInfo("package_name", "app_name"));
         when(mockAppUsageDataHelper.getAppList()).thenReturn(mockAppInfoList);
 
-        when(mockStatAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendAppList(mock(AppStatServiceCallback.class));
 
@@ -96,7 +105,7 @@ public class AppStatServiceTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("package_name", 1, 1000L));
         when(mockAppUsageDataHelper.getEventStats(anyLong())).thenReturn(mockEventStatList);
-        when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendEventStats(mock(AppStatServiceCallback.class));
 
@@ -112,7 +121,7 @@ public class AppStatServiceTest {
         List<LongTermStat> mockLongTermStats = new ArrayList<>();
         mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
         when(mockAppUsageDataHelper.getLongTermStats()).thenReturn(mockLongTermStats);
-        when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendLongTermStats(mock(AppStatServiceCallback.class));
 
@@ -128,7 +137,7 @@ public class AppStatServiceTest {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
         when(mockAppUsageDataHelper.getShortTermStats(anyLong())).thenReturn(mockShortTermStats);
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Call.class));
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendShortTermStats(mock(AppStatServiceCallback.class));
 
@@ -154,7 +163,7 @@ public class AppStatServiceTest {
 
     @Test
     public void sendShortTermStatsAPI호출후_성공시_현재시간을_LocalStorage에_저장한다() throws Exception {
-        mockingCall(retrofit2.Response.success(null));
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
 
         subject.sendShortTermStats(mock(AppStatServiceCallback.class));
 
@@ -162,20 +171,31 @@ public class AppStatServiceTest {
     }
 
     @Test
+    public void sendShortTermStatsAPI호출후_성공시_AppStatServiceCallback의_onSuccess를_호출한다() throws Exception {
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
+
+        AppStatServiceCallback mockAppStatServiceCallback = mock(AppStatServiceCallback.class);
+        subject.sendShortTermStats(mockAppStatServiceCallback);
+
+        verify(mockAppStatServiceCallback).onSuccess();
+    }
+
+    @Test
     public void sendShortTermStatsAPI호출후_실패시_현재시간을_LocalStorage에_저장하지않는다() throws Exception {
-        mockingCall(retrofit2.Response.error(400, new RealResponseBody(null, null)));
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.error(403, new RealResponseBody(null, null))));
 
         subject.sendShortTermStats(mock(AppStatServiceCallback.class));
 
         verify(mockLocalStorageHelper, times(0)).setLastUsageTime(anyLong());
     }
 
-    private void mockingCall(Response<Boolean> response) {
-        Call<Boolean> mockCall = mock(Call.class);
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mockCall);
-        doAnswer(invocation -> {
-            ((Callback<Boolean>) invocation.getArguments()[0]).onResponse(mockCall, response);
-            return null;
-        }).when(mockCall).enqueue(any(Callback.class));
+    @Test
+    public void sendShortTermStatsAPI호출후_실패시_AppStatServiceCallback의_onFail를_호출한다() throws Exception {
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.error(403, new RealResponseBody(null, null))));
+
+        AppStatServiceCallback mockAppStatServiceCallback = mock(AppStatServiceCallback.class);
+        subject.sendShortTermStats(mockAppStatServiceCallback);
+
+        verify(mockAppStatServiceCallback).onFail("403");
     }
 }
