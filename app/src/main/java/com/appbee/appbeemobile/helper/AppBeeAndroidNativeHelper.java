@@ -69,7 +69,7 @@ public class AppBeeAndroidNativeHelper {
     public List<UsageStats> getUsageStats(long startTime, long endTime) {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
-        return usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        return usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
     }
 
     public boolean hasUsageStatsPermission() {
