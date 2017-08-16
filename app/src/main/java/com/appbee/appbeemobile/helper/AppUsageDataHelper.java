@@ -75,7 +75,7 @@ public class AppUsageDataHelper {
 
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.MONTH, -6);
+        calendar.add(Calendar.YEAR, -3);
         long startTime = calendar.getTimeInMillis();
 
         List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
