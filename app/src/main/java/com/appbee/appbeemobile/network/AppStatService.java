@@ -1,7 +1,5 @@
 package com.appbee.appbeemobile.network;
 
-import android.util.Log;
-
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants;
@@ -27,20 +25,19 @@ public class AppStatService {
     }
 
     public void sendAppList(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendAppInfoList(localStorageHelper.getAccessToken(), appUsageDataHelper.getAppList()).enqueue(getStatCallback(appStatServiceCallback));
+        StatAPI.sendAppInfoList(localStorageHelper.getAccessToken(), appUsageDataHelper.getAppList()).enqueue(new StatAPICallback(appStatServiceCallback));
     }
 
     public void sendEventStats(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime())).enqueue(getStatCallback(appStatServiceCallback));
+        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime())).enqueue(new StatAPICallback(appStatServiceCallback));
     }
 
     public void sendLongTermStats(AppStatServiceCallback appStatServiceCallback) {
-        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats()).enqueue(getStatCallback(appStatServiceCallback));
+        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats()).enqueue(new StatAPICallback(appStatServiceCallback));
     }
 
     public void sendShortTermStats(AppStatServiceCallback appStatServiceCallback) {
-        //TODO : 단기데이터 저장 완료 시 localStorageHelper의 lastUsageTime업데이트
-        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime())).enqueue(getStatCallback(appStatServiceCallback));
+        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime())).enqueue(new ShortTermStatAPICallback(appStatServiceCallback));
     }
 
     long getStartTime() {
@@ -52,22 +49,39 @@ public class AppStatService {
         }
     }
 
-    private Callback<Boolean> getStatCallback(AppStatServiceCallback appStatServiceCallback) {
-        return new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if(response.isSuccessful()) {
-                    appStatServiceCallback.onSuccess();
-                } else {
-                    appStatServiceCallback.onFail(String.valueOf(response.code()));
-                }
-            }
+    private class StatAPICallback implements Callback<Boolean> {
+        private AppStatServiceCallback appStatServiceCallback;
 
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.d(TAG, "failure!!! t=" + t.toString());
-                appStatServiceCallback.onFail(AppBeeConstants.API_RESPONSE_CODE.FORBIDDEN);
+        StatAPICallback(AppStatServiceCallback appStatServiceCallback) {
+            this.appStatServiceCallback = appStatServiceCallback;
+        }
+
+        @Override
+        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            if(response.isSuccessful()) {
+                appStatServiceCallback.onSuccess();
+            } else {
+                appStatServiceCallback.onFail(String.valueOf(response.code()));
             }
-        };
+        }
+
+        @Override
+        public void onFailure(Call<Boolean> call, Throwable t) {
+            appStatServiceCallback.onFail(AppBeeConstants.API_RESPONSE_CODE.FORBIDDEN);
+        }
+    }
+
+    private class ShortTermStatAPICallback extends StatAPICallback {
+        ShortTermStatAPICallback(AppStatServiceCallback appStatServiceCallback) {
+            super(appStatServiceCallback);
+        }
+
+        @Override
+        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            super.onResponse(call, response);
+            if(response.isSuccessful()) {
+                localStorageHelper.setLastUsageTime(TimeUtil.getCurrentTime());
+            }
+        }
     }
 }
