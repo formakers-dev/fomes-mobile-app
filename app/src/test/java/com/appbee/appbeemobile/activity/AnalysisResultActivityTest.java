@@ -1,9 +1,13 @@
 package com.appbee.appbeemobile.activity;
 
 
+import android.app.Fragment;
+import android.os.Bundle;
+
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 
@@ -43,12 +47,18 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppCountMessage(2)).thenReturn(R.string.app_count_few_msg);
         when(appUsageDataHelper.getAppCountMessage(200)).thenReturn(R.string.app_count_proper_msg);
         when(appUsageDataHelper.getAppCountMessage(400)).thenReturn(R.string.app_count_many_msg);
+        when(appUsageDataHelper.getAppUsageAverageHourPerDay()).thenReturn(8);
 
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
     }
 
     @Test
     public void onCreate앱시작시_OverViewFragment가_나타난다() throws Exception {
-        assertThat(subject.getFragmentManager().findFragmentByTag(subject.OVERVIEW_FRAGMENT_TAG).isAdded()).isTrue();
+        Fragment fragment = subject.getFragmentManager().findFragmentByTag(subject.OVERVIEW_FRAGMENT_TAG);
+        Bundle bundle = fragment.getArguments();
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(2);
+        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
+        assertThat(fragment.isAdded()).isTrue();
     }
 }

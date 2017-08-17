@@ -7,7 +7,6 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.util.TimeUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -196,6 +195,17 @@ public class AppUsageDataHelperTest {
         assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(10))).contains("적기도 하네 진짜...");
         assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(200))).contains("적당도 하네 진짜...");
         assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(400))).contains("많기도 하네 진짜...");
+    }
+
+    @Test
+    public void getAppUsageAverageTime호출시_2년간_앱사용평균시간을_리턴한다() throws Exception {
+        List<UsageStats> preStoredUsageStats = new ArrayList<>();
+        preStoredUsageStats.add(createMockUsageStats("com.package.name1", 5_000_000_000L, 1499914800000L));    //2017-07-13 12:00:00
+        preStoredUsageStats.add(createMockUsageStats("com.package.name2", 8_000_000_000L, 1499934615000L));    //2017-07-13 17:30:15
+        preStoredUsageStats.add(createMockUsageStats("com.package.name3", 9_000_000_000L, 1500001200000L));    //2017-07-14 12:00:00
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+
+        assertThat(subject.getAppUsageAverageHourPerDay()).isEqualTo(8);
     }
 
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {

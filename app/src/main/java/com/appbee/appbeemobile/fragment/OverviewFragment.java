@@ -14,6 +14,7 @@ public class OverviewFragment extends Fragment {
 
     public static final String EXTRA_APP_LIST_COUNT = "EXTRA_APP_LIST_COUNT";
     public static final String EXTRA_APP_LIST_COUNT_MSG = "EXTRA_APP_LIST_COUNT_MSG";
+    public static final String EXTRA_APP_AVG_TIME = "EXTRA_APP_AVG_TIME";
 
     View view;
 
@@ -28,6 +29,8 @@ public class OverviewFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_overview, container, false);
         ((TextView) view.findViewById(R.id.app_count_textview)).setText(String.valueOf(getArguments().getInt(EXTRA_APP_LIST_COUNT)));
         ((TextView) view.findViewById(R.id.app_count_msg_textview)).setText(getArguments().getString(EXTRA_APP_LIST_COUNT_MSG));
+        ((TextView) view.findViewById(R.id.average_app_usage_time_textview))
+                .setText(String.format(getString(R.string.overview_average_time), getArguments().getInt(EXTRA_APP_AVG_TIME)));
         return view;
     }
 }

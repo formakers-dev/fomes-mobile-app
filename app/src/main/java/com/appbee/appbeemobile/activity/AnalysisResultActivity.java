@@ -9,9 +9,6 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
-import com.appbee.appbeemobile.model.NativeAppInfo;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,17 +26,23 @@ public class AnalysisResultActivity extends Activity {
 
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
-        List<NativeAppInfo> appInfoList = appUsageDataHelper.getAppList();
+        getFragmentManager().beginTransaction()
+                .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
+                .commit();
+    }
 
+    private Fragment getOverviewFragment() {
         Fragment overviewFragment = new OverviewFragment();
+
+        int appCount = appUsageDataHelper.getAppList().size();
+
         Bundle bundle = new Bundle();
-        int appCount = appInfoList.size();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, getString(appUsageDataHelper.getAppCountMessage(appCount)));
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageDataHelper.getAppUsageAverageHourPerDay());
+
         overviewFragment.setArguments(bundle);
 
-        getFragmentManager().beginTransaction()
-                .add(R.id.overview_fragment, overviewFragment, OVERVIEW_FRAGMENT_TAG)
-                .commit();
+        return overviewFragment;
     }
 }

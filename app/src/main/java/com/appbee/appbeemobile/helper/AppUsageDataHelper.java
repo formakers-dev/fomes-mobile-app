@@ -29,6 +29,7 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 @Singleton
 public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+    private static final int FROM_YEAR_FOR_LONG_TERM_STAT = 2;
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
@@ -77,7 +78,7 @@ public class AppUsageDataHelper {
 
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.YEAR, -3);
+        calendar.add(Calendar.YEAR, -1 * FROM_YEAR_FOR_LONG_TERM_STAT);
         long startTime = calendar.getTimeInMillis();
 
         List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
@@ -117,5 +118,14 @@ public class AppUsageDataHelper {
         } else {
             return R.string.app_count_proper_msg;
         }
+    }
+
+    public int getAppUsageAverageHourPerDay() {
+        long result = 0L;
+        List<LongTermStat> longTermStatList = this.getLongTermStats();
+        for (LongTermStat item : longTermStatList) {
+            result += item.getTotalUsedTime() / 1000;
+        }
+        return (int) Math.floor(result / 60 / 60 / 365 / FROM_YEAR_FOR_LONG_TERM_STAT);
     }
 }

@@ -28,6 +28,7 @@ public class OverviewFragmentTest {
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, 400);
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, "많기도 하네 진짜...");
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 8);
         subject = new OverviewFragment();
         subject.setArguments(bundle);
 
@@ -43,5 +44,12 @@ public class OverviewFragmentTest {
         TextView appCountMsgTextView = (TextView) subject.getView().findViewById(R.id.app_count_msg_textview);
         assertThat(appCountMsgTextView.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(appCountMsgTextView.getText()).contains("많기도");
+    }
+
+    @Test
+    public void fragment시작시_평균_앱사용_시간을_표시한다() throws Exception {
+        TextView averageAppUsageTimeTextView = (TextView) subject.getView().findViewById(R.id.average_app_usage_time_textview);
+        assertThat(averageAppUsageTimeTextView.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(averageAppUsageTimeTextView.getText()).contains("8");
     }
 }
