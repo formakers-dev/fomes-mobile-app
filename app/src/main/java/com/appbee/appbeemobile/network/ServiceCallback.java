@@ -1,6 +1,6 @@
 package com.appbee.appbeemobile.network;
 
-public interface AppStatServiceCallback {
+public interface ServiceCallback {
     void onSuccess();
     void onFail(String resultCode);
 }

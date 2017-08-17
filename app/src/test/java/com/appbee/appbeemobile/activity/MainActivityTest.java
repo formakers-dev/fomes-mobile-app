@@ -8,7 +8,8 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.network.AppStatServiceCallback;
+import com.appbee.appbeemobile.network.ServiceCallback;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.Before;
@@ -36,6 +37,9 @@ import static org.robolectric.Shadows.shadowOf;
 public class MainActivityTest extends ActivityTest {
 
     private ActivityController<MainActivity> activityController;
+
+    @Inject
+    UserService userService;
 
     @Inject
     AppStatService appStatService;
@@ -78,31 +82,31 @@ public class MainActivityTest extends ActivityTest {
 
     @Test
     public void 앱테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
-        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendAppList(any(AppStatServiceCallback.class));
+        doAnswer(setApiResultToUnauthorized()).when(userService).sendAppList(any(ServiceCallback.class));
 
         MainActivity subject = activityController.create().get();
 
-        verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
+        verify(userService).sendAppList(any(ServiceCallback.class));
         assertRestartApp(subject);
     }
 
     @Test
     public void 단기통계테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
-        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
+        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendShortTermStats(any(ServiceCallback.class));
 
         MainActivity subject = activityController.create().get();
 
-        verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
+        verify(appStatService).sendShortTermStats(any(ServiceCallback.class));
         assertRestartApp(subject);
     }
 
     @Test
     public void 장기통계테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
-        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
+        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendLongTermStats(any(ServiceCallback.class));
 
         MainActivity subject = activityController.create().get();
 
-        verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
+        verify(appStatService).sendLongTermStats(any(ServiceCallback.class));
         assertRestartApp(subject);
     }
 
@@ -130,15 +134,15 @@ public class MainActivityTest extends ActivityTest {
     @NonNull
     private Answer setApiResultToUnauthorized() {
         return (invocation) -> {
-            ((AppStatServiceCallback) invocation.getArguments()[0]).onFail(AppBeeConstants.API_RESPONSE_CODE.UNAUTHORIZED);
+            ((ServiceCallback) invocation.getArguments()[0]).onFail(AppBeeConstants.API_RESPONSE_CODE.UNAUTHORIZED);
             return null;
         };
     }
 
     private void assertSendAppListAndStatData() {
-        verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
-        verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
-        verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
+        verify(userService).sendAppList(any(ServiceCallback.class));
+        verify(appStatService).sendLongTermStats(any(ServiceCallback.class));
+        verify(appStatService).sendShortTermStats(any(ServiceCallback.class));
     }
 
     private void assertRestartApp(MainActivity subject) {

@@ -85,29 +85,13 @@ public class AppStatServiceTest {
     }
 
     @Test
-    public void sendAppList호출시_설치앱리스트를_조회하여_서버로_전송한다() throws Exception {
-        List<AppInfo> mockAppInfoList = new ArrayList<>();
-        mockAppInfoList.add(new AppInfo("package_name", "app_name"));
-        when(mockAppUsageDataHelper.getAppList()).thenReturn(mockAppInfoList);
-
-        when(mockStatAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Observable.class));
-
-        subject.sendAppList(mock(AppStatServiceCallback.class));
-
-        verify(mockStatAPI).sendAppInfoList(anyString(), appInfos.capture());
-        List<AppInfo> actualAppInfos = appInfos.getValue();
-        assertEquals(actualAppInfos.get(0).getPackageName(), "package_name");
-        assertEquals(actualAppInfos.get(0).getAppName(), "app_name");
-    }
-
-    @Test
     public void sendEventStats호출시_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("package_name", 1, 1000L));
         when(mockAppUsageDataHelper.getEventStats(anyLong())).thenReturn(mockEventStatList);
         when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendEventStats(mock(AppStatServiceCallback.class));
+        subject.sendEventStats(mock(ServiceCallback.class));
 
         verify(mockStatAPI).sendEventStats(anyString(), eventStatsCaptor.capture());
         EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
@@ -123,7 +107,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getLongTermStats()).thenReturn(mockLongTermStats);
         when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendLongTermStats(mock(AppStatServiceCallback.class));
+        subject.sendLongTermStats(mock(ServiceCallback.class));
 
         verify(mockStatAPI).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
         LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
@@ -139,7 +123,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getShortTermStats(anyLong())).thenReturn(mockShortTermStats);
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendShortTermStats(mock(AppStatServiceCallback.class));
+        subject.sendShortTermStats(mock(ServiceCallback.class));
 
         verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
@@ -165,7 +149,7 @@ public class AppStatServiceTest {
     public void sendShortTermStatsAPI호출후_성공시_현재시간을_LocalStorage에_저장한다() throws Exception {
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
 
-        subject.sendShortTermStats(mock(AppStatServiceCallback.class));
+        subject.sendShortTermStats(mock(ServiceCallback.class));
 
         verify(mockLocalStorageHelper).setLastUsageTime(TimeUtil.getCurrentTime());
     }
@@ -174,17 +158,17 @@ public class AppStatServiceTest {
     public void sendShortTermStatsAPI호출후_성공시_AppStatServiceCallback의_onSuccess를_호출한다() throws Exception {
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
 
-        AppStatServiceCallback mockAppStatServiceCallback = mock(AppStatServiceCallback.class);
-        subject.sendShortTermStats(mockAppStatServiceCallback);
+        ServiceCallback mockServiceCallback = mock(ServiceCallback.class);
+        subject.sendShortTermStats(mockServiceCallback);
 
-        verify(mockAppStatServiceCallback).onSuccess();
+        verify(mockServiceCallback).onSuccess();
     }
 
     @Test
     public void sendShortTermStatsAPI호출후_실패시_현재시간을_LocalStorage에_저장하지않는다() throws Exception {
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.error(403, new RealResponseBody(null, null))));
 
-        subject.sendShortTermStats(mock(AppStatServiceCallback.class));
+        subject.sendShortTermStats(mock(ServiceCallback.class));
 
         verify(mockLocalStorageHelper, times(0)).setLastUsageTime(anyLong());
     }
@@ -193,9 +177,9 @@ public class AppStatServiceTest {
     public void sendShortTermStatsAPI호출후_실패시_AppStatServiceCallback의_onFail를_호출한다() throws Exception {
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.error(403, new RealResponseBody(null, null))));
 
-        AppStatServiceCallback mockAppStatServiceCallback = mock(AppStatServiceCallback.class);
-        subject.sendShortTermStats(mockAppStatServiceCallback);
+        ServiceCallback mockServiceCallback = mock(ServiceCallback.class);
+        subject.sendShortTermStats(mockServiceCallback);
 
-        verify(mockAppStatServiceCallback).onFail("403");
+        verify(mockServiceCallback).onFail("403");
     }
 }

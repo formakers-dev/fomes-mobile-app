@@ -10,7 +10,8 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.network.AppStatServiceCallback;
+import com.appbee.appbeemobile.network.ServiceCallback;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import javax.inject.Inject;
@@ -20,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
+
+    @Inject
+    UserService userService;
 
     @Inject
     AppStatService appStatService;
@@ -54,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendData() {
-        appStatService.sendShortTermStats(appStatServiceCallback);
-        appStatService.sendAppList(appStatServiceCallback);
-        appStatService.sendLongTermStats(appStatServiceCallback);
-//        appStatService.sendEventStats(appStatServiceCallback);
+        userService.sendAppList(serviceCallback);
+        appStatService.sendShortTermStats(serviceCallback);
+        appStatService.sendLongTermStats(serviceCallback);
+//        appStatService.sendEventStats(serviceCallback);
     }
 
-    AppStatServiceCallback appStatServiceCallback = new AppStatServiceCallback() {
+    ServiceCallback serviceCallback = new ServiceCallback() {
         @Override
         public void onSuccess() {
             Log.d(TAG, "api call success");

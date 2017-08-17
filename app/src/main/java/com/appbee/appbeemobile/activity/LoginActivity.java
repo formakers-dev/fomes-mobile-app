@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.network.AppBeeAccountService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 9001;
 
     @Inject
-    AppBeeAccountService appBeeAccountService;
+    UserService userService;
 
     @Inject
     GoogleSignInAPIHelper googleSignInAPIHelper;
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     void signInUser(final String idToken) {
-        appBeeAccountService.signIn(idToken, new SignInResultCallback() {
+        userService.signIn(idToken, new SignInResultCallback() {
             @Override
             public void onSuccess(String token) {
                 Log.d(TAG, "signInUser success");

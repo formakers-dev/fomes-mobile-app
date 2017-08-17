@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.network;
 
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
@@ -22,7 +21,4 @@ public interface StatAPI {
 
     @POST("/stats/short")
     Observable<Response<Boolean>> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
-
-    @POST("/apps")
-    Observable<Response<Boolean>> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<AppInfo> appInfos);
 }
