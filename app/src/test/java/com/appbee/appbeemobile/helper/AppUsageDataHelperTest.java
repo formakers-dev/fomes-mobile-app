@@ -191,6 +191,13 @@ public class AppUsageDataHelperTest {
         assertThat(eventStatList.get(0).getTimeStamp()).isEqualTo(1000L);
     }
 
+    @Test
+    public void getAppCountMessage호출시_알맞은_메세지를_리턴한다() throws Exception {
+        assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(10))).contains("적기도 하네 진짜...");
+        assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(200))).contains("적당도 하네 진짜...");
+        assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(400))).contains("많기도 하네 진짜...");
+    }
+
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
         assertThat(shortTermStat.getPackageName()).isEqualTo(packageName);
         assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
