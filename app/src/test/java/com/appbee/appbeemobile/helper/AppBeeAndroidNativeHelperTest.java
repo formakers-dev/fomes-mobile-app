@@ -9,7 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ResolveInfo;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -93,7 +93,7 @@ public class AppBeeAndroidNativeHelperTest {
         ShadowPackageManager shadowPackageManager = shadowOf(RuntimeEnvironment.application.getPackageManager());
         shadowPackageManager.addResolveInfoForIntent(intent, mockReturnList);
 
-        List<AppInfo> appList = subject.getInstalledLaunchableApps();
+        List<NativeAppInfo> appList = subject.getInstalledLaunchableApps();
         assertThat(appList.size()).isEqualTo(1);
         assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
         assertThat(appList.get(0).getPackageName()).isEqualTo("package");

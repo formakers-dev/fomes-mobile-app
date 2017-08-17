@@ -1,6 +1,6 @@
 package com.appbee.appbeemobile.network;
 
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ public interface UserAPI {
     Call<String> signInUser(@Header("x-id-token") String idToken);
 
     @POST("/user/apps")
-    Observable<Response<Boolean>> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<AppInfo> appInfos);
+    Observable<Response<Boolean>> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<NativeAppInfo> nativeAppInfos);
 }

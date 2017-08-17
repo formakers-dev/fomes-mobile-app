@@ -9,7 +9,7 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class AnalysisResultActivity extends Activity {
 
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
-        List<AppInfo> appInfoList = appUsageDataHelper.getAppList();
+        List<NativeAppInfo> appInfoList = appUsageDataHelper.getAppList();
 
         Fragment overviewFragment = new OverviewFragment();
         Bundle bundle = new Bundle();

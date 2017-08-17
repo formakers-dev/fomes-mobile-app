@@ -5,7 +5,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,11 +35,11 @@ public class AnalysisResultActivityTest extends ActivityTest {
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
 
-        List<AppInfo> appInfoList = new ArrayList<>();
-        appInfoList.add(new AppInfo("com.package.name1", "app_name_1"));
-        appInfoList.add(new AppInfo("com.package.name2", "app_name_2"));
+        List<NativeAppInfo> nativeAppInfos = new ArrayList<>();
+        nativeAppInfos.add(new NativeAppInfo("com.package.name1", "app_name_1"));
+        nativeAppInfos.add(new NativeAppInfo("com.package.name2", "app_name_2"));
 
-        when(appUsageDataHelper.getAppList()).thenReturn(appInfoList);
+        when(appUsageDataHelper.getAppList()).thenReturn(nativeAppInfos);
         when(appUsageDataHelper.getAppCountMessage(2)).thenReturn(R.string.app_count_few_msg);
         when(appUsageDataHelper.getAppCountMessage(200)).thenReturn(R.string.app_count_proper_msg);
         when(appUsageDataHelper.getAppCountMessage(400)).thenReturn(R.string.app_count_many_msg);

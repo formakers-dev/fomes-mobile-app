@@ -2,7 +2,7 @@ package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import org.junit.After;
 import org.junit.Before;
@@ -42,7 +42,7 @@ public class UserServiceTest {
     private LocalStorageHelper mockLocalStorageHelper;
 
     @Captor
-    ArgumentCaptor<List<AppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
+    ArgumentCaptor<List<NativeAppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
 
     @Before
     public void setUp() throws Exception {
@@ -63,18 +63,18 @@ public class UserServiceTest {
 
     @Test
     public void sendAppList호출시_설치앱리스트를_조회하여_서버로_전송한다() throws Exception {
-        List<AppInfo> mockAppInfoList = new ArrayList<>();
-        mockAppInfoList.add(new AppInfo("package_name", "app_name"));
-        when(mockAppUsageDataHelper.getAppList()).thenReturn(mockAppInfoList);
+        List<NativeAppInfo> mockNativeAppInfoList = new ArrayList<>();
+        mockNativeAppInfoList.add(new NativeAppInfo("package_name", "app_name"));
+        when(mockAppUsageDataHelper.getAppList()).thenReturn(mockNativeAppInfoList);
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("anyToken");
         when(mockUserAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendAppList(mock(ServiceCallback.class));
 
         verify(mockUserAPI).sendAppInfoList(anyString(), appInfos.capture());
-        List<AppInfo> actualAppInfos = appInfos.getValue();
-        assertEquals(actualAppInfos.get(0).getPackageName(), "package_name");
-        assertEquals(actualAppInfos.get(0).getAppName(), "app_name");
+        List<NativeAppInfo> actualNativeAppInfos = appInfos.getValue();
+        assertEquals(actualNativeAppInfos.get(0).getPackageName(), "package_name");
+        assertEquals(actualNativeAppInfos.get(0).getAppName(), "app_name");
     }
 
 }
