@@ -10,7 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Process;
 
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class AppBeeAndroidNativeHelper {
         return eventStats;
     }
 
-    public List<AppInfo> getInstalledLaunchableApps() {
+    public List<NativeAppInfo> getInstalledLaunchableApps() {
         final PackageManager packageManager = context.getPackageManager();
 
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
@@ -58,12 +58,12 @@ public class AppBeeAndroidNativeHelper {
 
         List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(intent, PackageManager.GET_META_DATA);
 
-        List<AppInfo> appInfoList = new ArrayList<>();
+        List<NativeAppInfo> nativeAppInfoList = new ArrayList<>();
         for(ResolveInfo resolveInfo : resolveInfoList) {
-            appInfoList.add(new AppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
+            nativeAppInfoList.add(new NativeAppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
         }
 
-        return appInfoList;
+        return nativeAppInfoList;
     }
 
     public List<UsageStats> getUsageStats(long startTime, long endTime) {

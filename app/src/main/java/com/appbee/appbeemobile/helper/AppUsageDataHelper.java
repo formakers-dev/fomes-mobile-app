@@ -4,7 +4,7 @@ import android.app.usage.UsageStats;
 import android.support.annotation.StringRes;
 
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
@@ -105,7 +105,7 @@ public class AppUsageDataHelper {
                 .single();
     }
 
-    public List<AppInfo> getAppList() {
+    public List<NativeAppInfo> getAppList() {
         return appBeeAndroidNativeHelper.getInstalledLaunchableApps();
     }
 

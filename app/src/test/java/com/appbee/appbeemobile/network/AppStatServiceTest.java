@@ -1,20 +1,24 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class AppStatServiceTest {
 
     private AppStatService subject;
@@ -51,7 +57,7 @@ public class AppStatServiceTest {
     private StatAPI mockStatAPI;
 
     @Captor
-    ArgumentCaptor<List<AppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
+    ArgumentCaptor<List<NativeAppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
 
     @Captor
     ArgumentCaptor<List<EventStat>> eventStatsCaptor = ArgumentCaptor.forClass(List.class);

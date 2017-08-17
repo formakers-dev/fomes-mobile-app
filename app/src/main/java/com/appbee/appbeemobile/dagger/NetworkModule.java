@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.network.AppAPI;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 
@@ -50,4 +51,9 @@ public class NetworkModule {
         return retrofit.create(UserAPI.class);
     }
 
+    @Singleton
+    @Provides
+    AppAPI appAPI(Retrofit retrofit) {
+        return retrofit.create(AppAPI.class);
+    }
 }
