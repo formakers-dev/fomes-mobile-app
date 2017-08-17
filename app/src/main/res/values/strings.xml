@@ -3,6 +3,8 @@
     <string name="app_count_many_msg">많기도 하네 진짜...</string>
     <string name="app_count_few_msg">적기도 하네 진짜...</string>
     <string name="app_count_proper_msg">적당도 하네 진짜...</string>
-    <string name="overview_app_count_title">당신은 앱 개수가</string>
+    <string name="overview_app_count_title">당신은 앱 개수가 </string>
     <string name="overview_app_count_unit">개로</string>
+    <string name="overview_average_time_title">당신은 앱 사용 시간이 </string>
+    <string name="overview_average_time">하루 평균 %d시간, </string>
 </resources>
