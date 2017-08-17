@@ -31,6 +31,6 @@ test:
 
 deployment:
   prod:
-    branch: master
+    branch: development
     commands:
       - aws s3 sync app/build/outputs/apk s3://appbeepkg/test/ --delete --acl public-read
