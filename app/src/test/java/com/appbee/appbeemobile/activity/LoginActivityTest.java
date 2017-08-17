@@ -6,7 +6,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.network.AppBeeAccountService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.network.SignInResultCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -47,7 +47,7 @@ public class LoginActivityTest extends ActivityTest {
     GoogleSignInAPIHelper googleSignInAPIHelper;
 
     @Inject
-    AppBeeAccountService appBeeAccountService;
+    UserService userService;
 
     @Inject
     LocalStorageHelper localStorageHelper;
@@ -95,7 +95,7 @@ public class LoginActivityTest extends ActivityTest {
 
         subject.onActivityResult(9001, 0, null);
 
-        verify(appBeeAccountService).signIn(eq("testToken"), any(SignInResultCallback.class));
+        verify(userService).signIn(eq("testToken"), any(SignInResultCallback.class));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class LoginActivityTest extends ActivityTest {
         doAnswer((invocation) -> {
             ((SignInResultCallback) invocation.getArguments()[1]).onSuccess("testAccessToken");
             return null;
-        }).when(appBeeAccountService).signIn(anyString(), any(SignInResultCallback.class));
+        }).when(userService).signIn(anyString(), any(SignInResultCallback.class));
 
         LoginActivity subject = activityController.create().get();
         shadowOf(subject).getNextStartedActivity();
