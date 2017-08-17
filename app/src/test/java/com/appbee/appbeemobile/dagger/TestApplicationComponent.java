@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.activity.AnalysisResultActivityTest;
 import com.appbee.appbeemobile.activity.LoginActivityTest;
 import com.appbee.appbeemobile.activity.MainActivityTest;
 
@@ -12,4 +13,5 @@ import dagger.Component;
 public interface TestApplicationComponent extends ApplicationComponent {
     void inject(MainActivityTest mainActivity);
     void inject(LoginActivityTest loginActivity);
+    void inject(AnalysisResultActivityTest analysisResultActivityTest);
 }

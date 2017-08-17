@@ -1,7 +1,9 @@
 package com.appbee.appbeemobile.helper;
 
 import android.app.usage.UsageStats;
+import android.support.annotation.StringRes;
 
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
@@ -43,14 +45,14 @@ public class AppUsageDataHelper {
 
         EventStat beforeForegroundEvent = null;
 
-        for(EventStat eventStat : eventStats) {
+        for (EventStat eventStat : eventStats) {
             switch (eventStat.getEventType()) {
-                case MOVE_TO_FOREGROUND :
+                case MOVE_TO_FOREGROUND:
                     beforeForegroundEvent = eventStat;
                     break;
 
-                case MOVE_TO_BACKGROUND :
-                    if(beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
+                case MOVE_TO_BACKGROUND:
+                    if (beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
                         shortTermStats.add(createDetailUsageStat(eventStat.getPackageName(), beforeForegroundEvent.getTimeStamp(), eventStat.getTimeStamp()));
                         beforeForegroundEvent = null;
                     }
@@ -61,7 +63,7 @@ public class AppUsageDataHelper {
         return shortTermStats;
     }
 
-    public List<EventStat> getEventStats(long startTime){
+    public List<EventStat> getEventStats(long startTime) {
         long endTime = TimeUtil.getCurrentTime();
         return appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
     }
@@ -81,7 +83,7 @@ public class AppUsageDataHelper {
         List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
 
         for (UsageStats stats : usageStatsList) {
-            if(stats.getTotalTimeInForeground() > 0) {
+            if (stats.getTotalTimeInForeground() > 0) {
                 String packageName = stats.getPackageName();
                 String usedLastDate = DATE_FORMAT.format(stats.getLastTimeUsed());
                 long totalUsedTime = stats.getTotalTimeInForeground();
@@ -105,5 +107,15 @@ public class AppUsageDataHelper {
 
     public List<AppInfo> getAppList() {
         return appBeeAndroidNativeHelper.getInstalledLaunchableApps();
+    }
+
+    public @StringRes int getAppCountMessage(int appCount) {
+        if (appCount < 100) {
+            return R.string.app_count_few_msg;
+        } else if (appCount > 300) {
+            return R.string.app_count_many_msg;
+        } else {
+            return R.string.app_count_proper_msg;
+        }
     }
 }

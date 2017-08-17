@@ -33,7 +33,9 @@ public class AnalysisResultActivity extends Activity {
 
         Fragment overviewFragment = new OverviewFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appInfoList.size());
+        int appCount = appInfoList.size();
+        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
+        bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, getString(appUsageDataHelper.getAppCountMessage(appCount)));
         overviewFragment.setArguments(bundle);
 
         getFragmentManager().beginTransaction()
