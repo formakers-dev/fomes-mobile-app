@@ -6,6 +6,8 @@ import android.provider.Settings;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
+import com.appbee.appbeemobile.network.AppService;
+import com.appbee.appbeemobile.network.AppStatService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +18,18 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowToast;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -28,6 +38,12 @@ import static org.robolectric.Shadows.shadowOf;
 public class MainActivityTest extends ActivityTest {
 
     private ActivityController<MainActivity> activityController;
+
+    @Inject
+    AppStatService mockAppStatService;
+
+    @Inject
+    AppService mockAppService;
 
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
@@ -54,18 +70,37 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void onCreate호출시_Stat접근권한이_있는_경우_권한요청_Activity를_호출하지_않는다() throws Exception {
         MainActivity subject = activityController.create().get();
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent()).isNotNull();
+        assertThat(shadowOf(subject).getNextStartedActivity()).isNull();
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_분석결과화면으로_이동한다() throws Exception {
+    public void onCreate호출시_Stat접근권한이_있는_경우_사용이력이있는_앱목록정보조회API를_호출한다() throws Exception {
+        List<String> usedPackageNameList = Arrays.asList("com.package.name1","com.package.name2");
+        when(mockAppStatService.getUsedPackageNameList()).thenReturn(usedPackageNameList);
+
         MainActivity subject = activityController.create().get();
+
+        verify(mockAppService).getInfos(eq(usedPackageNameList), eq(subject.appInfosServiceCallback));
+    }
+
+    @Test
+    public void appInfosServiceCallback의_onFail을_호출했을때_에러메시지가_표시된다() throws Exception {
+        MainActivity subject = activityController.get();
+        subject.appInfosServiceCallback.onFail("ERROR_CODE");
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("appList API fail");
+    }
+
+    @Test
+    public void appInfosServiceCallback의_onSuccess를_호출했을때_분석결과화면으로_이동한다() throws Exception {
+        MainActivity subject = activityController.get();
+        subject.appInfosServiceCallback.onSuccess(mock(List.class));
 
         assertLaunchAnalysisResultActivity(subject);
     }
 
     @Test
-    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_분석결과화면으로_이동한다() throws Exception {
+    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_앱목록정보조회API를_요청한다() throws Exception {
         when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         MainActivity subject = activityController.create().get();
         shadowOf(subject).getNextStartedActivity();
@@ -73,7 +108,7 @@ public class MainActivityTest extends ActivityTest {
         when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
 
-        assertLaunchAnalysisResultActivity(subject);
+        verify(mockAppService).getInfos(any(), eq(subject.appInfosServiceCallback));
     }
 
     @Test
