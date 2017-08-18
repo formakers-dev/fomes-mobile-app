@@ -4,15 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
-import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.network.ServiceCallback;
-import com.appbee.appbeemobile.network.UserService;
-import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import javax.inject.Inject;
 
@@ -21,12 +16,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
-
-    @Inject
-    UserService userService;
-
-    @Inject
-    AppStatService appStatService;
 
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
@@ -39,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            sendData();
+            startActivity(new Intent(this, AnalysisResultActivity.class));
+            finish();
         } else {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
@@ -50,34 +40,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION) {
             if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-                sendData();
-            } else {
-                finish();
+                startActivity(new Intent(this, AnalysisResultActivity.class));
             }
+            finish();
         }
     }
-
-    public void sendData() {
-        userService.sendAppList(serviceCallback);
-        appStatService.sendShortTermStats(serviceCallback);
-        appStatService.sendLongTermStats(serviceCallback);
-//        appStatService.sendEventStats(serviceCallback);
-    }
-
-    ServiceCallback serviceCallback = new ServiceCallback() {
-        @Override
-        public void onSuccess() {
-            Log.d(TAG, "api call success");
-        }
-
-        @Override
-        public void onFail(String resultCode) {
-            if(AppBeeConstants.API_RESPONSE_CODE.UNAUTHORIZED.equals(resultCode)) {
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-        }
-    };
 }
