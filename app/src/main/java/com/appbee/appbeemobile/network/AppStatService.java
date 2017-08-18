@@ -4,6 +4,9 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.util.TimeUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import retrofit2.Response;
@@ -59,5 +62,14 @@ public class AppStatService {
         } else {
             return lastUsageTime;
         }
+    }
+
+    public List<String> getUsedPackageNameList() {
+        List<String> usedPackageNameList = new ArrayList<>();
+
+        appUsageDataHelper.getLongTermStats()
+                .forEach(stat -> usedPackageNameList.add(stat.getPackageName()));
+
+        return usedPackageNameList;
     }
 }
