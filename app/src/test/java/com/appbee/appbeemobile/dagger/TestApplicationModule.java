@@ -2,22 +2,24 @@ package com.appbee.appbeemobile.dagger;
 
 import android.content.Context;
 
-import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
+import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.AppAPI;
 import com.appbee.appbeemobile.network.AppService;
-import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
-import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.network.UserService;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+
 import static org.mockito.Mockito.mock;
 
 @Module
@@ -93,5 +95,11 @@ public class TestApplicationModule {
     @Provides
     LocalStorageHelper localStorageHelper() {
         return mock(LocalStorageHelper.class);
+    }
+
+    @Singleton
+    @Provides
+    AppRepositoryHelper appRepositoryHelper() {
+        return mock(AppRepositoryHelper.class);
     }
 }
