@@ -188,4 +188,17 @@ public class AppStatServiceTest {
 
         verify(mockServiceCallback).onFail("403");
     }
+
+    @Test
+    public void getUsedPackageNameList호출시_장기통계에서_사용이력이있는_appList를_리턴한다() throws Exception {
+        List<LongTermStat> mockLongTermStats = new ArrayList<>();
+        mockLongTermStats.add(new LongTermStat("com.package.name1", "20170717", 1000L));
+
+        when(mockAppUsageDataHelper.getLongTermStats()).thenReturn(mockLongTermStats);
+
+        List<String> usedPackageNameList = subject.getUsedPackageNameList();
+
+        assertThat(usedPackageNameList.size()).isEqualTo(1);
+        assertThat(usedPackageNameList.get(0)).isEqualTo("com.package.name1");
+    }
 }
