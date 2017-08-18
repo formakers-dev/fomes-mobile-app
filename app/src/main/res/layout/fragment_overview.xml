@@ -24,8 +24,7 @@
             android:textColor="@android:color/black"
             android:textSize="15dp"
             android:text="@string/overview_app_count_unit"/>
-        <TextView
-            android:id="@+id/app_count_msg_textview"
+        <TextView android:id="@+id/app_count_msg_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
@@ -46,5 +45,11 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_blue_light"
             android:textSize="15dp"/>
+        <TextView android:id="@+id/average_app_usage_time_msg_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="15dp"/>
+
     </LinearLayout>
 </LinearLayout>

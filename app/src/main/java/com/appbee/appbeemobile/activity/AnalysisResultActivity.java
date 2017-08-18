@@ -39,7 +39,10 @@ public class AnalysisResultActivity extends Activity {
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, getString(appUsageDataHelper.getAppCountMessage(appCount)));
-        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageDataHelper.getAppUsageAverageHourPerDay());
+
+        int appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay();
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
+        bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
 
         overviewFragment.setArguments(bundle);
 
