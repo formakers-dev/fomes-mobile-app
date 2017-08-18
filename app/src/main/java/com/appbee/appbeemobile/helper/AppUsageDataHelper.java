@@ -33,9 +33,12 @@ public class AppUsageDataHelper {
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
+    private final LocalStorageHelper localStorageHelper;
+
     @Inject
-    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
+    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
+        this.localStorageHelper = localStorageHelper;
     }
 
     public List<ShortTermStat> getShortTermStats(long startTime) {
@@ -83,7 +86,9 @@ public class AppUsageDataHelper {
 
         List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
 
+        long minFirstStartedStatTimeStamp = Long.MAX_VALUE;
         for (UsageStats stats : usageStatsList) {
+            minFirstStartedStatTimeStamp = Math.min(minFirstStartedStatTimeStamp, stats.getFirstTimeStamp());
             if (stats.getTotalTimeInForeground() > 0) {
                 String packageName = stats.getPackageName();
                 String usedLastDate = DATE_FORMAT.format(stats.getLastTimeUsed());
@@ -99,6 +104,8 @@ public class AppUsageDataHelper {
                 }
             }
         }
+
+        localStorageHelper.setMinFirstStartedStatTimeStamp(minFirstStartedStatTimeStamp);
 
         return Observable.from(dailyUsageStatMap.values())
                 .toList()
@@ -121,11 +128,19 @@ public class AppUsageDataHelper {
     }
 
     public int getAppUsageAverageHourPerDay() {
-        long result = 0L;
+        long totalUsedTime = 0L;
+
         List<LongTermStat> longTermStatList = this.getLongTermStats();
+
         for (LongTermStat item : longTermStatList) {
-            result += item.getTotalUsedTime() / 1000;
+            totalUsedTime += item.getTotalUsedTime();
         }
-        return (int) Math.floor(result / 60 / 60 / 365 / FROM_YEAR_FOR_LONG_TERM_STAT);
+
+        totalUsedTime = totalUsedTime / 1000 / 60 / 60;
+
+        long mobileTotalUsedTime = TimeUtil.getMobileTotalUsedTime(localStorageHelper.getMinFirstStartedStatTimeStamp());
+
+        return Math.round(totalUsedTime / (float) mobileTotalUsedTime);
     }
+
 }

@@ -16,6 +16,7 @@ import org.mockito.Captor;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowSystemClock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +39,13 @@ public class AppUsageDataHelperTest {
     ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    private LocalStorageHelper mockLocalStorageHelper;
 
     @Before
     public void setUp() throws Exception {
         this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper);
+        this.mockLocalStorageHelper = mock(LocalStorageHelper.class);
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockLocalStorageHelper);
     }
 
     @Test
@@ -198,13 +201,18 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getAppUsageAverageTime호출시_2년간_앱사용평균시간을_리턴한다() throws Exception {
+    public void getAppUsageAverageTime호출시_앱사용평균시간을_리턴한다() throws Exception {
+        when(mockLocalStorageHelper.getMinFirstStartedStatTimeStamp()).thenReturn(1436788800000L); // 2015년 July 13일 Monday PM 12:00:00
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
-        preStoredUsageStats.add(createMockUsageStats("com.package.name1", 5_000_000_000L, 1499914800000L));    //2017-07-13 12:00:00
-        preStoredUsageStats.add(createMockUsageStats("com.package.name2", 8_000_000_000L, 1499934615000L));    //2017-07-13 17:30:15
-        preStoredUsageStats.add(createMockUsageStats("com.package.name3", 9_000_000_000L, 1500001200000L));    //2017-07-14 12:00:00
+        preStoredUsageStats.add(createMockUsageStats("com.package.name1", 5_000_000_000L, 1436788800000L));
+        preStoredUsageStats.add(createMockUsageStats("com.package.name2", 8_000_000_000L, 1499934615000L));
+        preStoredUsageStats.add(createMockUsageStats("com.package.name3", 9_000_000_000L, 1500001200000L));
         when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        ShadowSystemClock.setCurrentTimeMillis(1503014400000L); // 2017년 August 18일 Friday AM 12:00:00
 
+        // (앱 사용시간의 총합 / 디바이스 총 사용일) 의 반올림.....
+        // 앱 사용시간의 총합 = 22000000000 / 1000 / 60 / 60 = 6,111.1111111111
+        // 디바이스 총 사용일 = (1503014400000 - 1436788800000) / 1000/ 60 / 60 / 24 = 766.5
         assertThat(subject.getAppUsageAverageHourPerDay()).isEqualTo(8);
     }
 
