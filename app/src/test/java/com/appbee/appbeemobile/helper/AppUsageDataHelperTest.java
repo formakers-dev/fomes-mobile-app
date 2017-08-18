@@ -216,6 +216,13 @@ public class AppUsageDataHelperTest {
         assertThat(subject.getAppUsageAverageHourPerDay()).isEqualTo(8);
     }
 
+    @Test
+    public void getAppUsageAverageMessage호출시_알맞은_메세지를_리턴한다() throws Exception {
+        assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(1))).contains("짱 적은 편");
+        assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(5))).contains("짱 적당한 편");
+        assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(10))).contains("짱 많은 편");
+    }
+
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
         assertThat(shortTermStat.getPackageName()).isEqualTo(packageName);
         assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
