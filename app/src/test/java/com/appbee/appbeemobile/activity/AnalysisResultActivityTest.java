@@ -48,6 +48,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppCountMessage(200)).thenReturn(R.string.app_count_proper_msg);
         when(appUsageDataHelper.getAppCountMessage(400)).thenReturn(R.string.app_count_many_msg);
         when(appUsageDataHelper.getAppUsageAverageHourPerDay()).thenReturn(8);
+        when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
 
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
     }
@@ -59,6 +60,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(2);
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
+        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
         assertThat(fragment.isAdded()).isTrue();
     }
 }
