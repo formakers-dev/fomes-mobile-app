@@ -142,7 +142,7 @@ public class AppUsageDataHelper {
     }
 
     public @StringRes int getAppUsageAverageMessage(int hour) {
-        if (hour < 1) {
+        if (hour < 2) {
             return R.string.app_usage_average_time_few_msg;
         } else if (hour > 5) {
             return R.string.app_usage_average_time_many_msg;
