@@ -9,10 +9,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
-        jackOptions {
-            enabled true
-        }
     }
     signingConfigs {
         release {
@@ -77,3 +73,5 @@ dependencies {
     testCompile 'com.squareup.okhttp:mockwebserver:1.2.1'
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'realm-android'

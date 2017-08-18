@@ -12,6 +12,7 @@ import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     AppService appService;
+
+    @Inject
+    AppRepositoryHelper appRepositoryHelper;
 
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
@@ -69,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
     AppService.AppInfosServiceCallback appInfosServiceCallback = new AppService.AppInfosServiceCallback() {
         @Override
-        public void onSuccess(List<AppInfo> result) {
+        public void onSuccess(List<AppInfo> appInfos) {
+            appRepositoryHelper.insertUsedApps(appInfos);
             moveToAnalysisResultActivity();
         }
 

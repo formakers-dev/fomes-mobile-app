@@ -1,0 +1,39 @@
+package com.appbee.appbeemobile.repository.helper;
+
+import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.repository.model.UsedApp;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import io.realm.Realm;
+
+public class AppRepositoryHelper {
+
+    @Inject
+    public AppRepositoryHelper() {
+
+    }
+
+    public void insertUsedApps(final List<AppInfo> appInfos) {
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.beginTransaction();
+
+        appInfos.forEach(appInfo -> {
+                    UsedApp usedApp = new UsedApp();
+                    usedApp.setPackageName(appInfo.getPackageName());
+                    usedApp.setAppName(appInfo.getAppName());
+                    usedApp.setCategoryId1(appInfo.getCategoryId1());
+                    usedApp.setCategoryName1(appInfo.getCategoryName1());
+                    usedApp.setCategoryId2(appInfo.getCategoryId2());
+                    usedApp.setCategoryName2(appInfo.getCategoryName2());
+                    realm.copyToRealmOrUpdate(usedApp);
+                });
+
+        realm.commitTransaction();
+
+        realm.close();
+    }
+}

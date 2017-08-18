@@ -6,8 +6,10 @@ import android.provider.Settings;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +46,9 @@ public class MainActivityTest extends ActivityTest {
 
     @Inject
     AppService mockAppService;
+
+    @Inject
+    AppRepositoryHelper appRepositoryHelper;
 
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
@@ -92,8 +97,17 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
+    public void appInfosServiceCallback의_onSuccess를_호출했을때_DB에_결과를_저장한다() throws Exception {
+        List<AppInfo> returnedAppInfos = mock(List.class);
+        MainActivity subject = activityController.create().get();
+        subject.appInfosServiceCallback.onSuccess(returnedAppInfos);
+
+        verify(appRepositoryHelper).insertUsedApps(eq(returnedAppInfos));
+    }
+
+    @Test
     public void appInfosServiceCallback의_onSuccess를_호출했을때_분석결과화면으로_이동한다() throws Exception {
-        MainActivity subject = activityController.get();
+        MainActivity subject = activityController.create().get();
         subject.appInfosServiceCallback.onSuccess(mock(List.class));
 
         assertLaunchAnalysisResultActivity(subject);
