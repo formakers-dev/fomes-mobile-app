@@ -202,7 +202,7 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getAppUsageAverageTime호출시_앱사용평균시간을_리턴한다() throws Exception {
-        when(mockLocalStorageHelper.getMinFirstStartedStatTimeStamp()).thenReturn(1436788800000L); // 2015년 July 13일 Monday PM 12:00:00
+        when(mockLocalStorageHelper.getMinStartedStatTimeStamp()).thenReturn(1436788800000L); // 2015년 July 13일 Monday PM 12:00:00
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("com.package.name1", 5_000_000_000L, 1436788800000L));
         preStoredUsageStats.add(createMockUsageStats("com.package.name2", 8_000_000_000L, 1499934615000L));

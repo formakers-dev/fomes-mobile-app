@@ -13,7 +13,7 @@ public class LocalStorageHelper {
     private static final String NAME = "APP_BEE_SHARED_PREFERENCES";
     private static final String KEY_LAST_USAGE_TIME = "LAST_USAGE_TIME";
     private static final String KEY_ACCESS_TOKEN = "ACCESS_TOKEN";
-    private static final String KEY_MIN_FIRST_STARTED_STAT_TIME_STAMP = "MIN_FIRST_STARTED_STAT_TIME_STAMP";
+    private static final String KEY_MIN_STARTED_STAT_TIME_STAMP = "MIN_STARTED_STAT_TIME_STAMP";
 
     private SharedPreferences sf;
 
@@ -58,11 +58,11 @@ public class LocalStorageHelper {
         return getLong(KEY_LAST_USAGE_TIME, 0L);
     }
 
-    public void setMinFirstStartedStatTimeStamp(long minFirstStartedStatTimeStamp) {
-        putLong(KEY_MIN_FIRST_STARTED_STAT_TIME_STAMP, minFirstStartedStatTimeStamp);
+    public void setMinStartedStatTimeStamp(long minStartedStatTimeStamp) {
+        putLong(KEY_MIN_STARTED_STAT_TIME_STAMP, minStartedStatTimeStamp);
     }
 
-    public long getMinFirstStartedStatTimeStamp() {
-        return getLong(KEY_MIN_FIRST_STARTED_STAT_TIME_STAMP, 0L);
+    public long getMinStartedStatTimeStamp() {
+        return getLong(KEY_MIN_STARTED_STAT_TIME_STAMP, 0L);
     }
 }

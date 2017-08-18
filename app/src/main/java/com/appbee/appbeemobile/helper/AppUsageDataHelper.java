@@ -105,7 +105,7 @@ public class AppUsageDataHelper {
             }
         }
 
-        localStorageHelper.setMinFirstStartedStatTimeStamp(minFirstStartedStatTimeStamp);
+        localStorageHelper.setMinStartedStatTimeStamp(minFirstStartedStatTimeStamp);
 
         return Observable.from(dailyUsageStatMap.values())
                 .toList()
@@ -137,10 +137,8 @@ public class AppUsageDataHelper {
         }
 
         totalUsedTime = totalUsedTime / 1000 / 60 / 60;
-
-        long mobileTotalUsedTime = TimeUtil.getMobileTotalUsedTime(localStorageHelper.getMinFirstStartedStatTimeStamp());
-
-        return Math.round(totalUsedTime / (float) mobileTotalUsedTime);
+        long mobileTotalUsedDay = TimeUtil.getMobileTotalUsedDay(localStorageHelper.getMinStartedStatTimeStamp());
+        return Math.round(totalUsedTime / (float) mobileTotalUsedDay);
     }
 
 }
