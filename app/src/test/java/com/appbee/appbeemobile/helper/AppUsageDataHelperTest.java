@@ -49,7 +49,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStatsForYear호출시_1년간_일별통계정보를_리턴한다() throws Exception {
+    public void getLongTermStatsForYear호출시_연간_일별통계정보를_리턴한다() throws Exception {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
@@ -71,8 +71,22 @@ public class AppUsageDataHelperTest {
         List<LongTermStat> actualResult = subject.getLongTermStats();
 
         assertEquals(actualResult.size(), 2);
-        assertEquals(actualResult.get(0).getTotalUsedTime(), 300L);
-        assertEquals(actualResult.get(1).getTotalUsedTime(), 400L);
+        assertEquals(actualResult.get(0).getTotalUsedTime(), 400L);
+        assertEquals(actualResult.get(1).getTotalUsedTime(), 300L);
+    }
+
+    @Test
+    public void getLongTermStatsForYear호출시_연간_일별통계정보_사용시간이_많은순서대로_리턴한다() throws Exception {
+        List<UsageStats> preStoredUsageStats = new ArrayList<>();
+        preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
+        preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
+
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+
+        List<LongTermStat> actualResult = subject.getLongTermStats();
+
+        assertEquals(actualResult.size(), 2);
+        assertEquals(actualResult.get(0).getPackageName(), "bbbbb");
     }
 
     @Test
@@ -87,6 +101,7 @@ public class AppUsageDataHelperTest {
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageA", 1000L, 1100L);
     }
+
 
     @Test
     public void getShortTermStats호출시_A앱이_떠있는상태에서_백그라운드로_가지않고_B앱이_실행된경우_A앱의_실행시간은_무시한다() throws Exception {
@@ -210,10 +225,12 @@ public class AppUsageDataHelperTest {
         when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
         ShadowSystemClock.setCurrentTimeMillis(1503014400000L); // 2017년 August 18일 Friday AM 12:00:00
 
+        List<LongTermStat> longTermStatList = subject.getLongTermStats();
+
         // (앱 사용시간의 총합 / 디바이스 총 사용일) 의 반올림.....
         // 앱 사용시간의 총합 = 22000000000 / 1000 / 60 / 60 = 6,111.1111111111
         // 디바이스 총 사용일 = (1503014400000 - 1436788800000) / 1000/ 60 / 60 / 24 = 766.5
-        assertThat(subject.getAppUsageAverageHourPerDay()).isEqualTo(8);
+        assertThat(subject.getAppUsageAverageHourPerDay(longTermStatList)).isEqualTo(8);
     }
 
     @Test
@@ -238,5 +255,6 @@ public class AppUsageDataHelperTest {
         when(mockUsageStats.getLastTimeUsed()).thenReturn(lastTimeUsed);
         return mockUsageStats;
     }
+
 
 }
