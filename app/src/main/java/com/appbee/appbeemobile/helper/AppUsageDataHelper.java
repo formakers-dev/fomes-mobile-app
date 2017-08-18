@@ -13,6 +13,7 @@ import com.appbee.appbeemobile.util.TimeUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -20,8 +21,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import rx.Observable;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
@@ -107,10 +106,9 @@ public class AppUsageDataHelper {
 
         localStorageHelper.setMinStartedStatTimeStamp(minFirstStartedStatTimeStamp);
 
-        return Observable.from(dailyUsageStatMap.values())
-                .toList()
-                .toBlocking()
-                .single();
+        List<LongTermStat> longTermStatList = new ArrayList<>(dailyUsageStatMap.values());
+        Collections.sort(longTermStatList, (o1, o2) -> Long.valueOf(o2.getTotalUsedTime()).compareTo(o1.getTotalUsedTime()));
+        return longTermStatList;
     }
 
     public List<NativeAppInfo> getAppList() {
@@ -127,10 +125,8 @@ public class AppUsageDataHelper {
         }
     }
 
-    public int getAppUsageAverageHourPerDay() {
+    public int getAppUsageAverageHourPerDay(List<LongTermStat> longTermStatList) {
         long totalUsedTime = 0L;
-
-        List<LongTermStat> longTermStatList = this.getLongTermStats();
 
         for (LongTermStat item : longTermStatList) {
             totalUsedTime += item.getTotalUsedTime();

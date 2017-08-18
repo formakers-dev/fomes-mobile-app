@@ -9,6 +9,9 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.model.LongTermStat;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,9 +43,14 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, getString(appUsageDataHelper.getAppCountMessage(appCount)));
 
-        int appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay();
+        List<LongTermStat> longTermStatList = appUsageDataHelper.getLongTermStats();
+        int appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay(longTermStatList);
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
+
+        LongTermStat longTermStat = longTermStatList.get(0);
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_PACKAGE_NAME, longTermStat.getPackageName());
+        bundle.putLong(OverviewFragment.EXTRA_LONGEST_USED_APP_TIME, longTermStat.getTotalUsedTime());
 
         overviewFragment.setArguments(bundle);
 
