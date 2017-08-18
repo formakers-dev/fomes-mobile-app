@@ -9,4 +9,8 @@
     <string name="overview_average_time">하루 평균 %d시간, </string>
     <string name="app_service_get_info_api_fail">appList API fail</string>
     <string name="now_loading">Now Loading...</string>
+
+    <string name="app_usage_average_time_many_msg">짱 많은 편</string>
+    <string name="app_usage_average_time_few_msg">짱 적은 편</string>
+    <string name="app_usage_average_time_proper_msg">짱 적당한 편</string>
 </resources>
