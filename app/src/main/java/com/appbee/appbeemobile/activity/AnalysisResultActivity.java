@@ -27,7 +27,7 @@ public class AnalysisResultActivity extends Activity {
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
         getFragmentManager().beginTransaction()
-                .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
+                .add(R.id.fragment_container, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
                 .commit();
     }
 
