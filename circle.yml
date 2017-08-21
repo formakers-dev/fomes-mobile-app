@@ -22,8 +22,13 @@ dependencies:
         - /usr/local/android-sdk-linux/build-tools/25.0.1
 
 test:
+  pre:
+    - emulator -avd circleci-android24 -no-window:
+        background: true
+        parallel: true
+    - circle-android wait-for-boot
   override:
-    - ./gradlew testReleaseUnitTest assembleRelease
+    - ./gradlew testReleaseUnitTest connectedAndroidTest assembleRelease
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/debug/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
