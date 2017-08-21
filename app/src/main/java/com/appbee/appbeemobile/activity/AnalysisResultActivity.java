@@ -23,6 +23,7 @@ public class AnalysisResultActivity extends Activity {
     public static final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
 
     public static final int NUMBER_OF_MOST_INSTALLED_CATEGORY = 3;
+    public static final int NUMBER_OF_LEAST_INSTALLED_CATEGORY = 1;
 
     @Inject
     AppUsageDataHelper appUsageDataHelper;
@@ -74,7 +75,8 @@ public class AnalysisResultActivity extends Activity {
         Fragment brainFragment = new BrainFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_USED_CATEGORIES, appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY));
+        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY));
+        bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY));
 
         brainFragment.setArguments(bundle);
 

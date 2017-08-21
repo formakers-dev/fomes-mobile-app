@@ -15,5 +15,6 @@
     <string name="app_usage_average_time_proper_msg">짱 적당한 편</string>
 
     <string name="longest_used_app_title">당신과 뗄레야 뗄수 없는 앱</string>
-    <string name="most_installed_categories_title">가장많이설치한카테고리는</string>
+    <string name="most_installed_categories_title">가장 많이 설치한 카테고리는 </string>
+    <string name="least_installed_categories_title">가장 적게 설치한 카테고리는 </string>
 </resources>

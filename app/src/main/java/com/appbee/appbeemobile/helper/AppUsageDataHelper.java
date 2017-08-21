@@ -172,4 +172,11 @@ public class AppUsageDataHelper {
         List<String> categoryListSortedByInstalls = appRepositoryHelper.getCategoryListSortedByInstalls();
         return new ArrayList<>(categoryListSortedByInstalls.subList(0, Math.min(count, categoryListSortedByInstalls.size())));
     }
+
+
+    public ArrayList<String> getLeastInstalledCategories(int count) {
+        List<String> categories = appRepositoryHelper.getCategoryListSortedByInstalls();
+        int categorySize = categories.size();
+        return new ArrayList<>(categories.subList(categorySize - count, categorySize));
+    }
 }

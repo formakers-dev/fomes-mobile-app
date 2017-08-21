@@ -77,12 +77,17 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(brainFragment.isAdded()).isTrue();
 
         Bundle bundle = brainFragment.getArguments();
-        ArrayList<String> actualMostUsedCategories = bundle.getStringArrayList(BrainFragment.EXTRA_MOST_USED_CATEGORIES);
+        ArrayList<String> actualMostUsedCategories = bundle.getStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES);
         assertThat(actualMostUsedCategories).isNotNull();
         assertThat(actualMostUsedCategories.size()).isEqualTo(3);
         assertThat(actualMostUsedCategories.get(0)).isEqualTo("사진");
         assertThat(actualMostUsedCategories.get(1)).isEqualTo("쇼핑");
         assertThat(actualMostUsedCategories.get(2)).isEqualTo("음악");
+
+        ArrayList<String> actualLeastInstalledCategories = bundle.getStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES);
+        assertThat(actualLeastInstalledCategories).isNotNull();
+        assertThat(actualLeastInstalledCategories.size()).isEqualTo(1);
+        assertThat(actualLeastInstalledCategories.get(0)).isEqualTo("고양이");
     }
 
     private void mockDummyData() {
@@ -108,5 +113,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         mostUsedCategories.add("쇼핑");
         mostUsedCategories.add("음악");
         when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(mostUsedCategories);
+
+        ArrayList<String> leastUsedCategories = new ArrayList<>();
+        leastUsedCategories.add("고양이");
+        when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(leastUsedCategories);
     }
 }
