@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
@@ -18,7 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class AnalysisResultActivity extends Activity {
-    final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
+    public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";
+    public static final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
 
     @Inject
     AppUsageDataHelper appUsageDataHelper;
@@ -38,7 +40,8 @@ public class AnalysisResultActivity extends Activity {
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
         getFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
+                .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
+                .add(R.id.brain_fragment, new BrainFragment(), BRAIN_FRAGMENT_TAG)
                 .commit();
     }
 
