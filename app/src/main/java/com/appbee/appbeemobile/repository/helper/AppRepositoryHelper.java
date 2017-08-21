@@ -13,7 +13,6 @@ public class AppRepositoryHelper {
 
     @Inject
     public AppRepositoryHelper() {
-
     }
 
     public void insertUsedApps(final List<AppInfo> appInfos) {
@@ -35,5 +34,9 @@ public class AppRepositoryHelper {
         realm.commitTransaction();
 
         realm.close();
+    }
+
+    public int getTotalUsedApps() {
+        return (int)Realm.getDefaultInstance().where(UsedApp.class).count();
     }
 }
