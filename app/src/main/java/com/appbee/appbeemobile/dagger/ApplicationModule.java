@@ -9,6 +9,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 @Module
 public class ApplicationModule {
@@ -28,5 +30,18 @@ public class ApplicationModule {
     @Provides
     GoogleSignInAPIHelper googleSignInAPIHelper() {
         return new GoogleSignInAPIHelper();
+    }
+
+    @Singleton
+    @Provides
+    Realm realm(Context context) {
+        Realm.init(context);
+        RealmConfiguration config = new RealmConfiguration
+                .Builder()
+                .name("appbeeDB")
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
+        return Realm.getDefaultInstance();
     }
 }

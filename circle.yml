@@ -28,7 +28,7 @@ test:
         parallel: true
     - circle-android wait-for-boot
   override:
-    - ./gradlew testReleaseUnitTest connectedAndroidTest assembleRelease
+    - ./gradlew testReleaseUnitTest connectedAndroidTest assembleRelease:
         timeout: 30
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
