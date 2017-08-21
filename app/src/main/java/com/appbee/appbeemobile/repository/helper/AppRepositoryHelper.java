@@ -26,16 +26,16 @@ public class AppRepositoryHelper {
 
         realm.beginTransaction();
 
-        appInfos.forEach(appInfo -> {
-                    UsedApp usedApp = new UsedApp();
-                    usedApp.setPackageName(appInfo.getPackageName());
-                    usedApp.setAppName(appInfo.getAppName());
-                    usedApp.setCategoryId1(appInfo.getCategoryId1());
-                    usedApp.setCategoryName1(appInfo.getCategoryName1());
-                    usedApp.setCategoryId2(appInfo.getCategoryId2());
-                    usedApp.setCategoryName2(appInfo.getCategoryName2());
-                    realm.copyToRealmOrUpdate(usedApp);
-                });
+        for (AppInfo appInfo : appInfos) {
+            UsedApp usedApp = new UsedApp();
+            usedApp.setPackageName(appInfo.getPackageName());
+            usedApp.setAppName(appInfo.getAppName());
+            usedApp.setCategoryId1(appInfo.getCategoryId1());
+            usedApp.setCategoryName1(appInfo.getCategoryName1());
+            usedApp.setCategoryId2(appInfo.getCategoryId2());
+            usedApp.setCategoryName2(appInfo.getCategoryName2());
+            realm.copyToRealmOrUpdate(usedApp);
+        }
 
         realm.commitTransaction();
         realm.close();
@@ -82,12 +82,13 @@ public class AppRepositoryHelper {
     public void updateTotalUsedTime(Map<String, Long> map) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        map.forEach((packageName, totalUsedTime) -> {
+
+        for (String packageName : map.keySet()) {
             final UsedApp usedApp = realm.where(UsedApp.class).equalTo("packageName", packageName).findFirst();
-            if(usedApp != null) {
-                usedApp.setTotalUsedTime(totalUsedTime);
+            if (usedApp != null) {
+                usedApp.setTotalUsedTime(map.get(packageName));
             }
-        });
+        }
 
         realm.commitTransaction();
         realm.close();

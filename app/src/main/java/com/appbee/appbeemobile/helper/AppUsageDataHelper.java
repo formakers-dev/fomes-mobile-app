@@ -157,13 +157,13 @@ public class AppUsageDataHelper {
     public Map<String, Long> getLongTermStatsSummary() {
         Map<String, Long> map = new HashMap<>();
 
-        getLongTermStats().forEach(longTermStat -> {
+        for (LongTermStat longTermStat : getLongTermStats()) {
             if(map.get(longTermStat.getPackageName()) == null){
                 map.put(longTermStat.getPackageName(), longTermStat.getTotalUsedTime());
             } else {
                 map.put(longTermStat.getPackageName(), map.get(longTermStat.getPackageName()) + longTermStat.getTotalUsedTime());
             }
-        });
+        }
 
         return map;
     }
