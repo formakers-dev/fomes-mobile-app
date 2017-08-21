@@ -79,6 +79,7 @@ public class AppRepositoryHelperTest {
         insertDummyData();
 
         Map<String, Long> map = new HashMap<>();
+        map.put("com.package.name0", 0L);
         map.put("com.package.name1", 1000L);
         map.put("com.package.name2", 2000L);
 
