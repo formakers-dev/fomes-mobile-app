@@ -45,7 +45,9 @@ public class AppRepositoryHelper {
         realm.beginTransaction();
         map.forEach((packageName, totalUsedTime) -> {
             final UsedApp usedApp = realm.where(UsedApp.class).equalTo("packageName", packageName).findFirst();
-            usedApp.setTotalUsedTime(totalUsedTime);
+            if(usedApp != null) {
+                usedApp.setTotalUsedTime(totalUsedTime);
+            }
         });
 
         realm.commitTransaction();

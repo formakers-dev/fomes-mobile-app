@@ -6,6 +6,7 @@ import android.provider.Settings;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
@@ -24,6 +25,7 @@ import org.robolectric.shadows.ShadowToast;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,22 +50,25 @@ public class MainActivityTest extends ActivityTest {
     AppService mockAppService;
 
     @Inject
-    AppRepositoryHelper appRepositoryHelper;
+    AppRepositoryHelper mockAppRepositoryHelper;
 
     @Inject
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    AppUsageDataHelper mockAppUsageDataHelper;
+
+    @Inject
+    AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
         activityController = Robolectric.buildActivity(MainActivity.class);
 
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
     }
 
     @Test
     public void onCreate호출시_Stat접근권한이_없는_경우_권한요청_Activity를_호출한다() throws Exception {
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
         MainActivity subject = activityController.create().get();
 
@@ -100,9 +105,13 @@ public class MainActivityTest extends ActivityTest {
     public void appInfosServiceCallback의_onSuccess를_호출했을때_DB에_결과를_저장한다() throws Exception {
         List<AppInfo> returnedAppInfos = mock(List.class);
         MainActivity subject = activityController.create().get();
+        Map<String, Long> mockLongTermStatsSummary = mock(Map.class);
+        when(mockAppUsageDataHelper.getLongTermStatsSummary()).thenReturn(mockLongTermStatsSummary);
+
         subject.appInfosServiceCallback.onSuccess(returnedAppInfos);
 
-        verify(appRepositoryHelper).insertUsedApps(eq(returnedAppInfos));
+        verify(mockAppRepositoryHelper).insertUsedApps(eq(returnedAppInfos));
+        verify(mockAppRepositoryHelper).updateTotalUsedTime(eq(mockLongTermStatsSummary));
     }
 
     @Test
@@ -115,11 +124,11 @@ public class MainActivityTest extends ActivityTest {
 
     @Test
     public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_앱목록정보조회API를_요청한다() throws Exception {
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         MainActivity subject = activityController.create().get();
         shadowOf(subject).getNextStartedActivity();
 
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
 
         verify(mockAppService).getInfos(any(), eq(subject.appInfosServiceCallback));
@@ -127,7 +136,7 @@ public class MainActivityTest extends ActivityTest {
 
     @Test
     public void 권한요청에대한_onActivityResult호출시_접근권한이_부여되지_않은_경우_앱을_종료한다() throws Exception {
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         MainActivity subject = activityController.create().get();
 
         subject.onActivityResult(1001, 0, null);

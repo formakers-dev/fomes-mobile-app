@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     AppRepositoryHelper appRepositoryHelper;
+
+    @Inject
+    AppUsageDataHelper appUsageDataHelper;
 
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSuccess(List<AppInfo> appInfos) {
             appRepositoryHelper.insertUsedApps(appInfos);
+            appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getLongTermStatsSummary());
             moveToAnalysisResultActivity();
         }
 
