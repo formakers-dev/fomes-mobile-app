@@ -8,6 +8,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
+import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
@@ -41,6 +42,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
     @Inject
     AppRepositoryHelper appRepositoryHelper;
 
+    @Inject
+    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
@@ -59,6 +63,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppUsageAverageHourPerDay(any())).thenReturn(8);
         when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
+        when(appBeeAndroidNativeHelper.getAppName("com.package.test")).thenReturn("testApp");
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
     }
 
@@ -70,8 +75,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
-        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_PACKAGE_NAME)).isEqualTo("com.package.test");
-        assertThat(bundle.getLong(OverviewFragment.EXTRA_LONGEST_USED_APP_TIME)).isEqualTo(999_999_999L);
+        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME)).isEqualTo("testApp");
         assertThat(fragment.isAdded()).isTrue();
     }
 }

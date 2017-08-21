@@ -6,6 +6,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Process;
@@ -64,6 +65,16 @@ public class AppBeeAndroidNativeHelper {
         }
 
         return nativeAppInfoList;
+    }
+
+    public String getAppName(String packageName) {
+        try {
+            final PackageManager pm = context.getPackageManager();
+            ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
+            return pm.getApplicationLabel(ai).toString();
+        } catch (final PackageManager.NameNotFoundException e) {
+            return null;
+        }
     }
 
     public List<UsageStats> getUsageStats(long startTime, long endTime) {
