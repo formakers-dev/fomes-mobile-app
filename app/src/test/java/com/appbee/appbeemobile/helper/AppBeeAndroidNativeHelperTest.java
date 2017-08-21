@@ -6,6 +6,8 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.ResolveInfo;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -123,5 +125,21 @@ public class AppBeeAndroidNativeHelperTest {
         when(mockAppOpsManager.checkOpNoThrow(eq(AppOpsManager.OPSTR_GET_USAGE_STATS), anyInt(), anyString())).thenReturn(AppOpsManager.MODE_ALLOWED);
 
         assertThat(subject.hasUsageStatsPermission()).isTrue();
+    }
+
+    @Test
+    public void getAppName호출시_파라미터로받은_PackageName에대한_앱이름을_리턴한다() throws Exception {
+        PackageInfo packageInfo = new PackageInfo();
+        packageInfo.packageName = "com.package.name1";
+        packageInfo.versionName = "1.0";
+        packageInfo.applicationInfo = new ApplicationInfo();
+        packageInfo.applicationInfo.packageName = "com.package.name1";
+        packageInfo.applicationInfo.name = "앱이름1";
+
+        shadowOf(RuntimeEnvironment.application.getPackageManager()).addPackage(packageInfo);
+
+        String returnedAppName = subject.getAppName("com.package.name1");
+
+        assertThat(returnedAppName).isEqualTo("앱이름1");
     }
 }

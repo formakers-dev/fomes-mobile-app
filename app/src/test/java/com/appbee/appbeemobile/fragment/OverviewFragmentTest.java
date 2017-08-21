@@ -30,8 +30,7 @@ public class OverviewFragmentTest {
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, "많기도 하네 진짜...");
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 8);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, "짱 많은 편");
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_PACKAGE_NAME, "com.package.test");
-        bundle.putLong(OverviewFragment.EXTRA_LONGEST_USED_APP_TIME, 999_999_999L);
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, "testApp");
         subject = new OverviewFragment();
         subject.setArguments(bundle);
 
@@ -40,34 +39,30 @@ public class OverviewFragmentTest {
 
     @Test
     public void fragment시작시_설치된_앱개수와_앱개수의평가를_표시한다() throws Exception {
-        TextView textView = (TextView) subject.getView().findViewById(R.id.app_count_textview);
-        assertThat(textView.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(textView.getText()).contains("400");
-
-        TextView appCountMsgTextView = (TextView) subject.getView().findViewById(R.id.app_count_msg_textview);
-        assertThat(appCountMsgTextView.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(appCountMsgTextView.getText()).contains("많기도");
+        assertTextViewVisibleAndContains(R.id.app_count_textview, "400");
+        assertTextViewVisibleAndContains(R.id.app_count_msg_textview, "많기도");
     }
 
     @Test
     public void fragment시작시_평균_앱사용_시간과_평가를_표시한다() throws Exception {
-        TextView averageAppUsageTimeTextView = (TextView) subject.getView().findViewById(R.id.average_app_usage_time_textview);
-        assertThat(averageAppUsageTimeTextView.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(averageAppUsageTimeTextView.getText()).contains("8");
-
-        TextView appAverageUsageTimeTextView = (TextView) subject.getView().findViewById(R.id.average_app_usage_time_msg_textview);
-        assertThat(appAverageUsageTimeTextView.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(appAverageUsageTimeTextView.getText()).isEqualTo("짱 많은 편");
+        assertTextViewVisibleAndContains(R.id.average_app_usage_time_textview, "8");
+        assertTextViewVisibleAndEquals(R.id.average_app_usage_time_msg_textview, "짱 많은 편");
     }
 
     @Test
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
-        TextView longestUsedAppTimePackageName = (TextView) subject.getView().findViewById(R.id.longest_used_app_packagename_textview);
-        assertThat(longestUsedAppTimePackageName.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(longestUsedAppTimePackageName.getText()).isEqualTo("com.package.test");
+        assertTextViewVisibleAndEquals(R.id.longest_used_app_name_textview, "testApp");
+    }
 
-        TextView longestUsedAppTime = (TextView) subject.getView().findViewById(R.id.longest_used_app_time_textview);
-        assertThat(longestUsedAppTime.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(Long.valueOf(longestUsedAppTime.getText().toString())).isEqualTo(999_999_999L);
+    private void assertTextViewVisibleAndEquals(int textViewResourceId, String text) {
+        TextView textView = (TextView) subject.getView().findViewById(textViewResourceId);
+        assertThat(textView.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(textView.getText()).isEqualTo(text);
+    }
+
+    private void assertTextViewVisibleAndContains(int textViewResourceId, String text) {
+        TextView textView = (TextView) subject.getView().findViewById(textViewResourceId);
+        assertThat(textView.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(textView.getText()).contains(text);
     }
 }

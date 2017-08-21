@@ -62,12 +62,7 @@
             android:textColor="@android:color/black"
             android:textSize="15dp"
             android:text="@string/longest_used_app_title"/>
-        <TextView android:id="@+id/longest_used_app_packagename_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_blue_light"
-            android:textSize="15dp"/>
-        <TextView android:id="@+id/longest_used_app_time_textview"
+        <TextView android:id="@+id/longest_used_app_name_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_blue_light"
