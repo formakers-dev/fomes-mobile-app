@@ -20,6 +20,7 @@ import org.robolectric.shadows.ShadowSystemClock;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
@@ -256,5 +257,18 @@ public class AppUsageDataHelperTest {
         return mockUsageStats;
     }
 
+    @Test
+    public void getLongTermStatsSummary호출시_package별_totalUsedTime의_합을_리턴한다() throws Exception {
+        List<UsageStats> preStoredUsageStats = new ArrayList<>();
+        preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-12 12:00:00
+        preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
+        preStoredUsageStats.add(createMockUsageStats("aaaaa", 300L, 1500001200000L));    //2017-07-14 12:00:00
 
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+
+        Map map = subject.getLongTermStatsSummary();
+
+        assertThat(map.get("aaaaa")).isEqualTo(400L);
+        assertThat(map.get("bbbbb")).isEqualTo(200L);
+    }
 }

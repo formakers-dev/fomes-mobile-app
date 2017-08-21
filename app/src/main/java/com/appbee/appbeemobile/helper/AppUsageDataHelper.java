@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.helper;
 
 import android.app.usage.UsageStats;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.appbee.appbeemobile.R;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -147,4 +149,18 @@ public class AppUsageDataHelper {
         }
     }
 
+    @NonNull
+    public Map<String, Long> getLongTermStatsSummary() {
+        Map<String, Long> map = new HashMap<>();
+
+        getLongTermStats().forEach(longTermStat -> {
+            if(map.get(longTermStat.getPackageName()) == null){
+                map.put(longTermStat.getPackageName(), longTermStat.getTotalUsedTime());
+            } else {
+                map.put(longTermStat.getPackageName(), map.get(longTermStat.getPackageName()) + longTermStat.getTotalUsedTime());
+            }
+        });
+
+        return map;
+    }
 }
