@@ -7,6 +7,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,12 +42,14 @@ public class AppUsageDataHelperTest {
 
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
     private LocalStorageHelper mockLocalStorageHelper;
+    private AppRepositoryHelper mockAppRepositoryHelper;
 
     @Before
     public void setUp() throws Exception {
         this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
         this.mockLocalStorageHelper = mock(LocalStorageHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockLocalStorageHelper);
+        this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockLocalStorageHelper, mockAppRepositoryHelper);
     }
 
     @Test
@@ -239,6 +242,42 @@ public class AppUsageDataHelperTest {
         assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(1))).contains("짱 적은 편");
         assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(5))).contains("짱 적당한 편");
         assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(10))).contains("짱 많은 편");
+    }
+
+    @Test
+    public void getMostInstalledCategories호출시_많이_설치되어있는_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
+        List<String> dummyCategoryData = new ArrayList<>();
+        dummyCategoryData.add("사진");
+        dummyCategoryData.add("쇼핑");
+        dummyCategoryData.add("음악");
+        dummyCategoryData.add("교육");
+        dummyCategoryData.add("게임");
+        when(mockAppRepositoryHelper.getCategoryListSortedByInstalls()).thenReturn(dummyCategoryData);
+
+        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(3);
+
+        verify(mockAppRepositoryHelper).getCategoryListSortedByInstalls();
+        assertThat(mostInstalledCategories).isNotNull();
+        assertThat(mostInstalledCategories.size()).isEqualTo(3);
+        assertThat(mostInstalledCategories.get(0)).isEqualTo("사진");
+        assertThat(mostInstalledCategories.get(1)).isEqualTo("쇼핑");
+        assertThat(mostInstalledCategories.get(2)).isEqualTo("음악");
+    }
+
+    @Test
+    public void getMostInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리를_리턴한다() throws Exception {
+        List<String> dummyCategoryData = new ArrayList<>();
+        dummyCategoryData.add("사진");
+        dummyCategoryData.add("쇼핑");
+        dummyCategoryData.add("음악");
+        dummyCategoryData.add("교육");
+        dummyCategoryData.add("게임");
+        when(mockAppRepositoryHelper.getCategoryListSortedByInstalls()).thenReturn(dummyCategoryData);
+
+        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(6);
+
+        assertThat(mostInstalledCategories).isNotNull();
+        assertThat(mostInstalledCategories.size()).isEqualTo(5);
     }
 
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {

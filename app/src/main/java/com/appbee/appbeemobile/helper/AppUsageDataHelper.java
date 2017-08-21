@@ -9,6 +9,7 @@ import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.text.SimpleDateFormat;
@@ -36,10 +37,13 @@ public class AppUsageDataHelper {
 
     private final LocalStorageHelper localStorageHelper;
 
+    private final AppRepositoryHelper appRepositoryHelper;
+
     @Inject
-    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper) {
+    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper, AppRepositoryHelper appRepositoryHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
         this.localStorageHelper = localStorageHelper;
+        this.appRepositoryHelper = appRepositoryHelper;
     }
 
     public List<ShortTermStat> getShortTermStats(long startTime) {
@@ -162,5 +166,10 @@ public class AppUsageDataHelper {
         });
 
         return map;
+    }
+
+    public ArrayList<String> getMostInstalledCategories(int count) {
+        List<String> categoryListSortedByInstalls = appRepositoryHelper.getCategoryListSortedByInstalls();
+        return new ArrayList<>(categoryListSortedByInstalls.subList(0, Math.min(count, categoryListSortedByInstalls.size())));
     }
 }
