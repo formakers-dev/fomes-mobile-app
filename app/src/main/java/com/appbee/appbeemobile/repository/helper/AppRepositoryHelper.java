@@ -4,6 +4,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.repository.model.UsedApp;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -37,5 +38,17 @@ public class AppRepositoryHelper {
 
     public int getTotalUsedApps() {
         return (int) Realm.getDefaultInstance().where(UsedApp.class).count();
+    }
+
+    public void updateTotalUsedTime(Map<String, Long> map) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        map.forEach((packageName, totalUsedTime) -> {
+            final UsedApp usedApp = realm.where(UsedApp.class).equalTo("packageName", packageName).findFirst();
+            usedApp.setTotalUsedTime(totalUsedTime);
+        });
+
+        realm.commitTransaction();
+        realm.close();
     }
 }

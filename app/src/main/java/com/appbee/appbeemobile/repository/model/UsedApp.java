@@ -11,6 +11,7 @@ public class UsedApp extends RealmObject {
     private String categoryName1;
     private String categoryId2;
     private String categoryName2;
+    private long totalUsedTime;
 
     public String getPackageName() {
         return packageName;
@@ -58,5 +59,13 @@ public class UsedApp extends RealmObject {
 
     public void setCategoryName2(String categoryName2) {
         this.categoryName2 = categoryName2;
+    }
+
+    public long getTotalUsedTime() {
+        return totalUsedTime;
+    }
+
+    public void setTotalUsedTime(long totalUsedTime) {
+        this.totalUsedTime = totalUsedTime;
     }
 }

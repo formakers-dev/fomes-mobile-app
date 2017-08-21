@@ -11,7 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -70,6 +72,20 @@ public class AppRepositoryHelperTest {
 
         insertDummyData();
         assertEquals(actualData.size(), 2);
+    }
+
+    @Test
+    public void updateTotalUsedTime호출시_사용앱테이블의_TotalUsedTime컬럼값이_갱신된다() throws Exception {
+        insertDummyData();
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("com.package.name1", 1000L);
+        map.put("com.package.name2", 2000L);
+
+        subject.updateTotalUsedTime(map);
+
+        assertEquals(realm.where(UsedApp.class).equalTo("packageName", "com.package.name1").findFirst().getTotalUsedTime(), 1000L);
+        assertEquals(realm.where(UsedApp.class).equalTo("packageName", "com.package.name2").findFirst().getTotalUsedTime(), 2000L);
     }
 
     private void insertDummyData() {
