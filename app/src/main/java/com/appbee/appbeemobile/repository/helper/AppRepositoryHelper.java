@@ -11,13 +11,14 @@ import io.realm.Realm;
 
 public class AppRepositoryHelper {
 
+    private Realm realm;
+
     @Inject
-    public AppRepositoryHelper() {
+    public AppRepositoryHelper(Realm realm) {
+        this.realm = realm;
     }
 
     public void insertUsedApps(final List<AppInfo> appInfos) {
-        Realm realm = Realm.getDefaultInstance();
-
         realm.beginTransaction();
 
         appInfos.forEach(appInfo -> {
@@ -32,11 +33,10 @@ public class AppRepositoryHelper {
                 });
 
         realm.commitTransaction();
-
         realm.close();
     }
 
     public int getTotalUsedApps() {
-        return (int)Realm.getDefaultInstance().where(UsedApp.class).count();
+        return (int) Realm.getDefaultInstance().where(UsedApp.class).count();
     }
 }
