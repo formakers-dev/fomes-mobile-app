@@ -280,6 +280,24 @@ public class AppUsageDataHelperTest {
         assertThat(mostInstalledCategories.size()).isEqualTo(5);
     }
 
+    @Test
+    public void getLeastInstalledCategories호출시_가장_적게_설치된_카테고리리스트를_리턴한다() throws Exception {
+        List<String> dummyCategoryData = new ArrayList<>();
+        dummyCategoryData.add("사진");
+        dummyCategoryData.add("쇼핑");
+        dummyCategoryData.add("음악");
+        dummyCategoryData.add("교육");
+        dummyCategoryData.add("게임");
+        dummyCategoryData.add("고양이");
+        when(mockAppRepositoryHelper.getCategoryListSortedByInstalls()).thenReturn(dummyCategoryData);
+
+        ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(1);
+
+        assertThat(leastInstalledCategories).isNotNull();
+        assertThat(leastInstalledCategories.size()).isEqualTo(1);
+        assertThat(leastInstalledCategories.get(0)).isEqualTo("고양이");
+    }
+
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
         assertThat(shortTermStat.getPackageName()).isEqualTo(packageName);
         assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);

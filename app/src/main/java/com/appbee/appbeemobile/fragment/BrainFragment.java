@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class BrainFragment extends Fragment {
 
-    public static final String EXTRA_MOST_USED_CATEGORIES = "EXTRA_MOST_USED_CATEGORIES";
-
+    public static final String EXTRA_MOST_INSTALLED_CATEGORIES = "EXTRA_MOST_INSTALLED_CATEGORIES";
+    public static final String EXTRA_LEAST_INSTALLED_CATEGORIES = "EXTRA_LEAST_INSTALLED_CATEGORIES";
 
     @Nullable
     @Override
@@ -29,7 +29,10 @@ public class BrainFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<String> mostInstalledCategories = getArguments().getStringArrayList(EXTRA_MOST_USED_CATEGORIES);
+        ArrayList<String> mostInstalledCategories = getArguments().getStringArrayList(EXTRA_MOST_INSTALLED_CATEGORIES);
         ((TextView) view.findViewById(R.id.most_installed_categories)).setText(mostInstalledCategories.toString());
+
+        ArrayList<String> leastInstalledCategories = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
+        ((TextView) view.findViewById(R.id.least_installed_categories)).setText(leastInstalledCategories.toString());
     }
 }

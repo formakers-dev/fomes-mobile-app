@@ -27,12 +27,15 @@ public class BrainFragmentTest {
     public void setUp() throws Exception {
         Bundle bundle = new Bundle();
 
-        ArrayList<String> categoryList = new ArrayList<>();
-        categoryList.add("categoryId1");
-        categoryList.add("categoryId2");
-        categoryList.add("categoryId3");
+        ArrayList<String> mostInstalledCategoryList = new ArrayList<>();
+        mostInstalledCategoryList.add("categoryId1");
+        mostInstalledCategoryList.add("categoryId2");
+        mostInstalledCategoryList.add("categoryId3");
+        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, mostInstalledCategoryList);
 
-        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_USED_CATEGORIES, categoryList);
+        ArrayList<String> leastInstalledCategoryList = new ArrayList<>();
+        leastInstalledCategoryList.add("leastInstalledCategoryId");
+        bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, leastInstalledCategoryList);
 
         subject = new BrainFragment();
         subject.setArguments(bundle);
@@ -43,5 +46,10 @@ public class BrainFragmentTest {
     @Test
     public void onViewCreated호출시_가장많이설치한카테고리목록이_나타난다() throws Exception {
         assertThat(((TextView) subject.getView().findViewById(R.id.most_installed_categories)).getText()).isEqualTo("[categoryId1, categoryId2, categoryId3]");
+    }
+
+    @Test
+    public void onViewCreated호출시_가장적게설치한카테고리목록이_나타난다() throws Exception {
+        assertThat(((TextView) subject.getView().findViewById(R.id.least_installed_categories)).getText()).isEqualTo("[leastInstalledCategoryId]");
     }
 }
