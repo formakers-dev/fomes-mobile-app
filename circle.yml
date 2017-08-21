@@ -29,7 +29,7 @@ test:
     - circle-android wait-for-boot
   override:
     - ./gradlew testReleaseUnitTest connectedAndroidTest assembleRelease:
-        timeout: 30
+        timeout: 1200
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/debug/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
