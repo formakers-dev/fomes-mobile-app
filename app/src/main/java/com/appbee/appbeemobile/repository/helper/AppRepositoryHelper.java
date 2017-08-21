@@ -96,18 +96,15 @@ public class AppRepositoryHelper {
         realm.close();
     }
 
-    public List<AppInfo> getTop3UsedAppList() {
-        List<AppInfo> appInfoList = new ArrayList<>();
+    public List<String> getTop3UsedAppList() {
+        List<String> packageNames = new ArrayList<>();
         final List<UsedApp> usedApps = Realm.getDefaultInstance().where(UsedApp.class).findAllSorted("totalUsedTime", Sort.DESCENDING);
 
         final int maxListCount = Math.min(3, usedApps.size());
 
         Observable.range(0, maxListCount)
-                .forEach(i -> {
-                    final UsedApp usedApp = usedApps.get(i);
-                    appInfoList.add(new AppInfo(usedApp.getPackageName(), usedApp.getAppName(), usedApp.getCategoryId1(), usedApp.getCategoryName1(), usedApp.getCategoryId2(), usedApp.getCategoryName2()));
-                });
+                .forEach(i ->  packageNames.add(usedApps.get(i).getPackageName()));
 
-        return appInfoList;
+        return packageNames;
     }
 }

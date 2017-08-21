@@ -16,7 +16,9 @@ public class OverviewFragment extends Fragment {
     public static final String EXTRA_APP_LIST_COUNT_MSG = "EXTRA_APP_LIST_COUNT_MSG";
     public static final String EXTRA_APP_AVG_TIME = "EXTRA_APP_AVG_TIME";
     public static final String EXTRA_APP_USAGE_AVG_TIME_MSG = "EXTRA_APP_USAGE_AVG_TIME_MSG";
-    public static final String EXTRA_LONGEST_USED_APP_NAME = "EXTRA_LONGEST_USED_APP_NAME";
+    public static final String EXTRA_LONGEST_USED_APP_NAME1 = "EXTRA_LONGEST_USED_APP_NAME1";
+    public static final String EXTRA_LONGEST_USED_APP_NAME2 = "EXTRA_LONGEST_USED_APP_NAME2";
+    public static final String EXTRA_LONGEST_USED_APP_NAME3 = "EXTRA_LONGEST_USED_APP_NAME3";
 
     View view;
 
@@ -37,7 +39,9 @@ public class OverviewFragment extends Fragment {
                 .setText(String.format(getString(R.string.overview_average_time), getArguments().getInt(EXTRA_APP_AVG_TIME)));
         ((TextView) view.findViewById(R.id.average_app_usage_time_msg_textview)).setText(getArguments().getString(EXTRA_APP_USAGE_AVG_TIME_MSG));
 
-        ((TextView) view.findViewById(R.id.longest_used_app_name_textview)).setText(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME));
+        ((TextView) view.findViewById(R.id.longest_used_app_name1_textview)).setText(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME1));
+        ((TextView) view.findViewById(R.id.longest_used_app_name2_textview)).setText(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME2));
+        ((TextView) view.findViewById(R.id.longest_used_app_name3_textview)).setText(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME3));
 
         return view;
     }

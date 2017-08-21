@@ -20,7 +20,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class AppRepositoryHelperTest {
@@ -109,10 +109,10 @@ public class AppRepositoryHelperTest {
     public void getTop3UsedAppList호출시_3개미만의앱정보만_있는경우_존재하는_앱정보목록을_모두_총사용시간_역순으로_리턴한다() throws Exception {
         insertDummyDataWithTotalUsedTime();
 
-        List<AppInfo> appInfos = subject.getTop3UsedAppList();
+        List<String> appInfos = subject.getTop3UsedAppList();
         assertEquals(appInfos.size(), 2);
-        assertEquals(appInfos.get(0).getPackageName(), "com.package.name2");
-        assertEquals(appInfos.get(1).getPackageName(), "com.package.name1");
+        assertEquals(appInfos.get(0), "com.package.name2");
+        assertEquals(appInfos.get(1), "com.package.name1");
     }
 
     @Test
@@ -131,12 +131,12 @@ public class AppRepositoryHelperTest {
         map.put("com.package.name4", 4000L);
         subject.updateTotalUsedTime(map);
 
-        List<AppInfo> appInfos = subject.getTop3UsedAppList();
+        List<String> appInfos = subject.getTop3UsedAppList();
 
         assertEquals(appInfos.size(), 3);
-        assertEquals(appInfos.get(0).getPackageName(), "com.package.name4");
-        assertEquals(appInfos.get(1).getPackageName(), "com.package.name3");
-        assertEquals(appInfos.get(2).getPackageName(), "com.package.name1");
+        assertEquals(appInfos.get(0), "com.package.name4");
+        assertEquals(appInfos.get(1), "com.package.name3");
+        assertEquals(appInfos.get(2), "com.package.name1");
     }
 
     private void insertDummyData() {
