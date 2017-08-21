@@ -107,9 +107,9 @@ public class AppRepositoryHelperTest {
         List<AppInfo> expectedData = new ArrayList<>();
         expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
         expectedData.add(new AppInfo("com.package.name2", "appName2", "categoryId1", "categoryName1", null, null));
-        expectedData.add(new AppInfo("com.package.name3", "appName3", "categoryId1", "categoryName1", null, null));
+        expectedData.add(new AppInfo("com.package.name3", "appName3", "categoryId1", "categoryName1", "", null));
         expectedData.add(new AppInfo("com.package.name4", "appName4", "categoryId2", "categoryName2", "categoryId1", "categoryName1"));
-        expectedData.add(new AppInfo("com.package.name5", "appName5", "categoryId2", "categoryName2", null, null));
+        expectedData.add(new AppInfo("com.package.name5", "appName5", "categoryId2", "categoryName2", "", null));
         expectedData.add(new AppInfo("com.package.name6", "appName6", "categoryId3", "categoryName3", "categoryId5", "categoryName5"));
         expectedData.add(new AppInfo("com.package.name7", "appName7", "categoryId4", "categoryName4", null, null));
         expectedData.add(new AppInfo("com.package.name8", "appName8", "categoryId4", "categoryName4", null, null));
