@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.util.TimeUtil;
 
 import java.util.ArrayList;
@@ -67,8 +68,9 @@ public class AppStatService {
     public List<String> getUsedPackageNameList() {
         List<String> usedPackageNameList = new ArrayList<>();
 
-        appUsageDataHelper.getLongTermStats()
-                .forEach(stat -> usedPackageNameList.add(stat.getPackageName()));
+        for(LongTermStat stat : appUsageDataHelper.getLongTermStats()) {
+            usedPackageNameList.add(stat.getPackageName());
+        }
 
         return usedPackageNameList;
     }
