@@ -30,7 +30,9 @@ public class OverviewFragmentTest {
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, "많기도 하네 진짜...");
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 8);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, "짱 많은 편");
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, "testApp");
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME1, "testApp1");
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME2, "testApp2");
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME3, "testApp3");
         subject = new OverviewFragment();
         subject.setArguments(bundle);
 
@@ -51,7 +53,9 @@ public class OverviewFragmentTest {
 
     @Test
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
-        assertTextViewVisibleAndEquals(R.id.longest_used_app_name_textview, "testApp");
+        assertTextViewVisibleAndEquals(R.id.longest_used_app_name1_textview, "testApp1");
+        assertTextViewVisibleAndEquals(R.id.longest_used_app_name2_textview, "testApp2");
+        assertTextViewVisibleAndEquals(R.id.longest_used_app_name3_textview, "testApp3");
     }
 
     private void assertTextViewVisibleAndEquals(int textViewResourceId, String text) {

@@ -62,9 +62,10 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
 
-        LongTermStat longTermStat = longTermStatList.get(0);
-        String longestUsedPackageName = longTermStat.getPackageName();
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, appBeeAndroidNativeHelper.getAppName(longestUsedPackageName));
+        List<String> packages = appRepositoryHelper.getTop3UsedAppList();
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME1, appBeeAndroidNativeHelper.getAppName(packages.get(0)));
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME2, appBeeAndroidNativeHelper.getAppName(packages.get(1)));
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME3, appBeeAndroidNativeHelper.getAppName(packages.get(2)));
 
         overviewFragment.setArguments(bundle);
 
