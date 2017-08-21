@@ -66,7 +66,7 @@ public class AppRepositoryHelper {
 
         LinkedHashMap<String, Integer> sortedCategoryMap = new LinkedHashMap<>();
         for (Map.Entry<String, Integer> item : categorylist) {
-            if (item.getKey() != null) {
+            if (item.getKey() != null && !item.getKey().isEmpty()) {
                 sortedCategoryMap.put(item.getKey(), item.getValue());
             }
         }
