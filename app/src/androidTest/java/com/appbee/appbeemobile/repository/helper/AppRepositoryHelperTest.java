@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.repository.helper;
 
+import android.os.SystemClock;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.appbee.appbeemobile.model.AppInfo;
@@ -28,7 +29,8 @@ public class AppRepositoryHelperTest {
 
     @Before
     public void setUp() throws Exception {
-        RealmConfiguration config = new RealmConfiguration.Builder().inMemory().name("testAppbeeDB").build();
+        String testDBName = String.valueOf(SystemClock.currentThreadTimeMillis());
+        RealmConfiguration config = new RealmConfiguration.Builder().inMemory().name(testDBName).build();
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
 
@@ -103,6 +105,40 @@ public class AppRepositoryHelperTest {
         assertEquals(realm.where(UsedApp.class).equalTo("packageName", "com.package.name2").findFirst().getTotalUsedTime(), 2000L);
     }
 
+    @Test
+    public void getTop3UsedAppList호출시_3개미만의앱정보만_있는경우_존재하는_앱정보목록을_모두_총사용시간_역순으로_리턴한다() throws Exception {
+        insertDummyDataWithTotalUsedTime();
+
+        List<AppInfo> appInfos = subject.getTop3UsedAppList();
+        assertEquals(appInfos.size(), 2);
+        assertEquals(appInfos.get(0).getPackageName(), "com.package.name2");
+        assertEquals(appInfos.get(1).getPackageName(), "com.package.name1");
+    }
+
+    @Test
+    public void getTop3UsedAppList호출시_3개이상의앱정보만_있는경우_존재하는_앱정보목록중_총사용시간_역순으로_상위3개앱만_리턴한다() throws Exception {
+        List<AppInfo> appInfoData = new ArrayList<>();
+        appInfoData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
+        appInfoData.add(new AppInfo("com.package.name2", "appName2", "categoryId1", "categoryName1", null, null));
+        appInfoData.add(new AppInfo("com.package.name3", "appName3", "categoryId1", "categoryName1", null, null));
+        appInfoData.add(new AppInfo("com.package.name4", "appName4", "categoryId1", "categoryName1", null, null));
+        subject.insertUsedApps(appInfoData);
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("com.package.name1", 2000L);
+        map.put("com.package.name2", 1000L);
+        map.put("com.package.name3", 3000L);
+        map.put("com.package.name4", 4000L);
+        subject.updateTotalUsedTime(map);
+
+        List<AppInfo> appInfos = subject.getTop3UsedAppList();
+
+        assertEquals(appInfos.size(), 3);
+        assertEquals(appInfos.get(0).getPackageName(), "com.package.name4");
+        assertEquals(appInfos.get(1).getPackageName(), "com.package.name3");
+        assertEquals(appInfos.get(2).getPackageName(), "com.package.name1");
+    }
+
     private void insertDummyData() {
         List<AppInfo> expectedData = new ArrayList<>();
         expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
@@ -116,5 +152,16 @@ public class AppRepositoryHelperTest {
         expectedData.add(new AppInfo("com.package.name9", "appName9", "categoryId5", "categoryName5", null, null));
 
         subject.insertUsedApps(expectedData);
+    }
+
+    private void insertDummyDataWithTotalUsedTime() {
+        insertDummyData();
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("com.package.name0", 0L);
+        map.put("com.package.name1", 1000L);
+        map.put("com.package.name2", 2000L);
+
+        subject.updateTotalUsedTime(map);
     }
 }

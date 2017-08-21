@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.Sort;
+import rx.Observable;
 import io.realm.RealmResults;
 
 public class AppRepositoryHelper {
@@ -92,5 +94,20 @@ public class AppRepositoryHelper {
 
         realm.commitTransaction();
         realm.close();
+    }
+
+    public List<AppInfo> getTop3UsedAppList() {
+        List<AppInfo> appInfoList = new ArrayList<>();
+        final List<UsedApp> usedApps = Realm.getDefaultInstance().where(UsedApp.class).findAllSorted("totalUsedTime", Sort.DESCENDING);
+
+        final int maxListCount = Math.min(3, usedApps.size());
+
+        Observable.range(0, maxListCount)
+                .forEach(i -> {
+                    final UsedApp usedApp = usedApps.get(i);
+                    appInfoList.add(new AppInfo(usedApp.getPackageName(), usedApp.getAppName(), usedApp.getCategoryId1(), usedApp.getCategoryName1(), usedApp.getCategoryId2(), usedApp.getCategoryName2()));
+                });
+
+        return appInfoList;
     }
 }
