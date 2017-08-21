@@ -10,6 +10,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class AnalysisResultActivity extends Activity {
 
     @Inject
     AppUsageDataHelper appUsageDataHelper;
+
+    @Inject
+    AppRepositoryHelper appRepositoryHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class AnalysisResultActivity extends Activity {
     private Fragment getOverviewFragment() {
         Fragment overviewFragment = new OverviewFragment();
 
-        int appCount = appUsageDataHelper.getAppList().size();
+        int appCount = appRepositoryHelper.getTotalUsedApps();
 
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);

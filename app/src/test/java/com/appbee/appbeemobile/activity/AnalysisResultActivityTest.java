@@ -11,6 +11,7 @@ import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
     @Inject
     AppUsageDataHelper appUsageDataHelper;
 
+    @Inject
+    AppRepositoryHelper appRepositoryHelper;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
@@ -48,7 +52,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         List<LongTermStat> longTermStats = new ArrayList<>();
         longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
 
-        when(appUsageDataHelper.getAppList()).thenReturn(nativeAppInfos);
+        when(appRepositoryHelper.getTotalUsedApps()).thenReturn(2);
         when(appUsageDataHelper.getAppCountMessage(2)).thenReturn(R.string.app_count_few_msg);
         when(appUsageDataHelper.getAppCountMessage(200)).thenReturn(R.string.app_count_proper_msg);
         when(appUsageDataHelper.getAppCountMessage(400)).thenReturn(R.string.app_count_many_msg);
