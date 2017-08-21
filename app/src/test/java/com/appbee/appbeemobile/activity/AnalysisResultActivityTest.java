@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -49,6 +51,42 @@ public class AnalysisResultActivityTest extends ActivityTest {
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
 
+        mockDummyData();
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+    }
+
+    @Test
+    public void onCreate앱시작시_OverViewFragment가_나타난다() throws Exception {
+        Fragment fragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.OVERVIEW_FRAGMENT_TAG);
+        assertThat(fragment).isNotNull();
+        assertThat(fragment.isAdded()).isTrue();
+
+        Bundle bundle = fragment.getArguments();
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(2);
+        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
+        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
+        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME)).isEqualTo("testApp");
+    }
+
+    @Test
+    public void onCreate앱시작시_BrainFragment가_나타난다() throws Exception {
+        Fragment brainFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.BRAIN_FRAGMENT_TAG);
+        assertThat(brainFragment).isNotNull();
+        assertThat(brainFragment.isAdded()).isTrue();
+
+        Bundle bundle = brainFragment.getArguments();
+        ArrayList<String> actualMostUsedCategories = bundle.getStringArrayList(BrainFragment.EXTRA_MOST_USED_CATEGORIES);
+        assertThat(actualMostUsedCategories).isNotNull();
+        assertThat(actualMostUsedCategories.size()).isEqualTo(3);
+        assertThat(actualMostUsedCategories.get(0)).isEqualTo("사진");
+        assertThat(actualMostUsedCategories.get(1)).isEqualTo("쇼핑");
+        assertThat(actualMostUsedCategories.get(2)).isEqualTo("음악");
+    }
+
+    private void mockDummyData() {
+
         List<NativeAppInfo> nativeAppInfos = new ArrayList<>();
         nativeAppInfos.add(new NativeAppInfo("com.package.name1", "app_name_1"));
         nativeAppInfos.add(new NativeAppInfo("com.package.name2", "app_name_2"));
@@ -64,26 +102,11 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
         when(appBeeAndroidNativeHelper.getAppName("com.package.test")).thenReturn("testApp");
-        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
-    }
 
-    @Test
-    public void onCreate앱시작시_OverViewFragment가_나타난다() throws Exception {
-        Fragment fragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.OVERVIEW_FRAGMENT_TAG);
-        Bundle bundle = fragment.getArguments();
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(2);
-        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
-        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
-        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME)).isEqualTo("testApp");
-        assertThat(fragment).isNotNull();
-        assertThat(fragment.isAdded()).isTrue();
-    }
-
-    @Test
-    public void onCreate앱시작시_BrainFragment가_나타난다() throws Exception {
-        Fragment fragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.BRAIN_FRAGMENT_TAG);
-        assertThat(fragment).isNotNull();
-        assertThat(fragment.isAdded()).isTrue();
+        ArrayList<String> mostUsedCategories = new ArrayList<>();
+        mostUsedCategories.add("사진");
+        mostUsedCategories.add("쇼핑");
+        mostUsedCategories.add("음악");
+        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(mostUsedCategories);
     }
 }

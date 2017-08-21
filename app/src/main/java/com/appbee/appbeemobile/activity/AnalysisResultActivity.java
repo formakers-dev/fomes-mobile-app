@@ -22,6 +22,8 @@ public class AnalysisResultActivity extends Activity {
     public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";
     public static final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
 
+    public static final int NUMBER_OF_MOST_INSTALLED_CATEGORY = 3;
+
     @Inject
     AppUsageDataHelper appUsageDataHelper;
 
@@ -41,7 +43,7 @@ public class AnalysisResultActivity extends Activity {
 
         getFragmentManager().beginTransaction()
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
-                .add(R.id.brain_fragment, new BrainFragment(), BRAIN_FRAGMENT_TAG)
+                .add(R.id.brain_fragment, getBrainFragment(), BRAIN_FRAGMENT_TAG)
                 .commit();
     }
 
@@ -66,5 +68,16 @@ public class AnalysisResultActivity extends Activity {
         overviewFragment.setArguments(bundle);
 
         return overviewFragment;
+    }
+
+    private Fragment getBrainFragment() {
+        Fragment brainFragment = new BrainFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_USED_CATEGORIES, appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY));
+
+        brainFragment.setArguments(bundle);
+
+        return brainFragment;
     }
 }

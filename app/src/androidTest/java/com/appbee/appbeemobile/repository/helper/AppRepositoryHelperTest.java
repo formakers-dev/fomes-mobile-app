@@ -46,7 +46,7 @@ public class AppRepositoryHelperTest {
 
         RealmResults<UsedApp> actualData = realm.where(UsedApp.class).findAll();
 
-        assertEquals(actualData.size(), 2);
+        assertEquals(actualData.size(), 9);
 
         assertEquals(actualData.get(0).getPackageName(), "com.package.name1");
         assertEquals(actualData.get(0).getAppName(), "appName1");
@@ -68,10 +68,24 @@ public class AppRepositoryHelperTest {
         insertDummyData();
 
         RealmResults<UsedApp> actualData = realm.where(UsedApp.class).findAll();
-        assertEquals(actualData.size(), 2);
+        assertEquals(actualData.size(), 9);
 
         insertDummyData();
-        assertEquals(actualData.size(), 2);
+        assertEquals(actualData.size(), 9);
+    }
+
+    @Test
+    public void getCategoryListSortedByInstalls호출시_설치된개수순으로카테고리명리스트를_리턴한다() throws Exception {
+        insertDummyData();
+
+        List<String> mostInstalledCategories = subject.getCategoryListSortedByInstalls();
+
+        assertEquals(mostInstalledCategories.size(), 5);
+        assertEquals(mostInstalledCategories.get(0), "categoryId1");
+        assertEquals(mostInstalledCategories.get(1), "categoryId2");
+        assertEquals(mostInstalledCategories.get(2), "categoryId4");
+        assertEquals(mostInstalledCategories.get(3), "categoryId5");
+        assertEquals(mostInstalledCategories.get(4), "categoryId3");
     }
 
     @Test
@@ -93,6 +107,14 @@ public class AppRepositoryHelperTest {
         List<AppInfo> expectedData = new ArrayList<>();
         expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
         expectedData.add(new AppInfo("com.package.name2", "appName2", "categoryId1", "categoryName1", null, null));
+        expectedData.add(new AppInfo("com.package.name3", "appName3", "categoryId1", "categoryName1", null, null));
+        expectedData.add(new AppInfo("com.package.name4", "appName4", "categoryId2", "categoryName2", "categoryId1", "categoryName1"));
+        expectedData.add(new AppInfo("com.package.name5", "appName5", "categoryId2", "categoryName2", null, null));
+        expectedData.add(new AppInfo("com.package.name6", "appName6", "categoryId3", "categoryName3", "categoryId5", "categoryName5"));
+        expectedData.add(new AppInfo("com.package.name7", "appName7", "categoryId4", "categoryName4", null, null));
+        expectedData.add(new AppInfo("com.package.name8", "appName8", "categoryId4", "categoryName4", null, null));
+        expectedData.add(new AppInfo("com.package.name9", "appName9", "categoryId5", "categoryName5", null, null));
+
         subject.insertUsedApps(expectedData);
     }
 }
