@@ -39,11 +39,8 @@ public class AppRepositoryHelperTest {
     }
 
     @Test
-    public void insertUsedApps테스트() throws Exception {
-        List<AppInfo> expectedData = new ArrayList<>();
-        expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
-        expectedData.add(new AppInfo("com.package.name2", "appName2", "categoryId1", "categoryName1", null, null));
-        subject.insertUsedApps(expectedData);
+    public void insertUsedApps테스트_insertTest() throws Exception {
+        insertDummyData();
 
         RealmResults<UsedApp> actualData = realm.where(UsedApp.class).findAll();
 
@@ -62,9 +59,23 @@ public class AppRepositoryHelperTest {
         assertEquals(actualData.get(1).getCategoryName1(), "categoryName1");
         assertEquals(actualData.get(1).getCategoryId2(), null);
         assertEquals(actualData.get(1).getCategoryName2(), null);
+    }
 
+    @Test
+    public void insertUsedApps테스트_upsertTest() throws Exception {
+        insertDummyData();
+
+        RealmResults<UsedApp> actualData = realm.where(UsedApp.class).findAll();
+        assertEquals(actualData.size(), 2);
+
+        insertDummyData();
+        assertEquals(actualData.size(), 2);
+    }
+
+    private void insertDummyData() {
+        List<AppInfo> expectedData = new ArrayList<>();
+        expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
+        expectedData.add(new AppInfo("com.package.name2", "appName2", "categoryId1", "categoryName1", null, null));
         subject.insertUsedApps(expectedData);
-
-        assertEquals(actualData.size(), 4);
     }
 }
