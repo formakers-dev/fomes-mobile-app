@@ -69,13 +69,21 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void onCreate앱시작시_OverViewFragment가_나타난다() throws Exception {
-        Fragment fragment = subject.getFragmentManager().findFragmentByTag(subject.OVERVIEW_FRAGMENT_TAG);
+        Fragment fragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.OVERVIEW_FRAGMENT_TAG);
         Bundle bundle = fragment.getArguments();
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(2);
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
         assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME)).isEqualTo("testApp");
+        assertThat(fragment).isNotNull();
+        assertThat(fragment.isAdded()).isTrue();
+    }
+
+    @Test
+    public void onCreate앱시작시_BrainFragment가_나타난다() throws Exception {
+        Fragment fragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.BRAIN_FRAGMENT_TAG);
+        assertThat(fragment).isNotNull();
         assertThat(fragment.isAdded()).isTrue();
     }
 }
