@@ -198,4 +198,12 @@ public class AppUsageDataHelper {
     public long getAppCountByCategoryId(String categoryId) {
         return appRepositoryHelper.getAppCountByCategoryId(categoryId);
     }
+
+    public int getTotalUsedApps() {
+        return appRepositoryHelper.getTotalUsedApps();
+    }
+
+    public List<String> getTop3UsedAppList() {
+        return appRepositoryHelper.getTop3UsedAppList();
+    }
 }

@@ -12,27 +12,45 @@ import com.appbee.appbeemobile.R;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class BrainFragment extends Fragment {
 
     public static final String EXTRA_MOST_INSTALLED_CATEGORIES = "EXTRA_MOST_INSTALLED_CATEGORIES";
     public static final String EXTRA_LEAST_INSTALLED_CATEGORIES = "EXTRA_LEAST_INSTALLED_CATEGORIES";
+    public static final String EXTRA_INSTALLED_APP_COUNT = "EXTRA_INSTALLED_APP_COUNT";
+
+    @BindView(R.id.most_installed_categories)
+    TextView mostInstalledCategoriesView;
+
+    @BindView(R.id.least_installed_categories)
+    TextView leastInstalledCategoriesView;
+
+    @BindView(R.id.installed_app_count)
+    TextView installedAppCountView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        return inflater.inflate(R.layout.fragment_brain, container, false);
+        View view = inflater.inflate(R.layout.fragment_brain, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<String> mostInstalledCategories = getArguments().getStringArrayList(EXTRA_MOST_INSTALLED_CATEGORIES);
-        ((TextView) view.findViewById(R.id.most_installed_categories)).setText(mostInstalledCategories.toString());
+        ArrayList<String> mostInstalledCategoryList = getArguments().getStringArrayList(EXTRA_MOST_INSTALLED_CATEGORIES);
+        mostInstalledCategoriesView.setText(String.valueOf(mostInstalledCategoryList));
 
-        ArrayList<String> leastInstalledCategories = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
-        ((TextView) view.findViewById(R.id.least_installed_categories)).setText(leastInstalledCategories.toString());
+        ArrayList<String> leastInstalledCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
+        leastInstalledCategoriesView.setText(String.valueOf(leastInstalledCategoryList));
+
+        int installedAppCount = getArguments().getInt(EXTRA_INSTALLED_APP_COUNT);
+        installedAppCountView.setText(String.valueOf(installedAppCount));
     }
 }

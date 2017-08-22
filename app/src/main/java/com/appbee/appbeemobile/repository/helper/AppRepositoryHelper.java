@@ -5,18 +5,16 @@ import com.appbee.appbeemobile.repository.model.SocialApp;
 import com.appbee.appbeemobile.repository.model.UsedApp;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import io.realm.Sort;
 import rx.Observable;
-import io.realm.RealmResults;
 
 public class AppRepositoryHelper {
 
