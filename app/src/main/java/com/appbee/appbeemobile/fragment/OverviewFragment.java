@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
+
+import java.util.List;
 
 public class OverviewFragment extends Fragment {
 
@@ -16,9 +19,7 @@ public class OverviewFragment extends Fragment {
     public static final String EXTRA_APP_LIST_COUNT_MSG = "EXTRA_APP_LIST_COUNT_MSG";
     public static final String EXTRA_APP_AVG_TIME = "EXTRA_APP_AVG_TIME";
     public static final String EXTRA_APP_USAGE_AVG_TIME_MSG = "EXTRA_APP_USAGE_AVG_TIME_MSG";
-    public static final String EXTRA_LONGEST_USED_APP_NAME1 = "EXTRA_LONGEST_USED_APP_NAME1";
-    public static final String EXTRA_LONGEST_USED_APP_NAME2 = "EXTRA_LONGEST_USED_APP_NAME2";
-    public static final String EXTRA_LONGEST_USED_APP_NAME3 = "EXTRA_LONGEST_USED_APP_NAME3";
+    public static final String EXTRA_LONGEST_USED_APP_NAME_LIST = "EXTRA_LONGEST_USED_APP_NAME_LIST";
 
     View view;
 
@@ -39,9 +40,16 @@ public class OverviewFragment extends Fragment {
                 .setText(String.format(getString(R.string.overview_average_time), getArguments().getInt(EXTRA_APP_AVG_TIME)));
         ((TextView) view.findViewById(R.id.average_app_usage_time_msg_textview)).setText(getArguments().getString(EXTRA_APP_USAGE_AVG_TIME_MSG));
 
-        ((TextView) view.findViewById(R.id.longest_used_app_name1_textview)).setText(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME1));
-        ((TextView) view.findViewById(R.id.longest_used_app_name2_textview)).setText(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME2));
-        ((TextView) view.findViewById(R.id.longest_used_app_name3_textview)).setText(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME3));
+        List<String> appNames = getArguments().getStringArrayList(EXTRA_LONGEST_USED_APP_NAME_LIST);
+
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.longest_used_app_layout);
+        if(appNames != null) {
+            for(String appName: appNames) {
+                TextView textView = new TextView(getActivity().getApplicationContext());
+                textView.setText(appName);
+                linearLayout.addView(textView);
+            }
+        }
 
         return view;
     }

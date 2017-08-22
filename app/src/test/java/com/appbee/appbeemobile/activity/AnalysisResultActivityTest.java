@@ -24,7 +24,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -68,10 +67,12 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
-        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME1)).isEqualTo("testApp1");
-        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME2)).isEqualTo("testApp2");
-        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME3)).isEqualTo("testApp3");
+        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).size()).isEqualTo(3);
+        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("test1");
+        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("test2");
+        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("test3");
     }
+
 
     @Test
     public void onCreate앱시작시_BrainFragment가_나타난다() throws Exception {
@@ -109,11 +110,16 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppUsageAverageHourPerDay(any())).thenReturn(8);
         when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
-        when(appRepositoryHelper.getTop3UsedAppList()).thenReturn(Arrays.asList("com.package.test1", "com.package.test2", "com.package.test3"));
-        when(appBeeAndroidNativeHelper.getAppName("com.package.test1")).thenReturn("testApp1");
-        when(appBeeAndroidNativeHelper.getAppName("com.package.test2")).thenReturn("testApp2");
-        when(appBeeAndroidNativeHelper.getAppName("com.package.test3")).thenReturn("testApp3");
 
+        when(appBeeAndroidNativeHelper.getAppName("com.package.test1")).thenReturn("test1");
+        when(appBeeAndroidNativeHelper.getAppName("com.package.test2")).thenReturn("test2");
+        when(appBeeAndroidNativeHelper.getAppName("com.package.test3")).thenReturn("test3");
+
+        ArrayList<String> appPackageNames = new ArrayList<>();
+        appPackageNames.add("com.package.test1");
+        appPackageNames.add("com.package.test2");
+        appPackageNames.add("com.package.test3");
+        when(appRepositoryHelper.getTop3UsedAppList()).thenReturn(appPackageNames);
 
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("사진");

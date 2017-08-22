@@ -14,6 +14,7 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,10 +63,12 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
 
-        List<String> packages = appRepositoryHelper.getTop3UsedAppList();
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME1, appBeeAndroidNativeHelper.getAppName(packages.get(0)));
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME2, appBeeAndroidNativeHelper.getAppName(packages.get(1)));
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME3, appBeeAndroidNativeHelper.getAppName(packages.get(2)));
+        List<String> top3UsedAppList = appRepositoryHelper.getTop3UsedAppList();
+        ArrayList<String> top3UsedAppNameList = new ArrayList<>();
+        for(String packageName : top3UsedAppList) {
+            top3UsedAppNameList.add(appBeeAndroidNativeHelper.getAppName(packageName));
+        }
+        bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, top3UsedAppNameList);
 
         overviewFragment.setArguments(bundle);
 

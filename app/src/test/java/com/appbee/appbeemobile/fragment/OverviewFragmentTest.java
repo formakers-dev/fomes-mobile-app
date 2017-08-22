@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -13,6 +14,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -30,9 +33,13 @@ public class OverviewFragmentTest {
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, "많기도 하네 진짜...");
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 8);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, "짱 많은 편");
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME1, "testApp1");
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME2, "testApp2");
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME3, "testApp3");
+
+        ArrayList<String> appNameList = new ArrayList<>();
+        appNameList.add("testApp1");
+        appNameList.add("testApp2");
+        appNameList.add("testApp3");
+        bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, appNameList);
+
         subject = new OverviewFragment();
         subject.setArguments(bundle);
 
@@ -53,9 +60,11 @@ public class OverviewFragmentTest {
 
     @Test
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
-        assertTextViewVisibleAndEquals(R.id.longest_used_app_name1_textview, "testApp1");
-        assertTextViewVisibleAndEquals(R.id.longest_used_app_name2_textview, "testApp2");
-        assertTextViewVisibleAndEquals(R.id.longest_used_app_name3_textview, "testApp3");
+        LinearLayout linearLayout = (LinearLayout) subject.getView().findViewById(R.id.longest_used_app_layout);
+        assertThat(linearLayout.getChildCount()).isEqualTo(3);
+        assertThat(((TextView) linearLayout.getChildAt(0)).getText()).isEqualTo("testApp1");
+        assertThat(((TextView) linearLayout.getChildAt(1)).getText()).isEqualTo("testApp2");
+        assertThat(((TextView) linearLayout.getChildAt(2)).getText()).isEqualTo("testApp3");
     }
 
     private void assertTextViewVisibleAndEquals(int textViewResourceId, String text) {
