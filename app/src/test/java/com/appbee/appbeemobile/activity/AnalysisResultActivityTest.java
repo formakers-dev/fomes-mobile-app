@@ -42,9 +42,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
     AppUsageDataHelper appUsageDataHelper;
 
     @Inject
-    AppRepositoryHelper appRepositoryHelper;
-
-    @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Before
@@ -63,8 +60,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(fragment.isAdded()).isTrue();
 
         Bundle bundle = fragment.getArguments();
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(2);
-        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜...");
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(400);
+        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("많기도 하네 진짜…");
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).size()).isEqualTo(3);
@@ -92,6 +89,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(actualLeastInstalledCategories).isNotNull();
         assertThat(actualLeastInstalledCategories.size()).isEqualTo(1);
         assertThat(actualLeastInstalledCategories.get(0)).isEqualTo("고양이");
+
+
+        assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(400);
     }
 
     private void mockDummyData() {
@@ -103,7 +103,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         List<LongTermStat> longTermStats = new ArrayList<>();
         longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
 
-        when(appRepositoryHelper.getTotalUsedApps()).thenReturn(2);
+        when(appUsageDataHelper.getTotalUsedApps()).thenReturn(400);
+
         when(appUsageDataHelper.getAppCountMessage(2)).thenReturn(R.string.app_count_few_msg);
         when(appUsageDataHelper.getAppCountMessage(200)).thenReturn(R.string.app_count_proper_msg);
         when(appUsageDataHelper.getAppCountMessage(400)).thenReturn(R.string.app_count_many_msg);
@@ -119,7 +120,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         appPackageNames.add("com.package.test1");
         appPackageNames.add("com.package.test2");
         appPackageNames.add("com.package.test3");
-        when(appRepositoryHelper.getTop3UsedAppList()).thenReturn(appPackageNames);
+        when(appUsageDataHelper.getTop3UsedAppList()).thenReturn(appPackageNames);
 
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("사진");

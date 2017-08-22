@@ -15,6 +15,9 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -22,6 +25,15 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class BrainFragmentTest {
 
     private BrainFragment subject;
+
+    @BindView(R.id.most_installed_categories)
+    TextView mostInstalledCategories;
+
+    @BindView(R.id.least_installed_categories)
+    TextView leastInstalledCategories;
+
+    @BindView(R.id.installed_app_count)
+    TextView installedAppCount;
 
     @Before
     public void setUp() throws Exception {
@@ -37,19 +49,27 @@ public class BrainFragmentTest {
         leastInstalledCategoryList.add("leastInstalledCategoryId");
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, leastInstalledCategoryList);
 
+        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, 400);
+
         subject = new BrainFragment();
         subject.setArguments(bundle);
 
         FragmentController.of(subject).create();
+        ButterKnife.bind(this, subject.getView());
     }
 
     @Test
     public void onViewCreated호출시_가장많이설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(((TextView) subject.getView().findViewById(R.id.most_installed_categories)).getText()).isEqualTo("[categoryId1, categoryId2, categoryId3]");
+        assertThat(mostInstalledCategories.getText()).isEqualTo("[categoryId1, categoryId2, categoryId3]");
     }
 
     @Test
     public void onViewCreated호출시_가장적게설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(((TextView) subject.getView().findViewById(R.id.least_installed_categories)).getText()).isEqualTo("[leastInstalledCategoryId]");
+        assertThat(leastInstalledCategories.getText()).isEqualTo("[leastInstalledCategoryId]");
+    }
+
+    @Test
+    public void onViewCreated호출시_설치된_앱의_갯수를_표시한다() throws Exception {
+        assertThat(installedAppCount.getText()).isEqualTo("400");
     }
 }

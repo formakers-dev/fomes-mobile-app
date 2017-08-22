@@ -30,9 +30,6 @@ public class AnalysisResultActivity extends Activity {
     AppUsageDataHelper appUsageDataHelper;
 
     @Inject
-    AppRepositoryHelper appRepositoryHelper;
-
-    @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Override
@@ -52,7 +49,7 @@ public class AnalysisResultActivity extends Activity {
     private Fragment getOverviewFragment() {
         Fragment overviewFragment = new OverviewFragment();
 
-        int appCount = appRepositoryHelper.getTotalUsedApps();
+        int appCount = appUsageDataHelper.getTotalUsedApps();
 
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
@@ -63,7 +60,7 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
 
-        List<String> top3UsedAppList = appRepositoryHelper.getTop3UsedAppList();
+        List<String> top3UsedAppList = appUsageDataHelper.getTop3UsedAppList();
         ArrayList<String> top3UsedAppNameList = new ArrayList<>();
         for(String packageName : top3UsedAppList) {
             top3UsedAppNameList.add(appBeeAndroidNativeHelper.getAppName(packageName));
@@ -81,6 +78,7 @@ public class AnalysisResultActivity extends Activity {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY));
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY));
+        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appUsageDataHelper.getTotalUsedApps());
 
         brainFragment.setArguments(bundle);
 
