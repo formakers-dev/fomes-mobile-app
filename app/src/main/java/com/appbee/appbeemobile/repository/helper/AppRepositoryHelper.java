@@ -47,7 +47,7 @@ public class AppRepositoryHelper {
         }
     }
 
-    public List<String> getCategoryListSortedByInstalls() {
+    public Map<String, Integer> getAppCountMapByCategory() {
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             RealmResults<UsedApp> usedAppList = realmInstance.where(UsedApp.class).findAll();
 
@@ -58,26 +58,13 @@ public class AppRepositoryHelper {
                 categoryCountMap.put(categoryId1Key, categoryId1Value == null ? 1 : categoryId1Value + 1);
 
                 String categoryId2Key = usedApp.getCategoryId2();
-                Integer categoryId2Value = categoryCountMap.get(categoryId2Key);
-                categoryCountMap.put(categoryId2Key, categoryId2Value == null ? 1 : categoryId2Value + 1);
-            }
-
-            List<Map.Entry<String, Integer>> categorylist = new ArrayList<>(categoryCountMap.entrySet());
-            Collections.sort(categorylist, (o1, o2) -> o1.getValue().compareTo(o2.getValue()) * -1);
-
-            LinkedHashMap<String, Integer> sortedCategoryMap = new LinkedHashMap<>();
-            for (Map.Entry<String, Integer> item : categorylist) {
-                if (item.getKey() != null && !item.getKey().isEmpty()) {
-                    sortedCategoryMap.put(item.getKey(), item.getValue());
+                if(categoryId2Key != null && !categoryId2Key.isEmpty()) {
+                    Integer categoryId2Value = categoryCountMap.get(categoryId2Key);
+                    categoryCountMap.put(categoryId2Key, categoryId2Value == null ? 1 : categoryId2Value + 1);
                 }
             }
 
-            List<String> sortedCategoryList = new ArrayList<>();
-            for (String key : sortedCategoryMap.keySet()) {
-                sortedCategoryList.add(key);
-            }
-
-            return sortedCategoryList;
+            return categoryCountMap;
         }
     }
 

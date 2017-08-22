@@ -80,17 +80,22 @@ public class AppRepositoryHelperTest {
     }
 
     @Test
-    public void getCategoryListSortedByInstalls호출시_설치된개수순으로카테고리명리스트를_리턴한다() throws Exception {
+    public void getCategoryMapSortedByInstalls호출시_설치된개수순으로카테고리명_맵을_리턴한다() throws Exception {
         insertDummyData();
 
-        List<String> mostInstalledCategories = subject.getCategoryListSortedByInstalls();
+        Map<String, Integer> appCountMap = subject.getAppCountMapByCategory();
 
-        assertEquals(mostInstalledCategories.size(), 5);
-        assertEquals(mostInstalledCategories.get(0), "categoryId1");
-        assertEquals(mostInstalledCategories.get(1), "categoryId2");
-        assertEquals(mostInstalledCategories.get(2), "categoryId4");
-        assertEquals(mostInstalledCategories.get(3), "categoryId5");
-        assertEquals(mostInstalledCategories.get(4), "categoryId3");
+        assertEquals(appCountMap.size(), 5);
+        assertAppCountWithCategoryId(appCountMap, "categoryId1", 4);
+        assertAppCountWithCategoryId(appCountMap, "categoryId2", 3);
+        assertAppCountWithCategoryId(appCountMap, "categoryId3", 1);
+        assertAppCountWithCategoryId(appCountMap, "categoryId4", 2);
+        assertAppCountWithCategoryId(appCountMap, "categoryId5", 2);
+    }
+
+    private void assertAppCountWithCategoryId(Map<String, Integer> map, String categoryId, int appCount) {
+        assertEquals(map.containsKey(categoryId), true);
+        assertEquals(map.get(categoryId), Integer.valueOf(appCount));
     }
 
     @Test

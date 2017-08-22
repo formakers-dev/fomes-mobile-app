@@ -20,6 +20,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowSystemClock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -247,17 +248,11 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getMostInstalledCategories호출시_많이_설치되어있는_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
-        List<String> dummyCategoryData = new ArrayList<>();
-        dummyCategoryData.add("사진");
-        dummyCategoryData.add("쇼핑");
-        dummyCategoryData.add("음악");
-        dummyCategoryData.add("교육");
-        dummyCategoryData.add("게임");
-        when(mockAppRepositoryHelper.getCategoryListSortedByInstalls()).thenReturn(dummyCategoryData);
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
 
         ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(3);
 
-        verify(mockAppRepositoryHelper).getCategoryListSortedByInstalls();
+        verify(mockAppRepositoryHelper).getAppCountMapByCategory();
         assertThat(mostInstalledCategories).isNotNull();
         assertThat(mostInstalledCategories.size()).isEqualTo(3);
         assertThat(mostInstalledCategories.get(0)).isEqualTo("사진");
@@ -265,15 +260,19 @@ public class AppUsageDataHelperTest {
         assertThat(mostInstalledCategories.get(2)).isEqualTo("음악");
     }
 
+    private Map<String, Integer> createCategoryDummyData() {
+        Map<String, Integer> dummyCategoryData = new HashMap<>();
+        dummyCategoryData.put("게임", 1);
+        dummyCategoryData.put("사진", 5);
+        dummyCategoryData.put("교육", 2);
+        dummyCategoryData.put("음악", 3);
+        dummyCategoryData.put("쇼핑", 4);
+        return dummyCategoryData;
+    }
+
     @Test
-    public void getMostInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리를_리턴한다() throws Exception {
-        List<String> dummyCategoryData = new ArrayList<>();
-        dummyCategoryData.add("사진");
-        dummyCategoryData.add("쇼핑");
-        dummyCategoryData.add("음악");
-        dummyCategoryData.add("교육");
-        dummyCategoryData.add("게임");
-        when(mockAppRepositoryHelper.getCategoryListSortedByInstalls()).thenReturn(dummyCategoryData);
+    public void getMostInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
 
         ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(6);
 
@@ -282,37 +281,67 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
+    public void getMostInstalledCategories호출시_카테고리맵이_비어있는경우_비어있는_리스트를_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mock(Map.class));
+
+        ArrayList<String> leastInstalledCategories = subject.getMostInstalledCategories(1);
+
+        assertThat(leastInstalledCategories).isNotNull();
+        assertThat(leastInstalledCategories.size()).isEqualTo(0);
+    }
+
+    @Test
     public void getLeastInstalledCategories호출시_가장_적게_설치된_카테고리리스트를_리턴한다() throws Exception {
-        List<String> dummyCategoryData = new ArrayList<>();
-        dummyCategoryData.add("사진");
-        dummyCategoryData.add("쇼핑");
-        dummyCategoryData.add("음악");
-        dummyCategoryData.add("교육");
-        dummyCategoryData.add("게임");
-        dummyCategoryData.add("고양이");
-        when(mockAppRepositoryHelper.getCategoryListSortedByInstalls()).thenReturn(dummyCategoryData);
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
 
         ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(1);
 
         assertThat(leastInstalledCategories).isNotNull();
         assertThat(leastInstalledCategories.size()).isEqualTo(1);
-        assertThat(leastInstalledCategories.get(0)).isEqualTo("고양이");
+        assertThat(leastInstalledCategories.get(0)).isEqualTo("게임");
     }
 
-    private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
-        assertThat(shortTermStat.getPackageName()).isEqualTo(packageName);
-        assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
-        assertThat(shortTermStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
-        assertThat(shortTermStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
+    @Test
+    public void getLeastInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼만_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
+
+        ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(6);
+
+        assertThat(leastInstalledCategories).isNotNull();
+        assertThat(leastInstalledCategories.size()).isEqualTo(5);
     }
 
-    @NonNull
-    private UsageStats createMockUsageStats(String packageName, long totalTimeInForeground, long lastTimeUsed) {
-        UsageStats mockUsageStats = mock(UsageStats.class);
-        when(mockUsageStats.getPackageName()).thenReturn(packageName);
-        when(mockUsageStats.getTotalTimeInForeground()).thenReturn(totalTimeInForeground);
-        when(mockUsageStats.getLastTimeUsed()).thenReturn(lastTimeUsed);
-        return mockUsageStats;
+    @Test
+    public void getLeastInstalledCategories호출시_카테고리맵이_비어있는경우_비어있는_리스트를_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mock(Map.class));
+
+        ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(1);
+
+        assertThat(leastInstalledCategories).isNotNull();
+        assertThat(leastInstalledCategories.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void 오름차순sortByValue호출시_입력된_맵의_값을_기준으로_오름차순_정렬된_맵을_리턴한다() throws Exception {
+        Map<String, Integer> map = subject.sortByValue(createDummyMapForSortTest(), AppUsageDataHelper.ASC);
+
+        assertSortedMap(map);
+
+        Object[] keySet = map.keySet().toArray();
+        assertEquals(keySet[0].toString(), "categoryId1");
+        assertEquals(keySet[1].toString(), "categoryId3");
+        assertEquals(keySet[2].toString(), "categoryId2");
+    }
+
+    @Test
+    public void 내림차순sortByValue호출시_입력된_맵의_값을_기준으로_내림차순_정렬된_맵을_리턴한다() throws Exception {
+        Map<String, Integer> map = subject.sortByValue(createDummyMapForSortTest(), AppUsageDataHelper.DESC);
+        assertSortedMap(map);
+
+        Object[] keySet = map.keySet().toArray();
+        assertEquals(keySet[0].toString(), "categoryId2");
+        assertEquals(keySet[1].toString(), "categoryId3");
+        assertEquals(keySet[2].toString(), "categoryId1");
     }
 
     @Test
@@ -337,5 +366,37 @@ public class AppUsageDataHelperTest {
         long installs = subject.getAppCountByCategoryId("categoryId");
 
         assertThat(installs).isEqualTo(100);
+    }
+
+    private void assertSortedMap(Map<String, Integer> map) {
+        assertEquals(map.size(), 3);
+        assertEquals(map.get("categoryId1"), Integer.valueOf(1));
+        assertEquals(map.get("categoryId2"), Integer.valueOf(3));
+        assertEquals(map.get("categoryId3"), Integer.valueOf(2));
+    }
+
+    @NonNull
+    private Map<String, Integer> createDummyMapForSortTest() {
+        Map<String, Integer> dummyMap = new HashMap<>();
+        dummyMap.put("categoryId1", 1);
+        dummyMap.put("categoryId2", 3);
+        dummyMap.put("categoryId3", 2);
+        return dummyMap;
+    }
+
+    private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
+        assertThat(shortTermStat.getPackageName()).isEqualTo(packageName);
+        assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
+        assertThat(shortTermStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
+        assertThat(shortTermStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
+    }
+
+    @NonNull
+    private UsageStats createMockUsageStats(String packageName, long totalTimeInForeground, long lastTimeUsed) {
+        UsageStats mockUsageStats = mock(UsageStats.class);
+        when(mockUsageStats.getPackageName()).thenReturn(packageName);
+        when(mockUsageStats.getTotalTimeInForeground()).thenReturn(totalTimeInForeground);
+        when(mockUsageStats.getLastTimeUsed()).thenReturn(lastTimeUsed);
+        return mockUsageStats;
     }
 }

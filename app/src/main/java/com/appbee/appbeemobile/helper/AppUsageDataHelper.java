@@ -11,6 +11,7 @@ import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.TimeUtil;
+import com.google.common.collect.Lists;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
     private static final int FROM_YEAR_FOR_LONG_TERM_STAT = 2;
+    static final boolean ASC = true;
+    static final boolean DESC = false;
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
@@ -168,16 +171,28 @@ public class AppUsageDataHelper {
         return map;
     }
 
-    public ArrayList<String> getMostInstalledCategories(int count) {
-        List<String> categoryListSortedByInstalls = appRepositoryHelper.getCategoryListSortedByInstalls();
-        return new ArrayList<>(categoryListSortedByInstalls.subList(0, Math.min(count, categoryListSortedByInstalls.size())));
+    Map<String, Integer> sortByValue(Map<String, Integer> map, boolean isAsc) {
+        List<Map.Entry<String, Integer>> categorylist = new ArrayList<>(map.entrySet());
+        Collections.sort(categorylist, (o1, o2) -> o1.getValue().compareTo(o2.getValue()) * (isAsc ? 1 : -1));
+
+        LinkedHashMap<String, Integer> sortedCategoryMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> item : categorylist) {
+            sortedCategoryMap.put(item.getKey(), item.getValue());
+        }
+
+        return sortedCategoryMap;
     }
 
+    public ArrayList<String> getMostInstalledCategories(int count) {
+        Map<String, Integer> sortedAppCountMap = sortByValue(appRepositoryHelper.getAppCountMapByCategory(), DESC);
+        int mapSize = sortedAppCountMap.size();
+        return new ArrayList<>(Lists.newArrayList(sortedAppCountMap.keySet()).subList(0, Math.min(count, mapSize)));
+    }
 
     public ArrayList<String> getLeastInstalledCategories(int count) {
-        List<String> categories = appRepositoryHelper.getCategoryListSortedByInstalls();
-        int categorySize = categories.size();
-        return new ArrayList<>(categories.subList(categorySize - count, categorySize));
+        Map<String, Integer> sortedAppCountMap = sortByValue(appRepositoryHelper.getAppCountMapByCategory(), ASC);
+        int mapSize = sortedAppCountMap.size();
+        return new ArrayList<>(Lists.newArrayList(sortedAppCountMap.keySet()).subList(0, Math.min(count, mapSize)));
     }
 
     public long getAppCountByCategoryId(String categoryId) {
