@@ -179,4 +179,8 @@ public class AppUsageDataHelper {
         int categorySize = categories.size();
         return new ArrayList<>(categories.subList(categorySize - count, categorySize));
     }
+
+    public long getAppCountByCategoryId(String categoryId) {
+        return appRepositoryHelper.getAppCountByCategoryId(categoryId);
+    }
 }
