@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.repository.helper;
 
-import android.os.SystemClock;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.appbee.appbeemobile.model.AppInfo;
@@ -29,7 +28,7 @@ public class AppRepositoryHelperTest {
 
     @Before
     public void setUp() throws Exception {
-        String testDBName = String.valueOf(SystemClock.currentThreadTimeMillis());
+        String testDBName = "testAppBeeDB";
         RealmConfiguration config = new RealmConfiguration.Builder().inMemory().name(testDBName).build();
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
@@ -39,6 +38,9 @@ public class AppRepositoryHelperTest {
 
     @After
     public void tearDown() throws Exception {
+        realm.beginTransaction();
+        realm.delete(UsedApp.class);
+        realm.commitTransaction();
         realm.close();
     }
 
@@ -107,7 +109,7 @@ public class AppRepositoryHelperTest {
 
     @Test
     public void getTop3UsedAppList호출시_3개미만의앱정보만_있는경우_존재하는_앱정보목록을_모두_총사용시간_역순으로_리턴한다() throws Exception {
-        insertDummyDataWithTotalUsedTime();
+        insert2DummyDataWithTotalUsedTime();
 
         List<String> appInfos = subject.getTop3UsedAppList();
         assertEquals(appInfos.size(), 2);
@@ -154,8 +156,11 @@ public class AppRepositoryHelperTest {
         subject.insertUsedApps(expectedData);
     }
 
-    private void insertDummyDataWithTotalUsedTime() {
-        insertDummyData();
+    private void insert2DummyDataWithTotalUsedTime() {
+        List<AppInfo> expectedData = new ArrayList<>();
+        expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
+        expectedData.add(new AppInfo("com.package.name2", "appName2", "categoryId1", "categoryName1", null, null));
+        subject.insertUsedApps(expectedData);
 
         Map<String, Long> map = new HashMap<>();
         map.put("com.package.name0", 0L);
