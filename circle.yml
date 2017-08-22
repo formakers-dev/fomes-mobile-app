@@ -28,6 +28,7 @@ test:
         parallel: true
     - circle-android wait-for-boot
   override:
+    - adb install path/to/build.apk
     - ./gradlew testReleaseUnitTest connectedAndroidTest assembleRelease:
         timeout: 1200
   post:
