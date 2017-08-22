@@ -24,7 +24,7 @@ public class AppRepositoryHelper {
     }
 
     public void insertUsedApps(final List<AppInfo> appInfos) {
-        try(Realm realmInstance = Realm.getDefaultInstance()) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction((realm) -> {
                 for (AppInfo appInfo : appInfos) {
                     UsedApp usedApp = new UsedApp();
@@ -41,13 +41,13 @@ public class AppRepositoryHelper {
     }
 
     public int getTotalUsedApps() {
-        try(Realm realmInstance = Realm.getDefaultInstance()) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
             return (int)realmInstance.where(UsedApp.class).count();
         }
     }
 
     public List<String> getCategoryListSortedByInstalls() {
-        try(Realm realmInstance = Realm.getDefaultInstance()) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
             RealmResults<UsedApp> usedAppList = realmInstance.where(UsedApp.class).findAll();
 
             Map<String, Integer> categoryCountMap = new HashMap<>();
@@ -81,7 +81,7 @@ public class AppRepositoryHelper {
     }
 
     public void updateTotalUsedTime(Map<String, Long> map) {
-        try(Realm realmInstance = Realm.getDefaultInstance()) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction(realm -> {
                 for (String packageName : map.keySet()) {
                     final UsedApp usedApp = realm.where(UsedApp.class).equalTo("packageName", packageName).findFirst();
@@ -93,10 +93,10 @@ public class AppRepositoryHelper {
         }
     }
 
-    public ArrayList<String> getTop3UsedAppList() {
-        final ArrayList<String> packageNames = new ArrayList<>();
+    public List<String> getTop3UsedAppList() {
+        final List<String> packageNames = new ArrayList<>();
 
-        try(Realm realmInstance = Realm.getDefaultInstance()) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
             final List<UsedApp> usedApps = realmInstance.where(UsedApp.class).findAllSorted("totalUsedTime", Sort.DESCENDING);
             Observable.range(0, Math.min(3, usedApps.size()))
                     .forEach(i ->  packageNames.add(usedApps.get(i).getPackageName()));
@@ -106,11 +106,13 @@ public class AppRepositoryHelper {
     }
 
     public long getAppCountByCategoryId(String categoryId) {
-        return Realm.getDefaultInstance()
-                .where(UsedApp.class)
-                .equalTo("categoryId1", categoryId)
-                .or()
-                .equalTo("categoryId2", categoryId)
-                .count();
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
+            return realmInstance
+                    .where(UsedApp.class)
+                    .equalTo("categoryId1", categoryId)
+                    .or()
+                    .equalTo("categoryId2", categoryId)
+                    .count();
+        }
     }
 }
