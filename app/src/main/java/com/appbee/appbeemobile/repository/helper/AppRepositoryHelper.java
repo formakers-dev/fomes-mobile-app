@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.repository.helper;
 
 import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.repository.model.SocialApp;
 import com.appbee.appbeemobile.repository.model.UsedApp;
 
 import java.util.ArrayList;
@@ -113,6 +114,19 @@ public class AppRepositoryHelper {
                     .or()
                     .equalTo("categoryId2", categoryId)
                     .count();
+        }
+    }
+
+    public void insertSocialApps(List<AppInfo> appInfos) {
+        try(Realm realmInstance = Realm.getDefaultInstance()) {
+            realmInstance.executeTransaction((realm) -> {
+                for(AppInfo appInfo : appInfos) {
+                    SocialApp socialApp = new SocialApp();
+                    socialApp.setPackageName(appInfo.getPackageName());
+                    socialApp.setAppName(appInfo.getAppName());
+                    realm.copyToRealmOrUpdate(socialApp);
+                }
+            });
         }
     }
 }

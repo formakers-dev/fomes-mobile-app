@@ -15,6 +15,7 @@ import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,12 +48,27 @@ public class MainActivity extends AppCompatActivity {
 
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
+        insertSocialApps();
+
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
             callAppServiceGetInfoAPI();
         } else {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
         }
+    }
+
+    private void insertSocialApps() {
+        List<AppInfo> socialAppInfos = new ArrayList<>();
+
+        socialAppInfos.add(new AppInfo("com.facebook.katana", "Facebook", "", "", "", ""));
+        socialAppInfos.add(new AppInfo("com.instagram.android", "Instagram", "", "", "", ""));
+        socialAppInfos.add(new AppInfo("com.kakao.talk", "카카오톡 KakaoTalk", "", "", "", ""));
+        socialAppInfos.add(new AppInfo("jp.naver.line.android", "라인 LINE", "", "", "", ""));
+        socialAppInfos.add(new AppInfo("com.nhn.android.band", "밴드", "", "", "", ""));
+        socialAppInfos.add(new AppInfo("kr.co.vcnc.android.couple", "커플앱 비트윈 - Between", "", "", "", ""));
+
+        appRepositoryHelper.insertSocialApps(socialAppInfos);
     }
 
     private void callAppServiceGetInfoAPI() {
