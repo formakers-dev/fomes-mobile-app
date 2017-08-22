@@ -4,6 +4,7 @@ import android.app.usage.UsageStats;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
@@ -366,6 +367,17 @@ public class AppUsageDataHelperTest {
         long installs = subject.getAppCountByCategoryId("categoryId");
 
         assertThat(installs).isEqualTo(100);
+    }
+
+    @Test
+    public void getSortedUsedAppsByTotalUsedTime호출시_모든앱사용이력_리스트를_리턴한다() throws Exception {
+        List<AppInfo> mockAppInfoList = new ArrayList<>();
+        mockAppInfoList.add(new AppInfo("packageName", "appName", "categoryId1", null, null, null));
+        when(mockAppRepositoryHelper.getSortedUsedAppsByTotalUsedTime()).thenReturn(mockAppInfoList);
+
+        List<AppInfo> appInfoList = subject.getSortedUsedAppsByTotalUsedTime();
+        assertThat(appInfoList).isNotNull();
+        assertThat(appInfoList.size()).isEqualTo(1);
     }
 
     @Test

@@ -1,7 +1,5 @@
 package com.appbee.appbeemobile.repository.helper;
 
-import android.util.Log;
-
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.repository.model.SocialApp;
 import com.appbee.appbeemobile.repository.model.UsedApp;
@@ -41,12 +39,6 @@ public class AppRepositoryHelper {
         }
     }
 
-    public int getTotalUsedApps() {
-        try (Realm realmInstance = Realm.getDefaultInstance()) {
-            return (int)realmInstance.where(UsedApp.class).count();
-        }
-    }
-
     public Map<String, Integer> getAppCountMapByCategory() {
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             RealmResults<UsedApp> usedAppList = realmInstance.where(UsedApp.class).findAll();
@@ -58,7 +50,7 @@ public class AppRepositoryHelper {
                 categoryCountMap.put(categoryId1Key, categoryId1Value == null ? 1 : categoryId1Value + 1);
 
                 String categoryId2Key = usedApp.getCategoryId2();
-                if(categoryId2Key != null && !categoryId2Key.isEmpty()) {
+                if (categoryId2Key != null && !categoryId2Key.isEmpty()) {
                     Integer categoryId2Value = categoryCountMap.get(categoryId2Key);
                     categoryCountMap.put(categoryId2Key, categoryId2Value == null ? 1 : categoryId2Value + 1);
                 }
@@ -81,18 +73,6 @@ public class AppRepositoryHelper {
         }
     }
 
-    public List<String> getTop3UsedAppList() {
-        final List<String> packageNames = new ArrayList<>();
-
-        try (Realm realmInstance = Realm.getDefaultInstance()) {
-            final List<UsedApp> usedApps = realmInstance.where(UsedApp.class).findAllSorted("totalUsedTime", Sort.DESCENDING);
-            Observable.range(0, Math.min(3, usedApps.size()))
-                    .forEach(i ->  packageNames.add(usedApps.get(i).getPackageName()));
-        }
-
-        return packageNames;
-    }
-
     public long getAppCountByCategoryId(String categoryId) {
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             return realmInstance
@@ -104,10 +84,10 @@ public class AppRepositoryHelper {
         }
     }
 
-    public void insertSocialApps(List<AppInfo> appInfos) {
-        try(Realm realmInstance = Realm.getDefaultInstance()) {
+    public void insertSocialApps(List<AppInfo> appInfoList) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction((realm) -> {
-                for(AppInfo appInfo : appInfos) {
+                for (AppInfo appInfo : appInfoList) {
                     SocialApp socialApp = new SocialApp();
                     socialApp.setPackageName(appInfo.getPackageName());
                     socialApp.setAppName(appInfo.getAppName());
@@ -138,5 +118,19 @@ public class AppRepositoryHelper {
             }
 
         }
+    }
+
+    public List<AppInfo> getSortedUsedAppsByTotalUsedTime() {
+        List<AppInfo> appInfoList = new ArrayList<>();
+
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
+            final RealmResults<UsedApp> usedAppList = realmInstance.where(UsedApp.class).findAllSorted("totalUsedTime", Sort.DESCENDING);
+
+            for (UsedApp usedApp: usedAppList) {
+                appInfoList.add(new AppInfo(usedApp));
+            }
+        }
+
+        return appInfoList;
     }
 }

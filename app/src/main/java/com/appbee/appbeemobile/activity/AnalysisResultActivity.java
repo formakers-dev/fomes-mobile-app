@@ -10,8 +10,8 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
@@ -21,6 +21,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class AnalysisResultActivity extends Activity {
+    private static final int NUMBER_OF_TOP_USED_APP_COUNT = 3;
+
     public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";
     public static final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
 
@@ -31,10 +33,9 @@ public class AnalysisResultActivity extends Activity {
     AppUsageDataHelper appUsageDataHelper;
 
     @Inject
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
-
-    @Inject
     AppRepositoryHelper appRepositoryHelper;
+
+    private List<AppInfo> appInfoList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class AnalysisResultActivity extends Activity {
         setContentView(R.layout.activity_analysis_result);
 
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
+
+        appInfoList = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime();
 
         getFragmentManager().beginTransaction()
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
@@ -53,7 +56,7 @@ public class AnalysisResultActivity extends Activity {
     private Fragment getOverviewFragment() {
         Fragment overviewFragment = new OverviewFragment();
 
-        int appCount = appUsageDataHelper.getTotalUsedApps();
+        int appCount = appInfoList.size();
 
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
@@ -64,12 +67,7 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
 
-        List<String> top3UsedAppList = appUsageDataHelper.getTop3UsedAppList();
-        ArrayList<String> top3UsedAppNameList = new ArrayList<>();
-        for(String packageName : top3UsedAppList) {
-            top3UsedAppNameList.add(appBeeAndroidNativeHelper.getAppName(packageName));
-        }
-        bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, top3UsedAppNameList);
+        bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, getTopUsedAppNameList(NUMBER_OF_TOP_USED_APP_COUNT));
         String mostUsedSocialAppName = appRepositoryHelper.getMostUsedSocialApp().getAppName();
         String mostUsedSocialAppMessage = appUsageDataHelper.getMostUsedSocialAppMessage(mostUsedSocialAppName);
 
@@ -92,10 +90,19 @@ public class AnalysisResultActivity extends Activity {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY));
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY));
-        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appUsageDataHelper.getTotalUsedApps());
+        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appUsageDataHelper.getSortedUsedAppsByTotalUsedTime().size());
 
         brainFragment.setArguments(bundle);
 
         return brainFragment;
+    }
+
+    ArrayList<String> getTopUsedAppNameList(int count) {
+        ArrayList<String> top3UsedAppNameList = new ArrayList<>();
+        List<AppInfo> topUsedAppList = appInfoList.subList(0, Math.min(count, appInfoList.size()));
+        for (AppInfo appInfo : topUsedAppList) {
+            top3UsedAppNameList.add(appInfo.getAppName());
+        }
+        return top3UsedAppNameList;
     }
 }
