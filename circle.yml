@@ -23,7 +23,7 @@ dependencies:
 
 test:
   pre:
-    - emulator -avd circleci-android24 -no-window:
+    - emulator -avd circleci-android22 -no-window:
         background: true
         parallel: true
     - circle-android wait-for-boot
@@ -32,7 +32,9 @@ test:
         timeout: 1200
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - find . -type f -regex ".*/build/test-results/debug/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - find . -type f -regex ".*/build/test-results/debug/*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - find . -type f -regex ".*/build/test-results/release/*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - cp -r $CIRCLE_TEST_REPORTS $CIRCLE_ARTIFACTS/
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
 
 deployment:
