@@ -63,26 +63,11 @@
             android:textSize="15dp"
             android:text="@string/longest_used_app_title"/>
         <LinearLayout
+            android:id="@+id/longest_used_app_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:orientation="vertical">
-
-            <TextView android:id="@+id/longest_used_app_name1_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_blue_light"
-                android:textSize="15dp"/>
-            <TextView android:id="@+id/longest_used_app_name2_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_blue_light"
-                android:textSize="15dp"/>
-            <TextView android:id="@+id/longest_used_app_name3_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_blue_light"
-                android:textSize="15dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
