@@ -9,7 +9,6 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
@@ -44,9 +43,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
     AppUsageDataHelper appUsageDataHelper;
 
     @Inject
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
-
-    @Inject
     AppRepositoryHelper appRepositoryHelper;
 
     @Before
@@ -65,14 +61,14 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(fragment.isAdded()).isTrue();
 
         Bundle bundle = fragment.getArguments();
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(400);
-        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("많기도 하네 진짜…");
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(4);
+        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜…");
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
         assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).size()).isEqualTo(3);
-        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("test1");
-        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("test2");
-        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("test3");
+        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("app_name_1");
+        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("app_name_2");
+        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("app_name_3");
         assertThat(bundle.getString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP)).isEqualTo("AppBee");
         assertThat(bundle.getString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP_MSG)).isEqualTo("소셜 앱 평가 메세지");
     }
@@ -97,8 +93,13 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(actualLeastInstalledCategories.size()).isEqualTo(1);
         assertThat(actualLeastInstalledCategories.get(0)).isEqualTo("고양이");
 
+        assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(4);
+    }
 
-        assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(400);
+    @Test
+    public void getTopUsedAppNameList호출시_지정한_개수만큼의_가장_많이_사용된_앱정보리스트를_리턴한다() throws Exception {
+        ArrayList<String> appNameList = subject.getTopUsedAppNameList(3);
+        assertThat(appNameList.size()).isEqualTo(3);
     }
 
     private void mockDummyData() {
@@ -110,27 +111,23 @@ public class AnalysisResultActivityTest extends ActivityTest {
         List<LongTermStat> longTermStats = new ArrayList<>();
         longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
 
-        when(appUsageDataHelper.getTotalUsedApps()).thenReturn(400);
+        List<AppInfo> appInfoList = new ArrayList<>();
+        appInfoList.add(new AppInfo("com.package.name1", "app_name_1", null, null, null, null));
+        appInfoList.add(new AppInfo("com.package.name2", "app_name_2", null, null, null, null));
+        appInfoList.add(new AppInfo("com.package.name3", "app_name_3", null, null, null, null));
+        appInfoList.add(new AppInfo("com.package.name4", "app_name_4", null, null, null, null));
 
-        when(appUsageDataHelper.getAppCountMessage(2)).thenReturn(R.string.app_count_few_msg);
+        when(appUsageDataHelper.getSortedUsedAppsByTotalUsedTime()).thenReturn(appInfoList);
+
+        when(appUsageDataHelper.getAppCountMessage(4)).thenReturn(R.string.app_count_few_msg);
         when(appUsageDataHelper.getAppCountMessage(200)).thenReturn(R.string.app_count_proper_msg);
         when(appUsageDataHelper.getAppCountMessage(400)).thenReturn(R.string.app_count_many_msg);
         when(appUsageDataHelper.getAppUsageAverageHourPerDay(any())).thenReturn(8);
         when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
 
-        when(appBeeAndroidNativeHelper.getAppName("com.package.test1")).thenReturn("test1");
-        when(appBeeAndroidNativeHelper.getAppName("com.package.test2")).thenReturn("test2");
-        when(appBeeAndroidNativeHelper.getAppName("com.package.test3")).thenReturn("test3");
-
         when(appRepositoryHelper.getMostUsedSocialApp()).thenReturn(new AppInfo("com.appbee.appbeemobile", "AppBee", "", "", "", ""));
         when(appUsageDataHelper.getMostUsedSocialAppMessage(anyString())).thenReturn("소셜 앱 평가 메세지");
-
-        ArrayList<String> appPackageNames = new ArrayList<>();
-        appPackageNames.add("com.package.test1");
-        appPackageNames.add("com.package.test2");
-        appPackageNames.add("com.package.test3");
-        when(appUsageDataHelper.getTop3UsedAppList()).thenReturn(appPackageNames);
 
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("사진");

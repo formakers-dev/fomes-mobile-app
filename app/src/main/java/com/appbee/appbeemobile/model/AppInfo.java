@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.model;
 
+import com.appbee.appbeemobile.repository.model.UsedApp;
+
 public class AppInfo {
     private String packageName;
     private String appName;
@@ -63,5 +65,14 @@ public class AppInfo {
 
     public void setCategoryName2(String categoryName2) {
         this.categoryName2 = categoryName2;
+    }
+
+    public AppInfo(UsedApp usedApp) {
+        this.packageName = usedApp.getPackageName();
+        this.appName = usedApp.getAppName();
+        this.categoryId1 =usedApp.getCategoryId1();
+        this.categoryName1 = usedApp.getCategoryName1();
+        this.categoryId2 = usedApp.getCategoryId2();
+        this.categoryName2 = usedApp.getCategoryName2();
     }
 }

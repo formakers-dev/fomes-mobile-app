@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
@@ -33,6 +34,7 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
     private static final int FROM_YEAR_FOR_LONG_TERM_STAT = 2;
+
     static final boolean ASC = true;
     static final boolean DESC = false;
 
@@ -199,6 +201,10 @@ public class AppUsageDataHelper {
         return appRepositoryHelper.getAppCountByCategoryId(categoryId);
     }
 
+    public List<AppInfo> getSortedUsedAppsByTotalUsedTime() {
+        return appRepositoryHelper.getSortedUsedAppsByTotalUsedTime();
+    }
+
     public String getMostUsedSocialAppMessage(String socialAppName) {
         switch (socialAppName) {
             case "Facebook":
@@ -220,13 +226,5 @@ public class AppUsageDataHelper {
             default:
                 return "요즘엔 이게 유행인가요?";
         }
-    }
-
-    public int getTotalUsedApps() {
-        return appRepositoryHelper.getTotalUsedApps();
-    }
-
-    public List<String> getTop3UsedAppList() {
-        return appRepositoryHelper.getTop3UsedAppList();
     }
 }
