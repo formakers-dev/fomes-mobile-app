@@ -46,6 +46,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
+    @Inject
+    AppRepositoryHelper appRepositoryHelper;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
