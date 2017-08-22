@@ -368,6 +368,20 @@ public class AppUsageDataHelperTest {
         assertThat(installs).isEqualTo(100);
     }
 
+    @Test
+    public void getMostUsedSocialAppMessage호출시_app별_평가정보를_리턴한다() throws Exception {
+        assertThat(subject.getMostUsedSocialAppMessage("Facebook")).contains("당신, 잘 살고 계시네요.");
+        assertThat(subject.getMostUsedSocialAppMessage("네이버 블로그 - Naver Blog")).contains("당신은 세상의 훌륭한 이웃입니다. ");
+        assertThat(subject.getMostUsedSocialAppMessage("티스토리 - TISTORY")).contains("당신은 세상의 훌륭한 이웃입니다. ");
+        assertThat(subject.getMostUsedSocialAppMessage("브런치 - 좋은 글과 작가를 만나는 공간")).contains("당신은 세상의 훌륭한 이웃입니다. ");
+        assertThat(subject.getMostUsedSocialAppMessage("Instagram")).contains("유행을 놓치지 않는 영한 감성의 소유자!");
+        assertThat(subject.getMostUsedSocialAppMessage("카카오스토리 KakaoStory")).contains("혹시 자녀가 있으신가요?");
+        assertThat(subject.getMostUsedSocialAppMessage("트위터")).contains("현실에는 말 못할 이야기가 많으신가요?");
+        assertThat(subject.getMostUsedSocialAppMessage("밴드")).contains("여러가지 동아리를 하고 계신 액티브한 당신!");
+        assertThat(subject.getMostUsedSocialAppMessage("커플앱 비트윈 - Between")).contains("정말 부러워요..전 모쏠이거든요..");
+        assertThat(subject.getMostUsedSocialAppMessage("디폴트")).contains("요즘엔 이게 유행인가요?");
+    }
+
     private void assertSortedMap(Map<String, Integer> map) {
         assertEquals(map.size(), 3);
         assertEquals(map.get("categoryId1"), Integer.valueOf(1));
