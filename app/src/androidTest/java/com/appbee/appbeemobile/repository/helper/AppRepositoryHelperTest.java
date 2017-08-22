@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.repository.helper;
 
+import android.support.test.espresso.core.deps.guava.collect.Lists;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.appbee.appbeemobile.model.AppInfo;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +168,15 @@ public class AppRepositoryHelperTest {
 
         AppInfo appInfo = subject.getMostUsedSocialApp();
         assertEquals(appInfo.getAppName(), "Chrome");
+    }
+
+    @Test
+    public void getAppCountByCategoryIds() throws Exception {
+        insertDummyData();
+
+        List<String> CategoryIds = Arrays.asList("categoryId1", "categoryId2");
+
+        assertEquals(subject.getAppCountByCategoryIds(CategoryIds), 7);
     }
 
     private void checkSocialAppData(SocialApp socialApp, String packageName, String appName) {

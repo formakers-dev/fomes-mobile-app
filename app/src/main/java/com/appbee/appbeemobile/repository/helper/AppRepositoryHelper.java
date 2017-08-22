@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import rx.Observable;
 
 public class AppRepositoryHelper {
 
@@ -84,10 +83,18 @@ public class AppRepositoryHelper {
         }
     }
 
-    public void insertSocialApps(List<AppInfo> appInfoList) {
-        try (Realm realmInstance = Realm.getDefaultInstance()) {
+    public int getAppCountByCategoryIds(List<String> categoryIds) {
+        int returnCount = 0;
+        for(String categoryId : categoryIds) {
+            returnCount += this.getAppCountByCategoryId(categoryId);
+        }
+        return returnCount;
+    }
+
+    public void insertSocialApps(List<AppInfo> appInfos) {
+        try(Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction((realm) -> {
-                for (AppInfo appInfo : appInfoList) {
+                for(AppInfo appInfo : appInfos) {
                     SocialApp socialApp = new SocialApp();
                     socialApp.setPackageName(appInfo.getPackageName());
                     socialApp.setAppName(appInfo.getAppName());
