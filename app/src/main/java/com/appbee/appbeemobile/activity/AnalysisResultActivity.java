@@ -33,6 +33,9 @@ public class AnalysisResultActivity extends Activity {
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
+    @Inject
+    AppRepositoryHelper appRepositoryHelper;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
