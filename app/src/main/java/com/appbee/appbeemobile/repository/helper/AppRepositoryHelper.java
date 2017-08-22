@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.repository.helper;
 
+import android.util.Log;
+
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.repository.model.SocialApp;
 import com.appbee.appbeemobile.repository.model.UsedApp;
@@ -112,6 +114,29 @@ public class AppRepositoryHelper {
                     realm.copyToRealmOrUpdate(socialApp);
                 }
             });
+        }
+    }
+
+    public AppInfo getMostUsedSocialApp() {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
+            RealmResults<SocialApp> socialApps = realmInstance.where(SocialApp.class).findAll();
+
+            long maxTotalUsedTime = Long.MIN_VALUE;
+            UsedApp maxTotalTimeUseApp = null;
+            for(SocialApp socialApp : socialApps) {
+                UsedApp usedApp = realmInstance.where(UsedApp.class).equalTo("packageName", socialApp.getPackageName()).findFirst();
+                if(usedApp != null && usedApp.getTotalUsedTime() > maxTotalUsedTime) {
+                    maxTotalUsedTime = usedApp.getTotalUsedTime();
+                    maxTotalTimeUseApp = usedApp;
+                }
+            }
+
+            if(maxTotalTimeUseApp != null) {
+                return new AppInfo(maxTotalTimeUseApp.getPackageName(), maxTotalTimeUseApp.getAppName(), "", "", "", "");
+            } else {
+                return new AppInfo("", "", "", "", "", "");
+            }
+
         }
     }
 }

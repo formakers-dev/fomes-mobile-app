@@ -51,7 +51,7 @@ public class AppRepositoryHelperTest {
 
         RealmResults<UsedApp> actualData = realm.where(UsedApp.class).findAll();
 
-        assertEquals(actualData.size(), 9);
+        assertEquals(actualData.size(), 10);
 
         assertEquals(actualData.get(0).getPackageName(), "com.package.name1");
         assertEquals(actualData.get(0).getAppName(), "appName1");
@@ -73,10 +73,12 @@ public class AppRepositoryHelperTest {
         insertDummyData();
 
         RealmResults<UsedApp> actualData = realm.where(UsedApp.class).findAll();
-        assertEquals(actualData.size(), 9);
+        assertEquals(actualData.size(), 10);
 
-        insertDummyData();
-        assertEquals(actualData.size(), 9);
+        insertAdditionalDummyData();
+        assertEquals(actualData.size(), 11);
+        assertEquals(actualData.get(0).getAppName(), "변경된AppName");
+        assertEquals(actualData.get(10).getAppName(), "appName10");
     }
 
     @Test
@@ -90,7 +92,7 @@ public class AppRepositoryHelperTest {
         assertAppCountWithCategoryId(appCountMap, "categoryId2", 3);
         assertAppCountWithCategoryId(appCountMap, "categoryId3", 1);
         assertAppCountWithCategoryId(appCountMap, "categoryId4", 2);
-        assertAppCountWithCategoryId(appCountMap, "categoryId5", 2);
+        assertAppCountWithCategoryId(appCountMap, "categoryId5", 3);
     }
 
     private void assertAppCountWithCategoryId(Map<String, Integer> map, String categoryId, int appCount) {
@@ -159,13 +161,14 @@ public class AppRepositoryHelperTest {
 
         RealmResults<SocialApp> socialApps = realm.where(SocialApp.class).findAll();
 
-        assertEquals(socialApps.size(), 6);
+        assertEquals(socialApps.size(), 7);
         checkSocialAppData(socialApps.get(0), "com.facebook.katana", "Facebook");
         checkSocialAppData(socialApps.get(1), "com.instagram.android", "Instagram");
         checkSocialAppData(socialApps.get(2), "com.kakao.talk", "카카오톡 KakaoTalk");
         checkSocialAppData(socialApps.get(3), "jp.naver.line.android", "라인 LINE");
         checkSocialAppData(socialApps.get(4), "com.nhn.android.band", "밴드");
         checkSocialAppData(socialApps.get(5), "kr.co.vcnc.android.couple", "커플앱 비트윈 - Between");
+        checkSocialAppData(socialApps.get(6), "com.android.chrome", "Chrome");
     }
 
     @Test
@@ -175,8 +178,17 @@ public class AppRepositoryHelperTest {
         insertAdditionalDummyDataForSocialApp();
         RealmResults<SocialApp> socialApps = realm.where(SocialApp.class).findAll();
 
-        assertEquals(socialApps.size(), 7);
+        assertEquals(socialApps.size(), 8);
         assertEquals(socialApps.get(0).getAppName(), "페이스북");
+    }
+
+    @Test
+    public void getMostUsedSocialApp() throws Exception {
+        insertDummyData();
+        insertDummyDataForSocialApp();
+
+        AppInfo appInfo = subject.getMostUsedSocialApp();
+        assertEquals(appInfo.getAppName(), "Chrome");
     }
 
     private void checkSocialAppData(SocialApp socialApp, String packageName, String appName) {
@@ -195,6 +207,15 @@ public class AppRepositoryHelperTest {
         expectedData.add(new AppInfo("com.package.name7", "appName7", "categoryId4", "categoryName4", null, null));
         expectedData.add(new AppInfo("com.package.name8", "appName8", "categoryId4", "categoryName4", null, null));
         expectedData.add(new AppInfo("com.package.name9", "appName9", "categoryId5", "categoryName5", null, null));
+        expectedData.add(new AppInfo("com.android.chrome", "Chrome", "categoryId5", "categoryName5", null, null));
+
+        subject.insertUsedApps(expectedData);
+    }
+
+    private void insertAdditionalDummyData() {
+        List<AppInfo> expectedData = new ArrayList<>();
+        expectedData.add(new AppInfo("com.package.name1", "변경된AppName", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));
+        expectedData.add(new AppInfo("com.package.name10", "appName10", "categoryId1", "categoryName1", null, null));
 
         subject.insertUsedApps(expectedData);
     }
@@ -221,6 +242,7 @@ public class AppRepositoryHelperTest {
         dummyData.add(new AppInfo("jp.naver.line.android", "라인 LINE", "", "", "", ""));
         dummyData.add(new AppInfo("com.nhn.android.band", "밴드", "", "", "", ""));
         dummyData.add(new AppInfo("kr.co.vcnc.android.couple", "커플앱 비트윈 - Between", "", "", "", ""));
+        dummyData.add(new AppInfo("com.android.chrome", "Chrome", "", "", "", ""));
         subject.insertSocialApps(dummyData);
     }
 

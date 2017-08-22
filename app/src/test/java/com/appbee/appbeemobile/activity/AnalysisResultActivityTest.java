@@ -11,6 +11,7 @@ import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -31,6 +32,7 @@ import javax.inject.Inject;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -68,6 +70,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("test1");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("test2");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("test3");
+        assertThat(bundle.getString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP)).isEqualTo("AppBee");
+        assertThat(bundle.getString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP_MSG)).isEqualTo("소셜 앱 평가 메세지");
     }
 
 
@@ -115,6 +119,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appBeeAndroidNativeHelper.getAppName("com.package.test1")).thenReturn("test1");
         when(appBeeAndroidNativeHelper.getAppName("com.package.test2")).thenReturn("test2");
         when(appBeeAndroidNativeHelper.getAppName("com.package.test3")).thenReturn("test3");
+
+        when(appRepositoryHelper.getMostUsedSocialApp()).thenReturn(new AppInfo("com.appbee.appbeemobile", "AppBee", "", "", "", ""));
+        when(appUsageDataHelper.getMostUsedSocialAppMessage(anyString())).thenReturn("소셜 앱 평가 메세지");
 
         ArrayList<String> appPackageNames = new ArrayList<>();
         appPackageNames.add("com.package.test1");

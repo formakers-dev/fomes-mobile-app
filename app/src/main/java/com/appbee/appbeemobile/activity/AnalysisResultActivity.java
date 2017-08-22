@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -66,6 +67,16 @@ public class AnalysisResultActivity extends Activity {
             top3UsedAppNameList.add(appBeeAndroidNativeHelper.getAppName(packageName));
         }
         bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, top3UsedAppNameList);
+        String mostUsedSocialAppName = appRepositoryHelper.getMostUsedSocialApp().getAppName();
+        String mostUsedSocialAppMessage = appUsageDataHelper.getMostUsedSocialAppMessage(mostUsedSocialAppName);
+
+        if(TextUtils.isEmpty(mostUsedSocialAppName)) {
+            mostUsedSocialAppName = "없음";
+            mostUsedSocialAppMessage = "SNS 안하시네요";
+        }
+
+        bundle.putString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP, mostUsedSocialAppName);
+        bundle.putString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP_MSG, mostUsedSocialAppMessage);
 
         overviewFragment.setArguments(bundle);
 
