@@ -94,6 +94,12 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
+    public void onCreate호출시_SocialApp을_insert한다() throws Exception {
+        activityController.create().get();
+        verify(mockAppRepositoryHelper).insertSocialApps(any(List.class));
+    }
+
+    @Test
     public void appInfosServiceCallback의_onFail을_호출했을때_에러메시지가_표시된다() throws Exception {
         MainActivity subject = activityController.get();
         subject.appInfosServiceCallback.onFail("ERROR_CODE");
