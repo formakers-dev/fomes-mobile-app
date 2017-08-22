@@ -87,10 +87,15 @@ public class AnalysisResultActivity extends Activity {
     private Fragment getBrainFragment() {
         Fragment brainFragment = new BrainFragment();
 
+        ArrayList<String> mostCategoryList = appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY);
+        int appCount = appInfoList.size();
+
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY));
+        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, mostCategoryList);
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY));
-        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appUsageDataHelper.getSortedUsedAppsByTotalUsedTime().size());
+        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appCount);
+        bundle.putLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE,
+                Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostCategoryList.get(0)) / appCount * 100));
 
         brainFragment.setArguments(bundle);
 

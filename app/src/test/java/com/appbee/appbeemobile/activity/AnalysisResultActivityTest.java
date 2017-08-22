@@ -94,6 +94,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(actualLeastInstalledCategories.get(0)).isEqualTo("고양이");
 
         assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(4);
+        assertThat(bundle.getLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE)).isEqualTo(25);
     }
 
     @Test
@@ -138,5 +139,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         ArrayList<String> leastUsedCategories = new ArrayList<>();
         leastUsedCategories.add("고양이");
         when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(leastUsedCategories);
+
+        when(appUsageDataHelper.getAppCountByCategoryId("사진")).thenReturn(1L);
     }
 }

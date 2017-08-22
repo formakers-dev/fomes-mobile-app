@@ -20,6 +20,7 @@ public class BrainFragment extends Fragment {
     public static final String EXTRA_MOST_INSTALLED_CATEGORIES = "EXTRA_MOST_INSTALLED_CATEGORIES";
     public static final String EXTRA_LEAST_INSTALLED_CATEGORIES = "EXTRA_LEAST_INSTALLED_CATEGORIES";
     public static final String EXTRA_INSTALLED_APP_COUNT = "EXTRA_INSTALLED_APP_COUNT";
+    public static final String EXTRA_MOST_INSTALLED_CATEGORY_RATE = "EXTRA_MOST_INSTALLED_CATEGORY_RATE";
 
     @BindView(R.id.most_installed_categories)
     TextView mostInstalledCategoriesView;
@@ -29,6 +30,9 @@ public class BrainFragment extends Fragment {
 
     @BindView(R.id.installed_app_count)
     TextView installedAppCountView;
+
+    @BindView(R.id.most_installed_category_rate)
+    TextView mostInstalledCategoryRateView;
 
     @Nullable
     @Override
@@ -52,5 +56,10 @@ public class BrainFragment extends Fragment {
 
         int installedAppCount = getArguments().getInt(EXTRA_INSTALLED_APP_COUNT);
         installedAppCountView.setText(String.valueOf(installedAppCount));
+
+        long installedCategoryRate = getArguments().getLong(EXTRA_MOST_INSTALLED_CATEGORY_RATE);
+        mostInstalledCategoryRateView.setText(String.format(getString(R.string.brain_category_rate),
+                mostInstalledCategoryList.get(0), installedCategoryRate));
+
     }
 }
