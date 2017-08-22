@@ -141,6 +141,12 @@ public class AppRepositoryHelperTest {
         assertEquals(appInfos.get(2), "com.package.name1");
     }
 
+    @Test
+    public void getAppCountByCategoryId호출시_해당_카테고리의_앱_개수를_리턴한다() throws Exception {
+        insertDummyData();
+        assertEquals(subject.getAppCountByCategoryId("categoryId1"), 4);
+    }
+
     private void insertDummyData() {
         List<AppInfo> expectedData = new ArrayList<>();
         expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2"));

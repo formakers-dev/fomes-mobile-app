@@ -28,6 +28,7 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -327,5 +328,14 @@ public class AppUsageDataHelperTest {
 
         assertThat(map.get("aaaaa")).isEqualTo(400L);
         assertThat(map.get("bbbbb")).isEqualTo(200L);
+    }
+
+    @Test
+    public void getAppInstallsByCategoryId호출시_categoryId별_install수를_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getAppCountByCategoryId(anyString())).thenReturn(100L);
+
+        long installs = subject.getAppCountByCategoryId("categoryId");
+
+        assertThat(installs).isEqualTo(100);
     }
 }

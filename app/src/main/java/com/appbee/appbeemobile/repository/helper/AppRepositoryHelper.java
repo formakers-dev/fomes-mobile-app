@@ -104,4 +104,13 @@ public class AppRepositoryHelper {
 
         return packageNames;
     }
+
+    public long getAppCountByCategoryId(String categoryId) {
+        return Realm.getDefaultInstance()
+                .where(UsedApp.class)
+                .equalTo("categoryId1", categoryId)
+                .or()
+                .equalTo("categoryId2", categoryId)
+                .count();
+    }
 }
