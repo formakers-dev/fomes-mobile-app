@@ -9,6 +9,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -29,6 +31,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class OverviewFragmentTest {
 
     private OverviewFragment subject;
+    private Unbinder binder;
 
     @BindView(R.id.app_count_textview)
     TextView appCountView;
@@ -72,7 +75,12 @@ public class OverviewFragmentTest {
         subject.setArguments(bundle);
 
         FragmentController.of(subject).create();
-        ButterKnife.bind(this, subject.getView());
+        binder = ButterKnife.bind(this, subject.getView());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        binder.unbind();
     }
 
     @Test

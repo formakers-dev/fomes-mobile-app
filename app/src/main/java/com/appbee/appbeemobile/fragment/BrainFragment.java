@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class BrainFragment extends Fragment {
 
@@ -34,13 +35,14 @@ public class BrainFragment extends Fragment {
     @BindView(R.id.most_installed_category_rate)
     TextView mostInstalledCategoryRateView;
 
+    private Unbinder binder;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_brain, container, false);
-        ButterKnife.bind(this, view);
+        binder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -61,5 +63,11 @@ public class BrainFragment extends Fragment {
         mostInstalledCategoryRateView.setText(String.format(getString(R.string.brain_category_rate),
                 mostInstalledCategoryList.get(0), installedCategoryRate));
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        binder.unbind();
+        super.onDestroyView();
     }
 }

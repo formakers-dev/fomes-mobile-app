@@ -10,23 +10,33 @@ import com.appbee.appbeemobile.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class StartActivity extends AppCompatActivity {
 
     @BindView(R.id.start_analysis_button)
     Button startButton;
 
+    private Unbinder binder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_start);
-        ButterKnife.bind(this);
+
+        binder = ButterKnife.bind(this);
 
         startButton.setOnClickListener(v -> {
             Intent intent = new Intent(StartActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        binder.unbind();
+        super.onDestroy();
     }
 }
