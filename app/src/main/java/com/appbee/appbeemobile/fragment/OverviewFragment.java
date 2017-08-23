@@ -23,6 +23,7 @@ public class OverviewFragment extends Fragment {
     public static final String EXTRA_APP_AVG_TIME = "EXTRA_APP_AVG_TIME";
     public static final String EXTRA_APP_USAGE_AVG_TIME_MSG = "EXTRA_APP_USAGE_AVG_TIME_MSG";
     public static final String EXTRA_LONGEST_USED_APP_NAME_LIST = "EXTRA_LONGEST_USED_APP_NAME_LIST";
+    public static final String EXTRA_CHARACTER_TYPE = "EXTRA_CHARACTER_TYPE";
 
     @BindView(R.id.app_count_textview)
     TextView appCountView;
@@ -39,10 +40,14 @@ public class OverviewFragment extends Fragment {
     @BindView(R.id.longest_used_app_layout)
     LinearLayout longestUsedAppLayout;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    @BindView(R.id.character_type_name)
+    TextView characterTypeNameView;
+
+    @BindView(R.id.character_type_simple_description)
+    TextView characterTypeSimpleDescriptionView;
+
+    @BindView(R.id.character_type_detail_description)
+    TextView characterTypeDetailDescriptionView;
 
     @Nullable
     @Override
@@ -71,5 +76,14 @@ public class OverviewFragment extends Fragment {
                 longestUsedAppLayout.addView(textView);
             }
         }
+
+        setCharacterInfo();
+    }
+
+    private void setCharacterInfo() {
+        int characterType = getArguments().getInt(EXTRA_CHARACTER_TYPE);
+        characterTypeNameView.setText(getResources().getStringArray(R.array.character_names)[characterType]);
+        characterTypeSimpleDescriptionView.setText(getResources().getStringArray(R.array.character_simple_descriptions)[characterType]);
+        characterTypeDetailDescriptionView.setText(getResources().getStringArray(R.array.character_detail_descriptions)[characterType]);
     }
 }

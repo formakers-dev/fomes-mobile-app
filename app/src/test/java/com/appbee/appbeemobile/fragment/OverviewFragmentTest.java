@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,15 @@ public class OverviewFragmentTest {
     @BindView(R.id.longest_used_app_layout)
     LinearLayout longestUsedAppLayout;
 
+    @BindView(R.id.character_type_name)
+    TextView characterTypeView;
+
+    @BindView(R.id.character_type_simple_description)
+    TextView characterTypeSimpleDescriptionView;
+
+    @BindView(R.id.character_type_detail_description)
+    TextView characterTypeDetailDescriptionView;
+
     @Before
     public void setUp() throws Exception {
         Bundle bundle = new Bundle();
@@ -51,6 +61,7 @@ public class OverviewFragmentTest {
         bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, "많기도 하네 진짜...");
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 8);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, "짱 많은 편");
+        bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, AppBeeConstants.CHARACTER_TYPE.GAMER);
 
         ArrayList<String> appNameList = new ArrayList<>();
         appNameList.add("testApp1");
@@ -82,6 +93,13 @@ public class OverviewFragmentTest {
         assertThat(((TextView) longestUsedAppLayout.getChildAt(0)).getText()).isEqualTo("testApp1");
         assertThat(((TextView) longestUsedAppLayout.getChildAt(1)).getText()).isEqualTo("testApp2");
         assertThat(((TextView) longestUsedAppLayout.getChildAt(2)).getText()).isEqualTo("testApp3");
+    }
+
+    @Test
+    public void fragment시작시_캐릭터타입을_표시한다() throws Exception {
+        assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라 게이머다! 일코벌");
+        assertThat(characterTypeSimpleDescriptionView.getText()).contains("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는");
+        assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
     }
 
     private void assertTextViewVisibleAndEquals(TextView textView, String text) {

@@ -11,6 +11,7 @@ import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.TimeUtil;
 import com.google.common.collect.Lists;
 
@@ -226,5 +227,38 @@ public class AppUsageDataHelper {
             default:
                 return "요즘엔 이게 유행인가요?";
         }
+    }
+
+    public int getCharacterType() {
+        //TODO : 서브카테고리들을 합한 수치로 계산하는 로직 추가 필요
+
+        Map<String, Integer> categoryMap = appRepositoryHelper.getAppCountMapByCategory();
+        Map<String, Integer> sortedCategoryMap = sortByValue(categoryMap, DESC);
+
+        for(String key : sortedCategoryMap.keySet()) {
+            switch (key) {
+                case "/store/apps/category/GAME" :
+                case "/store/apps/category/GAME_EDUCATIONAL" :
+                case "/store/apps/category/GAME_WORD" :
+                case "/store/apps/category/GAME_ROLE_PLAYING" :
+                case "/store/apps/category/GAME_BOARD" :
+                case "/store/apps/category/GAME_SPORTS" :
+                case "/store/apps/category/GAME_SIMULATION" :
+                case "/store/apps/category/GAME_ARCADE" :
+                case "/store/apps/category/GAME_ACTION" :
+                case "/store/apps/category/GAME_ADVENTURE" :
+                case "/store/apps/category/GAME_MUSIC" :
+                case "/store/apps/category/GAME_RACING" :
+                case "/store/apps/category/GAME_STRATEGY" :
+                case "/store/apps/category/GAME_CARD" :
+                case "/store/apps/category/GAME_CASINO" :
+                case "/store/apps/category/GAME_CASUAL" :
+                case "/store/apps/category/GAME_TRIVIA" :
+                case "/store/apps/category/GAME_PUZZLE" :
+                    return AppBeeConstants.CHARACTER_TYPE.GAMER;
+            }
+        }
+
+        return AppBeeConstants.CHARACTER_TYPE.ETC;
     }
 }

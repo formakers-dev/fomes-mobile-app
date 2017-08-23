@@ -14,6 +14,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +70,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("app_name_1");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("app_name_2");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("app_name_3");
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(AppBeeConstants.CHARACTER_TYPE.QUEEN);
     }
 
 
@@ -126,7 +128,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
 
         when(appUsageDataHelper.getMostUsedSocialAppMessage(anyString())).thenReturn("소셜 앱 평가 메세지");
-
+        when(appUsageDataHelper.getCharacterType()).thenReturn(AppBeeConstants.CHARACTER_TYPE.QUEEN);
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("사진");
         mostUsedCategories.add("쇼핑");
