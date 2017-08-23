@@ -11,8 +11,9 @@ import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
-import com.appbee.appbeemobile.util.AppBeeConstants;
+import com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
 import com.appbee.appbeemobile.util.TimeUtil;
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,14 +37,13 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
     private static final int FROM_YEAR_FOR_LONG_TERM_STAT = 2;
-
+    private static final String GAME_CATEGORY_GROUP_KEY = "GAME_GROUP";
+    private static final String MUSIC_VIDEO_CATEGORY_GROUP_KEY = "MV_GROUP";
     static final boolean ASC = true;
     static final boolean DESC = false;
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
-
     private final LocalStorageHelper localStorageHelper;
-
     private final AppRepositoryHelper appRepositoryHelper;
 
     @Inject
@@ -174,12 +175,12 @@ public class AppUsageDataHelper {
         return map;
     }
 
-    Map<String, Integer> sortByValue(Map<String, Integer> map, boolean isAsc) {
-        List<Map.Entry<String, Integer>> categorylist = new ArrayList<>(map.entrySet());
-        Collections.sort(categorylist, (o1, o2) -> o1.getValue().compareTo(o2.getValue()) * (isAsc ? 1 : -1));
+    <T> Map<T, Integer> sortByValue(Map<T, Integer> map, boolean isAsc) {
+        List<Map.Entry<T, Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, (o1, o2) -> o1.getValue().compareTo(o2.getValue()) * (isAsc ? 1 : -1));
 
-        LinkedHashMap<String, Integer> sortedCategoryMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> item : categorylist) {
+        LinkedHashMap<T, Integer> sortedCategoryMap = new LinkedHashMap<>();
+        for (Map.Entry<T, Integer> item : list) {
             sortedCategoryMap.put(item.getKey(), item.getValue());
         }
 
@@ -230,12 +231,32 @@ public class AppUsageDataHelper {
     }
 
     public int getCharacterType() {
-        //TODO : 서브카테고리들을 합한 수치로 계산하는 로직 추가 필요
+        final Map<String, Integer> aggregatedMap = aggregateCategoryMap(appRepositoryHelper.getAppCountMapByCategory());
 
-        Map<String, Integer> categoryMap = appRepositoryHelper.getAppCountMapByCategory();
-        Map<String, Integer> sortedCategoryMap = sortByValue(categoryMap, DESC);
+        if (aggregatedMap == null || aggregatedMap.isEmpty()) {
+            return CHARACTER_TYPE.ETC;
+        }
 
-        for(String key : sortedCategoryMap.keySet()) {
+        final String topCategoryId = aggregatedMap.keySet().iterator().next();
+
+        switch (topCategoryId) {
+            case GAME_CATEGORY_GROUP_KEY :
+                return CHARACTER_TYPE.GAMER;
+            case MUSIC_VIDEO_CATEGORY_GROUP_KEY :
+                return CHARACTER_TYPE.QUEEN;
+            case "/store/apps/category/PHOTOGRAPHY" :
+                return CHARACTER_TYPE.POISON;
+            case "/store/apps/category/PERSONALIZATION" :
+                return CHARACTER_TYPE.SOUL;
+            default:
+                return CHARACTER_TYPE.ETC;
+        }
+    }
+
+    Map<String,Integer> aggregateCategoryMap(Map<String, Integer> categoryMap) {
+        Map<String, Integer> map = new HashMap<>();
+
+        for(String key : categoryMap.keySet()) {
             switch (key) {
                 case "/store/apps/category/GAME" :
                 case "/store/apps/category/GAME_EDUCATIONAL" :
@@ -255,10 +276,18 @@ public class AppUsageDataHelper {
                 case "/store/apps/category/GAME_CASUAL" :
                 case "/store/apps/category/GAME_TRIVIA" :
                 case "/store/apps/category/GAME_PUZZLE" :
-                    return AppBeeConstants.CHARACTER_TYPE.GAMER;
+                    map.put(GAME_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(GAME_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
+                    break;
+                case "/store/apps/category/VIDEO_PLAYERS" :
+                case "/store/apps/category/MUSIC_AND_AUDIO" :
+                    map.put(MUSIC_VIDEO_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(MUSIC_VIDEO_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
+                    break;
+                default :
+                    map.put(key, categoryMap.get(key));
+                    break;
             }
         }
 
-        return AppBeeConstants.CHARACTER_TYPE.ETC;
+        return sortByValue(map, DESC);
     }
 }
