@@ -138,7 +138,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
 
-        when(appUsageDataHelper.getMostUsedSocialAppMessage(anyString())).thenReturn("소셜 앱 평가 메세지");
         when(appUsageDataHelper.getCharacterType()).thenReturn(AppBeeConstants.CHARACTER_TYPE.QUEEN);
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("사진");
