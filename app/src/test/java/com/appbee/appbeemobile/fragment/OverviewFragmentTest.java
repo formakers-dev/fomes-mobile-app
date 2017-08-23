@@ -45,6 +45,9 @@ public class OverviewFragmentTest {
     @BindView(R.id.average_app_usage_time_msg_textview)
     TextView averageAppUsageTimeMsgView;
 
+    @BindView(R.id.average_app_usage_time_description_textview)
+    TextView averageAppUsageTimeDescriptionView;
+
     @BindView(R.id.longest_used_app_layout)
     LinearLayout longestUsedAppLayout;
 
@@ -56,6 +59,9 @@ public class OverviewFragmentTest {
 
     @BindView(R.id.character_type_detail_description)
     TextView characterTypeDetailDescriptionView;
+
+    @BindView(R.id.app_count_description_textview)
+    TextView appCountDescriptionView;
 
     @Before
     public void setUp() throws Exception {
@@ -84,15 +90,17 @@ public class OverviewFragmentTest {
     }
 
     @Test
-    public void fragment시작시_설치된_앱개수와_앱개수의평가를_표시한다() throws Exception {
+    public void fragment시작시_설치된_앱개수와_앱개수관련정보를_표시한다() throws Exception {
         assertTextViewVisibleAndContains(appCountView, "400");
         assertTextViewVisibleAndEquals(appCountMsgView, "많아요.");
+        assertTextViewVisibleAndEquals(appCountDescriptionView, "호기심이 많고 항상 효율적인 방법을 모색하는 스타일이에요.");
     }
 
     @Test
     public void fragment시작시_평균_앱사용_시간과_평가를_표시한다() throws Exception {
         assertTextViewVisibleAndContains(averageAppUsageTimeView, "8");
         assertTextViewVisibleAndEquals(averageAppUsageTimeMsgView, "엄청 많아요.");
+        assertTextViewVisibleAndEquals(averageAppUsageTimeDescriptionView, "가끔은 핸드폰을 덮고 하늘을 바라보는게 어떨까요?");
     }
 
     @Test
