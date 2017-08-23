@@ -29,4 +29,29 @@ public interface AppBeeConstants {
         int MORE = 3;
         int MOST = 4;
     }
+
+    interface CATEGORY_GROUP {
+        int FINANCE = 0;
+        int GAME = 1;
+        int MUSIC_VIDEO = 2;
+        int SOCIAL = 3;
+        int PHOTOGRAPHY = 4;
+        int PERSONALIZATION = 5;
+        int SHOPPING = 6;
+        int COMMUNICATION = 7;
+        int ENTERTAINMENT = 8;
+        int HEALTH_SPORTS = 9;
+        int EDUCATION = 10;
+        int WEATHER = 11;
+        int TRAVEL = 12;
+        int BUSINESS_PRODUCTIVITY = 13;
+        int TOOLS = 14;
+        int BOOK_NEWS = 15;
+        int LIBRARY = 16;
+        int LIFESTYLE = 17;
+        int COMICS = 18;
+        int HOUSE = 19;
+        int BEAUTY_DESIGN = 20;
+        int DATING = 21;
+    }
 }
