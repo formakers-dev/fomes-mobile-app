@@ -240,7 +240,7 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getMostInstalledCategories호출시_많이_설치되어있는_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
 
         ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(3);
 
@@ -252,7 +252,7 @@ public class AppUsageDataHelperTest {
         assertThat(mostInstalledCategories.get(2)).isEqualTo("음악");
     }
 
-    private Map<String, Integer> createCategoryDummyData() {
+    private Map<String, Integer> createCategoryDummyDataByAppCount() {
         Map<String, Integer> dummyCategoryData = new HashMap<>();
         dummyCategoryData.put("게임", 1);
         dummyCategoryData.put("사진", 5);
@@ -264,7 +264,7 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getMostInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼_리턴한다() throws Exception {
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
 
         ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(6);
 
@@ -284,7 +284,7 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getLeastInstalledCategories호출시_가장_적게_설치된_카테고리리스트를_리턴한다() throws Exception {
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
 
         ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(1);
 
@@ -295,7 +295,7 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getLeastInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼만_리턴한다() throws Exception {
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyData());
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
 
         ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(6);
 
@@ -527,6 +527,33 @@ public class AppUsageDataHelperTest {
         assertEquals(keySet[4].toString(), "/store/apps/category/ANY_CATEGORY");
     }
 
+    @Test
+    public void getMostUsedTimeCategories호출시_많은_시간_사용된_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
+        when(mockAppRepositoryHelper.getUsedTimeMapByCategory()).thenReturn(createCategoryDummyDataByUsedTime());
+        ArrayList<String> list = subject.getMostUsedTimeCategories(3);
+        assertThat(list).isNotNull();
+        assertThat(list.size()).isEqualTo(3);
+        assertThat(list.get(0)).isEqualTo("사진");
+        assertThat(list.get(1)).isEqualTo("쇼핑");
+        assertThat(list.get(2)).isEqualTo("음악");
+    }
+
+    @Test
+    public void getMostUsedTimeCategories호출시_요청한리스트크기가_많은시간_사용된_카테고리의수보다_큰경우_설치된카테고리수만큼_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getUsedTimeMapByCategory()).thenReturn(createCategoryDummyDataByUsedTime());
+        ArrayList<String> list = subject.getMostUsedTimeCategories(6);
+        assertThat(list).isNotNull();
+        assertThat(list.size()).isEqualTo(5);
+    }
+
+    @Test
+    public void getMostUsedTimeCategories호출시_카테고리맵이_비어있는경우_비어있는_리스트를_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getUsedTimeMapByCategory()).thenReturn(new HashMap<>());
+        ArrayList<String> list = subject.getMostUsedTimeCategories(3);
+        assertThat(list).isNotNull();
+        assertThat(list.size()).isEqualTo(0);
+    }
+
     private void assertSortedMap(Map<String, Integer> map) {
         assertEquals(map.size(), 3);
         assertEquals(map.get("categoryId1"), Integer.valueOf(1));
@@ -541,6 +568,16 @@ public class AppUsageDataHelperTest {
         dummyMap.put("categoryId2", 3);
         dummyMap.put("categoryId3", 2);
         return dummyMap;
+    }
+
+    private Map<String, Long> createCategoryDummyDataByUsedTime() {
+        Map<String, Long> dummyCategoryData = new HashMap<>();
+        dummyCategoryData.put("게임", 1L);
+        dummyCategoryData.put("사진", 5L);
+        dummyCategoryData.put("교육", 2L);
+        dummyCategoryData.put("음악", 3L);
+        dummyCategoryData.put("쇼핑", 4L);
+        return dummyCategoryData;
     }
 
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {

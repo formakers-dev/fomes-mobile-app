@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.repository.helper;
 
+import android.text.TextUtils;
+
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.repository.model.UsedApp;
 
@@ -102,5 +104,30 @@ public class AppRepositoryHelper {
         }
 
         return appInfoList;
+    }
+
+    public Map<String, Long> getUsedTimeMapByCategory() {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
+            final RealmResults<UsedApp> usedAppList = realmInstance.where(UsedApp.class).findAll();
+
+            Map<String, Long> usedTimeMap = new HashMap<>();
+            for (UsedApp usedApp : usedAppList) {
+                String key = usedApp.getCategoryId1();
+                Long value = usedApp.getTotalUsedTime();
+                Long oldValue = usedTimeMap.get(usedApp.getCategoryId1());
+
+                usedTimeMap.put(key, oldValue != null ? oldValue + value : value);
+
+                if (!TextUtils.isEmpty(usedApp.getCategoryId2())) {
+                    key = usedApp.getCategoryId2();
+                    value = usedApp.getTotalUsedTime();
+                    oldValue = usedTimeMap.get(usedApp.getCategoryId2());
+
+                    usedTimeMap.put(key, oldValue != null ? oldValue + value : value);
+                }
+            }
+
+            return usedTimeMap;
+        }
     }
 }

@@ -9,6 +9,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.fragment.BrainFragment;
+import com.appbee.appbeemobile.fragment.FlowerFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.AppInfo;
@@ -31,8 +32,7 @@ import javax.inject.Inject;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -95,6 +95,23 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(4);
         assertThat(bundle.getLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE)).isEqualTo(25);
+    }
+
+    @Test
+    public void onCreate_앱시작시_FlowerFragment가_나타난다() throws Exception {
+        Fragment flowerFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.FLOWER_FRAGMENT_TAG);
+        assertThat(flowerFragment).isNotNull();
+        assertThat(flowerFragment.isAdded()).isTrue();
+
+        Bundle bundle = flowerFragment.getArguments();
+        assertThat(bundle).isNotNull();
+
+        ArrayList<String> mostUsedTimeCategoryList = bundle.getStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES);
+        assertThat(mostUsedTimeCategoryList).isNotNull();
+        assertThat(mostUsedTimeCategoryList.size()).isEqualTo(3);
+        assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("금융");
+        assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("게임");
+        assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("부동산/인테리어");
     }
 
     @Test
@@ -167,5 +184,11 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(leastUsedCategories);
 
         when(appUsageDataHelper.getAppCountByCategoryId("사진")).thenReturn(1L);
+
+        ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
+        mostUsedTimeCategoryList.add("금융");
+        mostUsedTimeCategoryList.add("게임");
+        mostUsedTimeCategoryList.add("부동산/인테리어");
+        when(appUsageDataHelper.getMostUsedTimeCategories(anyInt())).thenReturn(mostUsedTimeCategoryList);
     }
 }
