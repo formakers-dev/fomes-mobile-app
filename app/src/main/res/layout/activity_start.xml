@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_orange_light"
+    android:gravity="center">
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/appbee"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="40dp"
+        android:textColor="@android:color/black"
+        android:text="@string/start_title"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:text="@string/start_description"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:text="@string/start_permission_message"/>
     <Button
         android:id="@+id/start_analysis_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/please_analysis_me"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:text="@string/start_privacy_information"/>
 </LinearLayout>
