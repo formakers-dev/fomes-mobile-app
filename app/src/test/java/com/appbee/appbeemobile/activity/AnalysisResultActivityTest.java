@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.activity;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
@@ -95,6 +96,16 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(4);
         assertThat(bundle.getLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE)).isEqualTo(25);
+    }
+
+    @Test
+    public void onCreate_앱시작시_ShareFragment가_나타난다() throws Exception {
+        Fragment shareFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.SHARE_FRAGMENT_TAG);
+        assertThat(shareFragment).isNotNull();
+        assertThat(shareFragment.isAdded()).isTrue();
+
+        Button button = (Button)shareFragment.getView().findViewById(R.id.share_button);
+        assertThat(button.isShown()).isTrue();
     }
 
     @Test

@@ -9,7 +9,9 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
+import com.appbee.appbeemobile.fragment.ShareFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.ShareSnsHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -24,6 +26,7 @@ public class AnalysisResultActivity extends Activity {
 
     public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";
     public static final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
+    public static final String SHARE_FRAGMENT_TAG = "SHARE_FRAGMENT_TAG";
 
     public static final int NUMBER_OF_MOST_INSTALLED_CATEGORY = 3;
     public static final int NUMBER_OF_LEAST_INSTALLED_CATEGORY = 1;
@@ -33,6 +36,9 @@ public class AnalysisResultActivity extends Activity {
 
     @Inject
     AppRepositoryHelper appRepositoryHelper;
+
+    @Inject
+    ShareSnsHelper shareSnsHelper;
 
     private List<AppInfo> appInfoList;
 
@@ -49,6 +55,7 @@ public class AnalysisResultActivity extends Activity {
         getFragmentManager().beginTransaction()
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
                 .add(R.id.brain_fragment, getBrainFragment(), BRAIN_FRAGMENT_TAG)
+                .add(R.id.share_fragment, new ShareFragment(), SHARE_FRAGMENT_TAG)
                 .commit();
     }
 
