@@ -21,6 +21,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
 public class AppRepositoryHelperTest {
@@ -95,9 +96,14 @@ public class AppRepositoryHelperTest {
         assertAppCountWithCategoryId(appCountMap, "categoryId5", 3);
     }
 
-    private void assertAppCountWithCategoryId(Map<String, Integer> map, String categoryId, int appCount) {
-        assertEquals(map.containsKey(categoryId), true);
-        assertEquals(map.get(categoryId), Integer.valueOf(appCount));
+    private void assertAppCountWithCategoryId(Map<String, Integer> map, String key, int value) {
+        assertEquals(map.containsKey(key), true);
+        assertEquals(map.get(key), Integer.valueOf(value));
+    }
+
+    private void assertAppCountWithCategoryId(Map<String, Long> map, String key, long value) {
+        assertEquals(map.containsKey(key), true);
+        assertEquals(map.get(key), Long.valueOf(value));
     }
 
     @Test
@@ -145,6 +151,22 @@ public class AppRepositoryHelperTest {
         List<String> CategoryIds = Arrays.asList("categoryId1", "categoryId2");
 
         assertEquals(subject.getAppCountByCategoryIds(CategoryIds), 7);
+    }
+
+    @Test
+    public void getUsedTimeMapByCategory호출시_카테고리별_총사용시간의합을_리턴한다() throws Exception {
+        insertDummyDataWithTotalUsedTimeByCategory();
+
+        Map<String, Long> map = subject.getUsedTimeMapByCategory();
+
+        assertNotNull(map);
+        assertEquals(map.size(), 6);
+        assertAppCountWithCategoryId(map, "categoryId0", 1000L);
+        assertAppCountWithCategoryId(map, "categoryId1", 3000L);
+        assertAppCountWithCategoryId(map, "categoryId2", 3000L);
+        assertAppCountWithCategoryId(map, "categoryId3", 2000L);
+        assertAppCountWithCategoryId(map, "categoryId4", 4000L);
+        assertAppCountWithCategoryId(map, "categoryId5", 4000L);
     }
 
     private void insertDummyData() {
@@ -201,4 +223,24 @@ public class AppRepositoryHelperTest {
         dummyData.add(new AppInfo("com.facebook.katana", "페이스북", "", "", "", ""));
         dummyData.add(new AppInfo("com.social.app", "소셜앱앱", "", "", "", ""));
     }
+
+    private void insertDummyDataWithTotalUsedTimeByCategory() {
+        List<AppInfo> expectedData = new ArrayList<>();
+        expectedData.add(new AppInfo("com.package.name0", "appName0", "categoryId0", "categoryName0", null, null));
+        expectedData.add(new AppInfo("com.package.name1", "appName1", "categoryId1", "categoryName1", "categoryId0", "categoryName0"));
+        expectedData.add(new AppInfo("com.package.name2", "appName2", "categoryId2", "categoryName2", null, null));
+        expectedData.add(new AppInfo("com.package.name3", "appName3", "categoryId3", "categoryName3", "categoryId1", "categoryName1"));
+        expectedData.add(new AppInfo("com.package.name4", "appName4", "categoryId4", "categoryName4", "categoryId5", "categoryName5"));
+        subject.insertUsedApps(expectedData);
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("com.package.name0", 0L);
+        map.put("com.package.name1", 1000L);
+        map.put("com.package.name2", 3000L);
+        map.put("com.package.name3", 2000L);
+        map.put("com.package.name4", 4000L);
+
+        subject.updateTotalUsedTime(map);
+    }
+
 }

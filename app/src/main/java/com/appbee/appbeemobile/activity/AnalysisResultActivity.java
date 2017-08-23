@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.BrainFragment;
+import com.appbee.appbeemobile.fragment.FlowerFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.fragment.ShareFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
@@ -29,6 +30,7 @@ public class AnalysisResultActivity extends Activity {
     public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";
     public static final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
     public static final String SHARE_FRAGMENT_TAG = "SHARE_FRAGMENT_TAG";
+    public static final String FLOWER_FRAGMENT_TAG = "FLOWER_FRAGMENT_TAG";
 
     public static final int NUMBER_OF_MOST_INSTALLED_CATEGORY = 3;
     public static final int NUMBER_OF_LEAST_INSTALLED_CATEGORY = 1;
@@ -57,8 +59,20 @@ public class AnalysisResultActivity extends Activity {
         getFragmentManager().beginTransaction()
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
                 .add(R.id.brain_fragment, getBrainFragment(), BRAIN_FRAGMENT_TAG)
+                .add(R.id.flower_fragment, getFlowerFragment(), FLOWER_FRAGMENT_TAG)
                 .add(R.id.share_fragment, new ShareFragment(), SHARE_FRAGMENT_TAG)
                 .commit();
+    }
+
+    private Fragment getFlowerFragment() {
+        Fragment flowerFragment = new FlowerFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, appUsageDataHelper.getMostUsedTimeCategories(3));
+
+        flowerFragment.setArguments(bundle);
+
+        return flowerFragment;
     }
 
     private Fragment getOverviewFragment() {
