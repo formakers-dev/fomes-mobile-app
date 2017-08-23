@@ -15,6 +15,8 @@ import com.appbee.appbeemobile.helper.ShareSnsHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
+import com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +50,7 @@ public class AnalysisResultActivity extends Activity {
 
         setContentView(R.layout.activity_analysis_result);
 
-        ((AppBeeApplication)getApplication()).getComponent().inject(this);
+        ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
         appInfoList = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime();
 
@@ -66,12 +68,12 @@ public class AnalysisResultActivity extends Activity {
 
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
-        bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, getString(appUsageDataHelper.getAppCountMessage(appCount)));
+        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, getAppCountType(appCount));
 
         List<LongTermStat> longTermStatList = appUsageDataHelper.getLongTermStats();
-        int appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay(longTermStatList);
-        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
-        bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
+        double appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay(longTermStatList);
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, (int) Math.round(appUsageAverageHourPerDay));
+        bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageHourPerDay));
         bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, getTopUsedAppNameList(NUMBER_OF_TOP_USED_APP_COUNT));
         bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, appUsageDataHelper.getCharacterType());
         overviewFragment.setArguments(bundle);
@@ -104,5 +106,33 @@ public class AnalysisResultActivity extends Activity {
             top3UsedAppNameList.add(appInfo.getAppName());
         }
         return top3UsedAppNameList;
+    }
+
+    int getAppCountType(int appCount) {
+        if (appCount < 25) {
+            return APP_LIST_COUNT_TYPE.LEAST;
+        } else if (appCount < 50) {
+            return APP_LIST_COUNT_TYPE.LESS;
+        } else if (appCount < 100) {
+            return APP_LIST_COUNT_TYPE.NORMAL;
+        } else if (appCount < 150) {
+            return APP_LIST_COUNT_TYPE.MORE;
+        } else {
+            return APP_LIST_COUNT_TYPE.MOST;
+        }
+    }
+
+    int getAppUsageTimeType(double hour) {
+        if (hour < 1) {
+            return APP_USAGE_TIME_TYPE.LEAST;
+        } else if (hour < 2) {
+            return APP_USAGE_TIME_TYPE.LESS;
+        } else if (hour < 4) {
+            return APP_USAGE_TIME_TYPE.NORMAL;
+        } else if (hour < 8) {
+            return APP_USAGE_TIME_TYPE.MORE;
+        } else {
+            return APP_USAGE_TIME_TYPE.MOST;
+        }
     }
 }

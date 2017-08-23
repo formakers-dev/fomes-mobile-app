@@ -20,11 +20,11 @@ import butterknife.Unbinder;
 public class OverviewFragment extends Fragment {
 
     public static final String EXTRA_APP_LIST_COUNT = "EXTRA_APP_LIST_COUNT";
-    public static final String EXTRA_APP_LIST_COUNT_MSG = "EXTRA_APP_LIST_COUNT_MSG";
+    public static final String EXTRA_APP_LIST_COUNT_TYPE = "EXTRA_APP_LIST_COUNT_TYPE";
     public static final String EXTRA_APP_AVG_TIME = "EXTRA_APP_AVG_TIME";
-    public static final String EXTRA_APP_USAGE_AVG_TIME_MSG = "EXTRA_APP_USAGE_AVG_TIME_MSG";
     public static final String EXTRA_LONGEST_USED_APP_NAME_LIST = "EXTRA_LONGEST_USED_APP_NAME_LIST";
     public static final String EXTRA_CHARACTER_TYPE = "EXTRA_CHARACTER_TYPE";
+    public static final String EXTRA_APP_USAGE_TIME_TYPE = "EXTRA_APP_USAGE_TIME_TYPE";
 
     @BindView(R.id.app_count_textview)
     TextView appCountView;
@@ -65,15 +65,17 @@ public class OverviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         appCountView.setText(String.valueOf(getArguments().getInt(EXTRA_APP_LIST_COUNT)));
-        appCountMsgView.setText(getArguments().getString(EXTRA_APP_LIST_COUNT_MSG));
+        String appCountMsg = getResources().getStringArray(R.array.app_list_count_type_names)[getArguments().getInt(EXTRA_APP_LIST_COUNT_TYPE)];
+        appCountMsgView.setText(appCountMsg);
 
         averageAppUsageTimeView.setText(String.format(getString(R.string.overview_average_time), getArguments().getInt(EXTRA_APP_AVG_TIME)));
-        averageAppUsageTimeMsgView.setText(getArguments().getString(EXTRA_APP_USAGE_AVG_TIME_MSG));
+        String averageAppUsageTimeMsg = getResources().getStringArray(R.array.app_usage_time_type_names)[getArguments().getInt(EXTRA_APP_USAGE_TIME_TYPE)];
+        averageAppUsageTimeMsgView.setText(averageAppUsageTimeMsg);
 
         List<String> appNames = getArguments().getStringArrayList(EXTRA_LONGEST_USED_APP_NAME_LIST);
 
-        if(appNames != null) {
-            for(String appName: appNames) {
+        if (appNames != null) {
+            for (String appName : appNames) {
                 TextView textView = new TextView(getActivity().getApplicationContext());
                 textView.setText(appName);
                 longestUsedAppLayout.addView(textView);

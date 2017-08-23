@@ -61,10 +61,10 @@ public class OverviewFragmentTest {
     public void setUp() throws Exception {
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, 400);
-        bundle.putString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG, "많기도 하네 진짜...");
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 8);
-        bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, "짱 많은 편");
         bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, AppBeeConstants.CHARACTER_TYPE.GAMER);
+        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, AppBeeConstants.APP_LIST_COUNT_TYPE.MORE);
+        bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, AppBeeConstants.APP_USAGE_TIME_TYPE.MOST);
 
         ArrayList<String> appNameList = new ArrayList<>();
         appNameList.add("testApp1");
@@ -86,13 +86,13 @@ public class OverviewFragmentTest {
     @Test
     public void fragment시작시_설치된_앱개수와_앱개수의평가를_표시한다() throws Exception {
         assertTextViewVisibleAndContains(appCountView, "400");
-        assertTextViewVisibleAndContains(appCountMsgView, "많기도");
+        assertTextViewVisibleAndEquals(appCountMsgView, "많아요.");
     }
 
     @Test
     public void fragment시작시_평균_앱사용_시간과_평가를_표시한다() throws Exception {
         assertTextViewVisibleAndContains(averageAppUsageTimeView, "8");
-        assertTextViewVisibleAndEquals(averageAppUsageTimeMsgView, "짱 많은 편");
+        assertTextViewVisibleAndEquals(averageAppUsageTimeMsgView, "엄청 많아요.");
     }
 
     @Test

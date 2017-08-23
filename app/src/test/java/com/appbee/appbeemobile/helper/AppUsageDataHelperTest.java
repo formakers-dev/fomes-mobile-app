@@ -65,7 +65,7 @@ public class AppUsageDataHelperTest {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
-        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
 
         List<LongTermStat> actualResult = subject.getLongTermStats();
 
@@ -78,7 +78,7 @@ public class AppUsageDataHelperTest {
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 200L, 1499934615000L));    //2017-07-13 17:30:15
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 400L, 1500001200000L));    //2017-07-14 12:00:00
-        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
 
         List<LongTermStat> actualResult = subject.getLongTermStats();
 
@@ -93,7 +93,7 @@ public class AppUsageDataHelperTest {
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
 
-        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
 
         List<LongTermStat> actualResult = subject.getLongTermStats();
 
@@ -221,20 +221,13 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getAppCountMessage호출시_알맞은_메세지를_리턴한다() throws Exception {
-        assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(10))).contains("적기도 하네 진짜…");
-        assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(200))).contains("적당도 하네 진짜…");
-        assertThat(RuntimeEnvironment.application.getString(subject.getAppCountMessage(400))).contains("많기도 하네 진짜…");
-    }
-
-    @Test
     public void getAppUsageAverageTime호출시_앱사용평균시간을_리턴한다() throws Exception {
         when(mockLocalStorageHelper.getMinStartedStatTimeStamp()).thenReturn(1436788800000L); // 2015년 July 13일 Monday PM 12:00:00
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("com.package.name1", 5_000_000_000L, 1436788800000L));
         preStoredUsageStats.add(createMockUsageStats("com.package.name2", 8_000_000_000L, 1499934615000L));
         preStoredUsageStats.add(createMockUsageStats("com.package.name3", 9_000_000_000L, 1500001200000L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
         ShadowSystemClock.setCurrentTimeMillis(1503014400000L); // 2017년 August 18일 Friday AM 12:00:00
 
         List<LongTermStat> longTermStatList = subject.getLongTermStats();
@@ -242,14 +235,7 @@ public class AppUsageDataHelperTest {
         // (앱 사용시간의 총합 / 디바이스 총 사용일) 의 반올림.....
         // 앱 사용시간의 총합 = 22000000000 / 1000 / 60 / 60 = 6,111.1111111111
         // 디바이스 총 사용일 = (1503014400000 - 1436788800000) / 1000/ 60 / 60 / 24 = 766.5
-        assertThat(subject.getAppUsageAverageHourPerDay(longTermStatList)).isEqualTo(8);
-    }
-
-    @Test
-    public void getAppUsageAverageMessage호출시_알맞은_메세지를_리턴한다() throws Exception {
-        assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(1))).contains("짱 적은 편");
-        assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(5))).contains("짱 적당한 편");
-        assertThat(RuntimeEnvironment.application.getString(subject.getAppUsageAverageMessage(10))).contains("짱 많은 편");
+        assertThat(subject.getAppUsageAverageHourPerDay(longTermStatList)).isEqualTo(7.926070038910506);
     }
 
     @Test
@@ -357,7 +343,7 @@ public class AppUsageDataHelperTest {
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 300L, 1500001200000L));    //2017-07-14 12:00:00
 
-        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(),anyLong())).thenReturn(preStoredUsageStats);
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
 
         Map map = subject.getLongTermStatsSummary();
 

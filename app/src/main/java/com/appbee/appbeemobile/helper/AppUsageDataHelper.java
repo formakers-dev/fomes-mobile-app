@@ -128,17 +128,7 @@ public class AppUsageDataHelper {
         return appBeeAndroidNativeHelper.getInstalledLaunchableApps();
     }
 
-    public @StringRes int getAppCountMessage(int appCount) {
-        if (appCount < 100) {
-            return R.string.app_count_few_msg;
-        } else if (appCount > 300) {
-            return R.string.app_count_many_msg;
-        } else {
-            return R.string.app_count_proper_msg;
-        }
-    }
-
-    public int getAppUsageAverageHourPerDay(List<LongTermStat> longTermStatList) {
+    public double getAppUsageAverageHourPerDay(List<LongTermStat> longTermStatList) {
         long totalUsedTime = 0L;
 
         for (LongTermStat item : longTermStatList) {
@@ -147,17 +137,7 @@ public class AppUsageDataHelper {
 
         totalUsedTime = totalUsedTime / 1000 / 60 / 60;
         long mobileTotalUsedDay = TimeUtil.getMobileTotalUsedDay(localStorageHelper.getMinStartedStatTimeStamp());
-        return Math.round(totalUsedTime / (float) mobileTotalUsedDay);
-    }
-
-    public @StringRes int getAppUsageAverageMessage(int hour) {
-        if (hour < 2) {
-            return R.string.app_usage_average_time_few_msg;
-        } else if (hour > 5) {
-            return R.string.app_usage_average_time_many_msg;
-        } else {
-            return R.string.app_usage_average_time_proper_msg;
-        }
+        return totalUsedTime / (double) mobileTotalUsedDay;
     }
 
     @NonNull
@@ -165,7 +145,7 @@ public class AppUsageDataHelper {
         Map<String, Long> map = new HashMap<>();
 
         for (LongTermStat longTermStat : getLongTermStats()) {
-            if(map.get(longTermStat.getPackageName()) == null){
+            if (map.get(longTermStat.getPackageName()) == null) {
                 map.put(longTermStat.getPackageName(), longTermStat.getTotalUsedTime());
             } else {
                 map.put(longTermStat.getPackageName(), map.get(longTermStat.getPackageName()) + longTermStat.getTotalUsedTime());
@@ -217,49 +197,49 @@ public class AppUsageDataHelper {
         final String topCategoryId = aggregatedMap.keySet().iterator().next();
 
         switch (topCategoryId) {
-            case GAME_CATEGORY_GROUP_KEY :
+            case GAME_CATEGORY_GROUP_KEY:
                 return CHARACTER_TYPE.GAMER;
-            case MUSIC_VIDEO_CATEGORY_GROUP_KEY :
+            case MUSIC_VIDEO_CATEGORY_GROUP_KEY:
                 return CHARACTER_TYPE.QUEEN;
-            case "/store/apps/category/PHOTOGRAPHY" :
+            case "/store/apps/category/PHOTOGRAPHY":
                 return CHARACTER_TYPE.POISON;
-            case "/store/apps/category/PERSONALIZATION" :
+            case "/store/apps/category/PERSONALIZATION":
                 return CHARACTER_TYPE.SOUL;
             default:
                 return CHARACTER_TYPE.ETC;
         }
     }
 
-    Map<String,Integer> aggregateCategoryMap(Map<String, Integer> categoryMap) {
+    Map<String, Integer> aggregateCategoryMap(Map<String, Integer> categoryMap) {
         Map<String, Integer> map = new HashMap<>();
 
-        for(String key : categoryMap.keySet()) {
+        for (String key : categoryMap.keySet()) {
             switch (key) {
-                case "/store/apps/category/GAME" :
-                case "/store/apps/category/GAME_EDUCATIONAL" :
-                case "/store/apps/category/GAME_WORD" :
-                case "/store/apps/category/GAME_ROLE_PLAYING" :
-                case "/store/apps/category/GAME_BOARD" :
-                case "/store/apps/category/GAME_SPORTS" :
-                case "/store/apps/category/GAME_SIMULATION" :
-                case "/store/apps/category/GAME_ARCADE" :
-                case "/store/apps/category/GAME_ACTION" :
-                case "/store/apps/category/GAME_ADVENTURE" :
-                case "/store/apps/category/GAME_MUSIC" :
-                case "/store/apps/category/GAME_RACING" :
-                case "/store/apps/category/GAME_STRATEGY" :
-                case "/store/apps/category/GAME_CARD" :
-                case "/store/apps/category/GAME_CASINO" :
-                case "/store/apps/category/GAME_CASUAL" :
-                case "/store/apps/category/GAME_TRIVIA" :
-                case "/store/apps/category/GAME_PUZZLE" :
+                case "/store/apps/category/GAME":
+                case "/store/apps/category/GAME_EDUCATIONAL":
+                case "/store/apps/category/GAME_WORD":
+                case "/store/apps/category/GAME_ROLE_PLAYING":
+                case "/store/apps/category/GAME_BOARD":
+                case "/store/apps/category/GAME_SPORTS":
+                case "/store/apps/category/GAME_SIMULATION":
+                case "/store/apps/category/GAME_ARCADE":
+                case "/store/apps/category/GAME_ACTION":
+                case "/store/apps/category/GAME_ADVENTURE":
+                case "/store/apps/category/GAME_MUSIC":
+                case "/store/apps/category/GAME_RACING":
+                case "/store/apps/category/GAME_STRATEGY":
+                case "/store/apps/category/GAME_CARD":
+                case "/store/apps/category/GAME_CASINO":
+                case "/store/apps/category/GAME_CASUAL":
+                case "/store/apps/category/GAME_TRIVIA":
+                case "/store/apps/category/GAME_PUZZLE":
                     map.put(GAME_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(GAME_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
                     break;
-                case "/store/apps/category/VIDEO_PLAYERS" :
-                case "/store/apps/category/MUSIC_AND_AUDIO" :
+                case "/store/apps/category/VIDEO_PLAYERS":
+                case "/store/apps/category/MUSIC_AND_AUDIO":
                     map.put(MUSIC_VIDEO_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(MUSIC_VIDEO_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
                     break;
-                default :
+                default:
                     map.put(key, categoryMap.get(key));
                     break;
             }
