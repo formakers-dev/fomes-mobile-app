@@ -20,8 +20,6 @@ public class OverviewFragment extends Fragment {
     public static final String EXTRA_APP_AVG_TIME = "EXTRA_APP_AVG_TIME";
     public static final String EXTRA_APP_USAGE_AVG_TIME_MSG = "EXTRA_APP_USAGE_AVG_TIME_MSG";
     public static final String EXTRA_LONGEST_USED_APP_NAME_LIST = "EXTRA_LONGEST_USED_APP_NAME_LIST";
-    public static final String EXTRA_MOST_USED_SOCIAL_APP = "EXTRA_MOST_USED_SOCIAL_APP";
-    public static final String EXTRA_MOST_USED_SOCIAL_APP_MSG = "EXTRA_MOST_USED_SOCIAL_APP_MSG";
 
     View view;
 
@@ -52,9 +50,6 @@ public class OverviewFragment extends Fragment {
                 linearLayout.addView(textView);
             }
         }
-
-        ((TextView)view.findViewById(R.id.most_used_social_app_textview)).setText(getArguments().getString(EXTRA_MOST_USED_SOCIAL_APP));
-        ((TextView)view.findViewById(R.id.most_used_social_app_msg_textview)).setText(getArguments().getString(EXTRA_MOST_USED_SOCIAL_APP_MSG));
 
         return view;
     }

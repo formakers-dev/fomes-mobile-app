@@ -1,10 +1,8 @@
 package com.appbee.appbeemobile.repository.helper;
 
-import android.support.test.espresso.core.deps.guava.collect.Lists;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.appbee.appbeemobile.model.AppInfo;
-import com.appbee.appbeemobile.repository.model.SocialApp;
 import com.appbee.appbeemobile.repository.model.UsedApp;
 
 import org.junit.After;
@@ -135,39 +133,9 @@ public class AppRepositoryHelperTest {
     }
 
     @Test
-    public void insertSocial호출시_신규_소셜앱의_정보를_저장한다() throws Exception {
-        insertDummyDataForSocialApp();
-
-        RealmResults<SocialApp> socialApps = realm.where(SocialApp.class).findAll();
-
-        assertEquals(socialApps.size(), 7);
-        checkSocialAppData(socialApps.get(0), "com.facebook.katana", "Facebook");
-        checkSocialAppData(socialApps.get(1), "com.instagram.android", "Instagram");
-        checkSocialAppData(socialApps.get(2), "com.kakao.talk", "카카오톡 KakaoTalk");
-        checkSocialAppData(socialApps.get(3), "jp.naver.line.android", "라인 LINE");
-        checkSocialAppData(socialApps.get(4), "com.nhn.android.band", "밴드");
-        checkSocialAppData(socialApps.get(5), "kr.co.vcnc.android.couple", "커플앱 비트윈 - Between");
-        checkSocialAppData(socialApps.get(6), "com.android.chrome", "Chrome");
-    }
-
-    @Test
-    public void insertSocial호출시_기존_소셜앱의_경우_정보를_업데이트한다() throws Exception {
-        insertDummyDataForSocialApp();
-
-        insertAdditionalDummyDataForSocialApp();
-        RealmResults<SocialApp> socialApps = realm.where(SocialApp.class).findAll();
-
-        assertEquals(socialApps.size(), 8);
-        assertEquals(socialApps.get(0).getAppName(), "페이스북");
-    }
-
-    @Test
     public void getMostUsedSocialApp() throws Exception {
         insertDummyData();
         insertDummyDataForSocialApp();
-
-        AppInfo appInfo = subject.getMostUsedSocialApp();
-        assertEquals(appInfo.getAppName(), "Chrome");
     }
 
     @Test
@@ -177,11 +145,6 @@ public class AppRepositoryHelperTest {
         List<String> CategoryIds = Arrays.asList("categoryId1", "categoryId2");
 
         assertEquals(subject.getAppCountByCategoryIds(CategoryIds), 7);
-    }
-
-    private void checkSocialAppData(SocialApp socialApp, String packageName, String appName) {
-        assertEquals(socialApp.getPackageName(), packageName);
-        assertEquals(socialApp.getAppName(), appName);
     }
 
     private void insertDummyData() {
@@ -231,13 +194,11 @@ public class AppRepositoryHelperTest {
         dummyData.add(new AppInfo("com.nhn.android.band", "밴드", "", "", "", ""));
         dummyData.add(new AppInfo("kr.co.vcnc.android.couple", "커플앱 비트윈 - Between", "", "", "", ""));
         dummyData.add(new AppInfo("com.android.chrome", "Chrome", "", "", "", ""));
-        subject.insertSocialApps(dummyData);
     }
 
     private void insertAdditionalDummyDataForSocialApp() {
         List<AppInfo> dummyData = new ArrayList<>();
         dummyData.add(new AppInfo("com.facebook.katana", "페이스북", "", "", "", ""));
         dummyData.add(new AppInfo("com.social.app", "소셜앱앱", "", "", "", ""));
-        subject.insertSocialApps(dummyData);
     }
 }
