@@ -207,29 +207,6 @@ public class AppUsageDataHelper {
         return appRepositoryHelper.getSortedUsedAppsByTotalUsedTime();
     }
 
-    public String getMostUsedSocialAppMessage(String socialAppName) {
-        switch (socialAppName) {
-            case "Facebook":
-                return "당신, 잘 살고 계시네요.";
-            case "네이버 블로그 - Naver Blog":
-            case "티스토리 - TISTORY":
-            case "브런치 - 좋은 글과 작가를 만나는 공간":
-                return "당신은 세상의 훌륭한 이웃입니다. ";
-            case "Instagram":
-                return "유행을 놓치지 않는 영한 감성의 소유자!";
-            case "카카오스토리 KakaoStory":
-                return "혹시 자녀가 있으신가요?";
-            case "트위터":
-                return "현실에는 말 못할 이야기가 많으신가요?";
-            case "밴드":
-                return "여러가지 동아리를 하고 계신 액티브한 당신!";
-            case "커플앱 비트윈 - Between":
-                return "정말 부러워요..전 모쏠이거든요..";
-            default:
-                return "요즘엔 이게 유행인가요?";
-        }
-    }
-
     public int getCharacterType() {
         final Map<String, Integer> aggregatedMap = aggregateCategoryMap(appRepositoryHelper.getAppCountMapByCategory());
 
