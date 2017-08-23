@@ -10,10 +10,6 @@
     <string name="app_service_get_info_api_fail">appList API fail</string>
     <string name="now_loading">Now Loading…</string>
 
-    <string name="app_usage_average_time_many_msg">짱 많은 편</string>
-    <string name="app_usage_average_time_few_msg">짱 적은 편</string>
-    <string name="app_usage_average_time_proper_msg">짱 적당한 편</string>
-
     <string name="longest_used_app_title">당신과 뗄레야 뗄수 없는 앱</string>
     <string name="most_installed_categories_title">가장 많이 설치한 카테고리는 </string>
     <string name="least_installed_categories_title">가장 적게 설치한 카테고리는 </string>
@@ -43,6 +39,22 @@
         <item>ㄱㅏ끔...눈물을 흘ㄹㅣ는...당신... 섬ㅅㅔ하고...ㅅㅏ진을 좋아하는...당신... 소ㄹ ㅣ치며...울 수 있ㄷㅏ는건...좋은ㄱ ㅓ에요... 당신은 한가지로 규정짓기에 어려운 사람이에요. 룰에 얽매이지 않는 감성은 오글거리는게 아니라 멋지답니다!</item>
         <item>당신은 자기만의 쀨로 가득 찬 특이한 사람이에요. 자신만의 공간이 필요하고, 뭐든 자기만의 방식이 있는 개성파죠. 당신만의 소울과 룰 때문에 때로는 친해지기 어렵다는 말을 듣기도 해요. 하지만 가까워지면 누구보다 사랑스러운 사람이랍니다!</item>
         <item>분석하기 어려운 당신! 앱비에게는 외계인같은 당신! 당신은 딱 떨어지는 분석결과를 받기에는 너무 복잡한 존재에요. 꿀빨러 지구에 오신 김에 앱비에 들러주시겠어요? 신비로운 당신의 데이터를 영접하고 싶답니다!</item>
+    </string-array>
+
+    <string-array name="app_list_count_type_names">
+        <item>아주 적어요.</item>
+        <item>적어요.</item>
+        <item>보통이에요.</item>
+        <item>많아요.</item>
+        <item>엄청 많아요.</item>
+    </string-array>
+
+    <string-array name="app_usage_time_type_names">
+        <item>아주 적어요.</item>
+        <item>적어요.</item>
+        <item>보통이에요.</item>
+        <item>많아요.</item>
+        <item>엄청 많아요.</item>
     </string-array>
 
     <string name="share">공유하기</string>

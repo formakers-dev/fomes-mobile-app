@@ -15,7 +15,6 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
-import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +29,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.appbee.appbeemobile.util.AppBeeConstants.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -49,7 +48,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         mockDummyData();
 
@@ -64,14 +63,14 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         Bundle bundle = fragment.getArguments();
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(4);
-        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_LIST_COUNT_MSG)).isEqualTo("적기도 하네 진짜…");
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
-        assertThat(bundle.getString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG)).isEqualTo("짱 적당한 편");
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).size()).isEqualTo(3);
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("app_name_1");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("app_name_2");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("app_name_3");
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(AppBeeConstants.CHARACTER_TYPE.QUEEN);
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(CHARACTER_TYPE.QUEEN);
     }
 
 
@@ -104,7 +103,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(shareFragment).isNotNull();
         assertThat(shareFragment.isAdded()).isTrue();
 
-        Button button = (Button)shareFragment.getView().findViewById(R.id.share_button);
+        Button button = (Button) shareFragment.getView().findViewById(R.id.share_button);
         assertThat(button.isShown()).isTrue();
     }
 
@@ -112,6 +111,28 @@ public class AnalysisResultActivityTest extends ActivityTest {
     public void getTopUsedAppNameList호출시_지정한_개수만큼의_가장_많이_사용된_앱정보리스트를_리턴한다() throws Exception {
         ArrayList<String> appNameList = subject.getTopUsedAppNameList(3);
         assertThat(appNameList.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void getAppUsageTimeType호출시_앱사용시간별_타입을_리턴한다() throws Exception {
+        assertThat(subject.getAppUsageTimeType(0)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
+        assertThat(subject.getAppUsageTimeType(0.5)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
+        assertThat(subject.getAppUsageTimeType(1)).isEqualTo(APP_USAGE_TIME_TYPE.LESS);
+        assertThat(subject.getAppUsageTimeType(2)).isEqualTo(APP_USAGE_TIME_TYPE.NORMAL);
+        assertThat(subject.getAppUsageTimeType(4)).isEqualTo(APP_USAGE_TIME_TYPE.MORE);
+        assertThat(subject.getAppUsageTimeType(8)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
+        assertThat(subject.getAppUsageTimeType(10)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
+    }
+
+    @Test
+    public void getAppCountType호출시_설치앱개수별_타입을_리턴한다() throws Exception {
+        assertThat(subject.getAppCountType(0)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
+        assertThat(subject.getAppCountType(10)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
+        assertThat(subject.getAppCountType(25)).isEqualTo(APP_LIST_COUNT_TYPE.LESS);
+        assertThat(subject.getAppCountType(50)).isEqualTo(APP_LIST_COUNT_TYPE.NORMAL);
+        assertThat(subject.getAppCountType(100)).isEqualTo(APP_LIST_COUNT_TYPE.MORE);
+        assertThat(subject.getAppCountType(150)).isEqualTo(APP_LIST_COUNT_TYPE.MOST);
+        assertThat(subject.getAppCountType(200)).isEqualTo(APP_LIST_COUNT_TYPE.MOST);
     }
 
     private void mockDummyData() {
@@ -131,14 +152,10 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         when(appUsageDataHelper.getSortedUsedAppsByTotalUsedTime()).thenReturn(appInfoList);
 
-        when(appUsageDataHelper.getAppCountMessage(4)).thenReturn(R.string.app_count_few_msg);
-        when(appUsageDataHelper.getAppCountMessage(200)).thenReturn(R.string.app_count_proper_msg);
-        when(appUsageDataHelper.getAppCountMessage(400)).thenReturn(R.string.app_count_many_msg);
-        when(appUsageDataHelper.getAppUsageAverageHourPerDay(any())).thenReturn(8);
-        when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
+        when(appUsageDataHelper.getAppUsageAverageHourPerDay(any())).thenReturn(8.0d);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
 
-        when(appUsageDataHelper.getCharacterType()).thenReturn(AppBeeConstants.CHARACTER_TYPE.QUEEN);
+        when(appUsageDataHelper.getCharacterType()).thenReturn(CHARACTER_TYPE.QUEEN);
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("사진");
         mostUsedCategories.add("쇼핑");
