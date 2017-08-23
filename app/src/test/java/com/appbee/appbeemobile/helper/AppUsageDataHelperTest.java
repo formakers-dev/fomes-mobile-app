@@ -9,6 +9,7 @@ import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -392,6 +393,41 @@ public class AppUsageDataHelperTest {
         assertThat(subject.getMostUsedSocialAppMessage("밴드")).contains("여러가지 동아리를 하고 계신 액티브한 당신!");
         assertThat(subject.getMostUsedSocialAppMessage("커플앱 비트윈 - Between")).contains("정말 부러워요..전 모쏠이거든요..");
         assertThat(subject.getMostUsedSocialAppMessage("디폴트")).contains("요즘엔 이게 유행인가요?");
+    }
+
+    @Test
+    public void getCharacterType호출시_게임관련카테고리설치앱이_가장많은경우_게임캐릭터로_리턴한다() throws Exception {
+        verifyIsGameCharacter("/store/apps/category/GAME");
+        verifyIsGameCharacter("/store/apps/category/GAME_EDUCATIONAL");
+        verifyIsGameCharacter("/store/apps/category/GAME_WORD");
+        verifyIsGameCharacter("/store/apps/category/GAME_ROLE_PLAYING");
+        verifyIsGameCharacter("/store/apps/category/GAME_BOARD");
+        verifyIsGameCharacter("/store/apps/category/GAME_SPORTS");
+        verifyIsGameCharacter("/store/apps/category/GAME_SIMULATION");
+        verifyIsGameCharacter("/store/apps/category/GAME_ARCADE");
+        verifyIsGameCharacter("/store/apps/category/GAME_ACTION");
+        verifyIsGameCharacter("/store/apps/category/GAME_ADVENTURE");
+        verifyIsGameCharacter("/store/apps/category/GAME_MUSIC");
+        verifyIsGameCharacter("/store/apps/category/GAME_RACING");
+        verifyIsGameCharacter("/store/apps/category/GAME_STRATEGY");
+        verifyIsGameCharacter("/store/apps/category/GAME_CARD");
+        verifyIsGameCharacter("/store/apps/category/GAME_CASINO");
+        verifyIsGameCharacter("/store/apps/category/GAME_CASUAL");
+        verifyIsGameCharacter("/store/apps/category/GAME_TRIVIA");
+        verifyIsGameCharacter("/store/apps/category/GAME_PUZZLE");
+    }
+
+    private void verifyIsGameCharacter(String gameCategoryId) {
+        Map<String, Integer> mockCategoryMap = new HashMap<>();
+        mockCategoryMap.put("/store/apps/category/FINANCE", 200);
+        mockCategoryMap.put("/store/apps/category/TOOLS", 100);
+        mockCategoryMap.put(gameCategoryId, 300);
+
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
+
+        int returnCharacterType = subject.getCharacterType();
+
+        assertEquals(returnCharacterType, AppBeeConstants.CHARACTER_TYPE.GAMER);
     }
 
     private void assertSortedMap(Map<String, Integer> map) {
