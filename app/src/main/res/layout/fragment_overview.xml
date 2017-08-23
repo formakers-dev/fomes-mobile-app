@@ -6,51 +6,72 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="15dp"
-            android:text="@string/overview_app_count_title"/>
-        <TextView android:id="@+id/app_count_textview"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="15dp"
+                android:text="@string/overview_app_count_title"/>
+            <TextView android:id="@+id/app_count_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_blue_light"
+                android:textSize="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="15dp"
+                android:text="@string/overview_app_count_unit"/>
+            <TextView android:id="@+id/app_count_msg_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textColor="@android:color/holo_blue_light"/>
+        </LinearLayout>
+
+        <TextView android:id="@+id/app_count_description_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_blue_light"
             android:textSize="15dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="15dp"
-            android:text="@string/overview_app_count_unit"/>
-        <TextView android:id="@+id/app_count_msg_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:textColor="@android:color/holo_blue_light"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="15dp"
-            android:text="@string/overview_average_time_title"/>
-        <TextView android:id="@+id/average_app_usage_time_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_blue_light"
-            android:textSize="15dp"/>
-        <TextView android:id="@+id/average_app_usage_time_msg_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_blue_light"
-            android:textSize="15dp"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="15dp"
+                android:text="@string/overview_average_time_title"/>
+            <TextView android:id="@+id/average_app_usage_time_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_blue_light"
+                android:textSize="15dp"/>
+            <TextView android:id="@+id/average_app_usage_time_msg_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_blue_light"
+                android:textSize="15dp"/>
+        </LinearLayout>
 
+        <TextView android:id="@+id/average_app_usage_time_description_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="15dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
