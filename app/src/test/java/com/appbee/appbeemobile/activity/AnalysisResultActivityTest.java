@@ -66,10 +66,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
-        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).size()).isEqualTo(3);
-        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("app_name_1");
-        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("app_name_2");
-        assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("app_name_3");
+        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME)).isEqualTo("app_name_1");
+        assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION)).isEqualTo("역시 당신은 덕…아니, 게이머라구요.");
         assertThat(bundle.getInt(OverviewFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(CHARACTER_TYPE.QUEEN);
     }
 
@@ -125,12 +123,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     @Test
-    public void getTopUsedAppNameList호출시_지정한_개수만큼의_가장_많이_사용된_앱정보리스트를_리턴한다() throws Exception {
-        ArrayList<String> appNameList = subject.getTopUsedAppNameList(3);
-        assertThat(appNameList.size()).isEqualTo(3);
-    }
-
-    @Test
     public void getAppUsageTimeType호출시_앱사용시간별_타입을_리턴한다() throws Exception {
         assertThat(subject.getAppUsageTimeType(0)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
         assertThat(subject.getAppUsageTimeType(0.5)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
@@ -152,6 +144,54 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getAppCountType(200)).isEqualTo(APP_LIST_COUNT_TYPE.MOST);
     }
 
+    @Test
+    public void getLongestUsedAppDescription호출시_카테고리별_description을_리턴한다() throws Exception {
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FINANCE")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[0]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_EDUCATIONAL")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_WORD")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_ROLE_PLAYING")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_BOARD")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_SPORTS")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_SIMULATION")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_ARCADE")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_ACTION")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_ADVENTURE")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_MUSIC")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_RACING")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_STRATEGY")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_CARD")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_CASINO")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_CASUAL")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_TRIVIA")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_PUZZLE")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/VIDEO_PLAYERS")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[2]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/MUSIC_AND_AUDIO")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[2]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/SOCIAL")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[3]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/PHOTOGRAPHY")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[4]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/PERSONALIZATION")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[5]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/SHOPPING")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[6]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/COMMUNICATION")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[7]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/ENTERTAINMENT")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[8]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/HEALTH_AND_FITNESS")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[9]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/SPORTS")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[9]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/EDUCATION")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[10]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/WEATHER")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[11]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/TRAVEL_AND_LOCAL")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[12]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BUSINESS")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[13]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/PRODUCTIVITY")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[13]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/TOOLS")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[14]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BOOKS_AND_REFERENCE")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[15]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/NEWS_AND_MAGAZINES")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[15]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/LIBRARIES_AND_DEMO")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[16]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/LIFESTYLE")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[17]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/COMICS")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[18]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/HOUSE_AND_HOME")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[19]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BEAUTY")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[20]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/ART_AND_DESIGN")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[20]);
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/DATING")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[21]);
+    }
+
     private void mockDummyData() {
 
         List<NativeAppInfo> nativeAppInfos = new ArrayList<>();
@@ -162,8 +202,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
 
         List<AppInfo> appInfoList = new ArrayList<>();
-        appInfoList.add(new AppInfo("com.package.name1", "app_name_1", null, null, null, null));
-        appInfoList.add(new AppInfo("com.package.name2", "app_name_2", null, null, null, null));
+        appInfoList.add(new AppInfo("com.package.name1", "app_name_1", "/store/apps/category/GAME", null, null, null));
+        appInfoList.add(new AppInfo("com.package.name2", "app_name_2", "category_id_2", null, null, null));
         appInfoList.add(new AppInfo("com.package.name3", "app_name_3", null, null, null, null));
         appInfoList.add(new AppInfo("com.package.name4", "app_name_4", null, null, null, null));
 

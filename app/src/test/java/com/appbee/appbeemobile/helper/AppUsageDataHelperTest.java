@@ -235,7 +235,7 @@ public class AppUsageDataHelperTest {
         // (앱 사용시간의 총합 / 디바이스 총 사용일) 의 반올림.....
         // 앱 사용시간의 총합 = 22000000000 / 1000 / 60 / 60 = 6,111.1111111111
         // 디바이스 총 사용일 = (1503014400000 - 1436788800000) / 1000/ 60 / 60 / 24 = 766.5
-        assertThat(subject.getAppUsageAverageHourPerDay(longTermStatList)).isEqualTo(7.926070038910506);
+        assertThat(Math.round(subject.getAppUsageAverageHourPerDay(longTermStatList))).isEqualTo(8);
     }
 
     @Test

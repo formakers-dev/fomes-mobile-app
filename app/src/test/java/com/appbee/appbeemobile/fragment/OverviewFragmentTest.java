@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -16,8 +15,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +45,11 @@ public class OverviewFragmentTest {
     @BindView(R.id.average_app_usage_time_description_textview)
     TextView averageAppUsageTimeDescriptionView;
 
-    @BindView(R.id.longest_used_app_layout)
-    LinearLayout longestUsedAppLayout;
+    @BindView(R.id.longest_used_app_name)
+    TextView longestUsedAppNameView;
+
+    @BindView(R.id.longest_used_app_description)
+    TextView longestUsedAppDescriptionView;
 
     @BindView(R.id.character_type_name)
     TextView characterTypeView;
@@ -72,11 +72,8 @@ public class OverviewFragmentTest {
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, AppBeeConstants.APP_LIST_COUNT_TYPE.MORE);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, AppBeeConstants.APP_USAGE_TIME_TYPE.MOST);
 
-        ArrayList<String> appNameList = new ArrayList<>();
-        appNameList.add("testApp1");
-        appNameList.add("testApp2");
-        appNameList.add("testApp3");
-        bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, appNameList);
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, "testApp1");
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, "testApp1 Description");
         subject = new OverviewFragment();
         subject.setArguments(bundle);
 
@@ -105,10 +102,8 @@ public class OverviewFragmentTest {
 
     @Test
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
-        assertThat(longestUsedAppLayout.getChildCount()).isEqualTo(3);
-        assertThat(((TextView) longestUsedAppLayout.getChildAt(0)).getText()).isEqualTo("testApp1");
-        assertThat(((TextView) longestUsedAppLayout.getChildAt(1)).getText()).isEqualTo("testApp2");
-        assertThat(((TextView) longestUsedAppLayout.getChildAt(2)).getText()).isEqualTo("testApp3");
+        assertThat(longestUsedAppNameView.getText()).isEqualTo("testApp1");
+        assertThat(longestUsedAppDescriptionView.getText()).isEqualTo("testApp1 Description");
     }
 
     @Test

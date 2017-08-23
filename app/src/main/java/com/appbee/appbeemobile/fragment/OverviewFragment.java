@@ -6,12 +6,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,9 +19,10 @@ public class OverviewFragment extends Fragment {
     public static final String EXTRA_APP_LIST_COUNT = "EXTRA_APP_LIST_COUNT";
     public static final String EXTRA_APP_LIST_COUNT_TYPE = "EXTRA_APP_LIST_COUNT_TYPE";
     public static final String EXTRA_APP_AVG_TIME = "EXTRA_APP_AVG_TIME";
-    public static final String EXTRA_LONGEST_USED_APP_NAME_LIST = "EXTRA_LONGEST_USED_APP_NAME_LIST";
     public static final String EXTRA_CHARACTER_TYPE = "EXTRA_CHARACTER_TYPE";
     public static final String EXTRA_APP_USAGE_TIME_TYPE = "EXTRA_APP_USAGE_TIME_TYPE";
+    public static final String EXTRA_LONGEST_USED_APP_NAME = "EXTRA_LONGEST_USED_APP_NAME";
+    public static final String EXTRA_LONGEST_USED_APP_DESCRIPTION = "EXTRA_LONGEST_USED_APP_DESCRIPTION";
 
     @BindView(R.id.app_count_textview)
     TextView appCountView;
@@ -41,8 +39,11 @@ public class OverviewFragment extends Fragment {
     @BindView(R.id.average_app_usage_time_description_textview)
     TextView averageAppUsageTimeDescriptionView;
 
-    @BindView(R.id.longest_used_app_layout)
-    LinearLayout longestUsedAppLayout;
+    @BindView(R.id.longest_used_app_name)
+    TextView longestUsedAppNameView;
+
+    @BindView(R.id.longest_used_app_description)
+    TextView longestUsedAppDescriptionView;
 
     @BindView(R.id.character_type_name)
     TextView characterTypeNameView;
@@ -72,18 +73,13 @@ public class OverviewFragment extends Fragment {
 
         displayAppListCountInformation(getArguments().getInt(EXTRA_APP_LIST_COUNT), getArguments().getInt(EXTRA_APP_LIST_COUNT_TYPE));
         displayAppUsageTimeInformation(getArguments().getInt(EXTRA_APP_AVG_TIME), getArguments().getInt(EXTRA_APP_USAGE_TIME_TYPE));
-        displayLongestUsedAppInformation(getArguments().getStringArrayList(EXTRA_LONGEST_USED_APP_NAME_LIST));
+        displayLongestUsedAppInformation(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME), getArguments().getString(EXTRA_LONGEST_USED_APP_DESCRIPTION));
         displayCharacterTypeInformation(getArguments().getInt(EXTRA_CHARACTER_TYPE));
     }
 
-    private void displayLongestUsedAppInformation(List<String> appNames) {
-        if (appNames != null) {
-            for (String appName : appNames) {
-                TextView textView = new TextView(getActivity().getApplicationContext());
-                textView.setText(appName);
-                longestUsedAppLayout.addView(textView);
-            }
-        }
+    private void displayLongestUsedAppInformation(String appName, String description) {
+        longestUsedAppNameView.setText(appName);
+        longestUsedAppDescriptionView.setText(description);
     }
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
