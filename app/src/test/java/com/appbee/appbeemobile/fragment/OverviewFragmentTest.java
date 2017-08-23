@@ -17,6 +17,9 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
@@ -25,6 +28,21 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class OverviewFragmentTest {
 
     private OverviewFragment subject;
+
+    @BindView(R.id.app_count_textview)
+    TextView appCountView;
+
+    @BindView(R.id.app_count_msg_textview)
+    TextView appCountMsgView;
+
+    @BindView(R.id.average_app_usage_time_textview)
+    TextView averageAppUsageTimeView;
+
+    @BindView(R.id.average_app_usage_time_msg_textview)
+    TextView averageAppUsageTimeMsgView;
+
+    @BindView(R.id.longest_used_app_layout)
+    LinearLayout longestUsedAppLayout;
 
     @Before
     public void setUp() throws Exception {
@@ -43,37 +61,35 @@ public class OverviewFragmentTest {
         subject.setArguments(bundle);
 
         FragmentController.of(subject).create();
+        ButterKnife.bind(this, subject.getView());
     }
 
     @Test
     public void fragment시작시_설치된_앱개수와_앱개수의평가를_표시한다() throws Exception {
-        assertTextViewVisibleAndContains(R.id.app_count_textview, "400");
-        assertTextViewVisibleAndContains(R.id.app_count_msg_textview, "많기도");
+        assertTextViewVisibleAndContains(appCountView, "400");
+        assertTextViewVisibleAndContains(appCountMsgView, "많기도");
     }
 
     @Test
     public void fragment시작시_평균_앱사용_시간과_평가를_표시한다() throws Exception {
-        assertTextViewVisibleAndContains(R.id.average_app_usage_time_textview, "8");
-        assertTextViewVisibleAndEquals(R.id.average_app_usage_time_msg_textview, "짱 많은 편");
+        assertTextViewVisibleAndContains(averageAppUsageTimeView, "8");
+        assertTextViewVisibleAndEquals(averageAppUsageTimeMsgView, "짱 많은 편");
     }
 
     @Test
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
-        LinearLayout linearLayout = (LinearLayout) subject.getView().findViewById(R.id.longest_used_app_layout);
-        assertThat(linearLayout.getChildCount()).isEqualTo(3);
-        assertThat(((TextView) linearLayout.getChildAt(0)).getText()).isEqualTo("testApp1");
-        assertThat(((TextView) linearLayout.getChildAt(1)).getText()).isEqualTo("testApp2");
-        assertThat(((TextView) linearLayout.getChildAt(2)).getText()).isEqualTo("testApp3");
+        assertThat(longestUsedAppLayout.getChildCount()).isEqualTo(3);
+        assertThat(((TextView) longestUsedAppLayout.getChildAt(0)).getText()).isEqualTo("testApp1");
+        assertThat(((TextView) longestUsedAppLayout.getChildAt(1)).getText()).isEqualTo("testApp2");
+        assertThat(((TextView) longestUsedAppLayout.getChildAt(2)).getText()).isEqualTo("testApp3");
     }
 
-    private void assertTextViewVisibleAndEquals(int textViewResourceId, String text) {
-        TextView textView = (TextView) subject.getView().findViewById(textViewResourceId);
+    private void assertTextViewVisibleAndEquals(TextView textView, String text) {
         assertThat(textView.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(textView.getText()).isEqualTo(text);
     }
 
-    private void assertTextViewVisibleAndContains(int textViewResourceId, String text) {
-        TextView textView = (TextView) subject.getView().findViewById(textViewResourceId);
+    private void assertTextViewVisibleAndContains(TextView textView, String text) {
         assertThat(textView.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(textView.getText()).contains(text);
     }
