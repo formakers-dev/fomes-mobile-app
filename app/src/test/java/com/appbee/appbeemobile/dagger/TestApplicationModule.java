@@ -5,7 +5,6 @@ import android.content.Context;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
-import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.AppAPI;
 import com.appbee.appbeemobile.network.AppService;
@@ -83,12 +82,6 @@ public class TestApplicationModule {
     @Provides
     UserService userService() {
         return mock(UserService.class);
-    }
-
-    @Singleton
-    @Provides
-    GoogleSignInAPIHelper googleSignInAPIHelper() {
-        return mock(GoogleSignInAPIHelper.class);
     }
 
     @Singleton
