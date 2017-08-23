@@ -26,6 +26,7 @@ public class StartActivity extends AppCompatActivity {
         startButton.setOnClickListener(v -> {
             Intent intent = new Intent(StartActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 }
