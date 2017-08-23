@@ -7,6 +7,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.ShareSnsHelper;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static org.mockito.Mockito.verify;
 
@@ -26,7 +28,8 @@ import static org.mockito.Mockito.verify;
 @Config(constants = BuildConfig.class)
 public class ShareFragmentTest {
 
-    ShareFragment subject;
+    private ShareFragment subject;
+    private Unbinder binder;
 
     @BindView(R.id.share_button)
     Button sharedButton;
@@ -40,7 +43,12 @@ public class ShareFragmentTest {
 
         subject = new ShareFragment();
         FragmentController.of(subject).create();
-        ButterKnife.bind(this, subject.getView());
+        binder = ButterKnife.bind(this, subject.getView());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        binder.unbind();
     }
 
     @Test

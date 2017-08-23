@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class ShareFragment extends Fragment {
 
@@ -25,6 +26,8 @@ public class ShareFragment extends Fragment {
     @Inject
     ShareSnsHelper shareSnsHelper;
 
+    private Unbinder binder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,7 +36,7 @@ public class ShareFragment extends Fragment {
         ((AppBeeApplication) getActivity().getApplication()).getComponent().inject(this);
 
         View view = inflater.inflate(R.layout.fragment_share, container, false);
-        ButterKnife.bind(this, view);
+        binder = ButterKnife.bind(this, view);
 
         return view;
     }
@@ -42,5 +45,11 @@ public class ShareFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         shareButton.setOnClickListener(v -> shareSnsHelper.shareKakao());
+    }
+
+    @Override
+    public void onDestroyView() {
+        binder.unbind();
+        super.onDestroyView();
     }
 }

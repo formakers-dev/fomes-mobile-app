@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class OverviewFragment extends Fragment {
 
@@ -49,11 +50,13 @@ public class OverviewFragment extends Fragment {
     @BindView(R.id.character_type_detail_description)
     TextView characterTypeDetailDescriptionView;
 
+    private Unbinder binder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
-        ButterKnife.bind(this, view);
+        binder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -85,5 +88,11 @@ public class OverviewFragment extends Fragment {
         characterTypeNameView.setText(getResources().getStringArray(R.array.character_names)[characterType]);
         characterTypeSimpleDescriptionView.setText(getResources().getStringArray(R.array.character_simple_descriptions)[characterType]);
         characterTypeDetailDescriptionView.setText(getResources().getStringArray(R.array.character_detail_descriptions)[characterType]);
+    }
+
+    @Override
+    public void onDestroyView() {
+        binder.unbind();
+        super.onDestroyView();
     }
 }

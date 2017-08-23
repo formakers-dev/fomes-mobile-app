@@ -6,6 +6,7 @@ import android.widget.Button;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.robolectric.annotation.Config;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -24,6 +26,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class StartActivityTest {
 
     private StartActivity subject;
+    private Unbinder binder;
 
     @BindView(R.id.start_analysis_button)
     Button startButton;
@@ -31,7 +34,12 @@ public class StartActivityTest {
     @Before
     public void setUp() throws Exception {
         subject = Robolectric.setupActivity(StartActivity.class);
-        ButterKnife.bind(this, subject);
+        binder = ButterKnife.bind(this, subject);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        binder.unbind();
     }
 
     @Test
