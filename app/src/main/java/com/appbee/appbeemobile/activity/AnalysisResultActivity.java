@@ -66,18 +66,7 @@ public class AnalysisResultActivity extends Activity {
         int appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay(longTermStatList);
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageHourPerDay);
         bundle.putString(OverviewFragment.EXTRA_APP_USAGE_AVG_TIME_MSG, getString(appUsageDataHelper.getAppUsageAverageMessage(appUsageAverageHourPerDay)));
-
         bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, getTopUsedAppNameList(NUMBER_OF_TOP_USED_APP_COUNT));
-        String mostUsedSocialAppName = appRepositoryHelper.getMostUsedSocialApp().getAppName();
-        String mostUsedSocialAppMessage = appUsageDataHelper.getMostUsedSocialAppMessage(mostUsedSocialAppName);
-
-        if(TextUtils.isEmpty(mostUsedSocialAppName)) {
-            mostUsedSocialAppName = "없음";
-            mostUsedSocialAppMessage = "SNS 안하시네요";
-        }
-
-        bundle.putString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP, mostUsedSocialAppName);
-        bundle.putString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP_MSG, mostUsedSocialAppMessage);
 
         overviewFragment.setArguments(bundle);
 

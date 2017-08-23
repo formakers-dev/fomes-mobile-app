@@ -69,8 +69,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(0)).isEqualTo("app_name_1");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(1)).isEqualTo("app_name_2");
         assertThat(bundle.getStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST).get(2)).isEqualTo("app_name_3");
-        assertThat(bundle.getString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP)).isEqualTo("AppBee");
-        assertThat(bundle.getString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP_MSG)).isEqualTo("소셜 앱 평가 메세지");
     }
 
 
@@ -127,7 +125,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppUsageAverageMessage(8)).thenReturn(R.string.app_usage_average_time_proper_msg);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
 
-        when(appRepositoryHelper.getMostUsedSocialApp()).thenReturn(new AppInfo("com.appbee.appbeemobile", "AppBee", "", "", "", ""));
         when(appUsageDataHelper.getMostUsedSocialAppMessage(anyString())).thenReturn("소셜 앱 평가 메세지");
 
         ArrayList<String> mostUsedCategories = new ArrayList<>();

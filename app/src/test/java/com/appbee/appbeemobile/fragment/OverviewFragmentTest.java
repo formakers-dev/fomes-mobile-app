@@ -39,8 +39,6 @@ public class OverviewFragmentTest {
         appNameList.add("testApp2");
         appNameList.add("testApp3");
         bundle.putStringArrayList(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME_LIST, appNameList);
-        bundle.putString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP, "Facebook");
-        bundle.putString(OverviewFragment.EXTRA_MOST_USED_SOCIAL_APP_MSG, "당신, 잘 살고 계시네요.");
         subject = new OverviewFragment();
         subject.setArguments(bundle);
 
@@ -66,14 +64,6 @@ public class OverviewFragmentTest {
         assertThat(((TextView) linearLayout.getChildAt(0)).getText()).isEqualTo("testApp1");
         assertThat(((TextView) linearLayout.getChildAt(1)).getText()).isEqualTo("testApp2");
         assertThat(((TextView) linearLayout.getChildAt(2)).getText()).isEqualTo("testApp3");
-    }
-
-    @Test
-    public void fragment시작시_가장많이_사용하는_Social앱_정보를_표시한다() throws Exception {
-        TextView textView = (TextView)subject.getView().findViewById(R.id.most_used_social_app_textview);
-        assertThat(textView.getText()).isEqualTo("Facebook");
-        TextView textViewMsg = (TextView)subject.getView().findViewById(R.id.most_used_social_app_msg_textview);
-        assertThat(textViewMsg.getText()).contains("당신, 잘 살고 계시네요.");
     }
 
     private void assertTextViewVisibleAndEquals(int textViewResourceId, String text) {

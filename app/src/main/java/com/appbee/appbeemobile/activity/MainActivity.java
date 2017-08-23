@@ -48,30 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
         ((AppBeeApplication)getApplication()).getComponent().inject(this);
 
-        insertSocialApps();
-
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
             callAppServiceGetInfoAPI();
         } else {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
         }
-    }
-
-    private void insertSocialApps() {
-        List<AppInfo> socialAppInfos = new ArrayList<>();
-
-        socialAppInfos.add(new AppInfo("com.facebook.katana", "Facebook", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("com.nhn.android.blog", "네이버 블로그 - Naver Blog", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("net.daum.android.tistoryapp", "티스토리 - TISTORY", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("com.daumkakao.android.brunchapp", "브런치 - 좋은 글과 작가를 만나는 공간", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("com.instagram.android", "Instagram", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("com.kakao.story", "카카오스토리 KakaoStory", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("com.twitter.android", "트위터", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("com.nhn.android.band", "밴드", "", "", "", ""));
-        socialAppInfos.add(new AppInfo("kr.co.vcnc.android.couple", "커플앱 비트윈 - Between", "", "", "", ""));
-
-        appRepositoryHelper.insertSocialApps(socialAppInfos);
     }
 
     private void callAppServiceGetInfoAPI() {
