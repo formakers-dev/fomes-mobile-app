@@ -144,7 +144,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(leastUsedTimeCategory).isNotNull();
         assertThat(leastUsedTimeCategory.get(0)).isEqualTo("com.package.name4");
 
-        assertThat(bundle.getLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE)).isEqualTo(50L);
+        assertThat(bundle.getLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE)).isEqualTo(46L);
     }
 
     @Test
@@ -271,11 +271,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         usedTimeCategoryMap.put("com.package.name1", 3000L);
         usedTimeCategoryMap.put("com.package.name2", 2000L);
         usedTimeCategoryMap.put("com.package.name3", 1000L);
+        usedTimeCategoryMap.put("com.package.name4", 500L);
         when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(usedTimeCategoryMap);
-
-        ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
-        leastUsedTimeCategoryList.add("com.package.name4");
-        when(appUsageDataHelper.getLeastUsedTimeCategories(anyInt())).thenReturn(leastUsedTimeCategoryList);
     }
 
     private void mockNativeAppInfo(boolean hasIconDrawable) {

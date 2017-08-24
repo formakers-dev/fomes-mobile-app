@@ -127,10 +127,13 @@ public class AnalysisResultActivity extends Activity {
 
         Bundle bundle = new Bundle();
         Map<String, Long> usedTimeCategoryMap = appUsageDataHelper.getSortedCategoriesByUsedTime();
+        ArrayList<String> usedTimeCategoryKeyList = Lists.newArrayList(usedTimeCategoryMap.keySet());
 
-        ArrayList<String> mostUsedTimeCategoryList = getKeySubListByCount(usedTimeCategoryMap, NUMBER_OF_MOST_USED_TIME_CATEGORY);
+        ArrayList<String> mostUsedTimeCategoryList = getKeySubListByCount(usedTimeCategoryKeyList, NUMBER_OF_MOST_USED_TIME_CATEGORY);
+        ArrayList<String> leastUsedTimeCategoryList = getKeySubListByCount(Lists.reverse(usedTimeCategoryKeyList), NUMBER_OF_LEAST_USED_TIME_CATEGORY);
+
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
-        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, appUsageDataHelper.getLeastUsedTimeCategories(NUMBER_OF_LEAST_USED_TIME_CATEGORY));
+        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, getCategoryRate(usedTimeCategoryMap, mostUsedTimeCategoryList.get(0)));
 
         flowerFragment.setArguments(bundle);
@@ -148,8 +151,8 @@ public class AnalysisResultActivity extends Activity {
     }
 
     @NonNull
-    private ArrayList<String> getKeySubListByCount(Map<String, Long> usedTimeCategoryMap, int count) {
-        return Lists.newArrayList(Lists.newArrayList(usedTimeCategoryMap.keySet()).subList(0, Math.min(count, usedTimeCategoryMap.size())));
+    private ArrayList<String> getKeySubListByCount(List<String> usedTimeCategoryList, int count) {
+        return Lists.newArrayList(Lists.newArrayList(usedTimeCategoryList).subList(0, Math.min(count, usedTimeCategoryList.size())));
     }
 
     int getAppCountType(int appCount) {

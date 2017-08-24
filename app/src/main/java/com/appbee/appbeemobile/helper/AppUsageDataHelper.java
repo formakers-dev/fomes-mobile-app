@@ -176,12 +176,6 @@ public class AppUsageDataHelper {
         return sortByValue(appRepositoryHelper.getUsedTimeMapByCategory(), DESC);
     }
 
-    public ArrayList<String> getLeastUsedTimeCategories(int count) {
-        Map<String, Long> usedTImeCategoryMap =  sortByValue(appRepositoryHelper.getUsedTimeMapByCategory(), ASC);
-        int mapSize = usedTImeCategoryMap.size();
-        return new ArrayList<>(Lists.newArrayList(usedTImeCategoryMap.keySet()).subList(0, Math.min(count, mapSize)));
-    }
-
     public int getCharacterType() {
         final Map<String, Integer> aggregatedMap = aggregateCategoryMap(appRepositoryHelper.getAppCountMapByCategory());
 
