@@ -36,6 +36,8 @@ public class AppUsageDataHelper {
     private static final int FROM_YEAR_FOR_LONG_TERM_STAT = 2;
     private static final String GAME_CATEGORY_GROUP_KEY = "GAME_GROUP";
     private static final String MUSIC_VIDEO_CATEGORY_GROUP_KEY = "MV_GROUP";
+    private static final String PERSONALIZATION_CATEGORY_GROUP_KEY = "PERSONALIZATION_GROUP";
+    private static final String PHOTOGRAPHY_CATEGORY_GROUP_KEY = "PHOTOGRAPHY_GROUP";
     static final boolean ASC = true;
     static final boolean DESC = false;
 
@@ -177,7 +179,7 @@ public class AppUsageDataHelper {
     }
 
     public int getCharacterType() {
-        final Map<String, Integer> aggregatedMap = aggregateCategoryMap(appRepositoryHelper.getAppCountMapByCategory());
+        final Map<String, Integer> aggregatedMap = aggregateCategoryMapForBest5(appRepositoryHelper.getAppCountMapByCategory());
 
         if (aggregatedMap == null || aggregatedMap.isEmpty()) {
             return CHARACTER_TYPE.ETC;
@@ -190,16 +192,15 @@ public class AppUsageDataHelper {
                 return CHARACTER_TYPE.GAMER;
             case MUSIC_VIDEO_CATEGORY_GROUP_KEY:
                 return CHARACTER_TYPE.QUEEN;
-            case "/store/apps/category/PHOTOGRAPHY":
+            case PHOTOGRAPHY_CATEGORY_GROUP_KEY:
                 return CHARACTER_TYPE.POISON;
-            case "/store/apps/category/PERSONALIZATION":
+            case PERSONALIZATION_CATEGORY_GROUP_KEY:
                 return CHARACTER_TYPE.SOUL;
-            default:
-                return CHARACTER_TYPE.ETC;
         }
+        return CHARACTER_TYPE.ETC;
     }
 
-    Map<String, Integer> aggregateCategoryMap(Map<String, Integer> categoryMap) {
+    Map<String, Integer> aggregateCategoryMapForBest5(Map<String, Integer> categoryMap) {
         Map<String, Integer> map = new HashMap<>();
 
         for (String key : categoryMap.keySet()) {
@@ -228,8 +229,11 @@ public class AppUsageDataHelper {
                 case "/store/apps/category/MUSIC_AND_AUDIO":
                     map.put(MUSIC_VIDEO_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(MUSIC_VIDEO_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
                     break;
-                default:
-                    map.put(key, categoryMap.get(key));
+                case "/store/apps/category/PHOTOGRAPHY":
+                    map.put(PHOTOGRAPHY_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(PHOTOGRAPHY_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
+                    break;
+                case "/store/apps/category/PERSONALIZATION":
+                    map.put(PERSONALIZATION_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(PERSONALIZATION_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
                     break;
             }
         }

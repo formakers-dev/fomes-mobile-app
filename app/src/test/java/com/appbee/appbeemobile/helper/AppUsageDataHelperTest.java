@@ -451,22 +451,6 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getCharacterType호출시_단일_게임_음악_동영상_사진_개인화를_제외한_기타카테고리설치앱이_가장많은경우_기타캐릭터로_리턴한다() throws Exception {
-        Map<String, Integer> mockCategoryMap = new HashMap<>();
-        mockCategoryMap.put("/store/apps/category/GAME", 3);
-        mockCategoryMap.put("/store/apps/category/MUSIC_AND_AUDIO", 4);
-        mockCategoryMap.put("/store/apps/category/PHOTOGRAPHY", 5);
-        mockCategoryMap.put("/store/apps/category/PERSONALIZATION", 6);
-        mockCategoryMap.put("/store/apps/category/SOCIAL", 10);
-        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
-
-        int characterType = subject.getCharacterType();
-
-        assertEquals(characterType, ETC);
-    }
-
-    @Test
     public void getCharacterType호출시_두개이상의_음악동영상관련카테고리설치앱이_가장많은경우_퀸캐릭터로_리턴한다() throws Exception {
         Map<String, Integer> mockCategoryMap = new HashMap<>();
         mockCategoryMap.put("/store/apps/category/GAME", 6);
@@ -483,14 +467,24 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getCharacterType호출시_기타_카테고리설치앱이_가장많은경우_기타캐릭터로_리턴한다() throws Exception {
+    public void getCharacterType호출시_기타_카테고리설치앱이_가장많아도_게임_카테고리앱이_하나라도_설치되어있으면_게임캐릭터로_리턴한다() throws Exception {
         Map<String, Integer> mockCategoryMap = new HashMap<>();
-        mockCategoryMap.put("/store/apps/category/GAME", 6);
-        mockCategoryMap.put("/store/apps/category/VIDEO_PLAYERS", 3);
-        mockCategoryMap.put("/store/apps/category/MUSIC_AND_AUDIO", 4);
-        mockCategoryMap.put("/store/apps/category/PHOTOGRAPHY", 5);
-        mockCategoryMap.put("/store/apps/category/PERSONALIZATION", 6);
-        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 99);
+        mockCategoryMap.put("/store/apps/category/GAME", 1);
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY1", 99);
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY2", 999);
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
+
+        int characterType = subject.getCharacterType();
+
+        assertEquals(characterType, GAMER);
+    }
+
+    @Test
+    public void getCharacterType호출시_단일_게임_음악_동영상_사진_개인화_카테고리의_설치된앱이_없는_경우_기타캐릭터로_리턴한다() throws Exception {
+        Map<String, Integer> mockCategoryMap = new HashMap<>();
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY1", 1);
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY2", 2);
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY3", 3);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
         int characterType = subject.getCharacterType();
@@ -499,7 +493,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void aggregateCategoryMap호출시_best5로직처리를_위한_카테고리그룹핑을_수행한후_그룹핑된_Map을_리턴한다() throws Exception {
+    public void aggregateCategoryMapForBest5호출시_best5로직처리를_위한_카테고리그룹핑을_수행한후_그룹핑된_Map을_리턴한다() throws Exception {
         Map<String, Integer> mockCategoryMap = new HashMap<>();
         mockCategoryMap.put("/store/apps/category/GAME_ROLE_PLAYING", 1);
         mockCategoryMap.put("/store/apps/category/GAME_BOARD", 2);
@@ -509,22 +503,32 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/PERSONALIZATION", 6);
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
 
-        Map<String, Integer> aggregateCategoryMap = subject.aggregateCategoryMap(mockCategoryMap);
+        Map<String, Integer> aggregateCategoryMap = subject.aggregateCategoryMapForBest5(mockCategoryMap);
 
         assertThat(aggregateCategoryMap).isNotNull();
-        assertThat(aggregateCategoryMap.size()).isEqualTo(5);
+        assertThat(aggregateCategoryMap.size()).isEqualTo(4);
         assertThat(aggregateCategoryMap.get("GAME_GROUP")).isEqualTo(1 + 2);
         assertThat(aggregateCategoryMap.get("MV_GROUP")).isEqualTo(3 + 4);
-        assertThat(aggregateCategoryMap.get("/store/apps/category/PHOTOGRAPHY")).isEqualTo(5);
-        assertThat(aggregateCategoryMap.get("/store/apps/category/PERSONALIZATION")).isEqualTo(6);
-        assertThat(aggregateCategoryMap.get("/store/apps/category/ANY_CATEGORY")).isEqualTo(2);
+        assertThat(aggregateCategoryMap.get("PHOTOGRAPHY_GROUP")).isEqualTo(5);
+        assertThat(aggregateCategoryMap.get("PERSONALIZATION_GROUP")).isEqualTo(6);
 
         Object[] keySet = aggregateCategoryMap.keySet().toArray();
         assertEquals(keySet[0].toString(), "MV_GROUP");
-        assertEquals(keySet[1].toString(), "/store/apps/category/PERSONALIZATION");
-        assertEquals(keySet[2].toString(), "/store/apps/category/PHOTOGRAPHY");
+        assertEquals(keySet[1].toString(), "PERSONALIZATION_GROUP");
+        assertEquals(keySet[2].toString(), "PHOTOGRAPHY_GROUP");
         assertEquals(keySet[3].toString(), "GAME_GROUP");
-        assertEquals(keySet[4].toString(), "/store/apps/category/ANY_CATEGORY");
+    }
+
+    @Test
+    public void aggregateCategoryMapForBest5호출시_best5에해당하는_카테고리가_없는경우_비어있는_맵을_리턴한다() throws Exception {
+        Map<String, Integer> mockCategoryMap = new HashMap<>();
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY1", 3);
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY2", 4);
+
+        Map<String, Integer> aggregateCategoryMap = subject.aggregateCategoryMapForBest5(mockCategoryMap);
+
+        assertThat(aggregateCategoryMap).isNotNull();
+        assertThat(aggregateCategoryMap.size()).isEqualTo(0);
     }
 
     @Test
