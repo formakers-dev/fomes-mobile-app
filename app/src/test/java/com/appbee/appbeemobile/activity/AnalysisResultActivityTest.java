@@ -137,14 +137,15 @@ public class AnalysisResultActivityTest extends ActivityTest {
         ArrayList<String> mostUsedTimeCategoryList = bundle.getStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES);
         assertThat(mostUsedTimeCategoryList).isNotNull();
         assertThat(mostUsedTimeCategoryList.size()).isEqualTo(3);
-        assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("com.package.name1");
-        assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("com.package.name2");
-        assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("com.package.name3");
+        assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("/store/apps/category/GAME");
+        assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("/store/apps/category/FINANCE");
+        assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("/store/apps/category/SOCIAL");
         ArrayList<String> leastUsedTimeCategory = bundle.getStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES);
         assertThat(leastUsedTimeCategory).isNotNull();
-        assertThat(leastUsedTimeCategory.get(0)).isEqualTo("com.package.name4");
+        assertThat(leastUsedTimeCategory.get(0)).isEqualTo("/store/apps/category/SHOPPING");
 
         assertThat(bundle.getLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE)).isEqualTo(46L);
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).isEqualTo("재미있는 것에 몰두하는 당신. 재미가 없으면 의욕도 사라져요! 하지만 한번 꽂힌 것은 엄청난 집중력으로 처리해 버린다는 사실~ 겉으로는 잘 티가 안나도, 누구보다 자유로운 영혼의 소유자!");
     }
 
     @Test
@@ -235,6 +236,54 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/DATING")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[21]);
     }
 
+    @Test
+    public void getMostUsedCategoryDesc호출시_해당_카테고리ID에_해당하는_설명이_리턴된다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FINANCE")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[0]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_EDUCATIONAL")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_WORD")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_ROLE_PLAYING")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_BOARD")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_SPORTS")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_SIMULATION")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_ARCADE")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_ACTION")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_ADVENTURE")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_MUSIC")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_RACING")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_STRATEGY")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_CARD")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_CASINO")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_CASUAL")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_TRIVIA")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_PUZZLE")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[1]);
+
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MUSIC_AND_AUDIO")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[2]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/VIDEO_PLAYERS")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[3]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/SOCIAL")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[4]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PHOTOGRAPHY")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[5]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PERSONALIZATION")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[6]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/SHOPPING")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[7]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/COMMUNICATION")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[8]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/ENTERTAINMENT")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[9]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/HEALTH_AND_FITNESS")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[10]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/SPORTS")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[10]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/EDUCATION")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[11]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/WEATHER")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[12]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/TRAVEL_AND_LOCAL")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[13]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/BUSINESS")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[14]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PRODUCTIVITY")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[14]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/TOOLS")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[15]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/BOOKS_AND_REFERENCE")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[16]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/NEWS_AND_MAGAZINES")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[16]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/LIBRARIES_AND_DEMO")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[17]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/LIFESTYLE")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[18]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/COMICS")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[19]);
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/DATING")).isEqualTo(subject.getResources().getStringArray(R.array.category_detail_description)[22]);
+    }
+
     private void mockDummyData() {
 
         mockNativeAppInfo(true);
@@ -268,10 +317,10 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getAppCountByCategoryId("com.package.name1")).thenReturn(2L);
 
         Map<String, Long> usedTimeCategoryMap = new LinkedHashMap<>();
-        usedTimeCategoryMap.put("com.package.name1", 3000L);
-        usedTimeCategoryMap.put("com.package.name2", 2000L);
-        usedTimeCategoryMap.put("com.package.name3", 1000L);
-        usedTimeCategoryMap.put("com.package.name4", 500L);
+        usedTimeCategoryMap.put("/store/apps/category/GAME", 3000L);
+        usedTimeCategoryMap.put("/store/apps/category/FINANCE", 2000L);
+        usedTimeCategoryMap.put("/store/apps/category/SOCIAL", 1000L);
+        usedTimeCategoryMap.put("/store/apps/category/SHOPPING", 500L);
         when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(usedTimeCategoryMap);
     }
 

@@ -54,4 +54,33 @@ public interface AppBeeConstants {
         int BEAUTY_DESIGN = 20;
         int DATING = 21;
     }
+
+    interface CATEGORY_DETAIL_GROUP {
+        int FINANCE = 0;
+        int GAME = 1;
+        int MUSIC = 2;
+        int VIDEO = 3;
+        int SOCIAL = 4;
+        int PHOTOGRAPHY = 5;
+        int PERSONALIZATION = 6;
+        int SHOPPING = 7;
+        int COMMUNICATION = 8;
+        int ENTERTAINMENT = 9;
+        int HEALTH_SPORTS = 10;
+        int EDUCATION = 11;
+        int WEATHER = 12;
+        int TRAVEL = 13;
+        int BUSINESS_PRODUCTIVITY = 14;
+        int TOOLS = 15;
+        int BOOK_NEWS = 16;
+        int LIBRARY = 17;
+        int LIFESTYLE = 18;
+        int COMICS = 19;
+        int HOUSE = 20;
+        int BEAUTY_DESIGN = 21;
+        int DATING = 22;
+        int KIDES = 23;
+        int EXCEPTION_LESS_CATEGORY = 24;
+        int EXCEPTION_SAME_CATEGOR = 25;
+    }
 }

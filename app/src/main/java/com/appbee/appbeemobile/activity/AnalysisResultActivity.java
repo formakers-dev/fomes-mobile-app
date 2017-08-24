@@ -20,8 +20,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
-import com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
-import com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
+import com.appbee.appbeemobile.util.AppBeeConstants.*;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -30,8 +29,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-
-import static com.appbee.appbeemobile.util.AppBeeConstants.CATEGORY_GROUP;
 
 public class AnalysisResultActivity extends Activity {
     public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";
@@ -136,9 +133,79 @@ public class AnalysisResultActivity extends Activity {
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, getCategoryRate(usedTimeCategoryMap, mostUsedTimeCategoryList.get(0)));
 
+        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(mostUsedTimeCategoryList.get(0)));
         flowerFragment.setArguments(bundle);
 
         return flowerFragment;
+    }
+
+    String getMostUsedCategoryDesc(String categoryId) {
+        switch (categoryId) {
+            case "/store/apps/category/FINANCE":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.FINANCE];
+            case "/store/apps/category/GAME":
+            case "/store/apps/category/GAME_EDUCATIONAL":
+            case "/store/apps/category/GAME_WORD":
+            case "/store/apps/category/GAME_ROLE_PLAYING":
+            case "/store/apps/category/GAME_BOARD":
+            case "/store/apps/category/GAME_SPORTS":
+            case "/store/apps/category/GAME_SIMULATION":
+            case "/store/apps/category/GAME_ARCADE":
+            case "/store/apps/category/GAME_ACTION":
+            case "/store/apps/category/GAME_ADVENTURE":
+            case "/store/apps/category/GAME_MUSIC":
+            case "/store/apps/category/GAME_RACING":
+            case "/store/apps/category/GAME_STRATEGY":
+            case "/store/apps/category/GAME_CARD":
+            case "/store/apps/category/GAME_CASINO":
+            case "/store/apps/category/GAME_CASUAL":
+            case "/store/apps/category/GAME_TRIVIA":
+            case "/store/apps/category/GAME_PUZZLE":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.GAME];
+            case "/store/apps/category/MUSIC_AND_AUDIO":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.MUSIC];
+            case "/store/apps/category/VIDEO_PLAYERS":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.VIDEO];
+            case "/store/apps/category/SOCIAL":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.SOCIAL];
+            case "/store/apps/category/PHOTOGRAPHY":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.PHOTOGRAPHY];
+            case "/store/apps/category/PERSONALIZATION":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.PERSONALIZATION];
+            case "/store/apps/category/SHOPPING":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.SHOPPING];
+            case "/store/apps/category/COMMUNICATION":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.COMMUNICATION];
+            case "/store/apps/category/ENTERTAINMENT":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.ENTERTAINMENT];
+            case "/store/apps/category/HEALTH_AND_FITNESS":
+            case "/store/apps/category/SPORTS":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.HEALTH_SPORTS];
+            case "/store/apps/category/EDUCATION":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.EDUCATION];
+            case "/store/apps/category/WEATHER":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.WEATHER];
+            case "/store/apps/category/TRAVEL_AND_LOCAL":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.TRAVEL];
+            case "/store/apps/category/BUSINESS":
+            case "/store/apps/category/PRODUCTIVITY":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.BUSINESS_PRODUCTIVITY];
+            case "/store/apps/category/TOOLS":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.TOOLS];
+            case "/store/apps/category/BOOKS_AND_REFERENCE":
+            case "/store/apps/category/NEWS_AND_MAGAZINES":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.BOOK_NEWS];
+            case "/store/apps/category/LIBRARIES_AND_DEMO":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.LIBRARY];
+            case "/store/apps/category/LIFESTYLE":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.LIFESTYLE];
+            case "/store/apps/category/COMICS":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.COMICS];
+            case "/store/apps/category/DATING":
+                return getResources().getStringArray(R.array.category_detail_description)[CATEGORY_DETAIL_GROUP.DATING];
+            default:
+                return "";
+        }
     }
 
     private long getCategoryRate(Map<String, Long> usedTimeCategoryMap, String mostUsedTimeCategoryKey) {
