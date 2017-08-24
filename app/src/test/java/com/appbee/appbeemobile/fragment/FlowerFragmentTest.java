@@ -31,6 +31,8 @@ public class FlowerFragmentTest {
 
     @BindView(R.id.most_used_time_categories)
     LinearLayout linearLayout;
+    @BindView(R.id.least_used_time_category)
+    TextView textView;
 
     @Before
     public void setUp() throws Exception {
@@ -41,6 +43,9 @@ public class FlowerFragmentTest {
         mostUsedTimeCategoryList.add("category2");
         mostUsedTimeCategoryList.add("category3");
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
+        ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
+        leastUsedTimeCategoryList.add("category4");
+        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         subject = new FlowerFragment();
         subject.setArguments(bundle);
 
@@ -58,5 +63,9 @@ public class FlowerFragmentTest {
         assertThat(((TextView)linearLayout.getChildAt(0)).getText()).isEqualTo("category1");
         assertThat(((TextView)linearLayout.getChildAt(1)).getText()).isEqualTo("category2");
         assertThat(((TextView)linearLayout.getChildAt(2)).getText()).isEqualTo("category3");
+    }
+    @Test
+    public void onViewCreate호출시_가장_적은_시간_사용한_카테코리_목록이_나타난다() throws Exception {
+        assertThat(textView.getText()).isEqualTo("category4");
     }
 }

@@ -69,7 +69,7 @@ public class AnalysisResultActivity extends Activity {
 
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, appUsageDataHelper.getMostUsedTimeCategories(3));
-
+        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, appUsageDataHelper.getLeastUsedTimeCategories(1));
         flowerFragment.setArguments(bundle);
 
         return flowerFragment;

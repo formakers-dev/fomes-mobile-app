@@ -110,6 +110,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("금융");
         assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("게임");
         assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("부동산/인테리어");
+        ArrayList<String> leastUsedTimeCategory = bundle.getStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES);
+        assertThat(leastUsedTimeCategory).isNotNull();
+        assertThat(leastUsedTimeCategory.get(0)).isEqualTo("사진");
     }
 
     @Test
@@ -230,5 +233,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         mostUsedTimeCategoryList.add("게임");
         mostUsedTimeCategoryList.add("부동산/인테리어");
         when(appUsageDataHelper.getMostUsedTimeCategories(anyInt())).thenReturn(mostUsedTimeCategoryList);
+
+        ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
+        leastUsedTimeCategoryList.add("사진");
+        when(appUsageDataHelper.getLeastUsedTimeCategories(anyInt())).thenReturn(leastUsedTimeCategoryList);
     }
 }
