@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.model.NativeAppInfo;
@@ -63,9 +64,10 @@ public class AppBeeAndroidNativeHelperTest {
 
         when(usageEvents.hasNextEvent()).thenAnswer(new Answer<Boolean>() {
             private int callCount = 0;
+
             @Override
             public Boolean answer(InvocationOnMock invocation) throws Throwable {
-                if(callCount < 2) {
+                if (callCount < 2) {
                     callCount++;
                     return true;
                 } else {
@@ -86,7 +88,7 @@ public class AppBeeAndroidNativeHelperTest {
         ResolveInfo resolveInfo = new ResolveInfo();
         resolveInfo.isDefault = true;
         resolveInfo.activityInfo = new ActivityInfo();
-        resolveInfo.activityInfo.packageName =  "package";
+        resolveInfo.activityInfo.packageName = "package";
         shadowOf(resolveInfo).setLabel("app_name");
         mockReturnList.add(resolveInfo);
 
@@ -128,18 +130,22 @@ public class AppBeeAndroidNativeHelperTest {
     }
 
     @Test
-    public void getAppName호출시_파라미터로받은_PackageName에대한_앱이름을_리턴한다() throws Exception {
+    public void getNativeAppInfo호출시_파라미터로받은_PackageName에대한_앱정보를_리턴한다() throws Exception {
         PackageInfo packageInfo = new PackageInfo();
         packageInfo.packageName = "com.package.name1";
         packageInfo.versionName = "1.0";
         packageInfo.applicationInfo = new ApplicationInfo();
         packageInfo.applicationInfo.packageName = "com.package.name1";
         packageInfo.applicationInfo.name = "앱이름1";
+        Drawable mockDrawable = mock(Drawable.class);
+        shadowOf(RuntimeEnvironment.application.getPackageManager()).setApplicationIcon("com.package.name1", mockDrawable);
 
         shadowOf(RuntimeEnvironment.application.getPackageManager()).addPackage(packageInfo);
 
-        String returnedAppName = subject.getAppName("com.package.name1");
+        NativeAppInfo nativeAppInfo = subject.getNativeAppInfo("com.package.name1");
 
-        assertThat(returnedAppName).isEqualTo("앱이름1");
+        assertThat(nativeAppInfo.getPackageName()).isEqualTo("com.package.name1");
+        assertThat(nativeAppInfo.getAppName()).isEqualTo("앱이름1");
+        assertThat(nativeAppInfo.getIcon()).isEqualTo(mockDrawable);
     }
 }

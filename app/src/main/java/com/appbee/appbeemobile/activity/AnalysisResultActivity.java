@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.activity;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -12,9 +13,11 @@ import com.appbee.appbeemobile.fragment.FlowerFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.fragment.ShareFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.helper.ShareSnsHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
 import com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
@@ -43,6 +46,9 @@ public class AnalysisResultActivity extends Activity {
 
     @Inject
     ShareSnsHelper shareSnsHelper;
+
+    @Inject
+    NativeAppInfoHelper nativeAppInfoHelper;
 
     private List<AppInfo> appInfoList;
 
@@ -88,8 +94,15 @@ public class AnalysisResultActivity extends Activity {
         double appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay(longTermStatList);
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, (int) Math.round(appUsageAverageHourPerDay));
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageHourPerDay));
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, appInfoList.get(0).getAppName());
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, getLongestUsedAppDescription(appInfoList.get(0).getCategoryId1()));
+
+        AppInfo longestUsedAppInfo = appInfoList.get(0);
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, longestUsedAppInfo.getAppName());
+        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, getLongestUsedAppDescription(longestUsedAppInfo.getCategoryId1()));
+        NativeAppInfo nativeAppInfo = nativeAppInfoHelper.getNativeAppInfo(longestUsedAppInfo.getPackageName());
+        if (nativeAppInfo.getIcon() != null) {
+            bundle.putParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP, ((BitmapDrawable) nativeAppInfo.getIcon()).getBitmap());
+        }
+
         bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, appUsageDataHelper.getCharacterType());
         overviewFragment.setArguments(bundle);
 

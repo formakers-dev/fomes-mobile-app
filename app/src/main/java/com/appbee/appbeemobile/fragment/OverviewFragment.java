@@ -1,11 +1,13 @@
 package com.appbee.appbeemobile.fragment;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
@@ -23,6 +25,7 @@ public class OverviewFragment extends Fragment {
     public static final String EXTRA_APP_USAGE_TIME_TYPE = "EXTRA_APP_USAGE_TIME_TYPE";
     public static final String EXTRA_LONGEST_USED_APP_NAME = "EXTRA_LONGEST_USED_APP_NAME";
     public static final String EXTRA_LONGEST_USED_APP_DESCRIPTION = "EXTRA_LONGEST_USED_APP_DESCRIPTION";
+    public static final String EXTRA_LONGEST_USED_APP_ICON_BITMAP = "EXTRA_LONGEST_USED_APP_ICON_BITMAP";
 
     @BindView(R.id.app_count_textview)
     TextView appCountView;
@@ -44,6 +47,9 @@ public class OverviewFragment extends Fragment {
 
     @BindView(R.id.longest_used_app_description)
     TextView longestUsedAppDescriptionView;
+
+    @BindView(R.id.longest_used_app_icon)
+    ImageView longestUsedAppIcon;
 
     @BindView(R.id.character_type_name)
     TextView characterTypeNameView;
@@ -73,13 +79,16 @@ public class OverviewFragment extends Fragment {
 
         displayAppListCountInformation(getArguments().getInt(EXTRA_APP_LIST_COUNT), getArguments().getInt(EXTRA_APP_LIST_COUNT_TYPE));
         displayAppUsageTimeInformation(getArguments().getInt(EXTRA_APP_AVG_TIME), getArguments().getInt(EXTRA_APP_USAGE_TIME_TYPE));
-        displayLongestUsedAppInformation(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME), getArguments().getString(EXTRA_LONGEST_USED_APP_DESCRIPTION));
+        displayLongestUsedAppInformation(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME), getArguments().getString(EXTRA_LONGEST_USED_APP_DESCRIPTION), getArguments().getParcelable(EXTRA_LONGEST_USED_APP_ICON_BITMAP));
         displayCharacterTypeInformation(getArguments().getInt(EXTRA_CHARACTER_TYPE));
     }
 
-    private void displayLongestUsedAppInformation(String appName, String description) {
+    private void displayLongestUsedAppInformation(String appName, String description, Bitmap iconBitmap) {
         longestUsedAppNameView.setText(appName);
         longestUsedAppDescriptionView.setText(description);
+        if (iconBitmap != null) {
+            longestUsedAppIcon.setImageBitmap(iconBitmap);
+        }
     }
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
