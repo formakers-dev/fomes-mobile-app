@@ -23,4 +23,8 @@
         android:id="@+id/least_used_time_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/most_used_time_category_rate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -9,6 +9,7 @@ import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.google.common.collect.Lists;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -527,30 +528,24 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getMostUsedTimeCategories호출시_많은_시간_사용된_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
+    public void getSortedCategoriesByUsedTime호출시_많은_시간_사용된_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
         when(mockAppRepositoryHelper.getUsedTimeMapByCategory()).thenReturn(createCategoryDummyDataByUsedTime());
-        ArrayList<String> list = subject.getMostUsedTimeCategories(3);
-        assertThat(list).isNotNull();
-        assertThat(list.size()).isEqualTo(3);
+        Map<String, Long> map = subject.getSortedCategoriesByUsedTime();
+        assertThat(map).isNotNull();
+        assertThat(map.size()).isEqualTo(5);
+
+        ArrayList<String> list = Lists.newArrayList(map.keySet());
         assertThat(list.get(0)).isEqualTo("사진");
         assertThat(list.get(1)).isEqualTo("쇼핑");
         assertThat(list.get(2)).isEqualTo("음악");
-    }
+        assertThat(list.get(3)).isEqualTo("교육");
+        assertThat(list.get(4)).isEqualTo("게임");
 
-    @Test
-    public void getMostUsedTimeCategories호출시_요청한리스트크기가_많은시간_사용된_카테고리의수보다_큰경우_설치된카테고리수만큼_리턴한다() throws Exception {
-        when(mockAppRepositoryHelper.getUsedTimeMapByCategory()).thenReturn(createCategoryDummyDataByUsedTime());
-        ArrayList<String> list = subject.getMostUsedTimeCategories(6);
-        assertThat(list).isNotNull();
-        assertThat(list.size()).isEqualTo(5);
-    }
-
-    @Test
-    public void getMostUsedTimeCategories호출시_카테고리맵이_비어있는경우_비어있는_리스트를_리턴한다() throws Exception {
-        when(mockAppRepositoryHelper.getUsedTimeMapByCategory()).thenReturn(new HashMap<>());
-        ArrayList<String> list = subject.getMostUsedTimeCategories(3);
-        assertThat(list).isNotNull();
-        assertThat(list.size()).isEqualTo(0);
+        assertThat(map.get(list.get(0))).isEqualTo(5L);
+        assertThat(map.get(list.get(1))).isEqualTo(4L);
+        assertThat(map.get(list.get(2))).isEqualTo(3L);
+        assertThat(map.get(list.get(3))).isEqualTo(2L);
+        assertThat(map.get(list.get(4))).isEqualTo(1L);
     }
 
     private void assertSortedMap(Map<String, Integer> map) {

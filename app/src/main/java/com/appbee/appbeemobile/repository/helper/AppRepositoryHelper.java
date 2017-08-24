@@ -98,14 +98,14 @@ public class AppRepositoryHelper {
 
             Map<String, Long> usedTimeMap = new HashMap<>();
             for (UsedApp usedApp : usedAppList) {
-                String key = usedApp.getCategoryName1();
+                String key = usedApp.getCategoryId1();
                 Long value = usedApp.getTotalUsedTime();
                 Long oldValue = usedTimeMap.get(usedApp.getCategoryId1());
 
                 usedTimeMap.put(key, oldValue != null ? oldValue + value : value);
 
                 if (!TextUtils.isEmpty(usedApp.getCategoryId2())) {
-                    key = usedApp.getCategoryName2();
+                    key = usedApp.getCategoryId2();
                     value = usedApp.getTotalUsedTime();
                     oldValue = usedTimeMap.get(usedApp.getCategoryId2());
 
