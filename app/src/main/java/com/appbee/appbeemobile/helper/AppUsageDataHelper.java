@@ -2,13 +2,11 @@ package com.appbee.appbeemobile.helper;
 
 import android.app.usage.UsageStats;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 
-import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.AppInfo;
-import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
@@ -25,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -262,11 +259,11 @@ public class AppUsageDataHelper {
             return result * (isAsc ? 1 : -1);
         });
 
-        LinkedHashMap<K, V> sortedCategoryMap = new LinkedHashMap<>();
+        LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
         for (Map.Entry<K, V> item : list) {
-            sortedCategoryMap.put(item.getKey(), item.getValue());
+            sortedMap.put(item.getKey(), item.getValue());
         }
 
-        return sortedCategoryMap;
+        return sortedMap;
     }
 }
