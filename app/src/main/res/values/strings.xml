@@ -15,7 +15,7 @@
     <string name="least_installed_categories_title">가장 적게 설치한 카테고리는 </string>
     <string name="most_used_social_app_title">당신이 사랑하는 SNS는 </string>
     <string name="total">총</string>
-    <string name="brain_category_rate">%1$s앱이 %2$d%%</string>
+    <string name="category_rate">%1$s앱이 %2$d%%</string>
 
     <string-array name="character_names">
         <item>덕후가 아니라 게이머다! 일코벌</item>

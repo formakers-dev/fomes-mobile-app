@@ -172,10 +172,8 @@ public class AppUsageDataHelper {
         return appRepositoryHelper.getSortedUsedAppsByTotalUsedTime();
     }
 
-    public ArrayList<String> getMostUsedTimeCategories(int count) {
-        Map<String, Long> usedTImeCategoryMap =  sortByValue(appRepositoryHelper.getUsedTimeMapByCategory(), DESC);
-        int mapSize = usedTImeCategoryMap.size();
-        return new ArrayList<>(Lists.newArrayList(usedTImeCategoryMap.keySet()).subList(0, Math.min(count, mapSize)));
+    public Map<String, Long> getSortedCategoriesByUsedTime() {
+        return sortByValue(appRepositoryHelper.getUsedTimeMapByCategory(), DESC);
     }
 
     public ArrayList<String> getLeastUsedTimeCategories(int count) {

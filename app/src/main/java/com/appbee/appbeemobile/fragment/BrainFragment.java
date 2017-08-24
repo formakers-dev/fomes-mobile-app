@@ -60,7 +60,7 @@ public class BrainFragment extends Fragment {
         installedAppCountView.setText(String.valueOf(installedAppCount));
 
         long installedCategoryRate = getArguments().getLong(EXTRA_MOST_INSTALLED_CATEGORY_RATE);
-        mostInstalledCategoryRateView.setText(String.format(getString(R.string.brain_category_rate),
+        mostInstalledCategoryRateView.setText(String.format(getString(R.string.category_rate),
                 mostInstalledCategoryList.get(0), installedCategoryRate));
 
     }

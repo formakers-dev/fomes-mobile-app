@@ -30,7 +30,9 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -135,12 +137,14 @@ public class AnalysisResultActivityTest extends ActivityTest {
         ArrayList<String> mostUsedTimeCategoryList = bundle.getStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES);
         assertThat(mostUsedTimeCategoryList).isNotNull();
         assertThat(mostUsedTimeCategoryList.size()).isEqualTo(3);
-        assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("금융");
-        assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("게임");
-        assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("부동산/인테리어");
+        assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("com.package.name1");
+        assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("com.package.name2");
+        assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("com.package.name3");
         ArrayList<String> leastUsedTimeCategory = bundle.getStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES);
         assertThat(leastUsedTimeCategory).isNotNull();
-        assertThat(leastUsedTimeCategory.get(0)).isEqualTo("사진");
+        assertThat(leastUsedTimeCategory.get(0)).isEqualTo("com.package.name4");
+
+        assertThat(bundle.getLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE)).isEqualTo(50L);
     }
 
     @Test
@@ -261,15 +265,16 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(leastUsedCategories);
 
         when(appUsageDataHelper.getAppCountByCategoryId("사진")).thenReturn(1L);
+        when(appUsageDataHelper.getAppCountByCategoryId("com.package.name1")).thenReturn(2L);
 
-        ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
-        mostUsedTimeCategoryList.add("금융");
-        mostUsedTimeCategoryList.add("게임");
-        mostUsedTimeCategoryList.add("부동산/인테리어");
-        when(appUsageDataHelper.getMostUsedTimeCategories(anyInt())).thenReturn(mostUsedTimeCategoryList);
+        Map<String, Long> usedTimeCategoryMap = new LinkedHashMap<>();
+        usedTimeCategoryMap.put("com.package.name1", 3000L);
+        usedTimeCategoryMap.put("com.package.name2", 2000L);
+        usedTimeCategoryMap.put("com.package.name3", 1000L);
+        when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(usedTimeCategoryMap);
 
         ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
-        leastUsedTimeCategoryList.add("사진");
+        leastUsedTimeCategoryList.add("com.package.name4");
         when(appUsageDataHelper.getLeastUsedTimeCategories(anyInt())).thenReturn(leastUsedTimeCategoryList);
     }
 

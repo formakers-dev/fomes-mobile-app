@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -21,9 +22,12 @@ import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
 import com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -35,9 +39,11 @@ public class AnalysisResultActivity extends Activity {
     public static final String SHARE_FRAGMENT_TAG = "SHARE_FRAGMENT_TAG";
     public static final String FLOWER_FRAGMENT_TAG = "FLOWER_FRAGMENT_TAG";
 
-    public static final int NUMBER_OF_MOST_INSTALLED_CATEGORY = 3;
-    public static final int NUMBER_OF_LEAST_INSTALLED_CATEGORY = 1;
+    private static final int NUMBER_OF_MOST_INSTALLED_CATEGORY = 3;
+    private static final int NUMBER_OF_LEAST_INSTALLED_CATEGORY = 1;
 
+    private static final int NUMBER_OF_MOST_USED_TIME_CATEGORY = 3;
+    private static final int NUMBER_OF_LEAST_USED_TIME_CATEGORY = 1;
     @Inject
     AppUsageDataHelper appUsageDataHelper;
 
@@ -68,17 +74,6 @@ public class AnalysisResultActivity extends Activity {
                 .add(R.id.flower_fragment, getFlowerFragment(), FLOWER_FRAGMENT_TAG)
                 .add(R.id.share_fragment, new ShareFragment(), SHARE_FRAGMENT_TAG)
                 .commit();
-    }
-
-    private Fragment getFlowerFragment() {
-        Fragment flowerFragment = new FlowerFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, appUsageDataHelper.getMostUsedTimeCategories(3));
-        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, appUsageDataHelper.getLeastUsedTimeCategories(1));
-        flowerFragment.setArguments(bundle);
-
-        return flowerFragment;
     }
 
     private Fragment getOverviewFragment() {
@@ -125,6 +120,36 @@ public class AnalysisResultActivity extends Activity {
         brainFragment.setArguments(bundle);
 
         return brainFragment;
+    }
+
+    private Fragment getFlowerFragment() {
+        Fragment flowerFragment = new FlowerFragment();
+
+        Bundle bundle = new Bundle();
+        Map<String, Long> usedTimeCategoryMap = appUsageDataHelper.getSortedCategoriesByUsedTime();
+
+        ArrayList<String> mostUsedTimeCategoryList = getKeySubListByCount(usedTimeCategoryMap, NUMBER_OF_MOST_USED_TIME_CATEGORY);
+        bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
+        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, appUsageDataHelper.getLeastUsedTimeCategories(NUMBER_OF_LEAST_USED_TIME_CATEGORY));
+        bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, getCategoryRate(usedTimeCategoryMap, mostUsedTimeCategoryList.get(0)));
+
+        flowerFragment.setArguments(bundle);
+
+        return flowerFragment;
+    }
+
+    private long getCategoryRate(Map<String, Long> usedTimeCategoryMap, String mostUsedTimeCategoryKey) {
+        long totalUsedTime = 0L;
+        Set<String> keySet = usedTimeCategoryMap.keySet();
+        for (String key : keySet) {
+            totalUsedTime += usedTimeCategoryMap.get(key);
+        }
+        return Math.round((double) usedTimeCategoryMap.get(mostUsedTimeCategoryKey) / totalUsedTime * 100);
+    }
+
+    @NonNull
+    private ArrayList<String> getKeySubListByCount(Map<String, Long> usedTimeCategoryMap, int count) {
+        return Lists.newArrayList(Lists.newArrayList(usedTimeCategoryMap.keySet()).subList(0, Math.min(count, usedTimeCategoryMap.size())));
     }
 
     int getAppCountType(int appCount) {
