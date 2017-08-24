@@ -74,7 +74,7 @@ public class OverviewFragmentTest {
     private void createFragment(boolean isLongUsedAppIcon) throws Exception {
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, 400);
-        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 8);
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 495);
         bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, AppBeeConstants.CHARACTER_TYPE.GAMER);
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, AppBeeConstants.APP_LIST_COUNT_TYPE.MORE);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, AppBeeConstants.APP_USAGE_TIME_TYPE.MOST);
@@ -111,7 +111,7 @@ public class OverviewFragmentTest {
     public void fragment시작시_평균_앱사용_시간과_평가를_표시한다() throws Exception {
         createFragment(true);
 
-        assertTextViewVisibleAndContains(averageAppUsageTimeView, "8");
+        assertTextViewVisibleAndContains(averageAppUsageTimeView, "8시간 15분");
         assertTextViewVisibleAndEquals(averageAppUsageTimeMsgView, "엄청 많아요.");
         assertTextViewVisibleAndEquals(averageAppUsageTimeDescriptionView, "가끔은 핸드폰을 덮고 하늘을 바라보는게 어떨까요?");
     }

@@ -92,7 +92,7 @@ public class OverviewFragment extends Fragment {
     }
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
-        averageAppUsageTimeView.setText(String.format(getString(R.string.overview_average_time), appUsageAverageTime));
+        averageAppUsageTimeView.setText(String.format(getString(R.string.overview_average_time), appUsageAverageTime/60, appUsageAverageTime%60));
         averageAppUsageTimeMsgView.setText(getResources().getStringArray(R.array.app_usage_time_type_names)[appUsageTimeType]);
         averageAppUsageTimeDescriptionView.setText(getResources().getStringArray(R.array.app_usage_time_type_descriptions)[appUsageTimeType]);
     }

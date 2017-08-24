@@ -127,16 +127,16 @@ public class AppUsageDataHelper {
         return appBeeAndroidNativeHelper.getInstalledLaunchableApps();
     }
 
-    public double getAppUsageAverageHourPerDay(List<LongTermStat> longTermStatList) {
+    public int getAppUsageAverageMinutesPerDay(List<LongTermStat> longTermStatList) {
         long totalUsedTime = 0L;
 
         for (LongTermStat item : longTermStatList) {
             totalUsedTime += item.getTotalUsedTime();
         }
 
-        totalUsedTime = totalUsedTime / 1000 / 60 / 60;
+        totalUsedTime = totalUsedTime / 1000 / 60;
         long mobileTotalUsedDay = TimeUtil.getMobileTotalUsedDay(localStorageHelper.getMinStartedStatTimeStamp());
-        return totalUsedTime / (double) mobileTotalUsedDay;
+        return Math.round(totalUsedTime / mobileTotalUsedDay);
     }
 
     @NonNull

@@ -79,7 +79,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         Bundle bundle = fragment.getArguments();
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(4);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(8);
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(480);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
         assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME)).isEqualTo("app_name_1");
         assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION)).isEqualTo("역시 당신은 덕…아니, 게이머라구요.");
@@ -164,12 +164,12 @@ public class AnalysisResultActivityTest extends ActivityTest {
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
 
         assertThat(subject.getAppUsageTimeType(0)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
-        assertThat(subject.getAppUsageTimeType(0.5)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
-        assertThat(subject.getAppUsageTimeType(1)).isEqualTo(APP_USAGE_TIME_TYPE.LESS);
-        assertThat(subject.getAppUsageTimeType(2)).isEqualTo(APP_USAGE_TIME_TYPE.NORMAL);
-        assertThat(subject.getAppUsageTimeType(4)).isEqualTo(APP_USAGE_TIME_TYPE.MORE);
-        assertThat(subject.getAppUsageTimeType(8)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
-        assertThat(subject.getAppUsageTimeType(10)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
+        assertThat(subject.getAppUsageTimeType(30)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
+        assertThat(subject.getAppUsageTimeType(60)).isEqualTo(APP_USAGE_TIME_TYPE.LESS);
+        assertThat(subject.getAppUsageTimeType(120)).isEqualTo(APP_USAGE_TIME_TYPE.NORMAL);
+        assertThat(subject.getAppUsageTimeType(240)).isEqualTo(APP_USAGE_TIME_TYPE.MORE);
+        assertThat(subject.getAppUsageTimeType(480)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
+        assertThat(subject.getAppUsageTimeType(600)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
     }
 
     @Test
@@ -250,7 +250,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         when(appUsageDataHelper.getSortedUsedAppsByTotalUsedTime()).thenReturn(appInfoList);
 
-        when(appUsageDataHelper.getAppUsageAverageHourPerDay(any())).thenReturn(8.0d);
+        when(appUsageDataHelper.getAppUsageAverageMinutesPerDay(any())).thenReturn(480);
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
 
         when(appUsageDataHelper.getCharacterType()).thenReturn(CHARACTER_TYPE.QUEEN);

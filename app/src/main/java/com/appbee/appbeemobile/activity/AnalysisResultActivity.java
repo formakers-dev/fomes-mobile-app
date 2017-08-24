@@ -86,9 +86,9 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, getAppCountType(appCount));
 
         List<LongTermStat> longTermStatList = appUsageDataHelper.getLongTermStats();
-        double appUsageAverageHourPerDay = appUsageDataHelper.getAppUsageAverageHourPerDay(longTermStatList);
-        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, (int) Math.round(appUsageAverageHourPerDay));
-        bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageHourPerDay));
+        int appUsageAverageMinutesPerDay = appUsageDataHelper.getAppUsageAverageMinutesPerDay(longTermStatList);
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageMinutesPerDay);
+        bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageMinutesPerDay));
 
         AppInfo longestUsedAppInfo = appInfoList.get(0);
         bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, longestUsedAppInfo.getAppName());
@@ -169,14 +169,14 @@ public class AnalysisResultActivity extends Activity {
         }
     }
 
-    int getAppUsageTimeType(double hour) {
-        if (hour < 1) {
+    int getAppUsageTimeType(int minutes) {
+        if (minutes < 60) {
             return APP_USAGE_TIME_TYPE.LEAST;
-        } else if (hour < 2) {
+        } else if (minutes < 120) {
             return APP_USAGE_TIME_TYPE.LESS;
-        } else if (hour < 4) {
+        } else if (minutes < 240) {
             return APP_USAGE_TIME_TYPE.NORMAL;
-        } else if (hour < 8) {
+        } else if (minutes < 480) {
             return APP_USAGE_TIME_TYPE.MORE;
         } else {
             return APP_USAGE_TIME_TYPE.MOST;
