@@ -35,6 +35,8 @@ public class FlowerFragmentTest {
     TextView leastUsedTimeCategoryTextView;
     @BindView(R.id.most_used_time_category_rate)
     TextView mostUsedTimeCategoryRateTextView;
+    @BindView(R.id.most_used_time_category_desc)
+    TextView mostUsedTimeCategoryDescTextView;
 
     @Before
     public void setUp() throws Exception {
@@ -49,6 +51,7 @@ public class FlowerFragmentTest {
         leastUsedTimeCategoryList.add("category4");
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, 20L);
+        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, "category1 입니다");
         subject = new FlowerFragment();
         subject.setArguments(bundle);
 
@@ -74,5 +77,10 @@ public class FlowerFragmentTest {
     @Test
     public void onViewCreate호출시_가장_많은_시간_사용한_카테코리의_비율이_나타난다() throws Exception {
         assertThat(mostUsedTimeCategoryRateTextView.getText()).isEqualTo("category1앱이 20%");
+    }
+
+    @Test
+    public void onViewCreate호출시_가장_많은_시간_사용한_카테고리에_대한_설명이_나타난다() throws Exception {
+        assertThat(mostUsedTimeCategoryDescTextView.getText()).isEqualTo("category1 입니다");
     }
 }

@@ -18,10 +18,10 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class FlowerFragment extends Fragment{
-    private Unbinder binder;
     public static final String EXTRA_MOST_USED_TIME_CATEGORIES = "EXTRA_MOST_USED_TIME_CATEGORIES";
     public static final String EXTRA_LEAST_USED_TIME_CATEGORIES = "EXTRA_LEAST_USED_TIME_CATEGORIES";
     public static final String EXTRA_MOST_USED_TIME_CATEGORY_RATE = "EXTRA_MOST_USED_TIME_CATEGORY_RATE";
+    public static final String EXTRA_MOST_USED_TIME_CATEGORY_DESC = "EXTRA_MOST_USED_TIME_CATEGORY_DESC";
 
     @BindView(R.id.most_used_time_categories)
     LinearLayout categoryLinearLayout;
@@ -31,6 +31,11 @@ public class FlowerFragment extends Fragment{
 
     @BindView(R.id.most_used_time_category_rate)
     TextView mostUsedTimeCategoryRate;
+
+    @BindView(R.id.most_used_time_category_desc)
+    TextView mostUsedTimeCategoryDesc;
+
+    private Unbinder binder;
 
     @Nullable
     @Override
@@ -62,6 +67,8 @@ public class FlowerFragment extends Fragment{
                 leastUsedTimeCategoryTextView.setText(leastUsedTimeCategory);
             }
         }
+
+        mostUsedTimeCategoryDesc.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_DESC));
     }
 
     @Override
