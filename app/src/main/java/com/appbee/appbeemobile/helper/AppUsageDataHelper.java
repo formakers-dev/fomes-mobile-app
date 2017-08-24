@@ -243,25 +243,9 @@ public class AppUsageDataHelper {
         return sortByValue(map, DESC);
     }
 
-    <K, V extends Number> Map<K, V> sortByValue(Map<K, V> map, boolean isAsc) {
+    <K, V extends Comparable<V>> Map<K, V> sortByValue(Map<K, V> map, boolean isAsc) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
-        Collections.sort(list, (o1, o2) -> {
-            Number n1 = o1.getValue();
-            Number n2 = o2.getValue();
-
-            int result = 0;
-            if (n1 instanceof Integer || n2 instanceof Integer) {
-                result = n1.intValue() > n2.intValue() ? 1 : -1;
-            } else if (n1 instanceof Long || n2 instanceof Long) {
-                result = n1.longValue() > n2.longValue() ? 1 : -1;
-            } else if (n1 instanceof Float || n2 instanceof Float) {
-                result = n1.floatValue() > n2.floatValue() ? 1 : -1;
-            } else {
-                result = n1.doubleValue() > n2.doubleValue() ? 1 : -1;
-            }
-
-            return result * (isAsc ? 1 : -1);
-        });
+        Collections.sort(list, (o1, o2) -> o1.getValue().compareTo(o2.getValue()) * (isAsc ? 1 : -1));
 
         LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
         for (Map.Entry<K, V> item : list) {
