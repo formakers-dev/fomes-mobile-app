@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.repository.helper;
 import android.text.TextUtils;
 
 import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.repository.mapper.UsedAppMapper;
 import com.appbee.appbeemobile.repository.model.UsedApp;
 
 import java.util.ArrayList;
@@ -26,14 +27,7 @@ public class AppRepositoryHelper {
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction((realm) -> {
                 for (AppInfo appInfo : appInfos) {
-                    UsedApp usedApp = new UsedApp();
-                    usedApp.setPackageName(appInfo.getPackageName());
-                    usedApp.setAppName(appInfo.getAppName());
-                    usedApp.setCategoryId1(appInfo.getCategoryId1());
-                    usedApp.setCategoryName1(appInfo.getCategoryName1());
-                    usedApp.setCategoryId2(appInfo.getCategoryId2());
-                    usedApp.setCategoryName2(appInfo.getCategoryName2());
-                    realm.copyToRealmOrUpdate(usedApp);
+                    realm.copyToRealmOrUpdate(UsedAppMapper.toUsedApp(appInfo));
                 }
             });
         }
@@ -84,14 +78,6 @@ public class AppRepositoryHelper {
         }
     }
 
-    public int getAppCountByCategoryIds(List<String> categoryIds) {
-        int returnCount = 0;
-        for(String categoryId : categoryIds) {
-            returnCount += this.getAppCountByCategoryId(categoryId);
-        }
-        return returnCount;
-    }
-
     public List<AppInfo> getSortedUsedAppsByTotalUsedTime() {
         List<AppInfo> appInfoList = new ArrayList<>();
 
@@ -99,7 +85,7 @@ public class AppRepositoryHelper {
             final RealmResults<UsedApp> usedAppList = realmInstance.where(UsedApp.class).findAllSorted("totalUsedTime", Sort.DESCENDING);
 
             for (UsedApp usedApp: usedAppList) {
-                appInfoList.add(new AppInfo(usedApp));
+                appInfoList.add(UsedAppMapper.toAppInfo(usedApp));
             }
         }
 

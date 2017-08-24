@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.appbee.appbeemobile.util.AppBeeConstants.*;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CATEGORY_GROUP;
 
 public class AnalysisResultActivity extends Activity {
     public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";

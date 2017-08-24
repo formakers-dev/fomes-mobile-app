@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,15 +144,6 @@ public class AppRepositoryHelperTest {
     }
 
     @Test
-    public void getAppCountByCategoryIds() throws Exception {
-        insertDummyData();
-
-        List<String> CategoryIds = Arrays.asList("categoryId1", "categoryId2");
-
-        assertEquals(subject.getAppCountByCategoryIds(CategoryIds), 7);
-    }
-
-    @Test
     public void getUsedTimeMapByCategory호출시_카테고리별_총사용시간의합을_리턴한다() throws Exception {
         insertDummyDataWithTotalUsedTimeByCategory();
 
@@ -216,12 +206,6 @@ public class AppRepositoryHelperTest {
         dummyData.add(new AppInfo("com.nhn.android.band", "밴드", "", "", "", ""));
         dummyData.add(new AppInfo("kr.co.vcnc.android.couple", "커플앱 비트윈 - Between", "", "", "", ""));
         dummyData.add(new AppInfo("com.android.chrome", "Chrome", "", "", "", ""));
-    }
-
-    private void insertAdditionalDummyDataForSocialApp() {
-        List<AppInfo> dummyData = new ArrayList<>();
-        dummyData.add(new AppInfo("com.facebook.katana", "페이스북", "", "", "", ""));
-        dummyData.add(new AppInfo("com.social.app", "소셜앱앱", "", "", "", ""));
     }
 
     private void insertDummyDataWithTotalUsedTimeByCategory() {
