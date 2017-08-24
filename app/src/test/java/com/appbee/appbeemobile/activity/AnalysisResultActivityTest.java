@@ -2,6 +2,9 @@ package com.appbee.appbeemobile.activity;
 
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -12,6 +15,7 @@ import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.FlowerFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
@@ -30,9 +34,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.appbee.appbeemobile.util.AppBeeConstants.*;
+import static com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
+import static com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -46,17 +54,22 @@ public class AnalysisResultActivityTest extends ActivityTest {
     @Inject
     AppRepositoryHelper appRepositoryHelper;
 
+    @Inject
+    NativeAppInfoHelper mockNativeAppInfoHelper;
+
+    private Bitmap mockIconBitmap;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         mockDummyData();
-
-        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
     }
 
     @Test
     public void onCreate앱시작시_OverViewFragment가_나타난다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
         Fragment fragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.OVERVIEW_FRAGMENT_TAG);
         assertThat(fragment).isNotNull();
         assertThat(fragment.isAdded()).isTrue();
@@ -68,12 +81,25 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
         assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME)).isEqualTo("app_name_1");
         assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION)).isEqualTo("역시 당신은 덕…아니, 게이머라구요.");
+        assertThat(((Bitmap) bundle.getParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP))).isEqualTo(mockIconBitmap);
+
         assertThat(bundle.getInt(OverviewFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(CHARACTER_TYPE.QUEEN);
     }
 
+    @Test
+    public void OverViewFragment생성시_아이콘이없는_앱은_아이콘비트맵정보를_전달하지_않는다() throws Exception {
+        mockNativeAppInfo(false);
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Fragment fragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.OVERVIEW_FRAGMENT_TAG);
+        Bundle bundle = fragment.getArguments();
+        assertThat(bundle.containsKey(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP)).isFalse();
+    }
 
     @Test
     public void onCreate앱시작시_BrainFragment가_나타난다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
         Fragment brainFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.BRAIN_FRAGMENT_TAG);
         assertThat(brainFragment).isNotNull();
         assertThat(brainFragment.isAdded()).isTrue();
@@ -97,6 +123,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void onCreate_앱시작시_FlowerFragment가_나타난다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
         Fragment flowerFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.FLOWER_FRAGMENT_TAG);
         assertThat(flowerFragment).isNotNull();
         assertThat(flowerFragment.isAdded()).isTrue();
@@ -117,6 +145,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void onCreate_앱시작시_ShareFragment가_나타난다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
         Fragment shareFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.SHARE_FRAGMENT_TAG);
         assertThat(shareFragment).isNotNull();
         assertThat(shareFragment.isAdded()).isTrue();
@@ -127,6 +157,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void getAppUsageTimeType호출시_앱사용시간별_타입을_리턴한다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
         assertThat(subject.getAppUsageTimeType(0)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
         assertThat(subject.getAppUsageTimeType(0.5)).isEqualTo(APP_USAGE_TIME_TYPE.LEAST);
         assertThat(subject.getAppUsageTimeType(1)).isEqualTo(APP_USAGE_TIME_TYPE.LESS);
@@ -138,6 +170,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void getAppCountType호출시_설치앱개수별_타입을_리턴한다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
         assertThat(subject.getAppCountType(0)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
         assertThat(subject.getAppCountType(10)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
         assertThat(subject.getAppCountType(25)).isEqualTo(APP_LIST_COUNT_TYPE.LESS);
@@ -149,6 +183,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void getLongestUsedAppDescription호출시_카테고리별_description을_리턴한다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FINANCE")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[0]);
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/GAME_EDUCATIONAL")).isEqualTo(subject.getResources().getStringArray(R.array.longest_used_app_category_descriptions)[1]);
@@ -197,9 +233,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     private void mockDummyData() {
 
-        List<NativeAppInfo> nativeAppInfos = new ArrayList<>();
-        nativeAppInfos.add(new NativeAppInfo("com.package.name1", "app_name_1"));
-        nativeAppInfos.add(new NativeAppInfo("com.package.name2", "app_name_2"));
+        mockNativeAppInfo(true);
 
         List<LongTermStat> longTermStats = new ArrayList<>();
         longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
@@ -237,5 +271,15 @@ public class AnalysisResultActivityTest extends ActivityTest {
         ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
         leastUsedTimeCategoryList.add("사진");
         when(appUsageDataHelper.getLeastUsedTimeCategories(anyInt())).thenReturn(leastUsedTimeCategoryList);
+    }
+
+    private void mockNativeAppInfo(boolean hasIconDrawable) {
+        NativeAppInfo nativeApp1 = new NativeAppInfo("com.package.name1", "app_name_1");
+        if (hasIconDrawable) {
+            mockIconBitmap = mock(Bitmap.class);
+            Drawable iconDrawable = new BitmapDrawable(RuntimeEnvironment.application.getResources(), mockIconBitmap);
+            nativeApp1.setIcon(iconDrawable);
+        }
+        when(mockNativeAppInfoHelper.getNativeAppInfo("com.package.name1")).thenReturn(nativeApp1);
     }
 }

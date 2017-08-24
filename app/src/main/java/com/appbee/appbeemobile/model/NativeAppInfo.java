@@ -1,9 +1,11 @@
 package com.appbee.appbeemobile.model;
 
+import android.graphics.drawable.Drawable;
+
 public class NativeAppInfo {
     private String packageName;
     private String appName;
-
+    private Drawable icon;
 
     public NativeAppInfo(String packageName, String appName) {
         this.packageName = packageName;
@@ -24,5 +26,13 @@ public class NativeAppInfo {
 
     public void setAppName(String appName) {
         this.appName = appName;
+    }
+
+    public Drawable getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Drawable icon) {
+        this.icon = icon;
     }
 }

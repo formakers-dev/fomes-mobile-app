@@ -60,21 +60,24 @@ public class AppBeeAndroidNativeHelper {
         List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(intent, PackageManager.GET_META_DATA);
 
         List<NativeAppInfo> nativeAppInfoList = new ArrayList<>();
-        for(ResolveInfo resolveInfo : resolveInfoList) {
+        for (ResolveInfo resolveInfo : resolveInfoList) {
             nativeAppInfoList.add(new NativeAppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
         }
 
         return nativeAppInfoList;
     }
 
-    public String getAppName(String packageName) {
+    public NativeAppInfo getNativeAppInfo(String packageName) {
+        NativeAppInfo nativeAppInfo = new NativeAppInfo(packageName, "");
         try {
             final PackageManager pm = context.getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
-            return pm.getApplicationLabel(ai).toString();
+            nativeAppInfo.setAppName(pm.getApplicationLabel(ai).toString());
+            nativeAppInfo.setIcon(pm.getApplicationIcon(packageName));
         } catch (final PackageManager.NameNotFoundException e) {
-            return null;
         }
+
+        return nativeAppInfo;
     }
 
     public List<UsageStats> getUsageStats(long startTime, long endTime) {
