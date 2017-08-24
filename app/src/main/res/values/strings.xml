@@ -106,4 +106,8 @@
     <string name="start_privacy_information">주신 정보는 분석만을 위해 사용합니다</string>
     <string name="most_used_time_category_title">가장 많은 시간 사용한 카테고리(꿀 빨던 꽃)</string>
     <string name="least_used_time_category_title">가장 적은 시간 사용한 카테고리(꿀 빨던 꽃)</string>
+    <string name="permission_dialog_title">앱 사용 정보 접근 권한 허용</string>
+    <string name="permission_dialog_message">[AppBee] 에서 앱 사용 정보 권한에 접근하려 합니다. 허용 하시겠습니까?</string>
+    <string name="agree_button_text">동의</string>
+    <string name="cancel_button_text">취소</string>
 </resources>
