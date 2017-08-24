@@ -1,21 +1,18 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 
 import com.appbee.appbeemobile.R;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class StartActivity extends AppCompatActivity {
-
-    @BindView(R.id.start_analysis_button)
-    Button startButton;
 
     private Unbinder binder;
 
@@ -26,12 +23,23 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         binder = ButterKnife.bind(this);
+    }
 
-        startButton.setOnClickListener(v -> {
-            Intent intent = new Intent(StartActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
+    @OnClick(R.id.start_analysis_button)
+    void showPermissionAlertDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.permission_dialog_title)
+                .setMessage(R.string.permission_dialog_message)
+                .setPositiveButton(R.string.agree_button_text, (dialog, which) -> startMainActivity())
+                .setNegativeButton(R.string.cancel_button_text, (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
+    void startMainActivity() {
+        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
