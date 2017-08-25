@@ -26,17 +26,17 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class FlowerFragmentTest {
-    FlowerFragment subject;
+    private FlowerFragment subject;
     private Unbinder binder;
 
     @BindView(R.id.most_used_time_categories)
     LinearLayout linearLayout;
     @BindView(R.id.least_used_time_category)
     TextView leastUsedTimeCategoryTextView;
-    @BindView(R.id.most_used_time_category_rate)
-    TextView mostUsedTimeCategoryRateTextView;
-    @BindView(R.id.most_used_time_category_desc)
-    TextView mostUsedTimeCategoryDescTextView;
+    @BindView(R.id.most_used_time_category_summary)
+    TextView mostUsedTimeCategorySummaryView;
+    @BindView(R.id.most_used_time_category_description)
+    TextView mostUsedTimeCategoryDescriptionView;
 
     @Before
     public void setUp() throws Exception {
@@ -50,7 +50,7 @@ public class FlowerFragmentTest {
         ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
         leastUsedTimeCategoryList.add("데이트");
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
-        bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, 20L);
+        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, "금융 앱이 전체 앱 개수의 20%");
         bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, "금융 입니다");
         subject = new FlowerFragment();
         subject.setArguments(bundle);
@@ -77,12 +77,8 @@ public class FlowerFragmentTest {
     }
 
     @Test
-    public void onViewCreate호출시_가장_많은_시간_사용한_카테코리의_비율이_나타난다() throws Exception {
-        assertThat(mostUsedTimeCategoryRateTextView.getText()).isEqualTo("금융앱이 20%");
-    }
-
-    @Test
-    public void onViewCreate호출시_가장_많은_시간_사용한_카테고리에_대한_설명이_나타난다() throws Exception {
-        assertThat(mostUsedTimeCategoryDescTextView.getText()).isEqualTo("금융 입니다");
+    public void onViewCreate호출시_가장_많은_시간_사용한_카테코리의_정보가_나타난다() throws Exception {
+        assertThat(mostUsedTimeCategorySummaryView.getText()).isEqualTo("금융 앱이 전체 앱 개수의 20%");
+        assertThat(mostUsedTimeCategoryDescriptionView.getText()).isEqualTo("금융 입니다");
     }
 }

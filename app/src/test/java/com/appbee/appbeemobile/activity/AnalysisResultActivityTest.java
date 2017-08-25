@@ -119,9 +119,31 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(actualLeastInstalledCategories.size()).isEqualTo(1);
         assertThat(actualLeastInstalledCategories.get(0)).isEqualTo("데이트");
 
-        assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(4);
-        assertThat(bundle.getLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE)).isEqualTo(25);
-        assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION)).isEqualTo(subject.getString(R.string.brain_flower_desc_photography));
+        assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY)).isEqualTo("사진 앱이 전체 앱 개수의 25%");
+        assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION)).contains("늘 기록을 남기고 추억을 소중하게 여기는 당신.");
+    }
+
+    @Test
+    public void 설치된카테고리데이터가없을경우_BrainFragment가_설치된정보가없음을_표시한다() throws Exception {
+        mockNoInstalledCategoryDummyData();
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Fragment brainFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.BRAIN_FRAGMENT_TAG);
+        assertThat(brainFragment).isNotNull();
+        assertThat(brainFragment.isAdded()).isTrue();
+
+        Bundle bundle = brainFragment.getArguments();
+        ArrayList<String> actualMostUsedCategories = bundle.getStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES);
+        assertThat(actualMostUsedCategories).isNotNull();
+        assertThat(actualMostUsedCategories.size()).isEqualTo(0);
+
+        ArrayList<String> actualLeastInstalledCategories = bundle.getStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES);
+        assertThat(actualLeastInstalledCategories).isNotNull();
+        assertThat(actualLeastInstalledCategories.size()).isEqualTo(0);
+
+        assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY)).isEqualTo("당신, 어느별에서 오신거죠?!");
+        assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION)).contains("분석할만한 충분한 카테고리가 보이지 않아요.");
     }
 
     @Test
@@ -145,8 +167,33 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(leastUsedTimeCategory).isNotNull();
         assertThat(leastUsedTimeCategory.get(0)).isEqualTo("쇼핑");
 
-        assertThat(bundle.getLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE)).isEqualTo(46L);
-        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).isEqualTo(subject.getString(R.string.brain_flower_desc_game));
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY)).isEqualTo("게임이 전체 앱 사용 시간의 46%");
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("재미있는 것에 몰두하는 당신.");
+    }
+
+    @Test
+    public void 설치된카테고리데이터가없을경우_FlowerFragment가_설치된정보가없음을_표시한다() throws Exception {
+        mockNoUsedCategoryDummyData();
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Fragment flowerFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.FLOWER_FRAGMENT_TAG);
+        assertThat(flowerFragment).isNotNull();
+        assertThat(flowerFragment.isAdded()).isTrue();
+
+        Bundle bundle = flowerFragment.getArguments();
+        assertThat(bundle).isNotNull();
+
+        ArrayList<String> mostUsedTimeCategoryList = bundle.getStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES);
+        assertThat(mostUsedTimeCategoryList).isNotNull();
+        assertThat(mostUsedTimeCategoryList.size()).isEqualTo(0);
+
+        ArrayList<String> leastUsedTimeCategory = bundle.getStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES);
+        assertThat(leastUsedTimeCategory).isNotNull();
+        assertThat(leastUsedTimeCategory.size()).isEqualTo(0);
+
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY)).isEqualTo("아이코, 꽃이 시들어 버렸어요.");
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요.");
     }
 
     @Test
@@ -348,5 +395,16 @@ public class AnalysisResultActivityTest extends ActivityTest {
             nativeApp1.setIcon(iconDrawable);
         }
         when(mockNativeAppInfoHelper.getNativeAppInfo("com.package.name1")).thenReturn(nativeApp1);
+    }
+
+    private void mockNoInstalledCategoryDummyData() {
+        ArrayList<String> emptyList = new ArrayList<>();
+        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(emptyList);
+        when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(emptyList);
+    }
+
+    private void mockNoUsedCategoryDummyData() {
+        Map<String, Long> emptyCategoryMap = new LinkedHashMap<>();
+        when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(emptyCategoryMap);
     }
 }

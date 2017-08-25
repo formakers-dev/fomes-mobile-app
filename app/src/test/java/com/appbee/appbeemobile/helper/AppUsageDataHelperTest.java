@@ -252,6 +252,17 @@ public class AppUsageDataHelperTest {
         assertThat(mostInstalledCategories.get(2)).isEqualTo("음악");
     }
 
+    @Test
+    public void 카테고리별앱설치수가없는경우_getMostInstalledCategories호출시_emptyList를_리턴한다() throws Exception {
+        Map<String, Integer> emptyMap = new HashMap<>();
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(emptyMap);
+
+        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(3);
+
+        assertThat(mostInstalledCategories).isNotNull();
+        assertThat(mostInstalledCategories.size()).isEqualTo(0);
+    }
+
     private Map<String, Integer> createCategoryDummyDataByAppCount() {
         Map<String, Integer> dummyCategoryData = new HashMap<>();
         dummyCategoryData.put("게임", 1);

@@ -88,12 +88,14 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageMinutesPerDay);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageMinutesPerDay));
 
-        AppInfo longestUsedAppInfo = appInfoList.get(0);
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, longestUsedAppInfo.getAppName());
-        bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, getLongestUsedAppDescription(longestUsedAppInfo.getCategoryId1()));
-        NativeAppInfo nativeAppInfo = nativeAppInfoHelper.getNativeAppInfo(longestUsedAppInfo.getPackageName());
-        if (nativeAppInfo.getIcon() != null) {
-            bundle.putParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP, ((BitmapDrawable) nativeAppInfo.getIcon()).getBitmap());
+        if (appInfoList != null && !appInfoList.isEmpty()) {
+            AppInfo longestUsedAppInfo = appInfoList.get(0);
+            bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, longestUsedAppInfo.getAppName());
+            bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, getLongestUsedAppDescription(longestUsedAppInfo.getCategoryId1()));
+            NativeAppInfo nativeAppInfo = nativeAppInfoHelper.getNativeAppInfo(longestUsedAppInfo.getPackageName());
+            if (nativeAppInfo.getIcon() != null) {
+                bundle.putParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP, ((BitmapDrawable) nativeAppInfo.getIcon()).getBitmap());
+            }
         }
 
         bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, appUsageDataHelper.getCharacterType());
@@ -112,10 +114,17 @@ public class AnalysisResultActivity extends Activity {
         ArrayList<String> leastInstalledCategory = appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY);
         bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, getCategoryNameList(mostInstalledCategoryList, NUMBER_OF_MOST_INSTALLED_CATEGORY));
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, getCategoryNameList(leastInstalledCategory, NUMBER_OF_LEAST_INSTALLED_CATEGORY));
-        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appCount);
-        bundle.putLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE,
-                Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / appCount * 100));
-        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(Category.fromId(mostInstalledCategoryList.get(0)).description));
+        if (mostInstalledCategoryList != null && mostInstalledCategoryList.size() >= 3) {
+            String categoryId = mostInstalledCategoryList.get(0);
+            String categoryName = Category.fromId(categoryId).categoryName;
+            int rate = (int) Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / appCount * 100);
+            bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, String.format(getString(R.string.category_count_summary_format_string), categoryName, rate));
+            bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(Category.fromId(categoryId).description));
+        } else {
+            bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, getString(R.string.brain_summary_not_enough_data));
+            bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(R.string.brain_desc_not_enough_data));
+        }
+
         brainFragment.setArguments(bundle);
 
         return brainFragment;
@@ -133,9 +142,15 @@ public class AnalysisResultActivity extends Activity {
 
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
-        bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, getCategoryRate(usedTimeCategoryMap, usedTimeCategoryKeyList.get(0)));
-
-        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(usedTimeCategoryKeyList.get(0)));
+        if (usedTimeCategoryKeyList.size() >= 3) {
+            String categoryId = usedTimeCategoryKeyList.get(0);
+            int rate = (int) getCategoryRate(usedTimeCategoryMap, categoryId);
+            bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, String.format(getString(R.string.category_time_summary_format_string), Category.fromId(categoryId).categoryName, rate));
+            bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(categoryId));
+        } else {
+            bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, getString(R.string.flower_summary_not_enough_data));
+            bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getString(R.string.flower_desc_not_enough_data));
+        }
         flowerFragment.setArguments(bundle);
 
         return flowerFragment;
