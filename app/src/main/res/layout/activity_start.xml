@@ -1,42 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_light"
-    android:gravity="center">
+    android:background="@drawable/start_background"
+    android:orientation="vertical"
+    android:paddingEnd="30dp"
+    android:paddingStart="30dp">
+
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:foregroundGravity="center"
-        android:src="@drawable/appbee"/>
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="88dp"
+        android:src="@drawable/start_appbee_icon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2.1dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/horizontal_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:text="@string/appbee"
+            android:textColor="#4a4a4a"
+            android:textSize="20dp"
+            app:font="BMJUA"
+            tools:ignore="MissingPrefix" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2.1dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/horizontal_line" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:textSize="40dp"
+        android:text="@string/start_title"
         android:textColor="@android:color/black"
-        android:text="@string/start_title"/>
+        android:textSize="36dp"
+        app:font="BMJUA"
+        tools:ignore="MissingPrefix" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
-        android:textColor="@android:color/black"
-        android:text="@string/start_description"/>
+        android:text="@string/start_description"
+        android:textColor="@android:color/white"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2.1dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/horizontal_line" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:textColor="@android:color/black"
-        android:text="@string/start_permission_message"/>
+        android:text="@string/start_permission_message"
+        android:textColor="#a24a4a4a"
+        android:textSize="14.1dp" />
+
     <Button
         android:id="@+id/start_analysis_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/please_analysis_me"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="@android:color/black"
-        android:text="@string/start_privacy_information"/>
+        android:layout_width="264.9dp"
+        android:layout_height="68dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/round_button_background"
+        android:text="@string/please_analysis_me"
+        android:textColor="#4a4a4a"
+        android:textSize="20.1dp"
+        app:font="BMJUA"
+        tools:ignore="MissingPrefix" />
 </LinearLayout>

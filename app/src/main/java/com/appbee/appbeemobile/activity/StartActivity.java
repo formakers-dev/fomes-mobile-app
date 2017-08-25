@@ -1,12 +1,14 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.appbee.appbeemobile.R;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -15,6 +17,11 @@ import butterknife.Unbinder;
 public class StartActivity extends AppCompatActivity {
 
     private Unbinder binder;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
