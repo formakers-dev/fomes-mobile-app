@@ -36,7 +36,7 @@ public class OverviewFragmentTest {
     @BindView(R.id.app_count_textview)
     TextView appCountView;
 
-    @BindView(R.id.app_count_msg_textview)
+    @BindView(R.id.app_count_title_textview)
     TextView appCountMsgView;
 
     @BindView(R.id.average_app_usage_time_textview)
@@ -102,8 +102,8 @@ public class OverviewFragmentTest {
     public void fragment시작시_설치된_앱개수와_앱개수관련정보를_표시한다() throws Exception {
         createFragment(true);
 
-        assertTextViewVisibleAndContains(appCountView, "400");
-        assertTextViewVisibleAndEquals(appCountMsgView, "많아요.");
+        assertTextViewVisibleAndEquals(appCountView, "400개");
+        assertTextViewVisibleAndEquals(appCountMsgView, "총 앱개수 많아요.");
         assertTextViewVisibleAndEquals(appCountDescriptionView, "호기심이 많고 항상 효율적인 방법을 모색하는 스타일이에요.");
     }
 
@@ -135,8 +135,8 @@ public class OverviewFragmentTest {
     public void fragment시작시_캐릭터타입을_표시한다() throws Exception {
         createFragment(true);
 
-        assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라 게이머다! 일코벌");
-        assertThat(characterTypeSimpleDescriptionView.getText()).contains("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는");
+        assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침,\\n만일 내게 물어보면 나는…!!!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
     }
 

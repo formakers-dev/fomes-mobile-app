@@ -30,7 +30,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-public class AnalysisResultActivity extends Activity {
+public class AnalysisResultActivity extends BaseActivity {
     public static final String BRAIN_FRAGMENT_TAG = "BRAIN_FRAGMENT_TAG";
     public static final String OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG";
     public static final String SHARE_FRAGMENT_TAG = "SHARE_FRAGMENT_TAG";
