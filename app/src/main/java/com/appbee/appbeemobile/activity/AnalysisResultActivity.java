@@ -65,6 +65,7 @@ public class AnalysisResultActivity extends Activity {
 
         appInfoList = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime();
 
+        // TODO : BrainFragment의 가장많이설치된 카테고리와 FlowerFragment의 가장 많이 사용된 카테고리가 동일한 경우 예외 처리
         getFragmentManager().beginTransaction()
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
                 .add(R.id.brain_fragment, getBrainFragment(), BRAIN_FRAGMENT_TAG)
@@ -113,7 +114,7 @@ public class AnalysisResultActivity extends Activity {
         bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appCount);
         bundle.putLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE,
                 Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostCategoryList.get(0)) / appCount * 100));
-
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(Category.fromId(mostCategoryList.get(0)).getMostUsedCategoryDescription()));
         brainFragment.setArguments(bundle);
 
         return brainFragment;

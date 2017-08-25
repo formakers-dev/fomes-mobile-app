@@ -110,9 +110,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         ArrayList<String> actualMostUsedCategories = bundle.getStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES);
         assertThat(actualMostUsedCategories).isNotNull();
         assertThat(actualMostUsedCategories.size()).isEqualTo(3);
-        assertThat(actualMostUsedCategories.get(0)).isEqualTo("사진");
-        assertThat(actualMostUsedCategories.get(1)).isEqualTo("쇼핑");
-        assertThat(actualMostUsedCategories.get(2)).isEqualTo("음악");
+        assertThat(actualMostUsedCategories.get(0)).isEqualTo("/store/apps/category/PHOTOGRAPHY");
+        assertThat(actualMostUsedCategories.get(1)).isEqualTo("/store/apps/category/SHOPPING");
+        assertThat(actualMostUsedCategories.get(2)).isEqualTo("/store/apps/category/MUSIC_AND_AUDIO");
 
         ArrayList<String> actualLeastInstalledCategories = bundle.getStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES);
         assertThat(actualLeastInstalledCategories).isNotNull();
@@ -121,6 +121,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(4);
         assertThat(bundle.getLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE)).isEqualTo(25);
+        assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION)).isEqualTo(subject.getString(R.string.brain_flower_desc_photography));
     }
 
     @Test
@@ -319,16 +320,16 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         when(appUsageDataHelper.getCharacterType()).thenReturn(CHARACTER_TYPE.QUEEN);
         ArrayList<String> mostUsedCategories = new ArrayList<>();
-        mostUsedCategories.add("사진");
-        mostUsedCategories.add("쇼핑");
-        mostUsedCategories.add("음악");
+        mostUsedCategories.add("/store/apps/category/PHOTOGRAPHY");
+        mostUsedCategories.add("/store/apps/category/SHOPPING");
+        mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
         when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(mostUsedCategories);
 
         ArrayList<String> leastUsedCategories = new ArrayList<>();
         leastUsedCategories.add("고양이");
         when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(leastUsedCategories);
 
-        when(appUsageDataHelper.getAppCountByCategoryId("사진")).thenReturn(1L);
+        when(appUsageDataHelper.getAppCountByCategoryId("/store/apps/category/PHOTOGRAPHY")).thenReturn(1L);
         when(appUsageDataHelper.getAppCountByCategoryId("com.package.name1")).thenReturn(2L);
 
         Map<String, Long> usedTimeCategoryMap = new LinkedHashMap<>();
