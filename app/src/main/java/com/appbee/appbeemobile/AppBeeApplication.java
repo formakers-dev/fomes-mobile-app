@@ -29,7 +29,7 @@ public class AppBeeApplication extends Application {
                 .build();
     }
 
-    private void initFont() {
+    protected void initFont() {
         Typekit.getInstance()
                 .addNormal(Typeface.SANS_SERIF)
                 .addBold(Typeface.DEFAULT_BOLD)

@@ -21,6 +21,11 @@ public class TestAppBeeApplication extends AppBeeApplication {
 
     }
 
+    @Override
+    protected void initFont() {
+
+    }
+
     public TestApplicationComponent getComponent() {
         return testApplicationComponent;
     }
