@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -15,12 +14,11 @@ import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ((AppBeeApplication)getApplication()).getComponent().inject(this);
+        ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
             callAppServiceGetInfoAPI();
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onFail(String resultCode) {
             MainActivity.this.runOnUiThread(() ->
-                Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
+                    Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
         }
     };
 }
