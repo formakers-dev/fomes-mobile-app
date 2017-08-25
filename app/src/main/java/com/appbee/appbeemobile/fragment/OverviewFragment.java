@@ -77,18 +77,16 @@ public class OverviewFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        displayCharacterTypeInformation(getArguments().getInt(EXTRA_CHARACTER_TYPE));
         displayAppListCountInformation(getArguments().getInt(EXTRA_APP_LIST_COUNT), getArguments().getInt(EXTRA_APP_LIST_COUNT_TYPE));
         displayAppUsageTimeInformation(getArguments().getInt(EXTRA_APP_AVG_TIME), getArguments().getInt(EXTRA_APP_USAGE_TIME_TYPE));
         displayLongestUsedAppInformation(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME), getArguments().getString(EXTRA_LONGEST_USED_APP_DESCRIPTION), getArguments().getParcelable(EXTRA_LONGEST_USED_APP_ICON_BITMAP));
-        displayCharacterTypeInformation(getArguments().getInt(EXTRA_CHARACTER_TYPE));
     }
 
-    private void displayLongestUsedAppInformation(String appName, String description, Bitmap iconBitmap) {
-        longestUsedAppNameView.setText(appName);
-        longestUsedAppDescriptionView.setText(description);
-        if (iconBitmap != null) {
-            longestUsedAppIcon.setImageBitmap(iconBitmap);
-        }
+    private void displayCharacterTypeInformation(int characterType) {
+        characterTypeNameView.setText(getResources().getStringArray(R.array.character_names)[characterType]);
+        characterTypeSimpleDescriptionView.setText(getResources().getStringArray(R.array.character_simple_descriptions)[characterType]);
+        characterTypeDetailDescriptionView.setText(getResources().getStringArray(R.array.character_detail_descriptions)[characterType]);
     }
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
@@ -105,10 +103,12 @@ public class OverviewFragment extends Fragment {
         appCountDescriptionView.setText(getResources().getStringArray(R.array.app_list_count_type_descriptions)[appListCountType]);
     }
 
-    private void displayCharacterTypeInformation(int characterType) {
-        characterTypeNameView.setText(getResources().getStringArray(R.array.character_names)[characterType]);
-        characterTypeSimpleDescriptionView.setText(getResources().getStringArray(R.array.character_simple_descriptions)[characterType]);
-        characterTypeDetailDescriptionView.setText(getResources().getStringArray(R.array.character_detail_descriptions)[characterType]);
+    private void displayLongestUsedAppInformation(String appName, String description, Bitmap iconBitmap) {
+        longestUsedAppNameView.setText(getString(R.string.longest_used_app_title, appName));
+        longestUsedAppDescriptionView.setText(description);
+        if (iconBitmap != null) {
+            longestUsedAppIcon.setImageBitmap(iconBitmap);
+        }
     }
 
     @Override

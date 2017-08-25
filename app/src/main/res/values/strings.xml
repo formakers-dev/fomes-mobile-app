@@ -10,7 +10,7 @@
     <string name="app_service_get_info_api_fail">appList API fail</string>
     <string name="now_loading">분석할 꿀을 모으는 중…</string>
 
-    <string name="longest_used_app_title">당신과 뗄레야 뗄수 없는 앱</string>
+    <string name="longest_used_app_title">뗄레야 뗄 수 없는 앱, %s</string>
     <string name="most_installed_categories_title">가장 많이 설치한 카테고리는 </string>
     <string name="least_installed_categories_title">가장 적게 설치한 카테고리는 </string>
     <string name="most_used_social_app_title">당신이 사랑하는 SNS는 </string>
