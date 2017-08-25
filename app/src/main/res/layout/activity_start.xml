@@ -27,7 +27,7 @@
 
         <View
             android:layout_width="0dp"
-            android:layout_height="2.1dp"
+            android:layout_height="1dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/horizontal_line" />
@@ -46,7 +46,7 @@
 
         <View
             android:layout_width="0dp"
-            android:layout_height="2.1dp"
+            android:layout_height="1dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/horizontal_line" />
@@ -75,7 +75,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2.1dp"
+        android:layout_height="1dp"
         android:layout_gravity="center"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
