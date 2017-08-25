@@ -49,18 +49,18 @@ public class BrainFragmentTest {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostInstalledCategoryList = new ArrayList<>();
-        mostInstalledCategoryList.add("categoryId1");
-        mostInstalledCategoryList.add("categoryId2");
-        mostInstalledCategoryList.add("categoryId3");
+        mostInstalledCategoryList.add("금융");
+        mostInstalledCategoryList.add("게임");
+        mostInstalledCategoryList.add("만화");
         bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, mostInstalledCategoryList);
 
         ArrayList<String> leastInstalledCategoryList = new ArrayList<>();
-        leastInstalledCategoryList.add("leastInstalledCategoryId");
+        leastInstalledCategoryList.add("건강");
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, leastInstalledCategoryList);
 
         bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, 400);
         bundle.putLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE, 25L);
-        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "categoryId1의 설명입니다");
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "금융앱 설명입니다");
 
         subject = new BrainFragment();
         subject.setArguments(bundle);
@@ -76,18 +76,18 @@ public class BrainFragmentTest {
 
     @Test
     public void onViewCreated호출시_가장많이설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(mostInstalledCategoriesView.getText()).isEqualTo("[categoryId1, categoryId2, categoryId3]");
+        assertThat(mostInstalledCategoriesView.getText()).isEqualTo("[금융, 게임, 만화]");
     }
 
     @Test
     public void onViewCreated호출시_가장적게설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(leastInstalledCategoriesView.getText()).isEqualTo("[leastInstalledCategoryId]");
+        assertThat(leastInstalledCategoriesView.getText()).isEqualTo("[건강]");
     }
 
     @Test
     public void onViewCreated호출시_가장_많이_설치된_카테고리에_대한_정보를_표시한다() throws Exception {
         assertThat(installedAppCountView.getText()).isEqualTo("400");
-        assertThat(String.valueOf(mostInstalledCategoryRateView.getText())).isEqualTo("categoryId1앱이 25%");
-        assertThat(mostInstalledCategoryDescriptionView.getText()).isEqualTo("categoryId1의 설명입니다");
+        assertThat(String.valueOf(mostInstalledCategoryRateView.getText())).isEqualTo("금융앱이 25%");
+        assertThat(mostInstalledCategoryDescriptionView.getText()).isEqualTo("금융앱 설명입니다");
     }
 }

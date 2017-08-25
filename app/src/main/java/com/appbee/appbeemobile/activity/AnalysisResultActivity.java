@@ -105,16 +105,17 @@ public class AnalysisResultActivity extends Activity {
     private Fragment getBrainFragment() {
         Fragment brainFragment = new BrainFragment();
 
-        ArrayList<String> mostCategoryList = appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY);
+        List<String> mostInstalledCategoryList = appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY);
         int appCount = appInfoList.size();
 
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, mostCategoryList);
-        bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY));
+        ArrayList<String> leastInstalledCategory = appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY);
+        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, getCategoryNameList(mostInstalledCategoryList, NUMBER_OF_MOST_INSTALLED_CATEGORY));
+        bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, getCategoryNameList(leastInstalledCategory, NUMBER_OF_LEAST_INSTALLED_CATEGORY));
         bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, appCount);
         bundle.putLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE,
-                Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostCategoryList.get(0)) / appCount * 100));
-        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(Category.fromId(mostCategoryList.get(0)).getMostUsedCategoryDescription()));
+                Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / appCount * 100));
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(Category.fromId(mostInstalledCategoryList.get(0)).description));
         brainFragment.setArguments(bundle);
 
         return brainFragment;
@@ -127,21 +128,21 @@ public class AnalysisResultActivity extends Activity {
         Map<String, Long> usedTimeCategoryMap = appUsageDataHelper.getSortedCategoriesByUsedTime();
         ArrayList<String> usedTimeCategoryKeyList = Lists.newArrayList(usedTimeCategoryMap.keySet());
 
-        ArrayList<String> mostUsedTimeCategoryList = getKeySubListByCount(usedTimeCategoryKeyList, NUMBER_OF_MOST_USED_TIME_CATEGORY);
-        ArrayList<String> leastUsedTimeCategoryList = getKeySubListByCount(Lists.reverse(usedTimeCategoryKeyList), NUMBER_OF_LEAST_USED_TIME_CATEGORY);
+        ArrayList<String> mostUsedTimeCategoryList = getCategoryNameList(usedTimeCategoryKeyList, NUMBER_OF_MOST_USED_TIME_CATEGORY);
+        ArrayList<String> leastUsedTimeCategoryList = getCategoryNameList(Lists.reverse(usedTimeCategoryKeyList), NUMBER_OF_LEAST_USED_TIME_CATEGORY);
 
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
-        bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, getCategoryRate(usedTimeCategoryMap, mostUsedTimeCategoryList.get(0)));
+        bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, getCategoryRate(usedTimeCategoryMap, usedTimeCategoryKeyList.get(0)));
 
-        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(mostUsedTimeCategoryList.get(0)));
+        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(usedTimeCategoryKeyList.get(0)));
         flowerFragment.setArguments(bundle);
 
         return flowerFragment;
     }
 
     String getMostUsedCategoryDesc(String categoryId) {
-        return getString(Category.fromId(categoryId).getMostUsedCategoryDescription());
+        return getString(Category.fromId(categoryId).description);
     }
 
     private long getCategoryRate(Map<String, Long> usedTimeCategoryMap, String mostUsedTimeCategoryKey) {
@@ -154,8 +155,13 @@ public class AnalysisResultActivity extends Activity {
     }
 
     @NonNull
-    private ArrayList<String> getKeySubListByCount(List<String> usedTimeCategoryList, int count) {
-        return Lists.newArrayList(Lists.newArrayList(usedTimeCategoryList).subList(0, Math.min(count, usedTimeCategoryList.size())));
+    private ArrayList<String> getCategoryNameList(List<String> usedTimeCategoryList, int count) {
+        ArrayList<String> categoryIdList = Lists.newArrayList(Lists.newArrayList(usedTimeCategoryList).subList(0, Math.min(count, usedTimeCategoryList.size())));
+        ArrayList<String> categoryNameList = new ArrayList<>();
+        for (String categoryId : categoryIdList) {
+            categoryNameList.add(Category.fromId(categoryId).categoryName);
+        }
+        return categoryNameList;
     }
 
     int getAppCountType(int appCount) {
@@ -187,6 +193,6 @@ public class AnalysisResultActivity extends Activity {
     }
 
     String getLongestUsedAppDescription(String categoryId) {
-        return getString(Category.fromId(categoryId).getLongestUsedAppDescription());
+        return getString(Category.fromId(categoryId).appDescription);
     }
 }

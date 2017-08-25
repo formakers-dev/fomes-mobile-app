@@ -43,15 +43,15 @@ public class FlowerFragmentTest {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
-        mostUsedTimeCategoryList.add("category1");
-        mostUsedTimeCategoryList.add("category2");
-        mostUsedTimeCategoryList.add("category3");
+        mostUsedTimeCategoryList.add("금융");
+        mostUsedTimeCategoryList.add("소셜");
+        mostUsedTimeCategoryList.add("게임");
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
         ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
-        leastUsedTimeCategoryList.add("category4");
+        leastUsedTimeCategoryList.add("데이트");
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         bundle.putLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE, 20L);
-        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, "category1 입니다");
+        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, "금융 입니다");
         subject = new FlowerFragment();
         subject.setArguments(bundle);
 
@@ -66,21 +66,23 @@ public class FlowerFragmentTest {
 
     @Test
     public void onViewCreate호출시_가장_많은_시간_사용한_카테코리_목록이_나타난다() throws Exception {
-        assertThat(((TextView)linearLayout.getChildAt(0)).getText()).isEqualTo("category1");
-        assertThat(((TextView)linearLayout.getChildAt(1)).getText()).isEqualTo("category2");
-        assertThat(((TextView)linearLayout.getChildAt(2)).getText()).isEqualTo("category3");
+        assertThat(((TextView) linearLayout.getChildAt(0)).getText()).isEqualTo("금융");
+        assertThat(((TextView) linearLayout.getChildAt(1)).getText()).isEqualTo("소셜");
+        assertThat(((TextView) linearLayout.getChildAt(2)).getText()).isEqualTo("게임");
     }
+
     @Test
     public void onViewCreate호출시_가장_적은_시간_사용한_카테코리_목록이_나타난다() throws Exception {
-        assertThat(leastUsedTimeCategoryTextView.getText()).isEqualTo("category4");
+        assertThat(leastUsedTimeCategoryTextView.getText()).isEqualTo("데이트");
     }
+
     @Test
     public void onViewCreate호출시_가장_많은_시간_사용한_카테코리의_비율이_나타난다() throws Exception {
-        assertThat(mostUsedTimeCategoryRateTextView.getText()).isEqualTo("category1앱이 20%");
+        assertThat(mostUsedTimeCategoryRateTextView.getText()).isEqualTo("금융앱이 20%");
     }
 
     @Test
     public void onViewCreate호출시_가장_많은_시간_사용한_카테고리에_대한_설명이_나타난다() throws Exception {
-        assertThat(mostUsedTimeCategoryDescTextView.getText()).isEqualTo("category1 입니다");
+        assertThat(mostUsedTimeCategoryDescTextView.getText()).isEqualTo("금융 입니다");
     }
 }
