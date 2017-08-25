@@ -73,31 +73,6 @@
         <item>가끔은 핸드폰을 덮고 하늘을 바라보는게 어떨까요? </item>
     </string-array>
 
-    <string-array name="longest_used_app_category_descriptions">
-        <item>알뜰살뜰한 당신답네요.</item>
-        <item>역시 당신은 덕…아니, 게이머라구요.</item>
-        <item>매 순간순간이 즐길거리죠!</item>
-        <item>SNS는 인생의 낭비가 아니라구요!</item>
-        <item>남는건 사진뿐이니까! 치즈~</item>
-        <item>당신은 소울넘치는 개성파!</item>
-        <item>전 돈쓰는게 정말 좋아요.</item>
-        <item>인생의 재미는 시간낭비같아요.</item>
-        <item>인생의 재미는 시간낭비같아요.</item>
-        <item>스포츠는 정말 재미있어요!</item>
-        <item>크, 부지런해라~</item>
-        <item>오늘 날은 어때요?</item>
-        <item>여행은 인생의 시야를 넓혀주죠.</item>
-        <item>성실한 당신, 멋져요!</item>
-        <item>속을 알 수 없는 당신..</item>
-        <item>세상엔 재밌는 이야기가 많죠.</item>
-        <item>특이한 사람이군요.</item>
-        <item>인생에서 제일 중요한건 나 자신이죠.</item>
-        <item>저랑 친구할래요..?</item>
-        <item>갑자기 퇴근하고 싶어졌어요..</item>
-        <item>아름다운걸 사랑하시는군요!</item>
-        <item>화이팅…!(손 꼬옥)</item>
-    </string-array>
-
     <string name="share">공유하기</string>
     <string name="please_analysis_me">앱비, 나를 분석해줘!</string>
     <string name="start_title">내 꿀벌의 핸드폰</string>
@@ -111,6 +86,31 @@
     <string name="agree_button_text">동의</string>
     <string name="cancel_button_text">취소</string>
 
+    <!-- Longest Used App Simple Description-->
+    <string name="longest_used_app_desc_finance">알뜰살뜰한 당신답네요.</string>
+    <string name="longest_used_app_desc_game">역시 당신은 덕…아니, 게이머라구요.</string>
+    <string name="longest_used_app_desc_music_video">컨텐츠가 넘쳐나는 요즘 세상! 매 순간순간이 즐길거리죠!</string>
+    <string name="longest_used_app_desc_social">SNS는 인생의 낭비가 아니라구요! 마치.. 삶의 일부랄까요..?</string>
+    <string name="longest_used_app_desc_photography">남는건 사진뿐이니까! 치즈~ 찍습니다~ 하나둘셋!</string>
+    <string name="longest_used_app_desc_personalization">자신에게 가장 어울리는 것을 아는 당신은 소울넘치는 개성파!</string>
+    <string name="longest_used_app_desc_shopping">전 돈쓰는게 정말 좋아요.</string>
+    <string name="longest_used_app_desc_communication">인생의 재미는 시간낭비같아요.</string>
+    <string name="longest_used_app_desc_entertainment">인생의 재미는 시간낭비같아요.</string>
+    <string name="longest_used_app_desc_health_sports">스포츠는 정말 재미있어요!</string>
+    <string name="longest_used_app_desc_education">크, 부지런해라~</string>
+    <string name="longest_used_app_desc_weather">오늘 날은 어때요?</string>
+    <string name="longest_used_app_desc_travel">여행은 인생의 시야를 넓혀주죠.</string>
+    <string name="longest_used_app_desc_business_producitivity">성실한 당신, 멋져요!</string>
+    <string name="longest_used_app_desc_tools">속을 알 수 없는 당신..</string>
+    <string name="longest_used_app_desc_book_news">세상엔 재밌는 이야기가 많죠.</string>
+    <string name="longest_used_app_desc_library">특이한 사람이군요.</string>
+    <string name="longest_used_app_desc_lifestyle">인생에서 제일 중요한건 나 자신이죠.</string>
+    <string name="longest_used_app_desc_comics">저랑 친구할래요..?</string>
+    <string name="longest_used_app_desc_house">집이 최고에요. 퇴근하고 싶어지네요…</string>
+    <string name="longest_used_app_desc_beauty_design">아름다운걸 사랑하시는군요!</string>
+    <string name="longest_used_app_desc_dating">화이팅…!(손 꼬옥)</string>
+    <string name="longest_used_app_desc_kids">저랑 친구해요!</string>
+    <!-- Brain And Flower Description-->
     <string name="brain_flower_desc_finance">당장의 재미보다 꼭 해야하는 일에 집중하는 당신! 성실하게 자신의 할일에 집중하는 것을 즐기시네요. 늘 꼼꼼한 당신은 세상의 빛과 소금! 하지만 가끔은 여유를 갖고 게으름을 피는 것도 좋을 것 같아요!</string>
     <string name="brain_flower_desc_game">재미있는 것에 몰두하는 당신. 재미가 없으면 의욕도 사라져요! 하지만 한번 꽂힌 것은 엄청난 집중력으로 처리해 버린다는 사실~ 겉으로는 잘 티가 안나도, 누구보다 자유로운 영혼의 소유자!</string>
     <string name="brain_flower_desc_music_video">항상 음악과 함께하는 당신. 풍부한 감성의 소유자에요. 자기만의 취향,  즐길거리, 쉬는 방법이 명확하시군요. 정해진 규칙을 따르기보단 나만의 방식을 추구하는 모습이 멋져요!</string>
@@ -134,6 +134,4 @@
     <string name="brain_flower_desc_beauty_design">항상 아름다움을 추구하는 당신. 표현 방법은 다를지언정 손재주가 있는 사람이랍니다. 뿐만 아니라 부지런함과 세심함을 갖추고 있는 사람이군요! </string>
     <string name="brain_flower_desc_dating">데이트 앱을 많이 다운받으셨네요. 당신이 많이 외로운 걸까봐 걱정되요. 연애라는게 마음대로 되지는 않지만, 누군가를 향해 열려있는 마음은 이미 준비되어 있으니 곧 좋은 일이 있을거같아요!</string>
     <string name="brain_flower_desc_kids">아이를 키우는게 쉬운 일이 아니지요. 늘 바쁘지만 아이에게는 다정한 부모가 되려고 노력하는 당신! 당신의 가족들은 그 노력을 분명히 알고 있을 거에요. 오늘도 수고했어요.</string>
-    <string name="brain_flower_desc_exception_less_cateogry">아이코, 꽃이 시들어 버렸어요. 가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요. 앱 사용 패턴이 조금 더 쌓이면, 예쁜 꽃이 다시 피어날꺼에요. 그때 앱비랑 다시 만나요!</string>
-    <string name="brain_flower_desc_exception_same_category">가장 많은 앱 다운로드 갯수를 가진 카테고리와 가장 많은 앱 사용시간을 가진 카테고리가 같아요. 두가지가 은근 같게 나오기 어려운데.. 당신은 다른 사람보다 일관성이 있으신 분인 것 같아요!</string>
 </resources>
