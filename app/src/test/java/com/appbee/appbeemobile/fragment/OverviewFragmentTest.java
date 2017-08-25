@@ -37,13 +37,13 @@ public class OverviewFragmentTest {
     TextView appCountView;
 
     @BindView(R.id.app_count_title_textview)
-    TextView appCountMsgView;
+    TextView appCountTitleView;
 
     @BindView(R.id.average_app_usage_time_textview)
     TextView averageAppUsageTimeView;
 
-    @BindView(R.id.average_app_usage_time_msg_textview)
-    TextView averageAppUsageTimeMsgView;
+    @BindView(R.id.average_app_usage_time_title_textview)
+    TextView averageAppUsageTimeTitleView;
 
     @BindView(R.id.average_app_usage_time_description_textview)
     TextView averageAppUsageTimeDescriptionView;
@@ -103,7 +103,7 @@ public class OverviewFragmentTest {
         createFragment(true);
 
         assertTextViewVisibleAndEquals(appCountView, "400개");
-        assertTextViewVisibleAndEquals(appCountMsgView, "총 앱개수 많아요.");
+        assertTextViewVisibleAndEquals(appCountTitleView, "총 앱개수 많아요.");
         assertTextViewVisibleAndEquals(appCountDescriptionView, "호기심이 많고 항상 효율적인 방법을 모색하는 스타일이에요.");
     }
 
@@ -111,8 +111,8 @@ public class OverviewFragmentTest {
     public void fragment시작시_평균_앱사용_시간과_평가를_표시한다() throws Exception {
         createFragment(true);
 
-        assertTextViewVisibleAndContains(averageAppUsageTimeView, "8시간 15분");
-        assertTextViewVisibleAndEquals(averageAppUsageTimeMsgView, "엄청 많아요.");
+        assertTextViewVisibleAndEquals(averageAppUsageTimeView, "8시간\n15분");
+        assertTextViewVisibleAndEquals(averageAppUsageTimeTitleView, "하루 앱사용시간 엄청 많은편!");
         assertTextViewVisibleAndEquals(averageAppUsageTimeDescriptionView, "가끔은 핸드폰을 덮고 하늘을 바라보는게 어떨까요?");
     }
 

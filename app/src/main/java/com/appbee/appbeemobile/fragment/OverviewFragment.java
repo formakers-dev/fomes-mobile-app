@@ -36,8 +36,8 @@ public class OverviewFragment extends Fragment {
     @BindView(R.id.average_app_usage_time_textview)
     TextView averageAppUsageTimeView;
 
-    @BindView(R.id.average_app_usage_time_msg_textview)
-    TextView averageAppUsageTimeMsgView;
+    @BindView(R.id.average_app_usage_time_title_textview)
+    TextView averageAppUsageTimeTitleView;
 
     @BindView(R.id.average_app_usage_time_description_textview)
     TextView averageAppUsageTimeDescriptionView;
@@ -93,7 +93,8 @@ public class OverviewFragment extends Fragment {
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
         averageAppUsageTimeView.setText(String.format(getString(R.string.overview_average_time), appUsageAverageTime / 60, appUsageAverageTime % 60));
-        averageAppUsageTimeMsgView.setText(getResources().getStringArray(R.array.app_usage_time_type_names)[appUsageTimeType]);
+        final String appUsageTimeTypeName = getResources().getStringArray(R.array.app_usage_time_type_names)[appUsageTimeType];
+        averageAppUsageTimeTitleView.setText(getString(R.string.overview_average_time_title, appUsageTimeTypeName));
         averageAppUsageTimeDescriptionView.setText(getResources().getStringArray(R.array.app_usage_time_type_descriptions)[appUsageTimeType]);
     }
 

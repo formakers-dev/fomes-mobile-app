@@ -116,39 +116,47 @@
         </RelativeLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="53dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/overview_average_time_title"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/bee_house" />
 
             <TextView
                 android:id="@+id/average_app_usage_time_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_blue_light"
-                android:textSize="15dp" />
+                android:layout_centerVertical="true"
+                android:textAlignment="center"
+                android:textColor="@color/bold_title"
+                android:textSize="20dp"
+                app:font="BMJUA"
+                tools:ignore="MissingPrefix" />
 
             <TextView
-                android:id="@+id/average_app_usage_time_msg_textview"
+                android:id="@+id/average_app_usage_time_title_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_blue_light"
-                android:textSize="15dp" />
-        </LinearLayout>
+                android:layout_marginStart="88dp"
+                android:textColor="@color/bold_title"
+                android:textSize="18dp"
+                app:font="BMJUA"
+                tools:ignore="MissingPrefix" />
 
-        <TextView
-            android:id="@+id/average_app_usage_time_description_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_blue_light"
-            android:textSize="15dp" />
+            <TextView
+                android:id="@+id/average_app_usage_time_description_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="88dp"
+                android:textColor="@color/description"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
 
 
         <LinearLayout

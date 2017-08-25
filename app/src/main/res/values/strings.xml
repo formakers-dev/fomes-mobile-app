@@ -5,8 +5,8 @@
     <string name="app_count_proper_msg">적당도 하네 진짜…</string>
     <string name="overview_app_count_title">총 앱개수 %s</string>
     <string name="overview_app_count_with_unit">%d개</string>
-    <string name="overview_average_time_title">당신은 앱 사용 시간이 </string>
-    <string name="overview_average_time">하루 평균 %1$d시간 %2$d분, </string>
+    <string name="overview_average_time_title">하루 앱사용시간 %s</string>
+    <string name="overview_average_time">%1$d시간\n%2$d분</string>
     <string name="app_service_get_info_api_fail">appList API fail</string>
     <string name="now_loading">분석할 꿀을 모으는 중…</string>
 
@@ -59,11 +59,11 @@
     </string-array>
 
     <string-array name="app_usage_time_type_names">
-        <item>아주 적어요.</item>
-        <item>적어요.</item>
-        <item>보통이에요.</item>
-        <item>많아요.</item>
-        <item>엄청 많아요.</item>
+        <item>아주 적은편!</item>
+        <item>적은편!</item>
+        <item>보통인편!</item>
+        <item>많은편!</item>
+        <item>엄청 많은편!</item>
     </string-array>
 
     <string-array name="app_usage_time_type_descriptions">
