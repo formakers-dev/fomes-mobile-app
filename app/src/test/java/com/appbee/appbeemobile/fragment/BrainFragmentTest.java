@@ -41,6 +41,9 @@ public class BrainFragmentTest {
     @BindView(R.id.most_installed_category_rate)
     TextView mostInstalledCategoryRate;
 
+    @BindView(R.id.most_installed_category_description)
+    TextView mostInstalledCategoryDescriptioinView;
+
     @Before
     public void setUp() throws Exception {
         Bundle bundle = new Bundle();
@@ -57,6 +60,7 @@ public class BrainFragmentTest {
 
         bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, 400);
         bundle.putLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE, 25L);
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "categoryId1의 설명입니다");
 
         subject = new BrainFragment();
         subject.setArguments(bundle);
@@ -81,12 +85,9 @@ public class BrainFragmentTest {
     }
 
     @Test
-    public void onViewCreated호출시_설치된_앱의_갯수를_표시한다() throws Exception {
+    public void onViewCreated호출시_가장_많이_설치된_카테고리에_대한_정보를_표시한다() throws Exception {
         assertThat(installedAppCount.getText()).isEqualTo("400");
-    }
-
-    @Test
-    public void onViewCreated호출시_가장많이설치한카테고리의_비율이_나타난다() throws Exception {
         assertThat(String.valueOf(mostInstalledCategoryRate.getText())).isEqualTo("categoryId1앱이 25%");
+        assertThat(mostInstalledCategoryDescriptioinView.getText()).isEqualTo("categoryId1의 설명입니다");
     }
 }
