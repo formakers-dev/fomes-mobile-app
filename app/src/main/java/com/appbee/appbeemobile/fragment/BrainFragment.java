@@ -37,7 +37,7 @@ public class BrainFragment extends Fragment {
     TextView mostInstalledCategoryRateView;
 
     @BindView(R.id.most_installed_category_description)
-    TextView mostInstalledCategoryDescriptioinView;
+    TextView mostInstalledCategoryDescriptionView;
 
     private Unbinder binder;
 
@@ -72,7 +72,7 @@ public class BrainFragment extends Fragment {
                     mostInstalledCategoryList.get(0), installedCategoryRate));
         }
 
-        mostInstalledCategoryDescriptioinView.setText(getArguments().getString(EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION));
+        mostInstalledCategoryDescriptionView.setText(getArguments().getString(EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION));
     }
 
     @Override

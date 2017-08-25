@@ -30,19 +30,19 @@ public class BrainFragmentTest {
     private Unbinder binder;
 
     @BindView(R.id.most_installed_categories)
-    TextView mostInstalledCategories;
+    TextView mostInstalledCategoriesView;
 
     @BindView(R.id.least_installed_categories)
-    TextView leastInstalledCategories;
+    TextView leastInstalledCategoriesView;
 
     @BindView(R.id.installed_app_count)
-    TextView installedAppCount;
+    TextView installedAppCountView;
 
     @BindView(R.id.most_installed_category_rate)
-    TextView mostInstalledCategoryRate;
+    TextView mostInstalledCategoryRateView;
 
     @BindView(R.id.most_installed_category_description)
-    TextView mostInstalledCategoryDescriptioinView;
+    TextView mostInstalledCategoryDescriptionView;
 
     @Before
     public void setUp() throws Exception {
@@ -76,18 +76,18 @@ public class BrainFragmentTest {
 
     @Test
     public void onViewCreated호출시_가장많이설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(mostInstalledCategories.getText()).isEqualTo("[categoryId1, categoryId2, categoryId3]");
+        assertThat(mostInstalledCategoriesView.getText()).isEqualTo("[categoryId1, categoryId2, categoryId3]");
     }
 
     @Test
     public void onViewCreated호출시_가장적게설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(leastInstalledCategories.getText()).isEqualTo("[leastInstalledCategoryId]");
+        assertThat(leastInstalledCategoriesView.getText()).isEqualTo("[leastInstalledCategoryId]");
     }
 
     @Test
     public void onViewCreated호출시_가장_많이_설치된_카테고리에_대한_정보를_표시한다() throws Exception {
-        assertThat(installedAppCount.getText()).isEqualTo("400");
-        assertThat(String.valueOf(mostInstalledCategoryRate.getText())).isEqualTo("categoryId1앱이 25%");
-        assertThat(mostInstalledCategoryDescriptioinView.getText()).isEqualTo("categoryId1의 설명입니다");
+        assertThat(installedAppCountView.getText()).isEqualTo("400");
+        assertThat(String.valueOf(mostInstalledCategoryRateView.getText())).isEqualTo("categoryId1앱이 25%");
+        assertThat(mostInstalledCategoryDescriptionView.getText()).isEqualTo("categoryId1의 설명입니다");
     }
 }
