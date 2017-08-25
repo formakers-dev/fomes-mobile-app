@@ -15,7 +15,8 @@
     <string name="least_installed_categories_title">가장 적게 설치한 카테고리는 </string>
     <string name="most_used_social_app_title">당신이 사랑하는 SNS는 </string>
     <string name="total">총</string>
-    <string name="category_rate">%1$s앱이 %2$d%%</string>
+    <string name="category_count_summary_format_string">%1$s 앱이 전체 앱 개수의 %2$d%%</string>
+    <string name="category_time_summary_format_string">%1$s이 전체 앱 사용 시간의 %2$d%%</string>
 
     <string-array name="character_names">
         <item>덕후가 아니라 게이머다! 일코벌</item>
@@ -134,4 +135,8 @@
     <string name="brain_flower_desc_beauty_design">항상 아름다움을 추구하는 당신. 표현 방법은 다를지언정 손재주가 있는 사람이랍니다. 뿐만 아니라 부지런함과 세심함을 갖추고 있는 사람이군요! </string>
     <string name="brain_flower_desc_dating">데이트 앱을 많이 다운받으셨네요. 당신이 많이 외로운 걸까봐 걱정되요. 연애라는게 마음대로 되지는 않지만, 누군가를 향해 열려있는 마음은 이미 준비되어 있으니 곧 좋은 일이 있을거같아요!</string>
     <string name="brain_flower_desc_kids">아이를 키우는게 쉬운 일이 아니지요. 늘 바쁘지만 아이에게는 다정한 부모가 되려고 노력하는 당신! 당신의 가족들은 그 노력을 분명히 알고 있을 거에요. 오늘도 수고했어요.</string>
+    <string name="brain_desc_not_enough_data">분석할만한 충분한 카테고리가 보이지 않아요. 핸드폰을 사용한지 얼마 안되었거나 분석이 가능할 만큼 앱을 사용하시지 않은 것 같아요. 아쉽지만 다음 번에 꼭 다시 분석해드릴게요!</string>
+    <string name="flower_desc_not_enough_data">가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요. 앱 사용 패턴이 조금 더 쌓이면, 예쁜 꽃이 다시 피어날꺼에요. 그때 앱비랑 다시 만나요!</string>
+    <string name="brain_summary_not_enough_data">당신, 어느별에서 오신거죠?!</string>
+    <string name="flower_summary_not_enough_data">아이코, 꽃이 시들어 버렸어요.</string>
 </resources>

@@ -20,9 +20,8 @@ public class BrainFragment extends Fragment {
 
     public static final String EXTRA_MOST_INSTALLED_CATEGORIES = "EXTRA_MOST_INSTALLED_CATEGORIES";
     public static final String EXTRA_LEAST_INSTALLED_CATEGORIES = "EXTRA_LEAST_INSTALLED_CATEGORIES";
-    public static final String EXTRA_INSTALLED_APP_COUNT = "EXTRA_INSTALLED_APP_COUNT";
-    public static final String EXTRA_MOST_INSTALLED_CATEGORY_RATE = "EXTRA_MOST_INSTALLED_CATEGORY_RATE";
     public static final String EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION = "EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION";
+    public static final String EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY = "EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY";
 
     @BindView(R.id.most_installed_categories)
     TextView mostInstalledCategoriesView;
@@ -30,11 +29,8 @@ public class BrainFragment extends Fragment {
     @BindView(R.id.least_installed_categories)
     TextView leastInstalledCategoriesView;
 
-    @BindView(R.id.installed_app_count)
-    TextView installedAppCountView;
-
-    @BindView(R.id.most_installed_category_rate)
-    TextView mostInstalledCategoryRateView;
+    @BindView(R.id.most_installed_category_summary)
+    TextView mostInstalledCategorySummaryView;
 
     @BindView(R.id.most_installed_category_description)
     TextView mostInstalledCategoryDescriptionView;
@@ -62,16 +58,7 @@ public class BrainFragment extends Fragment {
         ArrayList<String> leastInstalledCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
         leastInstalledCategoriesView.setText(String.valueOf(leastInstalledCategoryList));
 
-        int installedAppCount = getArguments().getInt(EXTRA_INSTALLED_APP_COUNT);
-        installedAppCountView.setText(String.valueOf(installedAppCount));
-
-        long installedCategoryRate = getArguments().getLong(EXTRA_MOST_INSTALLED_CATEGORY_RATE);
-
-        if (mostInstalledCategoryList != null) {
-            mostInstalledCategoryRateView.setText(String.format(getString(R.string.category_rate),
-                    mostInstalledCategoryList.get(0), installedCategoryRate));
-        }
-
+        mostInstalledCategorySummaryView.setText(getArguments().getString(EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY));
         mostInstalledCategoryDescriptionView.setText(getArguments().getString(EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION));
     }
 

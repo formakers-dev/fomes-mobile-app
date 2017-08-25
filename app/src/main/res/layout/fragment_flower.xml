@@ -24,11 +24,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/most_used_time_category_rate"
+        android:id="@+id/most_used_time_category_summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/most_used_time_category_desc"
+        android:id="@+id/most_used_time_category_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

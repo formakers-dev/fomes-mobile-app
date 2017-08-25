@@ -20,8 +20,8 @@ import butterknife.Unbinder;
 public class FlowerFragment extends Fragment{
     public static final String EXTRA_MOST_USED_TIME_CATEGORIES = "EXTRA_MOST_USED_TIME_CATEGORIES";
     public static final String EXTRA_LEAST_USED_TIME_CATEGORIES = "EXTRA_LEAST_USED_TIME_CATEGORIES";
-    public static final String EXTRA_MOST_USED_TIME_CATEGORY_RATE = "EXTRA_MOST_USED_TIME_CATEGORY_RATE";
     public static final String EXTRA_MOST_USED_TIME_CATEGORY_DESC = "EXTRA_MOST_USED_TIME_CATEGORY_DESC";
+    public static final String EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY = "EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY";
 
     @BindView(R.id.most_used_time_categories)
     LinearLayout categoryLinearLayout;
@@ -29,11 +29,11 @@ public class FlowerFragment extends Fragment{
     @BindView(R.id.least_used_time_category)
     TextView leastUsedTimeCategoryTextView;
 
-    @BindView(R.id.most_used_time_category_rate)
-    TextView mostUsedTimeCategoryRate;
+    @BindView(R.id.most_used_time_category_summary)
+    TextView mostUsedTimeCategorySummaryView;
 
-    @BindView(R.id.most_used_time_category_desc)
-    TextView mostUsedTimeCategoryDesc;
+    @BindView(R.id.most_used_time_category_description)
+    TextView mostUsedTimeCategoryDescriptionView;
 
     private Unbinder binder;
 
@@ -51,24 +51,19 @@ public class FlowerFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         List<String> mostUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_MOST_USED_TIME_CATEGORIES);
-        if (mostUsedTimeCategoryList != null) {
-            for (String mostUsedTimeCategory : mostUsedTimeCategoryList) {
-                TextView textView = new TextView(getActivity());
-                textView.setText(mostUsedTimeCategory);
-                categoryLinearLayout.addView(textView);
-            }
-            mostUsedTimeCategoryRate.setText(String.format(getString(R.string.category_rate), mostUsedTimeCategoryList.get(0), getArguments().getLong(EXTRA_MOST_USED_TIME_CATEGORY_RATE)));
+        for (String mostUsedTimeCategory : mostUsedTimeCategoryList) {
+            TextView textView = new TextView(getActivity());
+            textView.setText(mostUsedTimeCategory);
+            categoryLinearLayout.addView(textView);
         }
         List<String> leastUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_USED_TIME_CATEGORIES);
-        if (leastUsedTimeCategoryList != null) {
-            for (String leastUsedTimeCategory : leastUsedTimeCategoryList) {
-                TextView textView = new TextView(getActivity());
-                textView.setText(leastUsedTimeCategory);
-                leastUsedTimeCategoryTextView.setText(leastUsedTimeCategory);
-            }
+        for (String leastUsedTimeCategory : leastUsedTimeCategoryList) {
+            TextView textView = new TextView(getActivity());
+            textView.setText(leastUsedTimeCategory);
+            leastUsedTimeCategoryTextView.setText(leastUsedTimeCategory);
         }
-
-        mostUsedTimeCategoryDesc.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_DESC));
+        mostUsedTimeCategorySummaryView.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY));
+        mostUsedTimeCategoryDescriptionView.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_DESC));
     }
 
     @Override

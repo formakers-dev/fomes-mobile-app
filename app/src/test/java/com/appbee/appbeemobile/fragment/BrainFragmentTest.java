@@ -35,11 +35,8 @@ public class BrainFragmentTest {
     @BindView(R.id.least_installed_categories)
     TextView leastInstalledCategoriesView;
 
-    @BindView(R.id.installed_app_count)
-    TextView installedAppCountView;
-
-    @BindView(R.id.most_installed_category_rate)
-    TextView mostInstalledCategoryRateView;
+    @BindView(R.id.most_installed_category_summary)
+    TextView mostInstalledCategorySummaryView;
 
     @BindView(R.id.most_installed_category_description)
     TextView mostInstalledCategoryDescriptionView;
@@ -58,8 +55,7 @@ public class BrainFragmentTest {
         leastInstalledCategoryList.add("건강");
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, leastInstalledCategoryList);
 
-        bundle.putInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT, 400);
-        bundle.putLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE, 25L);
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, "금융 앱이 전체 앱 개수의 25%");
         bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "금융앱 설명입니다");
 
         subject = new BrainFragment();
@@ -86,8 +82,7 @@ public class BrainFragmentTest {
 
     @Test
     public void onViewCreated호출시_가장_많이_설치된_카테고리에_대한_정보를_표시한다() throws Exception {
-        assertThat(installedAppCountView.getText()).isEqualTo("400");
-        assertThat(String.valueOf(mostInstalledCategoryRateView.getText())).isEqualTo("금융앱이 25%");
+        assertThat(String.valueOf(mostInstalledCategorySummaryView.getText())).isEqualTo("금융 앱이 전체 앱 개수의 25%");
         assertThat(mostInstalledCategoryDescriptionView.getText()).isEqualTo("금융앱 설명입니다");
     }
 }
