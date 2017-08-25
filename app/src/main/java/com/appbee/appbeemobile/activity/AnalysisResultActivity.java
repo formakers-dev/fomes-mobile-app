@@ -143,10 +143,17 @@ public class AnalysisResultActivity extends Activity {
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         if (usedTimeCategoryKeyList.size() >= 3) {
-            String categoryId = usedTimeCategoryKeyList.get(0);
-            int rate = (int) getCategoryRate(usedTimeCategoryMap, categoryId);
-            bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, String.format(getString(R.string.category_time_summary_format_string), Category.fromId(categoryId).categoryName, rate));
-            bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(categoryId));
+            String mostUsedCategoryId = usedTimeCategoryKeyList.get(0);
+            int rate = (int) getCategoryRate(usedTimeCategoryMap, mostUsedCategoryId);
+            bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, String.format(getString(R.string.category_time_summary_format_string), Category.fromId(mostUsedCategoryId).categoryName, rate));
+
+            List<String> mostInstalledCategoryList = appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY);
+
+            if (isMostInstalledAndMostUsedCategorySame(mostUsedCategoryId, mostInstalledCategoryList)) {
+                bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getString(R.string.flower_desc_same_category));
+            } else {
+                bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(mostUsedCategoryId));
+            }
         } else {
             bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, getString(R.string.flower_summary_not_enough_data));
             bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getString(R.string.flower_desc_not_enough_data));
@@ -154,6 +161,10 @@ public class AnalysisResultActivity extends Activity {
         flowerFragment.setArguments(bundle);
 
         return flowerFragment;
+    }
+
+    private boolean isMostInstalledAndMostUsedCategorySame(String mostUsedCategoryId, List<String> mostInstalledCategoryList) {
+        return mostInstalledCategoryList != null && !mostInstalledCategoryList.isEmpty() && mostUsedCategoryId.equals(mostInstalledCategoryList.get(0));
     }
 
     String getMostUsedCategoryDesc(String categoryId) {
