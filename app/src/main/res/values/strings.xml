@@ -139,4 +139,5 @@
     <string name="flower_desc_not_enough_data">가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요. 앱 사용 패턴이 조금 더 쌓이면, 예쁜 꽃이 다시 피어날꺼에요. 그때 앱비랑 다시 만나요!</string>
     <string name="brain_summary_not_enough_data">당신, 어느별에서 오신거죠?!</string>
     <string name="flower_summary_not_enough_data">아이코, 꽃이 시들어 버렸어요.</string>
+    <string name="flower_desc_same_category">가장 많은 앱 다운로드 갯수를 가진 카테고리와 가장 많은 앱 사용시간을 가진 카테고리가 같아요. 두 가지가 은근 같게 나오기 어려운데.. 당신은 다른 사람보다 일관성이 있으신 분인 것 같아요!</string>
 </resources>

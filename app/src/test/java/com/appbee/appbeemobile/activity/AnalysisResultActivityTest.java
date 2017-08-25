@@ -172,6 +172,22 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     @Test
+    public void 가장많이사용한카테고리와가장많이설치된카테고리가동일한경우_FlowerFragment에_관련정보를전달한다() throws Exception {
+        mockSameCategoryDataOfTimeUsageAndInstalls();
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Fragment flowerFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.FLOWER_FRAGMENT_TAG);
+        assertThat(flowerFragment).isNotNull();
+        assertThat(flowerFragment.isAdded()).isTrue();
+
+        Bundle bundle = flowerFragment.getArguments();
+        assertThat(bundle).isNotNull();
+
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("당신은 다른 사람보다 일관성이 있으신 분인 것 같아요!");
+    }
+
+    @Test
     public void 설치된카테고리데이터가없을경우_FlowerFragment가_설치된정보가없음을_표시한다() throws Exception {
         mockNoUsedCategoryDummyData();
 
@@ -406,5 +422,16 @@ public class AnalysisResultActivityTest extends ActivityTest {
     private void mockNoUsedCategoryDummyData() {
         Map<String, Long> emptyCategoryMap = new LinkedHashMap<>();
         when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(emptyCategoryMap);
+
+        ArrayList<String> emptyList = new ArrayList<>();
+        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(emptyList);
+    }
+
+    private void mockSameCategoryDataOfTimeUsageAndInstalls() {
+        ArrayList<String> mostUsedCategories = new ArrayList<>();
+        mostUsedCategories.add("/store/apps/category/GAME");
+        mostUsedCategories.add("/store/apps/category/SHOPPING");
+        mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
+        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(mostUsedCategories);
     }
 }
