@@ -30,8 +30,8 @@ public class OverviewFragment extends Fragment {
     @BindView(R.id.app_count_textview)
     TextView appCountView;
 
-    @BindView(R.id.app_count_msg_textview)
-    TextView appCountMsgView;
+    @BindView(R.id.app_count_title_textview)
+    TextView appCountTitleView;
 
     @BindView(R.id.average_app_usage_time_textview)
     TextView averageAppUsageTimeView;
@@ -92,14 +92,15 @@ public class OverviewFragment extends Fragment {
     }
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
-        averageAppUsageTimeView.setText(String.format(getString(R.string.overview_average_time), appUsageAverageTime/60, appUsageAverageTime%60));
+        averageAppUsageTimeView.setText(String.format(getString(R.string.overview_average_time), appUsageAverageTime / 60, appUsageAverageTime % 60));
         averageAppUsageTimeMsgView.setText(getResources().getStringArray(R.array.app_usage_time_type_names)[appUsageTimeType]);
         averageAppUsageTimeDescriptionView.setText(getResources().getStringArray(R.array.app_usage_time_type_descriptions)[appUsageTimeType]);
     }
 
     private void displayAppListCountInformation(int appListCount, int appListCountType) {
-        appCountView.setText(String.valueOf(appListCount));
-        appCountMsgView.setText(getResources().getStringArray(R.array.app_list_count_type_names)[appListCountType]);
+        appCountView.setText(getString(R.string.overview_app_count_with_unit, appListCount));
+        final String appCountTitle = getResources().getStringArray(R.array.app_list_count_type_names)[appListCountType];
+        appCountTitleView.setText(getString(R.string.overview_app_count_title, appCountTitle));
         appCountDescriptionView.setText(getResources().getStringArray(R.array.app_list_count_type_descriptions)[appListCountType]);
     }
 

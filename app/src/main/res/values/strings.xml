@@ -3,12 +3,12 @@
     <string name="app_count_many_msg">많기도 하네 진짜…</string>
     <string name="app_count_few_msg">적기도 하네 진짜…</string>
     <string name="app_count_proper_msg">적당도 하네 진짜…</string>
-    <string name="overview_app_count_title">당신은 앱 개수가 </string>
-    <string name="overview_app_count_unit">개로</string>
+    <string name="overview_app_count_title">총 앱개수 %s</string>
+    <string name="overview_app_count_with_unit">%d개</string>
     <string name="overview_average_time_title">당신은 앱 사용 시간이 </string>
     <string name="overview_average_time">하루 평균 %1$d시간 %2$d분, </string>
     <string name="app_service_get_info_api_fail">appList API fail</string>
-    <string name="now_loading">Now Loading…</string>
+    <string name="now_loading">분석할 꿀을 모으는 중…</string>
 
     <string name="longest_used_app_title">당신과 뗄레야 뗄수 없는 앱</string>
     <string name="most_installed_categories_title">가장 많이 설치한 카테고리는 </string>
@@ -19,19 +19,19 @@
     <string name="category_time_summary_format_string">%1$s이 전체 앱 사용 시간의 %2$d%%</string>
 
     <string-array name="character_names">
-        <item>덕후가 아니라 게이머다! 일코벌</item>
-        <item>하태하태! 내스타일대로 여왕벌</item>
+        <item>덕후가 아니라능! 게이머벌</item>
+        <item>하태하태! 내 스타일 여왕벌</item>
         <item>감성폭발! 치명치명 맹독벌</item>
-        <item>나만의 소울충만! 눈누누 흥벌흥벌</item>
+        <item>나만의 소울충만! 룰루 땡벌</item>
         <item>꿀빨러 왔나? 불시착 외계인!</item>
     </string-array>
 
     <string-array name="character_simple_descriptions">
-        <item>안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!</item>
-        <item>한번뿐인 인생, 모든 순간을 소중하게!</item>
-        <item>저기요 비가 가장 많이오는곳은 어디에요? 내마음이요</item>
-        <item>나의 밤은 당신의 낮보다 아름답다</item>
-        <item>꿀따리 샤바라~ 바니바니 꿍꿍꿀</item>
+        <item>안녕하신가! 힘세고 강한 아침,\n만일 내게 물어보면 나는…!!!</item>
+        <item>한번뿐인 인생,\n모든 순간을 소중하게!</item>
+        <item>저기요 비가 가장 많이오는곳은 어디에요?\n내마음이요</item>
+        <item>나의 밤은\n당신의 낮보다 아름답다</item>
+        <item>꿀따리 샤바라~\n바니바니 꿍꿍꿀</item>
     </string-array>
 
     <string-array name="character_detail_descriptions">
