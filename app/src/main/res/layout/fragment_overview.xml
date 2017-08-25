@@ -10,7 +10,6 @@
         android:layout_height="243dp"
         android:src="@drawable/overview_fragment_background" />
 
-
     <LinearLayout
         android:id="@+id/character_type_layout"
         android:layout_width="match_parent"
@@ -119,7 +118,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="53dp">
+            android:layout_marginTop="50dp">
 
             <ImageView
                 android:layout_width="70dp"
@@ -157,50 +156,45 @@
                 android:textSize="15dp" />
         </RelativeLayout>
 
-
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="50dp">
 
             <ImageView
                 android:id="@+id/longest_used_app_icon"
                 android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/longest_used_app_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginStart="88dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:textColor="@color/bold_title"
+                android:textSize="18dp"
+                app:font="BMJUA"
+                tools:ignore="MissingPrefix" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+            <TextView
+                android:id="@+id/longest_used_app_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="88dp"
+                android:textColor="@color/description"
+                android:textSize="15dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/longest_used_app_title"
-                        android:textColor="@android:color/black"
-                        android:textSize="15dp" />
+        </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/longest_used_app_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/holo_blue_light"
-                        android:textSize="15dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/longest_used_app_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/holo_blue_light"
-                    android:textSize="15dp" />
-            </LinearLayout>
-        </LinearLayout>
+        <View
+            android:layout_width="321dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@color/horizontal_line" />
     </LinearLayout>
 </RelativeLayout>

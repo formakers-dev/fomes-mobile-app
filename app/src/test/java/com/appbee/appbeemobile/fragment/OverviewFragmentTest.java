@@ -120,7 +120,7 @@ public class OverviewFragmentTest {
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
         createFragment(true);
 
-        assertThat(longestUsedAppNameView.getText()).isEqualTo("testApp1");
+        assertThat(longestUsedAppNameView.getText()).isEqualTo("뗄레야 뗄 수 없는 앱, testApp1");
         assertThat(longestUsedAppDescriptionView.getText()).isEqualTo("testApp1 Description");
         assertThat(((BitmapDrawable) longestUsedAppIcon.getDrawable()).getBitmap()).isEqualTo(mockBitmap);
     }
@@ -143,10 +143,5 @@ public class OverviewFragmentTest {
     private void assertTextViewVisibleAndEquals(TextView textView, String text) {
         assertThat(textView.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(textView.getText()).isEqualTo(text);
-    }
-
-    private void assertTextViewVisibleAndContains(TextView textView, String text) {
-        assertThat(textView.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(textView.getText()).contains(text);
     }
 }
