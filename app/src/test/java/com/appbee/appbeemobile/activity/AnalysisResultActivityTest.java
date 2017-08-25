@@ -110,14 +110,14 @@ public class AnalysisResultActivityTest extends ActivityTest {
         ArrayList<String> actualMostUsedCategories = bundle.getStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES);
         assertThat(actualMostUsedCategories).isNotNull();
         assertThat(actualMostUsedCategories.size()).isEqualTo(3);
-        assertThat(actualMostUsedCategories.get(0)).isEqualTo("/store/apps/category/PHOTOGRAPHY");
-        assertThat(actualMostUsedCategories.get(1)).isEqualTo("/store/apps/category/SHOPPING");
-        assertThat(actualMostUsedCategories.get(2)).isEqualTo("/store/apps/category/MUSIC_AND_AUDIO");
+        assertThat(actualMostUsedCategories.get(0)).isEqualTo("사진");
+        assertThat(actualMostUsedCategories.get(1)).isEqualTo("쇼핑");
+        assertThat(actualMostUsedCategories.get(2)).isEqualTo("음악/비디오");
 
         ArrayList<String> actualLeastInstalledCategories = bundle.getStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES);
         assertThat(actualLeastInstalledCategories).isNotNull();
         assertThat(actualLeastInstalledCategories.size()).isEqualTo(1);
-        assertThat(actualLeastInstalledCategories.get(0)).isEqualTo("고양이");
+        assertThat(actualLeastInstalledCategories.get(0)).isEqualTo("데이트");
 
         assertThat(bundle.getInt(BrainFragment.EXTRA_INSTALLED_APP_COUNT)).isEqualTo(4);
         assertThat(bundle.getLong(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_RATE)).isEqualTo(25);
@@ -138,12 +138,12 @@ public class AnalysisResultActivityTest extends ActivityTest {
         ArrayList<String> mostUsedTimeCategoryList = bundle.getStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES);
         assertThat(mostUsedTimeCategoryList).isNotNull();
         assertThat(mostUsedTimeCategoryList.size()).isEqualTo(3);
-        assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("/store/apps/category/GAME");
-        assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("/store/apps/category/FINANCE");
-        assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("/store/apps/category/SOCIAL");
+        assertThat(mostUsedTimeCategoryList.get(0)).isEqualTo("게임");
+        assertThat(mostUsedTimeCategoryList.get(1)).isEqualTo("금융");
+        assertThat(mostUsedTimeCategoryList.get(2)).isEqualTo("소셜");
         ArrayList<String> leastUsedTimeCategory = bundle.getStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES);
         assertThat(leastUsedTimeCategory).isNotNull();
-        assertThat(leastUsedTimeCategory.get(0)).isEqualTo("/store/apps/category/SHOPPING");
+        assertThat(leastUsedTimeCategory.get(0)).isEqualTo("쇼핑");
 
         assertThat(bundle.getLong(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_RATE)).isEqualTo(46L);
         assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).isEqualTo(subject.getString(R.string.brain_flower_desc_game));
@@ -326,7 +326,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(mostUsedCategories);
 
         ArrayList<String> leastUsedCategories = new ArrayList<>();
-        leastUsedCategories.add("고양이");
+        leastUsedCategories.add("/store/apps/category/DATING");
         when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(leastUsedCategories);
 
         when(appUsageDataHelper.getAppCountByCategoryId("/store/apps/category/PHOTOGRAPHY")).thenReturn(1L);
