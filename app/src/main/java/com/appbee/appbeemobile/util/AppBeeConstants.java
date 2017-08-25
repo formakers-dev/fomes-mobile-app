@@ -1,5 +1,12 @@
 package com.appbee.appbeemobile.util;
 
+import android.support.annotation.StringRes;
+
+import com.appbee.appbeemobile.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public interface AppBeeConstants {
     interface API_RESPONSE_CODE {
         String UNAUTHORIZED = "401";
@@ -55,32 +62,87 @@ public interface AppBeeConstants {
         int DATING = 21;
     }
 
-    interface CATEGORY_DETAIL_GROUP {
-        int FINANCE = 0;
-        int GAME = 1;
-        int MUSIC = 2;
-        int VIDEO = 3;
-        int SOCIAL = 4;
-        int PHOTOGRAPHY = 5;
-        int PERSONALIZATION = 6;
-        int SHOPPING = 7;
-        int COMMUNICATION = 8;
-        int ENTERTAINMENT = 9;
-        int HEALTH_SPORTS = 10;
-        int EDUCATION = 11;
-        int WEATHER = 12;
-        int TRAVEL = 13;
-        int BUSINESS_PRODUCTIVITY = 14;
-        int TOOLS = 15;
-        int BOOK_NEWS = 16;
-        int LIBRARY = 17;
-        int LIFESTYLE = 18;
-        int COMICS = 19;
-        int HOUSE = 20;
-        int BEAUTY_DESIGN = 21;
-        int DATING = 22;
-        int KIDES = 23;
-        int EXCEPTION_LESS_CATEGORY = 24;
-        int EXCEPTION_SAME_CATEGOR = 25;
+    enum Category {
+        FINANCE("/store/apps/category/FINANCE", R.string.brain_flower_desc_finance),
+        GAME("/store/apps/category/GAME", R.string.brain_flower_desc_game),
+        GAME_EDUCATIONAL("/store/apps/category/GAME_EDUCATIONAL", R.string.brain_flower_desc_game),
+        GAME_WORD("/store/apps/category/GAME_WORD", R.string.brain_flower_desc_game),
+        GAME_ROLE_PLAYING("/store/apps/category/GAME_ROLE_PLAYING", R.string.brain_flower_desc_game),
+        GAME_BOARD("/store/apps/category/GAME_BOARD", R.string.brain_flower_desc_game),
+        GAME_SPORTS("/store/apps/category/GAME_SPORTS", R.string.brain_flower_desc_game),
+        GAME_SIMULATION("/store/apps/category/GAME_SIMULATION", R.string.brain_flower_desc_game),
+        GAME_ARCADE("/store/apps/category/GAME_ARCADE", R.string.brain_flower_desc_game),
+        GAME_ACTION("/store/apps/category/GAME_ACTION", R.string.brain_flower_desc_game),
+        GAME_ADVENTURE("/store/apps/category/GAME_ADVENTURE", R.string.brain_flower_desc_game),
+        GAME_MUSIC("/store/apps/category/GAME_MUSIC", R.string.brain_flower_desc_game),
+        GAME_RACING("/store/apps/category/GAME_RACING", R.string.brain_flower_desc_game),
+        GAME_STRATEGY("/store/apps/category/GAME_STRATEGY", R.string.brain_flower_desc_game),
+        GAME_CARD("/store/apps/category/GAME_CARD", R.string.brain_flower_desc_game),
+        GAME_CASINO("/store/apps/category/GAME_CASINO", R.string.brain_flower_desc_game),
+        GAME_CASUAL("/store/apps/category/GAME_CASUAL", R.string.brain_flower_desc_game),
+        GAME_TRIVIA("/store/apps/category/GAME_TRIVIA", R.string.brain_flower_desc_game),
+        GAME_PUZZLE("/store/apps/category/GAME_PUZZLE", R.string.brain_flower_desc_game),
+
+        MUSIC_AND_AUDIO("/store/apps/category/MUSIC_AND_AUDIO", R.string.brain_flower_desc_music_video),
+        VIDEO_PLAYERS("/store/apps/category/VIDEO_PLAYERS", R.string.brain_flower_desc_music_video),
+        SOCIAL("/store/apps/category/SOCIAL", R.string.brain_flower_desc_social),
+        PHOTOGRAPHY("/store/apps/category/PHOTOGRAPHY", R.string.brain_flower_desc_photography),
+        PERSONALIZATION("/store/apps/category/PERSONALIZATION", R.string.brain_flower_desc_personalization),
+        SHOPPING("/store/apps/category/SHOPPING", R.string.brain_flower_desc_shopping),
+        COMMUNICATION("/store/apps/category/COMMUNICATION", R.string.brain_flower_desc_communication),
+        ENTERTAINMENT("/store/apps/category/ENTERTAINMENT", R.string.brain_flower_desc_entertainment),
+        HEALTH_AND_FITNESS("/store/apps/category/HEALTH_AND_FITNESS", R.string.brain_flower_desc_health_sports),
+        SPORTS("/store/apps/category/SPORTS", R.string.brain_flower_desc_health_sports),
+        EDUCATION("/store/apps/category/EDUCATION", R.string.brain_flower_desc_education),
+        WEATHER("/store/apps/category/WEATHER", R.string.brain_flower_desc_weather),
+        TRAVEL_AND_LOCAL("/store/apps/category/TRAVEL_AND_LOCAL", R.string.brain_flower_desc_travel),
+        BUSINESS("/store/apps/category/BUSINESS", R.string.brain_flower_desc_business_producitivity),
+        PRODUCTIVITY("/store/apps/category/PRODUCTIVITY", R.string.brain_flower_desc_business_producitivity),
+        TOOLS("/store/apps/category/TOOLS", R.string.brain_flower_desc_tools),
+        BOOKS_AND_REFERENCE("/store/apps/category/BOOKS_AND_REFERENCE", R.string.brain_flower_desc_book_news),
+        NEWS_AND_MAGAZINES("/store/apps/category/NEWS_AND_MAGAZINES", R.string.brain_flower_desc_book_news),
+        LIBRARIES_AND_DEMO("/store/apps/category/LIBRARIES_AND_DEMO", R.string.brain_flower_desc_library),
+        LIFESTYLE("/store/apps/category/LIFESTYLE", R.string.brain_flower_desc_lifestyle),
+        COMICS("/store/apps/category/COMICS", R.string.brain_flower_desc_comics),
+        HOUSE("/store/apps/category/HOUSE", R.string.brain_flower_desc_house),
+        BEAUTY_DESIGN("/store/apps/category/BEAUTY_DESIGN", R.string.brain_flower_desc_beauty_design),
+        DATING("/store/apps/category/DATING", R.string.brain_flower_desc_dating),
+        FAMILY("/store/apps/category/FAMILY", R.string.brain_flower_desc_kids),
+        FAMILY_EDUCATION("/store/apps/category/FAMILY_EDUCATION", R.string.brain_flower_desc_kids),
+        FAMILY_BRAINGAMES("/store/apps/category/FAMILY_BRAINGAMES", R.string.brain_flower_desc_kids),
+        FAMILY_ACTION("/store/apps/category/FAMILY_ACTION", R.string.brain_flower_desc_kids),
+        FAMILY_PRETEND("/store/apps/category/FAMILY_PRETEND", R.string.brain_flower_desc_kids),
+        FAMILY_MUSICVIDEO("/store/apps/category/FAMILY_MUSICVIDEO", R.string.brain_flower_desc_kids),
+        FAMILY_CREATE("/store/apps/category/FAMILY_CREATE", R.string.brain_flower_desc_kids);
+        private static final Map<String, Category> map = new HashMap<>();
+
+        static {
+            for (Category category : values()) {
+                map.put(category.categoryId, category);
+            }
+        }
+
+        public static Category fromId(String categoryId) {
+            return map.get(categoryId);
+        }
+
+        String categoryId;
+        @StringRes
+        int detailString;
+
+        Category(String categoryId, @StringRes int detailString) {
+            this.categoryId = categoryId;
+            this.detailString = detailString;
+        }
+
+        public
+        @StringRes
+        int getDetailString() {
+            return detailString;
+        }
+
+        public String toString() {
+            return this.categoryId;
+        }
     }
 }
