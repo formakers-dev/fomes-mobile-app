@@ -286,8 +286,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/EDUCATION")).isEqualTo(subject.getString(R.string.longest_used_app_desc_education));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/WEATHER")).isEqualTo(subject.getString(R.string.longest_used_app_desc_weather));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/TRAVEL_AND_LOCAL")).isEqualTo(subject.getString(R.string.longest_used_app_desc_travel));
-        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BUSINESS")).isEqualTo(subject.getString(R.string.longest_used_app_desc_business_producitivity));
-        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/PRODUCTIVITY")).isEqualTo(subject.getString(R.string.longest_used_app_desc_business_producitivity));
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BUSINESS")).isEqualTo(subject.getString(R.string.longest_used_app_desc_business_productivity));
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/PRODUCTIVITY")).isEqualTo(subject.getString(R.string.longest_used_app_desc_business_productivity));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/TOOLS")).isEqualTo(subject.getString(R.string.longest_used_app_desc_tools));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BOOKS_AND_REFERENCE")).isEqualTo(subject.getString(R.string.longest_used_app_desc_book_news));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/NEWS_AND_MAGAZINES")).isEqualTo(subject.getString(R.string.longest_used_app_desc_book_news));
@@ -305,8 +305,13 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY_PRETEND")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY_MUSICVIDEO")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY_CREATE")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
-
-        // TODO : 추가 정의한 카테고리 스트링 테스트
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/MEDICAL")).isEqualTo("조금은 특수한 상황에 처해있는 당신. 이 순간도 즐기면 좋겠네요.");
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FOOD_AND_DRINK")).isEqualTo("다 먹고 살자고 하는 일이죠! 말하다보니 배가 고프네요..");
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/EVENTS")).isEqualTo("늘 재미있는 것들을 찾으시나요? 당신은 좀 특이한분 이시네요!");
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/AUTO_AND_VEHICLES")).isEqualTo("자동차는 정말 편리하고 안락하죠. 항상 안전운전 하세요 :)");
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/MAPS_AND_NAVIGATION")).isEqualTo("차막히는것은 딱 질색! 효율성을 추구하는 사람이에요.");
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/PARENTING")).isEqualTo("부모님은 세상에서 가장 위대한 존재지요. 당신에게 찾아온 축복을 축하드려요.");
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/ANDROID_WEAR")).isEqualTo("얼리어답터이시네요! 앱비가 찾는 트랜드 리더!!");
     }
 
     @Test
@@ -364,8 +369,13 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_PRETEND")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_MUSICVIDEO")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_CREATE")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
-
-        // TODO : 추가 정의한 카테고리 스트링 테스트
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MEDICAL")).isEqualTo("의료 앱을 많이 쓰는 사람들은 크게 두 분류로 나뉘어진대요. 의료업계에서 일하거나, 몸에 큰 변화가 있는 사람! 당신이 어떤 상황이든 건강 조심하라구요~");
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FOOD_AND_DRINK")).isEqualTo("당신은 앱비랑 잘 맞는것 같아요! 인생의 가장 큰 즐거움은 역시 먹고 마시는거 아니겠어요. 이런 즐거움도 없이 어떻게 세상을 살아가나요?");
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/EVENTS")).isEqualTo("당신은 좀 특이하네요. 하나의 분야를 깊게 파는 스타일인데, 알면 알수록 궁금해지는 사람이에요.");
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/AUTO_AND_VEHICLES")).isEqualTo("자동차에 관심이 많은 당신! 항상 알뜰하고 세심하게 차를 돌봐줘서 당신이 운전하는 차는 행복할 거에요. 은근 섬세한 성향이 있는 당신이니까 오늘도 안전운전 하리라고 믿어요!");
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MAPS_AND_NAVIGATION")).isEqualTo("무슨 일이든 효율적으로 처리하는 당신. 느린 길, 돌아가는 길은 참기 어려운 짜증을 불러일으키죠! 하지만 가끔은 지나치는 풍경과 하늘을 바라보는 것도 좋을것 같아요.");
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PARENTING")).isEqualTo("아이를 키우는게 쉬운 일이 아니지요. 늘 바쁘지만 아이에게는 다정한 부모가 되려고 노력하는 당신! 당신의 가족들은 그 노력을 분명히 알고 있을 거에요. 오늘도 수고했어요.");
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/ANDROID_WEAR")).isEqualTo("스마트 시계를 몸에서 떼놓지 않는 얼리어답터! 트랜드에 밝고 신기술에 관심이 많고 호기심이 넘치는 스타일이에요. 자기에게 맞는 일을 찾으면 누구보다 잘 파고드는 성향이랍니다.");
     }
 
     private void mockDummyData() {
