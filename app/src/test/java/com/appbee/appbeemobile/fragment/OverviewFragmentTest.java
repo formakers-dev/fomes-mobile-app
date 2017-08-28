@@ -136,7 +136,7 @@ public class OverviewFragmentTest {
         createFragment(true);
 
         assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
-        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침,\\n만일 내게 물어보면 나는…!!!");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
     }
 
