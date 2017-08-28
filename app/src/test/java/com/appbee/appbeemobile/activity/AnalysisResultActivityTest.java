@@ -401,11 +401,11 @@ public class AnalysisResultActivityTest extends ActivityTest {
         mostUsedCategories.add("/store/apps/category/PHOTOGRAPHY");
         mostUsedCategories.add("/store/apps/category/SHOPPING");
         mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
-        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(mostUsedCategories);
+        when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(mostUsedCategories);
 
         ArrayList<String> leastUsedCategories = new ArrayList<>();
         leastUsedCategories.add("/store/apps/category/DATING");
-        when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(leastUsedCategories);
+        when(appUsageDataHelper.getLeastInstalledCategoryGroups(anyInt())).thenReturn(leastUsedCategories);
 
         when(appUsageDataHelper.getAppCountByCategoryId("/store/apps/category/PHOTOGRAPHY")).thenReturn(1L);
         when(appUsageDataHelper.getAppCountByCategoryId("com.package.name1")).thenReturn(2L);
@@ -430,8 +430,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     private void mockNoInstalledCategoryDummyData() {
         ArrayList<String> emptyList = new ArrayList<>();
-        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(emptyList);
-        when(appUsageDataHelper.getLeastInstalledCategories(anyInt())).thenReturn(emptyList);
+        when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(emptyList);
+        when(appUsageDataHelper.getLeastInstalledCategoryGroups(anyInt())).thenReturn(emptyList);
     }
 
     private void mockNoUsedCategoryDummyData() {
@@ -439,7 +439,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(emptyCategoryMap);
 
         ArrayList<String> emptyList = new ArrayList<>();
-        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(emptyList);
+        when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(emptyList);
     }
 
     private void mockSameCategoryDataOfTimeUsageAndInstalls() {
@@ -447,6 +447,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
         mostUsedCategories.add("/store/apps/category/GAME");
         mostUsedCategories.add("/store/apps/category/SHOPPING");
         mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
-        when(appUsageDataHelper.getMostInstalledCategories(anyInt())).thenReturn(mostUsedCategories);
+        when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(mostUsedCategories);
     }
 }
