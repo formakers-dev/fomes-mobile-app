@@ -164,9 +164,10 @@
 
             <ImageView
                 android:id="@+id/longest_used_app_icon"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp" />
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/notfound_app_icon"/>
 
             <TextView
                 android:id="@+id/longest_used_app_name"
@@ -175,6 +176,7 @@
                 android:layout_marginStart="88dp"
                 android:lines="1"
                 android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/bold_title"
                 android:textSize="18dp"
                 app:font="BMJUA"
