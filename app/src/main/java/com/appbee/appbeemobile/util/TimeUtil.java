@@ -10,6 +10,6 @@ public class TimeUtil {
         if (minStatedTime == 0L) {
             mobileTotalUsedDay = 365 * 2; // 2년치 기간(일)
         }
-        return mobileTotalUsedDay;
+        return Math.max(mobileTotalUsedDay,1);
     }
 }
