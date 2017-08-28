@@ -1,7 +1,6 @@
 package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -29,10 +28,14 @@ public class FlowerFragmentTest {
     private FlowerFragment subject;
     private Unbinder binder;
 
-    @BindView(R.id.most_used_time_categories)
-    LinearLayout linearLayout;
-    @BindView(R.id.least_used_time_category)
-    TextView leastUsedTimeCategoryTextView;
+    @BindView(R.id.most_used_category1)
+    TextView mostUsedCategory1View;
+    @BindView(R.id.most_used_category2)
+    TextView mostUsedCategory2View;
+    @BindView(R.id.most_used_category3)
+    TextView mostUsedCategory3View;
+    @BindView(R.id.least_used_category)
+    TextView leastUsedCategoryView;
     @BindView(R.id.most_used_time_category_summary)
     TextView mostUsedTimeCategorySummaryView;
     @BindView(R.id.most_used_time_category_description)
@@ -66,14 +69,15 @@ public class FlowerFragmentTest {
 
     @Test
     public void onViewCreate호출시_가장_많은_시간_사용한_카테코리_목록이_나타난다() throws Exception {
-        assertThat(((TextView) linearLayout.getChildAt(0)).getText()).isEqualTo("금융");
-        assertThat(((TextView) linearLayout.getChildAt(1)).getText()).isEqualTo("소셜");
-        assertThat(((TextView) linearLayout.getChildAt(2)).getText()).isEqualTo("게임");
+        assertThat(mostUsedCategory1View.getText()).isEqualTo("금융");
+        assertThat(mostUsedCategory2View.getText()).isEqualTo("소셜");
+        assertThat(mostUsedCategory3View.getText()).isEqualTo("게임");
     }
 
     @Test
     public void onViewCreate호출시_가장_적은_시간_사용한_카테코리_목록이_나타난다() throws Exception {
-        assertThat(leastUsedTimeCategoryTextView.getText()).isEqualTo("데이트");
+        assertThat(leastUsedCategoryView.getText()).contains("데이트 : 저도 있어요");
+        assertThat(leastUsedCategoryView.getText()).contains("있지만 사용시간이 낮은 앱");
     }
 
     @Test
