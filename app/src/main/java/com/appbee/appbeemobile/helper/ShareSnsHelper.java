@@ -27,7 +27,7 @@ public class ShareSnsHelper {
 
             String url = "https://firebasestorage.googleapis.com/v0/b/appbeemobile.appspot.com/o/appbee-logo.png?alt=media&token=70a97b40-4bf9-4fe5-ba8a-5ab96507831b";
             kakaoTalkLinkMessageBuilder.addImage(url, 160, 160);
-            kakaoTalkLinkMessageBuilder.addWebButton("앱비 다운로드", "http://appbeepkg.s3-website.ap-northeast-2.amazonaws.com/test/app-release.apk");
+            kakaoTalkLinkMessageBuilder.addWebButton("앱비 다운로드", "http://appbeepkg.s3-website.ap-northeast-no_brain_background.amazonaws.com/test/app-release.apk");
             kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder, context);
         }catch(Exception e) {
             e.printStackTrace();

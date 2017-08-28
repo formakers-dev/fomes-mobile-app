@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -24,7 +25,6 @@
         android:textColor="@color/bold_title"
         android:textSize="30dp"
         app:font="BMJUA"
-        tools:ignore="MissingPrefix"
         tools:text="그 꿀벌의 뇌구조" />
 
     <RelativeLayout
@@ -40,6 +40,7 @@
             android:background="@drawable/brain_background">
 
             <RelativeLayout
+                android:id="@+id/rank1_layout"
                 android:layout_width="69dp"
                 android:layout_height="70dp"
                 android:layout_marginStart="58dp"
@@ -75,6 +76,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rank2_layout"
                 android:layout_width="69dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="132dp"
@@ -110,6 +112,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rank3_layout"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="105dp"
@@ -145,6 +148,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/last_rank_layout"
             android:layout_width="68dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="-5dp"
