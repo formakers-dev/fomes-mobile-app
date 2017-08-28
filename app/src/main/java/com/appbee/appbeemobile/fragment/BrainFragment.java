@@ -23,17 +23,23 @@ public class BrainFragment extends Fragment {
     public static final String EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION = "EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION";
     public static final String EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY = "EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY";
 
-    @BindView(R.id.most_installed_categories)
-    TextView mostInstalledCategoriesView;
-
-    @BindView(R.id.least_installed_categories)
-    TextView leastInstalledCategoriesView;
-
     @BindView(R.id.most_installed_category_summary)
     TextView mostInstalledCategorySummaryView;
 
     @BindView(R.id.most_installed_category_description)
     TextView mostInstalledCategoryDescriptionView;
+
+    @BindView(R.id.most_installed_category1)
+    TextView mostInstalledCategory1View;
+
+    @BindView(R.id.most_installed_category2)
+    TextView mostInstalledCategory2View;
+
+    @BindView(R.id.most_installed_category3)
+    TextView mostInstalledCategory3View;
+
+    @BindView(R.id.least_installed_category)
+    TextView leastInstalledCategoryView;
 
     private Unbinder binder;
 
@@ -53,10 +59,16 @@ public class BrainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ArrayList<String> mostInstalledCategoryList = getArguments().getStringArrayList(EXTRA_MOST_INSTALLED_CATEGORIES);
-        mostInstalledCategoriesView.setText(String.valueOf(mostInstalledCategoryList));
+        if (mostInstalledCategoryList.size() > 0) {
+            mostInstalledCategory1View.setText(mostInstalledCategoryList.get(0));
+            mostInstalledCategory2View.setText(mostInstalledCategoryList.get(1));
+            mostInstalledCategory3View.setText(mostInstalledCategoryList.get(2));
+        }
 
         ArrayList<String> leastInstalledCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
-        leastInstalledCategoriesView.setText(String.valueOf(leastInstalledCategoryList));
+        if (leastInstalledCategoryList.size() > 0) {
+            leastInstalledCategoryView.setText(leastInstalledCategoryList.get(0));
+        }
 
         mostInstalledCategorySummaryView.setText(getArguments().getString(EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY));
         mostInstalledCategoryDescriptionView.setText(getArguments().getString(EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION));
