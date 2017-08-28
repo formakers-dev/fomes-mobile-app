@@ -29,6 +29,7 @@ import javax.inject.Singleton;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
+import static com.appbee.appbeemobile.util.AppBeeConstants.*;
 
 @Singleton
 public class AppUsageDataHelper {
@@ -175,11 +176,54 @@ public class AppUsageDataHelper {
     }
 
     public Map<String, Long> getSortedCategoriesByUsedTime() {
-        return sortByValue(appRepositoryHelper.getUsedTimeMapByCategory(), DESC);
+        return combineUsedTimeByCategoryGroup(appRepositoryHelper.getUsedTimeMapByCategory());
     }
 
+    Map<String,Long> combineUsedTimeByCategoryGroup(Map<String, Long> usedTimeMapByCategory) {
+        Map<String, Long> map = new HashMap<>();
+
+        for (String key : usedTimeMapByCategory.keySet()) {
+            switch (key) {
+                case "/store/apps/category/GAME":
+                case "/store/apps/category/GAME_EDUCATIONAL":
+                case "/store/apps/category/GAME_WORD":
+                case "/store/apps/category/GAME_ROLE_PLAYING":
+                case "/store/apps/category/GAME_BOARD":
+                case "/store/apps/category/GAME_SPORTS":
+                case "/store/apps/category/GAME_SIMULATION":
+                case "/store/apps/category/GAME_ARCADE":
+                case "/store/apps/category/GAME_ACTION":
+                case "/store/apps/category/GAME_ADVENTURE":
+                case "/store/apps/category/GAME_MUSIC":
+                case "/store/apps/category/GAME_RACING":
+                case "/store/apps/category/GAME_STRATEGY":
+                case "/store/apps/category/GAME_CARD":
+                case "/store/apps/category/GAME_CASINO":
+                case "/store/apps/category/GAME_CASUAL":
+                case "/store/apps/category/GAME_TRIVIA":
+                case "/store/apps/category/GAME_PUZZLE":
+                    map.put(Category.GAME.categoryId, Optional.fromNullable(map.get(Category.GAME.categoryId)).or(0L) + usedTimeMapByCategory.get(key));
+                    break;
+                case "/store/apps/category/FAMILY":
+                case "/store/apps/category/FAMILY_EDUCATION":
+                case "/store/apps/category/FAMILY_BRAINGAMES":
+                case "/store/apps/category/FAMILY_ACTION":
+                case "/store/apps/category/FAMILY_PRETEND":
+                case "/store/apps/category/FAMILY_MUSICVIDEO":
+                case "/store/apps/category/FAMILY_CREATE":
+                    map.put(Category.FAMILY.categoryId, Optional.fromNullable(map.get(Category.FAMILY.categoryId)).or(0L) + usedTimeMapByCategory.get(key));
+                    break;
+                default:
+                    map.put(key, Optional.fromNullable(map.get(key)).or(0L) + usedTimeMapByCategory.get(key));
+            }
+        }
+
+        return sortByValue(map, DESC);
+    }
+
+
     public int getCharacterType() {
-        final Map<String, Integer> aggregatedMap = aggregateCategoryMapForBest5(appRepositoryHelper.getAppCountMapByCategory());
+        final Map<String, Integer> aggregatedMap = combineAppCountByBest5CategoryGroup(appRepositoryHelper.getAppCountMapByCategory());
 
         if (aggregatedMap == null || aggregatedMap.isEmpty()) {
             return CHARACTER_TYPE.ETC;
@@ -200,7 +244,7 @@ public class AppUsageDataHelper {
         return CHARACTER_TYPE.ETC;
     }
 
-    Map<String, Integer> aggregateCategoryMapForBest5(Map<String, Integer> categoryMap) {
+    Map<String, Integer> combineAppCountByBest5CategoryGroup(Map<String, Integer> categoryMap) {
         Map<String, Integer> map = new HashMap<>();
 
         for (String key : categoryMap.keySet()) {
