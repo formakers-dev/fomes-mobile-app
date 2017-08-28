@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
@@ -17,17 +16,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FlowerFragment extends Fragment{
+public class FlowerFragment extends Fragment {
     public static final String EXTRA_MOST_USED_TIME_CATEGORIES = "EXTRA_MOST_USED_TIME_CATEGORIES";
     public static final String EXTRA_LEAST_USED_TIME_CATEGORIES = "EXTRA_LEAST_USED_TIME_CATEGORIES";
     public static final String EXTRA_MOST_USED_TIME_CATEGORY_DESC = "EXTRA_MOST_USED_TIME_CATEGORY_DESC";
     public static final String EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY = "EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY";
 
-    @BindView(R.id.most_used_time_categories)
-    LinearLayout categoryLinearLayout;
+    @BindView(R.id.most_used_category1)
+    TextView mostUsedCategory1View;
 
-    @BindView(R.id.least_used_time_category)
-    TextView leastUsedTimeCategoryTextView;
+    @BindView(R.id.most_used_category2)
+    TextView mostUsedCategory2View;
+
+    @BindView(R.id.most_used_category3)
+    TextView mostUsedCategory3View;
+
+    @BindView(R.id.least_used_category)
+    TextView leastUsedCategoryView;
 
     @BindView(R.id.most_used_time_category_summary)
     TextView mostUsedTimeCategorySummaryView;
@@ -51,19 +56,27 @@ public class FlowerFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         List<String> mostUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_MOST_USED_TIME_CATEGORIES);
-        for (String mostUsedTimeCategory : mostUsedTimeCategoryList) {
-            TextView textView = new TextView(getActivity());
-            textView.setText(mostUsedTimeCategory);
-            categoryLinearLayout.addView(textView);
+        if (isAvailableMostUsedCategoryList(mostUsedTimeCategoryList)) {
+            mostUsedCategory1View.setText(mostUsedTimeCategoryList.get(0));
+            mostUsedCategory2View.setText(mostUsedTimeCategoryList.get(1));
+            mostUsedCategory3View.setText(mostUsedTimeCategoryList.get(2));
         }
+
         List<String> leastUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_USED_TIME_CATEGORIES);
-        for (String leastUsedTimeCategory : leastUsedTimeCategoryList) {
-            TextView textView = new TextView(getActivity());
-            textView.setText(leastUsedTimeCategory);
-            leastUsedTimeCategoryTextView.setText(leastUsedTimeCategory);
+        if (isAvailableLeastUsedCategoryList(leastUsedTimeCategoryList)) {
+            leastUsedCategoryView.setText(String.format(getString(R.string.least_used_category_format), leastUsedTimeCategoryList.get(0)));
         }
+
         mostUsedTimeCategorySummaryView.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY));
         mostUsedTimeCategoryDescriptionView.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_DESC));
+    }
+
+    boolean isAvailableLeastUsedCategoryList(List<String> leastUsedTimeCategoryList) {
+        return leastUsedTimeCategoryList != null && !leastUsedTimeCategoryList.isEmpty() && leastUsedTimeCategoryList.size() >= 1;
+    }
+
+    boolean isAvailableMostUsedCategoryList(List<String> mostUsedTimeCategoryList) {
+        return mostUsedTimeCategoryList != null && !mostUsedTimeCategoryList.isEmpty() && mostUsedTimeCategoryList.size() == 3;
     }
 
     @Override
