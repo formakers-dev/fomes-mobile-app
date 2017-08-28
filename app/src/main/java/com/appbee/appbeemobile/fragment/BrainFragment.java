@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
@@ -41,6 +42,21 @@ public class BrainFragment extends Fragment {
     @BindView(R.id.least_installed_category)
     TextView leastInstalledCategoryView;
 
+    @BindView(R.id.brain_image_layout)
+    RelativeLayout brainImageLayout;
+
+    @BindView(R.id.rank1_layout)
+    RelativeLayout rank1Layout;
+
+    @BindView(R.id.rank2_layout)
+    RelativeLayout rank2Layout;
+
+    @BindView(R.id.rank3_layout)
+    RelativeLayout rank3Layout;
+
+    @BindView(R.id.last_rank_layout)
+    RelativeLayout lastRankLayout;
+
     private Unbinder binder;
 
     @Nullable
@@ -55,14 +71,15 @@ public class BrainFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        // TODO : 카테고리 정보가 없는 경우 예외 케이스 처리
         super.onViewCreated(view, savedInstanceState);
 
         ArrayList<String> mostInstalledCategoryList = getArguments().getStringArrayList(EXTRA_MOST_INSTALLED_CATEGORIES);
-        if (mostInstalledCategoryList.size() > 0) {
+        if (mostInstalledCategoryList.size() >= 3) {
             mostInstalledCategory1View.setText(mostInstalledCategoryList.get(0));
             mostInstalledCategory2View.setText(mostInstalledCategoryList.get(1));
             mostInstalledCategory3View.setText(mostInstalledCategoryList.get(2));
+        } else {
+            setLayoutByNotEnoughData();
         }
 
         ArrayList<String> leastInstalledCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
@@ -78,5 +95,13 @@ public class BrainFragment extends Fragment {
     public void onDestroyView() {
         binder.unbind();
         super.onDestroyView();
+    }
+
+    private void setLayoutByNotEnoughData() {
+        brainImageLayout.setBackground(getResources().getDrawable(R.drawable.no_brain_background, null));
+        rank1Layout.setVisibility(View.GONE);
+        rank2Layout.setVisibility(View.GONE);
+        rank3Layout.setVisibility(View.GONE);
+        lastRankLayout.setVisibility(View.GONE);
     }
 }
