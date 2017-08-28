@@ -11,8 +11,6 @@
     <string name="now_loading">분석할 꿀을 모으는 중…</string>
 
     <string name="longest_used_app_title">뗄레야 뗄 수 없는 앱, %s</string>
-    <string name="most_installed_categories_title">가장 많이 설치한 카테고리는 </string>
-    <string name="least_installed_categories_title">가장 적게 설치한 카테고리는 </string>
     <string name="most_used_social_app_title">당신이 사랑하는 SNS는 </string>
     <string name="total">총</string>
     <string name="category_count_summary_format_string">%1$s 앱이 전체 앱 개수의 %2$d%%</string>
@@ -141,6 +139,12 @@
     <string name="brain_summary_not_enough_data">당신, 어느별에서 오신거죠?!</string>
     <string name="flower_summary_not_enough_data">아이코, 꽃이 시들어 버렸어요.</string>
     <string name="flower_desc_same_category">가장 많은 앱 다운로드 갯수를 가진 카테고리와 가장 많은 앱 사용시간을 가진 카테고리가 같아요. 두 가지가 은근 같게 나오기 어려운데.. 당신은 다른 사람보다 일관성이 있으신 분인 것 같아요!</string>
+    <string name="brain_description">카테고리별 앱 다운로드 갯수로 보는</string>
+    <string name="rank1">1위</string>
+    <string name="brain_title"><![CDATA[< 그 꿀벌의 뇌구조 >]]></string>
+    <string name="rank2">2위</string>
+    <string name="rank3">3위</string>
+    <string name="last_rank">꼴등</string>
 
     <!-- Warning -->
     <string name="warn_default_category">미분류 카테고리 입니다.</string>

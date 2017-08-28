@@ -29,17 +29,23 @@ public class BrainFragmentTest {
     private BrainFragment subject;
     private Unbinder binder;
 
-    @BindView(R.id.most_installed_categories)
-    TextView mostInstalledCategoriesView;
-
-    @BindView(R.id.least_installed_categories)
-    TextView leastInstalledCategoriesView;
-
     @BindView(R.id.most_installed_category_summary)
     TextView mostInstalledCategorySummaryView;
 
     @BindView(R.id.most_installed_category_description)
     TextView mostInstalledCategoryDescriptionView;
+
+    @BindView(R.id.most_installed_category1)
+    TextView mostInstalledCategory1View;
+
+    @BindView(R.id.most_installed_category2)
+    TextView mostInstalledCategory2View;
+
+    @BindView(R.id.most_installed_category3)
+    TextView mostInstalledCategory3View;
+
+    @BindView(R.id.least_installed_category)
+    TextView leastInstalledCategoryView;
 
     @Before
     public void setUp() throws Exception {
@@ -72,12 +78,14 @@ public class BrainFragmentTest {
 
     @Test
     public void onViewCreated호출시_가장많이설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(mostInstalledCategoriesView.getText()).isEqualTo("[금융, 게임, 만화]");
+        assertThat(mostInstalledCategory1View.getText()).isEqualTo("금융");
+        assertThat(mostInstalledCategory2View.getText()).isEqualTo("게임");
+        assertThat(mostInstalledCategory3View.getText()).isEqualTo("만화");
     }
 
     @Test
     public void onViewCreated호출시_가장적게설치한카테고리목록이_나타난다() throws Exception {
-        assertThat(leastInstalledCategoriesView.getText()).isEqualTo("[건강]");
+        assertThat(leastInstalledCategoryView.getText()).isEqualTo("건강");
     }
 
     @Test
