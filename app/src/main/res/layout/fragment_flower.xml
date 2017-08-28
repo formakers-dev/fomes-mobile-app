@@ -27,12 +27,14 @@
         android:textColor="@color/bold_title"
         app:font="BMJUA"/>
     <RelativeLayout
+        android:id="@+id/flower_background_layout"
         android:layout_width="322dp"
         android:layout_height="309dp"
         android:layout_marginTop="32dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/flower_background">
         <LinearLayout
+            android:id="@+id/rank1_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="25dp"
@@ -60,6 +62,7 @@
                 app:font="BMJUA"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/rank2_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="99dp"
@@ -87,6 +90,7 @@
                 app:font="BMJUA"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/rank3_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="129dp"
@@ -114,6 +118,7 @@
                 app:font="BMJUA" />
         </LinearLayout>
         <TextView
+            android:id="@+id/last_rank_title_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="249dp"
