@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.appbee.appbeemobile.util.AppBeeConstants.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -71,13 +72,13 @@ public class OverviewFragmentTest {
 
     private Bitmap mockBitmap;
 
-    private void createFragment(boolean isLongUsedAppIcon) throws Exception {
+    private void createFragment(boolean isLongUsedAppIcon, int characterType) throws Exception {
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, 400);
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, 495);
-        bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, AppBeeConstants.CHARACTER_TYPE.GAMER);
-        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, AppBeeConstants.APP_LIST_COUNT_TYPE.MORE);
-        bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, AppBeeConstants.APP_USAGE_TIME_TYPE.MOST);
+        bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, characterType);
+        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, APP_LIST_COUNT_TYPE.MORE);
+        bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, APP_USAGE_TIME_TYPE.MOST);
 
         bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, "testApp1");
         bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, "testApp1 Description");
@@ -99,8 +100,62 @@ public class OverviewFragmentTest {
     }
 
     @Test
+    public void 게이머타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
+        createFragment(true, CHARACTER_TYPE.GAMER);
+
+        assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!");
+        assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
+    }
+
+    @Test
+    public void 여왕벌타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
+        createFragment(true, CHARACTER_TYPE.QUEEN);
+
+        assertThat(characterTypeView.getText()).isEqualTo("하태하태! 내 스타일 여왕벌");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("한번뿐인 인생, 모든 순간을 소중하게!");
+        assertThat(characterTypeDetailDescriptionView.getText()).contains("스쳐지나가는 순간도 소중히 여기는 당신!");
+    }
+
+    @Test
+    public void 맹독벌타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
+        createFragment(true, CHARACTER_TYPE.POISON);
+
+        assertThat(characterTypeView.getText()).isEqualTo("감성폭발! 치명치명 맹독벌");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("비가 가장 많이오는곳은 어디?\\n바로..내 마음이에요");
+        assertThat(characterTypeDetailDescriptionView.getText()).contains("룰에 얽매이지 않는 감성이 정말 멋지답니다!");
+    }
+
+    @Test
+    public void 룰루땡벌타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
+        createFragment(true, CHARACTER_TYPE.SOUL);
+
+        assertThat(characterTypeView.getText()).isEqualTo("나만의 소울충만! 룰루 땡벌");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("나의 밤은 당신의 낮보다 아름답다");
+        assertThat(characterTypeDetailDescriptionView.getText()).contains("자기만의 쀨로 가득 찬 특이한 당신!");
+    }
+
+    @Test
+    public void 기타타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
+        createFragment(true, CHARACTER_TYPE.ETC);
+
+        assertThat(characterTypeView.getText()).isEqualTo("꿀빨러 왔나? 불시착 외계인!");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("꿀따리 샤바라~ 바니바니 꿍꿍꿀!");
+        assertThat(characterTypeDetailDescriptionView.getText()).contains("혹시 평소에 독특하다는 소리 좀 들으시나요?");
+    }
+
+    @Test
+    public void 게이머타입유저로서_fragment시작시_게이머_캐릭터타입_정보를_표시한다() throws Exception {
+        createFragment(true, CHARACTER_TYPE.GAMER);
+
+        assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!");
+        assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
+    }
+
+    @Test
     public void fragment시작시_설치된_앱개수와_앱개수관련정보를_표시한다() throws Exception {
-        createFragment(true);
+        createFragment(true, CHARACTER_TYPE.GAMER);
 
         assertTextViewVisibleAndEquals(appCountView, "400개");
         assertTextViewVisibleAndEquals(appCountTitleView, "총 앱개수 많아요.");
@@ -109,7 +164,7 @@ public class OverviewFragmentTest {
 
     @Test
     public void fragment시작시_평균_앱사용_시간과_평가를_표시한다() throws Exception {
-        createFragment(true);
+        createFragment(true, CHARACTER_TYPE.GAMER);
 
         assertTextViewVisibleAndEquals(averageAppUsageTimeView, "8시간\n15분");
         assertTextViewVisibleAndEquals(averageAppUsageTimeTitleView, "하루 앱사용시간 엄청 많은편!");
@@ -118,7 +173,7 @@ public class OverviewFragmentTest {
 
     @Test
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
-        createFragment(true);
+        createFragment(true, CHARACTER_TYPE.GAMER);
 
         assertThat(longestUsedAppNameView.getText()).isEqualTo("제일 많이 쓴 앱, testApp1");
         assertThat(longestUsedAppDescriptionView.getText()).isEqualTo("testApp1 Description");
@@ -127,17 +182,8 @@ public class OverviewFragmentTest {
 
     @Test
     public void 가장_오래사용한_앱의_아이콘이_없는_경우_디폴트아이콘을_표시한다() throws Exception {
-        createFragment(false);
+        createFragment(false, CHARACTER_TYPE.GAMER);
         assertThat(longestUsedAppIcon.getDrawable()).isEqualTo(subject.getResources().getDrawable(R.drawable.notfound_app_icon, null));
-    }
-
-    @Test
-    public void fragment시작시_캐릭터타입을_표시한다() throws Exception {
-        createFragment(true);
-
-        assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
-        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!");
-        assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
     }
 
     private void assertTextViewVisibleAndEquals(TextView textView, String text) {
