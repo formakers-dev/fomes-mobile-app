@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.google.common.collect.Lists;
 
@@ -28,12 +28,12 @@ import java.util.Map;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
-import static com.appbee.appbeemobile.util.AppBeeConstants.*;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.ETC;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.GAMER;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.POISON;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.QUEEN;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.SOUL;
+import static com.appbee.appbeemobile.util.AppBeeConstants.Category;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -244,89 +244,82 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getMostInstalledCategories호출시_많이_설치되어있는_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
+    public void getMostInstalledCategoryGroups호출시_카테고리그룹별_앱개수의_합산결과를_정렬하여_맵으로_리턴한다() throws Exception {
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
 
-        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(3);
+        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategoryGroups(3);
 
-        verify(mockAppRepositoryHelper).getAppCountMapByCategory();
         assertThat(mostInstalledCategories).isNotNull();
         assertThat(mostInstalledCategories.size()).isEqualTo(3);
-        assertThat(mostInstalledCategories.get(0)).isEqualTo("사진");
-        assertThat(mostInstalledCategories.get(1)).isEqualTo("쇼핑");
-        assertThat(mostInstalledCategories.get(2)).isEqualTo("음악");
+        assertThat(mostInstalledCategories.get(0)).isEqualTo("/store/apps/category/FAMILY");
+        assertThat(mostInstalledCategories.get(1)).isEqualTo("/store/apps/category/GAME");
+        assertThat(mostInstalledCategories.get(2)).isEqualTo("/store/apps/category/PHOTOGRAPHY");
     }
 
     @Test
-    public void 카테고리별앱설치수가없는경우_getMostInstalledCategories호출시_emptyList를_리턴한다() throws Exception {
-        Map<String, Integer> emptyMap = new HashMap<>();
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(emptyMap);
+    public void 카테고리별앱설치수가없는경우_getMostInstalledCategoryGroups호출시_emptyList를_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mock(Map.class));
 
-        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(3);
+        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategoryGroups(3);
 
         assertThat(mostInstalledCategories).isNotNull();
         assertThat(mostInstalledCategories.size()).isEqualTo(0);
     }
 
-    private Map<String, Integer> createCategoryDummyDataByAppCount() {
-        Map<String, Integer> dummyCategoryData = new HashMap<>();
-        dummyCategoryData.put("게임", 1);
-        dummyCategoryData.put("사진", 5);
-        dummyCategoryData.put("교육", 2);
-        dummyCategoryData.put("음악", 3);
-        dummyCategoryData.put("쇼핑", 4);
-        return dummyCategoryData;
-    }
-
     @Test
-    public void getMostInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼_리턴한다() throws Exception {
+    public void getMostInstalledCategoryGroups호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼_리턴한다() throws Exception {
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
 
-        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategories(6);
+        ArrayList<String> mostInstalledCategories = subject.getMostInstalledCategoryGroups(6);
 
         assertThat(mostInstalledCategories).isNotNull();
-        assertThat(mostInstalledCategories.size()).isEqualTo(5);
+        assertThat(mostInstalledCategories.size()).isEqualTo(4);
+    }
+
+    private Map<String, Integer> createCategoryDummyDataByAppCount() {
+        Map<String, Integer> mockAppCountMap = new HashMap<>();
+        mockAppCountMap.put("/store/apps/category/GAME_ROLE_PLAYING", 10);
+        mockAppCountMap.put("/store/apps/category/GAME_BOARD", 20);
+        mockAppCountMap.put("/store/apps/category/PHOTOGRAPHY", 25);
+        mockAppCountMap.put("/store/apps/category/PERSONALIZATION", 6);
+        mockAppCountMap.put("/store/apps/category/FAMILY", 15);
+        mockAppCountMap.put("/store/apps/category/FAMILY_BRAINGAMES", 15);
+        mockAppCountMap.put("/store/apps/category/FAMILY_CREATE", 15);
+
+        return mockAppCountMap;
     }
 
     @Test
-    public void getMostInstalledCategories호출시_카테고리맵이_비어있는경우_비어있는_리스트를_리턴한다() throws Exception {
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mock(Map.class));
-
-        ArrayList<String> leastInstalledCategories = subject.getMostInstalledCategories(1);
-
-        assertThat(leastInstalledCategories).isNotNull();
-        assertThat(leastInstalledCategories.size()).isEqualTo(0);
-    }
-
-    @Test
-    public void getLeastInstalledCategories호출시_가장_적게_설치된_카테고리리스트를_리턴한다() throws Exception {
+    public void getLeastInstalledCategoryGroups호출시_카테고리그룹별_앱개수의_합산결과를_정렬하여_맵으로_리턴한다() throws Exception {
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
 
-        ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(1);
+        ArrayList<String> mostInstalledCategories = subject.getLeastInstalledCategoryGroups(3);
 
-        assertThat(leastInstalledCategories).isNotNull();
-        assertThat(leastInstalledCategories.size()).isEqualTo(1);
-        assertThat(leastInstalledCategories.get(0)).isEqualTo("게임");
+        assertThat(mostInstalledCategories).isNotNull();
+        assertThat(mostInstalledCategories.size()).isEqualTo(3);
+        assertThat(mostInstalledCategories.get(0)).isEqualTo("/store/apps/category/PERSONALIZATION");
+        assertThat(mostInstalledCategories.get(1)).isEqualTo("/store/apps/category/PHOTOGRAPHY");
+        assertThat(mostInstalledCategories.get(2)).isEqualTo("/store/apps/category/GAME");
     }
 
     @Test
-    public void getLeastInstalledCategories호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼만_리턴한다() throws Exception {
-        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
-
-        ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(6);
-
-        assertThat(leastInstalledCategories).isNotNull();
-        assertThat(leastInstalledCategories.size()).isEqualTo(5);
-    }
-
-    @Test
-    public void getLeastInstalledCategories호출시_카테고리맵이_비어있는경우_비어있는_리스트를_리턴한다() throws Exception {
+    public void 카테고리별앱설치수가없는경우_getLeastInstalledCategoryGroups호출시_emptyList를_리턴한다() throws Exception {
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mock(Map.class));
 
-        ArrayList<String> leastInstalledCategories = subject.getLeastInstalledCategories(1);
+        ArrayList<String> mostInstalledCategories = subject.getLeastInstalledCategoryGroups(3);
 
-        assertThat(leastInstalledCategories).isNotNull();
-        assertThat(leastInstalledCategories.size()).isEqualTo(0);
+        assertThat(mostInstalledCategories).isNotNull();
+        assertThat(mostInstalledCategories.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void getLeastInstalledCategoryGroups호출시_요청한리스트크기가_설치된카테고리의수보다큰경우_설치된카테고리수만큼_리턴한다() throws Exception {
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(createCategoryDummyDataByAppCount());
+
+        ArrayList<String> mostInstalledCategories = subject.getLeastInstalledCategoryGroups(6);
+
+        assertThat(mostInstalledCategories).isNotNull();
+        assertThat(mostInstalledCategories.size()).isEqualTo(4);
     }
 
     @Test
@@ -600,6 +593,27 @@ public class AppUsageDataHelperTest {
         assertThat(map.get(list.get(2))).isEqualTo(3L);
         assertThat(map.get(list.get(3))).isEqualTo(2L);
         assertThat(map.get(list.get(4))).isEqualTo(1L);
+    }
+
+    @Test
+    public void combineInstalledAppCountByCategoryGroup호출시_서브카테고리의_정보가_key에_포함되어_있을경우_메인카테고리로_변경하여_출력한다() throws Exception {
+        Map<String, Integer> dummyCategoryData = new HashMap<>();
+        dummyCategoryData.put("/store/apps/category/PHOTOGRAPHY", 5);
+        dummyCategoryData.put("/store/apps/category/GAME_ACTION", 4);
+        dummyCategoryData.put("/store/apps/category/GAME_SPORTS", 3);
+        dummyCategoryData.put("/store/apps/category/FAMILY_ACTION", 3);
+        dummyCategoryData.put("/store/apps/category/FAMILY_PRETEND", 3);
+
+        Map<String, Integer> result = subject.combineInstalledAppCountByCategoryGroup(dummyCategoryData, AppUsageDataHelper.DESC);
+
+        assertThat(result).isNotNull();
+        assertThat(result.get("/store/apps/category/PHOTOGRAPHY")).isEqualTo(5);
+        assertThat(result.get("/store/apps/category/GAME")).isEqualTo(7);
+        assertThat(result.get("/store/apps/category/FAMILY")).isEqualTo(6);
+        assertThat(result.containsKey("/store/apps/category/GAME_ACTION")).isFalse();
+        assertThat(result.containsKey("/store/apps/category/GAME_SPORTS")).isFalse();
+        assertThat(result.containsKey("/store/apps/category/FAMILY_ACTION")).isFalse();
+        assertThat(result.containsKey("/store/apps/category/FAMILY_PRETEND")).isFalse();
     }
 
     @Test

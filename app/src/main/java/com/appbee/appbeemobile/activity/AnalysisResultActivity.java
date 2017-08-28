@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -107,11 +106,11 @@ public class AnalysisResultActivity extends BaseActivity {
     private Fragment getBrainFragment() {
         Fragment brainFragment = new BrainFragment();
 
-        List<String> mostInstalledCategoryList = appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY);
+        List<String> mostInstalledCategoryList = appUsageDataHelper.getMostInstalledCategoryGroups(NUMBER_OF_MOST_INSTALLED_CATEGORY);
         int appCount = appInfoList.size();
 
         Bundle bundle = new Bundle();
-        ArrayList<String> leastInstalledCategory = appUsageDataHelper.getLeastInstalledCategories(NUMBER_OF_LEAST_INSTALLED_CATEGORY);
+        ArrayList<String> leastInstalledCategory = appUsageDataHelper.getLeastInstalledCategoryGroups(NUMBER_OF_LEAST_INSTALLED_CATEGORY);
         bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, getCategoryNameList(mostInstalledCategoryList, NUMBER_OF_MOST_INSTALLED_CATEGORY));
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, getCategoryNameList(leastInstalledCategory, NUMBER_OF_LEAST_INSTALLED_CATEGORY));
         if (mostInstalledCategoryList != null && mostInstalledCategoryList.size() >= 3) {
@@ -147,7 +146,7 @@ public class AnalysisResultActivity extends BaseActivity {
             int rate = (int) getCategoryRate(usedTimeCategoryMap, mostUsedCategoryId);
             bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, String.format(getString(R.string.category_time_summary_format_string), Category.fromId(mostUsedCategoryId).categoryName, rate));
 
-            List<String> mostInstalledCategoryList = appUsageDataHelper.getMostInstalledCategories(NUMBER_OF_MOST_INSTALLED_CATEGORY);
+            List<String> mostInstalledCategoryList = appUsageDataHelper.getMostInstalledCategoryGroups(NUMBER_OF_MOST_INSTALLED_CATEGORY);
 
             if (isMostInstalledAndMostUsedCategorySame(mostUsedCategoryId, mostInstalledCategoryList)) {
                 bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getString(R.string.flower_desc_same_category));
