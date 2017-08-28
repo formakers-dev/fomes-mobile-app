@@ -120,15 +120,15 @@ public class OverviewFragmentTest {
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
         createFragment(true);
 
-        assertThat(longestUsedAppNameView.getText()).isEqualTo("뗄레야 뗄 수 없는 앱, testApp1");
+        assertThat(longestUsedAppNameView.getText()).isEqualTo("제일 많이 쓴 앱, testApp1");
         assertThat(longestUsedAppDescriptionView.getText()).isEqualTo("testApp1 Description");
         assertThat(((BitmapDrawable) longestUsedAppIcon.getDrawable()).getBitmap()).isEqualTo(mockBitmap);
     }
 
     @Test
-    public void 가장_오래사용한_앱의_아이콘이_없는_경우_표시하지않는다() throws Exception {
+    public void 가장_오래사용한_앱의_아이콘이_없는_경우_디폴트아이콘을_표시한다() throws Exception {
         createFragment(false);
-        assertThat(longestUsedAppIcon.getDrawable()).isNull();
+        assertThat(longestUsedAppIcon.getDrawable()).isEqualTo(subject.getResources().getDrawable(R.drawable.notfound_app_icon, null));
     }
 
     @Test
