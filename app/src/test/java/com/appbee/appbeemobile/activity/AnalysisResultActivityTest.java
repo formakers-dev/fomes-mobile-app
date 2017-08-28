@@ -112,7 +112,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(actualMostUsedCategories.size()).isEqualTo(3);
         assertThat(actualMostUsedCategories.get(0)).isEqualTo("사진");
         assertThat(actualMostUsedCategories.get(1)).isEqualTo("쇼핑");
-        assertThat(actualMostUsedCategories.get(2)).isEqualTo("음악/비디오");
+        assertThat(actualMostUsedCategories.get(2)).isEqualTo("음악");
 
         ArrayList<String> actualLeastInstalledCategories = bundle.getStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES);
         assertThat(actualLeastInstalledCategories).isNotNull();
@@ -294,8 +294,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/LIBRARIES_AND_DEMO")).isEqualTo(subject.getString(R.string.longest_used_app_desc_library));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/LIFESTYLE")).isEqualTo(subject.getString(R.string.longest_used_app_desc_lifestyle));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/COMICS")).isEqualTo(subject.getString(R.string.longest_used_app_desc_comics));
-        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/HOUSE")).isEqualTo(subject.getString(R.string.longest_used_app_desc_house));
-        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BEAUTY_DESIGN")).isEqualTo(subject.getString(R.string.longest_used_app_desc_beauty_design));
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/HOUSE_AND_HOME")).isEqualTo(subject.getString(R.string.longest_used_app_desc_house));
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/BEAUTY")).isEqualTo(subject.getString(R.string.longest_used_app_desc_beauty_design));
+        assertThat(subject.getLongestUsedAppDescription("/store/apps/category/ART_AND_DESIGN")).isEqualTo(subject.getString(R.string.longest_used_app_desc_beauty_design));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/DATING")).isEqualTo(subject.getString(R.string.longest_used_app_desc_dating));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY_EDUCATION")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
@@ -304,6 +305,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY_PRETEND")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY_MUSICVIDEO")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
         assertThat(subject.getLongestUsedAppDescription("/store/apps/category/FAMILY_CREATE")).isEqualTo(subject.getString(R.string.longest_used_app_desc_kids));
+
+        // TODO : 추가 정의한 카테고리 스트링 테스트
     }
 
     @Test
@@ -329,8 +332,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_CASUAL")).isEqualTo(subject.getString(R.string.brain_flower_desc_game));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_TRIVIA")).isEqualTo(subject.getString(R.string.brain_flower_desc_game));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/GAME_PUZZLE")).isEqualTo(subject.getString(R.string.brain_flower_desc_game));
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MUSIC_AND_AUDIO")).isEqualTo(subject.getString(R.string.brain_flower_desc_music_video));
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/VIDEO_PLAYERS")).isEqualTo(subject.getString(R.string.brain_flower_desc_music_video));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MUSIC_AND_AUDIO")).isEqualTo(subject.getString(R.string.brain_flower_desc_music));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/VIDEO_PLAYERS")).isEqualTo(subject.getString(R.string.brain_flower_desc_video));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/SOCIAL")).isEqualTo(subject.getString(R.string.brain_flower_desc_social));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PHOTOGRAPHY")).isEqualTo(subject.getString(R.string.brain_flower_desc_photography));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PERSONALIZATION")).isEqualTo(subject.getString(R.string.brain_flower_desc_personalization));
@@ -350,8 +353,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/LIBRARIES_AND_DEMO")).isEqualTo(subject.getString(R.string.brain_flower_desc_library));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/LIFESTYLE")).isEqualTo(subject.getString(R.string.brain_flower_desc_lifestyle));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/COMICS")).isEqualTo(subject.getString(R.string.brain_flower_desc_comics));
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/HOUSE")).isEqualTo(subject.getString(R.string.brain_flower_desc_house));
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/BEAUTY_DESIGN")).isEqualTo(subject.getString(R.string.brain_flower_desc_beauty_design));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/HOUSE_AND_HOME")).isEqualTo(subject.getString(R.string.brain_flower_desc_house));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/BEAUTY")).isEqualTo(subject.getString(R.string.brain_flower_desc_beauty_design));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/ART_AND_DESIGN")).isEqualTo(subject.getString(R.string.brain_flower_desc_beauty_design));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/DATING")).isEqualTo(subject.getString(R.string.brain_flower_desc_dating));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_EDUCATION")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
@@ -361,6 +365,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_MUSICVIDEO")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_CREATE")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
 
+        // TODO : 추가 정의한 카테고리 스트링 테스트
     }
 
     private void mockDummyData() {

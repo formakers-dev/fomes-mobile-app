@@ -59,29 +59,30 @@ public interface AppBeeConstants {
         GAME_CASUAL("/store/apps/category/GAME_CASUAL", "게임", Arrays.asList(R.string.brain_flower_desc_game, R.string.longest_used_app_desc_game)),
         GAME_TRIVIA("/store/apps/category/GAME_TRIVIA", "게임", Arrays.asList(R.string.brain_flower_desc_game, R.string.longest_used_app_desc_game)),
         GAME_PUZZLE("/store/apps/category/GAME_PUZZLE", "게임", Arrays.asList(R.string.brain_flower_desc_game, R.string.longest_used_app_desc_game)),
-        MUSIC_AND_AUDIO("/store/apps/category/MUSIC_AND_AUDIO", "음악/비디오", Arrays.asList(R.string.brain_flower_desc_music_video, R.string.longest_used_app_desc_music_video)),
-        VIDEO_PLAYERS("/store/apps/category/VIDEO_PLAYERS", "음악/비디오", Arrays.asList(R.string.brain_flower_desc_music_video, R.string.longest_used_app_desc_music_video)),
+        MUSIC_AND_AUDIO("/store/apps/category/MUSIC_AND_AUDIO", "음악", Arrays.asList(R.string.brain_flower_desc_music, R.string.longest_used_app_desc_music_video)),
+        VIDEO_PLAYERS("/store/apps/category/VIDEO_PLAYERS", "비디오", Arrays.asList(R.string.brain_flower_desc_video, R.string.longest_used_app_desc_music_video)),
         SOCIAL("/store/apps/category/SOCIAL", "소셜", Arrays.asList(R.string.brain_flower_desc_social, R.string.longest_used_app_desc_social)),
         PHOTOGRAPHY("/store/apps/category/PHOTOGRAPHY", "사진", Arrays.asList(R.string.brain_flower_desc_photography, R.string.longest_used_app_desc_photography)),
-        PERSONALIZATION("/store/apps/category/PERSONALIZATION", "개인화(=맞춤설정)", Arrays.asList(R.string.brain_flower_desc_personalization, R.string.longest_used_app_desc_personalization)),
+        PERSONALIZATION("/store/apps/category/PERSONALIZATION", "맞춤 설정", Arrays.asList(R.string.brain_flower_desc_personalization, R.string.longest_used_app_desc_personalization)),
         SHOPPING("/store/apps/category/SHOPPING", "쇼핑", Arrays.asList(R.string.brain_flower_desc_shopping, R.string.longest_used_app_desc_shopping)),
         COMMUNICATION("/store/apps/category/COMMUNICATION", "커뮤니케이션", Arrays.asList(R.string.brain_flower_desc_communication, R.string.longest_used_app_desc_communication)),
         ENTERTAINMENT("/store/apps/category/ENTERTAINMENT", "엔터테인먼트", Arrays.asList(R.string.brain_flower_desc_entertainment, R.string.longest_used_app_desc_entertainment)),
-        HEALTH_AND_FITNESS("/store/apps/category/HEALTH_AND_FITNESS", "건강", Arrays.asList(R.string.brain_flower_desc_health_sports, R.string.longest_used_app_desc_health_sports)),
-        SPORTS("/store/apps/category/SPORTS", "건강", Arrays.asList(R.string.brain_flower_desc_health_sports, R.string.longest_used_app_desc_health_sports)),
+        HEALTH_AND_FITNESS("/store/apps/category/HEALTH_AND_FITNESS", "건강/운동", Arrays.asList(R.string.brain_flower_desc_health_sports, R.string.longest_used_app_desc_health_sports)),
+        SPORTS("/store/apps/category/SPORTS", "스포츠", Arrays.asList(R.string.brain_flower_desc_health_sports, R.string.longest_used_app_desc_health_sports)),
         EDUCATION("/store/apps/category/EDUCATION", "교육", Arrays.asList(R.string.brain_flower_desc_education, R.string.longest_used_app_desc_education)),
         WEATHER("/store/apps/category/WEATHER", "날씨", Arrays.asList(R.string.brain_flower_desc_weather, R.string.longest_used_app_desc_weather)),
         TRAVEL_AND_LOCAL("/store/apps/category/TRAVEL_AND_LOCAL", "여행", Arrays.asList(R.string.brain_flower_desc_travel, R.string.longest_used_app_desc_travel)),
-        BUSINESS("/store/apps/category/BUSINESS", "비즈니스/생산성", Arrays.asList(R.string.brain_flower_desc_business_producitivity, R.string.longest_used_app_desc_business_producitivity)),
-        PRODUCTIVITY("/store/apps/category/PRODUCTIVITY", "비즈니스/생산성", Arrays.asList(R.string.brain_flower_desc_business_producitivity, R.string.longest_used_app_desc_business_producitivity)),
+        BUSINESS("/store/apps/category/BUSINESS", "비즈니스", Arrays.asList(R.string.brain_flower_desc_business_producitivity, R.string.longest_used_app_desc_business_producitivity)),
+        PRODUCTIVITY("/store/apps/category/PRODUCTIVITY", "생산성", Arrays.asList(R.string.brain_flower_desc_business_producitivity, R.string.longest_used_app_desc_business_producitivity)),
         TOOLS("/store/apps/category/TOOLS", "도구", Arrays.asList(R.string.brain_flower_desc_tools, R.string.longest_used_app_desc_tools)),
-        BOOKS_AND_REFERENCE("/store/apps/category/BOOKS_AND_REFERENCE", "도서/뉴스/잡지", Arrays.asList(R.string.brain_flower_desc_book_news, R.string.longest_used_app_desc_book_news)),
-        NEWS_AND_MAGAZINES("/store/apps/category/NEWS_AND_MAGAZINES", "도서/뉴스/잡지", Arrays.asList(R.string.brain_flower_desc_book_news, R.string.longest_used_app_desc_book_news)),
+        BOOKS_AND_REFERENCE("/store/apps/category/BOOKS_AND_REFERENCE", "도서", Arrays.asList(R.string.brain_flower_desc_book_news, R.string.longest_used_app_desc_book_news)),
+        NEWS_AND_MAGAZINES("/store/apps/category/NEWS_AND_MAGAZINES", "뉴스/잡지", Arrays.asList(R.string.brain_flower_desc_book_news, R.string.longest_used_app_desc_book_news)),
         LIBRARIES_AND_DEMO("/store/apps/category/LIBRARIES_AND_DEMO", "데모", Arrays.asList(R.string.brain_flower_desc_library, R.string.longest_used_app_desc_library)),
         LIFESTYLE("/store/apps/category/LIFESTYLE", "라이프스타일", Arrays.asList(R.string.brain_flower_desc_lifestyle, R.string.longest_used_app_desc_lifestyle)),
         COMICS("/store/apps/category/COMICS", "만화", Arrays.asList(R.string.brain_flower_desc_comics, R.string.longest_used_app_desc_comics)),
-        HOUSE("/store/apps/category/HOUSE", "부동산/인테리어", Arrays.asList(R.string.brain_flower_desc_house, R.string.longest_used_app_desc_house)),
-        BEAUTY_DESIGN("/store/apps/category/BEAUTY_DESIGN", "뷰티/예술/디자인", Arrays.asList(R.string.brain_flower_desc_beauty_design, R.string.longest_used_app_desc_beauty_design)),
+        HOUSE_AND_HOME("/store/apps/category/HOUSE_AND_HOME", "부동산/인테리어", Arrays.asList(R.string.brain_flower_desc_house, R.string.longest_used_app_desc_house)),
+        BEAUTY("/store/apps/category/BEAUTY", "뷰티", Arrays.asList(R.string.brain_flower_desc_beauty_design, R.string.longest_used_app_desc_beauty_design)),
+        ART_AND_DESIGN("/store/apps/category/ART_AND_DESIGN", "예술/디자인", Arrays.asList(R.string.brain_flower_desc_beauty_design, R.string.longest_used_app_desc_beauty_design)),
         DATING("/store/apps/category/DATING", "데이트", Arrays.asList(R.string.brain_flower_desc_dating, R.string.longest_used_app_desc_dating)),
         FAMILY("/store/apps/category/FAMILY", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
         FAMILY_EDUCATION("/store/apps/category/FAMILY_EDUCATION", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
@@ -89,7 +90,19 @@ public interface AppBeeConstants {
         FAMILY_ACTION("/store/apps/category/FAMILY_ACTION", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
         FAMILY_PRETEND("/store/apps/category/FAMILY_PRETEND", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
         FAMILY_MUSICVIDEO("/store/apps/category/FAMILY_MUSICVIDEO", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
-        FAMILY_CREATE("/store/apps/category/FAMILY_CREATE", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids));
+        FAMILY_CREATE("/store/apps/category/FAMILY_CREATE", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+
+        // TODO : 아래 카테고리 관련 메세지 정의 후 변경할 것
+        FOOD_AND_DRINK("/store/apps/category/FOOD_AND_DRINK", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+        EVENTS("/store/apps/category/EVENTS", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+        AUTO_AND_VEHICLES("/store/apps/category/AUTO_AND_VEHICLES", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+        MAPS_AND_NAVIGATION("/store/apps/category/MAPS_AND_NAVIGATION", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+        PARENTING("/store/apps/category/PARENTING", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+        ANDROID_WEAR("/store/apps/category/ANDROID_WEAR", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+        MEDICAL("/store/apps/category/MEDICAL", "키즈", Arrays.asList(R.string.brain_flower_desc_kids, R.string.longest_used_app_desc_kids)),
+
+        DEFAULT("DEFAULT", "DEFAULT", Arrays.asList(R.string.warn_default_category, R.string.warn_default_category));
+
         private static final Map<String, Category> map = new HashMap<>();
 
         static {
@@ -99,7 +112,13 @@ public interface AppBeeConstants {
         }
 
         public static Category fromId(String categoryId) {
-            return map.get(categoryId);
+            Category category = map.get(categoryId);
+
+            if (category == null) {
+                category = DEFAULT;
+            }
+
+            return category;
         }
 
         public final String categoryId;

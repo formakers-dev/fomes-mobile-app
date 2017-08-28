@@ -114,7 +114,8 @@
     <!-- Brain And Flower Description-->
     <string name="brain_flower_desc_finance">당장의 재미보다 꼭 해야하는 일에 집중하는 당신! 성실하게 자신의 할일에 집중하는 것을 즐기시네요. 늘 꼼꼼한 당신은 세상의 빛과 소금! 하지만 가끔은 여유를 갖고 게으름을 피는 것도 좋을 것 같아요!</string>
     <string name="brain_flower_desc_game">재미있는 것에 몰두하는 당신. 재미가 없으면 의욕도 사라져요! 하지만 한번 꽂힌 것은 엄청난 집중력으로 처리해 버린다는 사실~ 겉으로는 잘 티가 안나도, 누구보다 자유로운 영혼의 소유자!</string>
-    <string name="brain_flower_desc_music_video">항상 음악과 함께하는 당신. 풍부한 감성의 소유자에요. 자기만의 취향,  즐길거리, 쉬는 방법이 명확하시군요. 정해진 규칙을 따르기보단 나만의 방식을 추구하는 모습이 멋져요!</string>
+    <string name="brain_flower_desc_music">항상 음악과 함께하는 당신. 풍부한 감성의 소유자에요. 자기만의 취향,  즐길거리, 쉬는 방법이 명확하시군요. 정해진 규칙을 따르기보단 나만의 방식을 추구하는 모습이 멋져요!</string>
+    <string name="brain_flower_desc_video">항상 비디오와 함께하는 당신. 풍부한 감성의 소유자에요. 자기만의 취향,  즐길거리, 쉬는 방법이 명확하시군요. 정해진 규칙을 따르기보단 나만의 방식을 추구하는 모습이 멋져요!</string>
     <string name="brain_flower_desc_social">언제나 소통을 중요하게 생각하고 계시는군요. 인터넷을 통해서 사람들과 연결되는건 정말 재미있어요. 가끔은 핸드폰을 덮어보세요. 생각만 하던 보고싶은 친구에게 연락해 보는건 어때요?</string>
     <string name="brain_flower_desc_photography">늘 기록을 남기고 추억을 소중하게 여기는 당신. 일상을 소중하게 여기고 아름답게 만드는 당신 덕분에 주변 사람들도 추억에 대한 기억이 풍부해진답니다. 섬ㅅㅔ한 당신…좋ㄷㅏ*^^*</string>
     <string name="brain_flower_desc_personalization">혹시 특이하다는 얘기 자주 듣지 않으세요? 당신은 자기만의 확고한 취향과 독창적 시각,  실행력까지 갖추고 있어요. 그래서인지 늘 눈에 띄는 독보적인 존재랍니다!</string>
@@ -140,4 +141,7 @@
     <string name="brain_summary_not_enough_data">당신, 어느별에서 오신거죠?!</string>
     <string name="flower_summary_not_enough_data">아이코, 꽃이 시들어 버렸어요.</string>
     <string name="flower_desc_same_category">가장 많은 앱 다운로드 갯수를 가진 카테고리와 가장 많은 앱 사용시간을 가진 카테고리가 같아요. 두 가지가 은근 같게 나오기 어려운데.. 당신은 다른 사람보다 일관성이 있으신 분인 것 같아요!</string>
+
+    <!-- Warning -->
+    <string name="warn_default_category">미분류 카테고리 입니다.</string>
 </resources>
