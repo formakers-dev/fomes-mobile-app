@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
@@ -40,6 +42,21 @@ public class FlowerFragment extends Fragment {
     @BindView(R.id.most_used_time_category_description)
     TextView mostUsedTimeCategoryDescriptionView;
 
+    @BindView(R.id.rank1_layout)
+    LinearLayout rank1Layout;
+
+    @BindView(R.id.rank2_layout)
+    LinearLayout rank2Layout;
+
+    @BindView(R.id.rank3_layout)
+    LinearLayout rank3Layout;
+
+    @BindView(R.id.last_rank_title_view)
+    TextView lastRankTitleView;
+
+    @BindView(R.id.flower_background_layout)
+    RelativeLayout flowerBackgroundLayout;
+
     private Unbinder binder;
 
     @Nullable
@@ -60,6 +77,8 @@ public class FlowerFragment extends Fragment {
             mostUsedCategory1View.setText(mostUsedTimeCategoryList.get(0));
             mostUsedCategory2View.setText(mostUsedTimeCategoryList.get(1));
             mostUsedCategory3View.setText(mostUsedTimeCategoryList.get(2));
+        } else {
+            setLayoutByNotEnoughData();
         }
 
         List<String> leastUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_USED_TIME_CATEGORIES);
@@ -71,12 +90,22 @@ public class FlowerFragment extends Fragment {
         mostUsedTimeCategoryDescriptionView.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_DESC));
     }
 
+    void setLayoutByNotEnoughData() {
+        flowerBackgroundLayout.setBackground(getResources().getDrawable(R.drawable.dead_flower_background, null));
+
+        rank1Layout.setVisibility(View.GONE);
+        rank2Layout.setVisibility(View.GONE);
+        rank3Layout.setVisibility(View.GONE);
+        lastRankTitleView.setVisibility(View.GONE);
+        leastUsedCategoryView.setVisibility(View.GONE);
+    }
+
     boolean isAvailableLeastUsedCategoryList(List<String> leastUsedTimeCategoryList) {
         return leastUsedTimeCategoryList != null && !leastUsedTimeCategoryList.isEmpty() && leastUsedTimeCategoryList.size() >= 1;
     }
 
     boolean isAvailableMostUsedCategoryList(List<String> mostUsedTimeCategoryList) {
-        return mostUsedTimeCategoryList != null && !mostUsedTimeCategoryList.isEmpty() && mostUsedTimeCategoryList.size() == 3;
+        return mostUsedTimeCategoryList != null && !mostUsedTimeCategoryList.isEmpty() && mostUsedTimeCategoryList.size() >= 3;
     }
 
     @Override

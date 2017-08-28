@@ -95,8 +95,8 @@ public class BrainFragmentTest {
         leastInstalledCategoryList.add("게임");
         bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, leastInstalledCategoryList);
 
-        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, "금융 앱이 전체 앱 개수의 25%");
-        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "금융앱 설명입니다");
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, "당신, 어느별에서 오신거죠?!");
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "분석할만한 충분한 카테고리가 보이지 않아요. 핸드폰을 사용한지 얼마 안되었거나 분석이 가능할 만큼 앱을 사용하시지 않은 것 같아요. 아쉽지만 다음 번에 꼭 다시 분석해드릴게요!");
 
         createFragment(bundle);
     }
@@ -124,18 +124,6 @@ public class BrainFragmentTest {
     }
 
     @Test
-    public void 세건미만의카테고리정보가주어지는경우_onViewCreated호출시_카테고리정보부족_레이아웃이_나타난다() throws Exception {
-        setUpWithNotEnoughData();
-
-        assertThat(brainImageLayout.getBackground()).isEqualTo(subject.getResources().getDrawable(R.drawable.no_brain_background, null));
-
-        assertThat(rank1Layout.getVisibility()).isEqualTo(View.GONE);
-        assertThat(rank2Layout.getVisibility()).isEqualTo(View.GONE);
-        assertThat(rank3Layout.getVisibility()).isEqualTo(View.GONE);
-        assertThat(lastRankLayout.getVisibility()).isEqualTo(View.GONE);
-    }
-
-    @Test
     public void onViewCreated호출시_가장적게설치한카테고리목록이_나타난다() throws Exception {
         setUpWithEnoughData();
 
@@ -148,5 +136,20 @@ public class BrainFragmentTest {
 
         assertThat(String.valueOf(mostInstalledCategorySummaryView.getText())).isEqualTo("금융 앱이 전체 앱 개수의 25%");
         assertThat(mostInstalledCategoryDescriptionView.getText()).isEqualTo("금융앱 설명입니다");
+    }
+
+    @Test
+    public void 세건미만의카테고리정보가주어지는경우_onViewCreated호출시_카테고리정보부족_레이아웃이_나타난다() throws Exception {
+        setUpWithNotEnoughData();
+
+        assertThat(brainImageLayout.getBackground()).isEqualTo(subject.getResources().getDrawable(R.drawable.no_brain_background, null));
+
+        assertThat(rank1Layout.getVisibility()).isEqualTo(View.GONE);
+        assertThat(rank2Layout.getVisibility()).isEqualTo(View.GONE);
+        assertThat(rank3Layout.getVisibility()).isEqualTo(View.GONE);
+        assertThat(lastRankLayout.getVisibility()).isEqualTo(View.GONE);
+
+        assertThat(String.valueOf(mostInstalledCategorySummaryView.getText())).isEqualTo("당신, 어느별에서 오신거죠?!");
+        assertThat(mostInstalledCategoryDescriptionView.getText()).isEqualTo("분석할만한 충분한 카테고리가 보이지 않아요. 핸드폰을 사용한지 얼마 안되었거나 분석이 가능할 만큼 앱을 사용하시지 않은 것 같아요. 아쉽지만 다음 번에 꼭 다시 분석해드릴게요!");
     }
 }
