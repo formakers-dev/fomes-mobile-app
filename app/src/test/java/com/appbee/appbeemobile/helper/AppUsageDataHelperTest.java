@@ -27,6 +27,7 @@ import java.util.Map;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
+import static com.appbee.appbeemobile.util.AppBeeConstants.*;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.ETC;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.GAMER;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.POISON;
@@ -504,7 +505,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void aggregateCategoryMapForBest5호출시_best5로직처리를_위한_카테고리그룹핑을_수행한후_그룹핑된_Map을_리턴한다() throws Exception {
+    public void combineAppCountByBest5CategoryGroup호출시_best5로직처리를_위한_카테고리그룹핑을_수행한후_그룹핑된_Map을_리턴한다() throws Exception {
         Map<String, Integer> mockCategoryMap = new HashMap<>();
         mockCategoryMap.put("/store/apps/category/GAME_ROLE_PLAYING", 1);
         mockCategoryMap.put("/store/apps/category/GAME_BOARD", 2);
@@ -514,7 +515,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/PERSONALIZATION", 6);
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
 
-        Map<String, Integer> aggregateCategoryMap = subject.aggregateCategoryMapForBest5(mockCategoryMap);
+        Map<String, Integer> aggregateCategoryMap = subject.combineAppCountByBest5CategoryGroup(mockCategoryMap);
 
         assertThat(aggregateCategoryMap).isNotNull();
         assertThat(aggregateCategoryMap.size()).isEqualTo(4);
@@ -531,15 +532,49 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void aggregateCategoryMapForBest5호출시_best5에해당하는_카테고리가_없는경우_비어있는_맵을_리턴한다() throws Exception {
+    public void combineAppCountByBest5CategoryGroup호출시_best5에해당하는_카테고리가_없는경우_비어있는_맵을_리턴한다() throws Exception {
         Map<String, Integer> mockCategoryMap = new HashMap<>();
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY1", 3);
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY2", 4);
 
-        Map<String, Integer> aggregateCategoryMap = subject.aggregateCategoryMapForBest5(mockCategoryMap);
+        Map<String, Integer> aggregateCategoryMap = subject.combineAppCountByBest5CategoryGroup(mockCategoryMap);
 
         assertThat(aggregateCategoryMap).isNotNull();
         assertThat(aggregateCategoryMap.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void combineUsedTimeByCategoryGroup호출시_카테고리그룹별_사용시간을합산한_결과를_정렬하여_맵으로_리턴한다() throws Exception {
+        Map<String, Long> mockUsedTimeMap = new HashMap<>();
+        mockUsedTimeMap.put("/store/apps/category/GAME_ROLE_PLAYING", 10L);
+        mockUsedTimeMap.put("/store/apps/category/GAME_BOARD", 20L);
+        mockUsedTimeMap.put("/store/apps/category/VIDEO_PLAYERS", 3L);
+        mockUsedTimeMap.put("/store/apps/category/MUSIC_AND_AUDIO", 4L);
+        mockUsedTimeMap.put("/store/apps/category/PHOTOGRAPHY", 25L);
+        mockUsedTimeMap.put("/store/apps/category/PERSONALIZATION", 6L);
+        mockUsedTimeMap.put("/store/apps/category/FAMILY", 15L);
+        mockUsedTimeMap.put("/store/apps/category/FAMILY_BRAINGAMES", 15L);
+        mockUsedTimeMap.put("/store/apps/category/FAMILY_CREATE", 15L);
+
+        Map<String, Long> combinedMap = subject.combineUsedTimeByCategoryGroup(mockUsedTimeMap);
+
+        assertThat(combinedMap).isNotNull();
+        assertThat(combinedMap.size()).isEqualTo(6);
+
+        Object[] keySet = combinedMap.keySet().toArray();
+        assertThat(keySet[0].toString()).isEqualTo("/store/apps/category/FAMILY");
+        assertThat(keySet[1].toString()).isEqualTo("/store/apps/category/GAME");
+        assertThat(keySet[2].toString()).isEqualTo("/store/apps/category/PHOTOGRAPHY");
+        assertThat(keySet[3].toString()).isEqualTo("/store/apps/category/PERSONALIZATION");
+        assertThat(keySet[4].toString()).isEqualTo("/store/apps/category/MUSIC_AND_AUDIO");
+        assertThat(keySet[5].toString()).isEqualTo("/store/apps/category/VIDEO_PLAYERS");
+
+        assertThat(combinedMap.get(Category.FAMILY.categoryId)).isEqualTo(45L);
+        assertThat(combinedMap.get(Category.GAME.categoryId)).isEqualTo(30L);
+        assertThat(combinedMap.get(Category.PHOTOGRAPHY.categoryId)).isEqualTo(25L);
+        assertThat(combinedMap.get(Category.PERSONALIZATION.categoryId)).isEqualTo(6L);
+        assertThat(combinedMap.get(Category.MUSIC_AND_AUDIO.categoryId)).isEqualTo(4L);
+        assertThat(combinedMap.get(Category.VIDEO_PLAYERS.categoryId)).isEqualTo(3L);
     }
 
     @Test
@@ -550,17 +585,40 @@ public class AppUsageDataHelperTest {
         assertThat(map.size()).isEqualTo(5);
 
         ArrayList<String> list = Lists.newArrayList(map.keySet());
-        assertThat(list.get(0)).isEqualTo("사진");
-        assertThat(list.get(1)).isEqualTo("쇼핑");
-        assertThat(list.get(2)).isEqualTo("음악");
-        assertThat(list.get(3)).isEqualTo("교육");
-        assertThat(list.get(4)).isEqualTo("게임");
+        assertThat(list.get(0)).isEqualTo("/store/apps/category/PHOTOGRAPHY");
+        assertThat(list.get(1)).isEqualTo("/store/apps/category/SHOPPING");
+        assertThat(list.get(2)).isEqualTo("/store/apps/category/MUSIC_AND_AUDIO");
+        assertThat(list.get(3)).isEqualTo("/store/apps/category/EDUCATION");
+        assertThat(list.get(4)).isEqualTo("/store/apps/category/GAME");
 
         assertThat(map.get(list.get(0))).isEqualTo(5L);
         assertThat(map.get(list.get(1))).isEqualTo(4L);
         assertThat(map.get(list.get(2))).isEqualTo(3L);
         assertThat(map.get(list.get(3))).isEqualTo(2L);
         assertThat(map.get(list.get(4))).isEqualTo(1L);
+    }
+
+    @Test
+    public void getSortedCategoriesByUsedTime호출시_시간을합산해야하는카테고리가존재하는경우_대분류로_합산하여_많은_시간_사용된_카테고리순으로_정렬된_리스트를_요청한다() throws Exception {
+        when(mockAppRepositoryHelper.getUsedTimeMapByCategory()).thenReturn(createCategoryDummyDataWithCombiningSubCategoriesByUsedTime());
+        Map<String, Long> map = subject.getSortedCategoriesByUsedTime();
+        assertThat(map).isNotNull();
+        assertThat(map.size()).isEqualTo(6);
+
+        ArrayList<String> list = Lists.newArrayList(map.keySet());
+        assertThat(list.get(0)).isEqualTo("/store/apps/category/GAME");
+        assertThat(list.get(1)).isEqualTo("/store/apps/category/FAMILY");
+        assertThat(list.get(2)).isEqualTo("/store/apps/category/PHOTOGRAPHY");
+        assertThat(list.get(3)).isEqualTo("/store/apps/category/SHOPPING");
+        assertThat(list.get(4)).isEqualTo("/store/apps/category/MUSIC_AND_AUDIO");
+        assertThat(list.get(5)).isEqualTo("/store/apps/category/EDUCATION");
+
+        assertThat(map.get(list.get(0))).isEqualTo(7L);
+        assertThat(map.get(list.get(1))).isEqualTo(6L);
+        assertThat(map.get(list.get(2))).isEqualTo(5L);
+        assertThat(map.get(list.get(3))).isEqualTo(4L);
+        assertThat(map.get(list.get(4))).isEqualTo(3L);
+        assertThat(map.get(list.get(5))).isEqualTo(2L);
     }
 
     private void assertSortedMap(Map<String, Integer> map) {
@@ -581,11 +639,24 @@ public class AppUsageDataHelperTest {
 
     private Map<String, Long> createCategoryDummyDataByUsedTime() {
         Map<String, Long> dummyCategoryData = new HashMap<>();
-        dummyCategoryData.put("게임", 1L);
-        dummyCategoryData.put("사진", 5L);
-        dummyCategoryData.put("교육", 2L);
-        dummyCategoryData.put("음악", 3L);
-        dummyCategoryData.put("쇼핑", 4L);
+        dummyCategoryData.put("/store/apps/category/PHOTOGRAPHY", 5L);
+        dummyCategoryData.put("/store/apps/category/EDUCATION", 2L);
+        dummyCategoryData.put("/store/apps/category/MUSIC_AND_AUDIO", 3L);
+        dummyCategoryData.put("/store/apps/category/SHOPPING", 4L);
+        dummyCategoryData.put("/store/apps/category/GAME_ACTION", 1L);
+        return dummyCategoryData;
+    }
+
+    private Map<String, Long> createCategoryDummyDataWithCombiningSubCategoriesByUsedTime() {
+        Map<String, Long> dummyCategoryData = new HashMap<>();
+        dummyCategoryData.put("/store/apps/category/PHOTOGRAPHY", 5L);
+        dummyCategoryData.put("/store/apps/category/EDUCATION", 2L);
+        dummyCategoryData.put("/store/apps/category/MUSIC_AND_AUDIO", 3L);
+        dummyCategoryData.put("/store/apps/category/SHOPPING", 4L);
+        dummyCategoryData.put("/store/apps/category/GAME_ACTION", 4L);
+        dummyCategoryData.put("/store/apps/category/GAME_SPORTS", 3L);
+        dummyCategoryData.put("/store/apps/category/FAMILY_ACTION", 3L);
+        dummyCategoryData.put("/store/apps/category/FAMILY_PRETEND", 3L);
         return dummyCategoryData;
     }
 
