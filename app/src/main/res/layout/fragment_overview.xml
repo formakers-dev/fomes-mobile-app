@@ -23,9 +23,9 @@
             android:id="@+id/character_type_simple_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="79dp"
-            android:layout_marginStart="28dp"
             android:layout_marginEnd="27dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="79dp"
             android:gravity="center"
             android:lineSpacingExtra="7dp"
             android:textColor="@android:color/white"
@@ -84,9 +84,9 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/honey_pot_image"
                 android:layout_width="70dp"
-                android:layout_height="62.1dp"
-                android:src="@drawable/full_honey_bowl" />
+                android:layout_height="62.1dp" />
 
             <TextView
                 android:id="@+id/app_count_textview"
@@ -126,9 +126,9 @@
             android:layout_marginTop="50dp">
 
             <ImageView
+                android:id="@+id/hive_image"
                 android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/bee_house" />
+                android:layout_height="70dp" />
 
             <TextView
                 android:id="@+id/average_app_usage_time_textview"
@@ -171,16 +171,16 @@
                 android:layout_width="62dp"
                 android:layout_height="62dp"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/notfound_app_icon"/>
+                android:src="@drawable/notfound_app_icon" />
 
             <TextView
                 android:id="@+id/longest_used_app_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="88dp"
+                android:ellipsize="end"
                 android:lines="1"
                 android:maxLines="1"
-                android:ellipsize="end"
                 android:textColor="@color/bold_title"
                 android:textSize="18dp"
                 app:font="BMJUA"
