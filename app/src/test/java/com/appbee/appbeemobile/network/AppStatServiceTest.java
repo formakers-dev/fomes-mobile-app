@@ -140,7 +140,7 @@ public class AppStatServiceTest {
     public void getStartDate호출시_LocalStorageHelper에_저장된_lastUsageTime이_없으면_현시점에서_일주일전_시간을_리턴한다() throws Exception {
         long currentTime = 1503871200000L;
         when(timeHelper.getCurrentTime()).thenReturn(currentTime);
-        assertThat(subject.getStartTime()).isEqualTo(currentTime - 7 * 24 * 60 * 60 * 1000);
+        assertThat(subject.getStartTime()).isEqualTo(currentTime - 604800000L); // 604800000 = 7 * 24 * 60 * 60 * 1000
     }
 
     @Test

@@ -39,7 +39,7 @@ public class AppUsageDataHelper {
     private static final String PHOTOGRAPHY_CATEGORY_GROUP_KEY = "PHOTOGRAPHY_GROUP";
     static final boolean ASC = true;
     static final boolean DESC = false;
-    public static final long MILLISECONDS_OF_1_YEAR = 365 * 24 * 60 * 60 * 1000;
+    public static final long MILLISECONDS_OF_1_YEAR = 31536000000L; // 365 * 24 * 60 * 60 * 1000
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final LocalStorageHelper localStorageHelper;

@@ -104,6 +104,24 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
+    public void getLongTermStats호출시_조회시작일자는2년전_조회종료일자는현재시간을_전달한다() throws Exception {
+        long currentTime = 1499914800000L;
+        long twoYearsAgo = 1436842800000L; // currentTime - (2L * 365 * 24 * 60 * 60 * 1000)
+
+        when(mockTimeHelper.getCurrentTime()).thenReturn(currentTime);
+
+        ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
+
+        subject.getLongTermStats();
+
+        verify(mockAppBeeAndroidNativeHelper).getUsageStats(startTimeCaptor.capture(), endTimeCaptor.capture());
+
+        assertThat(endTimeCaptor.getValue()).isEqualTo(currentTime);
+        assertThat(startTimeCaptor.getValue()).isEqualTo(twoYearsAgo);
+    }
+
+    @Test
     public void getShortTermStats호출시_앱사용정보를_시간대별로_조회하여_리턴한다() throws Exception {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
