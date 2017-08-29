@@ -32,14 +32,13 @@ import static com.appbee.appbeemobile.util.AppBeeConstants.Category;
 @Singleton
 public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-    private static final int FROM_YEAR_FOR_LONG_TERM_STAT = 2;
     private static final String GAME_CATEGORY_GROUP_KEY = "GAME_GROUP";
     private static final String MUSIC_VIDEO_CATEGORY_GROUP_KEY = "MV_GROUP";
     private static final String PERSONALIZATION_CATEGORY_GROUP_KEY = "PERSONALIZATION_GROUP";
     private static final String PHOTOGRAPHY_CATEGORY_GROUP_KEY = "PHOTOGRAPHY_GROUP";
     static final boolean ASC = true;
     static final boolean DESC = false;
-    public static final long MILLISECONDS_OF_1_YEAR = 31536000000L; // 365 * 24 * 60 * 60 * 1000
+    private static final long MILLISECONDS_OF_THREE_MONTHS = 7884000000L; // 365 * 24 * 60 * 60 * 1000 / 4
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final LocalStorageHelper localStorageHelper;
@@ -93,7 +92,7 @@ public class AppUsageDataHelper {
         Map<String, LongTermStat> dailyUsageStatMap = new LinkedHashMap<>();
 
         long endTime = timeHelper.getCurrentTime();
-        long startTime = endTime - (MILLISECONDS_OF_1_YEAR * FROM_YEAR_FOR_LONG_TERM_STAT);
+        long startTime = endTime - MILLISECONDS_OF_THREE_MONTHS;
 
         List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
 

@@ -63,7 +63,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStats호출시_연간_일별통계정보를_리턴한다() throws Exception {
+    public void getLongTermStats호출시_최근3개월간_앱사용정보를_리턴한다() throws Exception {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
@@ -104,9 +104,9 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStats호출시_조회시작일자는2년전_조회종료일자는현재시간을_전달한다() throws Exception {
+    public void getLongTermStats호출시_조회시작일자는3개월전_조회종료일자는현재시간을_전달한다() throws Exception {
         long currentTime = 1499914800000L;
-        long twoYearsAgo = 1436842800000L; // currentTime - (2L * 365 * 24 * 60 * 60 * 1000)
+        long threeMonthsAgo = 1492030800000L; // currentTime - (365 * 24 * 60 * 60 * 1000 / 4)
 
         when(mockTimeHelper.getCurrentTime()).thenReturn(currentTime);
 
@@ -118,7 +118,7 @@ public class AppUsageDataHelperTest {
         verify(mockAppBeeAndroidNativeHelper).getUsageStats(startTimeCaptor.capture(), endTimeCaptor.capture());
 
         assertThat(endTimeCaptor.getValue()).isEqualTo(currentTime);
-        assertThat(startTimeCaptor.getValue()).isEqualTo(twoYearsAgo);
+        assertThat(startTimeCaptor.getValue()).isEqualTo(threeMonthsAgo);
     }
 
     @Test
