@@ -42,8 +42,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class AppUsageDataHelperTest {
     private AppUsageDataHelper subject;
 
@@ -65,7 +63,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStatsForYear호출시_연간_일별통계정보를_리턴한다() throws Exception {
+    public void getLongTermStats호출시_연간_일별통계정보를_리턴한다() throws Exception {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
@@ -77,7 +75,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStatsForYear호출시_동일앱의_일간사용정보가_두개이상인경우_사용시간을_합산하여_리턴한다() throws Exception {
+    public void getLongTermStats호출시_동일앱의_일간사용정보가_두개이상인경우_사용시간을_합산하여_리턴한다() throws Exception {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 200L, 1499934615000L));    //2017-07-13 17:30:15
@@ -92,7 +90,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStatsForYear호출시_연간_일별통계정보_사용시간이_많은순서대로_리턴한다() throws Exception {
+    public void getLongTermStats호출시_연간_일별통계정보_사용시간이_많은순서대로_리턴한다() throws Exception {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
         preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
@@ -225,24 +223,20 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    @Ignore
     public void getAppUsageAverageMinutesPerDay호출시_분단위의_앱사용평균시간을_리턴한다() throws Exception {
-        when(mockLocalStorageHelper.getMinStartedStatTimeStamp()).thenReturn(1436788800000L); // 2015년 July 13일 Monday PM 12:00:00
-        List<UsageStats> preStoredUsageStats = new ArrayList<>();
-        preStoredUsageStats.add(createMockUsageStats("com.package.name1", 5_000_000_000L, 1436788800000L));
-        preStoredUsageStats.add(createMockUsageStats("com.package.name2", 8_000_000_000L, 1499934615000L));
-        preStoredUsageStats.add(createMockUsageStats("com.package.name3", 9_000_000_000L, 1500001200000L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStats(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
-        ShadowSystemClock.setCurrentTimeMillis(1503014400000L); // 2017년 August 18일 Friday AM 12:00:00
-
-        List<LongTermStat> longTermStatList = subject.getLongTermStats();
-
         // (앱 사용시간의 총합 / 디바이스 총 사용일) 의 반올림.....
-        // 앱 사용시간의 총합 = 22000000000 / 1000 / 60 / 60 = 6,111.1111111111
-        // 디바이스 총 사용일 = (1503014400000 - 1436788800000) / 1000/ 60 / 60 / 24 = 766.5
+        // 앱 사용시간의 총합(분) = 22000000000 / 1000 / 60 = 366666 (소수점이하 내림)
+        // 디바이스 총 사용일 = 766
+        // 앱 사용평균사용시간(분/일) = 366666 / 766 = 478 (소수점이하 내림)
 
-        // TODO : 계산로직 체크
-        assertThat(subject.getAppUsageAverageMinutesPerDay(longTermStatList)).isEqualTo(474);
+        List<LongTermStat> longTermStatList = new ArrayList<>();
+        longTermStatList.add(new LongTermStat("com.package.name1", "20171212", 5_000_000_000L));
+        longTermStatList.add(new LongTermStat("com.package.name2", "20171212", 8_000_000_000L));
+        longTermStatList.add(new LongTermStat("com.package.name3", "20171212", 9_000_000_000L));
+
+        when(mockTimeHelper.getMobileTotalUsedDay(anyLong())).thenReturn(766L);
+
+        assertThat(subject.getAppUsageAverageMinutesPerDay(longTermStatList)).isEqualTo(478);
     }
 
     @Test

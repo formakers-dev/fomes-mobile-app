@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -40,6 +39,7 @@ public class AppUsageDataHelper {
     private static final String PHOTOGRAPHY_CATEGORY_GROUP_KEY = "PHOTOGRAPHY_GROUP";
     static final boolean ASC = true;
     static final boolean DESC = false;
+    public static final long MILLISECONDS_OF_1_YEAR = 365 * 24 * 60 * 60 * 1000;
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final LocalStorageHelper localStorageHelper;
@@ -92,10 +92,8 @@ public class AppUsageDataHelper {
     public List<LongTermStat> getLongTermStats() {
         Map<String, LongTermStat> dailyUsageStatMap = new LinkedHashMap<>();
 
-        Calendar calendar = Calendar.getInstance();
-        long endTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.YEAR, -1 * FROM_YEAR_FOR_LONG_TERM_STAT);
-        long startTime = calendar.getTimeInMillis();
+        long endTime = timeHelper.getCurrentTime();
+        long startTime = endTime - (MILLISECONDS_OF_1_YEAR * FROM_YEAR_FOR_LONG_TERM_STAT);
 
         List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
 
@@ -138,7 +136,7 @@ public class AppUsageDataHelper {
 
         totalUsedTime = totalUsedTime / 1000 / 60;
         long mobileTotalUsedDay = timeHelper.getMobileTotalUsedDay(localStorageHelper.getMinStartedStatTimeStamp());
-        return Math.round(totalUsedTime / mobileTotalUsedDay);
+        return (int) (totalUsedTime / mobileTotalUsedDay);
     }
 
     @NonNull
