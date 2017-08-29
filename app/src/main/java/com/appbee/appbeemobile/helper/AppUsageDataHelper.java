@@ -302,9 +302,15 @@ public class AppUsageDataHelper {
         return map;
     }
 
-    <K, V extends Comparable<V>> Map<K, V> sortByValue(Map<K, V> map, boolean isAsc) {
+    <K extends String, V extends Comparable<V>> Map<K, V> sortByValue(Map<K, V> map, boolean isAsc) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
-        Collections.sort(list, (o1, o2) -> o1.getValue().compareTo(o2.getValue()) * (isAsc ? 1 : -1));
+        Collections.sort(list, (o1, o2) -> {
+            if(o1.getValue().compareTo(o2.getValue()) == 0){
+                return o1.getKey().compareTo(o2.getKey()) * (isAsc? 1:-1);
+            } else{
+                return o1.getValue().compareTo(o2.getValue()) * (isAsc ? 1 : -1);
+            }
+        });
 
         LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
         for (Map.Entry<K, V> item : list) {
