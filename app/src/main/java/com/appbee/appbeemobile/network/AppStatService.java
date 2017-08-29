@@ -61,7 +61,7 @@ public class AppStatService {
     long getStartTime() {
         long lastUsageTime = localStorageHelper.getLastUsageTime();
         if (lastUsageTime == 0L) {
-            return timeHelper.getCurrentTime() - 7 * 24 * 60 * 60 * 1000;
+            return timeHelper.getCurrentTime() - 604800000L; // 604800000 = 7 * 24 * 60 * 60 * 1000 ( milliseconds / 1 week );
         } else {
             return lastUsageTime;
         }

@@ -16,7 +16,7 @@ public class TimeHelper {
     }
 
     public long getMobileTotalUsedDay(long minStatedTime) {
-        long mobileTotalUsedDay = (System.currentTimeMillis() - minStatedTime) / (1000 * 60 * 60 * 24);
+        long mobileTotalUsedDay = (System.currentTimeMillis() - minStatedTime) / 86400000L; // 86400000L = 1000 * 60 * 60 * 24 (milliseconds / day);
         if (minStatedTime == 0L) {
             mobileTotalUsedDay = 365 * 2; // 2년치 기간(일)
         }
