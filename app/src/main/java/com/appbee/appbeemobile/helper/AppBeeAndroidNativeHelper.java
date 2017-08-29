@@ -75,6 +75,7 @@ public class AppBeeAndroidNativeHelper {
             nativeAppInfo.setAppName(pm.getApplicationLabel(ai).toString());
             nativeAppInfo.setIcon(pm.getApplicationIcon(packageName));
         } catch (final PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
 
         return nativeAppInfo;
@@ -83,7 +84,7 @@ public class AppBeeAndroidNativeHelper {
     public List<UsageStats> getUsageStats(long startTime, long endTime) {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
-        return usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
+        return usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_MONTHLY, startTime, endTime);
     }
 
     public boolean hasUsageStatsPermission() {

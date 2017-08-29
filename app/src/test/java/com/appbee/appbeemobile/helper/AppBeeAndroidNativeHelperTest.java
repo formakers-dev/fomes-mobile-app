@@ -104,10 +104,10 @@ public class AppBeeAndroidNativeHelperTest {
     }
 
     @Test
-    public void getUsageStats호출시_일별통계정보를_조회한다() throws Exception {
+    public void getUsageStats호출시_앱사용정보를_조회한다() throws Exception {
         subject.getUsageStats(1000L, 1100L);
 
-        verify(mockUsageStatsManager).queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, 1000L, 1100L);
+        verify(mockUsageStatsManager).queryUsageStats(UsageStatsManager.INTERVAL_MONTHLY, 1000L, 1100L);
     }
 
     @Test
