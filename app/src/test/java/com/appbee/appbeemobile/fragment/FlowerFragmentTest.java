@@ -10,7 +10,6 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -24,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -142,6 +142,7 @@ public class FlowerFragmentTest {
         assertThat(lastRankTitleView.getVisibility()).isEqualTo(View.GONE);
         assertThat(leastUsedCategoryView.getVisibility()).isEqualTo(View.GONE);
 
+        assertThat(shadowOf(flowerBackgroundLayout.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.dead_flower_background);
         assertThat(mostUsedTimeCategorySummaryView.getText()).isEqualTo("아이코, 꽃이 시들어 버렸어요.");
         assertThat(mostUsedTimeCategoryDescriptionView.getText()).isEqualTo("가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요. 앱 사용 패턴이 조금 더 쌓이면, 예쁜 꽃이 다시 피어날꺼에요. 그때 앱비랑 다시 만나요!");
     }
