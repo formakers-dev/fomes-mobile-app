@@ -53,13 +53,15 @@ public class AppUsageDataHelperTest {
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
     private LocalStorageHelper mockLocalStorageHelper;
     private AppRepositoryHelper mockAppRepositoryHelper;
+    private TimeHelper mockTimeHelper;
 
     @Before
     public void setUp() throws Exception {
         this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
         this.mockLocalStorageHelper = mock(LocalStorageHelper.class);
         this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockLocalStorageHelper, mockAppRepositoryHelper);
+        this.mockTimeHelper = mock(TimeHelper.class);
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockLocalStorageHelper, mockAppRepositoryHelper, mockTimeHelper);
     }
 
     @Test
@@ -520,12 +522,6 @@ public class AppUsageDataHelperTest {
         assertThat(aggregateCategoryMap.get("MV_GROUP")).isEqualTo(3 + 4);
         assertThat(aggregateCategoryMap.get("PHOTOGRAPHY_GROUP")).isEqualTo(5);
         assertThat(aggregateCategoryMap.get("PERSONALIZATION_GROUP")).isEqualTo(6);
-
-        Object[] keySet = aggregateCategoryMap.keySet().toArray();
-        assertEquals(keySet[0].toString(), "MV_GROUP");
-        assertEquals(keySet[1].toString(), "PERSONALIZATION_GROUP");
-        assertEquals(keySet[2].toString(), "PHOTOGRAPHY_GROUP");
-        assertEquals(keySet[3].toString(), "GAME_GROUP");
     }
 
     @Test
@@ -557,15 +553,6 @@ public class AppUsageDataHelperTest {
 
         assertThat(combinedMap).isNotNull();
         assertThat(combinedMap.size()).isEqualTo(6);
-
-        Object[] keySet = combinedMap.keySet().toArray();
-        assertThat(keySet[0].toString()).isEqualTo("/store/apps/category/FAMILY");
-        assertThat(keySet[1].toString()).isEqualTo("/store/apps/category/GAME");
-        assertThat(keySet[2].toString()).isEqualTo("/store/apps/category/PHOTOGRAPHY");
-        assertThat(keySet[3].toString()).isEqualTo("/store/apps/category/PERSONALIZATION");
-        assertThat(keySet[4].toString()).isEqualTo("/store/apps/category/MUSIC_AND_AUDIO");
-        assertThat(keySet[5].toString()).isEqualTo("/store/apps/category/VIDEO_PLAYERS");
-
         assertThat(combinedMap.get(Category.FAMILY.categoryId)).isEqualTo(45L);
         assertThat(combinedMap.get(Category.GAME.categoryId)).isEqualTo(30L);
         assertThat(combinedMap.get(Category.PHOTOGRAPHY.categoryId)).isEqualTo(25L);
@@ -604,7 +591,7 @@ public class AppUsageDataHelperTest {
         dummyCategoryData.put("/store/apps/category/FAMILY_ACTION", 3);
         dummyCategoryData.put("/store/apps/category/FAMILY_PRETEND", 3);
 
-        Map<String, Integer> result = subject.combineInstalledAppCountByCategoryGroup(dummyCategoryData, AppUsageDataHelper.DESC);
+        Map<String, Integer> result = subject.combineInstalledAppCountByCategoryGroup(dummyCategoryData);
 
         assertThat(result).isNotNull();
         assertThat(result.get("/store/apps/category/PHOTOGRAPHY")).isEqualTo(5);

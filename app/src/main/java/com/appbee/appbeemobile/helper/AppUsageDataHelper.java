@@ -10,7 +10,6 @@ import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
-import com.appbee.appbeemobile.util.TimeUtil;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
@@ -45,16 +44,18 @@ public class AppUsageDataHelper {
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final LocalStorageHelper localStorageHelper;
     private final AppRepositoryHelper appRepositoryHelper;
+    private final TimeHelper timeHelper;
 
     @Inject
-    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper, AppRepositoryHelper appRepositoryHelper) {
+    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper, AppRepositoryHelper appRepositoryHelper, TimeHelper timeHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
         this.localStorageHelper = localStorageHelper;
         this.appRepositoryHelper = appRepositoryHelper;
+        this.timeHelper = timeHelper;
     }
 
     public List<ShortTermStat> getShortTermStats(long startTime) {
-        long endTime = TimeUtil.getCurrentTime();
+        long endTime = timeHelper.getCurrentTime();
 
         List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
@@ -80,7 +81,7 @@ public class AppUsageDataHelper {
     }
 
     public List<EventStat> getEventStats(long startTime) {
-        long endTime = TimeUtil.getCurrentTime();
+        long endTime = timeHelper.getCurrentTime();
         return appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
     }
 
@@ -136,7 +137,7 @@ public class AppUsageDataHelper {
         }
 
         totalUsedTime = totalUsedTime / 1000 / 60;
-        long mobileTotalUsedDay = TimeUtil.getMobileTotalUsedDay(localStorageHelper.getMinStartedStatTimeStamp());
+        long mobileTotalUsedDay = timeHelper.getMobileTotalUsedDay(localStorageHelper.getMinStartedStatTimeStamp());
         return Math.round(totalUsedTime / mobileTotalUsedDay);
     }
 
@@ -156,12 +157,14 @@ public class AppUsageDataHelper {
     }
 
     public ArrayList<String> getMostInstalledCategoryGroups(int count) {
-        Map<String, Integer> sortedAppCountMap = combineInstalledAppCountByCategoryGroup(appRepositoryHelper.getAppCountMapByCategory(), DESC);
+        Map<String, Integer> appCountMap = combineInstalledAppCountByCategoryGroup(appRepositoryHelper.getAppCountMapByCategory());
+        Map<String, Integer> sortedAppCountMap = sortByValue(appCountMap, DESC);
         return getSubList(sortedAppCountMap, count);
     }
 
     public ArrayList<String> getLeastInstalledCategoryGroups(int count) {
-        Map<String, Integer> sortedAppCountMap = combineInstalledAppCountByCategoryGroup(appRepositoryHelper.getAppCountMapByCategory(), ASC);
+        Map<String, Integer> appCountMap = combineInstalledAppCountByCategoryGroup(appRepositoryHelper.getAppCountMapByCategory());
+        Map<String, Integer> sortedAppCountMap = sortByValue(appCountMap, ASC);
         return getSubList(sortedAppCountMap, count);
     }
 
@@ -179,7 +182,7 @@ public class AppUsageDataHelper {
     }
 
     public Map<String, Long> getSortedCategoriesByUsedTime() {
-        return combineUsedTimeByCategoryGroup(appRepositoryHelper.getUsedTimeMapByCategory());
+        return sortByValue(combineUsedTimeByCategoryGroup(appRepositoryHelper.getUsedTimeMapByCategory()), DESC);
     }
 
     Map<String, Long> combineUsedTimeByCategoryGroup(Map<String, Long> usedTimeMapByCategory) {
@@ -190,10 +193,10 @@ public class AppUsageDataHelper {
             map.put(groupKey, Optional.fromNullable(map.get(groupKey)).or(0L) + usedTimeMapByCategory.get(key));
         }
 
-        return sortByValue(map, DESC);
+        return map;
     }
 
-    Map<String, Integer> combineInstalledAppCountByCategoryGroup(Map<String, Integer> usedTimeMapByCategory, boolean sortType) {
+    Map<String, Integer> combineInstalledAppCountByCategoryGroup(Map<String, Integer> usedTimeMapByCategory) {
         Map<String, Integer> map = new HashMap<>();
 
         for (String key : usedTimeMapByCategory.keySet()) {
@@ -201,7 +204,7 @@ public class AppUsageDataHelper {
             map.put(groupKey, Optional.fromNullable(map.get(groupKey)).or(0) + usedTimeMapByCategory.get(key));
         }
 
-        return sortByValue(map, sortType);
+        return map;
     }
 
     private String getCategoryGroupIdForCategoryId(String categoryId) {
@@ -244,8 +247,9 @@ public class AppUsageDataHelper {
         if (aggregatedMap == null || aggregatedMap.isEmpty()) {
             return CHARACTER_TYPE.ETC;
         }
+        Map<String, Integer> sortedMap = sortByValue(aggregatedMap, DESC);
 
-        final String topCategoryId = aggregatedMap.keySet().iterator().next();
+        final String topCategoryId = sortedMap.keySet().iterator().next();
 
         switch (topCategoryId) {
             case GAME_CATEGORY_GROUP_KEY:
@@ -298,7 +302,7 @@ public class AppUsageDataHelper {
             }
         }
 
-        return sortByValue(map, DESC);
+        return map;
     }
 
     <K, V extends Comparable<V>> Map<K, V> sortByValue(Map<K, V> map, boolean isAsc) {

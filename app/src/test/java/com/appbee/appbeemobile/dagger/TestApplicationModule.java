@@ -14,6 +14,7 @@ import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.helper.TimeHelper;
 
 import javax.inject.Singleton;
 
@@ -100,4 +101,8 @@ public class TestApplicationModule {
     @Singleton
     @Provides
     ShareSnsHelper shareSnsHelper() { return mock(ShareSnsHelper.class); }
+
+    @Singleton
+    @Provides
+    TimeHelper timeHelper() { return mock(TimeHelper.class); }
 }

@@ -1,24 +1,20 @@
 package com.appbee.appbeemobile.network;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.util.TimeUtil;
+import com.appbee.appbeemobile.helper.TimeHelper;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +37,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class AppStatServiceTest {
 
     private AppStatService subject;
@@ -55,6 +49,9 @@ public class AppStatServiceTest {
 
     @Mock
     private StatAPI mockStatAPI;
+
+    @Mock
+    private TimeHelper timeHelper;
 
     @Captor
     ArgumentCaptor<List<NativeAppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
@@ -74,7 +71,7 @@ public class AppStatServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper);
+        subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper, timeHelper);
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_TOKEN");
 
         RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
@@ -141,7 +138,9 @@ public class AppStatServiceTest {
 
     @Test
     public void getStartDate호출시_LocalStorageHelper에_저장된_lastUsageTime이_없으면_현시점에서_일주일전_시간을_리턴한다() throws Exception {
-        assertThat(subject.getStartTime()).isEqualTo(TimeUtil.getCurrentTime() - 7*24*60*60*1000);
+        long currentTime = 1503871200000L;
+        when(timeHelper.getCurrentTime()).thenReturn(currentTime);
+        assertThat(subject.getStartTime()).isEqualTo(currentTime - 7 * 24 * 60 * 60 * 1000);
     }
 
     @Test
@@ -154,10 +153,12 @@ public class AppStatServiceTest {
     @Test
     public void sendShortTermStatsAPI호출후_성공시_현재시간을_LocalStorage에_저장한다() throws Exception {
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
+        long currentTime = 100L;
+        when(timeHelper.getCurrentTime()).thenReturn(currentTime);
 
         subject.sendShortTermStats(mock(ServiceCallback.class));
 
-        verify(mockLocalStorageHelper).setLastUsageTime(TimeUtil.getCurrentTime());
+        verify(mockLocalStorageHelper).setLastUsageTime(currentTime);
     }
 
     @Test
