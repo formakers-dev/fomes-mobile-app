@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.After;
 import org.junit.Test;
@@ -25,6 +24,7 @@ import butterknife.Unbinder;
 import static com.appbee.appbeemobile.util.AppBeeConstants.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.robolectric.Shadows.shadowOf;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -70,6 +70,12 @@ public class OverviewFragmentTest {
     @BindView(R.id.app_count_description_textview)
     TextView appCountDescriptionView;
 
+    @BindView(R.id.honey_pot_image)
+    ImageView honeyPotImageView;
+
+    @BindView(R.id.hive_image)
+    ImageView hiveImageView;
+
     private Bitmap mockBitmap;
 
     private void createFragment(boolean isLongUsedAppIcon, int characterType) throws Exception {
@@ -87,6 +93,26 @@ public class OverviewFragmentTest {
             bundle.putParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP, mockBitmap);
         }
 
+        subject = new OverviewFragment();
+        subject.setArguments(bundle);
+
+        FragmentController.of(subject).create();
+        binder = ButterKnife.bind(this, subject.getView());
+    }
+
+    private void createFragmentForHoneyPot(int appCount) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
+        subject = new OverviewFragment();
+        subject.setArguments(bundle);
+
+        FragmentController.of(subject).create();
+        binder = ButterKnife.bind(this, subject.getView());
+    }
+
+    private void createFragmentForHive(int appAvgTime) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appAvgTime);
         subject = new OverviewFragment();
         subject.setArguments(bundle);
 
@@ -160,6 +186,42 @@ public class OverviewFragmentTest {
         assertTextViewVisibleAndEquals(appCountView, "400개");
         assertTextViewVisibleAndEquals(appCountTitleView, "총 앱개수 많아요.");
         assertTextViewVisibleAndEquals(appCountDescriptionView, "호기심이 많고 항상 효율적인 방법을 모색하는 스타일이에요.");
+
+    }
+
+    @Test
+    public void fragment시작시_설치된_앱개수가_150개_이상일_경우_FullHoneyPot_이미지를_보여준다() throws Exception {
+        createFragmentForHoneyPot(150);
+
+        assertThat(shadowOf(honeyPotImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.full_honey_pot);
+    }
+
+    @Test
+    public void fragment시작시_설치된_앱개수가_100개_이상일_경우_ThreeQuaterHoneyPot_이미지를_보여준다() throws Exception {
+        createFragmentForHoneyPot(100);
+
+        assertThat(shadowOf(honeyPotImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.three_quater_honey_pot);
+    }
+
+    @Test
+    public void fragment시작시_설치된_앱개수가_50개_이상일_경우_HalfHoneyPot_이미지를_보여준다() throws Exception {
+        createFragmentForHoneyPot(50);
+
+        assertThat(shadowOf(honeyPotImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.half_honey_pot);
+    }
+
+    @Test
+    public void fragment시작시_설치된_앱개수가_25개_이상일_경우_QuaterHoneyPot_이미지를_보여준다() throws Exception {
+        createFragmentForHoneyPot(25);
+
+        assertThat(shadowOf(honeyPotImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.quater_honey_pot);
+    }
+
+    @Test
+    public void fragment시작시_설치된_앱개수가_25개_미만일_경우_PoorHoneyPot_이미지를_보여준다() throws Exception {
+        createFragmentForHoneyPot(24);
+
+        assertThat(shadowOf(honeyPotImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.poor_honey_pot);
     }
 
     @Test
@@ -178,6 +240,42 @@ public class OverviewFragmentTest {
         assertThat(longestUsedAppNameView.getText()).isEqualTo("제일 많이 쓴 앱, testApp1");
         assertThat(longestUsedAppDescriptionView.getText()).isEqualTo("testApp1 Description");
         assertThat(((BitmapDrawable) longestUsedAppIcon.getDrawable()).getBitmap()).isEqualTo(mockBitmap);
+    }
+
+
+    @Test
+    public void fragment시작시_가장_오래사용한_앱의_사용시간이_8시간_이상인_경우_fullHive이미지를_표시한다() throws Exception {
+        createFragmentForHive(480);
+
+        assertThat(shadowOf(hiveImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.full_hive);
+    }
+
+    @Test
+    public void fragment시작시_가장_오래사용한_앱의_사용시간이_4시간_이상인_경우_threeQuaterHive이미지를_표시한다() throws Exception {
+        createFragmentForHive(240);
+
+        assertThat(shadowOf(hiveImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.three_quater_hive);
+    }
+
+    @Test
+    public void fragment시작시_가장_오래사용한_앱의_사용시간이_2시간_이상인_경우_halfHive이미지를_표시한다() throws Exception {
+        createFragmentForHive(120);
+
+        assertThat(shadowOf(hiveImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.half_hive);
+    }
+
+    @Test
+    public void fragment시작시_가장_오래사용한_앱의_사용시간이_1시간_이상인_경우_quaterHive이미지를_표시한다() throws Exception {
+        createFragmentForHive(60);
+
+        assertThat(shadowOf(hiveImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.quater_hive);
+    }
+
+    @Test
+    public void fragment시작시_가장_오래사용한_앱의_사용시간이_1시간_미만인_경우_poorHive이미지를_표시한다() throws Exception {
+        createFragmentForHive(59);
+
+        assertThat(shadowOf(hiveImageView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.poor_hive);
     }
 
     @Test

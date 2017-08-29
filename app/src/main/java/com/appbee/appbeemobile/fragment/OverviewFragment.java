@@ -63,6 +63,12 @@ public class OverviewFragment extends Fragment {
     @BindView(R.id.app_count_description_textview)
     TextView appCountDescriptionView;
 
+    @BindView(R.id.honey_pot_image)
+    ImageView honeyPotImageView;
+
+    @BindView(R.id.hive_image)
+    ImageView hiveImageView;
+
     private Unbinder binder;
 
     @Nullable
@@ -94,6 +100,17 @@ public class OverviewFragment extends Fragment {
         final String appUsageTimeTypeName = getResources().getStringArray(R.array.app_usage_time_type_names)[appUsageTimeType];
         averageAppUsageTimeTitleView.setText(getString(R.string.overview_average_time_title, appUsageTimeTypeName));
         averageAppUsageTimeDescriptionView.setText(getResources().getStringArray(R.array.app_usage_time_type_descriptions)[appUsageTimeType]);
+        if (appUsageAverageTime >= 480) {
+            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.full_hive, null));
+        } else if (appUsageAverageTime >= 240) {
+            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.three_quater_hive, null));
+        } else if (appUsageAverageTime >= 120) {
+            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.half_hive, null));
+        } else if (appUsageAverageTime >= 60) {
+            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.quater_hive, null));
+        } else {
+            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.poor_hive, null));
+        }
     }
 
     private void displayAppListCountInformation(int appListCount, int appListCountType) {
@@ -101,6 +118,17 @@ public class OverviewFragment extends Fragment {
         final String appCountTitle = getResources().getStringArray(R.array.app_list_count_type_names)[appListCountType];
         appCountTitleView.setText(getString(R.string.overview_app_count_title, appCountTitle));
         appCountDescriptionView.setText(getResources().getStringArray(R.array.app_list_count_type_descriptions)[appListCountType]);
+        if (appListCount >= 150) {
+            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.full_honey_pot, null));
+        } else if (appListCount >= 100) {
+            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.three_quater_honey_pot, null));
+        } else if (appListCount >= 50) {
+            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.half_honey_pot, null));
+        } else if (appListCount >= 25) {
+            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.quater_honey_pot, null));
+        } else {
+            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.poor_honey_pot, null));
+        }
     }
 
     private void displayLongestUsedAppInformation(String appName, String description, Bitmap iconBitmap) {
