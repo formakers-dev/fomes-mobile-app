@@ -360,6 +360,26 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
+    public void 오름차순sortByValue호출시_동률값이_존재하는_경우_키의값을_기준으로_오름차순_정렬된_맵을_리턴한다() throws Exception {
+        Map<String, Integer> map = subject.sortByValue(createDummyMapForSameValueSortingTest(), AppUsageDataHelper.ASC);
+
+        Object[] keySet = map.keySet().toArray();
+        assertEquals(keySet[0].toString(), "categoryId2");
+        assertEquals(keySet[1].toString(), "categoryId1");
+        assertEquals(keySet[2].toString(), "categoryId3");
+    }
+
+    @Test
+    public void 오름차순sortByValue호출시_동률값이_존재하는_경우_키의값을_기준으로_내림차순_정렬된_맵을_리턴한다() throws Exception {
+        Map<String, Integer> map = subject.sortByValue(createDummyMapForSameValueSortingTest(), AppUsageDataHelper.DESC);
+
+        Object[] keySet = map.keySet().toArray();
+        assertEquals(keySet[0].toString(), "categoryId3");
+        assertEquals(keySet[1].toString(), "categoryId1");
+        assertEquals(keySet[2].toString(), "categoryId2");
+    }
+
+    @Test
     public void getLongTermStatsSummary호출시_package별_totalUsedTime의_합을_리턴한다() throws Exception {
         List<UsageStats> preStoredUsageStats = new ArrayList<>();
         preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-12 12:00:00
@@ -651,6 +671,15 @@ public class AppUsageDataHelperTest {
         dummyMap.put("categoryId1", 1);
         dummyMap.put("categoryId2", 3);
         dummyMap.put("categoryId3", 2);
+        return dummyMap;
+    }
+
+    @NonNull
+    private Map<String, Integer> createDummyMapForSameValueSortingTest() {
+        Map<String, Integer> dummyMap = new HashMap<>();
+        dummyMap.put("categoryId3", 10);
+        dummyMap.put("categoryId1", 10);
+        dummyMap.put("categoryId2", 5);
         return dummyMap;
     }
 
