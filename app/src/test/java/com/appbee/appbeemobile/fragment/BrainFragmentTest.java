@@ -9,11 +9,9 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
 
@@ -24,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -142,7 +141,7 @@ public class BrainFragmentTest {
     public void 세건미만의카테고리정보가주어지는경우_onViewCreated호출시_카테고리정보부족_레이아웃이_나타난다() throws Exception {
         setUpWithNotEnoughData();
 
-        assertThat(brainImageLayout.getBackground()).isEqualTo(subject.getResources().getDrawable(R.drawable.no_brain_background, null));
+        assertThat(shadowOf(brainImageLayout.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.no_brain_background);
 
         assertThat(rank1Layout.getVisibility()).isEqualTo(View.GONE);
         assertThat(rank2Layout.getVisibility()).isEqualTo(View.GONE);

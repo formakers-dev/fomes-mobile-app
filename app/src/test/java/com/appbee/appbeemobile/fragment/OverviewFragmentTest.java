@@ -281,7 +281,7 @@ public class OverviewFragmentTest {
     @Test
     public void 가장_오래사용한_앱의_아이콘이_없는_경우_디폴트아이콘을_표시한다() throws Exception {
         createFragment(false, CHARACTER_TYPE.GAMER);
-        assertThat(longestUsedAppIcon.getDrawable()).isEqualTo(subject.getResources().getDrawable(R.drawable.notfound_app_icon, null));
+        assertThat(shadowOf(longestUsedAppIcon.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.notfound_app_icon);
     }
 
     private void assertTextViewVisibleAndEquals(TextView textView, String text) {
