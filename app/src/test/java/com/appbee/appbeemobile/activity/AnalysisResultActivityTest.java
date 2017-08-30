@@ -184,7 +184,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         Bundle bundle = flowerFragment.getArguments();
         assertThat(bundle).isNotNull();
 
-        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("당신은 다른 사람보다 일관성이 있으신 분인 것 같아요!");
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("다른 사람보다 일관성이 있으신 분인 것 같아요!");
     }
 
     @Test
@@ -209,7 +209,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(leastUsedTimeCategory.size()).isEqualTo(0);
 
         assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY)).isEqualTo("아이코, 꽃이 시들어 버렸어요.");
-        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요.");
+        assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("가지고 있는 앱의 카테고리 수가 충분치 않거나");
     }
 
     @Test
@@ -369,13 +369,13 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_PRETEND")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_MUSICVIDEO")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FAMILY_CREATE")).isEqualTo(subject.getString(R.string.brain_flower_desc_kids));
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MEDICAL")).isEqualTo("의료 앱을 많이 쓰는 사람들은 크게 두 분류로 나뉘어진대요. 의료업계에서 일하거나, 몸에 큰 변화가 있는 사람! 당신이 어떤 상황이든 건강 조심하라구요~");
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FOOD_AND_DRINK")).isEqualTo("당신은 앱비랑 잘 맞는것 같아요! 인생의 가장 큰 즐거움은 역시 먹고 마시는거 아니겠어요. 이런 즐거움도 없이 어떻게 세상을 살아가나요?");
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/EVENTS")).isEqualTo("당신은 좀 특이하네요. 하나의 분야를 깊게 파는 스타일인데, 알면 알수록 궁금해지는 사람이에요.");
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/AUTO_AND_VEHICLES")).isEqualTo("자동차에 관심이 많은 당신! 항상 알뜰하고 세심하게 차를 돌봐줘서 당신이 운전하는 차는 행복할 거에요. 은근 섬세한 성향이 있는 당신이니까 오늘도 안전운전 하리라고 믿어요!");
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MAPS_AND_NAVIGATION")).isEqualTo("무슨 일이든 효율적으로 처리하는 당신. 느린 길, 돌아가는 길은 참기 어려운 짜증을 불러일으키죠! 하지만 가끔은 지나치는 풍경과 하늘을 바라보는 것도 좋을것 같아요.");
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PARENTING")).isEqualTo("아이를 키우는게 쉬운 일이 아니지요. 늘 바쁘지만 아이에게는 다정한 부모가 되려고 노력하는 당신! 당신의 가족들은 그 노력을 분명히 알고 있을 거에요. 오늘도 수고했어요.");
-        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/ANDROID_WEAR")).isEqualTo("스마트 시계를 몸에서 떼놓지 않는 얼리어답터! 트랜드에 밝고 신기술에 관심이 많고 호기심이 넘치는 스타일이에요. 자기에게 맞는 일을 찾으면 누구보다 잘 파고드는 성향이랍니다.");
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MEDICAL")).isEqualTo(subject.getString(R.string.brain_flower_desc_medical));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/FOOD_AND_DRINK")).isEqualTo(subject.getString(R.string.brain_flower_desc_food_and_drink));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/EVENTS")).isEqualTo(subject.getString(R.string.brain_flower_desc_events));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/AUTO_AND_VEHICLES")).isEqualTo(subject.getString(R.string.brain_flower_desc_auto_and_vehicles));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/MAPS_AND_NAVIGATION")).isEqualTo(subject.getString(R.string.brain_flower_desc_maps_and_navigation));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/PARENTING")).isEqualTo(subject.getString(R.string.brain_flower_desc_parenting));
+        assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/ANDROID_WEAR")).isEqualTo(subject.getString(R.string.brain_flower_desc_android_wear));
     }
 
     private void mockDummyData() {
