@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -29,6 +30,7 @@
         android:layout_marginTop="16dp"
         android:paddingEnd="38dp"
         android:paddingStart="38dp"
+        android:textAlignment="center"
         android:text="@string/app_usage_habit_description"
         android:textColor="@color/description"
         android:textSize="15dp" />

@@ -1,106 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="88dp"
-        android:src="@drawable/start_appbee_icon" />
-
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:background="@drawable/background">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingEnd="40dp"
-        android:paddingStart="40dp">
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/start_appbee_icon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingEnd="40dp"
+            android:paddingStart="40dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/horizontal_line" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:text="@string/appbee"
+                android:textColor="#4a4a4a"
+                android:textSize="20dp"
+                app:font="BMJUA"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/horizontal_line" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:gravity="center_horizontal"
+            android:text="@string/start_title"
+            android:textColor="@android:color/black"
+            android:textSize="36dp"
+            app:font="BMJUA"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="@string/start_description"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
             android:background="@color/horizontal_line" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
-            android:text="@string/appbee"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginEnd="33dp"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:text="@string/start_permission_message"
+            android:textColor="#a24a4a4a"
+            android:textSize="14dp" />
+
+        <Button
+            android:id="@+id/start_analysis_button"
+            android:layout_width="264.9dp"
+            android:layout_height="68dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="51dp"
+            android:background="@drawable/round_button_background"
+            android:text="@string/please_analysis_me"
             android:textColor="#4a4a4a"
             android:textSize="20dp"
-            app:font="BMJUA"
-            tools:ignore="MissingPrefix" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@color/horizontal_line" />
+            app:font="BMJUA"/>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:gravity="center_horizontal"
-        android:text="@string/start_title"
-        android:textColor="@android:color/black"
-        android:textSize="36dp"
-        app:font="BMJUA"
-        tools:ignore="MissingPrefix" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="@string/start_description"
-        android:textColor="@android:color/white"
-        android:textSize="16dp"
-        android:textStyle="bold" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/horizontal_line" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginEnd="33dp"
-        android:gravity="center_horizontal"
-        android:text="@string/start_permission_message"
-        android:textColor="#a24a4a4a"
-        android:textSize="14dp" />
-
-    <Button
-        android:id="@+id/start_analysis_button"
-        android:layout_width="264.9dp"
-        android:layout_height="68dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="51dp"
-        android:background="@drawable/round_button_background"
-        android:text="@string/please_analysis_me"
-        android:textColor="#4a4a4a"
-        android:textSize="20dp"
-        app:font="BMJUA"
-        tools:ignore="MissingPrefix" />
-</LinearLayout>
+</ScrollView>
