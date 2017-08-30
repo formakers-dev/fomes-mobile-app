@@ -63,9 +63,10 @@ public class AppServiceTest {
         packageNames.add("com.test.app1");
         packageNames.add("com.test.app2");
 
-        when(mockAppAPI.getInfo(any())).thenReturn(mock(Observable.class));
+        when(mockAppAPI.getInfo(any())).thenReturn(Observable.just(Response.success(null)));
 
-        subject.getInfos(packageNames, mock(AppService.AppInfosServiceCallback.class));
+        AppService.AppInfosServiceCallback mockAppInfosServiceCallback = mock(AppService.AppInfosServiceCallback.class);
+        subject.getInfos(packageNames, mockAppInfosServiceCallback);
 
         verify(mockAppAPI).getInfo(packageNamesCaptor.capture());
         List<String> actualPackageNames = packageNamesCaptor.getValue();

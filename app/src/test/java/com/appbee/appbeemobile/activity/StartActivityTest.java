@@ -28,7 +28,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class StartActivityTest {
+public class StartActivityTest extends ActivityTest {
 
     private StartActivity subject;
     private Unbinder binder;

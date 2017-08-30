@@ -12,6 +12,7 @@ import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,9 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -42,6 +46,8 @@ import static org.robolectric.Shadows.shadowOf;
 public class MainActivityTest extends ActivityTest {
 
     private ActivityController<MainActivity> activityController;
+
+    private Unbinder binder;
 
     @Inject
     AppStatService mockAppStatService;
@@ -66,20 +72,33 @@ public class MainActivityTest extends ActivityTest {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        if(binder != null) {
+            binder.unbind();
+        }
+    }
+
     @Test
     public void onCreate호출시_Stat접근권한이_없는_경우_권한요청_Activity를_호출한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
-        MainActivity subject = activityController.create().get();
+        MainActivity subject = createSubjectWithCreateLifecycle();
 
         ShadowActivity.IntentForResult nextStartedActivityForResult = shadowOf(subject).getNextStartedActivityForResult();
         assertThat(nextStartedActivityForResult.intent.getAction()).isEqualTo(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         assertThat(nextStartedActivityForResult.requestCode).isEqualTo(1001);
     }
 
+    private MainActivity createSubjectWithCreateLifecycle() {
+        MainActivity subject = activityController.create().get();
+        binder = ButterKnife.bind(this, subject);
+        return subject;
+    }
+
     @Test
     public void onCreate호출시_Stat접근권한이_있는_경우_권한요청_Activity를_호출하지_않는다() throws Exception {
-        MainActivity subject = activityController.create().get();
+        MainActivity subject = createSubjectWithCreateLifecycle();
         assertThat(shadowOf(subject).getNextStartedActivity()).isNull();
     }
 
@@ -88,7 +107,7 @@ public class MainActivityTest extends ActivityTest {
         List<String> usedPackageNameList = Arrays.asList("com.package.name1","com.package.name2");
         when(mockAppStatService.getUsedPackageNameList()).thenReturn(usedPackageNameList);
 
-        MainActivity subject = activityController.create().get();
+        MainActivity subject = createSubjectWithCreateLifecycle();
 
         verify(mockAppService).getInfos(eq(usedPackageNameList), eq(subject.appInfosServiceCallback));
     }
@@ -104,7 +123,7 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void appInfosServiceCallback의_onSuccess를_호출했을때_DB에_결과를_저장한다() throws Exception {
         List<AppInfo> returnedAppInfos = mock(List.class);
-        MainActivity subject = activityController.create().get();
+        MainActivity subject = createSubjectWithCreateLifecycle();
         Map<String, Long> mockLongTermStatsSummary = mock(Map.class);
         when(mockAppUsageDataHelper.getLongTermStatsSummary()).thenReturn(mockLongTermStatsSummary);
 
@@ -116,7 +135,7 @@ public class MainActivityTest extends ActivityTest {
 
     @Test
     public void appInfosServiceCallback의_onSuccess를_호출했을때_분석결과화면으로_이동한다() throws Exception {
-        MainActivity subject = activityController.create().get();
+        MainActivity subject = createSubjectWithCreateLifecycle();
         subject.appInfosServiceCallback.onSuccess(mock(List.class));
 
         assertLaunchAnalysisResultActivity(subject);
@@ -125,7 +144,7 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_앱목록정보조회API를_요청한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        MainActivity subject = activityController.create().get();
+        MainActivity subject = createSubjectWithCreateLifecycle();
         shadowOf(subject).getNextStartedActivity();
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
@@ -137,7 +156,7 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void 권한요청에대한_onActivityResult호출시_접근권한이_부여되지_않은_경우_앱을_종료한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        MainActivity subject = activityController.create().get();
+        MainActivity subject = createSubjectWithCreateLifecycle();
 
         subject.onActivityResult(1001, 0, null);
 
