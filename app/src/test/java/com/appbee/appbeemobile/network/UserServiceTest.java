@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.network;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -77,4 +78,13 @@ public class UserServiceTest {
         assertEquals(actualNativeAppInfos.get(0).getAppName(), "app_name");
     }
 
+    @Test
+    public void sendUser호출시_유저정보를_서버로_전송한다() throws Exception {
+        when(mockUserAPI.sendUser(any(User.class))).thenReturn(mock(Observable.class));
+
+        User mockUser = mock(User.class);
+        subject.sendUser(mockUser, mock(ServiceCallback.class));
+
+        verify(mockUserAPI).sendUser(mockUser);
+    }
 }

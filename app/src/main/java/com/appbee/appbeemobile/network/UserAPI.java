@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.User;
 
 import java.util.List;
 
@@ -18,4 +19,7 @@ public interface UserAPI {
 
     @POST("/user/apps")
     Observable<Response<Boolean>> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<NativeAppInfo> nativeAppInfos);
+
+    @POST("/user")
+    Observable<Response<Boolean>> sendUser(@Body User user);
 }

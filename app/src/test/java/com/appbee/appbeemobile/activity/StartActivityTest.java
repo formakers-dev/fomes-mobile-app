@@ -1,23 +1,32 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.network.UserService;
+import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowApplication;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +45,16 @@ public class StartActivityTest extends ActivityTest {
     @BindView(R.id.start_analysis_button)
     Button startButton;
 
+    @Mock
+    UserService mockUserService;
+
+    @Mock
+    TimeHelper mockTimeHelper;
+
     @Before
     public void setUp() throws Exception {
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+
         subject = Robolectric.setupActivity(StartActivity.class);
         binder = ButterKnife.bind(this, subject);
     }
@@ -86,5 +103,20 @@ public class StartActivityTest extends ActivityTest {
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick();
 
         assertThat(alertDialog.isShowing()).isFalse();
+    }
+
+    @Test
+    public void onCreate호출시_PowerConnectedReceiver를_등록한다() throws Exception {
+        List<ShadowApplication.Wrapper> registeredReceivers = shadowOf(RuntimeEnvironment.application).getRegisteredReceivers();
+
+        boolean isPowerConnectedReceiverRegistered = false;
+        for(ShadowApplication.Wrapper receiver : registeredReceivers ) {
+            BroadcastReceiver broadcastReceiver = receiver.getBroadcastReceiver();
+            if(broadcastReceiver.getClass().getSimpleName().equals(PowerConnectedReceiver.class.getSimpleName())) {
+                isPowerConnectedReceiverRegistered = true;
+                break;
+            }
+        }
+        assertThat(isPowerConnectedReceiverRegistered).isTrue();
     }
 }
