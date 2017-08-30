@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppBeeMobile</string>
+    <string name="app_name">AppBee App Behavior</string>
     <string name="app_count_many_msg">많기도 하네 진짜…</string>
     <string name="app_count_few_msg">적기도 하네 진짜…</string>
     <string name="app_count_proper_msg">적당도 하네 진짜…</string>
