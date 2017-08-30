@@ -2,113 +2,128 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingPrefix"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="617dp"
+    android:layout_marginEnd="20dp"
     android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp">
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
         android:text="@string/flower_description"
-        android:textSize="15dp"
         android:textColor="@color/bold_description"
-        android:textStyle="bold"/>
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="6dp"
         android:text="@string/flower_title"
-        android:textSize="30dp"
         android:textColor="@color/bold_title"
-        app:font="BMJUA"/>
+        android:textSize="30dp"
+        app:font="BMJUA" />
+
     <RelativeLayout
         android:id="@+id/flower_background_layout"
         android:layout_width="322dp"
         android:layout_height="309dp"
-        android:layout_marginTop="32dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
         android:background="@drawable/flower_background">
+
         <LinearLayout
             android:id="@+id/rank1_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="25dp"
-            android:layout_marginStart="124dp"
-            android:layout_marginEnd="116dp"
             android:layout_marginBottom="202dp"
+            android:layout_marginEnd="116dp"
+            android:layout_marginStart="124dp"
+            android:layout_marginTop="25dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/rank1"
-                android:textSize="12dp"
                 android:lineSpacingExtra="8dp"
+                android:text="@string/rank1"
                 android:textColor="@color/description"
+                android:textSize="12dp"
                 app:font="BMJUA" />
-            <TextView android:id="@+id/most_used_category1"
+
+            <TextView
+                android:id="@+id/most_used_category1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="3dp"
-                android:textSize="20dp"
+                android:gravity="center_horizontal"
                 android:textColor="@color/bold_title"
-                app:font="BMJUA"/>
+                android:textSize="20dp"
+                app:font="BMJUA" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/rank2_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="99dp"
-            android:layout_marginStart="21dp"
-            android:layout_marginEnd="234dp"
             android:layout_marginBottom="143dp"
+            android:layout_marginEnd="234dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="99dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/rank2"
-                android:textSize="12dp"
                 android:lineSpacingExtra="8dp"
+                android:text="@string/rank2"
                 android:textColor="@color/description"
+                android:textSize="12dp"
                 app:font="BMJUA" />
-            <TextView android:id="@+id/most_used_category2"
+
+            <TextView
+                android:id="@+id/most_used_category2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="3dp"
-                android:textSize="20dp"
+                android:gravity="center_horizontal"
                 android:textColor="@color/bold_title"
-                app:font="BMJUA"/>
+                android:textSize="20dp"
+                app:font="BMJUA" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/rank3_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="129dp"
-            android:layout_marginStart="236dp"
-            android:layout_marginEnd="27dp"
             android:layout_marginBottom="121dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginStart="236dp"
+            android:layout_marginTop="129dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/rank3"
-                android:textSize="12dp"
                 android:lineSpacingExtra="8dp"
+                android:text="@string/rank3"
                 android:textColor="@color/description"
+                android:textSize="12dp"
                 app:font="BMJUA" />
-            <TextView android:id="@+id/most_used_category3"
+
+            <TextView
+                android:id="@+id/most_used_category3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -117,20 +132,23 @@
                 android:textSize="14dp"
                 app:font="BMJUA" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/last_rank_title_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="249dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="208dp"
             android:layout_marginBottom="40dp"
+            android:layout_marginEnd="208dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="249dp"
+            android:gravity="center"
             android:text="@string/last_rank"
             android:textColor="@color/pinkish_grey_title"
             android:textSize="12dp"
-            android:gravity="center"
-            app:font="BMJUA"/>
-        <TextView android:id="@+id/least_used_category"
+            app:font="BMJUA" />
+
+        <TextView
+            android:id="@+id/least_used_category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="21dp"
@@ -144,6 +162,7 @@
             android:textSize="14dp"
             app:font="BMJUA" />
     </RelativeLayout>
+
     <TextView
         android:id="@+id/most_used_time_category_summary"
         android:layout_width="wrap_content"
@@ -152,16 +171,19 @@
         android:layout_marginTop="32dp"
         android:textColor="@color/bold_title"
         android:textSize="20dp"
-        app:font="BMJUA"/>
+        app:font="BMJUA" />
+
     <TextView
         android:id="@+id/most_used_time_category_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:textColor="@color/description"
-        android:textSize="15dp"/>
+        android:textSize="15dp" />
 
     <View
         android:layout_width="321dp"
