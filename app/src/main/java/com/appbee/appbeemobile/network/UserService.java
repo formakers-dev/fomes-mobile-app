@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.User;
 
 import javax.inject.Inject;
 
@@ -50,5 +51,9 @@ public class UserService {
         userAPI.sendAppInfoList(localStorageHelper.getAccessToken(), appUsageDataHelper.getAppList())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new BooleanResponseObserver(serviceCallback));
+    }
+
+    public void sendUser(User user, ServiceCallback serviceCallback) {
+        userAPI.sendUser(user);
     }
 }

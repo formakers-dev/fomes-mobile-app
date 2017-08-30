@@ -1,21 +1,43 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.network.UserService;
+import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
+
+import javax.inject.Inject;
 
 import butterknife.OnClick;
 
 public class StartActivity extends BaseActivity {
 
+    @Inject
+    UserService userService;
+
+    @Inject
+    TimeHelper timeHelper;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ((AppBeeApplication) getApplication()).getComponent().inject(this);
+
         setContentView(R.layout.activity_start);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+        BroadcastReceiver br = new PowerConnectedReceiver(userService, timeHelper);
+
+        registerReceiver(br, intentFilter);
     }
 
     @OnClick(R.id.start_analysis_button)
