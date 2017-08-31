@@ -1,4 +1,32 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      'android/**/*.*',
+                      '**/*InjectAdapter*.*',
+                      '**/*StaticInjection*.*',
+                      '**/*ModuleAdapter*.*',
+                        '**/*_Factory.*']
+    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug/com/appbee/appbeemobile", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+    ])
+}
 
 android {
     compileSdkVersion 25
@@ -22,6 +50,7 @@ android {
     buildTypes {
         debug {
             debuggable true
+            testCoverageEnabled true
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://' + InetAddress.getLocalHost().getHostAddress() + ':8080/"';
         }
         release {
@@ -38,6 +67,9 @@ android {
     testOptions {
         unitTests.all {
             forkEvery = 5
+            jacoco {
+                includeNoLocationClasses = true
+            }
         }
     }
     configurations.all {
@@ -81,6 +113,8 @@ dependencies {
     compile 'com.kakao.sdk:kakaolink:1.5.1'
     // typekit
     compile 'com.tsengvn:typekit:1.0.1'
+    // Automated Gif
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.22'

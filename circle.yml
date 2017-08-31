@@ -31,6 +31,11 @@ test:
     - ./gradlew testReleaseUnitTest connectedAndroidTest assembleRelease:
         timeout: 1200
   post:
+    # Jacoco report
+    - ./gradlew jacocoTestReport
+    - mv build/reports/jacoco/test/html $CIRCLE_TEST_REPORTS/CodeCoverageReport
+
+    # copy test results
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/debug/*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
     - find . -type f -regex ".*/build/test-results/release/*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;

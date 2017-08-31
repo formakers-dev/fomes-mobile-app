@@ -17,11 +17,12 @@
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
-        <ImageView
+        <pl.droidsonroids.gif.GifImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:src="@drawable/loading_bowl" />
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/automated_loading_bowl"
+            />
 
         <TextView
             android:layout_width="wrap_content"
