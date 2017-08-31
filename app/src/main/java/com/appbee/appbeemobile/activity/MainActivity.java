@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -14,6 +15,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -46,6 +48,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Glide.with(this).asGif().load(R.drawable.automated_loading_bowl).into((ImageView) findViewById(R.id.loadingImage));
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
     }

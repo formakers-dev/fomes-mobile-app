@@ -28,7 +28,7 @@ test:
         parallel: true
     - circle-android wait-for-boot
   override:
-    - ./gradlew testReleaseUnitTest connectedAndroidTest assembleRelease:
+    - ./gradlew testDebugUnitTest connectedAndroidTest assembleRelease:
         timeout: 1200
   post:
     # Jacoco report
