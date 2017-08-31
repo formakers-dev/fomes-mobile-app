@@ -24,7 +24,6 @@
             android:src="@drawable/loading_bowl" />
 
         <TextView
-            android:id="@+id/nowLoadingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -34,12 +33,5 @@
             app:font="BMJUA"
             tools:ignore="MissingPrefix" />
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/networkLogText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        />
 </RelativeLayout>
 

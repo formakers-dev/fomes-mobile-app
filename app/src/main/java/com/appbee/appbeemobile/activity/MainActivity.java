@@ -3,8 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.View;
-import android.widget.EditText;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -19,9 +18,6 @@ import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
@@ -44,12 +40,19 @@ public class MainActivity extends BaseActivity {
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
+    private boolean isServiceAPIFailAlready = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
             callAppServiceGetInfoAPI();
@@ -74,14 +77,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @BindView(R.id.networkLogText)
-    EditText networkLogText;
-
-    @OnClick(R.id.nowLoadingText)
-    void displayLog() {
-        networkLogText.setVisibility(View.VISIBLE);
-    }
-
     private void moveToAnalysisResultActivity() {
         startActivity(new Intent(MainActivity.this, AnalysisResultActivity.class));
         finish();
@@ -91,29 +86,22 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onSuccess(List<AppInfo> appInfos) {
             MainActivity.this.runOnUiThread(() -> {
-                writeLogForErrorTrace("onSuccess");
                 appRepositoryHelper.insertUsedApps(appInfos);
-
-                writeLogForErrorTrace("appRepositoryHelper.insertUsedApps called");
                 appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getLongTermStatsSummary());
-
-                writeLogForErrorTrace("appRepositoryHelper.updateTotalUsedTime called");
                 moveToAnalysisResultActivity();
             });
         }
 
         @Override
         public void onFail(String resultCode) {
-            MainActivity.this.runOnUiThread(() -> {
-                writeLogForErrorTrace("Fail" + resultCode);
-                Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show();
-            });
+            if (!isServiceAPIFailAlready) {
+                isServiceAPIFailAlready = true;
+                callAppServiceGetInfoAPI();
+            } else {
+                MainActivity.this.runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show();
+                });
+            }
         }
     };
-
-    private void writeLogForErrorTrace(String msg) {
-        if (networkLogText != null) {
-            networkLogText.setText(networkLogText.getText() + "\n" + msg);
-        }
-    }
 }
