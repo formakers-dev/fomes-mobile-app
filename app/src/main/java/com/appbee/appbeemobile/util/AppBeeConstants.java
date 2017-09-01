@@ -64,7 +64,7 @@ public interface AppBeeConstants {
         VIDEO_PLAYERS("/store/apps/category/VIDEO_PLAYERS", "비디오", Arrays.asList(R.string.brain_flower_desc_video, R.string.longest_used_app_desc_music_video)),
         SOCIAL("/store/apps/category/SOCIAL", "소셜", Arrays.asList(R.string.brain_flower_desc_social, R.string.longest_used_app_desc_social)),
         PHOTOGRAPHY("/store/apps/category/PHOTOGRAPHY", "사진", Arrays.asList(R.string.brain_flower_desc_photography, R.string.longest_used_app_desc_photography)),
-        PERSONALIZATION("/store/apps/category/PERSONALIZATION", "맞춤 설정", Arrays.asList(R.string.brain_flower_desc_personalization, R.string.longest_used_app_desc_personalization)),
+        PERSONALIZATION("/store/apps/category/PERSONALIZATION", "맞춤설정", Arrays.asList(R.string.brain_flower_desc_personalization, R.string.longest_used_app_desc_personalization)),
         SHOPPING("/store/apps/category/SHOPPING", "쇼핑", Arrays.asList(R.string.brain_flower_desc_shopping, R.string.longest_used_app_desc_shopping)),
         COMMUNICATION("/store/apps/category/COMMUNICATION", "커뮤니케이션", Arrays.asList(R.string.brain_flower_desc_communication, R.string.longest_used_app_desc_communication)),
         ENTERTAINMENT("/store/apps/category/ENTERTAINMENT", "엔터테인먼트", Arrays.asList(R.string.brain_flower_desc_entertainment, R.string.longest_used_app_desc_entertainment)),
@@ -98,7 +98,7 @@ public interface AppBeeConstants {
         AUTO_AND_VEHICLES("/store/apps/category/AUTO_AND_VEHICLES", "자동차", Arrays.asList(R.string.brain_flower_desc_auto_and_vehicles, R.string.longest_used_app_desc_auto_and_vehicles)),
         MAPS_AND_NAVIGATION("/store/apps/category/MAPS_AND_NAVIGATION", "지도/네비", Arrays.asList(R.string.brain_flower_desc_maps_and_navigation, R.string.longest_used_app_desc_maps_and_navigation)),
         PARENTING("/store/apps/category/PARENTING", "출산/육아", Arrays.asList(R.string.brain_flower_desc_parenting, R.string.longest_used_app_desc_parenting)),
-        ANDROID_WEAR("/store/apps/category/ANDROID_WEAR", "Android Wear", Arrays.asList(R.string.brain_flower_desc_android_wear, R.string.longest_used_app_desc_android_wear)),
+        ANDROID_WEAR("/store/apps/category/ANDROID_WEAR", "안드로이드웨어러블", Arrays.asList(R.string.brain_flower_desc_android_wear, R.string.longest_used_app_desc_android_wear)),
 
         DEFAULT("DEFAULT", "DEFAULT", Arrays.asList(R.string.warn_default_category, R.string.warn_default_category));
 

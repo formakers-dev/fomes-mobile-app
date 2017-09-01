@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.util.FormatUtil;
 
 import java.util.List;
 
@@ -74,9 +75,9 @@ public class FlowerFragment extends Fragment {
 
         List<String> mostUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_MOST_USED_TIME_CATEGORIES);
         if (isAvailableMostUsedCategoryList(mostUsedTimeCategoryList)) {
-            mostUsedCategory1View.setText(mostUsedTimeCategoryList.get(0));
-            mostUsedCategory2View.setText(mostUsedTimeCategoryList.get(1));
-            mostUsedCategory3View.setText(mostUsedTimeCategoryList.get(2));
+            mostUsedCategory1View.setText(FormatUtil.formatLongCategoryName(mostUsedTimeCategoryList.get(0)));
+            mostUsedCategory2View.setText(FormatUtil.formatLongCategoryName(mostUsedTimeCategoryList.get(1)));
+            mostUsedCategory3View.setText(FormatUtil.formatLongCategoryName(mostUsedTimeCategoryList.get(2)));
         } else {
             setLayoutByNotEnoughData();
         }

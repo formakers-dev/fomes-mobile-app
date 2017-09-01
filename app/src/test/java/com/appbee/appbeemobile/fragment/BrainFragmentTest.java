@@ -68,7 +68,7 @@ public class BrainFragmentTest {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostInstalledCategoryList = new ArrayList<>();
-        mostInstalledCategoryList.add("금융");
+        mostInstalledCategoryList.add("금융/컨설팅");
         mostInstalledCategoryList.add("게임");
         mostInstalledCategoryList.add("만화");
         bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, mostInstalledCategoryList);
@@ -117,7 +117,7 @@ public class BrainFragmentTest {
     public void onViewCreated호출시_가장많이설치한카테고리목록이_나타난다() throws Exception {
         setUpWithEnoughData();
 
-        assertThat(mostInstalledCategory1View.getText()).isEqualTo("금융");
+        assertThat(mostInstalledCategory1View.getText()).isEqualTo("금융/\n컨설팅");
         assertThat(mostInstalledCategory2View.getText()).isEqualTo("게임");
         assertThat(mostInstalledCategory3View.getText()).isEqualTo("만화");
     }
