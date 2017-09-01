@@ -1,7 +1,7 @@
 package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import rx.Observable;
 
 public interface StatAPI {
     @POST("/stats/long")
-    Observable<Response<Boolean>> sendLongTermStats(@Header("x-appbee-number") String userId, @Body List<LongTermStat> longTermStats);
+    Observable<Response<Boolean>> sendLongTermStats(@Header("x-appbee-number") String userId, @Body List<NativeLongTermStat> longTermStats);
 
     @POST("/stats/event")
     Observable<Response<Boolean>> sendEventStats(@Header("x-appbee-number") String userId, @Body List<EventStat> eventStats);

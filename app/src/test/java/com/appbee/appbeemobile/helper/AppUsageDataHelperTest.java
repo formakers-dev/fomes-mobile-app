@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.google.common.collect.Lists;
@@ -115,8 +116,8 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStatsFor2Years호출시_2년간의_앱사용정보를_요청한다() throws Exception {
-        subject.getLongTermStatsFor2Years();
+    public void getNativeLongTermStatsFor2Years호출시_2년간의_앱사용정보를_요청한다() throws Exception {
+        subject.getNativeLongTermStatsFor2Years();
 
         ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
@@ -126,25 +127,27 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStatsFor2Years호출시_앱사용정보를_리턴한다() throws Exception {
+    public void getNativeLongTermStatsFor2Years호출시_앱사용정보를_리턴한다() throws Exception {
         List<UsageStats> mockUsageStatList = new ArrayList<>();
         mockUsageStatList.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));
         mockUsageStatList.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));
 
         when(mockAppBeeAndroidNativeHelper.getUsageStats(eq(UsageStatsManager.INTERVAL_YEARLY), anyLong(), anyLong())).thenReturn(mockUsageStatList);
 
-        List<LongTermStat> longTermStatList = subject.getLongTermStatsFor2Years();
+        List<NativeLongTermStat> nativeLongTermStatList = subject.getNativeLongTermStatsFor2Years();
 
-        assertThat(longTermStatList).isNotNull();
-        assertThat(longTermStatList.size()).isEqualTo(2);
-        assertEqualLongTermStat(longTermStatList.get(0), "aaaaa", "20170713" , 100L);
-        assertEqualLongTermStat(longTermStatList.get(1), "bbbbb", "20170714", 200L);
+        assertThat(nativeLongTermStatList).isNotNull();
+        assertThat(nativeLongTermStatList.size()).isEqualTo(2);
+        assertEqualLongTermStat(nativeLongTermStatList.get(0), "aaaaa", 0L, 0L, 1499914800000L, 100L);
+        assertEqualLongTermStat(nativeLongTermStatList.get(1), "bbbbb", 0L, 0L, 1500001200000L, 200L);
     }
 
-    private void assertEqualLongTermStat(LongTermStat longTermStat, String packageName, String lastUsedDate, long totalUsedTime) {
+    private void assertEqualLongTermStat(NativeLongTermStat longTermStat, String packageName, long beginTimeStamp, long lastTimeStamp, long lastTimeUsed, long totalUsedTime) {
         assertThat(longTermStat.getPackageName()).isEqualTo(packageName);
-        assertThat(longTermStat.getLastUsedDate()).isEqualTo(lastUsedDate);
-        assertThat(longTermStat.getTotalUsedTime()).isEqualTo(totalUsedTime);
+        assertThat(longTermStat.getBeginTimeStamp()).isEqualTo(beginTimeStamp);
+        assertThat(longTermStat.getEndTimeStamp()).isEqualTo(lastTimeStamp);
+        assertThat(longTermStat.getLastTimeUsed()).isEqualTo(lastTimeUsed);
+        assertThat(longTermStat.getTotalTimeInForeground()).isEqualTo(totalUsedTime);
     }
 
     @Test

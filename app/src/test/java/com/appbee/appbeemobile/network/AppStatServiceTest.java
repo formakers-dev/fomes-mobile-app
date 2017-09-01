@@ -5,6 +5,7 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.helper.TimeHelper;
 
@@ -102,18 +103,23 @@ public class AppStatServiceTest {
 
     @Test
     public void sendLongTermStatsFor2Years호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
-        List<LongTermStat> mockLongTermStats = new ArrayList<>();
-        mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
-        when(mockAppUsageDataHelper.getLongTermStatsFor2Years()).thenReturn(mockLongTermStats);
+        List<NativeLongTermStat> mockNativeLongTermStatList = new ArrayList<>();
+        mockNativeLongTermStatList.add(createMockNativeLongTermStat("anyPackage", 100L, 200L, 300L, 400L));
+
+        when(mockAppUsageDataHelper.getNativeLongTermStatsFor2Years()).thenReturn(mockNativeLongTermStatList);
         when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendLongTermStatsFor2Years();
 
-        verify(mockStatAPI).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
-        LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
-        assertEquals(actualLongTermStat.getPackageName(), "anyPackage");
-        assertEquals(actualLongTermStat.getLastUsedDate(), "20170717");
-        assertEquals(actualLongTermStat.getTotalUsedTime(), 1000L);
+        ArgumentCaptor<List<NativeLongTermStat>> navtiveLongTermStatCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockStatAPI).sendLongTermStats(anyString(), navtiveLongTermStatCaptor.capture());
+        assertThat(navtiveLongTermStatCaptor.getValue().size()).isEqualTo(1);
+        NativeLongTermStat nativeLongTermStat = navtiveLongTermStatCaptor.getValue().get(0);
+        assertEquals(nativeLongTermStat.getPackageName(), "anyPackage");
+        assertEquals(nativeLongTermStat.getBeginTimeStamp(), 100L);
+        assertEquals(nativeLongTermStat.getEndTimeStamp(), 200L);
+        assertEquals(nativeLongTermStat.getLastTimeUsed(), 300L);
+        assertEquals(nativeLongTermStat.getTotalTimeInForeground(), 400L);
     }
 
     @Test
@@ -158,5 +164,15 @@ public class AppStatServiceTest {
 
         assertThat(usedPackageNameList.size()).isEqualTo(1);
         assertThat(usedPackageNameList.get(0)).isEqualTo("com.package.name1");
+    }
+
+    private NativeLongTermStat createMockNativeLongTermStat(String packageName, long beginTimeStamp, long endTimeStamp, long lastTimeUsed, long totalUsedTime) {
+        NativeLongTermStat mockNativeLongTermStat = mock(NativeLongTermStat.class);
+        when(mockNativeLongTermStat.getPackageName()).thenReturn(packageName);
+        when(mockNativeLongTermStat.getBeginTimeStamp()).thenReturn(beginTimeStamp);
+        when(mockNativeLongTermStat.getEndTimeStamp()).thenReturn(endTimeStamp);
+        when(mockNativeLongTermStat.getTotalTimeInForeground()).thenReturn(totalUsedTime);
+        when(mockNativeLongTermStat.getLastTimeUsed()).thenReturn(lastTimeUsed);
+        return mockNativeLongTermStat;
     }
 }

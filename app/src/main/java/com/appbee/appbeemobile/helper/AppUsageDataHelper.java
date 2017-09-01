@@ -8,6 +8,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
@@ -125,17 +126,17 @@ public class AppUsageDataHelper {
     }
 
 
-    public List<LongTermStat> getLongTermStatsFor2Years() {
+    public List<NativeLongTermStat> getNativeLongTermStatsFor2Years() {
         long endTime = timeHelper.getCurrentTime();
         long startTime = endTime - MILLISECONDS_OF_TWO_YEARS;
-        List<UsageStats> usageStatList = appBeeAndroidNativeHelper.getUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
+        List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
 
-        List<LongTermStat> longTermStatList = new ArrayList<>();
-        for (UsageStats usageStat: usageStatList) {
-            longTermStatList.add(new LongTermStat(usageStat.getPackageName(), DATE_FORMAT.format(usageStat.getLastTimeUsed()), usageStat.getTotalTimeInForeground()));
+        List<NativeLongTermStat> nativeLongTermStatList = new ArrayList<>();
+        for (UsageStats usageStats : usageStatsList) {
+            nativeLongTermStatList.add(new NativeLongTermStat(usageStats));
         }
 
-        return longTermStatList;
+        return nativeLongTermStatList;
     }
 
     public List<NativeAppInfo> getAppList() {
