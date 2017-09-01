@@ -35,10 +35,10 @@
             tools:text="안녕하신가! 힘세고 강한 아침,\n만일 내게 물어보면 나는 …!!!" />
 
         <ImageView
+            android:id="@+id/character_type_icon"
             android:layout_width="138dp"
             android:layout_height="138dp"
-            android:layout_marginTop="38dp"
-            android:src="@drawable/character_gamer" />
+            android:layout_marginTop="38dp" />
 
         <TextView
             android:id="@+id/character_type_name"

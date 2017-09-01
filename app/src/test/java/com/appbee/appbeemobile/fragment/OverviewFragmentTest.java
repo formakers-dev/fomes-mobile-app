@@ -21,7 +21,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.appbee.appbeemobile.util.AppBeeConstants.*;
+import static com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
+import static com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.robolectric.Shadows.shadowOf;
@@ -57,6 +59,9 @@ public class OverviewFragmentTest {
 
     @BindView(R.id.longest_used_app_icon)
     ImageView longestUsedAppIcon;
+
+    @BindView(R.id.character_type_icon)
+    ImageView characterTypeIconView;
 
     @BindView(R.id.character_type_name)
     TextView characterTypeView;
@@ -129,6 +134,7 @@ public class OverviewFragmentTest {
     public void 게이머타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
         createFragment(true, CHARACTER_TYPE.GAMER);
 
+        assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_gamer);
         assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
         assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
@@ -138,6 +144,7 @@ public class OverviewFragmentTest {
     public void 여왕벌타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
         createFragment(true, CHARACTER_TYPE.QUEEN);
 
+        assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_queen);
         assertThat(characterTypeView.getText()).isEqualTo("하태하태! 내 스타일 여왕벌");
         assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("한번뿐인 인생, 모든 순간을 소중하게!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("스쳐지나가는 순간도 소중히 여기는 당신!");
@@ -147,6 +154,7 @@ public class OverviewFragmentTest {
     public void 맹독벌타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
         createFragment(true, CHARACTER_TYPE.POISON);
 
+        assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_poison);
         assertThat(characterTypeView.getText()).isEqualTo("감성폭발! 치명치명 맹독벌");
         assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("비가 가장 많이오는곳은 어디?\\n바로..내 마음이에요");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("룰에 얽매이지 않는 감성이 정말 멋지답니다!");
@@ -156,6 +164,7 @@ public class OverviewFragmentTest {
     public void 룰루땡벌타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
         createFragment(true, CHARACTER_TYPE.SOUL);
 
+        assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_soul);
         assertThat(characterTypeView.getText()).isEqualTo("나만의 소울충만! 룰루 땡벌");
         assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("나의 밤은 당신의 낮보다 아름답다");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("자기만의 쀨로 가득 찬 특이한 당신!");
@@ -165,6 +174,7 @@ public class OverviewFragmentTest {
     public void 기타타입유저로서_fragment시작시_적절한_캐릭터타입_정보를_표시한다() throws Exception {
         createFragment(true, CHARACTER_TYPE.ETC);
 
+        assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_alien);
         assertThat(characterTypeView.getText()).isEqualTo("꿀빨러 왔나? 불시착 외계인!");
         assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("꿀따리 샤바라~ 바니바니 꿍꿍꿀!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("혹시 평소에 독특하다는 소리 좀 들으시나요?");
