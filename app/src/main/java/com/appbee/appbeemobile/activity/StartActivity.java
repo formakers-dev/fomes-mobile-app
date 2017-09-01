@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
@@ -24,6 +25,9 @@ public class StartActivity extends BaseActivity {
 
     @Inject
     TimeHelper timeHelper;
+
+    @Inject
+    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,13 +46,17 @@ public class StartActivity extends BaseActivity {
 
     @OnClick(R.id.start_analysis_button)
     void showPermissionAlertDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.permission_dialog_title)
-                .setMessage(R.string.permission_dialog_message)
-                .setPositiveButton(R.string.agree_button_text, (dialog, which) -> startMainActivity())
-                .setNegativeButton(R.string.cancel_button_text, (dialog, which) -> dialog.dismiss())
-                .create()
-                .show();
+        if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+            startMainActivity();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.permission_dialog_title)
+                    .setMessage(R.string.permission_dialog_message)
+                    .setPositiveButton(R.string.agree_button_text, (dialog, which) -> startMainActivity())
+                    .setNegativeButton(R.string.cancel_button_text, (dialog, which) -> dialog.dismiss())
+                    .create()
+                    .show();
+        }
     }
 
     void startMainActivity() {
