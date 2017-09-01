@@ -20,12 +20,12 @@ public class TimeHelper {
         return System.currentTimeMillis();
     }
 
-    public long getMobileTotalUsedDay(long minStatedTime) {
-        long mobileTotalUsedDay = (System.currentTimeMillis() - minStatedTime) / 86400000L; // 86400000L = 1000 * 60 * 60 * 24 (milliseconds / day);
+    public double getMobileTotalUsedDay(long minStatedTime) {
+        double mobileTotalUsedDay = (System.currentTimeMillis() - minStatedTime) / 86400000L; // 86400000L = 1000 * 60 * 60 * 24 (milliseconds / day);
         if (minStatedTime == 0L) {
             mobileTotalUsedDay = 365 * 2; // 2년치 기간(일)
         }
-        return Math.max(mobileTotalUsedDay, 1);
+        return Math.max(mobileTotalUsedDay, 1.0d);
     }
 
     public String getFormattedCurrentTime(String format) {
