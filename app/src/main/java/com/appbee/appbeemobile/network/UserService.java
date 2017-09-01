@@ -48,10 +48,14 @@ public class UserService {
         });
     }
 
-    public void sendAppList(ServiceCallback serviceCallback) {
-        userAPI.sendAppInfoList(localStorageHelper.getAccessToken(), appUsageDataHelper.getAppList())
+    public void sendAppList() {
+        userAPI.sendAppInfoList(localStorageHelper.getUUID(), appUsageDataHelper.getAppList())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new BooleanResponseObserver(serviceCallback));
+                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                    if (error instanceof HttpException) {
+                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                    }
+                });
     }
 
     public void sendUser(User user) {

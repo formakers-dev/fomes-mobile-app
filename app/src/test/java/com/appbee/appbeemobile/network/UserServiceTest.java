@@ -67,10 +67,10 @@ public class UserServiceTest {
         List<NativeAppInfo> mockNativeAppInfoList = new ArrayList<>();
         mockNativeAppInfoList.add(new NativeAppInfo("package_name", "app_name"));
         when(mockAppUsageDataHelper.getAppList()).thenReturn(mockNativeAppInfoList);
-        when(mockLocalStorageHelper.getAccessToken()).thenReturn("anyToken");
+        when(mockLocalStorageHelper.getUUID()).thenReturn("uuid");
         when(mockUserAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendAppList(mock(ServiceCallback.class));
+        subject.sendAppList();
 
         verify(mockUserAPI).sendAppInfoList(anyString(), appInfos.capture());
         List<NativeAppInfo> actualNativeAppInfos = appInfos.getValue();
