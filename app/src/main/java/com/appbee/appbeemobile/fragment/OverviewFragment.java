@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.fragment;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +53,9 @@ public class OverviewFragment extends Fragment {
     @BindView(R.id.longest_used_app_icon)
     ImageView longestUsedAppIcon;
 
+    @BindView(R.id.character_type_icon)
+    ImageView characterTypeIconView;
+
     @BindView(R.id.character_type_name)
     TextView characterTypeNameView;
 
@@ -90,9 +95,25 @@ public class OverviewFragment extends Fragment {
     }
 
     private void displayCharacterTypeInformation(int characterType) {
+        characterTypeIconView.setImageResource(getCharacterDrawableResource(characterType));
         characterTypeNameView.setText(getResources().getStringArray(R.array.character_names)[characterType]);
         characterTypeSimpleDescriptionView.setText(getResources().getStringArray(R.array.character_simple_descriptions)[characterType]);
         characterTypeDetailDescriptionView.setText(getResources().getStringArray(R.array.character_detail_descriptions)[characterType]);
+    }
+
+    private @DrawableRes int getCharacterDrawableResource(int characterType) {
+        switch (characterType) {
+            case CHARACTER_TYPE.GAMER:
+                return R.drawable.character_gamer;
+            case CHARACTER_TYPE.POISON:
+                return R.drawable.character_poison;
+            case CHARACTER_TYPE.SOUL:
+                return R.drawable.character_soul;
+            case CHARACTER_TYPE.QUEEN:
+                return R.drawable.character_queen;
+            default:
+                return R.drawable.character_alien;
+        }
     }
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
@@ -101,15 +122,15 @@ public class OverviewFragment extends Fragment {
         averageAppUsageTimeTitleView.setText(getString(R.string.overview_average_time_title, appUsageTimeTypeName));
         averageAppUsageTimeDescriptionView.setText(getResources().getStringArray(R.array.app_usage_time_type_descriptions)[appUsageTimeType]);
         if (appUsageAverageTime >= 480) {
-            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.full_hive, null));
+            hiveImageView.setImageResource(R.drawable.full_hive);
         } else if (appUsageAverageTime >= 240) {
-            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.three_quater_hive, null));
+            hiveImageView.setImageResource(R.drawable.three_quater_hive);
         } else if (appUsageAverageTime >= 120) {
-            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.half_hive, null));
+            hiveImageView.setImageResource(R.drawable.half_hive);
         } else if (appUsageAverageTime >= 60) {
-            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.quater_hive, null));
+            hiveImageView.setImageResource(R.drawable.quater_hive);
         } else {
-            hiveImageView.setImageDrawable(getResources().getDrawable(R.drawable.poor_hive, null));
+            hiveImageView.setImageResource(R.drawable.poor_hive);
         }
     }
 
@@ -119,15 +140,15 @@ public class OverviewFragment extends Fragment {
         appCountTitleView.setText(getString(R.string.overview_app_count_title, appCountTitle));
         appCountDescriptionView.setText(getResources().getStringArray(R.array.app_list_count_type_descriptions)[appListCountType]);
         if (appListCount >= 150) {
-            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.full_honey_pot, null));
+            honeyPotImageView.setImageResource(R.drawable.full_honey_pot);
         } else if (appListCount >= 100) {
-            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.three_quater_honey_pot, null));
+            honeyPotImageView.setImageResource(R.drawable.three_quater_honey_pot);
         } else if (appListCount >= 50) {
-            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.half_honey_pot, null));
+            honeyPotImageView.setImageResource(R.drawable.half_honey_pot);
         } else if (appListCount >= 25) {
-            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.quater_honey_pot, null));
+            honeyPotImageView.setImageResource(R.drawable.quater_honey_pot);
         } else {
-            honeyPotImageView.setImageDrawable(getResources().getDrawable(R.drawable.poor_honey_pot, null));
+            honeyPotImageView.setImageResource(R.drawable.poor_honey_pot);
         }
     }
 
