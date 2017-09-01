@@ -83,7 +83,7 @@ public class UserServiceTest {
         when(mockUserAPI.sendUser(any(User.class))).thenReturn(mock(Observable.class));
 
         User mockUser = mock(User.class);
-        subject.sendUser(mockUser, mock(ServiceCallback.class));
+        subject.sendUser(mockUser);
 
         verify(mockUserAPI).sendUser(mockUser);
     }

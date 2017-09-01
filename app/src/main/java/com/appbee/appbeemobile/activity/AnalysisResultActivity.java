@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -13,11 +14,15 @@ import com.appbee.appbeemobile.fragment.FlowerFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.fragment.ShareFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.helper.ShareSnsHelper;
+import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants.*;
 import com.google.common.collect.Lists;
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -52,6 +58,15 @@ public class AnalysisResultActivity extends BaseActivity {
     @Inject
     NativeAppInfoHelper nativeAppInfoHelper;
 
+    @Inject
+    LocalStorageHelper localStorageHelper;
+
+    @Inject
+    TimeHelper timeHelper;
+
+    @Inject
+    UserService userService;
+
     private List<AppInfo> appInfoList;
 
     @Override
@@ -71,6 +86,15 @@ public class AnalysisResultActivity extends BaseActivity {
                 .add(R.id.flower_fragment, getFlowerFragment(), FLOWER_FRAGMENT_TAG)
                 .add(R.id.share_fragment, new ShareFragment(), SHARE_FRAGMENT_TAG)
                 .commit();
+
+        if (TextUtils.isEmpty(localStorageHelper.getUUID())) {
+            String uuid = UUID.randomUUID().toString();
+            localStorageHelper.setUUID(uuid);
+
+            String currentDate = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
+            User user = new User(localStorageHelper.getUUID(), currentDate, currentDate);
+            userService.sendUser(user);
+        }
     }
 
     private Fragment getOverviewFragment() {

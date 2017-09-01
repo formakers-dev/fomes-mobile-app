@@ -15,10 +15,14 @@ import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.FlowerFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.Before;
@@ -42,7 +46,9 @@ import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -58,6 +64,15 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Inject
     NativeAppInfoHelper mockNativeAppInfoHelper;
+
+    @Inject
+    LocalStorageHelper mockLocalStorageHelper;
+
+    @Inject
+    UserService mockUserService;
+
+    @Inject
+    AppStatService mockAppStatService;
 
     private Bitmap mockIconBitmap;
 
@@ -169,6 +184,19 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY)).isEqualTo("게임이 전체 앱 사용 시간의 46%");
         assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("재미있는 것에 몰두하는 당신.");
+    }
+
+    @Test
+    public void onCreate_앱시작시_UUID정보가_없으면_SharedPreference에_저장한다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        verify(mockLocalStorageHelper).setUUID(anyString());
+    }
+
+    @Test
+    public void onCreate_앱시작시_서버로_user정보를_전송한다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+        verify(mockUserService).sendUser(any(User.class));
     }
 
     @Test

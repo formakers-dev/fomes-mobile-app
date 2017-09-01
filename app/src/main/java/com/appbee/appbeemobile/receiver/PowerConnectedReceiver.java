@@ -31,17 +31,7 @@ public class PowerConnectedReceiver extends BroadcastReceiver {
             String uniqueID = UUID.randomUUID().toString();
             String date = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
             User user = new User(uniqueID, date);
-            userService.sendUser(user, new ServiceCallback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onFail(String resultCode) {
-
-                }
-            });
+            userService.sendUser(user);
         }
     }
 }

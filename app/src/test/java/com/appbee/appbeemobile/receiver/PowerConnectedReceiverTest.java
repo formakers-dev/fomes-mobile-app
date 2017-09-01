@@ -50,7 +50,7 @@ public class PowerConnectedReceiverTest {
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(mockUserService).sendUser(userArgumentCaptor.capture(), any(ServiceCallback.class));
+        verify(mockUserService).sendUser(userArgumentCaptor.capture());
         assertThat(userArgumentCaptor.getValue().getUserId().matches(UUID_REGEX)).isTrue();
         assertThat(userArgumentCaptor.getValue().getFirstUsedDate()).isNull();
         assertThat(userArgumentCaptor.getValue().getLastUsedDate()).isEqualTo("2017-08-30");
