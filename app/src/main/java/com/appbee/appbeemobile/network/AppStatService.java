@@ -41,7 +41,7 @@ public class AppStatService {
     }
 
     public void sendLongTermStatsFor2Years() {
-        StatAPI.sendLongTermStats(localStorageHelper.getUUID(), appUsageDataHelper.getLongTermStatsFor2Years())
+        StatAPI.sendLongTermStats(localStorageHelper.getUUID(), appUsageDataHelper.getNativeLongTermStatsFor2Years())
                 .subscribeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
                     if (error instanceof HttpException) {
