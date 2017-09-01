@@ -14,6 +14,7 @@ public class LocalStorageHelper {
     private static final String KEY_LAST_USAGE_TIME = "LAST_USAGE_TIME";
     private static final String KEY_ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String KEY_MIN_STARTED_STAT_TIME_STAMP = "MIN_STARTED_STAT_TIME_STAMP";
+    private static final String KEY_UUID = "UUID";
 
     private SharedPreferences sf;
 
@@ -64,5 +65,13 @@ public class LocalStorageHelper {
 
     public long getMinStartedStatTimeStamp() {
         return getLong(KEY_MIN_STARTED_STAT_TIME_STAMP, 0L);
+    }
+
+    public void setUUID(String uuid) {
+        putString(KEY_UUID, uuid);
+    }
+
+    public String getUUID(){
+        return getString(KEY_UUID, "");
     }
 }

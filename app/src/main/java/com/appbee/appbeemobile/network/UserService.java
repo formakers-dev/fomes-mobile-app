@@ -31,7 +31,7 @@ public class UserService {
         userAPI.signInUser(token).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     Log.d(TAG, "Success to send appList");
                 } else {
                     Log.d(TAG, "Fail to send appList");
@@ -53,7 +53,7 @@ public class UserService {
                 .subscribe(new BooleanResponseObserver(serviceCallback));
     }
 
-    public void sendUser(User user, ServiceCallback serviceCallback) {
+    public void sendUser(User user) {
         userAPI.sendUser(user);
     }
 }

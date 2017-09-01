@@ -28,6 +28,7 @@ public class LocalStorageHelperTest {
         sf.edit()
                 .putString("ACCESS_TOKEN", "TEST_STRING_VALUE")
                 .putLong("LAST_USAGE_TIME", 1234567890L)
+                .putString("UUID", "uuid")
                 .apply();
     }
 
@@ -51,5 +52,16 @@ public class LocalStorageHelperTest {
     @Test
     public void getLastUsageTime호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
         assertThat(subject.getLastUsageTime()).isEqualTo(1234567890L);
+    }
+
+    @Test
+    public void setUUID호출시_SharedPreference에_값을_저장한다() throws Exception {
+        subject.setUUID("test_uuid");
+        assertThat(sf.getString("UUID", "")).isEqualTo("test_uuid");
+    }
+
+    @Test
+    public void getUUID호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
+        assertThat(subject.getUUID()).isEqualTo("uuid");
     }
 }
