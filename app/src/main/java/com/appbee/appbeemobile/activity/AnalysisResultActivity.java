@@ -22,6 +22,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.AppBeeConstants.*;
@@ -67,6 +68,9 @@ public class AnalysisResultActivity extends BaseActivity {
     @Inject
     UserService userService;
 
+    @Inject
+    AppStatService appStatService;
+
     private List<AppInfo> appInfoList;
 
     @Override
@@ -95,6 +99,10 @@ public class AnalysisResultActivity extends BaseActivity {
             User user = new User(localStorageHelper.getUUID(), currentDate, currentDate);
             userService.sendUser(user);
         }
+
+        appStatService.sendLongTermStats();
+        appStatService.sendShortTermStats();
+        appStatService.sendEventStats();
     }
 
     private Fragment getOverviewFragment() {

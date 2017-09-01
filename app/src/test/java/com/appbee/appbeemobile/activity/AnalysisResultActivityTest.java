@@ -200,6 +200,14 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     @Test
+    public void onCreate_앱시작시_서버로_앱정보를_전송한다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+        verify(mockAppStatService).sendLongTermStats();
+        verify(mockAppStatService).sendShortTermStats();
+        verify(mockAppStatService).sendEventStats();
+    }
+
+    @Test
     public void 가장많이사용한카테고리와가장많이설치된카테고리가동일한경우_FlowerFragment에_관련정보를전달한다() throws Exception {
         mockSameCategoryDataOfTimeUsageAndInstalls();
 

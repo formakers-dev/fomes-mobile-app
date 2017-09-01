@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.network;
 
+import android.util.Log;
+
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.LongTermStat;
@@ -10,8 +12,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Response;
-import rx.Observable;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.schedulers.Schedulers;
 
 public class AppStatService {
@@ -29,33 +30,34 @@ public class AppStatService {
         this.timeHelper = timeHelper;
     }
 
-    public void sendEventStats(ServiceCallback serviceCallback) {
+    public void sendEventStats() {
         StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime()))
                 .subscribeOn(Schedulers.io())
-                .subscribe(new BooleanResponseObserver(serviceCallback));
-    }
-
-    public void sendLongTermStats(ServiceCallback serviceCallback) {
-        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new BooleanResponseObserver(serviceCallback));
-    }
-
-    public Observable sendShortTermStats(ServiceCallback serviceCallback) {
-        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime()))
-                .subscribeOn(Schedulers.io())
-                .subscribe(new BooleanResponseObserver(serviceCallback) {
-                    @Override
-                    public void onNext(Response<Boolean> booleanResponse) {
-                        if (booleanResponse.isSuccessful()) {
-                            this.serviceCallback.onSuccess();
-                            localStorageHelper.setLastUsageTime(timeHelper.getCurrentTime());
-                        } else {
-                            this.serviceCallback.onFail(String.valueOf(booleanResponse.code()));
-                        }
+                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                    if (error instanceof HttpException) {
+                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
                     }
                 });
-        return null;
+    }
+
+    public void sendLongTermStats() {
+        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats())
+                .subscribeOn(Schedulers.io())
+                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                    if (error instanceof HttpException) {
+                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                    }
+                });
+    }
+
+    public void sendShortTermStats() {
+        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime()))
+                .subscribeOn(Schedulers.io())
+                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                    if (error instanceof HttpException) {
+                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                    }
+                });
     }
 
     long getStartTime() {
