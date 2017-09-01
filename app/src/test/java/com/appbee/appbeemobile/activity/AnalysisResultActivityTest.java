@@ -21,6 +21,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -205,6 +206,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         verify(mockAppStatService).sendLongTermStatsFor2Years();
         verify(mockAppStatService).sendShortTermStats();
         verify(mockAppStatService).sendEventStats();
+        verify(mockUserService).sendAppList();
     }
 
     @Test

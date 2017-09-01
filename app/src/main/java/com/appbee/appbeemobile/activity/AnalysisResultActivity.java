@@ -98,6 +98,7 @@ public class AnalysisResultActivity extends BaseActivity {
             String currentDate = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
             User user = new User(localStorageHelper.getUUID(), currentDate, currentDate);
             userService.sendUser(user);
+            userService.sendAppList();
             appStatService.sendLongTermStatsFor2Years();
             appStatService.sendShortTermStats();
             appStatService.sendEventStats();
