@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.schedulers.Schedulers;
 
 public class UserService {
@@ -54,6 +55,12 @@ public class UserService {
     }
 
     public void sendUser(User user) {
-        userAPI.sendUser(user);
+        userAPI.sendUser(user)
+                .subscribeOn(Schedulers.io())
+                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                    if (error instanceof HttpException) {
+                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                    }
+                });
     }
 }

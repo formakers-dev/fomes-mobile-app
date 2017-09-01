@@ -19,8 +19,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.internal.http.RealResponseBody;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Scheduler;
 import rx.plugins.RxJavaPlugins;
@@ -33,7 +31,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -72,7 +69,7 @@ public class AppStatServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper, timeHelper);
-        when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_TOKEN");
+        when(mockLocalStorageHelper.getUUID()).thenReturn("uuid");
 
         RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
             @Override
@@ -104,13 +101,13 @@ public class AppStatServiceTest {
     }
 
     @Test
-    public void sendLongTermStats호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
+    public void sendLongTermStatsFor2Years호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
         List<LongTermStat> mockLongTermStats = new ArrayList<>();
         mockLongTermStats.add(new LongTermStat("anyPackage", "20170717", 1000L));
-        when(mockAppUsageDataHelper.getLongTermStats()).thenReturn(mockLongTermStats);
+        when(mockAppUsageDataHelper.getLongTermStatsFor2Years()).thenReturn(mockLongTermStats);
         when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendLongTermStats();
+        subject.sendLongTermStatsFor2Years();
 
         verify(mockStatAPI).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
         LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);

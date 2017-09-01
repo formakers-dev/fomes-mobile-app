@@ -31,7 +31,7 @@ public class AppStatService {
     }
 
     public void sendEventStats() {
-        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime()))
+        StatAPI.sendEventStats(localStorageHelper.getUUID(), appUsageDataHelper.getEventStats(getStartTime()))
                 .subscribeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
                     if (error instanceof HttpException) {
@@ -40,8 +40,8 @@ public class AppStatService {
                 });
     }
 
-    public void sendLongTermStats() {
-        StatAPI.sendLongTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStats())
+    public void sendLongTermStatsFor2Years() {
+        StatAPI.sendLongTermStats(localStorageHelper.getUUID(), appUsageDataHelper.getLongTermStatsFor2Years())
                 .subscribeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
                     if (error instanceof HttpException) {
@@ -51,7 +51,7 @@ public class AppStatService {
     }
 
     public void sendShortTermStats() {
-        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime()))
+        StatAPI.sendShortTermStats(localStorageHelper.getUUID(), appUsageDataHelper.getShortTermStats(getStartTime()))
                 .subscribeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
                     if (error instanceof HttpException) {
