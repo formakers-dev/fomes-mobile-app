@@ -94,7 +94,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getEventStats(anyLong())).thenReturn(mockEventStatList);
         when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendEventStats(mock(ServiceCallback.class));
+        subject.sendEventStats();
 
         verify(mockStatAPI).sendEventStats(anyString(), eventStatsCaptor.capture());
         EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
@@ -110,7 +110,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getLongTermStats()).thenReturn(mockLongTermStats);
         when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendLongTermStats(mock(ServiceCallback.class));
+        subject.sendLongTermStats();
 
         verify(mockStatAPI).sendLongTermStats(anyString(), longTermStatsCaptor.capture());
         LongTermStat actualLongTermStat = longTermStatsCaptor.getValue().get(0);
@@ -126,7 +126,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getShortTermStats(anyLong())).thenReturn(mockShortTermStats);
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendShortTermStats(mock(ServiceCallback.class));
+        subject.sendShortTermStats();
 
         verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
@@ -148,46 +148,6 @@ public class AppStatServiceTest {
         when(mockLocalStorageHelper.getLastUsageTime()).thenReturn(2000L);
 
         assertThat(subject.getStartTime()).isEqualTo(2000L);
-    }
-
-    @Test
-    public void sendShortTermStatsAPI호출후_성공시_현재시간을_LocalStorage에_저장한다() throws Exception {
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
-        long currentTime = 100L;
-        when(timeHelper.getCurrentTime()).thenReturn(currentTime);
-
-        subject.sendShortTermStats(mock(ServiceCallback.class));
-
-        verify(mockLocalStorageHelper).setLastUsageTime(currentTime);
-    }
-
-    @Test
-    public void sendShortTermStatsAPI호출후_성공시_AppStatServiceCallback의_onSuccess를_호출한다() throws Exception {
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
-
-        ServiceCallback mockServiceCallback = mock(ServiceCallback.class);
-        subject.sendShortTermStats(mockServiceCallback);
-
-        verify(mockServiceCallback).onSuccess();
-    }
-
-    @Test
-    public void sendShortTermStatsAPI호출후_실패시_현재시간을_LocalStorage에_저장하지않는다() throws Exception {
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.error(403, new RealResponseBody(null, null))));
-
-        subject.sendShortTermStats(mock(ServiceCallback.class));
-
-        verify(mockLocalStorageHelper, times(0)).setLastUsageTime(anyLong());
-    }
-
-    @Test
-    public void sendShortTermStatsAPI호출후_실패시_AppStatServiceCallback의_onFail를_호출한다() throws Exception {
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.just(Response.error(403, new RealResponseBody(null, null))));
-
-        ServiceCallback mockServiceCallback = mock(ServiceCallback.class);
-        subject.sendShortTermStats(mockServiceCallback);
-
-        verify(mockServiceCallback).onFail("403");
     }
 
     @Test
