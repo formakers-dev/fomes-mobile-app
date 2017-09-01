@@ -68,7 +68,7 @@ public class FlowerFragmentTest {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
-        mostUsedTimeCategoryList.add("금융");
+        mostUsedTimeCategoryList.add("금융/컨설팅");
         mostUsedTimeCategoryList.add("소셜");
         mostUsedTimeCategoryList.add("게임");
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
@@ -111,7 +111,7 @@ public class FlowerFragmentTest {
     public void onViewCreate호출시_가장_많은_시간_사용한_카테코리_목록이_나타난다() throws Exception {
         setUpWithEnoughData();
 
-        assertThat(mostUsedCategory1View.getText()).isEqualTo("금융");
+        assertThat(mostUsedCategory1View.getText()).isEqualTo("금융/\n컨설팅");
         assertThat(mostUsedCategory2View.getText()).isEqualTo("소셜");
         assertThat(mostUsedCategory3View.getText()).isEqualTo("게임");
     }

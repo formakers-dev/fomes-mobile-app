@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.util.FormatUtil;
 
 import java.util.ArrayList;
 
@@ -75,9 +76,9 @@ public class BrainFragment extends Fragment {
 
         ArrayList<String> mostInstalledCategoryList = getArguments().getStringArrayList(EXTRA_MOST_INSTALLED_CATEGORIES);
         if (mostInstalledCategoryList.size() >= 3) {
-            mostInstalledCategory1View.setText(mostInstalledCategoryList.get(0));
-            mostInstalledCategory2View.setText(mostInstalledCategoryList.get(1));
-            mostInstalledCategory3View.setText(mostInstalledCategoryList.get(2));
+            mostInstalledCategory1View.setText(FormatUtil.formatLongCategoryName(mostInstalledCategoryList.get(0)));
+            mostInstalledCategory2View.setText(FormatUtil.formatLongCategoryName(mostInstalledCategoryList.get(1)));
+            mostInstalledCategory3View.setText(FormatUtil.formatLongCategoryName(mostInstalledCategoryList.get(2)));
         } else {
             setLayoutByNotEnoughData();
         }
