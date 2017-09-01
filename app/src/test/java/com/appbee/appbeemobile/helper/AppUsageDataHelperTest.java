@@ -296,7 +296,7 @@ public class AppUsageDataHelperTest {
         longTermStatList.add(new LongTermStat("com.package.name2", "20171212", 8_000_000_000L));
         longTermStatList.add(new LongTermStat("com.package.name3", "20171212", 9_000_000_000L));
 
-        when(mockTimeHelper.getMobileTotalUsedDay(anyLong())).thenReturn(766L);
+        when(mockTimeHelper.getMobileTotalUsedDay(anyLong())).thenReturn(766d);
 
         assertThat(subject.getAppUsageAverageMinutesPerDay(longTermStatList)).isEqualTo(478);
     }
