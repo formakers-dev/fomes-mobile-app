@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.helper;
 
 import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.model.AppInfo;
@@ -39,6 +40,7 @@ public class AppUsageDataHelper {
     static final boolean ASC = true;
     static final boolean DESC = false;
     private static final long MILLISECONDS_OF_THREE_MONTHS = 7884000000L; // 365 * 24 * 60 * 60 * 1000 / 4
+    private static final long MILLISECONDS_OF_TWO_YEARS = 63072000000L;
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final LocalStorageHelper localStorageHelper;
@@ -94,7 +96,7 @@ public class AppUsageDataHelper {
         long endTime = timeHelper.getCurrentTime();
         long startTime = endTime - MILLISECONDS_OF_THREE_MONTHS;
 
-        List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(startTime, endTime);
+        List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(UsageStatsManager.INTERVAL_MONTHLY, startTime, endTime);
 
         long minFirstStartedStatTimeStamp = Long.MAX_VALUE;
         for (UsageStats stats : usageStatsList) {
@@ -119,6 +121,20 @@ public class AppUsageDataHelper {
 
         List<LongTermStat> longTermStatList = new ArrayList<>(dailyUsageStatMap.values());
         Collections.sort(longTermStatList, (o1, o2) -> Long.valueOf(o2.getTotalUsedTime()).compareTo(o1.getTotalUsedTime()));
+        return longTermStatList;
+    }
+
+
+    public List<LongTermStat> getLongTermStatsFor2Years() {
+        long endTime = timeHelper.getCurrentTime();
+        long startTime = endTime - MILLISECONDS_OF_TWO_YEARS;
+        List<UsageStats> usageStatList = appBeeAndroidNativeHelper.getUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
+
+        List<LongTermStat> longTermStatList = new ArrayList<>();
+        for (UsageStats usageStat: usageStatList) {
+            longTermStatList.add(new LongTermStat(usageStat.getPackageName(), DATE_FORMAT.format(usageStat.getLastTimeUsed()), usageStat.getTotalTimeInForeground()));
+        }
+
         return longTermStatList;
     }
 

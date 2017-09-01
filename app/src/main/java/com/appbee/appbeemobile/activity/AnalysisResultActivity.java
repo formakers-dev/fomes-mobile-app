@@ -100,7 +100,7 @@ public class AnalysisResultActivity extends BaseActivity {
             userService.sendUser(user);
         }
 
-        appStatService.sendLongTermStats();
+        appStatService.sendLongTermStatsFor2Years();
         appStatService.sendShortTermStats();
         appStatService.sendEventStats();
     }

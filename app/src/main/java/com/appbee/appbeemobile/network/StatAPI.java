@@ -14,11 +14,11 @@ import rx.Observable;
 
 public interface StatAPI {
     @POST("/stats/long")
-    Observable<Response<Boolean>> sendLongTermStats(@Header("x-access-token") String accessToken, @Body List<LongTermStat> longTermStats);
+    Observable<Response<Boolean>> sendLongTermStats(@Header("x-appbee-number") String userId, @Body List<LongTermStat> longTermStats);
 
     @POST("/stats/event")
-    Observable<Response<Boolean>> sendEventStats(@Header("x-access-token") String accessToken, @Body List<EventStat> eventStats);
+    Observable<Response<Boolean>> sendEventStats(@Header("x-appbee-number") String userId, @Body List<EventStat> eventStats);
 
     @POST("/stats/short")
-    Observable<Response<Boolean>> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
+    Observable<Response<Boolean>> sendShortTermStats(@Header("x-appbee-number") String userId, @Body List<ShortTermStat> shortTermStats);
 }
