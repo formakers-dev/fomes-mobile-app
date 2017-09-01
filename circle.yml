@@ -33,7 +33,7 @@ test:
   post:
     # Jacoco report
     - ./gradlew jacocoTestReport
-    - mv app/build/reports/jacoco/test/html $CIRCLE_TEST_REPORTS/CodeCoverageReport
+    - mv app/build/reports/jacoco/jacocoTestReport/html $CIRCLE_TEST_REPORTS/CodeCoverageReport
 
     # copy test results
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
