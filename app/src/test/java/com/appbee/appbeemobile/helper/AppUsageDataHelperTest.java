@@ -112,7 +112,7 @@ public class AppUsageDataHelperTest {
         ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
         verify(mockAppBeeAndroidNativeHelper).getUsageStats(eq(UsageStatsManager.INTERVAL_MONTHLY), startTimeCaptor.capture(), endTimeCaptor.capture());
 
-        assertEquals(startTimeCaptor.getValue().longValue(), endTimeCaptor.getValue().longValue() - MILLISECONDS_OF_THREE_MONTHS);
+        assertEquals(startTimeCaptor.getValue().longValue(), endTimeCaptor.getValue() - MILLISECONDS_OF_THREE_MONTHS);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class AppUsageDataHelperTest {
         ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
         verify(mockAppBeeAndroidNativeHelper).getUsageStats(eq(UsageStatsManager.INTERVAL_YEARLY), startTimeCaptor.capture(), endTimeCaptor.capture());
 
-        assertEquals(startTimeCaptor.getValue().longValue(), endTimeCaptor.getValue().longValue() - MILLISECONDS_OF_TWO_YEARS);
+        assertEquals(startTimeCaptor.getValue().longValue(), endTimeCaptor.getValue() - MILLISECONDS_OF_TWO_YEARS);
     }
 
     @Test
@@ -439,6 +439,33 @@ public class AppUsageDataHelperTest {
 
         assertThat(map.get("aaaaa")).isEqualTo(400L);
         assertThat(map.get("bbbbb")).isEqualTo(200L);
+    }
+
+    @Test
+    public void getLongTermStatsFor3Months호출시_3개월간의_데이터를_리턴한다() throws Exception {
+
+        subject.getLongTermStatsFor3Months();
+
+        ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(mockAppBeeAndroidNativeHelper).getUsageStats(eq(UsageStatsManager.INTERVAL_MONTHLY), startTimeCaptor.capture(), endTimeCaptor.capture());
+
+        assertThat(startTimeCaptor.getValue().longValue()).isEqualTo(endTimeCaptor.getValue() - MILLISECONDS_OF_THREE_MONTHS);
+    }
+
+    @Test
+    public void getLongTermStatsFor3Months호출시_장기사용데이터를_리턴한다() throws Exception {
+        List<UsageStats> usageStatsList = new ArrayList<>();
+        usageStatsList.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-13 12:00:00
+        usageStatsList.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
+
+        when(mockAppBeeAndroidNativeHelper.getUsageStats(eq(UsageStatsManager.INTERVAL_MONTHLY), anyLong(), anyLong())).thenReturn(usageStatsList);
+
+        List<NativeLongTermStat> nativeLongTermStatList = subject.getLongTermStatsFor3Months();
+
+        assertThat(nativeLongTermStatList.size()).isEqualTo(2);
+        assertEqualLongTermStat(nativeLongTermStatList.get(0), "aaaaa", 0L, 0L, 1499914800000L, 100L);
+        assertEqualLongTermStat(nativeLongTermStatList.get(1), "bbbbb", 0L, 0L, 1500001200000L, 200L);
     }
 
     @Test

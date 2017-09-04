@@ -126,6 +126,20 @@ public class AppUsageDataHelper {
     }
 
 
+    public List<NativeLongTermStat> getLongTermStatsFor3Months() {
+        long endTime = timeHelper.getCurrentTime();
+        long startTime = endTime - MILLISECONDS_OF_THREE_MONTHS;
+
+        List<UsageStats> usageStatsList = appBeeAndroidNativeHelper.getUsageStats(UsageStatsManager.INTERVAL_MONTHLY, startTime, endTime);
+
+        List<NativeLongTermStat> nativeLongTermStatList = new ArrayList<>();
+        for (UsageStats stats : usageStatsList) {
+            nativeLongTermStatList.add(new NativeLongTermStat(stats));
+        }
+
+        return nativeLongTermStatList;
+    }
+
     public List<NativeLongTermStat> getNativeLongTermStatsFor2Years() {
         long endTime = timeHelper.getCurrentTime();
         long startTime = endTime - MILLISECONDS_OF_TWO_YEARS;
