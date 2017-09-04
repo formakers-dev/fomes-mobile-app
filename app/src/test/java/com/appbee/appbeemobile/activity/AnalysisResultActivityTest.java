@@ -17,11 +17,11 @@ import com.appbee.appbeemobile.fragment.OverviewFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
+import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.User;
-import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -29,6 +29,7 @@ import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -224,6 +225,31 @@ public class AnalysisResultActivityTest extends ActivityTest {
         verify(mockAppStatService).sendLongTermStatsFor2Years();
         verify(mockAppStatService).sendShortTermStats();
         verify(mockUserService).sendAppList();
+    }
+
+    @Test
+    public void onCreate_앱시작시_서버로_분석결과를_전송한다() throws Exception {
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        ArgumentCaptor<AnalysisResult> analysisResultArgumentCaptor = ArgumentCaptor.forClass(AnalysisResult.class);
+        verify(mockAppStatService).sendAnalysisResult(analysisResultArgumentCaptor.capture());
+
+        AnalysisResult analysisResult = analysisResultArgumentCaptor.getValue();
+        assertThat(analysisResult.getCharacterType()).isEqualTo("QUEEN");
+        assertThat(analysisResult.getTotalInstalledAppCount()).isEqualTo(4);
+        assertThat(analysisResult.getAverageUsedMinutesPerDay()).isEqualTo(480);
+        assertThat(analysisResult.getMostUsedApp()).isEqualTo("com.package.name1");
+        assertThat(analysisResult.getMostDownloadCategories().size()).isEqualTo(3);
+        assertThat(analysisResult.getMostDownloadCategories().get(0)).isEqualTo("/store/apps/category/PHOTOGRAPHY");
+        assertThat(analysisResult.getMostDownloadCategories().get(1)).isEqualTo("/store/apps/category/SHOPPING");
+        assertThat(analysisResult.getMostDownloadCategories().get(2)).isEqualTo("/store/apps/category/MUSIC_AND_AUDIO");
+        assertThat(analysisResult.getLeastDownloadCategory()).isEqualTo("/store/apps/category/DATING");
+        assertThat(analysisResult.getMostUsedCategories().size()).isEqualTo(4);
+        assertThat(analysisResult.getMostUsedCategories().get(0)).isEqualTo("/store/apps/category/GAME");
+        assertThat(analysisResult.getMostUsedCategories().get(1)).isEqualTo("/store/apps/category/FINANCE");
+        assertThat(analysisResult.getMostUsedCategories().get(2)).isEqualTo("/store/apps/category/SOCIAL");
+        assertThat(analysisResult.getMostUsedCategories().get(3)).isEqualTo("/store/apps/category/SHOPPING");
+        assertThat(analysisResult.getLeastUsedCategory()).isEqualTo("/store/apps/category/SHOPPING");
     }
 
     @Test

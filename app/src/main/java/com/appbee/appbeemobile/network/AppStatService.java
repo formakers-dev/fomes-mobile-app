@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.helper.TimeHelper;
 
@@ -62,6 +63,16 @@ public class AppStatService {
 
     public void sendShortTermStats() {
         StatAPI.sendShortTermStats(localStorageHelper.getUUID(), appUsageDataHelper.getShortTermStats(getStartTime()))
+                .subscribeOn(Schedulers.io())
+                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                    if (error instanceof HttpException) {
+                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                    }
+                });
+    }
+
+    public void sendAnalysisResult(AnalysisResult analysisResult) {
+        StatAPI.sendAnalysisResult(localStorageHelper.getUUID(), analysisResult)
                 .subscribeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
                     if (error instanceof HttpException) {

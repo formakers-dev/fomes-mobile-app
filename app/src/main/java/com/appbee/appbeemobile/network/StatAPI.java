@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
@@ -24,4 +25,7 @@ public interface StatAPI {
 
     @POST("/stats/short")
     Observable<Response<Boolean>> sendShortTermStats(@Header("x-appbee-number") String userId, @Body List<ShortTermStat> shortTermStats);
+
+    @POST("/stats/analysis/result")
+    Observable<Response<Boolean>> sendAnalysisResult(@Header("x-appbee-number") String userId, @Body AnalysisResult analysisResult);
 }
