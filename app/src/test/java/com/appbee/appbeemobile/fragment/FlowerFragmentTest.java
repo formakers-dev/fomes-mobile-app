@@ -64,7 +64,7 @@ public class FlowerFragmentTest {
     @BindView(R.id.flower_background_layout)
     RelativeLayout flowerBackgroundLayout;
 
-    public void setUpWithEnoughData() throws Exception {
+    private void setUpWithEnoughData() throws Exception {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
@@ -80,7 +80,7 @@ public class FlowerFragmentTest {
         createFragment(bundle);
     }
 
-    public void setUpWithNotEnoughData() throws Exception {
+    private void setUpWithNotEnoughData() throws Exception {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
@@ -91,6 +91,20 @@ public class FlowerFragmentTest {
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, "아이코, 꽃이 시들어 버렸어요.");
         bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, "가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요. 앱 사용 패턴이 조금 더 쌓이면, 예쁜 꽃이 다시 피어날꺼에요. 그때 앱비랑 다시 만나요!");
+        createFragment(bundle);
+    }
+
+    private void setUpWithoutLeastUsedCategoryData() throws Exception {
+        Bundle bundle = new Bundle();
+
+        ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
+        mostUsedTimeCategoryList.add("금융/컨설팅");
+        mostUsedTimeCategoryList.add("소셜");
+        mostUsedTimeCategoryList.add("게임");
+        bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
+        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, new ArrayList<>());
+        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, "금융 앱이 전체 앱 개수의 20%");
+        bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, "금융 입니다");
         createFragment(bundle);
     }
 
@@ -145,5 +159,14 @@ public class FlowerFragmentTest {
         assertThat(shadowOf(flowerBackgroundLayout.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.dead_flower_background);
         assertThat(mostUsedTimeCategorySummaryView.getText()).isEqualTo("아이코, 꽃이 시들어 버렸어요.");
         assertThat(mostUsedTimeCategoryDescriptionView.getText()).isEqualTo("가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요. 앱 사용 패턴이 조금 더 쌓이면, 예쁜 꽃이 다시 피어날꺼에요. 그때 앱비랑 다시 만나요!");
+    }
+
+    @Test
+    public void 가장적게사용한카테고리정보가없는경우_onViewCreated호출시_가장적게사용한카테고리정보가_표시되지않는_레이아웃이_나타난다() throws Exception {
+        setUpWithoutLeastUsedCategoryData();
+
+        assertThat(lastRankTitleView.getVisibility()).isEqualTo(View.GONE);
+        assertThat(leastUsedCategoryView.getVisibility()).isEqualTo(View.GONE);
+        assertThat(shadowOf(flowerBackgroundLayout.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.flower_background_without_least_used_category);
     }
 }

@@ -47,6 +47,10 @@ public class AnalysisResultActivity extends BaseActivity {
 
     private static final int NUMBER_OF_MOST_USED_TIME_CATEGORY = 3;
     private static final int NUMBER_OF_LEAST_USED_TIME_CATEGORY = 1;
+
+    private int totalAppCount = 0;
+    private AppInfo mostUsedAppInfo;
+
     @Inject
     AppUsageDataHelper appUsageDataHelper;
 
@@ -71,8 +75,6 @@ public class AnalysisResultActivity extends BaseActivity {
     @Inject
     AppStatService appStatService;
 
-    private List<AppInfo> appInfoList;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +83,15 @@ public class AnalysisResultActivity extends BaseActivity {
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
-        appInfoList = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime();
+        List<AppInfo> appInfoList = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime();
 
-        // TODO : BrainFragment의 가장많이설치된 카테고리와 FlowerFragment의 가장 많이 사용된 카테고리가 동일한 경우 예외 처리
+        if (appInfoList != null && !appInfoList.isEmpty()) {
+            totalAppCount = appInfoList.size();
+            mostUsedAppInfo = appInfoList.get(0);
+        }
+
+        totalAppCount = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime().size();
+
         getFragmentManager().beginTransaction()
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
                 .add(R.id.brain_fragment, getBrainFragment(), BRAIN_FRAGMENT_TAG)
@@ -108,22 +116,20 @@ public class AnalysisResultActivity extends BaseActivity {
     private Fragment getOverviewFragment() {
         Fragment overviewFragment = new OverviewFragment();
 
-        int appCount = appInfoList.size();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, appCount);
-        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, getAppCountType(appCount));
+        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, totalAppCount);
+        bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, getAppCountType(totalAppCount));
 
         List<LongTermStat> longTermStatList = appUsageDataHelper.getLongTermStats();
         int appUsageAverageMinutesPerDay = appUsageDataHelper.getAppUsageAverageMinutesPerDay(longTermStatList);
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageMinutesPerDay);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageMinutesPerDay));
 
-        if (appInfoList != null && !appInfoList.isEmpty()) {
-            AppInfo longestUsedAppInfo = appInfoList.get(0);
-            bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, longestUsedAppInfo.getAppName());
-            bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, getLongestUsedAppDescription(longestUsedAppInfo.getCategoryId1()));
-            NativeAppInfo nativeAppInfo = nativeAppInfoHelper.getNativeAppInfo(longestUsedAppInfo.getPackageName());
+        if (mostUsedAppInfo != null) {
+            bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, mostUsedAppInfo.getAppName());
+            bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION, getLongestUsedAppDescription(mostUsedAppInfo.getCategoryId1()));
+            NativeAppInfo nativeAppInfo = nativeAppInfoHelper.getNativeAppInfo(mostUsedAppInfo.getPackageName());
             if (nativeAppInfo.getIcon() != null) {
                 bundle.putParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP, ((BitmapDrawable) nativeAppInfo.getIcon()).getBitmap());
             }
@@ -139,7 +145,6 @@ public class AnalysisResultActivity extends BaseActivity {
         Fragment brainFragment = new BrainFragment();
 
         List<String> mostInstalledCategoryList = appUsageDataHelper.getMostInstalledCategoryGroups(NUMBER_OF_MOST_INSTALLED_CATEGORY);
-        int appCount = appInfoList.size();
 
         Bundle bundle = new Bundle();
         ArrayList<String> leastInstalledCategoryList = appUsageDataHelper.getLeastInstalledCategoryGroups(NUMBER_OF_LEAST_INSTALLED_CATEGORY);
@@ -154,7 +159,7 @@ public class AnalysisResultActivity extends BaseActivity {
         if (mostInstalledCategoryList.size() >= 3) {
             String categoryId = mostInstalledCategoryList.get(0);
             String categoryName = Category.fromId(categoryId).categoryName;
-            int rate = (int) Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / appCount * 100);
+            int rate = (int) Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / totalAppCount * 100);
             bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, String.format(getString(R.string.category_count_summary_format_string), categoryName, rate));
             bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(Category.fromId(categoryId).description));
         } else {
@@ -177,9 +182,9 @@ public class AnalysisResultActivity extends BaseActivity {
         ArrayList<String> mostUsedTimeCategoryList = getCategoryNameList(usedTimeCategoryKeyList, NUMBER_OF_MOST_USED_TIME_CATEGORY);
         ArrayList<String> leastUsedTimeCategoryList = getCategoryNameList(Lists.reverse(usedTimeCategoryKeyList), NUMBER_OF_LEAST_USED_TIME_CATEGORY);
 
-        bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
-        bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         if (usedTimeCategoryKeyList.size() >= 3) {
+            bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
+
             String mostUsedCategoryId = usedTimeCategoryKeyList.get(0);
             int rate = (int) getCategoryRate(usedTimeCategoryMap, mostUsedCategoryId);
             bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, String.format(getString(R.string.category_time_summary_format_string), Category.fromId(mostUsedCategoryId).categoryName, rate));
@@ -191,7 +196,15 @@ public class AnalysisResultActivity extends BaseActivity {
             } else {
                 bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getMostUsedCategoryDesc(mostUsedCategoryId));
             }
+
+            if (usedTimeCategoryKeyList.size() == 3) {
+                bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, new ArrayList<>());
+            } else {
+                bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
+            }
         } else {
+            bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, new ArrayList<>());
+            bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, new ArrayList<>());
             bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, getString(R.string.flower_summary_not_enough_data));
             bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getString(R.string.flower_desc_not_enough_data));
         }

@@ -85,6 +85,10 @@ public class FlowerFragment extends Fragment {
         List<String> leastUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_USED_TIME_CATEGORIES);
         if (isAvailableLeastUsedCategoryList(leastUsedTimeCategoryList)) {
             leastUsedCategoryView.setText(String.format(getString(R.string.least_used_category_format), leastUsedTimeCategoryList.get(0)));
+        } else {
+            lastRankTitleView.setVisibility(View.GONE);
+            leastUsedCategoryView.setVisibility(View.GONE);
+            flowerBackgroundLayout.setBackgroundResource(R.drawable.flower_background_without_least_used_category);
         }
 
         mostUsedTimeCategorySummaryView.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY));
@@ -102,7 +106,7 @@ public class FlowerFragment extends Fragment {
     }
 
     boolean isAvailableLeastUsedCategoryList(List<String> leastUsedTimeCategoryList) {
-        return leastUsedTimeCategoryList != null && !leastUsedTimeCategoryList.isEmpty() && leastUsedTimeCategoryList.size() >= 1;
+        return leastUsedTimeCategoryList != null && !leastUsedTimeCategoryList.isEmpty();
     }
 
     boolean isAvailableMostUsedCategoryList(List<String> mostUsedTimeCategoryList) {
