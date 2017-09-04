@@ -203,9 +203,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
     @Test
     public void onCreate_앱시작시_서버로_앱정보를_전송한다() throws Exception {
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+        verify(mockAppStatService).sendLongTermStatsFor3Months();
         verify(mockAppStatService).sendLongTermStatsFor2Years();
         verify(mockAppStatService).sendShortTermStats();
-        verify(mockAppStatService).sendEventStats();
         verify(mockUserService).sendAppList();
     }
 

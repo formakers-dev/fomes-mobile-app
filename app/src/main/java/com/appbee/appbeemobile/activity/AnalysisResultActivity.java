@@ -99,9 +99,9 @@ public class AnalysisResultActivity extends BaseActivity {
             User user = new User(localStorageHelper.getUUID(), currentDate, currentDate);
             userService.sendUser(user);
             userService.sendAppList();
+            appStatService.sendLongTermStatsFor3Months();
             appStatService.sendLongTermStatsFor2Years();
             appStatService.sendShortTermStats();
-            appStatService.sendEventStats();
         }
     }
 

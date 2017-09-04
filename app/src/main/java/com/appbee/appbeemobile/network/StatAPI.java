@@ -13,8 +13,11 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 public interface StatAPI {
-    @POST("/stats/long")
-    Observable<Response<Boolean>> sendLongTermStats(@Header("x-appbee-number") String userId, @Body List<NativeLongTermStat> longTermStats);
+    @POST("/stats/long/yearly")
+    Observable<Response<Boolean>> sendLongTermStatsYearly(@Header("x-appbee-number") String userId, @Body List<NativeLongTermStat> longTermStats);
+
+    @POST("/stats/long/monthly")
+    Observable<Response<Boolean>> sendLongTermStatsMonthly(@Header("x-appbee-number") String userId, @Body List<NativeLongTermStat> longTermStats);
 
     @POST("/stats/event")
     Observable<Response<Boolean>> sendEventStats(@Header("x-appbee-number") String userId, @Body List<EventStat> eventStats);

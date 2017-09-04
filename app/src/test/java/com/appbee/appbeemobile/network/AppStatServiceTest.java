@@ -107,12 +107,12 @@ public class AppStatServiceTest {
         mockNativeLongTermStatList.add(createMockNativeLongTermStat("anyPackage", 100L, 200L, 300L, 400L));
 
         when(mockAppUsageDataHelper.getNativeLongTermStatsFor2Years()).thenReturn(mockNativeLongTermStatList);
-        when(mockStatAPI.sendLongTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
+        when(mockStatAPI.sendLongTermStatsYearly(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendLongTermStatsFor2Years();
 
         ArgumentCaptor<List<NativeLongTermStat>> navtiveLongTermStatCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockStatAPI).sendLongTermStats(anyString(), navtiveLongTermStatCaptor.capture());
+        verify(mockStatAPI).sendLongTermStatsYearly(anyString(), navtiveLongTermStatCaptor.capture());
         assertThat(navtiveLongTermStatCaptor.getValue().size()).isEqualTo(1);
         NativeLongTermStat nativeLongTermStat = navtiveLongTermStatCaptor.getValue().get(0);
         assertEquals(nativeLongTermStat.getPackageName(), "anyPackage");
@@ -164,6 +164,28 @@ public class AppStatServiceTest {
 
         assertThat(usedPackageNameList.size()).isEqualTo(1);
         assertThat(usedPackageNameList.get(0)).isEqualTo("com.package.name1");
+    }
+
+    @Test
+    public void sendLongTermStatsFor3Months() throws Exception {
+        List<NativeLongTermStat> nativeLongTermStatList = new ArrayList<>();
+        nativeLongTermStatList.add(new NativeLongTermStat("package1", 100L, 200L, 300L, 400L));
+        nativeLongTermStatList.add(new NativeLongTermStat("package2", 200L, 300L, 400L, 500L));
+        when(mockAppUsageDataHelper.getLongTermStatsFor3Months()).thenReturn(nativeLongTermStatList);
+        when(mockStatAPI.sendLongTermStatsMonthly(anyString(), any(List.class))).thenReturn(mock(Observable.class));
+
+        subject.sendLongTermStatsFor3Months();
+
+        ArgumentCaptor<List> listCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockStatAPI).sendLongTermStatsMonthly(anyString(), listCaptor.capture());
+        List<NativeLongTermStat> list = listCaptor.getValue();
+        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.get(0).getPackageName()).isEqualTo("package1");
+        assertThat(list.get(0).getBeginTimeStamp()).isEqualTo(100L);
+        assertThat(list.get(0).getEndTimeStamp()).isEqualTo(200L);
+        assertThat(list.get(0).getLastTimeUsed()).isEqualTo(300L);
+        assertThat(list.get(0).getTotalTimeInForeground()).isEqualTo(400L);
+
     }
 
     private NativeLongTermStat createMockNativeLongTermStat(String packageName, long beginTimeStamp, long endTimeStamp, long lastTimeUsed, long totalUsedTime) {
