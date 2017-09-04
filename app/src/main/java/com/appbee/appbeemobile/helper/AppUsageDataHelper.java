@@ -11,7 +11,7 @@ import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
-import com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
+import com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
@@ -269,11 +269,11 @@ public class AppUsageDataHelper {
         }
     }
 
-    public int getCharacterType() {
+    public CharacterType getCharacterType() {
         final Map<String, Integer> aggregatedMap = combineAppCountByBest5CategoryGroup(appRepositoryHelper.getAppCountMapByCategory());
 
         if (aggregatedMap == null || aggregatedMap.isEmpty()) {
-            return CHARACTER_TYPE.ETC;
+            return CharacterType.ETC;
         }
         Map<String, Integer> sortedMap = sortByValue(aggregatedMap, DESC);
 
@@ -281,15 +281,15 @@ public class AppUsageDataHelper {
 
         switch (topCategoryId) {
             case GAME_CATEGORY_GROUP_KEY:
-                return CHARACTER_TYPE.GAMER;
+                return CharacterType.GAMER;
             case MUSIC_VIDEO_CATEGORY_GROUP_KEY:
-                return CHARACTER_TYPE.QUEEN;
+                return CharacterType.QUEEN;
             case PHOTOGRAPHY_CATEGORY_GROUP_KEY:
-                return CHARACTER_TYPE.POISON;
+                return CharacterType.POISON;
             case PERSONALIZATION_CATEGORY_GROUP_KEY:
-                return CHARACTER_TYPE.SOUL;
+                return CharacterType.SOUL;
         }
-        return CHARACTER_TYPE.ETC;
+        return CharacterType.ETC;
     }
 
     Map<String, Integer> combineAppCountByBest5CategoryGroup(Map<String, Integer> categoryMap) {

@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.util;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
 import com.appbee.appbeemobile.R;
@@ -16,12 +17,24 @@ public interface AppBeeConstants {
         String NOTFOUND = "404";
     }
 
-    interface CHARACTER_TYPE {
-        int GAMER = 0;
-        int QUEEN = 1;
-        int POISON = 2;
-        int SOUL = 3;
-        int ETC = 4;
+    enum CharacterType {
+        GAMER(R.string.character_title_gamer, R.string.character_simple_desc_gamer, R.string.character_detail_desc_gamer, R.drawable.character_gamer),
+        QUEEN(R.string.character_title_queen, R.string.character_simple_desc_queen, R.string.character_detail_desc_queen, R.drawable.character_queen),
+        POISON(R.string.character_title_poison, R.string.character_simple_desc_poison, R.string.character_detail_desc_poison, R.drawable.character_poison),
+        SOUL(R.string.character_title_soul, R.string.character_simple_desc_soul, R.string.character_detail_desc_soul, R.drawable.character_soul),
+        ETC(R.string.character_title_alien, R.string.character_simple_desc_alien, R.string.character_detail_desc_alien, R.drawable.character_alien);
+
+        @StringRes public final int title;
+        @StringRes public final int simpleDescription;
+        @StringRes public final int detailDescription;
+        @DrawableRes public final int image;
+
+        CharacterType(int title, int simpleDescription, int detailDescription, int image) {
+            this.title = title;
+            this.simpleDescription = simpleDescription;
+            this.detailDescription = detailDescription;
+            this.image = image;
+        }
     }
 
     interface APP_USAGE_TIME_TYPE {

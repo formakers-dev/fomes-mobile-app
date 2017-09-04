@@ -21,6 +21,7 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -42,7 +43,7 @@ import javax.inject.Inject;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
-import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -103,7 +104,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(bundle.getString(OverviewFragment.EXTRA_LONGEST_USED_APP_DESCRIPTION)).isEqualTo("역시 당신은 덕…아니, 게이머라구요.");
         assertThat(((Bitmap) bundle.getParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP))).isEqualTo(mockIconBitmap);
 
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(CHARACTER_TYPE.QUEEN);
+        assertThat(bundle.getSerializable(OverviewFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(CharacterType.QUEEN);
     }
 
     @Test
@@ -486,7 +487,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         mockNativeAppInfo(true);
 
-        when(appUsageDataHelper.getCharacterType()).thenReturn(CHARACTER_TYPE.QUEEN);
+        when(appUsageDataHelper.getCharacterType()).thenReturn(CharacterType.QUEEN);
     }
 
     private void mockDummyDataForBrainFragment() {

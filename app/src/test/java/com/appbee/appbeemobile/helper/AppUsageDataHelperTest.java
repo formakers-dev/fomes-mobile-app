@@ -24,11 +24,12 @@ import java.util.Map;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
-import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.ETC;
-import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.GAMER;
-import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.POISON;
-import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.QUEEN;
-import static com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE.SOUL;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.ETC;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.GAMER;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.POISON;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.QUEEN;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.SOUL;
 import static com.appbee.appbeemobile.util.AppBeeConstants.Category;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -499,7 +500,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, GAMER);
     }
@@ -517,7 +518,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, GAMER);
     }
@@ -532,7 +533,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, QUEEN);
     }
@@ -547,7 +548,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, POISON);
     }
@@ -562,7 +563,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, SOUL);
     }
@@ -578,7 +579,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, QUEEN);
     }
@@ -591,7 +592,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY2", 999);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, GAMER);
     }
@@ -604,7 +605,7 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY3", 3);
         when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
 
-        int characterType = subject.getCharacterType();
+        CharacterType characterType = subject.getCharacterType();
 
         assertEquals(characterType, ETC);
     }

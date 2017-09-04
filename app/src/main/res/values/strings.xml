@@ -11,29 +11,6 @@
     <string name="category_count_summary_format_string">%1$s 앱이 전체 앱 개수의 %2$d%%</string>
     <string name="category_time_summary_format_string">%1$s이 전체 앱 사용 시간의 %2$d%%</string>
 
-    <string-array name="character_names">
-        <item>덕후가 아니라능! 게이머벌</item>
-        <item>하태하태! 내 스타일 여왕벌</item>
-        <item>감성폭발! 치명치명 맹독벌</item>
-        <item>나만의 소울충만! 룰루 땡벌</item>
-        <item>꿀빨러 왔나? 불시착 외계인!</item>
-    </string-array>
-
-    <string-array name="character_simple_descriptions">
-        <item>안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!</item>
-        <item>한번뿐인 인생, 모든 순간을 소중하게!</item>
-        <item>비가 가장 많이오는곳은 어디?\n바로..내 마음이에요</item>
-        <item>나의 밤은 당신의 낮보다 아름답다</item>
-        <item>꿀따리 샤바라~ 바니바니 꿍꿍꿀!</item>
-    </string-array>
-
-    <string-array name="character_detail_descriptions">
-        <item>어디서든 모바일 게임을 손에서 놓지 않는 당신!\n조금 내성적인 성향이 있지만, 게임 안에선\n누구보다 적극적이네요! 알면 알수록 매력적인\n당신은 양파같은 사람~ 자신있게 본모습을\n보여주면 핫해하태 여왕벌이 될지도 몰라요?!</item>
-        <item>스쳐지나가는 순간도 소중히 여기는 당신!\n똑같은 풍경도 다른 느낌으로 바라보는 멋진\n감수성을 가지고 있죠. 가끔 끈기가 부족하지만,\n규칙에 매이지 않는 감성이 당신의 최고 매력!\n그래서 모두에게 사랑받는 인기쟁이라는 사실!</item>
-        <item>ㄱㅏ끔…눈물을 흘ㄹㅣ는…당신…\n섬ㅅㅔ하고…ㅅㅏ진을 좋아하는…당신…\n소ㄹ ㅣ치며…울 수 있ㄷㅏ는건…좋은ㄱ ㅓ…\n당신은 한가지로 규정짓기에 어려운 사람이에요.\n룰에 얽매이지 않는 감성이 정말 멋지답니다!</item>
-        <item>자기만의 쀨로 가득 찬 특이한 당신!\n자신만의 공간이 필요하고, 뭐든 자기만의\n방식이 있는 개성파죠. 당신만의 소울과 룰\n때문에 친해지기 쉬운 사람은 아니죠. 하지만\n가까워지면 누구보다 속 깊고 사랑스럽죠!</item>
-        <item>혹시 평소에 독특하다는 소리 좀 들으시나요?\n다른사람보다 분석이 어려운 외계인같은 당신!\n정형화된 결과를 받기엔 당신은 너무 유니크해요!\n꿀빨러 지구에 오신 김에 앱비부스로 와줄래요?\n신비로운 당신의 데이터를 영접하고 싶답니다.</item>
-    </string-array>
 
     <string-array name="app_list_count_type_names">
         <item>아주 적어요.</item>
@@ -80,6 +57,25 @@
     <string name="agree_button_text">동의</string>
     <string name="cancel_button_text">취소</string>
     <string name="appbee">AppBee</string>
+
+    <!-- Character -->
+    <string name="character_title_gamer">덕후가 아니라능! 게이머벌</string>
+    <string name="character_title_queen">하태하태! 내 스타일 여왕벌</string>
+    <string name="character_title_poison">감성폭발! 치명치명 맹독벌</string>
+    <string name="character_title_soul">나만의 소울충만! 룰루 땡벌</string>
+    <string name="character_title_alien">꿀빨러 왔나? 불시착 외계인!</string>
+
+    <string name="character_simple_desc_gamer">안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!</string>
+    <string name="character_simple_desc_queen">한번뿐인 인생, 모든 순간을 소중하게!</string>
+    <string name="character_simple_desc_poison">비가 가장 많이오는곳은 어디?\n바로..내 마음이에요</string>
+    <string name="character_simple_desc_soul">나의 밤은 당신의 낮보다 아름답다</string>
+    <string name="character_simple_desc_alien">꿀따리 샤바라~ 바니바니 꿍꿍꿀!</string>
+
+    <string name="character_detail_desc_gamer">어디서든 모바일 게임을 손에서 놓지 않는 당신!\n조금 내성적인 성향이 있지만, 게임 안에선\n누구보다 적극적이네요! 알면 알수록 매력적인\n당신은 양파같은 사람~ 자신있게 본모습을\n보여주면 핫해하태 여왕벌이 될지도 몰라요?!</string>
+    <string name="character_detail_desc_queen">스쳐지나가는 순간도 소중히 여기는 당신!\n똑같은 풍경도 다른 느낌으로 바라보는 멋진\n감수성을 가지고 있죠. 가끔 끈기가 부족하지만,\n규칙에 매이지 않는 감성이 당신의 최고 매력!\n그래서 모두에게 사랑받는 인기쟁이라는 사실!</string>
+    <string name="character_detail_desc_poison">ㄱㅏ끔…눈물을 흘ㄹㅣ는…당신…\n섬ㅅㅔ하고…ㅅㅏ진을 좋아하는…당신…\n소ㄹ ㅣ치며…울 수 있ㄷㅏ는건…좋은ㄱ ㅓ…\n당신은 한가지로 규정짓기에 어려운 사람이에요.\n룰에 얽매이지 않는 감성이 정말 멋지답니다!</string>
+    <string name="character_detail_desc_soul">자기만의 쀨로 가득 찬 특이한 당신!\n자신만의 공간이 필요하고, 뭐든 자기만의\n방식이 있는 개성파죠. 당신만의 소울과 룰\n때문에 친해지기 쉬운 사람은 아니죠. 하지만\n가까워지면 누구보다 속 깊고 사랑스럽죠!</string>
+    <string name="character_detail_desc_alien">혹시 평소에 독특하다는 소리 좀 들으시나요?\n다른사람보다 분석이 어려운 외계인같은 당신!\n정형화된 결과를 받기엔 당신은 너무 유니크해요!\n꿀빨러 지구에 오신 김에 앱비부스로 와줄래요?\n신비로운 당신의 데이터를 영접하고 싶답니다.</string>
 
     <!-- Longest Used App Simple Description-->
     <string name="longest_used_app_desc_finance">늘 자신의 생활을 관리하는 모습이 알뜰살뜰한 당신답네요.</string>
