@@ -1,8 +1,5 @@
 <resources>
-    <string name="app_name">AppBee App Behavior</string>
-    <string name="app_count_many_msg">많기도 하네 진짜…</string>
-    <string name="app_count_few_msg">적기도 하네 진짜…</string>
-    <string name="app_count_proper_msg">적당도 하네 진짜…</string>
+    <string name="app_name">AppBee</string>
     <string name="overview_app_count_title">총 앱개수 %s</string>
     <string name="overview_app_count_with_unit">%d개</string>
     <string name="overview_average_time_title">하루 앱사용시간 %s</string>
@@ -11,8 +8,6 @@
     <string name="now_loading">분석할 꿀을 모으는 중…</string>
 
     <string name="longest_used_app_title">제일 많이 쓴 앱, %s</string>
-    <string name="most_used_social_app_title">당신이 사랑하는 SNS는 </string>
-    <string name="total">총</string>
     <string name="category_count_summary_format_string">%1$s 앱이 전체 앱 개수의 %2$d%%</string>
     <string name="category_time_summary_format_string">%1$s이 전체 앱 사용 시간의 %2$d%%</string>
 
@@ -35,7 +30,7 @@
     <string-array name="character_detail_descriptions">
         <item>어디서든 모바일 게임을 손에서 놓지 않는 당신!\n조금 내성적인 성향이 있지만, 게임 안에선\n누구보다 적극적이네요! 알면 알수록 매력적인\n당신은 양파같은 사람~ 자신있게 본모습을\n보여주면 핫해하태 여왕벌이 될지도 몰라요?!</item>
         <item>스쳐지나가는 순간도 소중히 여기는 당신!\n똑같은 풍경도 다른 느낌으로 바라보는 멋진\n감수성을 가지고 있죠. 가끔 끈기가 부족하지만,\n규칙에 매이지 않는 감성이 당신의 최고 매력!\n그래서 모두에게 사랑받는 인기쟁이라는 사실!</item>
-        <item>ㄱㅏ끔...눈물을 흘ㄹㅣ는...당신...\n섬ㅅㅔ하고...ㅅㅏ진을 좋아하는...당신...\n소ㄹ ㅣ치며...울 수 있ㄷㅏ는건...좋은ㄱ ㅓ...\n당신은 한가지로 규정짓기에 어려운 사람이에요.\n룰에 얽매이지 않는 감성이 정말 멋지답니다!</item>
+        <item>ㄱㅏ끔…눈물을 흘ㄹㅣ는…당신…\n섬ㅅㅔ하고…ㅅㅏ진을 좋아하는…당신…\n소ㄹ ㅣ치며…울 수 있ㄷㅏ는건…좋은ㄱ ㅓ…\n당신은 한가지로 규정짓기에 어려운 사람이에요.\n룰에 얽매이지 않는 감성이 정말 멋지답니다!</item>
         <item>자기만의 쀨로 가득 찬 특이한 당신!\n자신만의 공간이 필요하고, 뭐든 자기만의\n방식이 있는 개성파죠. 당신만의 소울과 룰\n때문에 친해지기 쉬운 사람은 아니죠. 하지만\n가까워지면 누구보다 속 깊고 사랑스럽죠!</item>
         <item>혹시 평소에 독특하다는 소리 좀 들으시나요?\n다른사람보다 분석이 어려운 외계인같은 당신!\n정형화된 결과를 받기엔 당신은 너무 유니크해요!\n꿀빨러 지구에 오신 김에 앱비부스로 와줄래요?\n신비로운 당신의 데이터를 영접하고 싶답니다.</item>
     </string-array>
@@ -123,7 +118,7 @@
     <string name="brain_flower_desc_music">항상 음악과 함께하는 당신. 풍부한 감성의\n소유자네요! 취향,  즐길거리, 쉬는방법이\n명확하네요. 정해진 규칙을 따르기보단 나만의\n방식을 추구하는 당신의 모습이 멋져보여요!</string>
     <string name="brain_flower_desc_video">항상 비디오와 함께하는 당신. 풍부한 감성의 소유자에요. 자기만의 취향,  즐길거리, 쉬는 방법이 명확하시군요. 정해진 규칙을 따르기보단 나만의 방식을 추구하는 모습이 멋져요!</string>
     <string name="brain_flower_desc_social">언제나 소통을 중요하게 생각하고 계시는군요. \n인터넷을 통해서 사람들과 연결되는건 즐겁죠!\n하지만 가끔은 핸드폰을 덮고 보고싶은 이에게\n오랜만에 연락을 보내보는건 어떨가요?</string>
-    <string name="brain_flower_desc_photography">늘 기록을 남기고 추억을 소중하게 여기는 당신.\n일상을 소중하게 여기고 아름답게 만드는 당신\n덕분에 주변 사람들도 추억에 대한 기억이\n풍부해진답니다. 섬ㅅㅔ한 당신이...좋ㄷㅏ*^^*</string>
+    <string name="brain_flower_desc_photography">늘 기록을 남기고 추억을 소중하게 여기는 당신.\n일상을 소중하게 여기고 아름답게 만드는 당신\n덕분에 주변 사람들도 추억에 대한 기억이\n풍부해진답니다. 섬ㅅㅔ한 당신이…좋ㄷㅏ*^^*</string>
     <string name="brain_flower_desc_personalization">혹시 특이하다는 얘기 자주 듣지 않으세요?\n당신은 자기만의 확고한 취향과 독창적인 시각,\n실행력까지 갖추고 있어요. 그래서인지 늘 눈에\n띄는 독보적인 존재가 바로 당신이랍니다!</string>
     <string name="brain_flower_desc_shopping">합리적인 선택을 하기 위해서 언제나 꼼꼼하게\n가격을 살피시네요! 호갱이 되지 않겠다는 의지!\n하지만 가끔은 당신을 위한 사치를 해보세요.\n오늘 자신에게 선물을 해보는거 어때요?</string>
     <string name="brain_flower_desc_communication">언제나 소통을 중요하게 생각하고 계시는군요.\n핸드폰을 보며 멍때리는거 참 재미있죠. 하지만\n가끔은 핸드폰을 덮고 보고싶은 이에게 연락해\n보면 반가운 목소리를 들을수 있을 거에요!</string>
