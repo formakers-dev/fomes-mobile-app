@@ -18,6 +18,7 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.helper.ShareSnsHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
@@ -50,6 +51,7 @@ public class AnalysisResultActivity extends BaseActivity {
 
     private int totalAppCount = 0;
     private AppInfo mostUsedAppInfo;
+    private AnalysisResult analysisResult = new AnalysisResult();
 
     @Inject
     AppUsageDataHelper appUsageDataHelper;
@@ -110,12 +112,14 @@ public class AnalysisResultActivity extends BaseActivity {
             appStatService.sendLongTermStatsFor3Months();
             appStatService.sendLongTermStatsFor2Years();
             appStatService.sendShortTermStats();
+
         }
+
+        appStatService.sendAnalysisResult(analysisResult);
     }
 
     private Fragment getOverviewFragment() {
         Fragment overviewFragment = new OverviewFragment();
-
 
         Bundle bundle = new Bundle();
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, totalAppCount);
@@ -133,10 +137,17 @@ public class AnalysisResultActivity extends BaseActivity {
             if (nativeAppInfo.getIcon() != null) {
                 bundle.putParcelable(OverviewFragment.EXTRA_LONGEST_USED_APP_ICON_BITMAP, ((BitmapDrawable) nativeAppInfo.getIcon()).getBitmap());
             }
+
+            analysisResult.setMostUsedApp(mostUsedAppInfo.getPackageName());
         }
 
-        bundle.putSerializable(OverviewFragment.EXTRA_CHARACTER_TYPE, appUsageDataHelper.getCharacterType());
+        CharacterType characterType = appUsageDataHelper.getCharacterType();
+        bundle.putSerializable(OverviewFragment.EXTRA_CHARACTER_TYPE, characterType);
         overviewFragment.setArguments(bundle);
+
+        analysisResult.setCharacterType(characterType.name());
+        analysisResult.setTotalInstalledAppCount(totalAppCount);
+        analysisResult.setAverageUsedMinutesPerDay(appUsageAverageMinutesPerDay);
 
         return overviewFragment;
     }
@@ -168,6 +179,11 @@ public class AnalysisResultActivity extends BaseActivity {
         }
 
         brainFragment.setArguments(bundle);
+
+        analysisResult.setMostDownloadCategories(mostInstalledCategoryList);
+        if (leastInstalledCategoryList.size() > 0) {
+            analysisResult.setLeastDownloadCategory(leastInstalledCategoryList.get(0));
+        }
 
         return brainFragment;
     }
@@ -209,6 +225,11 @@ public class AnalysisResultActivity extends BaseActivity {
             bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, getString(R.string.flower_desc_not_enough_data));
         }
         flowerFragment.setArguments(bundle);
+
+        analysisResult.setMostUsedCategories(usedTimeCategoryKeyList);
+        if (usedTimeCategoryKeyList.size() > 0) {
+            analysisResult.setLeastUsedCategory(Lists.reverse(usedTimeCategoryKeyList).get(0));
+        }
 
         return flowerFragment;
     }
