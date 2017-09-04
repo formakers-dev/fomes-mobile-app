@@ -12,7 +12,6 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.network.UserService;
-import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
 
 import javax.inject.Inject;
 
@@ -37,11 +36,6 @@ public class StartActivity extends BaseActivity {
 
         setContentView(R.layout.activity_start);
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-        BroadcastReceiver br = new PowerConnectedReceiver(userService, timeHelper);
-
-        registerReceiver(br, intentFilter);
     }
 
     @OnClick(R.id.start_analysis_button)

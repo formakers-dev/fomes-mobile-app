@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.activity;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,6 +26,7 @@ import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.service.PowerConnectedService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +54,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(resourceDir = "src/main/res", constants = BuildConfig.class)
@@ -216,6 +219,16 @@ public class AnalysisResultActivityTest extends ActivityTest {
     public void onCreate_앱시작시_서버로_user정보를_전송한다() throws Exception {
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
         verify(mockUserService).sendUser(any(User.class));
+    }
+
+    @Test
+    public void onCreate_앱시작시_UUID가sharedPreferences에저장되어있지않을경우_PowerConnectedService를_시작한다() throws Exception {
+        when(mockLocalStorageHelper.getUUID()).thenReturn(null);
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Intent nextStartedService = shadowOf(RuntimeEnvironment.application).getNextStartedService();
+        assertThat(nextStartedService.getComponent().getClassName()).contains(PowerConnectedService.class.getSimpleName());
     }
 
     @Test

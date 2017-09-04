@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.service.PowerConnectedService;
 import com.appbee.appbeemobile.util.AppBeeConstants.*;
 import com.google.common.collect.Lists;
 
@@ -113,6 +115,7 @@ public class AnalysisResultActivity extends BaseActivity {
             appStatService.sendLongTermStatsFor2Years();
             appStatService.sendShortTermStats();
 
+            startService(new Intent(this, PowerConnectedService.class));
         }
 
         appStatService.sendAnalysisResult(analysisResult);

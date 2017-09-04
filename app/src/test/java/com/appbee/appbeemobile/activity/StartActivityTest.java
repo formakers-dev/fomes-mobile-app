@@ -113,21 +113,6 @@ public class StartActivityTest extends ActivityTest {
         assertThat(alertDialog.isShowing()).isFalse();
     }
 
-    @Test
-    public void onCreate호출시_PowerConnectedReceiver를_등록한다() throws Exception {
-        List<ShadowApplication.Wrapper> registeredReceivers = shadowOf(RuntimeEnvironment.application).getRegisteredReceivers();
-
-        boolean isPowerConnectedReceiverRegistered = false;
-        for(ShadowApplication.Wrapper receiver : registeredReceivers ) {
-            BroadcastReceiver broadcastReceiver = receiver.getBroadcastReceiver();
-            if(broadcastReceiver.getClass().getSimpleName().equals(PowerConnectedReceiver.class.getSimpleName())) {
-                isPowerConnectedReceiverRegistered = true;
-                break;
-            }
-        }
-        assertThat(isPowerConnectedReceiverRegistered).isTrue();
-    }
-
     private void assertMoveToMainActivity() {
         Intent intent = Shadows.shadowOf(subject).peekNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).isEqualTo(MainActivity.class.getCanonicalName());
