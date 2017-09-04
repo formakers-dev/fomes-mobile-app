@@ -74,18 +74,21 @@ public class BrainFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ArrayList<String> leastInstalledCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
+        if (leastInstalledCategoryList != null && !leastInstalledCategoryList.isEmpty()) {
+            leastInstalledCategoryView.setText(leastInstalledCategoryList.get(0));
+        } else {
+            brainImageLayout.setBackgroundResource(R.drawable.brain_backgound_without_least_used_category);
+            lastRankLayout.setVisibility(View.GONE);
+        }
+
         ArrayList<String> mostInstalledCategoryList = getArguments().getStringArrayList(EXTRA_MOST_INSTALLED_CATEGORIES);
-        if (mostInstalledCategoryList.size() >= 3) {
+        if (mostInstalledCategoryList != null && mostInstalledCategoryList.size() >= 3) {
             mostInstalledCategory1View.setText(FormatUtil.formatLongCategoryName(mostInstalledCategoryList.get(0)));
             mostInstalledCategory2View.setText(FormatUtil.formatLongCategoryName(mostInstalledCategoryList.get(1)));
             mostInstalledCategory3View.setText(FormatUtil.formatLongCategoryName(mostInstalledCategoryList.get(2)));
         } else {
             setLayoutByNotEnoughData();
-        }
-
-        ArrayList<String> leastInstalledCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_INSTALLED_CATEGORIES);
-        if (leastInstalledCategoryList.size() > 0) {
-            leastInstalledCategoryView.setText(leastInstalledCategoryList.get(0));
         }
 
         mostInstalledCategorySummaryView.setText(getArguments().getString(EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY));
@@ -99,7 +102,7 @@ public class BrainFragment extends Fragment {
     }
 
     private void setLayoutByNotEnoughData() {
-        brainImageLayout.setBackground(getResources().getDrawable(R.drawable.no_brain_background, null));
+        brainImageLayout.setBackgroundResource(R.drawable.no_brain_background);
         rank1Layout.setVisibility(View.GONE);
         rank2Layout.setVisibility(View.GONE);
         rank3Layout.setVisibility(View.GONE);
