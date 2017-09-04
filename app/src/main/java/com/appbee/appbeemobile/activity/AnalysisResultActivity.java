@@ -135,7 +135,7 @@ public class AnalysisResultActivity extends BaseActivity {
             }
         }
 
-        bundle.putInt(OverviewFragment.EXTRA_CHARACTER_TYPE, appUsageDataHelper.getCharacterType());
+        bundle.putSerializable(OverviewFragment.EXTRA_CHARACTER_TYPE, appUsageDataHelper.getCharacterType());
         overviewFragment.setArguments(bundle);
 
         return overviewFragment;

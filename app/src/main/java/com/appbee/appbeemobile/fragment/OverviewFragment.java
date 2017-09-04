@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.fragment;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.util.AppBeeConstants.CHARACTER_TYPE;
+import com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,32 +87,17 @@ public class OverviewFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        displayCharacterTypeInformation(getArguments().getInt(EXTRA_CHARACTER_TYPE));
+        displayCharacterTypeInformation((CharacterType) getArguments().getSerializable(EXTRA_CHARACTER_TYPE));
         displayAppListCountInformation(getArguments().getInt(EXTRA_APP_LIST_COUNT), getArguments().getInt(EXTRA_APP_LIST_COUNT_TYPE));
         displayAppUsageTimeInformation(getArguments().getInt(EXTRA_APP_AVG_TIME), getArguments().getInt(EXTRA_APP_USAGE_TIME_TYPE));
         displayLongestUsedAppInformation(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME), getArguments().getString(EXTRA_LONGEST_USED_APP_DESCRIPTION), getArguments().getParcelable(EXTRA_LONGEST_USED_APP_ICON_BITMAP));
     }
 
-    private void displayCharacterTypeInformation(int characterType) {
-        characterTypeIconView.setImageResource(getCharacterDrawableResource(characterType));
-        characterTypeNameView.setText(getResources().getStringArray(R.array.character_names)[characterType]);
-        characterTypeSimpleDescriptionView.setText(getResources().getStringArray(R.array.character_simple_descriptions)[characterType]);
-        characterTypeDetailDescriptionView.setText(getResources().getStringArray(R.array.character_detail_descriptions)[characterType]);
-    }
-
-    private @DrawableRes int getCharacterDrawableResource(int characterType) {
-        switch (characterType) {
-            case CHARACTER_TYPE.GAMER:
-                return R.drawable.character_gamer;
-            case CHARACTER_TYPE.POISON:
-                return R.drawable.character_poison;
-            case CHARACTER_TYPE.SOUL:
-                return R.drawable.character_soul;
-            case CHARACTER_TYPE.QUEEN:
-                return R.drawable.character_queen;
-            default:
-                return R.drawable.character_alien;
-        }
+    private void displayCharacterTypeInformation(CharacterType characterType) {
+        characterTypeIconView.setImageResource(characterType.image);
+        characterTypeNameView.setText(characterType.title);
+        characterTypeSimpleDescriptionView.setText(characterType.simpleDescription);
+        characterTypeDetailDescriptionView.setText(characterType.detailDescription);
     }
 
     private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
