@@ -18,14 +18,17 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.AnalysisResultActivity"/>
+        <activity android:name=".activity.AnalysisResultActivity" />
         <activity android:name=".activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".service.PowerConnectedService" />
     </application>
 
 </manifest>

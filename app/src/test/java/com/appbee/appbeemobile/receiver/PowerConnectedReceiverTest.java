@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.receiver;
 import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.ServiceCallback;
@@ -35,17 +36,22 @@ public class PowerConnectedReceiverTest {
 
     @Mock
     TimeHelper mockTimeHelper;
+
+    @Mock
+    LocalStorageHelper mockLocalStorageHelper;
+
     private static final String UUID_REGEX = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$";
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new PowerConnectedReceiver(mockUserService, mockTimeHelper);
+        subject = new PowerConnectedReceiver(mockUserService, mockTimeHelper, mockLocalStorageHelper);
     }
 
     @Test
     public void onReceive에서_PowerConnect되었을때_userService의_sendUser를_호출한다() throws Exception {
         when(mockTimeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT)).thenReturn("2017-08-30");
+        when(mockLocalStorageHelper.getUUID()).thenReturn("b50ce22c-2d7c-49a7-a40b-f9a95e9c88d0");
 
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
 

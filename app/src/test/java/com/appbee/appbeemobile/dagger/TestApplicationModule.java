@@ -100,9 +100,13 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    ShareSnsHelper shareSnsHelper() { return mock(ShareSnsHelper.class); }
+    ShareSnsHelper shareSnsHelper() {
+        return mock(ShareSnsHelper.class);
+    }
 
     @Singleton
     @Provides
-    TimeHelper timeHelper() { return mock(TimeHelper.class); }
+    TimeHelper timeHelper() {
+        return mock(TimeHelper.class);
+    }
 }
