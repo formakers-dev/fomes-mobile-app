@@ -64,7 +64,7 @@ public class BrainFragmentTest {
     @BindView(R.id.last_rank_layout)
     RelativeLayout lastRankLayout;
 
-    public void setUpWithEnoughData() throws Exception {
+    private void setUpWithEnoughData() throws Exception {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostInstalledCategoryList = new ArrayList<>();
@@ -83,7 +83,7 @@ public class BrainFragmentTest {
         createFragment(bundle);
     }
 
-    public void setUpWithNotEnoughData() throws Exception {
+    private void setUpWithNotEnoughData() throws Exception {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostInstalledCategoryList = new ArrayList<>();
@@ -96,6 +96,22 @@ public class BrainFragmentTest {
 
         bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, "당신, 어느별에서 오신거죠?!");
         bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "분석할만한 충분한 카테고리가 보이지 않아요. 핸드폰을 사용한지 얼마 안되었거나 분석이 가능할 만큼 앱을 사용하시지 않은 것 같아요. 아쉽지만 다음 번에 꼭 다시 분석해드릴게요!");
+
+        createFragment(bundle);
+    }
+
+    private void setUpWithoutLeastInstalledCategory() throws Exception {
+        Bundle bundle = new Bundle();
+
+        ArrayList<String> mostInstalledCategoryList = new ArrayList<>();
+        mostInstalledCategoryList.add("금융/컨설팅");
+        mostInstalledCategoryList.add("게임");
+        mostInstalledCategoryList.add("만화");
+        bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, mostInstalledCategoryList);
+        bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, new ArrayList());
+
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, "금융 앱이 전체 앱 개수의 25%");
+        bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, "금융앱 설명입니다");
 
         createFragment(bundle);
     }
@@ -150,5 +166,13 @@ public class BrainFragmentTest {
 
         assertThat(String.valueOf(mostInstalledCategorySummaryView.getText())).isEqualTo("당신, 어느별에서 오신거죠?!");
         assertThat(mostInstalledCategoryDescriptionView.getText()).isEqualTo("분석할만한 충분한 카테고리가 보이지 않아요. 핸드폰을 사용한지 얼마 안되었거나 분석이 가능할 만큼 앱을 사용하시지 않은 것 같아요. 아쉽지만 다음 번에 꼭 다시 분석해드릴게요!");
+    }
+
+    @Test
+    public void 가장적게설치한카테고리정보가주어지지않는경우_onViewCreated호출시_가장적게설치한케테고리정보가없는_레이아웃이_나타난다() throws Exception {
+        setUpWithoutLeastInstalledCategory();
+
+        assertThat(lastRankLayout.getVisibility()).isEqualTo(View.GONE);
+        assertThat(shadowOf(brainImageLayout.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.brain_backgound_without_least_used_category);
     }
 }

@@ -142,10 +142,16 @@ public class AnalysisResultActivity extends BaseActivity {
         int appCount = appInfoList.size();
 
         Bundle bundle = new Bundle();
-        ArrayList<String> leastInstalledCategory = appUsageDataHelper.getLeastInstalledCategoryGroups(NUMBER_OF_LEAST_INSTALLED_CATEGORY);
+        ArrayList<String> leastInstalledCategoryList = appUsageDataHelper.getLeastInstalledCategoryGroups(NUMBER_OF_LEAST_INSTALLED_CATEGORY);
         bundle.putStringArrayList(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORIES, getCategoryNameList(mostInstalledCategoryList, NUMBER_OF_MOST_INSTALLED_CATEGORY));
-        bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, getCategoryNameList(leastInstalledCategory, NUMBER_OF_LEAST_INSTALLED_CATEGORY));
-        if (mostInstalledCategoryList != null && mostInstalledCategoryList.size() >= 3) {
+
+        if (mostInstalledCategoryList.containsAll(leastInstalledCategoryList)) {
+            bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, getCategoryNameList(leastInstalledCategoryList, 0));
+        } else {
+            bundle.putStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES, getCategoryNameList(leastInstalledCategoryList, NUMBER_OF_LEAST_INSTALLED_CATEGORY));
+        }
+
+        if (mostInstalledCategoryList.size() >= 3) {
             String categoryId = mostInstalledCategoryList.get(0);
             String categoryName = Category.fromId(categoryId).categoryName;
             int rate = (int) Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / appCount * 100);

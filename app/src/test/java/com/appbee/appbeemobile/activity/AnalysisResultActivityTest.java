@@ -21,7 +21,6 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.User;
-import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -140,7 +139,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 설치된카테고리데이터가없을경우_BrainFragment가_설치된정보가없음을_표시한다() throws Exception {
+    public void 설치된카테고리데이터가없을경우_BrainFragment에_설치된정보가없음을_전달한다() throws Exception {
         mockNoInstalledCategoryDummyData();
 
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
@@ -160,6 +159,20 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY)).isEqualTo("당신, 어느별에서 오신거죠?!");
         assertThat(bundle.getString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION)).contains("분석할만한 충분한 카테고리가 보이지 않아요.");
+    }
+
+    @Test
+    public void 가장적게사용한카테고리가_가장많이사용한카테고리에_포함되는경우_BrainFragment에_가장적게사용한카테고리정보를_전달하지않는다() throws Exception {
+        mockLeastInstalledCategoryInMostInstalledCategoriesDummyData();
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Fragment brainFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.BRAIN_FRAGMENT_TAG);
+        Bundle bundle = brainFragment.getArguments();
+
+        ArrayList<String> actualLeastInstalledCategories = bundle.getStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES);
+        assertThat(actualLeastInstalledCategories).isNotNull();
+        assertThat(actualLeastInstalledCategories.size()).isEqualTo(0);
     }
 
     @Test
@@ -478,6 +491,18 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         ArrayList<String> emptyList = new ArrayList<>();
         when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(emptyList);
+    }
+
+    private void mockLeastInstalledCategoryInMostInstalledCategoriesDummyData() {
+        ArrayList<String> mostUsedCategories = new ArrayList<>();
+        mostUsedCategories.add("/store/apps/category/PHOTOGRAPHY");
+        mostUsedCategories.add("/store/apps/category/SHOPPING");
+        mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
+        when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(mostUsedCategories);
+
+        ArrayList<String> leastUsedCategories = new ArrayList<>();
+        leastUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
+        when(appUsageDataHelper.getLeastInstalledCategoryGroups(anyInt())).thenReturn(leastUsedCategories);
     }
 
     private void mockSameCategoryDataOfTimeUsageAndInstalls() {
