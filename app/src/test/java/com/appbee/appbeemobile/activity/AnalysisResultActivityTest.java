@@ -80,7 +80,10 @@ public class AnalysisResultActivityTest extends ActivityTest {
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        mockDummyData();
+        mockDummyDataForAllFragment();
+        mockDummyDataForOverviewFragment();
+        mockDummyDataForBrainFragment();
+        mockDummyDataForFlowerFragment();
     }
 
     @Test
@@ -140,7 +143,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void 설치된카테고리데이터가없을경우_BrainFragment에_설치된정보가없음을_전달한다() throws Exception {
-        mockNoInstalledCategoryDummyData();
+        mockNoInstallDummyData();
 
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
 
@@ -162,8 +165,8 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 가장적게사용한카테고리가_가장많이사용한카테고리에_포함되는경우_BrainFragment에_가장적게사용한카테고리정보를_전달하지않는다() throws Exception {
-        mockLeastInstalledCategoryInMostInstalledCategoriesDummyData();
+    public void 카테고리가3개만설치된경우_BrainFragment에_가장적게사용한카테고리정보를_전달하지않는다() throws Exception {
+        mockDummyDataForJust3CategoriesByInstalls();
 
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
 
@@ -224,7 +227,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
     @Test
     public void 가장많이사용한카테고리와가장많이설치된카테고리가동일한경우_FlowerFragment에_관련정보를전달한다() throws Exception {
-        mockSameCategoryDataOfTimeUsageAndInstalls();
+        mockDummyDataWhenMostInstalledAndMostUsedTimeCategoryIsSame();
 
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
 
@@ -261,6 +264,35 @@ public class AnalysisResultActivityTest extends ActivityTest {
 
         assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY)).isEqualTo("아이코, 꽃이 시들어 버렸어요.");
         assertThat(bundle.getString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC)).contains("가지고 있는 앱의 카테고리 수가 충분치 않거나");
+    }
+
+    @Test
+    public void 사용한카테고리가3개만_존재하는경우_FlowerFragment에_가장_적게사용한_카테고리_정보를_전달하지_않는다() throws Exception {
+        mockDummyDataForJust3CategoriesByUsedTime();
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Fragment flowerFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.FLOWER_FRAGMENT_TAG);
+        assertThat(flowerFragment).isNotNull();
+
+        Bundle bundle = flowerFragment.getArguments();
+        ArrayList<String> leastUsedTimeCategoryList = bundle.getStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES);
+        assertThat(leastUsedTimeCategoryList).isNotNull();
+        assertThat(leastUsedTimeCategoryList).isEmpty();
+    }
+
+    @Test
+    public void 가장적게사용한카테고리가_가장많이사용한카테고리에_포함되는경우_FlowerFragment에_가장적게사용한카테고리정보를_전달하지않는다() throws Exception {
+        mockDummyDataForJust3CategoriesByInstalls();
+
+        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+
+        Fragment brainFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.BRAIN_FRAGMENT_TAG);
+        Bundle bundle = brainFragment.getArguments();
+
+        ArrayList<String> actualLeastInstalledCategories = bundle.getStringArrayList(BrainFragment.EXTRA_LEAST_INSTALLED_CATEGORIES);
+        assertThat(actualLeastInstalledCategories).isNotNull();
+        assertThat(actualLeastInstalledCategories.size()).isEqualTo(0);
     }
 
     @Test
@@ -429,12 +461,12 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(subject.getMostUsedCategoryDesc("/store/apps/category/ANDROID_WEAR")).isEqualTo(subject.getString(R.string.brain_flower_desc_android_wear));
     }
 
-    private void mockDummyData() {
-
-        mockNativeAppInfo(true);
-
-        List<LongTermStat> longTermStats = new ArrayList<>();
-        longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
+    private void mockDummyDataForAllFragment() {
+        ArrayList<String> mostUsedCategories = new ArrayList<>();
+        mostUsedCategories.add("/store/apps/category/PHOTOGRAPHY");
+        mostUsedCategories.add("/store/apps/category/SHOPPING");
+        mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
+        when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(mostUsedCategories);
 
         List<AppInfo> appInfoList = new ArrayList<>();
         appInfoList.add(new AppInfo("com.package.name1", "app_name_1", "/store/apps/category/GAME", null, null, null));
@@ -443,24 +475,31 @@ public class AnalysisResultActivityTest extends ActivityTest {
         appInfoList.add(new AppInfo("com.package.name4", "app_name_4", null, null, null, null));
 
         when(appUsageDataHelper.getSortedUsedAppsByTotalUsedTime()).thenReturn(appInfoList);
+    }
 
-        when(appUsageDataHelper.getAppUsageAverageMinutesPerDay(any())).thenReturn(480);
+    private void mockDummyDataForOverviewFragment() {
+        List<LongTermStat> longTermStats = new ArrayList<>();
+        longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
         when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
 
+        when(appUsageDataHelper.getAppUsageAverageMinutesPerDay(any())).thenReturn(480);
+
+        mockNativeAppInfo(true);
+
         when(appUsageDataHelper.getCharacterType()).thenReturn(CHARACTER_TYPE.QUEEN);
-        ArrayList<String> mostUsedCategories = new ArrayList<>();
-        mostUsedCategories.add("/store/apps/category/PHOTOGRAPHY");
-        mostUsedCategories.add("/store/apps/category/SHOPPING");
-        mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
-        when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(mostUsedCategories);
+    }
+
+    private void mockDummyDataForBrainFragment() {
+
 
         ArrayList<String> leastUsedCategories = new ArrayList<>();
         leastUsedCategories.add("/store/apps/category/DATING");
         when(appUsageDataHelper.getLeastInstalledCategoryGroups(anyInt())).thenReturn(leastUsedCategories);
 
         when(appUsageDataHelper.getAppCountByCategoryId("/store/apps/category/PHOTOGRAPHY")).thenReturn(1L);
-        when(appUsageDataHelper.getAppCountByCategoryId("com.package.name1")).thenReturn(2L);
+    }
 
+    private void mockDummyDataForFlowerFragment() {
         Map<String, Long> usedTimeCategoryMap = new LinkedHashMap<>();
         usedTimeCategoryMap.put("/store/apps/category/GAME", 3000L);
         usedTimeCategoryMap.put("/store/apps/category/FINANCE", 2000L);
@@ -468,6 +507,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         usedTimeCategoryMap.put("/store/apps/category/SHOPPING", 500L);
         when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(usedTimeCategoryMap);
     }
+
 
     private void mockNativeAppInfo(boolean hasIconDrawable) {
         NativeAppInfo nativeApp1 = new NativeAppInfo("com.package.name1", "app_name_1");
@@ -479,7 +519,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(mockNativeAppInfoHelper.getNativeAppInfo("com.package.name1")).thenReturn(nativeApp1);
     }
 
-    private void mockNoInstalledCategoryDummyData() {
+    private void mockNoInstallDummyData() {
         ArrayList<String> emptyList = new ArrayList<>();
         when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(emptyList);
         when(appUsageDataHelper.getLeastInstalledCategoryGroups(anyInt())).thenReturn(emptyList);
@@ -493,7 +533,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(emptyList);
     }
 
-    private void mockLeastInstalledCategoryInMostInstalledCategoriesDummyData() {
+    private void mockDummyDataForJust3CategoriesByInstalls() {
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("/store/apps/category/PHOTOGRAPHY");
         mostUsedCategories.add("/store/apps/category/SHOPPING");
@@ -505,7 +545,15 @@ public class AnalysisResultActivityTest extends ActivityTest {
         when(appUsageDataHelper.getLeastInstalledCategoryGroups(anyInt())).thenReturn(leastUsedCategories);
     }
 
-    private void mockSameCategoryDataOfTimeUsageAndInstalls() {
+    private void mockDummyDataForJust3CategoriesByUsedTime() {
+        Map<String, Long> usedTimeCategoryMap = new LinkedHashMap<>();
+        usedTimeCategoryMap.put("/store/apps/category/GAME", 3000L);
+        usedTimeCategoryMap.put("/store/apps/category/FINANCE", 2000L);
+        usedTimeCategoryMap.put("/store/apps/category/SOCIAL", 1000L);
+        when(appUsageDataHelper.getSortedCategoriesByUsedTime()).thenReturn(usedTimeCategoryMap);
+    }
+
+    private void mockDummyDataWhenMostInstalledAndMostUsedTimeCategoryIsSame() {
         ArrayList<String> mostUsedCategories = new ArrayList<>();
         mostUsedCategories.add("/store/apps/category/GAME");
         mostUsedCategories.add("/store/apps/category/SHOPPING");
