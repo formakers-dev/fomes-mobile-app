@@ -21,11 +21,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+
 public class MainActivity extends BaseActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     private static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
+
+    private List<String> usedPackageNameList;
 
     @Inject
     AppStatService appStatService;
@@ -67,7 +69,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void callAppServiceGetInfoAPI() {
-        appService.getInfos(appStatService.getUsedPackageNameList(), appInfosServiceCallback);
+        usedPackageNameList = appStatService.getUsedPackageNameList();
+        appService.getInfos(usedPackageNameList, appInfosServiceCallback);
     }
 
     @Override
@@ -89,8 +92,9 @@ public class MainActivity extends BaseActivity {
     AppService.AppInfosServiceCallback appInfosServiceCallback = new AppService.AppInfosServiceCallback() {
         @Override
         public void onSuccess(List<AppInfo> appInfos) {
+            callAppServicePostUncrawledApps(appInfos);
+
             MainActivity.this.runOnUiThread(() -> {
-                // TODO : uncrawled app list 생성 -> insert
                 appRepositoryHelper.insertUsedApps(appInfos);
                 appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getLongTermStatsSummary());
                 moveToAnalysisResultActivity();
@@ -107,4 +111,19 @@ public class MainActivity extends BaseActivity {
             }
         }
     };
+
+    private void callAppServicePostUncrawledApps(List<AppInfo> appInfos) {
+        List<String> uncrawledAppList = Observable.from(usedPackageNameList).filter(packageName -> {
+            for (AppInfo app : appInfos) {
+                if (app.getPackageName().equals(packageName)) {
+                    return false;
+                }
+            }
+            return true;
+        }).toList().toBlocking().single();
+
+        if (uncrawledAppList != null && !uncrawledAppList.isEmpty()) {
+            appService.postUncrawledApps(uncrawledAppList);
+        }
+    }
 }

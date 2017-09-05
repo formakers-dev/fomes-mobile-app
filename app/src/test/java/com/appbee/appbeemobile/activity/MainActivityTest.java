@@ -16,6 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -24,6 +25,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowToast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +36,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -141,6 +145,48 @@ public class MainActivityTest extends ActivityTest {
 
         verify(mockAppRepositoryHelper).insertUsedApps(eq(returnedAppInfos));
         verify(mockAppRepositoryHelper).updateTotalUsedTime(eq(mockLongTermStatsSummary));
+    }
+
+    @Test
+    public void appInfosServiceCallback의_onSuccess를_호출했을때_크롤링되지않은_앱목록을_서버로_전송한다() throws Exception {
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        List<String> usedPackageNameList = new ArrayList<>();
+        usedPackageNameList.add("com.package.name1");
+        usedPackageNameList.add("com.package.name2");
+        usedPackageNameList.add("com.package.name3");
+        when(mockAppStatService.getUsedPackageNameList()).thenReturn(usedPackageNameList);
+
+        List<AppInfo> returnedAppInfos = new ArrayList<>();
+        returnedAppInfos.add(new AppInfo("com.package.name1", null, null, null, null, null));
+        returnedAppInfos.add(new AppInfo("com.package.name2", null, null, null, null, null));
+        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        Map<String, Long> mockLongTermStatsSummary = mock(Map.class);
+        when(mockAppUsageDataHelper.getLongTermStatsSummary()).thenReturn(mockLongTermStatsSummary);
+
+        subject.appInfosServiceCallback.onSuccess(returnedAppInfos);
+
+        ArgumentCaptor<List<String>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockAppService).postUncrawledApps(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue().size(), 1);
+        assertEquals(argumentCaptor.getValue().get(0), "com.package.name3");
+    }
+
+    @Test
+    public void appInfosServiceCallback의_onSuccess를_호출했을때_크롤링되지않은_앱목록이_없으면_크롤링되지않은_앱목록을_서버로_전송하지_않는다() throws Exception {
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        List<String> usedPackageNameList = new ArrayList<>();
+        usedPackageNameList.add("com.package.name1");
+        when(mockAppStatService.getUsedPackageNameList()).thenReturn(usedPackageNameList);
+
+        List<AppInfo> returnedAppInfos = new ArrayList<>();
+        returnedAppInfos.add(new AppInfo("com.package.name1", null, null, null, null, null));
+        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        Map<String, Long> mockLongTermStatsSummary = mock(Map.class);
+        when(mockAppUsageDataHelper.getLongTermStatsSummary()).thenReturn(mockLongTermStatsSummary);
+
+        subject.appInfosServiceCallback.onSuccess(returnedAppInfos);
+
+        verify(mockAppService, never()).postUncrawledApps(any(List.class));
     }
 
     @Test

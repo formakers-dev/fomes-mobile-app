@@ -7,9 +7,11 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.helper.TimeHelper;
+import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -91,12 +93,12 @@ public class AppStatService {
     }
 
     public List<String> getUsedPackageNameList() {
-        List<String> usedPackageNameList = new ArrayList<>();
+        Set<String> usedPackageNameSet = new HashSet<>();
 
         for (LongTermStat stat : appUsageDataHelper.getLongTermStats()) {
-            usedPackageNameList.add(stat.getPackageName());
+            usedPackageNameSet.add(stat.getPackageName());
         }
 
-        return usedPackageNameList;
+        return Lists.newArrayList(usedPackageNameSet);
     }
 }
