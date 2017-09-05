@@ -84,10 +84,8 @@ public class FlowerFragmentTest {
         Bundle bundle = new Bundle();
 
         ArrayList<String> mostUsedTimeCategoryList = new ArrayList<>();
-        mostUsedTimeCategoryList.add("게임");
         bundle.putStringArrayList(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORIES, mostUsedTimeCategoryList);
         ArrayList<String> leastUsedTimeCategoryList = new ArrayList<>();
-        leastUsedTimeCategoryList.add("게임");
         bundle.putStringArrayList(FlowerFragment.EXTRA_LEAST_USED_TIME_CATEGORIES, leastUsedTimeCategoryList);
         bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY, "아이코, 꽃이 시들어 버렸어요.");
         bundle.putString(FlowerFragment.EXTRA_MOST_USED_TIME_CATEGORY_DESC, "가지고 있는 앱의 카테고리 수가 충분치 않거나 분석할만한 충분한 앱 사용정보가 없는 것 같아요. 앱 사용 패턴이 조금 더 쌓이면, 예쁜 꽃이 다시 피어날꺼에요. 그때 앱비랑 다시 만나요!");
@@ -147,7 +145,7 @@ public class FlowerFragmentTest {
     }
 
     @Test
-    public void 세건미만의카테고리정보가주어지는경우_onViewCreated호출시_카테고리정보부족_레이아웃이_나타난다() throws Exception {
+    public void 가장많이사용한카테고리정보가_세건미만인경우_onViewCreated호출시_카테고리정보부족_레이아웃이_나타난다() throws Exception {
         setUpWithNotEnoughData();
 
         assertThat(rank1Layout.getVisibility()).isEqualTo(View.GONE);
@@ -162,7 +160,7 @@ public class FlowerFragmentTest {
     }
 
     @Test
-    public void 가장적게사용한카테고리정보가없는경우_onViewCreated호출시_가장적게사용한카테고리정보가_표시되지않는_레이아웃이_나타난다() throws Exception {
+    public void 가장많이사용한카테고리가3건이고_가장적게사용한카테고리정보가없는경우_onViewCreated호출시_가장적게사용한카테고리정보가_표시되지않는_레이아웃이_나타난다() throws Exception {
         setUpWithoutLeastUsedCategoryData();
 
         assertThat(lastRankTitleView.getVisibility()).isEqualTo(View.GONE);

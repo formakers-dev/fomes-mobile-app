@@ -78,17 +78,17 @@ public class FlowerFragment extends Fragment {
             mostUsedCategory1View.setText(FormatUtil.formatLongCategoryName(mostUsedTimeCategoryList.get(0)));
             mostUsedCategory2View.setText(FormatUtil.formatLongCategoryName(mostUsedTimeCategoryList.get(1)));
             mostUsedCategory3View.setText(FormatUtil.formatLongCategoryName(mostUsedTimeCategoryList.get(2)));
+
+            List<String> leastUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_USED_TIME_CATEGORIES);
+            if (isAvailableLeastUsedCategoryList(leastUsedTimeCategoryList)) {
+                leastUsedCategoryView.setText(String.format(getString(R.string.least_used_category_format), leastUsedTimeCategoryList.get(0)));
+            } else {
+                lastRankTitleView.setVisibility(View.GONE);
+                leastUsedCategoryView.setVisibility(View.GONE);
+                flowerBackgroundLayout.setBackgroundResource(R.drawable.flower_background_without_least_used_category);
+            }
         } else {
             setLayoutByNotEnoughData();
-        }
-
-        List<String> leastUsedTimeCategoryList = getArguments().getStringArrayList(EXTRA_LEAST_USED_TIME_CATEGORIES);
-        if (isAvailableLeastUsedCategoryList(leastUsedTimeCategoryList)) {
-            leastUsedCategoryView.setText(String.format(getString(R.string.least_used_category_format), leastUsedTimeCategoryList.get(0)));
-        } else {
-            lastRankTitleView.setVisibility(View.GONE);
-            leastUsedCategoryView.setVisibility(View.GONE);
-            flowerBackgroundLayout.setBackgroundResource(R.drawable.flower_background_without_least_used_category);
         }
 
         mostUsedTimeCategorySummaryView.setText(getArguments().getString(EXTRA_MOST_USED_TIME_CATEGORY_SUMMARY));
