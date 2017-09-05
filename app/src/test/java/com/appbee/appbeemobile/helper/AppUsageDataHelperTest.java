@@ -26,6 +26,7 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.ETC;
+import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.FINANCE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.GAMER;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.POISON;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType.QUEEN;
@@ -554,6 +555,22 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
+    public void getCharacterType호출시_단일_금융관련카테고리설치앱이_가장많은경우_금융캐릭터로_리턴한다() throws Exception {
+        Map<String, Integer> mockCategoryMap = new HashMap<>();
+        mockCategoryMap.put("/store/apps/category/GAME", 3);
+        mockCategoryMap.put("/store/apps/category/MUSIC_AND_AUDIO", 7);
+        mockCategoryMap.put("/store/apps/category/PHOTOGRAPHY", 10);
+        mockCategoryMap.put("/store/apps/category/PERSONALIZATION", 6);
+        mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
+        mockCategoryMap.put("/store/apps/category/FINANCE", 99);
+        when(mockAppRepositoryHelper.getAppCountMapByCategory()).thenReturn(mockCategoryMap);
+
+        CharacterType characterType = subject.getCharacterType();
+
+        assertEquals(characterType, FINANCE);
+    }
+
+    @Test
     public void getCharacterType호출시_단일_개인화관련카테고리설치앱이_가장많은경우_SOUL캐릭터로_리턴한다() throws Exception {
         Map<String, Integer> mockCategoryMap = new HashMap<>();
         mockCategoryMap.put("/store/apps/category/GAME", 3);
@@ -620,15 +637,17 @@ public class AppUsageDataHelperTest {
         mockCategoryMap.put("/store/apps/category/PHOTOGRAPHY", 5);
         mockCategoryMap.put("/store/apps/category/PERSONALIZATION", 6);
         mockCategoryMap.put("/store/apps/category/ANY_CATEGORY", 2);
+        mockCategoryMap.put("/store/apps/category/FINANCE", 2);
 
         Map<String, Integer> aggregateCategoryMap = subject.combineAppCountByBest5CategoryGroup(mockCategoryMap);
 
         assertThat(aggregateCategoryMap).isNotNull();
-        assertThat(aggregateCategoryMap.size()).isEqualTo(4);
+        assertThat(aggregateCategoryMap.size()).isEqualTo(5);
         assertThat(aggregateCategoryMap.get("GAME_GROUP")).isEqualTo(1 + 2);
         assertThat(aggregateCategoryMap.get("MV_GROUP")).isEqualTo(3 + 4);
         assertThat(aggregateCategoryMap.get("PHOTOGRAPHY_GROUP")).isEqualTo(5);
         assertThat(aggregateCategoryMap.get("PERSONALIZATION_GROUP")).isEqualTo(6);
+        assertThat(aggregateCategoryMap.get("FINANCE_CATEGORY_GROUP")).isEqualTo(2);
     }
 
     @Test

@@ -38,6 +38,7 @@ public class AppUsageDataHelper {
     private static final String MUSIC_VIDEO_CATEGORY_GROUP_KEY = "MV_GROUP";
     private static final String PERSONALIZATION_CATEGORY_GROUP_KEY = "PERSONALIZATION_GROUP";
     private static final String PHOTOGRAPHY_CATEGORY_GROUP_KEY = "PHOTOGRAPHY_GROUP";
+    private static final String FINANCE_CATEGORY_GROUP_KEY = "FINANCE_CATEGORY_GROUP";
     static final boolean ASC = true;
     static final boolean DESC = false;
     private static final long MILLISECONDS_OF_THREE_MONTHS = 7884000000L; // 365 * 24 * 60 * 60 * 1000 / 4
@@ -288,6 +289,8 @@ public class AppUsageDataHelper {
                 return CharacterType.POISON;
             case PERSONALIZATION_CATEGORY_GROUP_KEY:
                 return CharacterType.SOUL;
+            case FINANCE_CATEGORY_GROUP_KEY:
+                return CharacterType.FINANCE;
         }
         return CharacterType.ETC;
     }
@@ -326,6 +329,9 @@ public class AppUsageDataHelper {
                     break;
                 case "/store/apps/category/PERSONALIZATION":
                     map.put(PERSONALIZATION_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(PERSONALIZATION_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
+                    break;
+                case "/store/apps/category/FINANCE":
+                    map.put(FINANCE_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(FINANCE_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
                     break;
             }
         }

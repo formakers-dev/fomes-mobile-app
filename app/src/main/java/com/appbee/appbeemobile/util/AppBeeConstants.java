@@ -22,6 +22,7 @@ public interface AppBeeConstants {
         QUEEN(R.string.character_title_queen, R.string.character_simple_desc_queen, R.string.character_detail_desc_queen, R.drawable.character_queen),
         POISON(R.string.character_title_poison, R.string.character_simple_desc_poison, R.string.character_detail_desc_poison, R.drawable.character_poison),
         SOUL(R.string.character_title_soul, R.string.character_simple_desc_soul, R.string.character_detail_desc_soul, R.drawable.character_soul),
+        FINANCE(R.string.character_title_finance, R.string.character_simple_desc_finance, R.string.character_detail_desc_finance, R.drawable.character_finance),
         ETC(R.string.character_title_alien, R.string.character_simple_desc_alien, R.string.character_detail_desc_alien, R.drawable.character_alien);
 
         @StringRes public final int title;
