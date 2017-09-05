@@ -13,7 +13,6 @@ import rx.Observer;
 import rx.schedulers.Schedulers;
 
 public class AppService {
-
     private final AppAPI appAPI;
 
     @Inject
@@ -49,8 +48,15 @@ public class AppService {
         );
     }
 
+    public void postUncrawledApps(List<String> uncrawledPackageNameList) {
+        appAPI.postUncrawledApps(uncrawledPackageNameList)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
     public interface AppInfosServiceCallback {
         void onSuccess(List<AppInfo> result);
+
         void onFail(String resultCode);
     }
 }

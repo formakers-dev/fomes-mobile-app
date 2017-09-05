@@ -12,4 +12,7 @@ import rx.Observable;
 public interface AppAPI {
     @POST("/apps/info")
     Observable<Response<List<AppInfo>>> getInfo(@Body List<String> packageNames);
+
+    @POST("/apps/uncrawled")
+    Observable<Response<Boolean>> postUncrawledApps(@Body List<String> packageNames);
 }

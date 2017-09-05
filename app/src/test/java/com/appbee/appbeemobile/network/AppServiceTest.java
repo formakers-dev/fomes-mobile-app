@@ -22,6 +22,7 @@ import rx.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -90,6 +91,19 @@ public class AppServiceTest {
         assertEquals(appInfos.size(), 2);
         assertAppInfo(appInfos.get(0), "packageNameA", "appNameA", "categoryId1A", "categoryName1A", "categoryId2A", "categoryName2A");
         assertAppInfo(appInfos.get(1), "packageNameB", "appNameB", "categoryId1B", "categoryName1B", "categoryId2B", "categoryName2B");
+    }
+
+    @Test
+    public void postUncrawledApps호출시_크롤링되지_않은_앱목록을_서버로_전송된다() throws Exception {
+        List<String> mockUncrawledAppList = new ArrayList<>();
+        mockUncrawledAppList.add("packageNameA");
+        mockUncrawledAppList.add("packageNameB");
+        mockUncrawledAppList.add("packageNameC");
+        when(mockAppAPI.postUncrawledApps(mockUncrawledAppList)).thenReturn(Observable.just(Response.success(true)));
+
+        subject.postUncrawledApps(mockUncrawledAppList);
+
+        verify(mockAppAPI).postUncrawledApps(eq(mockUncrawledAppList));
     }
 
     private void assertAppInfo(AppInfo appInfo, String packageName, String appName, String categoryId1, String categoryName1, String categoryId2, String categoryName2) {
