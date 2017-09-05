@@ -90,6 +90,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onSuccess(List<AppInfo> appInfos) {
             MainActivity.this.runOnUiThread(() -> {
+                // TODO : uncrawled app list 생성 -> insert
                 appRepositoryHelper.insertUsedApps(appInfos);
                 appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getLongTermStatsSummary());
                 moveToAnalysisResultActivity();
@@ -102,9 +103,7 @@ public class MainActivity extends BaseActivity {
                 isServiceAPIFailAlready = true;
                 callAppServiceGetInfoAPI();
             } else {
-                MainActivity.this.runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show();
-                });
+                MainActivity.this.runOnUiThread(() -> Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
             }
         }
     };

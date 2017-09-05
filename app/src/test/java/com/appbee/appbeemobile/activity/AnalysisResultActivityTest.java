@@ -222,7 +222,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate_앱시작시_UUID가sharedPreferences에저장되어있지않을경우_PowerConnectedService를_시작한다() throws Exception {
+    public void onCreate_앱시작시_PowerConnectedService를_시작한다() throws Exception {
         when(mockLocalStorageHelper.getUUID()).thenReturn(null);
 
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
