@@ -106,19 +106,18 @@ public class AnalysisResultActivity extends BaseActivity {
         if (TextUtils.isEmpty(localStorageHelper.getUUID())) {
             String uuid = UUID.randomUUID().toString();
             localStorageHelper.setUUID(uuid);
-
-            String currentDate = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
-            User user = new User(localStorageHelper.getUUID(), currentDate, currentDate);
-            userService.sendUser(user);
-            userService.sendAppList();
-            appStatService.sendLongTermStatsFor3Months();
-            appStatService.sendLongTermStatsFor2Years();
-            appStatService.sendShortTermStats();
-
-            startService(new Intent(this, PowerConnectedService.class));
         }
 
+        String currentDate = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
+        User user = new User(localStorageHelper.getUUID(), currentDate, currentDate);
+        userService.sendUser(user);
+        userService.sendAppList();
+        appStatService.sendLongTermStatsFor3Months();
+        appStatService.sendLongTermStatsFor2Years();
+        appStatService.sendShortTermStats();
         appStatService.sendAnalysisResult(analysisResult);
+
+        startService(new Intent(this, PowerConnectedService.class));
     }
 
     private Fragment getOverviewFragment() {
