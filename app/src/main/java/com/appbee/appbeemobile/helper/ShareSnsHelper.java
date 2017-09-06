@@ -2,8 +2,16 @@ package com.appbee.appbeemobile.helper;
 
 import android.content.Context;
 
-import com.kakao.kakaolink.KakaoLink;
-import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
+import com.appbee.appbeemobile.util.AppBeeConstants;
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.ContentObject;
+import com.kakao.message.template.FeedTemplate;
+import com.kakao.message.template.LinkObject;
+import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
+import com.kakao.util.helper.log.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,22 +22,38 @@ import static com.appbee.appbeemobile.BuildConfig.SERVER_BASE_URL;
 public class ShareSnsHelper {
 
     private Context context;
+    private LocalStorageHelper localStorageHelper;
 
     @Inject
-    public ShareSnsHelper(Context context) {
+    public ShareSnsHelper(Context context, LocalStorageHelper localStorageHelper) {
         this.context = context;
+        this.localStorageHelper = localStorageHelper;
     }
 
-    public void shareKakao() {
+    public void shareKakao(AppBeeConstants.CharacterType characterType) {
         try {
-            final KakaoLink kakaoLink = KakaoLink.getKakaoLink(context);
-            final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
-            String url = "https://firebasestorage.googleapis.com/v0/b/appbeemobile.appspot.com/o/share_card.jpg?alt=media&token=3ea4f582-e3af-4a90-bc9e-bb60cef0ba58";
-            kakaoTalkLinkMessageBuilder.addImage(url, 160, 86);
-            String msg = "[해커톤] 나는 어떤 꿀벌일까나?\n숨겨왔던 너의~모바일 성향 모두~알려~줄게에이예에";
-            kakaoTalkLinkMessageBuilder.addText(msg);
-            kakaoTalkLinkMessageBuilder.addWebButton("다운로드하러가기", SERVER_BASE_URL + "download?abc=def");
-            kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder, context);
+            String imageUrl = context.getString(characterType.shareImageUrl);
+            String downloadUrl = SERVER_BASE_URL + "download?referer=" + localStorageHelper.getUUID();
+
+            FeedTemplate params = FeedTemplate
+                    .newBuilder(ContentObject.newBuilder("모바일로 나의 벌 타입 알아보러 Go!", imageUrl,
+                            LinkObject.newBuilder().setWebUrl(downloadUrl).setMobileWebUrl(downloadUrl).build())
+                            .setImageWidth(334).setImageHeight(294)
+                            .build())
+                    .addButton(new ButtonObject("다운로드하기!", LinkObject.newBuilder().setWebUrl(downloadUrl).setMobileWebUrl(downloadUrl).build()))
+                    .build();
+
+            KakaoLinkService.getInstance().sendDefault(context, params, new ResponseCallback<KakaoLinkResponse>() {
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    Logger.e(errorResult.toString());
+                }
+
+                @Override
+                public void onSuccess(KakaoLinkResponse result) {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

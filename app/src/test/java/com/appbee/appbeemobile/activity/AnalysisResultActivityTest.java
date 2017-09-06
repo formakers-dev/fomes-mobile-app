@@ -15,6 +15,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.FlowerFragment;
 import com.appbee.appbeemobile.fragment.OverviewFragment;
+import com.appbee.appbeemobile.fragment.ShareFragment;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
@@ -342,6 +343,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         Fragment shareFragment = subject.getFragmentManager().findFragmentByTag(AnalysisResultActivity.SHARE_FRAGMENT_TAG);
         assertThat(shareFragment).isNotNull();
         assertThat(shareFragment.isAdded()).isTrue();
+
+        Bundle bundle = shareFragment.getArguments();
+        assertThat((CharacterType) bundle.getSerializable(ShareFragment.EXTRA_CHARACTER_TYPE)).isEqualTo(CharacterType.QUEEN);
 
         Button button = (Button) shareFragment.getView().findViewById(R.id.share_button);
         assertThat(button.isShown()).isTrue();

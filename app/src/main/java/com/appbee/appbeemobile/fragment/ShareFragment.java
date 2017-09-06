@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.ShareSnsHelper;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import javax.inject.Inject;
 
@@ -19,6 +20,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class ShareFragment extends Fragment {
+
+    public static final String EXTRA_CHARACTER_TYPE = "CHARACTER_TYPE";
 
     @BindView(R.id.share_button)
     Button shareButton;
@@ -44,7 +47,7 @@ public class ShareFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        shareButton.setOnClickListener(v -> shareSnsHelper.shareKakao());
+        shareButton.setOnClickListener(v -> shareSnsHelper.shareKakao((AppBeeConstants.CharacterType) getArguments().getSerializable(EXTRA_CHARACTER_TYPE)));
     }
 
     @Override
