@@ -252,7 +252,7 @@ public class OverviewFragmentTest {
     public void fragment시작시_가장_오래사용한_앱의_정보를_표시한다() throws Exception {
         createFragment(true, CharacterType.GAMER);
 
-        assertThat(longestUsedAppNameView.getText()).isEqualTo("제일 많이 쓴 앱, testApp1");
+        assertThat(longestUsedAppNameView.getText()).isEqualTo("testApp1");
         assertThat(longestUsedAppDescriptionView.getText()).isEqualTo("testApp1 Description");
         assertThat(((BitmapDrawable) longestUsedAppIcon.getDrawable()).getBitmap()).isEqualTo(mockBitmap);
     }
