@@ -18,23 +18,25 @@ public interface AppBeeConstants {
     }
 
     enum CharacterType {
-        GAMER(R.string.character_title_gamer, R.string.character_simple_desc_gamer, R.string.character_detail_desc_gamer, R.drawable.character_gamer),
-        QUEEN(R.string.character_title_queen, R.string.character_simple_desc_queen, R.string.character_detail_desc_queen, R.drawable.character_queen),
-        POISON(R.string.character_title_poison, R.string.character_simple_desc_poison, R.string.character_detail_desc_poison, R.drawable.character_poison),
-        SOUL(R.string.character_title_soul, R.string.character_simple_desc_soul, R.string.character_detail_desc_soul, R.drawable.character_soul),
-        FINANCE(R.string.character_title_finance, R.string.character_simple_desc_finance, R.string.character_detail_desc_finance, R.drawable.character_finance),
-        ETC(R.string.character_title_alien, R.string.character_simple_desc_alien, R.string.character_detail_desc_alien, R.drawable.character_alien);
+        GAMER(R.string.character_title_gamer, R.string.character_simple_desc_gamer, R.string.character_detail_desc_gamer, R.drawable.character_gamer, R.string.share_character_gamer_url),
+        QUEEN(R.string.character_title_queen, R.string.character_simple_desc_queen, R.string.character_detail_desc_queen, R.drawable.character_queen, R.string.share_character_queen_url),
+        POISON(R.string.character_title_poison, R.string.character_simple_desc_poison, R.string.character_detail_desc_poison, R.drawable.character_poison, R.string.share_character_poison_url),
+        SOUL(R.string.character_title_soul, R.string.character_simple_desc_soul, R.string.character_detail_desc_soul, R.drawable.character_soul, R.string.share_character_soul_url),
+        FINANCE(R.string.character_title_finance, R.string.character_simple_desc_finance, R.string.character_detail_desc_finance, R.drawable.character_finance, R.string.share_character_finance_url),
+        ETC(R.string.character_title_alien, R.string.character_simple_desc_alien, R.string.character_detail_desc_alien, R.drawable.character_alien, R.string.share_character_alien_url);
 
         @StringRes public final int title;
         @StringRes public final int simpleDescription;
         @StringRes public final int detailDescription;
         @DrawableRes public final int image;
+        @StringRes public final int shareImageUrl;
 
-        CharacterType(int title, int simpleDescription, int detailDescription, int image) {
+        CharacterType(int title, int simpleDescription, int detailDescription, int image, int shareImageUrl) {
             this.title = title;
             this.simpleDescription = simpleDescription;
             this.detailDescription = detailDescription;
             this.image = image;
+            this.shareImageUrl = shareImageUrl;
         }
     }
 

@@ -1,11 +1,13 @@
 package com.appbee.appbeemobile.fragment;
 
+import android.os.Bundle;
 import android.widget.Button;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.ShareSnsHelper;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -41,7 +44,11 @@ public class ShareFragmentTest {
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ShareFragment.EXTRA_CHARACTER_TYPE, AppBeeConstants.CharacterType.FINANCE);
+
         subject = new ShareFragment();
+        subject.setArguments(bundle);
         FragmentController.of(subject).create();
         binder = ButterKnife.bind(this, subject.getView());
     }
@@ -54,6 +61,7 @@ public class ShareFragmentTest {
     @Test
     public void 공유버튼_클릭시_메세지가_SNS로_공유된다() throws Exception {
         sharedButton.performClick();
-        verify(mockShareSnsHelper).shareKakao();
+
+        verify(mockShareSnsHelper).shareKakao(eq(AppBeeConstants.CharacterType.FINANCE));
     }
 }

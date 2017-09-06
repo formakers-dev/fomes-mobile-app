@@ -80,6 +80,13 @@
     <string name="character_detail_desc_alien">혹시 평소에 독특하다는 소리 좀 들으시나요?\n다른사람보다 분석이 어려운 외계인같은 당신!\n정형화된 결과를 받기엔 당신은 너무 유니크해요!\n꿀빨러 지구에 오신 김에 앱비부스로 와줄래요?\n신비로운 당신의 데이터를 영접하고 싶답니다.</string>
     <string name="character_detail_desc_finance">성실하고 매사에 열심인 당신!\n꼼꼼하고 책임감도 강한 일벌이랍니다.\n세상과 모임의 빛과 소금같은 사람이죠.\n착실하게 꿀을 모으다 보면, 언젠가는\n꿀단지가 꽉 차있을 거랍니다!</string>
 
+    <string name="share_character_finance_url">https://appbee.info/static/image/share/share_finance.png</string>
+    <string name="share_character_alien_url">https://appbee.info/static/image/share/share_alien.png</string>
+    <string name="share_character_gamer_url">https://appbee.info/static/image/share/share_gamer.png</string>
+    <string name="share_character_poison_url">https://appbee.info/static/image/share/share_poison.png</string>
+    <string name="share_character_queen_url">https://appbee.info/static/image/share/share_queen.png</string>
+    <string name="share_character_soul_url">https://appbee.info/static/image/share/share_soul.png</string>
+
     <!-- Longest Used App Simple Description-->
     <string name="longest_used_app_desc_finance">늘 자신의 생활을 관리하는 모습이 알뜰살뜰한 당신답네요.</string>
     <string name="longest_used_app_desc_game">역시 당신은 덕…아니, 게이머라구요.</string>

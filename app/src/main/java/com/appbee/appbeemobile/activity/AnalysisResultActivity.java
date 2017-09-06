@@ -28,7 +28,10 @@ import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.service.PowerConnectedService;
-import com.appbee.appbeemobile.util.AppBeeConstants.*;
+import com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
+import com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
+import com.appbee.appbeemobile.util.AppBeeConstants.Category;
+import com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -54,6 +57,7 @@ public class AnalysisResultActivity extends BaseActivity {
     private int totalAppCount = 0;
     private AppInfo mostUsedAppInfo;
     private AnalysisResult analysisResult = new AnalysisResult();
+    private CharacterType characterType;
 
     @Inject
     AppUsageDataHelper appUsageDataHelper;
@@ -100,7 +104,7 @@ public class AnalysisResultActivity extends BaseActivity {
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
                 .add(R.id.brain_fragment, getBrainFragment(), BRAIN_FRAGMENT_TAG)
                 .add(R.id.flower_fragment, getFlowerFragment(), FLOWER_FRAGMENT_TAG)
-                .add(R.id.share_fragment, new ShareFragment(), SHARE_FRAGMENT_TAG)
+                .add(R.id.share_fragment, getShareFragment(), SHARE_FRAGMENT_TAG)
                 .commit();
 
         if (TextUtils.isEmpty(localStorageHelper.getUUID())) {
@@ -143,7 +147,7 @@ public class AnalysisResultActivity extends BaseActivity {
             analysisResult.setMostUsedApp(mostUsedAppInfo.getPackageName());
         }
 
-        CharacterType characterType = appUsageDataHelper.getCharacterType();
+        characterType = appUsageDataHelper.getCharacterType();
         bundle.putSerializable(OverviewFragment.EXTRA_CHARACTER_TYPE, characterType);
         overviewFragment.setArguments(bundle);
 
@@ -234,6 +238,16 @@ public class AnalysisResultActivity extends BaseActivity {
         }
 
         return flowerFragment;
+    }
+
+    private Fragment getShareFragment() {
+        Fragment shareFragment = new ShareFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ShareFragment.EXTRA_CHARACTER_TYPE, characterType);
+
+        shareFragment.setArguments(bundle);
+        return shareFragment;
     }
 
     private boolean isMostInstalledAndMostUsedCategorySame(String mostUsedCategoryId, List<String> mostInstalledCategoryList) {
