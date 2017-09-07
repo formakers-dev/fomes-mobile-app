@@ -38,7 +38,8 @@
             android:text="@string/app_usage_habit_description"
             android:textAlignment="center"
             android:textColor="@color/description"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:lineSpacingExtra="1dp"/>
 
         <View
             android:layout_width="match_parent"
@@ -60,7 +61,8 @@
             android:text="@string/share_message"
             android:textAlignment="center"
             android:textColor="@color/description"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:lineSpacingExtra="1dp"/>
     </LinearLayout>
 
     <Button

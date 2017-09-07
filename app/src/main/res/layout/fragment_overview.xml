@@ -58,6 +58,7 @@
             android:textAlignment="center"
             android:textColor="@color/description"
             android:textSize="15dp"
+            android:lineSpacingExtra="1dp"
             tools:text="어디서든 모바일 게임을 손에서 놓지 않는 당신!\n조금 내성적인 성향이 있지만, 게임 안에선\n누구보다 적극적이네요! 알면 알수록 매력적인\n당신은 양파같은 사람~ 자신있게 본모습을\n보여주면 핫해하태 여왕벌이 될지도 몰라요?!" />
 
         <View
@@ -102,20 +103,23 @@
             <TextView
                 android:id="@+id/app_count_title_textview"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="19dp"
                 android:layout_marginStart="88dp"
+                android:layout_alignParentTop="true"
                 android:textColor="@color/bold_title"
                 android:textSize="18dp"
                 app:font="BMJUA" />
 
             <TextView
                 android:id="@+id/app_count_description_textview"
+                android:layout_below="@id/app_count_title_textview"
+                android:layout_marginTop="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_marginStart="88dp"
                 android:textColor="@color/description"
-                android:textSize="15dp" />
+                android:textSize="14dp"
+                app:font="medium"/>
         </RelativeLayout>
 
 
@@ -145,6 +149,7 @@
                 android:id="@+id/average_app_usage_time_title_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_marginStart="88dp"
                 android:textColor="@color/bold_title"
                 android:textSize="18dp"
@@ -154,18 +159,21 @@
                 android:id="@+id/average_app_usage_time_description_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@id/average_app_usage_time_title_textview"
                 android:layout_marginStart="88dp"
+                android:layout_marginTop="4dp"
                 android:textColor="@color/description"
-                android:textSize="15dp" />
+                android:textSize="14dp"
+                app:font="medium"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="50dp">
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="50dp"
+            android:clipToPadding="false">
 
             <ImageView
                 android:id="@+id/longest_used_app_icon"
@@ -174,11 +182,20 @@
                 android:padding="4dp"
                 android:src="@drawable/notfound_app_icon" />
 
+            <ImageView
+                android:layout_marginTop="-4dp"
+                android:layout_marginStart="-8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/badge"
+                />
+
             <TextView
                 android:id="@+id/longest_used_app_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="88dp"
+                android:layout_alignParentTop="true"
                 android:ellipsize="end"
                 android:lines="1"
                 android:maxLines="1"
@@ -190,10 +207,12 @@
                 android:id="@+id/longest_used_app_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@id/longest_used_app_name"
+                android:layout_marginTop="4dp"
                 android:layout_marginStart="88dp"
                 android:textColor="@color/description"
-                android:textSize="15dp" />
+                android:textSize="14dp"
+                app:font="medium" />
 
         </RelativeLayout>
 

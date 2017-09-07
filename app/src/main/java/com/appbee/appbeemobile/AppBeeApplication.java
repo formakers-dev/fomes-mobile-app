@@ -31,8 +31,9 @@ public class AppBeeApplication extends Application {
 
     protected void initFont() {
         Typekit.getInstance()
-                .addNormal(Typeface.SANS_SERIF)
-                .addBold(Typeface.DEFAULT_BOLD)
+                .addNormal(Typekit.createFromAsset(this, "NotoSans-Regular.otf"))
+                .addBold(Typekit.createFromAsset(this, "NotoSans-Bold.otf"))
+                .add("medium", Typekit.createFromAsset(this, "NotoSans-Medium.otf"))
                 .add("BMJUA", Typekit.createFromAsset(this, "BMJUA.otf"));
     }
 
