@@ -141,7 +141,7 @@ public class OverviewFragmentTest {
 
         assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_gamer);
         assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
-        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침,\n만일 내게 물어보면 나는…!!!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
     }
 
@@ -151,7 +151,7 @@ public class OverviewFragmentTest {
 
         assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_queen);
         assertThat(characterTypeView.getText()).isEqualTo("하태하태! 내 스타일 여왕벌");
-        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("한번뿐인 인생, 모든 순간을 소중하게!");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("한번뿐인 인생,\n모든 순간을 소중하게!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("스쳐지나가는 순간도 소중히 여기는 당신!");
     }
 
@@ -181,7 +181,7 @@ public class OverviewFragmentTest {
 
         assertThat(shadowOf(characterTypeIconView.getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.character_alien);
         assertThat(characterTypeView.getText()).isEqualTo("꿀빨러 왔나? 불시착 외계인!");
-        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("꿀따리 샤바라~ 바니바니 꿍꿍꿀!");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("꿀따리 샤바라~\n바니바니 꿍꿍꿀!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("혹시 평소에 독특하다는 소리 좀 들으시나요?");
     }
 
@@ -190,7 +190,7 @@ public class OverviewFragmentTest {
         createFragment(true, CharacterType.GAMER);
 
         assertThat(characterTypeView.getText()).isEqualTo("덕후가 아니라능! 게이머벌");
-        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침, 만일 내게 물어보면 나는…!!!");
+        assertThat(characterTypeSimpleDescriptionView.getText()).isEqualTo("안녕하신가! 힘세고 강한 아침,\n만일 내게 물어보면 나는…!!!");
         assertThat(characterTypeDetailDescriptionView.getText()).contains("모바일 게임");
     }
 

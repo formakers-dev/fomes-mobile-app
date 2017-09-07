@@ -75,7 +75,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="143dp"
             android:layout_marginEnd="234dp"
-            android:layout_marginStart="21dp"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="99dp"
             android:gravity="center"
             android:orientation="vertical">
@@ -94,10 +94,10 @@
                 android:id="@+id/most_used_category2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="1dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/bold_title"
-                android:textSize="18dp"
+                android:textSize="20dp"
                 app:font="BMJUA" />
         </LinearLayout>
 
@@ -126,7 +126,7 @@
                 android:id="@+id/most_used_category3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="2dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/bold_title"
                 android:textSize="14dp"
@@ -181,7 +181,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:textColor="@color/description"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:lineSpacingExtra="1dp"/>
 
     <View
         android:layout_width="match_parent"

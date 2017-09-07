@@ -46,8 +46,8 @@
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
                 android:text="@string/appbee"
-                android:textColor="#4a4a4a"
-                android:textSize="20dp"
+                android:textColor="@color/bold_title"
+                android:textSize="16dp"
                 app:font="BMJUA"/>
 
             <View
@@ -64,7 +64,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center_horizontal"
             android:text="@string/start_title"
-            android:textColor="@android:color/black"
+            android:textColor="@color/bold_title"
             android:textSize="36dp"
             app:font="BMJUA"/>
 
@@ -94,8 +94,10 @@
             android:gravity="center_horizontal"
             android:textAlignment="center"
             android:text="@string/start_permission_message"
-            android:textColor="#a24a4a4a"
-            android:textSize="14dp" />
+            android:textColor="@color/summary_description_text_color"
+            android:textSize="13dp"
+            android:lineSpacingExtra="2dp"
+            app:font="medium"/>
 
         <Button
             android:id="@+id/start_analysis_button"
