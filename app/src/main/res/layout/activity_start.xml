@@ -12,6 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingBottom="5dp"
         android:orientation="vertical">
 
         <ImageView
@@ -99,7 +102,7 @@
             android:layout_width="264.9dp"
             android:layout_height="68dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="51dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/round_button_background"
             android:text="@string/please_analysis_me"
             android:textColor="#4a4a4a"
