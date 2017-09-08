@@ -27,6 +27,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import rx.Observable;
+import rx.schedulers.Schedulers;
+
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 import static com.appbee.appbeemobile.util.AppBeeConstants.Category;
@@ -154,8 +157,11 @@ public class AppUsageDataHelper {
         return nativeLongTermStatList;
     }
 
-    public List<NativeAppInfo> getAppList() {
-        return appBeeAndroidNativeHelper.getInstalledLaunchableApps();
+    public Observable<List<NativeAppInfo>> getAppList() {
+        return appBeeAndroidNativeHelper.getInstalledLaunchableApps()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .toList();
     }
 
     public int getAppUsageAverageMinutesPerDay(List<LongTermStat> longTermStatList) {

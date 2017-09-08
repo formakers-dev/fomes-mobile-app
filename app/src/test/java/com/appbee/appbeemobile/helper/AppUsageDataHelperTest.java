@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
@@ -259,6 +262,8 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getAppList호출시_설치된_앱리스트조회를_요청한다() throws Exception {
+        when(mockAppBeeAndroidNativeHelper.getInstalledLaunchableApps()).thenReturn(mock(Observable.class));
+
         subject.getAppList();
 
         verify(mockAppBeeAndroidNativeHelper).getInstalledLaunchableApps();
