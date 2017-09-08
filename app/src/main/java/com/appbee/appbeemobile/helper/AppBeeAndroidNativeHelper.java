@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Process;
 
 import com.appbee.appbeemobile.model.NativeAppInfo;
@@ -19,6 +18,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import rx.Observable;
 
 import static android.content.Context.APP_OPS_SERVICE;
 import static android.content.Context.USAGE_STATS_SERVICE;
@@ -51,20 +52,14 @@ public class AppBeeAndroidNativeHelper {
         return eventStats;
     }
 
-    public List<NativeAppInfo> getInstalledLaunchableApps() {
+    public Observable<NativeAppInfo> getInstalledLaunchableApps() {
         final PackageManager packageManager = context.getPackageManager();
 
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(intent, PackageManager.GET_META_DATA);
-
-        List<NativeAppInfo> nativeAppInfoList = new ArrayList<>();
-        for (ResolveInfo resolveInfo : resolveInfoList) {
-            nativeAppInfoList.add(new NativeAppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
-        }
-
-        return nativeAppInfoList;
+        return Observable.from(packageManager.queryIntentActivities(intent, PackageManager.GET_META_DATA))
+                .map(resolveInfo -> new NativeAppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
     }
 
     public NativeAppInfo getNativeAppInfo(String packageName) {

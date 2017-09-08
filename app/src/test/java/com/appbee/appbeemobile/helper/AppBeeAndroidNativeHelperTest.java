@@ -97,7 +97,7 @@ public class AppBeeAndroidNativeHelperTest {
         ShadowPackageManager shadowPackageManager = shadowOf(RuntimeEnvironment.application.getPackageManager());
         shadowPackageManager.addResolveInfoForIntent(intent, mockReturnList);
 
-        List<NativeAppInfo> appList = subject.getInstalledLaunchableApps();
+        List<NativeAppInfo> appList = subject.getInstalledLaunchableApps().toList().toBlocking().single();
         assertThat(appList.size()).isEqualTo(1);
         assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
         assertThat(appList.get(0).getPackageName()).isEqualTo("package");
