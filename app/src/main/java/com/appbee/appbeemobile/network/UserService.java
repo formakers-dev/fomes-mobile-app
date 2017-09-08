@@ -51,6 +51,7 @@ public class UserService {
     public void sendAppList() {
         userAPI.sendAppInfoList(localStorageHelper.getUUID(), appUsageDataHelper.getAppList())
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
                     if (error instanceof HttpException) {
                         Log.d(TAG, String.valueOf(((HttpException) error).code()));
@@ -61,6 +62,7 @@ public class UserService {
     public void sendUser(User user) {
         userAPI.sendUser(user)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
                     if (error instanceof HttpException) {
                         Log.d(TAG, String.valueOf(((HttpException) error).code()));
