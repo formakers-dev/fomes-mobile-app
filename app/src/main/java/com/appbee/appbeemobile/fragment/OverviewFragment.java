@@ -27,6 +27,7 @@ public class OverviewFragment extends Fragment {
     public static final String EXTRA_LONGEST_USED_APP_NAME = "EXTRA_LONGEST_USED_APP_NAME";
     public static final String EXTRA_LONGEST_USED_APP_DESCRIPTION = "EXTRA_LONGEST_USED_APP_DESCRIPTION";
     public static final String EXTRA_LONGEST_USED_APP_ICON_BITMAP = "EXTRA_LONGEST_USED_APP_ICON_BITMAP";
+    public static final String EXTRA_APP_AVG_TIME_SHORT = "EXTRA_APP_AVG_TIME_SHORT";
 
     @BindView(R.id.app_count_textview)
     TextView appCountView;
@@ -89,7 +90,7 @@ public class OverviewFragment extends Fragment {
 
         displayCharacterTypeInformation((CharacterType) getArguments().getSerializable(EXTRA_CHARACTER_TYPE));
         displayAppListCountInformation(getArguments().getInt(EXTRA_APP_LIST_COUNT), getArguments().getInt(EXTRA_APP_LIST_COUNT_TYPE));
-        displayAppUsageTimeInformation(getArguments().getInt(EXTRA_APP_AVG_TIME), getArguments().getInt(EXTRA_APP_USAGE_TIME_TYPE));
+        displayAppUsageTimeInformation(getArguments().getInt(EXTRA_APP_AVG_TIME), getArguments().getInt(EXTRA_APP_USAGE_TIME_TYPE), getArguments().getInt(EXTRA_APP_AVG_TIME_SHORT));
         displayLongestUsedAppInformation(getArguments().getString(EXTRA_LONGEST_USED_APP_NAME), getArguments().getString(EXTRA_LONGEST_USED_APP_DESCRIPTION), getArguments().getParcelable(EXTRA_LONGEST_USED_APP_ICON_BITMAP));
     }
 
@@ -100,8 +101,8 @@ public class OverviewFragment extends Fragment {
         characterTypeDetailDescriptionView.setText(characterType.detailDescription);
     }
 
-    private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType) {
-        averageAppUsageTimeView.setText(String.format(getString(R.string.overview_average_time), appUsageAverageTime / 60, appUsageAverageTime % 60));
+    private void displayAppUsageTimeInformation(int appUsageAverageTime, int appUsageTimeType, int appUsageAverageTimeShort) {
+        averageAppUsageTimeView.setText(appUsageAverageTime + "\n" + appUsageAverageTimeShort);
         final String appUsageTimeTypeName = getResources().getStringArray(R.array.app_usage_time_type_names)[appUsageTimeType];
         averageAppUsageTimeTitleView.setText(getString(R.string.overview_average_time_title, appUsageTimeTypeName));
         averageAppUsageTimeDescriptionView.setText(getResources().getStringArray(R.array.app_usage_time_type_descriptions)[appUsageTimeType]);

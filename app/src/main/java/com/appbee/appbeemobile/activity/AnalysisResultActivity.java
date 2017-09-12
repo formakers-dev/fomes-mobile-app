@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.appbee.appbeemobile.AppBeeApplication;
+import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.FlowerFragment;
@@ -109,6 +110,11 @@ public class AnalysisResultActivity extends BaseActivity {
 
         if (TextUtils.isEmpty(localStorageHelper.getUUID())) {
             String uuid = UUID.randomUUID().toString();
+
+            if(BuildConfig.DEBUG) {
+                uuid = "DEBUG_FOR_TEST";
+            }
+
             localStorageHelper.setUUID(uuid);
         }
 
@@ -135,6 +141,7 @@ public class AnalysisResultActivity extends BaseActivity {
         int appUsageAverageMinutesPerDay = appUsageDataHelper.getAppUsageAverageMinutesPerDay(longTermStatList);
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageMinutesPerDay);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageMinutesPerDay));
+        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME_SHORT, appUsageDataHelper.getAppUsageAverageMinutesPerDayOfShortTermStats());
 
         if (mostUsedAppInfo != null) {
             bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, mostUsedAppInfo.getAppName());
