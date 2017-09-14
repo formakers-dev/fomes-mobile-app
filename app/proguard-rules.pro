@@ -120,4 +120,4 @@
 -keep class com.google.**
 -dontwarn com.google.**
 
--keep com.appbee.appbeemobile.model.**
+-keep class com.appbee.appbeemobile.model.**
