@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.activity.AnalysisResultActivityTest;
+import com.appbee.appbeemobile.activity.LoginActivityTest;
 import com.appbee.appbeemobile.activity.MainActivityTest;
 import com.appbee.appbeemobile.activity.StartActivityTest;
 import com.appbee.appbeemobile.fragment.ShareFragmentTest;
@@ -22,4 +23,6 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(StartActivityTest startActivityTest);
 
     void inject(PowerConnectedServiceTest powerConnectedServiceTest);
+
+    void inject(LoginActivityTest loginActivityTest);
 }

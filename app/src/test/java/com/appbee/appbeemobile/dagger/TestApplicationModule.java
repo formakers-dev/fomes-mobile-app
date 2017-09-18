@@ -5,6 +5,7 @@ import android.content.Context;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.ShareSnsHelper;
 import com.appbee.appbeemobile.network.AppAPI;
@@ -108,5 +109,11 @@ public class TestApplicationModule {
     @Provides
     TimeHelper timeHelper() {
         return mock(TimeHelper.class);
+    }
+
+    @Singleton
+    @Provides
+    GoogleSignInAPIHelper googleSignInAPIHelper() {
+        return mock(GoogleSignInAPIHelper.class);
     }
 }
