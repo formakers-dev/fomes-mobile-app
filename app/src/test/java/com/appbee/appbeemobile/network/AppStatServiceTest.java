@@ -72,7 +72,7 @@ public class AppStatServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper, timeHelper);
-        when(mockLocalStorageHelper.getUUID()).thenReturn("uuid");
+        when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
 
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());

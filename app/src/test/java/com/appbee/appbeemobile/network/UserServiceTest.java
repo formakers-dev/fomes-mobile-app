@@ -49,6 +49,7 @@ public class UserServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         subject = new UserService(mockAppUsageDataHelper, mockUserAPI, mockLocalStorageHelper);
+        when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
 
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
@@ -65,7 +66,6 @@ public class UserServiceTest {
         mockNativeAppInfoList.add(new NativeAppInfo("package_name", "app_name"));
         Observable<List<NativeAppInfo>> mockObservable = Observable.just(mockNativeAppInfoList);
         when(mockAppUsageDataHelper.getAppList()).thenReturn(mockObservable);
-        when(mockLocalStorageHelper.getUUID()).thenReturn("uuid");
         when(mockUserAPI.sendAppInfoList(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendAppList();

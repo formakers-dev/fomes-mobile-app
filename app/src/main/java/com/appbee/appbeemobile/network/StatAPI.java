@@ -15,17 +15,17 @@ import rx.Observable;
 
 public interface StatAPI {
     @POST("/stats/long/yearly")
-    Observable<Response<Boolean>> sendLongTermStatsYearly(@Header("x-appbee-number") String userId, @Body List<NativeLongTermStat> longTermStats);
+    Observable<Response<Boolean>> sendLongTermStatsYearly(@Header("x-access-token") String accessToken, @Body List<NativeLongTermStat> longTermStats);
 
     @POST("/stats/long/monthly")
-    Observable<Response<Boolean>> sendLongTermStatsMonthly(@Header("x-appbee-number") String userId, @Body List<NativeLongTermStat> longTermStats);
+    Observable<Response<Boolean>> sendLongTermStatsMonthly(@Header("x-access-token") String accessToken, @Body List<NativeLongTermStat> longTermStats);
 
     @POST("/stats/event")
-    Observable<Response<Boolean>> sendEventStats(@Header("x-appbee-number") String userId, @Body List<EventStat> eventStats);
+    Observable<Response<Boolean>> sendEventStats(@Header("x-access-token") String accessToken, @Body List<EventStat> eventStats);
 
     @POST("/stats/short")
-    Observable<Response<Boolean>> sendShortTermStats(@Header("x-appbee-number") String userId, @Body List<ShortTermStat> shortTermStats);
+    Observable<Response<Boolean>> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
 
     @POST("/stats/analysis/result")
-    Observable<Response<Boolean>> sendAnalysisResult(@Header("x-appbee-number") String userId, @Body AnalysisResult analysisResult);
+    Observable<Response<Boolean>> sendAnalysisResult(@Header("x-access-token") String accessToken, @Body AnalysisResult analysisResult);
 }

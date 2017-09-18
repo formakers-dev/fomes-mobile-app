@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 
 import org.junit.After;
@@ -22,6 +23,7 @@ import rx.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -29,11 +31,14 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class AppServiceTest {
-
+    private static final String TEST_ACCESS_TOKEN = "TEST_ACCESS_TOKEN";
     private AppService subject;
 
     @Mock
     private AppAPI mockAppAPI;
+
+    @Mock
+    private LocalStorageHelper mockLocalStorageHelper;
 
     @Captor
     ArgumentCaptor<List<String>> packageNamesCaptor = ArgumentCaptor.forClass(List.class);
@@ -44,7 +49,8 @@ public class AppServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new AppService(mockAppAPI);
+        subject = new AppService(mockAppAPI, mockLocalStorageHelper);
+        when(mockLocalStorageHelper.getAccessToken()).thenReturn(TEST_ACCESS_TOKEN);
 
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
@@ -61,12 +67,12 @@ public class AppServiceTest {
         packageNames.add("com.test.app1");
         packageNames.add("com.test.app2");
 
-        when(mockAppAPI.getInfo(any())).thenReturn(Observable.just(Response.success(null)));
+        when(mockAppAPI.getInfo(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(null)));
 
         AppService.AppInfosServiceCallback mockAppInfosServiceCallback = mock(AppService.AppInfosServiceCallback.class);
         subject.getInfos(packageNames, mockAppInfosServiceCallback);
 
-        verify(mockAppAPI).getInfo(packageNamesCaptor.capture());
+        verify(mockAppAPI).getInfo(anyString(), packageNamesCaptor.capture());
         List<String> actualPackageNames = packageNamesCaptor.getValue();
         assertEquals(actualPackageNames.get(0), "com.test.app1");
         assertEquals(actualPackageNames.get(1), "com.test.app2");
@@ -78,7 +84,7 @@ public class AppServiceTest {
         returnAppInfo.add(new AppInfo("packageNameA", "appNameA", "categoryId1A", "categoryName1A", "categoryId2A", "categoryName2A"));
         returnAppInfo.add(new AppInfo("packageNameB", "appNameB", "categoryId1B", "categoryName1B", "categoryId2B", "categoryName2B"));
 
-        when(mockAppAPI.getInfo(any(List.class))).thenReturn(Observable.just(Response.success(returnAppInfo)));
+        when(mockAppAPI.getInfo(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(returnAppInfo)));
 
         AppService.AppInfosServiceCallback mockAppInfosServiceCallback = mock(AppService.AppInfosServiceCallback.class);
         subject.getInfos(mock(List.class), mockAppInfosServiceCallback);
@@ -96,11 +102,11 @@ public class AppServiceTest {
         mockUncrawledAppList.add("packageNameA");
         mockUncrawledAppList.add("packageNameB");
         mockUncrawledAppList.add("packageNameC");
-        when(mockAppAPI.postUncrawledApps(mockUncrawledAppList)).thenReturn(Observable.just(Response.success(true)));
+        when(mockAppAPI.postUncrawledApps(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(true)));
 
         subject.postUncrawledApps(mockUncrawledAppList);
 
-        verify(mockAppAPI).postUncrawledApps(eq(mockUncrawledAppList));
+        verify(mockAppAPI).postUncrawledApps(anyString(), eq(mockUncrawledAppList));
     }
 
     private void assertAppInfo(AppInfo appInfo, String packageName, String appName, String categoryId1, String categoryName1, String categoryId2, String categoryName2) {
