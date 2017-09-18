@@ -113,9 +113,10 @@ public class LoginActivityTest extends ActivityTest {
     public void user정보저장이_성공하면_userID를_sharedPreferences에_저장하고_StartActivity를_시작한다() throws Exception {
         doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
 
-        subject.signInUser("testIdToken");
+        subject.signInUser("testIdToken", "testGoogleId");
 
         verify(localStorageHelper).setAccessToken("testAccessToken");
+        verify(localStorageHelper).setUserId("testGoogleId");
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(StartActivity.class.getSimpleName());
@@ -125,7 +126,7 @@ public class LoginActivityTest extends ActivityTest {
     public void user정보저장이_실패하면_오류메세지를_표시한다() throws Exception {
         doAnswer((invocation) -> Observable.error(new HttpException(404))).when(userService).signIn(anyString());
 
-        subject.signInUser("testIdToken");
+        subject.signInUser("testIdToken", "testGoogleId");
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to sign in");
     }

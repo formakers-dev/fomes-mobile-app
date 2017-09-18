@@ -108,19 +108,6 @@ public class AnalysisResultActivity extends BaseActivity {
                 .add(R.id.share_fragment, getShareFragment(), SHARE_FRAGMENT_TAG)
                 .commit();
 
-        if (TextUtils.isEmpty(localStorageHelper.getUUID())) {
-            String uuid = UUID.randomUUID().toString();
-
-            if(BuildConfig.DEBUG) {
-                uuid = "DEBUG_FOR_TEST";
-            }
-
-            localStorageHelper.setUUID(uuid);
-        }
-
-        String currentDate = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
-        User user = new User(localStorageHelper.getUUID(), currentDate, currentDate);
-        userService.sendUser(user);
         userService.sendAppList();
         appStatService.sendLongTermStatsFor3Months();
         appStatService.sendLongTermStatsFor2Years();

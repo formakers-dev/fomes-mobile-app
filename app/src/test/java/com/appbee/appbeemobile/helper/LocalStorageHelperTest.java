@@ -28,7 +28,7 @@ public class LocalStorageHelperTest {
         sf.edit()
                 .putString("ACCESS_TOKEN", "TEST_STRING_VALUE")
                 .putLong("LAST_USAGE_TIME", 1234567890L)
-                .putString("UUID", "uuid")
+                .putString("USER_ID", "user_id")
                 .apply();
     }
 
@@ -55,13 +55,13 @@ public class LocalStorageHelperTest {
     }
 
     @Test
-    public void setUUID호출시_SharedPreference에_값을_저장한다() throws Exception {
-        subject.setUUID("test_uuid");
-        assertThat(sf.getString("UUID", "")).isEqualTo("test_uuid");
+    public void setUserId호출시_SharedPreference에_값을_저장한다() throws Exception {
+        subject.setUserId("test_user_id");
+        assertThat(sf.getString("USER_ID", "")).isEqualTo("test_user_id");
     }
 
     @Test
-    public void getUUID호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
-        assertThat(subject.getUUID()).isEqualTo("uuid");
+    public void getUserId호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
+        assertThat(subject.getUserId()).isEqualTo("user_id");
     }
 }

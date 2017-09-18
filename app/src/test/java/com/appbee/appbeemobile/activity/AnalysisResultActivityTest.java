@@ -210,22 +210,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate_앱시작시_UUID정보가_없으면_SharedPreference에_저장한다() throws Exception {
-        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
-
-        verify(mockLocalStorageHelper).setUUID(anyString());
-    }
-
-    @Test
-    public void onCreate_앱시작시_서버로_user정보를_전송한다() throws Exception {
-        subject = Robolectric.setupActivity(AnalysisResultActivity.class);
-        verify(mockUserService).sendUser(any(User.class));
-    }
-
-    @Test
     public void onCreate_앱시작시_PowerConnectedService를_시작한다() throws Exception {
-        when(mockLocalStorageHelper.getUUID()).thenReturn(null);
-
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
 
         Intent nextStartedService = shadowOf(RuntimeEnvironment.application).getNextStartedService();
