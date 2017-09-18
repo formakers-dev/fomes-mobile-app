@@ -84,22 +84,6 @@ public class AppStatServiceTest {
     }
 
     @Test
-    public void sendEventStats호출시_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
-        List<EventStat> mockEventStatList = new ArrayList<>();
-        mockEventStatList.add(new EventStat("package_name", 1, 1000L));
-        when(mockAppUsageDataHelper.getEventStats(anyLong())).thenReturn(mockEventStatList);
-        when(mockStatAPI.sendEventStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
-
-        subject.sendEventStats();
-
-        verify(mockStatAPI).sendEventStats(anyString(), eventStatsCaptor.capture());
-        EventStat actualEventStat = eventStatsCaptor.getValue().get(0);
-        assertEquals(actualEventStat.getPackageName(), "package_name");
-        assertEquals(actualEventStat.getEventType(), 1);
-        assertEquals(actualEventStat.getTimeStamp(), 1000L);
-    }
-
-    @Test
     public void sendLongTermStatsFor2Years호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
         List<NativeLongTermStat> mockNativeLongTermStatList = new ArrayList<>();
         mockNativeLongTermStatList.add(createMockNativeLongTermStat("anyPackage", 100L, 200L, 300L, 400L));
