@@ -26,13 +26,13 @@ public class UserService {
         this.localStorageHelper = localStorageHelper;
     }
 
-    public Observable<String> signIn(String token) {
-        return userAPI.signInUser(token).subscribeOn(Schedulers.io());
+    public Observable<String> signIn(String googleIdToken) {
+        return userAPI.signInUser(googleIdToken).subscribeOn(Schedulers.io());
     }
 
     public void sendAppList() {
         appUsageDataHelper.getAppList().subscribe(nativeAppInfoList ->
-                userAPI.sendAppInfoList(localStorageHelper.getUUID(), nativeAppInfoList)
+                userAPI.sendAppInfoList(localStorageHelper.getAccessToken(), nativeAppInfoList)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {

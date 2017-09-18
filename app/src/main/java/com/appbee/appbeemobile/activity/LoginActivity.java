@@ -95,8 +95,8 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, R.string.fail_to_connect_google_play, Toast.LENGTH_SHORT).show();
     }
 
-    void signInUser(final String idToken) {
-        userService.signIn(idToken).observeOn(AndroidSchedulers.mainThread())
+    void signInUser(final String googleIdToken) {
+        userService.signIn(googleIdToken).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(token -> {
                     Log.d(TAG, "signInUser success");
                     localStorageHelper.setAccessToken(token);

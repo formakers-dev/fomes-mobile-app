@@ -14,10 +14,10 @@ import rx.Observable;
 
 public interface UserAPI {
     @GET("/user/auth")
-    Observable<String> signInUser(@Header("x-id-token") String idToken);
+    Observable<String> signInUser(@Header("x-id-token") String googleIdToken);
 
     @POST("/user/apps")
-    Observable<Response<Boolean>> sendAppInfoList(@Header("x-appbee-number") String userId, @Body List<NativeAppInfo> nativeAppInfos);
+    Observable<Response<Boolean>> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<NativeAppInfo> nativeAppInfos);
 
     @POST("/user")
     Observable<Response<Boolean>> sendUser(@Body User user);
