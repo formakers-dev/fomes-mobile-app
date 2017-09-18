@@ -167,4 +167,6 @@
     <string name="app_usage_habit_title">앱 사용 패턴은 생활 습관을 반영합니다.</string>
     <string name="app_usage_habit_description">상대의 모바일을 보며 소개팅을 진행하는 TV\n프로그램이 방송되는 시대가 되었습니다.\n즉, 모바일으로 그 사람을 알 수 있기 때문이죠!\n이제 앱비로 모바일 속 당신을 들여다 보세요.</string>
     <string name="share_message">나와 가장 비슷한 친구는 누구일까요?\n지금 공유하고 바로 찾아보세요!</string>
+    <string name="fail_to_connect_google_play">Fail to connect Google Play Service</string>
+    <string name="fail_to_sign_in">Fail to sign in</string>
 </resources>

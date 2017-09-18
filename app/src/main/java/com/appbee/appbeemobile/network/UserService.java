@@ -8,10 +8,8 @@ import com.appbee.appbeemobile.model.User;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 public class UserService {
@@ -28,37 +26,20 @@ public class UserService {
         this.localStorageHelper = localStorageHelper;
     }
 
-    public void signIn(String token, SignInResultCallback signInResultCallback) {
-        userAPI.signInUser(token).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "Success to send appList");
-                } else {
-                    Log.d(TAG, "Fail to send appList");
-                }
-                signInResultCallback.onSuccess(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                signInResultCallback.onFail();
-                Log.e(TAG, "failure!!! t=" + t.toString());
-            }
-        });
+    public Observable<String> signIn(String token) {
+        return userAPI.signInUser(token).subscribeOn(Schedulers.io());
     }
 
     public void sendAppList() {
-        appUsageDataHelper.getAppList().subscribe(nativeAppInfoList -> {
-            userAPI.sendAppInfoList(localStorageHelper.getUUID(), nativeAppInfoList)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
-                        if (error instanceof HttpException) {
-                            Log.d(TAG, String.valueOf(((HttpException) error).code()));
-                        }
-                    });
-        });
+        appUsageDataHelper.getAppList().subscribe(nativeAppInfoList ->
+                userAPI.sendAppInfoList(localStorageHelper.getUUID(), nativeAppInfoList)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                            if (error instanceof HttpException) {
+                                Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                            }
+                        }));
     }
 
     public void sendUser(User user) {

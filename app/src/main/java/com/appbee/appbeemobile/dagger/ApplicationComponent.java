@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.activity.AnalysisResultActivity;
+import com.appbee.appbeemobile.activity.LoginActivity;
 import com.appbee.appbeemobile.activity.MainActivity;
 import com.appbee.appbeemobile.activity.StartActivity;
 import com.appbee.appbeemobile.fragment.ShareFragment;
@@ -20,4 +21,5 @@ public interface ApplicationComponent {
     void inject(PowerConnectedReceiver powerConnectedReceiver);
     void inject(StartActivity startActivity);
     void inject(PowerConnectedService powerConnectedService);
+    void inject(LoginActivity loginActivity);
 }
