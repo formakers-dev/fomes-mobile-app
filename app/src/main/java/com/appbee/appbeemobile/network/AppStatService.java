@@ -33,17 +33,6 @@ public class AppStatService {
         this.timeHelper = timeHelper;
     }
 
-    public void sendEventStats() {
-        StatAPI.sendEventStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getEventStats(getStartTime()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
-                    if (error instanceof HttpException) {
-                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
-                    }
-                });
-    }
-
     public void sendLongTermStatsFor2Years() {
         StatAPI.sendLongTermStatsYearly(localStorageHelper.getAccessToken(), appUsageDataHelper.getNativeLongTermStatsFor2Years())
                 .subscribeOn(Schedulers.io())
