@@ -30,11 +30,12 @@ public class PowerConnectedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
-            String uniqueID = localStorageHelper.getUUID();
-            String date = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
-            User user = new User(uniqueID, date);
-            userService.sendUser(user);
-        }
+        //TODO : API Access Token 받도록 변경 후 작업
+//        if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
+//            String uniqueID = localStorageHelper.getUserId();
+//            String date = timeHelper.getFormattedCurrentTime(TimeHelper.DATE_FORMAT);
+//            User user = new User(uniqueID, date);
+//            userService.sendUser(user);
+//        }
     }
 }

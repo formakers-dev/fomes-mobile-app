@@ -33,7 +33,7 @@ public class ShareSnsHelper {
     public void shareKakao(AppBeeConstants.CharacterType characterType) {
         try {
             String imageUrl = context.getString(characterType.shareImageUrl);
-            String downloadUrl = SERVER_BASE_URL + "download?referer=" + localStorageHelper.getUUID();
+            String downloadUrl = SERVER_BASE_URL + "download?referer=" + localStorageHelper.getUserId();
 
             FeedTemplate params = FeedTemplate
                     .newBuilder(ContentObject.newBuilder("모바일로 나의 벌 타입 알아보러 Go!", imageUrl,

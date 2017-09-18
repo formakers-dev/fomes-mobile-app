@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 if (account != null) {
-                    signInUser(account.getIdToken());
+                    signInUser(account.getIdToken(), account.getId());
                 }
             } else {
                 onConnectionFailed(new ConnectionResult(0));
@@ -95,11 +95,12 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, R.string.fail_to_connect_google_play, Toast.LENGTH_SHORT).show();
     }
 
-    void signInUser(final String googleIdToken) {
+    void signInUser(final String googleIdToken, final String googleUserId) {
         userService.signIn(googleIdToken).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(token -> {
                     Log.d(TAG, "signInUser success");
                     localStorageHelper.setAccessToken(token);
+                    localStorageHelper.setUserId(googleUserId);
 
                     Intent intent = new Intent(getBaseContext(), StartActivity.class);
                     startActivity(intent);
