@@ -20,8 +20,8 @@ import com.appbee.appbeemobile.helper.ShareSnsHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
-import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -124,11 +124,10 @@ public class AnalysisResultActivity extends BaseActivity {
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, totalAppCount);
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, getAppCountType(totalAppCount));
 
-        List<LongTermStat> longTermStatList = appUsageDataHelper.getLongTermStats();
-        int appUsageAverageMinutesPerDay = appUsageDataHelper.getAppUsageAverageMinutesPerDay(longTermStatList);
+        List<ShortTermStat> shortTermStats = appUsageDataHelper.getShortTermStats(0L);
+        int appUsageAverageMinutesPerDay = appUsageDataHelper.getAppUsageAverageMinutesPerDay(shortTermStats);
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageMinutesPerDay);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageMinutesPerDay));
-        bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME_SHORT, appUsageDataHelper.getAppUsageAverageMinutesPerDayOfShortTermStats());
 
         if (mostUsedAppInfo != null) {
             bundle.putString(OverviewFragment.EXTRA_LONGEST_USED_APP_NAME, mostUsedAppInfo.getAppName());

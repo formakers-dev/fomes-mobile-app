@@ -21,8 +21,8 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
-import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -55,6 +55,8 @@ import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -523,11 +525,11 @@ public class AnalysisResultActivityTest extends ActivityTest {
     }
 
     private void mockDummyDataForOverviewFragment() {
-        List<LongTermStat> longTermStats = new ArrayList<>();
-        longTermStats.add(new LongTermStat("com.package.test", "", 999_999_999L));
-        when(appUsageDataHelper.getLongTermStats()).thenReturn(longTermStats);
+        List<ShortTermStat> shortTermStats = new ArrayList<>();
+        shortTermStats.add(new ShortTermStat("com.package.test", 0L, 100L, 300L));
+        when(appUsageDataHelper.getShortTermStats(anyLong())).thenReturn(shortTermStats);
 
-        when(appUsageDataHelper.getAppUsageAverageMinutesPerDay(any())).thenReturn(480);
+        when(appUsageDataHelper.getAppUsageAverageMinutesPerDay(eq(shortTermStats))).thenReturn(480);
 
         mockNativeAppInfo(true);
 
