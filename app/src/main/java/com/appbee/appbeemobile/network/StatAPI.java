@@ -14,14 +14,14 @@ import rx.Observable;
 
 public interface StatAPI {
     @POST("/stats/long/yearly")
-    Observable<Response<Boolean>> sendLongTermStatsYearly(@Header("x-access-token") String accessToken, @Body List<NativeLongTermStat> longTermStats);
+    Observable<Boolean> sendLongTermStatsYearly(@Header("x-access-token") String accessToken, @Body List<NativeLongTermStat> longTermStats);
 
     @POST("/stats/long/monthly")
-    Observable<Response<Boolean>> sendLongTermStatsMonthly(@Header("x-access-token") String accessToken, @Body List<NativeLongTermStat> longTermStats);
+    Observable<Boolean> sendLongTermStatsMonthly(@Header("x-access-token") String accessToken, @Body List<NativeLongTermStat> longTermStats);
 
     @POST("/stats/short")
-    Observable<Response<Boolean>> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
+    Observable<Boolean> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
 
     @POST("/stats/analysis/result")
-    Observable<Response<Boolean>> sendAnalysisResult(@Header("x-access-token") String accessToken, @Body AnalysisResult analysisResult);
+    Observable<Boolean> sendAnalysisResult(@Header("x-access-token") String accessToken, @Body AnalysisResult analysisResult);
 }

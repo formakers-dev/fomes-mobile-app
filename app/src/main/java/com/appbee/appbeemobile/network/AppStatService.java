@@ -37,7 +37,7 @@ public class AppStatService {
         StatAPI.sendLongTermStatsYearly(localStorageHelper.getAccessToken(), appUsageDataHelper.getNativeLongTermStatsFor2Years())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
                         Log.d(TAG, String.valueOf(((HttpException) error).code()));
                     }
@@ -48,7 +48,7 @@ public class AppStatService {
         StatAPI.sendLongTermStatsMonthly(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStatsFor3Months())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
                         Log.d(TAG, String.valueOf(((HttpException) error).code()));
                     }
@@ -59,7 +59,7 @@ public class AppStatService {
         StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
                         Log.d(TAG, String.valueOf(((HttpException) error).code()));
                     }
@@ -70,7 +70,7 @@ public class AppStatService {
         StatAPI.sendAnalysisResult(localStorageHelper.getAccessToken(), analysisResult)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
                         Log.d(TAG, String.valueOf(((HttpException) error).code()));
                     }

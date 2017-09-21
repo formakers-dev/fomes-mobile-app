@@ -84,7 +84,7 @@ public class AppServiceTest {
         returnAppInfo.add(new AppInfo("packageNameA", "appNameA", "categoryId1A", "categoryName1A", "categoryId2A", "categoryName2A"));
         returnAppInfo.add(new AppInfo("packageNameB", "appNameB", "categoryId1B", "categoryName1B", "categoryId2B", "categoryName2B"));
 
-        when(mockAppAPI.getInfo(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(returnAppInfo)));
+        when(mockAppAPI.getInfo(anyString(), any(List.class))).thenReturn(Observable.just(returnAppInfo));
 
         AppService.AppInfosServiceCallback mockAppInfosServiceCallback = mock(AppService.AppInfosServiceCallback.class);
         subject.getInfos(mock(List.class), mockAppInfosServiceCallback);

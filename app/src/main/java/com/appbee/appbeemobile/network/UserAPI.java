@@ -17,8 +17,8 @@ public interface UserAPI {
     Observable<String> signInUser(@Header("x-id-token") String googleIdToken);
 
     @POST("/user/apps")
-    Observable<Response<Boolean>> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<NativeAppInfo> nativeAppInfos);
+    Observable<Boolean> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<NativeAppInfo> nativeAppInfos);
 
     @POST("/user")
-    Observable<Response<Boolean>> sendUser(@Body User user);
+    Observable<Boolean> sendUser(@Body User user);
 }

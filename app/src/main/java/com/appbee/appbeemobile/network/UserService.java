@@ -35,7 +35,7 @@ public class UserService {
                 userAPI.sendAppInfoList(localStorageHelper.getAccessToken(), nativeAppInfoList)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
-                        .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                        .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                             if (error instanceof HttpException) {
                                 Log.d(TAG, String.valueOf(((HttpException) error).code()));
                             }
@@ -46,7 +46,7 @@ public class UserService {
         userAPI.sendUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response.code())), error -> {
+                .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
                         Log.d(TAG, String.valueOf(((HttpException) error).code()));
                     }

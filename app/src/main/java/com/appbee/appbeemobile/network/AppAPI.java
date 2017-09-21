@@ -12,8 +12,8 @@ import rx.Observable;
 
 public interface AppAPI {
     @POST("/apps/info")
-    Observable<Response<List<AppInfo>>> getInfo(@Header("x-access-token") String accessToken, @Body List<String> packageNames);
+    Observable<List<AppInfo>> getInfo(@Header("x-access-token") String accessToken, @Body List<String> packageNames);
 
     @POST("/apps/uncrawled")
-    Observable<Response<Boolean>> postUncrawledApps(@Header("x-access-token") String accessToken, @Body List<String> packageNames);
+    Observable<Boolean> postUncrawledApps(@Header("x-access-token") String accessToken, @Body List<String> packageNames);
 }
