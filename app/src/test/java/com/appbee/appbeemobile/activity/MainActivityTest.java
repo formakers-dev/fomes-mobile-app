@@ -138,13 +138,13 @@ public class MainActivityTest extends ActivityTest {
     public void appInfosServiceCallback의_onSuccess를_호출했을때_DB에_결과를_저장한다() throws Exception {
         List<AppInfo> returnedAppInfos = mock(List.class);
         MainActivity subject = createSubjectWithPostCreateLifecycle();
-        Map<String, Long> mockLongTermStatsSummary = mock(Map.class);
-        when(mockAppUsageDataHelper.getLongTermStatsSummary()).thenReturn(mockLongTermStatsSummary);
+        Map<String, Long> mockStatsSummary = mock(Map.class);
+        when(mockAppUsageDataHelper.getShortTermStatsTimeSummary()).thenReturn(mockStatsSummary);
 
         subject.appInfosServiceCallback.onSuccess(returnedAppInfos);
 
         verify(mockAppRepositoryHelper).insertUsedApps(eq(returnedAppInfos));
-        verify(mockAppRepositoryHelper).updateTotalUsedTime(eq(mockLongTermStatsSummary));
+        verify(mockAppRepositoryHelper).updateTotalUsedTime(eq(mockStatsSummary));
     }
 
     @Test
@@ -160,8 +160,8 @@ public class MainActivityTest extends ActivityTest {
         returnedAppInfos.add(new AppInfo("com.package.name1", null, null, null, null, null));
         returnedAppInfos.add(new AppInfo("com.package.name2", null, null, null, null, null));
         MainActivity subject = createSubjectWithPostCreateLifecycle();
-        Map<String, Long> mockLongTermStatsSummary = mock(Map.class);
-        when(mockAppUsageDataHelper.getLongTermStatsSummary()).thenReturn(mockLongTermStatsSummary);
+        Map<String, Long> mockShortTermStatsSummary = mock(Map.class);
+        when(mockAppUsageDataHelper.getShortTermStatsTimeSummary()).thenReturn(mockShortTermStatsSummary);
 
         subject.appInfosServiceCallback.onSuccess(returnedAppInfos);
 
@@ -181,8 +181,8 @@ public class MainActivityTest extends ActivityTest {
         List<AppInfo> returnedAppInfos = new ArrayList<>();
         returnedAppInfos.add(new AppInfo("com.package.name1", null, null, null, null, null));
         MainActivity subject = createSubjectWithPostCreateLifecycle();
-        Map<String, Long> mockLongTermStatsSummary = mock(Map.class);
-        when(mockAppUsageDataHelper.getLongTermStatsSummary()).thenReturn(mockLongTermStatsSummary);
+        Map<String, Long> mockShortTermStatsSummary = mock(Map.class);
+        when(mockAppUsageDataHelper.getShortTermStatsTimeSummary()).thenReturn(mockShortTermStatsSummary);
 
         subject.appInfosServiceCallback.onSuccess(returnedAppInfos);
 

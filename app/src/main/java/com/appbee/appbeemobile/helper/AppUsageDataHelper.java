@@ -76,7 +76,7 @@ public class AppUsageDataHelper {
 
                 case MOVE_TO_BACKGROUND:
                     if (beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
-                        shortTermStats.add(createDetailUsageStat(eventStat.getPackageName(), beforeForegroundEvent.getTimeStamp(), eventStat.getTimeStamp()));
+                        shortTermStats.add(createDetailUsageStat(eventStat.getPackageName(), beforeForegroundEvent.getEventTime(), eventStat.getEventTime()));
                         beforeForegroundEvent = null;
                     }
                     break;
@@ -179,14 +179,14 @@ public class AppUsageDataHelper {
     }
 
     @NonNull
-    public Map<String, Long> getLongTermStatsSummary() {
+    public Map<String, Long> getShortTermStatsTimeSummary() {
         Map<String, Long> map = new HashMap<>();
 
-        for (LongTermStat longTermStat : getLongTermStats()) {
-            if (map.get(longTermStat.getPackageName()) == null) {
-                map.put(longTermStat.getPackageName(), longTermStat.getTotalUsedTime());
+        for (ShortTermStat shortTermStat : getShortTermStats(0L)) {
+            if (map.get(shortTermStat.getPackageName()) == null) {
+                map.put(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime());
             } else {
-                map.put(longTermStat.getPackageName(), map.get(longTermStat.getPackageName()) + longTermStat.getTotalUsedTime());
+                map.put(shortTermStat.getPackageName(), map.get(shortTermStat.getPackageName()) + shortTermStat.getTotalUsedTime());
             }
         }
 
