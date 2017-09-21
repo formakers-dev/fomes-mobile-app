@@ -6,10 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.appbee.appbeemobile.AppBeeApplication;
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.BrainFragment;
 import com.appbee.appbeemobile.fragment.FlowerFragment;
@@ -24,7 +22,6 @@ import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
-import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -39,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -55,6 +51,7 @@ public class AnalysisResultActivity extends BaseActivity {
     private static final int NUMBER_OF_MOST_USED_TIME_CATEGORY = 3;
     private static final int NUMBER_OF_LEAST_USED_TIME_CATEGORY = 1;
 
+    private int totalUsedAppCount = 0;
     private int totalAppCount = 0;
     private AppInfo mostUsedAppInfo;
     private AnalysisResult analysisResult = new AnalysisResult();
@@ -93,13 +90,16 @@ public class AnalysisResultActivity extends BaseActivity {
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
         List<AppInfo> appInfoList = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime();
+        List<NativeAppInfo> nativeAppInfos = appUsageDataHelper.getAppList().toBlocking().single();
 
-        if (appInfoList != null && !appInfoList.isEmpty()) {
-            totalAppCount = appInfoList.size();
-            mostUsedAppInfo = appInfoList.get(0);
+        if(nativeAppInfos != null && !nativeAppInfos.isEmpty()) {
+            totalAppCount = nativeAppInfos.size();
         }
 
-        totalAppCount = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime().size();
+        if (appInfoList != null && !appInfoList.isEmpty()) {
+            totalUsedAppCount = appInfoList.size();
+            mostUsedAppInfo = appInfoList.get(0);
+        }
 
         getFragmentManager().beginTransaction()
                 .add(R.id.overview_fragment, getOverviewFragment(), OVERVIEW_FRAGMENT_TAG)
@@ -146,7 +146,7 @@ public class AnalysisResultActivity extends BaseActivity {
         overviewFragment.setArguments(bundle);
 
         analysisResult.setCharacterType(characterType.name());
-        analysisResult.setTotalInstalledAppCount(totalAppCount);
+        analysisResult.setTotalInstalledAppCount(totalUsedAppCount);
         analysisResult.setAverageUsedMinutesPerDay(appUsageAverageMinutesPerDay);
 
         return overviewFragment;
@@ -170,7 +170,7 @@ public class AnalysisResultActivity extends BaseActivity {
         if (mostInstalledCategoryList.size() >= 3) {
             String categoryId = mostInstalledCategoryList.get(0);
             String categoryName = Category.fromId(categoryId).categoryName;
-            int rate = (int) Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / totalAppCount * 100);
+            int rate = (int) Math.round((double) appUsageDataHelper.getAppCountByCategoryId(mostInstalledCategoryList.get(0)) / totalUsedAppCount * 100);
             bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_SUMMARY, String.format(getString(R.string.category_count_summary_format_string), categoryName, rate));
             bundle.putString(BrainFragment.EXTRA_MOST_INSTALLED_CATEGORY_DESCRIPTION, getString(Category.fromId(categoryId).description));
         } else {
