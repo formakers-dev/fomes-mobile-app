@@ -23,12 +23,12 @@ import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
-import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.service.PowerConnectedService;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,13 +45,16 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
+
 import static com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -90,6 +93,14 @@ public class AnalysisResultActivityTest extends ActivityTest {
         mockDummyDataForOverviewFragment();
         mockDummyDataForBrainFragment();
         mockDummyDataForFlowerFragment();
+
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+    }
+
+    @After
+    public void tearDown() {
+        RxJavaHooks.reset();
     }
 
     @Test
@@ -101,7 +112,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         assertThat(fragment.isAdded()).isTrue();
 
         Bundle bundle = fragment.getArguments();
-        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(4);
+        assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT)).isEqualTo(3);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE)).isEqualTo(APP_LIST_COUNT_TYPE.LEAST);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_AVG_TIME)).isEqualTo(480);
         assertThat(bundle.getInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE)).isEqualTo(APP_USAGE_TIME_TYPE.MOST);
@@ -497,12 +508,17 @@ public class AnalysisResultActivityTest extends ActivityTest {
         mostUsedCategories.add("/store/apps/category/MUSIC_AND_AUDIO");
         when(appUsageDataHelper.getMostInstalledCategoryGroups(anyInt())).thenReturn(mostUsedCategories);
 
+        List<NativeAppInfo> nativeAppInfoList = new ArrayList<>();
+        nativeAppInfoList.add(new NativeAppInfo("com.package.name1", "app_name_1"));
+        nativeAppInfoList.add(new NativeAppInfo("com.package.name2", "app_name_2"));
+        nativeAppInfoList.add(new NativeAppInfo("com.package.name3", "app_name_3"));
+        when(appUsageDataHelper.getAppList()).thenReturn(Observable.just(nativeAppInfoList));
+
         List<AppInfo> appInfoList = new ArrayList<>();
         appInfoList.add(new AppInfo("com.package.name1", "app_name_1", "/store/apps/category/GAME", null, null, null));
         appInfoList.add(new AppInfo("com.package.name2", "app_name_2", "category_id_2", null, null, null));
         appInfoList.add(new AppInfo("com.package.name3", "app_name_3", null, null, null, null));
         appInfoList.add(new AppInfo("com.package.name4", "app_name_4", null, null, null, null));
-
         when(appUsageDataHelper.getSortedUsedAppsByTotalUsedTime()).thenReturn(appInfoList);
     }
 
