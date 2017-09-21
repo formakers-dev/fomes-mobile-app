@@ -301,14 +301,14 @@ public class AppUsageDataHelperTest {
         // 디바이스 총 사용일 = 766
         // 앱 사용평균사용시간(분/일) = 366666 / 766 = 478 (소수점이하 내림)
 
-        List<LongTermStat> longTermStatList = new ArrayList<>();
-        longTermStatList.add(new LongTermStat("com.package.name1", "20171212", 5_000_000_000L));
-        longTermStatList.add(new LongTermStat("com.package.name2", "20171212", 8_000_000_000L));
-        longTermStatList.add(new LongTermStat("com.package.name3", "20171212", 9_000_000_000L));
+        List<ShortTermStat> shortTermStatList = new ArrayList<>();
+        shortTermStatList.add(new ShortTermStat("com.package.name1", 0L, 100L, 5_000_000_000L));
+        shortTermStatList.add(new ShortTermStat("com.package.name2", 10L, 200L, 8_000_000_000L));
+        shortTermStatList.add(new ShortTermStat("com.package.name3", 150L, 300L, 9_000_000_000L));
 
         when(mockTimeHelper.getMobileTotalUsedDay(anyLong())).thenReturn(766d);
 
-        assertThat(subject.getAppUsageAverageMinutesPerDay(longTermStatList)).isEqualTo(478);
+        assertThat(subject.getAppUsageAverageMinutesPerDay(shortTermStatList)).isEqualTo(478);
     }
 
     @Test

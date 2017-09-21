@@ -164,25 +164,11 @@ public class AppUsageDataHelper {
                 .toList();
     }
 
-    public int getAppUsageAverageMinutesPerDay(List<LongTermStat> longTermStatList) {
-        double totalUsedMinutes = 0d;
-
-        for (LongTermStat item : longTermStatList) {
-            totalUsedMinutes += item.getTotalUsedTime();
-        }
-
-        totalUsedMinutes = totalUsedMinutes / 1000 / 60;
-        double mobileTotalUsedDay = timeHelper.getMobileTotalUsedDay(localStorageHelper.getMinStartedStatTimeStamp());
-        return (int) (totalUsedMinutes / mobileTotalUsedDay);
-    }
-
-    public int getAppUsageAverageMinutesPerDayOfShortTermStats() {
-        List<ShortTermStat> shortTermStats = getShortTermStats(0L);
-
+    public int getAppUsageAverageMinutesPerDay(List<ShortTermStat> shortTermStatList) {
         double totalUsedMinutes = 0d;
         long firstUsedDateTime = Long.MAX_VALUE;
 
-        for (ShortTermStat item : shortTermStats) {
+        for (ShortTermStat item : shortTermStatList) {
             totalUsedMinutes += item.getTotalUsedTime();
             firstUsedDateTime = Math.min(firstUsedDateTime, item.getStartTimeStamp());
         }
