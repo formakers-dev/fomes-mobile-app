@@ -25,7 +25,7 @@ public class AppService {
 
     public void getInfos(List<String> packageNames, AppInfosServiceCallback appInfosServiceCallback) {
         appAPI.getInfo(localStorageHelper.getAccessToken(), packageNames).subscribeOn(Schedulers.io()).subscribe(
-                new Observer<Response<List<AppInfo>>>() {
+                new Observer<List<AppInfo>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -40,12 +40,8 @@ public class AppService {
                     }
 
                     @Override
-                    public void onNext(Response<List<AppInfo>> listResponse) {
-                        if (listResponse.isSuccessful()) {
-                            appInfosServiceCallback.onSuccess(listResponse.body());
-                        } else {
-                            appInfosServiceCallback.onFail(API_RESPONSE_CODE.FORBIDDEN);
-                        }
+                    public void onNext(List<AppInfo> appInfoList) {
+                        appInfosServiceCallback.onSuccess(appInfoList);
                     }
                 }
         );
