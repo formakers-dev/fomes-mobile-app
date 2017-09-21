@@ -5,8 +5,8 @@ import android.util.Log;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
-import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.model.ShortTermStat;
 import com.google.common.collect.Lists;
 
 import java.util.HashSet;
@@ -89,7 +89,7 @@ public class AppStatService {
     public List<String> getUsedPackageNameList() {
         Set<String> usedPackageNameSet = new HashSet<>();
 
-        for (LongTermStat stat : appUsageDataHelper.getLongTermStats()) {
+        for (ShortTermStat stat : appUsageDataHelper.getShortTermStats(0L)) {
             usedPackageNameSet.add(stat.getPackageName());
         }
 

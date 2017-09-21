@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
-import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -291,7 +290,7 @@ public class AppUsageDataHelperTest {
         assertThat(eventStatList.size()).isEqualTo(2);
         assertThat(eventStatList.get(0).getPackageName()).isEqualTo("packageA");
         assertThat(eventStatList.get(0).getEventType()).isEqualTo(MOVE_TO_FOREGROUND);
-        assertThat(eventStatList.get(0).getTimeStamp()).isEqualTo(1000L);
+        assertThat(eventStatList.get(0).getEventTime()).isEqualTo(1000L);
     }
 
     @Test
@@ -434,18 +433,18 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getLongTermStatsSummary호출시_package별_totalUsedTime의_합을_리턴한다() throws Exception {
-        List<UsageStats> preStoredUsageStats = new ArrayList<>();
-        preStoredUsageStats.add(createMockUsageStats("aaaaa", 100L, 1499914800000L));    //2017-07-12 12:00:00
-        preStoredUsageStats.add(createMockUsageStats("bbbbb", 200L, 1500001200000L));    //2017-07-14 12:00:00
-        preStoredUsageStats.add(createMockUsageStats("aaaaa", 300L, 1500001200000L));    //2017-07-14 12:00:00
+    public void getShortTermStatsTimeSummary호출시_package별_totalUsedTime의_합을_리턴한다() throws Exception {
+        List<EventStat> preStoredUsageStats = new ArrayList<>();
+        preStoredUsageStats.add(createMockEventStats("aaaaa", 1, 1499914800000L));    //2017-07-12 12:00:00
+        preStoredUsageStats.add(createMockEventStats("aaaaa", 2, 1500001200000L));    //2017-07-14 12:00:00
+        preStoredUsageStats.add(createMockEventStats("bbbbb", 1, 1500001200000L));    //2017-07-14 12:00:00
 
-        when(mockAppBeeAndroidNativeHelper.getUsageStats(eq(UsageStatsManager.INTERVAL_MONTHLY), anyLong(), anyLong())).thenReturn(preStoredUsageStats);
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
 
-        Map map = subject.getLongTermStatsSummary();
+        Map<String, Long> map = subject.getShortTermStatsTimeSummary();
 
-        assertThat(map.get("aaaaa")).isEqualTo(400L);
-        assertThat(map.get("bbbbb")).isEqualTo(200L);
+        assertThat(map.get("aaaaa")).isEqualTo(86400000L);
+        assertThat(map.get("bbbbb")).isNull();
     }
 
     @Test
@@ -819,5 +818,14 @@ public class AppUsageDataHelperTest {
         when(mockUsageStats.getTotalTimeInForeground()).thenReturn(totalTimeInForeground);
         when(mockUsageStats.getLastTimeUsed()).thenReturn(lastTimeUsed);
         return mockUsageStats;
+    }
+
+    @NonNull
+    private EventStat createMockEventStats(String packageName, int eventType, long eventTime) {
+        EventStat mockEventStats = mock(EventStat.class);
+        when(mockEventStats.getPackageName()).thenReturn(packageName);
+        when(mockEventStats.getEventType()).thenReturn(eventType);
+        when(mockEventStats.getEventTime()).thenReturn(eventTime);
+        return mockEventStats;
     }
 }

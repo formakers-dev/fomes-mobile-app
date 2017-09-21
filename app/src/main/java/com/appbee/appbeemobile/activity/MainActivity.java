@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity {
 
             MainActivity.this.runOnUiThread(() -> {
                 appRepositoryHelper.insertUsedApps(appInfos);
-                appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getLongTermStatsSummary());
+                appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getShortTermStatsTimeSummary());
                 moveToAnalysisResultActivity();
             });
         }
