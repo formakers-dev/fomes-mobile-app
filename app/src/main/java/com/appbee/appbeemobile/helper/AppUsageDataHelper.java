@@ -122,8 +122,6 @@ public class AppUsageDataHelper {
             }
         }
 
-        localStorageHelper.setMinStartedStatTimeStamp(minFirstStartedStatTimeStamp);
-
         List<LongTermStat> longTermStatList = new ArrayList<>(dailyUsageStatMap.values());
         Collections.sort(longTermStatList, (o1, o2) -> Long.valueOf(o2.getTotalUsedTime()).compareTo(o1.getTotalUsedTime()));
         return longTermStatList;
