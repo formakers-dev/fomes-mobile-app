@@ -44,17 +44,6 @@ public class LocalStorageHelperTest {
     }
 
     @Test
-    public void setLastUsageTime호출시_SharedPreference에_값을_저장한다() throws Exception {
-        subject.setLastUsageTime(987654321L);
-        assertThat(sf.getLong("LAST_USAGE_TIME", 0L)).isEqualTo(987654321L);
-    }
-
-    @Test
-    public void getLastUsageTime호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
-        assertThat(subject.getLastUsageTime()).isEqualTo(1234567890L);
-    }
-
-    @Test
     public void setUserId호출시_SharedPreference에_값을_저장한다() throws Exception {
         subject.setUserId("test_user_id");
         assertThat(sf.getString("USER_ID", "")).isEqualTo("test_user_id");

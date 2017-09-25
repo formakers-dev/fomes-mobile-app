@@ -109,11 +109,12 @@ public class AppStatServiceTest {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
         when(mockAppUsageDataHelper.getShortTermStats(anyLong())).thenReturn(mockShortTermStats);
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
+        when(mockStatAPI.getLastUpdateStatTimestamp(anyString())).thenReturn(Observable.just(1234567890L));
+        when(mockStatAPI.sendShortTermStats(anyString(), anyLong(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendShortTermStats();
 
-        verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
+        verify(mockStatAPI).sendShortTermStats(anyString(), anyLong(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
         assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
@@ -132,20 +133,6 @@ public class AppStatServiceTest {
         verify(mockStatAPI).sendAnalysisResult(anyString(), analysisResultArgumentCaptor.capture());
         AnalysisResult result = analysisResultArgumentCaptor.getValue();
         assertThat(result).isEqualTo(mockResult);
-    }
-
-    @Test
-    public void getStartDate호출시_LocalStorageHelper에_저장된_lastUsageTime이_없으면_현시점에서_일주일전_시간을_리턴한다() throws Exception {
-        long currentTime = 1503871200000L;
-        when(timeHelper.getCurrentTime()).thenReturn(currentTime);
-        assertThat(subject.getStartTime()).isEqualTo(currentTime - 604800000L); // 604800000 = 7 * 24 * 60 * 60 * 1000
-    }
-
-    @Test
-    public void getStartDate호출시_LocalStorageHelper에_저장된_lastUsageTime이_있으면_저장된_시간을_리턴한다() throws Exception {
-        when(mockLocalStorageHelper.getLastUsageTime()).thenReturn(2000L);
-
-        assertThat(subject.getStartTime()).isEqualTo(2000L);
     }
 
     @Test

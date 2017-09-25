@@ -39,7 +39,9 @@ public class AppStatService {
                 .observeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
-                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                        Log.e(TAG, String.valueOf(((HttpException) error).code()));
+                    } else {
+                        Log.e(TAG, error.getMessage());
                     }
                 });
     }
@@ -50,18 +52,35 @@ public class AppStatService {
                 .observeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
-                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                        Log.e(TAG, String.valueOf(((HttpException) error).code()));
+                    } else {
+                        Log.e(TAG, error.getMessage());
                     }
                 });
     }
 
     public void sendShortTermStats() {
-        StatAPI.sendShortTermStats(localStorageHelper.getAccessToken(), appUsageDataHelper.getShortTermStats(getStartTime()))
+        final String accessToken = localStorageHelper.getAccessToken();
+
+        StatAPI.getLastUpdateStatTimestamp(accessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
+                .subscribe(lastUpdatedTime -> {
+                    StatAPI.sendShortTermStats(accessToken, timeHelper.getCurrentTime(), appUsageDataHelper.getShortTermStats(lastUpdatedTime))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
+                            .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
+                                if (error instanceof HttpException) {
+                                    Log.e(TAG, String.valueOf(((HttpException) error).code()));
+                                } else {
+                                    Log.e(TAG, error.getMessage());
+                                }
+                            });
+                }, error -> {
                     if (error instanceof HttpException) {
-                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                        Log.e(TAG, String.valueOf(((HttpException) error).code()));
+                    } else {
+                        Log.e(TAG, error.getMessage());
                     }
                 });
     }
@@ -72,18 +91,11 @@ public class AppStatService {
                 .observeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
                     if (error instanceof HttpException) {
-                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
+                        Log.e(TAG, String.valueOf(((HttpException) error).code()));
+                    } else {
+                        Log.e(TAG, error.getMessage());
                     }
                 });
-    }
-
-    long getStartTime() {
-        long lastUsageTime = localStorageHelper.getLastUsageTime();
-        if (lastUsageTime == 0L) {
-            return timeHelper.getCurrentTime() - 604800000L; // 604800000 = 7 * 24 * 60 * 60 * 1000 ( milliseconds / 1 week );
-        } else {
-            return lastUsageTime;
-        }
     }
 
     public List<String> getUsedPackageNameList() {
