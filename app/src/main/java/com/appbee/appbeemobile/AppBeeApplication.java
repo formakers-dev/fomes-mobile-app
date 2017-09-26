@@ -1,7 +1,6 @@
 package com.appbee.appbeemobile;
 
 import android.app.Application;
-import android.graphics.Typeface;
 
 import com.appbee.appbeemobile.dagger.ApplicationComponent;
 import com.appbee.appbeemobile.dagger.ApplicationModule;

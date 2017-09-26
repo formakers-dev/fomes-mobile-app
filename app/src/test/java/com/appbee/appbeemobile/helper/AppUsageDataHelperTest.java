@@ -279,21 +279,6 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void getEventStats호출시_가공되지_않은_앱사용정보를_리턴한다() throws Exception {
-        List<EventStat> mockEventStatList = new ArrayList<>();
-        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
-        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1100L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
-
-        List<EventStat> eventStatList = subject.getEventStats(0L);
-
-        assertThat(eventStatList.size()).isEqualTo(2);
-        assertThat(eventStatList.get(0).getPackageName()).isEqualTo("packageA");
-        assertThat(eventStatList.get(0).getEventType()).isEqualTo(MOVE_TO_FOREGROUND);
-        assertThat(eventStatList.get(0).getEventTime()).isEqualTo(1000L);
-    }
-
-    @Test
     public void getAppUsageAverageMinutesPerDay호출시_분단위의_앱사용평균시간을_리턴한다() throws Exception {
         // (앱 사용시간의 총합 / 디바이스 총 사용일) 의 반올림.....
         // 앱 사용시간의 총합(분) = 22000000000 / 1000 / 60 = 366666 (소수점이하 내림)

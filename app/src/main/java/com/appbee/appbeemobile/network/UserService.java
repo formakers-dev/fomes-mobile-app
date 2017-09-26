@@ -8,11 +8,10 @@ import com.appbee.appbeemobile.model.User;
 
 import javax.inject.Inject;
 
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class UserService {
+public class UserService extends AbstractAppBeeService {
 
     private static final String TAG = UserService.class.getSimpleName();
     private final UserAPI userAPI;
@@ -35,21 +34,18 @@ public class UserService {
                 userAPI.sendAppInfoList(localStorageHelper.getAccessToken(), nativeAppInfoList)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
-                        .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
-                            if (error instanceof HttpException) {
-                                Log.d(TAG, String.valueOf(((HttpException) error).code()));
-                            }
-                        }));
+                        .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError));
     }
 
     public void sendUser(User user) {
         userAPI.sendUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), error -> {
-                    if (error instanceof HttpException) {
-                        Log.d(TAG, String.valueOf(((HttpException) error).code()));
-                    }
-                });
+                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
+    }
+
+    @Override
+    protected String getTag() {
+        return TAG;
     }
 }

@@ -3,15 +3,10 @@ package com.appbee.appbeemobile.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
-import com.appbee.appbeemobile.model.User;
-import com.appbee.appbeemobile.network.ServiceCallback;
 import com.appbee.appbeemobile.network.UserService;
-
-import java.util.UUID;
 
 import javax.inject.Inject;
 

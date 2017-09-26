@@ -61,8 +61,11 @@ public class AppUsageDataHelper {
     }
 
     public List<ShortTermStat> getShortTermStats(long startTime) {
-        long endTime = timeHelper.getCurrentTime();
+        return getShortTermStats(startTime, timeHelper.getCurrentTime());
+    }
 
+    @NonNull
+    public List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
         List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
 
@@ -84,11 +87,6 @@ public class AppUsageDataHelper {
         }
 
         return shortTermStats;
-    }
-
-    public List<EventStat> getEventStats(long startTime) {
-        long endTime = timeHelper.getCurrentTime();
-        return appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
     }
 
     private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
