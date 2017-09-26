@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity {
         super.onPostCreate(savedInstanceState);
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+            appStatService.sendShortTermStats();
             callAppServiceGetInfoAPI();
         } else {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
@@ -77,6 +78,7 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION) {
             if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+                appStatService.sendShortTermStats();
                 callAppServiceGetInfoAPI();
             } else {
                 finish();

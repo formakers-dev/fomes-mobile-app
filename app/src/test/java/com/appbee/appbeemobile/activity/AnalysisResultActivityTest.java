@@ -22,6 +22,7 @@ import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
@@ -234,7 +235,6 @@ public class AnalysisResultActivityTest extends ActivityTest {
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
         verify(mockAppStatService).sendLongTermStatsFor3Months();
         verify(mockAppStatService).sendLongTermStatsFor2Years();
-        verify(mockAppStatService).sendShortTermStats();
         verify(mockUserService).sendAppList();
     }
 
@@ -528,7 +528,9 @@ public class AnalysisResultActivityTest extends ActivityTest {
         shortTermStats.add(new ShortTermStat("com.package.test", 0L, 100L, 300L));
         when(appUsageDataHelper.getShortTermStats(anyLong())).thenReturn(shortTermStats);
 
-        when(appUsageDataHelper.getAppUsageAverageMinutesPerDay(eq(shortTermStats))).thenReturn(480);
+        OverviewInfo overviewInfo = new OverviewInfo();
+        overviewInfo.setAverageUsedMinutesPerDay(480);
+        when(mockAppStatService.getOverviewAnalysisResult()).thenReturn(Observable.just(overviewInfo));
 
         mockNativeAppInfo(true);
 

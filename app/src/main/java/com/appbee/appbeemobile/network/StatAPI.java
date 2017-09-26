@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
+import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 
 import java.util.List;
@@ -27,4 +28,7 @@ public interface StatAPI {
 
     @POST("/stats/analysis/result")
     Observable<Boolean> sendAnalysisResult(@Header("x-access-token") String accessToken, @Body AnalysisResult analysisResult);
+
+    @GET("/stats/analysis/overview")
+    Observable<OverviewInfo> getOverviewAnalysisResult(@Header("x-access-token") String accessToken);
 }
