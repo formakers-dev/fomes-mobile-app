@@ -53,7 +53,6 @@ import static com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;

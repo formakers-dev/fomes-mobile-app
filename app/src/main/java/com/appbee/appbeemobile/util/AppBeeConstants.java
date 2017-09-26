@@ -12,9 +12,9 @@ import java.util.Map;
 
 public interface AppBeeConstants {
     interface API_RESPONSE_CODE {
-        String UNAUTHORIZED = "401";
-        String FORBIDDEN = "403";
-        String NOTFOUND = "404";
+//        String UNAUTHORIZED = "401";
+//        String FORBIDDEN = "403";
+        int NOTFOUND = 404;
     }
 
     enum CharacterType {

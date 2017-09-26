@@ -33,6 +33,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -108,7 +109,7 @@ public class AppStatServiceTest {
     public void sendShortTermStats호출시_가공된_단기통계데이터를_조회하여_서버로_전송한다() throws Exception {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
-        when(mockAppUsageDataHelper.getShortTermStats(anyLong())).thenReturn(mockShortTermStats);
+        when(mockAppUsageDataHelper.getShortTermStats(anyLong(), anyLong())).thenReturn(mockShortTermStats);
         when(mockStatAPI.getLastUpdateStatTimestamp(anyString())).thenReturn(Observable.just(1234567890L));
         when(mockStatAPI.sendShortTermStats(anyString(), anyLong(), any(List.class))).thenReturn(mock(Observable.class));
 
@@ -120,6 +121,17 @@ public class AppStatServiceTest {
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
         assertEquals(actualShortTermStat.getEndTimeStamp(), 3000L);
         assertEquals(actualShortTermStat.getTotalUsedTime(), 2000L);
+    }
+
+    @Test
+    public void sendShortTermStats호출시_단기통계데이터가_없는경우_서버로_전송하지_않는다() throws Exception {
+        List<ShortTermStat> mockShortTermStats = new ArrayList<>();
+        when(mockAppUsageDataHelper.getShortTermStats(anyLong(), anyLong())).thenReturn(mockShortTermStats);
+        when(mockStatAPI.getLastUpdateStatTimestamp(anyString())).thenReturn(Observable.just(1234567890L));
+
+        subject.sendShortTermStats();
+
+        verify(mockStatAPI, never()).sendShortTermStats(anyString(), anyLong(), any(List.class));
     }
 
     @Test

@@ -1,9 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 

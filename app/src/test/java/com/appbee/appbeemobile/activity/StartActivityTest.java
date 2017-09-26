@@ -1,7 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +9,6 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
-import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,9 +20,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowApplication;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

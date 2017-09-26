@@ -4,7 +4,6 @@ import com.appbee.appbeemobile.model.AppInfo;
 
 import java.util.List;
 
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;

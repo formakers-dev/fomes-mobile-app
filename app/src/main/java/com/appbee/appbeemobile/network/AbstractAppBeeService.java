@@ -1,0 +1,18 @@
+package com.appbee.appbeemobile.network;
+
+import android.util.Log;
+
+import retrofit2.adapter.rxjava.HttpException;
+
+abstract class AbstractAppBeeService {
+
+    protected abstract String getTag();
+
+    void logError(Throwable error) {
+        if (error instanceof HttpException) {
+            Log.e(getTag(), String.valueOf(((HttpException) error).code()));
+        } else {
+            Log.e(getTag(), error.getMessage());
+        }
+    }
+}
