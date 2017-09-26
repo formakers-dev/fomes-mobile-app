@@ -21,7 +21,7 @@ import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.NativeAppInfo;
-import com.appbee.appbeemobile.model.ShortTermStat;
+import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -92,7 +92,7 @@ public class AnalysisResultActivity extends BaseActivity {
         List<AppInfo> appInfoList = appUsageDataHelper.getSortedUsedAppsByTotalUsedTime();
         List<NativeAppInfo> nativeAppInfos = appUsageDataHelper.getAppList().toBlocking().single();
 
-        if(nativeAppInfos != null && !nativeAppInfos.isEmpty()) {
+        if (nativeAppInfos != null && !nativeAppInfos.isEmpty()) {
             totalAppCount = nativeAppInfos.size();
         }
 
@@ -111,7 +111,6 @@ public class AnalysisResultActivity extends BaseActivity {
         userService.sendAppList();
         appStatService.sendLongTermStatsFor3Months();
         appStatService.sendLongTermStatsFor2Years();
-        appStatService.sendShortTermStats();
         appStatService.sendAnalysisResult(analysisResult);
 
         startService(new Intent(this, PowerConnectedService.class));
@@ -124,8 +123,8 @@ public class AnalysisResultActivity extends BaseActivity {
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, totalAppCount);
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, getAppCountType(totalAppCount));
 
-        List<ShortTermStat> shortTermStats = appUsageDataHelper.getShortTermStats(0L);
-        int appUsageAverageMinutesPerDay = appUsageDataHelper.getAppUsageAverageMinutesPerDay(shortTermStats);
+        OverviewInfo overviewInfo = appStatService.getOverviewAnalysisResult().toBlocking().single();
+        int appUsageAverageMinutesPerDay = overviewInfo.getAverageUsedMinutesPerDay();
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageMinutesPerDay);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageMinutesPerDay));
 

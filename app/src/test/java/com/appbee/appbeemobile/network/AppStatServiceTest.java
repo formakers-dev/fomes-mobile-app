@@ -7,6 +7,7 @@ import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
+import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.helper.TimeHelper;
 
@@ -179,7 +180,16 @@ public class AppStatServiceTest {
         assertThat(list.get(0).getEndTimeStamp()).isEqualTo(200L);
         assertThat(list.get(0).getLastTimeUsed()).isEqualTo(300L);
         assertThat(list.get(0).getTotalTimeInForeground()).isEqualTo(400L);
+    }
 
+    @Test
+    public void getOverview호출시_서버에_저장된_정보를_기반으로_하루평균사용시간과_가장많이사용한앱정보를_가져온다() throws Exception {
+        OverviewInfo mockOverviewInfo = mock(OverviewInfo.class);
+        when(mockStatAPI.getOverviewAnalysisResult(anyString())).thenReturn(Observable.just(mockOverviewInfo));
+
+        subject.getOverviewAnalysisResult().observeOn(Schedulers.io()).subscribe(overviewInfo -> {
+            assertThat(overviewInfo).isEqualTo(mockOverviewInfo);
+        });
     }
 
     private NativeLongTermStat createMockNativeLongTermStat(String packageName, long beginTimeStamp, long endTimeStamp, long lastTimeUsed, long totalUsedTime) {

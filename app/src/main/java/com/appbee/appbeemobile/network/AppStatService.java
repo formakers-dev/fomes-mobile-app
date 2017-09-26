@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
+import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.google.common.collect.Lists;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 public class AppStatService extends AbstractAppBeeService {
@@ -81,6 +83,10 @@ public class AppStatService extends AbstractAppBeeService {
         }
 
         return Lists.newArrayList(usedPackageNameSet);
+    }
+
+    public Observable<OverviewInfo> getOverviewAnalysisResult() {
+        return StatAPI.getOverviewAnalysisResult(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io());
     }
 
     @Override
