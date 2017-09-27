@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.network.AppStatService;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,13 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
+
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -29,12 +36,23 @@ public class PowerConnectedReceiverTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         subject = new PowerConnectedReceiver(mockAppStatService);
+
+        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
+        when(mockAppStatService.sendShortTermStats(anyLong())).thenReturn(Observable.just(true));
+
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 
     @Test
     public void onReceive에서_PowerConnect되었을때_단기통계데이터를_서버로_전송한다() throws Exception {
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
 
-        verify(mockAppStatService).sendShortTermStats();
+        verify(mockAppStatService).sendShortTermStats(anyLong());
     }
 }

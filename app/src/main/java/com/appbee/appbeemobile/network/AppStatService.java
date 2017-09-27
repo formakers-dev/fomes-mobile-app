@@ -48,24 +48,20 @@ public class AppStatService extends AbstractAppBeeService {
                 .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
     }
 
-    public void sendShortTermStats() {
+    public Observable<Boolean> sendShortTermStats(long startTime) {
         final String accessToken = localStorageHelper.getAccessToken();
+        final long endTime = Math.max(timeHelper.getCurrentTime() - 300000L, startTime);
+        final List<ShortTermStat> shortTermStatList = appUsageDataHelper.getShortTermStats(startTime, endTime);
 
-        StatAPI.getLastUpdateStatTimestamp(accessToken)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(lastUpdatedTime -> {
-                    final long startTime = lastUpdatedTime;
-                    final long endTime = Math.max(timeHelper.getCurrentTime() - 300000L, startTime);
-                    final List<ShortTermStat> shortTermStatList = appUsageDataHelper.getShortTermStats(startTime, endTime);
+        if (!shortTermStatList.isEmpty()) {
+            return StatAPI.sendShortTermStats(accessToken, endTime, shortTermStatList);
+        } else {
+            return Observable.just(true);
+        }
+    }
 
-                    if (!shortTermStatList.isEmpty()) {
-                        StatAPI.sendShortTermStats(accessToken, endTime, shortTermStatList)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(Schedulers.io())
-                                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
-                    }
-                }, this::logError);
+    public Observable<Long> getLastUpdateStatTimestamp() {
+        return StatAPI.getLastUpdateStatTimestamp(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io());
     }
 
     public void sendAnalysisResult(AnalysisResult analysisResult) {

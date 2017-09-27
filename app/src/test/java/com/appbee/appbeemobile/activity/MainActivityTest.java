@@ -34,10 +34,14 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -74,6 +78,11 @@ public class MainActivityTest extends ActivityTest {
         activityController = Robolectric.buildActivity(MainActivity.class);
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
+        when(mockAppStatService.sendShortTermStats(anyLong())).thenReturn(Observable.just(true));
+
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
     }
 
     @After
@@ -81,6 +90,7 @@ public class MainActivityTest extends ActivityTest {
         if (binder != null) {
             binder.unbind();
         }
+        RxJavaHooks.reset();
     }
 
     @Test
@@ -113,7 +123,7 @@ public class MainActivityTest extends ActivityTest {
 
         MainActivity subject = createSubjectWithPostCreateLifecycle();
 
-        verify(mockAppStatService).sendShortTermStats();
+        verify(mockAppStatService).sendShortTermStats(anyLong());
         verify(mockAppService).getInfos(eq(usedPackageNameList), eq(subject.appInfosServiceCallback));
     }
 
@@ -207,7 +217,7 @@ public class MainActivityTest extends ActivityTest {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
 
-        verify(mockAppStatService).sendShortTermStats();
+        verify(mockAppStatService).sendShortTermStats(anyLong());
         verify(mockAppService).getInfos(any(), eq(subject.appInfosServiceCallback));
     }
 

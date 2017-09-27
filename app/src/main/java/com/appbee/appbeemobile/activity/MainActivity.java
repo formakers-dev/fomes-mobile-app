@@ -22,6 +22,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
 
@@ -61,12 +62,21 @@ public class MainActivity extends BaseActivity {
         super.onPostCreate(savedInstanceState);
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            appStatService.sendShortTermStats();
-            callAppServiceGetInfoAPI();
+            sendShortTermStats();
         } else {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
         }
+    }
+
+    private void sendShortTermStats() {
+        appStatService.getLastUpdateStatTimestamp()
+                .observeOn(Schedulers.io())
+                .subscribe(lastUpdateStatTimestamp -> {
+                    appStatService.sendShortTermStats(lastUpdateStatTimestamp)
+                            .observeOn(Schedulers.io())
+                            .subscribe(result -> callAppServiceGetInfoAPI(), appStatService::logError);
+                }, appStatService::logError);
     }
 
     private void callAppServiceGetInfoAPI() {
@@ -78,8 +88,7 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION) {
             if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-                appStatService.sendShortTermStats();
-                callAppServiceGetInfoAPI();
+                sendShortTermStats();
             } else {
                 finish();
             }

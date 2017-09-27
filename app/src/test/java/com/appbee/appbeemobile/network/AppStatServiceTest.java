@@ -114,7 +114,7 @@ public class AppStatServiceTest {
         when(mockStatAPI.getLastUpdateStatTimestamp(anyString())).thenReturn(Observable.just(1234567890L));
         when(mockStatAPI.sendShortTermStats(anyString(), anyLong(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendShortTermStats();
+        subject.sendShortTermStats(0L);
 
         verify(mockStatAPI).sendShortTermStats(anyString(), anyLong(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
@@ -130,7 +130,7 @@ public class AppStatServiceTest {
         when(mockAppUsageDataHelper.getShortTermStats(anyLong(), anyLong())).thenReturn(mockShortTermStats);
         when(mockStatAPI.getLastUpdateStatTimestamp(anyString())).thenReturn(Observable.just(1234567890L));
 
-        subject.sendShortTermStats();
+        subject.sendShortTermStats(0L);
 
         verify(mockStatAPI, never()).sendShortTermStats(anyString(), anyLong(), any(List.class));
     }
