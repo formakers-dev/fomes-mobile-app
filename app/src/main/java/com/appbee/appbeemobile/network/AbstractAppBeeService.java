@@ -8,7 +8,7 @@ abstract class AbstractAppBeeService {
 
     protected abstract String getTag();
 
-    void logError(Throwable error) {
+    public void logError(Throwable error) {
         if (error instanceof HttpException) {
             Log.e(getTag(), String.valueOf(((HttpException) error).code()));
         } else {
