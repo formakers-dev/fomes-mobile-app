@@ -7,7 +7,6 @@ import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
-import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.helper.TimeHelper;
 
@@ -183,12 +182,12 @@ public class AppStatServiceTest {
     }
 
     @Test
-    public void getOverview호출시_서버에_저장된_정보를_기반으로_하루평균사용시간과_가장많이사용한앱정보를_가져온다() throws Exception {
-        OverviewInfo mockOverviewInfo = mock(OverviewInfo.class);
-        when(mockStatAPI.getOverviewAnalysisResult(anyString())).thenReturn(Observable.just(mockOverviewInfo));
+    public void getAverageUsedMinutesPerDay호출시_서버에_저장된_정보를_기반으로_하루평균사용시간을_가져온다() throws Exception {
+        int expectedAverageUsedMinutesPerDay = 1234;
+        when(mockStatAPI.getAverageUsedMinutesPerDay(anyString())).thenReturn(Observable.just(expectedAverageUsedMinutesPerDay));
 
-        subject.getOverviewAnalysisResult().observeOn(Schedulers.io()).subscribe(overviewInfo -> {
-            assertThat(overviewInfo).isEqualTo(mockOverviewInfo);
+        subject.getAverageUsedMinutesPerDay().observeOn(Schedulers.io()).subscribe(returnedValue -> {
+            assertThat(returnedValue).isEqualTo(expectedAverageUsedMinutesPerDay);
         });
     }
 

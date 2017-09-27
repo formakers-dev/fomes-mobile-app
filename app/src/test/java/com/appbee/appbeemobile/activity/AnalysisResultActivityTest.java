@@ -22,7 +22,6 @@ import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.NativeAppInfo;
-import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
@@ -56,7 +55,6 @@ import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -527,10 +525,7 @@ public class AnalysisResultActivityTest extends ActivityTest {
         List<ShortTermStat> shortTermStats = new ArrayList<>();
         shortTermStats.add(new ShortTermStat("com.package.test", 0L, 100L, 300L));
         when(appUsageDataHelper.getShortTermStats(anyLong())).thenReturn(shortTermStats);
-
-        OverviewInfo overviewInfo = new OverviewInfo();
-        overviewInfo.setAverageUsedMinutesPerDay(480);
-        when(mockAppStatService.getOverviewAnalysisResult()).thenReturn(Observable.just(overviewInfo));
+        when(mockAppStatService.getAverageUsedMinutesPerDay()).thenReturn(Observable.just(480));
 
         mockNativeAppInfo(true);
 
