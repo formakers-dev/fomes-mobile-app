@@ -21,7 +21,6 @@ import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.NativeAppInfo;
-import com.appbee.appbeemobile.model.OverviewInfo;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -123,8 +122,7 @@ public class AnalysisResultActivity extends BaseActivity {
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT, totalAppCount);
         bundle.putInt(OverviewFragment.EXTRA_APP_LIST_COUNT_TYPE, getAppCountType(totalAppCount));
 
-        OverviewInfo overviewInfo = appStatService.getOverviewAnalysisResult().toBlocking().single();
-        int appUsageAverageMinutesPerDay = overviewInfo.getAverageUsedMinutesPerDay();
+        int appUsageAverageMinutesPerDay = appStatService.getAverageUsedMinutesPerDay().toBlocking().single();
         bundle.putInt(OverviewFragment.EXTRA_APP_AVG_TIME, appUsageAverageMinutesPerDay);
         bundle.putInt(OverviewFragment.EXTRA_APP_USAGE_TIME_TYPE, getAppUsageTimeType(appUsageAverageMinutesPerDay));
 
