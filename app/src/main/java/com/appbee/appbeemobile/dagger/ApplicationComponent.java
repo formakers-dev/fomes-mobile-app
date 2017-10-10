@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.activity.MainActivity;
 import com.appbee.appbeemobile.activity.StartActivity;
 import com.appbee.appbeemobile.fragment.ShareFragment;
 import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
+import com.appbee.appbeemobile.service.InstanceIDService;
 import com.appbee.appbeemobile.service.PowerConnectedService;
 
 import javax.inject.Singleton;
@@ -22,4 +23,5 @@ public interface ApplicationComponent {
     void inject(StartActivity startActivity);
     void inject(PowerConnectedService powerConnectedService);
     void inject(LoginActivity loginActivity);
+    void inject(InstanceIDService instanceIDService);
 }
