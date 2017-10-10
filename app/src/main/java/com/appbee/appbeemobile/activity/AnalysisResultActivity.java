@@ -21,6 +21,7 @@ import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
@@ -107,6 +108,7 @@ public class AnalysisResultActivity extends BaseActivity {
                 .add(R.id.share_fragment, getShareFragment(), SHARE_FRAGMENT_TAG)
                 .commit();
 
+        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getRegistrationToken()));
         userService.sendAppList();
         appStatService.sendLongTermStatsFor3Months();
         appStatService.sendLongTermStatsFor2Years();

@@ -53,6 +53,7 @@ import static com.appbee.appbeemobile.util.AppBeeConstants.APP_LIST_COUNT_TYPE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.APP_USAGE_TIME_TYPE;
 import static com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
@@ -231,9 +232,11 @@ public class AnalysisResultActivityTest extends ActivityTest {
     @Test
     public void onCreate_앱시작시_서버로_앱정보를_전송한다() throws Exception {
         subject = Robolectric.setupActivity(AnalysisResultActivity.class);
+        verify(mockUserService).sendUser(any());
+        verify(mockUserService).sendAppList();
         verify(mockAppStatService).sendLongTermStatsFor3Months();
         verify(mockAppStatService).sendLongTermStatsFor2Years();
-        verify(mockUserService).sendAppList();
+        verify(mockAppStatService).sendAnalysisResult(any());
     }
 
     @Test

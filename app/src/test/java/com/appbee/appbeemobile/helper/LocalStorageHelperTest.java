@@ -29,6 +29,7 @@ public class LocalStorageHelperTest {
                 .putString("ACCESS_TOKEN", "TEST_STRING_VALUE")
                 .putLong("LAST_USAGE_TIME", 1234567890L)
                 .putString("USER_ID", "user_id")
+                .putString("REGISTRATION_TOKEN", "TEST_REGISTRATION_TOKEN")
                 .apply();
     }
 
@@ -52,5 +53,16 @@ public class LocalStorageHelperTest {
     @Test
     public void getUserId호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
         assertThat(subject.getUserId()).isEqualTo("user_id");
+    }
+
+    @Test
+    public void setRegistrationToken호출시_SharedPreference에_fcm_등록토큰값을_저장한다() throws Exception {
+        subject.setRegistrationToken("test_registration_token");
+        assertThat(sf.getString("REGISTRATION_TOKEN", "")).isEqualTo("test_registration_token");
+    }
+
+    @Test
+    public void getRegistrationToken호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
+        assertThat(subject.getRegistrationToken()).isEqualTo("TEST_REGISTRATION_TOKEN");
     }
 }

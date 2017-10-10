@@ -13,6 +13,7 @@ public class LocalStorageHelper {
     private static final String NAME = "APP_BEE_SHARED_PREFERENCES";
     private static final String KEY_ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String KEY_USER_ID = "USER_ID";
+    private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
 
     private SharedPreferences sf;
 
@@ -55,5 +56,13 @@ public class LocalStorageHelper {
 
     public String getUserId(){
         return getString(KEY_USER_ID, "");
+    }
+
+    public void setRegistrationToken(String registrationToken) {
+        putString(KEY_REGISTRATION_TOKEN, registrationToken);
+    }
+
+    public String getRegistrationToken() {
+        return getString(KEY_REGISTRATION_TOKEN, "");
     }
 }

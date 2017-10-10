@@ -2,18 +2,11 @@ package com.appbee.appbeemobile.model;
 
 public class User {
     private String userId;
-    private String firstUsedDate;
-    private String lastUsedDate;
+    private String registrationToken;
 
-    public User(String userId, String lastUsedDate) {
+    public User(String userId, String registrationToken) {
         this.userId = userId;
-        this.lastUsedDate = lastUsedDate;
-    }
-
-    public User(String userId, String firstUsedDate, String lastUsedDate) {
-        this.userId = userId;
-        this.firstUsedDate = firstUsedDate;
-        this.lastUsedDate = lastUsedDate;
+        this.registrationToken = registrationToken;
     }
 
     public String getUserId() {
@@ -24,19 +17,11 @@ public class User {
         this.userId = userId;
     }
 
-    public String getFirstUsedDate() {
-        return firstUsedDate;
+    public String getRegistrationToken() {
+        return registrationToken;
     }
 
-    public void setFirstUsedDate(String firstUsedDate) {
-        this.firstUsedDate = firstUsedDate;
-    }
-
-    public String getLastUsedDate() {
-        return lastUsedDate;
-    }
-
-    public void setLastUsedDate(String lastUsedDate) {
-        this.lastUsedDate = lastUsedDate;
+    public void setRegistrationToken(String registrationToken) {
+        this.registrationToken = registrationToken;
     }
 }
