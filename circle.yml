@@ -41,6 +41,7 @@ test:
     - find . -type f -regex ".*/build/test-results/release/*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
     - cp -r $CIRCLE_TEST_REPORTS $CIRCLE_ARTIFACTS/
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+    - cp app/build/outputs/app-development.apk app/build/outputs/app-hackerton.apk
 
 deployment:
   prod:
