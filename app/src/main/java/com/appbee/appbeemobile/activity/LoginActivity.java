@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -92,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, R.string.fail_to_connect_google_play, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, R.string.fail_to_connect_google_play, Toast.LENGTH_SHORT).show();
     }
 
     void signInUser(final String googleIdToken, final String googleUserId) {
@@ -107,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements
                     finish();
                 }, e -> {
                     Log.d(TAG, "signInUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
-                    Toast.makeText(this, R.string.fail_to_sign_in, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, R.string.fail_to_sign_in, Toast.LENGTH_SHORT).show();
                 });
     }
 }

@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
@@ -132,19 +131,6 @@ public class AppStatServiceTest {
         subject.sendShortTermStats(0L);
 
         verify(mockStatAPI, never()).sendShortTermStats(anyString(), anyLong(), any(List.class));
-    }
-
-    @Test
-    public void sendAnalysisResult호출시_분석된_결과를_서버로_전송한다() throws Exception {
-        AnalysisResult mockResult = mock(AnalysisResult.class);
-
-        when(mockStatAPI.sendAnalysisResult(anyString(), any(AnalysisResult.class))).thenReturn(mock(Observable.class));
-        subject.sendAnalysisResult(mockResult);
-
-        ArgumentCaptor<AnalysisResult> analysisResultArgumentCaptor = ArgumentCaptor.forClass(AnalysisResult.class);
-        verify(mockStatAPI).sendAnalysisResult(anyString(), analysisResultArgumentCaptor.capture());
-        AnalysisResult result = analysisResultArgumentCaptor.getValue();
-        assertThat(result).isEqualTo(mockResult);
     }
 
     @Test

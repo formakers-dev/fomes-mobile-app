@@ -4,18 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
-import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -50,9 +46,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
-        Glide.with(this).asGif().load(R.drawable.automated_loading_bowl).into((ImageView) findViewById(R.id.loadingImage));
+        //Glide.with(this).asGif().load(R.drawable.automated_loading_bowl).into((ImageView) findViewById(R.id.loadingImage));
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
     }
@@ -96,7 +92,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void moveToAnalysisResultActivity() {
-        startActivity(new Intent(MainActivity.this, AnalysisResultActivity.class));
+        //startActivity(new Intent(MainActivity.this, AnalysisResultActivity.class));
         finish();
     }
 
@@ -118,7 +114,7 @@ public class MainActivity extends BaseActivity {
                 isServiceAPIFailAlready = true;
                 callAppServiceGetInfoAPI();
             } else {
-                MainActivity.this.runOnUiThread(() -> Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
+                //MainActivity.this.runOnUiThread(() -> Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
             }
         }
     };

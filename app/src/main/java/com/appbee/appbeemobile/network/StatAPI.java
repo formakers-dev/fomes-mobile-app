@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.network;
 
-import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 
@@ -24,9 +23,6 @@ public interface StatAPI {
 
     @GET("/stats/short/lastUpdateStatTimestamp")
     Observable<Long> getLastUpdateStatTimestamp(@Header("x-access-token") String accessToken);
-
-    @POST("/stats/analysis/result")
-    Observable<Boolean> sendAnalysisResult(@Header("x-access-token") String accessToken, @Body AnalysisResult analysisResult);
 
     @GET("/stats/analysis/averageUsedMinutesPerDay")
     Observable<Integer> getAverageUsedMinutesPerDay(@Header("x-access-token") String accessToken);
