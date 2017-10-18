@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity {
+public class LoadingActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
 
@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void moveToAnalysisResultActivity() {
-        //startActivity(new Intent(MainActivity.this, AnalysisResultActivity.class));
+        //startActivity(new Intent(LoadingActivity.this, AnalysisResultActivity.class));
         finish();
     }
 
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
         public void onSuccess(List<AppInfo> appInfos) {
             callAppServicePostUncrawledApps(appInfos);
 
-            MainActivity.this.runOnUiThread(() -> {
+            LoadingActivity.this.runOnUiThread(() -> {
                 appRepositoryHelper.insertUsedApps(appInfos);
                 appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getShortTermStatsTimeSummary());
                 moveToAnalysisResultActivity();
@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity {
                 isServiceAPIFailAlready = true;
                 callAppServiceGetInfoAPI();
             } else {
-                //MainActivity.this.runOnUiThread(() -> Toast.makeText(MainActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
+                //LoadingActivity.this.runOnUiThread(() -> Toast.makeText(LoadingActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
             }
         }
     };

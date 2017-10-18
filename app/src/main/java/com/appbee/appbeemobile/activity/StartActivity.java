@@ -48,7 +48,7 @@ public class StartActivity extends BaseActivity {
 //    }
 
     void startMainActivity() {
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        Intent intent = new Intent(StartActivity.this, LoadingActivity.class);
         startActivity(intent);
         finish();
     }

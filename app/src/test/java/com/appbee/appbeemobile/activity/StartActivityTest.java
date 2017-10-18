@@ -109,6 +109,6 @@ public class StartActivityTest extends ActivityTest {
 
     private void assertMoveToMainActivity() {
         Intent intent = Shadows.shadowOf(subject).peekNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).isEqualTo(MainActivity.class.getCanonicalName());
+        assertThat(intent.getComponent().getClassName()).isEqualTo(LoadingActivity.class.getCanonicalName());
     }
 }
