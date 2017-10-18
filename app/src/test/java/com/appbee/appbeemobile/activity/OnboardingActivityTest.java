@@ -10,6 +10,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -27,5 +28,19 @@ public class OnboardingActivityTest {
     public void OnboardingActivity가_onCreate시_3페이지를갖는onboardingViewPager를표시한다() throws Exception {
         assertThat(subject.onboardingViewPager.isShown()).isTrue();
         assertThat(subject.onboardingViewPager.getAdapter().getCount()).isEqualTo(3);
+    }
+
+    @Test
+    public void OnboardingActivity가_onCreate시_구글ID로시작하기버튼이보인다() throws Exception {
+        assertThat(subject.loginButton.isShown()).isTrue();
+        assertThat(subject.loginButton.getText()).isEqualTo("구글ID로 시작하기");
+    }
+
+    @Test
+    public void 구글ID로시작하기버튼을_클릭하면_LoginActivity로이동하고_OnboardingActivity를종료한다() throws Exception {
+        subject.loginButton.performClick();
+
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
+        assertThat(subject.isFinishing()).isTrue();
     }
 }
