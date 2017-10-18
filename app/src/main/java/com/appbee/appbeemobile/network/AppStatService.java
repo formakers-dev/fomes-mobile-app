@@ -5,7 +5,6 @@ import android.util.Log;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
-import com.appbee.appbeemobile.model.AnalysisResult;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.google.common.collect.Lists;
 
@@ -61,13 +60,6 @@ public class AppStatService extends AbstractAppBeeService {
 
     public Observable<Long> getLastUpdateStatTimestamp() {
         return StatAPI.getLastUpdateStatTimestamp(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io());
-    }
-
-    public void sendAnalysisResult(AnalysisResult analysisResult) {
-        StatAPI.sendAnalysisResult(localStorageHelper.getAccessToken(), analysisResult)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
     }
 
     public List<String> getUsedPackageNameList() {

@@ -4,16 +4,11 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.support.annotation.NonNull;
 
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.LongTermStat;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.NativeLongTermStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
-import com.appbee.appbeemobile.util.AppBeeConstants.CharacterType;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,31 +27,21 @@ import rx.schedulers.Schedulers;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
-import static com.appbee.appbeemobile.util.AppBeeConstants.Category;
 
 @Singleton
 public class AppUsageDataHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-    private static final String GAME_CATEGORY_GROUP_KEY = "GAME_GROUP";
-    private static final String MUSIC_VIDEO_CATEGORY_GROUP_KEY = "MV_GROUP";
-    private static final String PERSONALIZATION_CATEGORY_GROUP_KEY = "PERSONALIZATION_GROUP";
-    private static final String PHOTOGRAPHY_CATEGORY_GROUP_KEY = "PHOTOGRAPHY_GROUP";
-    private static final String FINANCE_CATEGORY_GROUP_KEY = "FINANCE_CATEGORY_GROUP";
     static final boolean ASC = true;
     static final boolean DESC = false;
     private static final long MILLISECONDS_OF_THREE_MONTHS = 7884000000L; // 365 * 24 * 60 * 60 * 1000 / 4
     private static final long MILLISECONDS_OF_TWO_YEARS = 63072000000L;
 
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
-    private final LocalStorageHelper localStorageHelper;
-    private final AppRepositoryHelper appRepositoryHelper;
     private final TimeHelper timeHelper;
 
     @Inject
-    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, LocalStorageHelper localStorageHelper, AppRepositoryHelper appRepositoryHelper, TimeHelper timeHelper) {
+    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, TimeHelper timeHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
-        this.localStorageHelper = localStorageHelper;
-        this.appRepositoryHelper = appRepositoryHelper;
         this.timeHelper = timeHelper;
     }
 
@@ -160,20 +145,6 @@ public class AppUsageDataHelper {
                 .toList();
     }
 
-    public int getAppUsageAverageMinutesPerDay(List<ShortTermStat> shortTermStatList) {
-        double totalUsedMinutes = 0d;
-        long firstUsedDateTime = Long.MAX_VALUE;
-
-        for (ShortTermStat item : shortTermStatList) {
-            totalUsedMinutes += item.getTotalUsedTime();
-            firstUsedDateTime = Math.min(firstUsedDateTime, item.getStartTimeStamp());
-        }
-
-        totalUsedMinutes = totalUsedMinutes / 1000 / 60;
-        double mobileTotalUsedDay = timeHelper.getMobileTotalUsedDay(firstUsedDateTime);
-        return (int) (totalUsedMinutes / mobileTotalUsedDay);
-    }
-
     @NonNull
     public Map<String, Long> getShortTermStatsTimeSummary() {
         Map<String, Long> map = new HashMap<>();
@@ -187,177 +158,5 @@ public class AppUsageDataHelper {
         }
 
         return map;
-    }
-
-    public ArrayList<String> getMostInstalledCategoryGroups(int count) {
-        Map<String, Integer> appCountMap = combineInstalledAppCountByCategoryGroup(appRepositoryHelper.getAppCountMapByCategory());
-        Map<String, Integer> sortedAppCountMap = sortByValue(appCountMap, DESC);
-        return getSubList(sortedAppCountMap, count);
-    }
-
-    public ArrayList<String> getLeastInstalledCategoryGroups(int count) {
-        Map<String, Integer> appCountMap = combineInstalledAppCountByCategoryGroup(appRepositoryHelper.getAppCountMapByCategory());
-        Map<String, Integer> sortedAppCountMap = sortByValue(appCountMap, ASC);
-        return getSubList(sortedAppCountMap, count);
-    }
-
-    private ArrayList<String> getSubList(Map<String, Integer> sortedAppCountMap, int count) {
-        int mapSize = sortedAppCountMap.size();
-        return new ArrayList<>(Lists.newArrayList(sortedAppCountMap.keySet()).subList(0, Math.min(count, mapSize)));
-    }
-
-    public long getAppCountByCategoryId(String categoryId) {
-        return appRepositoryHelper.getAppCountByCategoryId(categoryId);
-    }
-
-    public List<AppInfo> getSortedUsedAppsByTotalUsedTime() {
-        return appRepositoryHelper.getSortedUsedAppsByTotalUsedTime();
-    }
-
-    public Map<String, Long> getSortedCategoriesByUsedTime() {
-        return sortByValue(combineUsedTimeByCategoryGroup(appRepositoryHelper.getUsedTimeMapByCategory()), DESC);
-    }
-
-    Map<String, Long> combineUsedTimeByCategoryGroup(Map<String, Long> usedTimeMapByCategory) {
-        Map<String, Long> map = new HashMap<>();
-
-        for (String key : usedTimeMapByCategory.keySet()) {
-            String groupKey = getCategoryGroupIdForCategoryId(key);
-            map.put(groupKey, Optional.fromNullable(map.get(groupKey)).or(0L) + usedTimeMapByCategory.get(key));
-        }
-
-        return map;
-    }
-
-    Map<String, Integer> combineInstalledAppCountByCategoryGroup(Map<String, Integer> usedTimeMapByCategory) {
-        Map<String, Integer> map = new HashMap<>();
-
-        for (String key : usedTimeMapByCategory.keySet()) {
-            String groupKey = getCategoryGroupIdForCategoryId(key);
-            map.put(groupKey, Optional.fromNullable(map.get(groupKey)).or(0) + usedTimeMapByCategory.get(key));
-        }
-
-        return map;
-    }
-
-    private String getCategoryGroupIdForCategoryId(String categoryId) {
-        switch (categoryId) {
-            case "/store/apps/category/GAME":
-            case "/store/apps/category/GAME_EDUCATIONAL":
-            case "/store/apps/category/GAME_WORD":
-            case "/store/apps/category/GAME_ROLE_PLAYING":
-            case "/store/apps/category/GAME_BOARD":
-            case "/store/apps/category/GAME_SPORTS":
-            case "/store/apps/category/GAME_SIMULATION":
-            case "/store/apps/category/GAME_ARCADE":
-            case "/store/apps/category/GAME_ACTION":
-            case "/store/apps/category/GAME_ADVENTURE":
-            case "/store/apps/category/GAME_MUSIC":
-            case "/store/apps/category/GAME_RACING":
-            case "/store/apps/category/GAME_STRATEGY":
-            case "/store/apps/category/GAME_CARD":
-            case "/store/apps/category/GAME_CASINO":
-            case "/store/apps/category/GAME_CASUAL":
-            case "/store/apps/category/GAME_TRIVIA":
-            case "/store/apps/category/GAME_PUZZLE":
-                return Category.GAME.categoryId;
-            case "/store/apps/category/FAMILY":
-            case "/store/apps/category/FAMILY_EDUCATION":
-            case "/store/apps/category/FAMILY_BRAINGAMES":
-            case "/store/apps/category/FAMILY_ACTION":
-            case "/store/apps/category/FAMILY_PRETEND":
-            case "/store/apps/category/FAMILY_MUSICVIDEO":
-            case "/store/apps/category/FAMILY_CREATE":
-                return Category.FAMILY.categoryId;
-            default:
-                return categoryId;
-        }
-    }
-
-    public CharacterType getCharacterType() {
-        final Map<String, Integer> aggregatedMap = combineAppCountByBest5CategoryGroup(appRepositoryHelper.getAppCountMapByCategory());
-
-        if (aggregatedMap == null || aggregatedMap.isEmpty()) {
-            return CharacterType.ETC;
-        }
-        Map<String, Integer> sortedMap = sortByValue(aggregatedMap, DESC);
-
-        final String topCategoryId = sortedMap.keySet().iterator().next();
-
-        switch (topCategoryId) {
-            case GAME_CATEGORY_GROUP_KEY:
-                return CharacterType.GAMER;
-            case MUSIC_VIDEO_CATEGORY_GROUP_KEY:
-                return CharacterType.QUEEN;
-            case PHOTOGRAPHY_CATEGORY_GROUP_KEY:
-                return CharacterType.POISON;
-            case PERSONALIZATION_CATEGORY_GROUP_KEY:
-                return CharacterType.SOUL;
-            case FINANCE_CATEGORY_GROUP_KEY:
-                return CharacterType.FINANCE;
-        }
-        return CharacterType.ETC;
-    }
-
-    Map<String, Integer> combineAppCountByBest5CategoryGroup(Map<String, Integer> categoryMap) {
-        Map<String, Integer> map = new HashMap<>();
-
-        for (String key : categoryMap.keySet()) {
-            switch (key) {
-                case "/store/apps/category/GAME":
-                case "/store/apps/category/GAME_EDUCATIONAL":
-                case "/store/apps/category/GAME_WORD":
-                case "/store/apps/category/GAME_ROLE_PLAYING":
-                case "/store/apps/category/GAME_BOARD":
-                case "/store/apps/category/GAME_SPORTS":
-                case "/store/apps/category/GAME_SIMULATION":
-                case "/store/apps/category/GAME_ARCADE":
-                case "/store/apps/category/GAME_ACTION":
-                case "/store/apps/category/GAME_ADVENTURE":
-                case "/store/apps/category/GAME_MUSIC":
-                case "/store/apps/category/GAME_RACING":
-                case "/store/apps/category/GAME_STRATEGY":
-                case "/store/apps/category/GAME_CARD":
-                case "/store/apps/category/GAME_CASINO":
-                case "/store/apps/category/GAME_CASUAL":
-                case "/store/apps/category/GAME_TRIVIA":
-                case "/store/apps/category/GAME_PUZZLE":
-                    map.put(GAME_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(GAME_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
-                    break;
-                case "/store/apps/category/VIDEO_PLAYERS":
-                case "/store/apps/category/MUSIC_AND_AUDIO":
-                    map.put(MUSIC_VIDEO_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(MUSIC_VIDEO_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
-                    break;
-                case "/store/apps/category/PHOTOGRAPHY":
-                    map.put(PHOTOGRAPHY_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(PHOTOGRAPHY_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
-                    break;
-                case "/store/apps/category/PERSONALIZATION":
-                    map.put(PERSONALIZATION_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(PERSONALIZATION_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
-                    break;
-                case "/store/apps/category/FINANCE":
-                    map.put(FINANCE_CATEGORY_GROUP_KEY, Optional.fromNullable(map.get(FINANCE_CATEGORY_GROUP_KEY)).or(0) + categoryMap.get(key));
-                    break;
-            }
-        }
-
-        return map;
-    }
-
-    <K extends String, V extends Comparable<V>> Map<K, V> sortByValue(Map<K, V> map, boolean isAsc) {
-        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
-        Collections.sort(list, (o1, o2) -> {
-            if(o1.getValue().compareTo(o2.getValue()) == 0){
-                return o1.getKey().compareTo(o2.getKey()) * (isAsc? 1:-1);
-            } else{
-                return o1.getValue().compareTo(o2.getValue()) * (isAsc ? 1 : -1);
-            }
-        });
-
-        LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<K, V> item : list) {
-            sortedMap.put(item.getKey(), item.getValue());
-        }
-
-        return sortedMap;
     }
 }

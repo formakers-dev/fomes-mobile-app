@@ -7,7 +7,6 @@ import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.helper.ShareSnsHelper;
 import com.appbee.appbeemobile.network.AppAPI;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
@@ -97,12 +96,6 @@ public class TestApplicationModule {
     @Provides
     AppRepositoryHelper appRepositoryHelper() {
         return mock(AppRepositoryHelper.class);
-    }
-
-    @Singleton
-    @Provides
-    ShareSnsHelper shareSnsHelper() {
-        return mock(ShareSnsHelper.class);
     }
 
     @Singleton

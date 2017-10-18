@@ -3,11 +3,4 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="horizontal_line">#51585858</color>
-    <color name="bold_title">#4a4a4a</color>
-    <color name="bold_description">#808080</color>
-    <color name="description">#9b9b9b</color>
-    <color name="kakao_share_background">#f8ab1c</color>
-    <color name="pinkish_grey_title">#d4c0af</color>
-    <color name="summary_description_text_color">#636363</color>
 </resources>
