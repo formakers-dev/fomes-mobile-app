@@ -52,9 +52,9 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MainActivityTest extends ActivityTest {
+public class LoadingActivityTest extends ActivityTest {
 
-    private ActivityController<MainActivity> activityController;
+    private ActivityController<LoadingActivity> activityController;
 
     private Unbinder binder;
 
@@ -76,7 +76,7 @@ public class MainActivityTest extends ActivityTest {
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        activityController = Robolectric.buildActivity(MainActivity.class);
+        activityController = Robolectric.buildActivity(LoadingActivity.class);
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
@@ -98,22 +98,22 @@ public class MainActivityTest extends ActivityTest {
     public void onCreate호출시_Stat접근권한이_없는_경우_권한요청_Activity를_호출한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
         ShadowActivity.IntentForResult nextStartedActivityForResult = shadowOf(subject).getNextStartedActivityForResult();
         assertThat(nextStartedActivityForResult.intent.getAction()).isEqualTo(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         assertThat(nextStartedActivityForResult.requestCode).isEqualTo(1001);
     }
 
-    private MainActivity createSubjectWithPostCreateLifecycle() {
-        MainActivity subject = activityController.create().postCreate(null).get();
+    private LoadingActivity createSubjectWithPostCreateLifecycle() {
+        LoadingActivity subject = activityController.create().postCreate(null).get();
         binder = ButterKnife.bind(this, subject);
         return subject;
     }
 
     @Test
     public void onCreate호출시_Stat접근권한이_있는_경우_권한요청_Activity를_호출하지_않는다() throws Exception {
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         assertThat(shadowOf(subject).getNextStartedActivity()).isNull();
     }
 
@@ -122,7 +122,7 @@ public class MainActivityTest extends ActivityTest {
         List<String> usedPackageNameList = Arrays.asList("com.package.name1", "com.package.name2");
         when(mockAppStatService.getUsedPackageNameList()).thenReturn(usedPackageNameList);
 
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
         verify(mockAppStatService).sendShortTermStats(anyLong());
         verify(mockAppService).getInfos(eq(usedPackageNameList), eq(subject.appInfosServiceCallback));
@@ -130,7 +130,7 @@ public class MainActivityTest extends ActivityTest {
 
     @Test
     public void appInfosServiceCallback의_onFail을_처음_호출했을때_AppInfo서비스를_재요청한다() throws Exception {
-        MainActivity subject = activityController.create().get();
+        LoadingActivity subject = activityController.create().get();
         subject.appInfosServiceCallback.onFail("ERROR_CODE");
 
         verify(mockAppService).getInfos(any(List.class), eq(subject.appInfosServiceCallback));
@@ -140,7 +140,7 @@ public class MainActivityTest extends ActivityTest {
     @Test
     @Ignore
     public void appInfosServiceCallback의_onFail을_2번_호출했을때_에러메시지가_표시된다() throws Exception {
-        MainActivity subject = activityController.create().get();
+        LoadingActivity subject = activityController.create().get();
         subject.appInfosServiceCallback.onFail("ERROR_CODE");
         subject.appInfosServiceCallback.onFail("ERROR_CODE");
 
@@ -150,7 +150,7 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void appInfosServiceCallback의_onSuccess를_호출했을때_DB에_결과를_저장한다() throws Exception {
         List<AppInfo> returnedAppInfos = mock(List.class);
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         Map<String, Long> mockStatsSummary = mock(Map.class);
         when(mockAppUsageDataHelper.getShortTermStatsTimeSummary()).thenReturn(mockStatsSummary);
 
@@ -172,7 +172,7 @@ public class MainActivityTest extends ActivityTest {
         List<AppInfo> returnedAppInfos = new ArrayList<>();
         returnedAppInfos.add(new AppInfo("com.package.name1", null, null, null, null, null));
         returnedAppInfos.add(new AppInfo("com.package.name2", null, null, null, null, null));
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         Map<String, Long> mockShortTermStatsSummary = mock(Map.class);
         when(mockAppUsageDataHelper.getShortTermStatsTimeSummary()).thenReturn(mockShortTermStatsSummary);
 
@@ -193,7 +193,7 @@ public class MainActivityTest extends ActivityTest {
 
         List<AppInfo> returnedAppInfos = new ArrayList<>();
         returnedAppInfos.add(new AppInfo("com.package.name1", null, null, null, null, null));
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         Map<String, Long> mockShortTermStatsSummary = mock(Map.class);
         when(mockAppUsageDataHelper.getShortTermStatsTimeSummary()).thenReturn(mockShortTermStatsSummary);
 
@@ -204,7 +204,7 @@ public class MainActivityTest extends ActivityTest {
 
     @Test
     public void appInfosServiceCallback의_onSuccess를_호출했을때_분석결과화면으로_이동한다() throws Exception {
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         subject.appInfosServiceCallback.onSuccess(mock(List.class));
 
         assertLaunchAnalysisResultActivity(subject);
@@ -213,7 +213,7 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_단기통계데이터를_전송하고_앱목록정보조회API를_요청한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         shadowOf(subject).getNextStartedActivity();
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
@@ -226,14 +226,14 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void 권한요청에대한_onActivityResult호출시_접근권한이_부여되지_않은_경우_앱을_종료한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        MainActivity subject = createSubjectWithPostCreateLifecycle();
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
         subject.onActivityResult(1001, 0, null);
 
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 
-    private void assertLaunchAnalysisResultActivity(MainActivity subject) {
+    private void assertLaunchAnalysisResultActivity(LoadingActivity subject) {
         ShadowActivity shadowActivity = shadowOf(subject);
         Intent nextStartedActivity = shadowActivity.getNextStartedActivity();
 //        assertThat(nextStartedActivity.getComponent().getClassName()).contains(AnalysisResultActivity.class.getSimpleName());
