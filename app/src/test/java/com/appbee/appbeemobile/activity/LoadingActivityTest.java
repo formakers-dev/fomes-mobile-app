@@ -1,15 +1,16 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
-import android.provider.Settings;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.After;
@@ -73,6 +74,9 @@ public class LoadingActivityTest extends ActivityTest {
     @Inject
     AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
+    @Inject
+    UserService mockUserService;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
@@ -94,17 +98,6 @@ public class LoadingActivityTest extends ActivityTest {
         RxJavaHooks.reset();
     }
 
-    @Test
-    public void onCreate호출시_Stat접근권한이_없는_경우_권한요청_Activity를_호출한다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-
-        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
-
-        ShadowActivity.IntentForResult nextStartedActivityForResult = shadowOf(subject).getNextStartedActivityForResult();
-        assertThat(nextStartedActivityForResult.intent.getAction()).isEqualTo(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-        assertThat(nextStartedActivityForResult.requestCode).isEqualTo(1001);
-    }
-
     private LoadingActivity createSubjectWithPostCreateLifecycle() {
         LoadingActivity subject = activityController.create().postCreate(null).get();
         binder = ButterKnife.bind(this, subject);
@@ -112,18 +105,13 @@ public class LoadingActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_권한요청_Activity를_호출하지_않는다() throws Exception {
-        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
-        assertThat(shadowOf(subject).getNextStartedActivity()).isNull();
-    }
-
-    @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_사용이력이있는_단기통계데이터를_전송하고_앱목록정보조회API를_호출한다() throws Exception {
+    public void onPostCreate호출시_유저의정보와_사용이력이있는단기통계데이터를_전송하고_앱목록정보조회API를_호출한다() throws Exception {
         List<String> usedPackageNameList = Arrays.asList("com.package.name1", "com.package.name2");
         when(mockAppStatService.getUsedPackageNameList()).thenReturn(usedPackageNameList);
 
         LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
+        verify(mockUserService).sendUser(any(User.class));
         verify(mockAppStatService).sendShortTermStats(anyLong());
         verify(mockAppService).getInfos(eq(usedPackageNameList), eq(subject.appInfosServiceCallback));
     }
@@ -207,36 +195,13 @@ public class LoadingActivityTest extends ActivityTest {
         LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         subject.appInfosServiceCallback.onSuccess(mock(List.class));
 
-        assertLaunchAnalysisResultActivity(subject);
+        assertLaunchMainActivity(subject);
     }
 
-    @Test
-    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_단기통계데이터를_전송하고_앱목록정보조회API를_요청한다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
-        shadowOf(subject).getNextStartedActivity();
-
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        subject.onActivityResult(1001, 0, null);
-
-        verify(mockAppStatService).sendShortTermStats(anyLong());
-        verify(mockAppService).getInfos(any(), eq(subject.appInfosServiceCallback));
-    }
-
-    @Test
-    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여되지_않은_경우_앱을_종료한다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
-
-        subject.onActivityResult(1001, 0, null);
-
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
-    }
-
-    private void assertLaunchAnalysisResultActivity(LoadingActivity subject) {
+    private void assertLaunchMainActivity(LoadingActivity subject) {
         ShadowActivity shadowActivity = shadowOf(subject);
         Intent nextStartedActivity = shadowActivity.getNextStartedActivity();
-//        assertThat(nextStartedActivity.getComponent().getClassName()).contains(AnalysisResultActivity.class.getSimpleName());
+        assertThat(nextStartedActivity.getComponent().getClassName()).contains(MainActivity.class.getSimpleName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }
