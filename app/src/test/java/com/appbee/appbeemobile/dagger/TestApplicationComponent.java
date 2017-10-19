@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.activity.LoginActivityTest;
 import com.appbee.appbeemobile.activity.LoadingActivityTest;
+import com.appbee.appbeemobile.activity.MainActivityTest;
 import com.appbee.appbeemobile.activity.PermissionGuideActivityTest;
 import com.appbee.appbeemobile.service.PowerConnectedServiceTest;
 
@@ -19,4 +20,6 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(PowerConnectedServiceTest powerConnectedServiceTest);
 
     void inject(LoginActivityTest loginActivityTest);
+
+    void inject(MainActivityTest mainActivityTest);
 }

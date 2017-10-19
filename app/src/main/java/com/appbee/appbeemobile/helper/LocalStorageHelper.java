@@ -14,6 +14,7 @@ public class LocalStorageHelper {
     private static final String KEY_ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
+    private static final String KEY_EMAIL = "EMAIL";
 
     private SharedPreferences sf;
 
@@ -64,5 +65,14 @@ public class LocalStorageHelper {
 
     public String getRegistrationToken() {
         return getString(KEY_REGISTRATION_TOKEN, "");
+    }
+
+
+    public String getEmail() {
+        return getString(KEY_EMAIL, "");
+    }
+
+    public void setEmail(String email) {
+        putString(KEY_EMAIL, email);
     }
 }

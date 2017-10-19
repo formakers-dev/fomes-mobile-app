@@ -30,6 +30,7 @@ public class LocalStorageHelperTest {
                 .putLong("LAST_USAGE_TIME", 1234567890L)
                 .putString("USER_ID", "user_id")
                 .putString("REGISTRATION_TOKEN", "TEST_REGISTRATION_TOKEN")
+                .putString("EMAIL", "appbee0627@gmail.com")
                 .apply();
     }
 
@@ -64,5 +65,16 @@ public class LocalStorageHelperTest {
     @Test
     public void getRegistrationToken호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
         assertThat(subject.getRegistrationToken()).isEqualTo("TEST_REGISTRATION_TOKEN");
+    }
+
+    @Test
+    public void getEmail호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
+        assertThat(subject.getEmail()).isEqualTo("appbee0627@gmail.com");
+    }
+
+    @Test
+    public void setEmail호출시_SharedPreference에_이메일주소를_저장한다() throws Exception {
+        subject.setEmail("appbee0627@gmail.com");
+        assertThat(sf.getString("EMAIL", "")).isEqualTo("appbee0627@gmail.com");
     }
 }
