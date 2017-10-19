@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements
                     localStorageHelper.setAccessToken(token);
                     localStorageHelper.setUserId(googleUserId);
 
-                    Intent intent = new Intent(getBaseContext(), StartActivity.class);
+                    Intent intent = new Intent(getBaseContext(), PermissionGuideActivity.class);
                     startActivity(intent);
                     finish();
                 }, e -> {

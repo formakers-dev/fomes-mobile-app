@@ -122,7 +122,7 @@ public class LoginActivityTest extends ActivityTest {
         verify(localStorageHelper).setUserId("testGoogleId");
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(StartActivity.class.getSimpleName());
+        assertThat(intent.getComponent().getClassName()).contains(PermissionGuideActivity.class.getSimpleName());
     }
 
     @Test
