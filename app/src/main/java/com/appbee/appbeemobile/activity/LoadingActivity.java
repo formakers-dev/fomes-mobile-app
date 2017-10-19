@@ -2,15 +2,18 @@ package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 
 import com.appbee.appbeemobile.AppBeeApplication;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import java.util.List;
@@ -21,10 +24,6 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 public class LoadingActivity extends BaseActivity {
-
-    private static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
-
-    private List<String> usedPackageNameList;
 
     @Inject
     AppStatService appStatService;
@@ -41,12 +40,20 @@ public class LoadingActivity extends BaseActivity {
     @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
+    @Inject
+    LocalStorageHelper localStorageHelper;
+
+    @Inject
+    UserService userService;
+
+    private List<String> usedPackageNameList;
+
     private boolean isServiceAPIFailAlready = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_loading);
 
         //Glide.with(this).asGif().load(R.drawable.automated_loading_bowl).into((ImageView) findViewById(R.id.loadingImage));
 
@@ -57,22 +64,13 @@ public class LoadingActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            sendShortTermStats();
-        } else {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
-        }
-    }
+        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getRegistrationToken()));
 
-    private void sendShortTermStats() {
         appStatService.getLastUpdateStatTimestamp()
                 .observeOn(Schedulers.io())
-                .subscribe(lastUpdateStatTimestamp -> {
-                    appStatService.sendShortTermStats(lastUpdateStatTimestamp)
-                            .observeOn(Schedulers.io())
-                            .subscribe(result -> callAppServiceGetInfoAPI(), appStatService::logError);
-                }, appStatService::logError);
+                .subscribe(lastUpdateStatTimestamp -> appStatService.sendShortTermStats(lastUpdateStatTimestamp)
+                        .observeOn(Schedulers.io())
+                        .subscribe(result -> callAppServiceGetInfoAPI(), appStatService::logError), appStatService::logError);
     }
 
     private void callAppServiceGetInfoAPI() {
@@ -80,19 +78,8 @@ public class LoadingActivity extends BaseActivity {
         appService.getInfos(usedPackageNameList, appInfosServiceCallback);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION) {
-            if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-                sendShortTermStats();
-            } else {
-                finish();
-            }
-        }
-    }
-
     private void moveToAnalysisResultActivity() {
-        //startActivity(new Intent(LoadingActivity.this, AnalysisResultActivity.class));
+        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
         finish();
     }
 

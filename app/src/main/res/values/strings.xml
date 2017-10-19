@@ -8,4 +8,6 @@
     <string name="app_data_permission">앱 사용정보 접근 권한</string>
     <string name="app_data_permission_text">앱 사용 정보 기반으로 관심사 분석을 통해 개인에게 맞춰진 컨텐츠를 제공합니다.</string>
     <string name="start_button_text">권한허용하고 시작하기</string>
+    <string name="loading_title">관심사 분석중…</string>
+    <string name="loading_description">앱 정보 기반으로 꼭 맞는 프로젝트를 추천해드려요.</string>
 </resources>
