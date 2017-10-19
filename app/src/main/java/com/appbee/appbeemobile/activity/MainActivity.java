@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -7,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -41,6 +43,13 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
+
+        if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
+            Intent intent = new Intent(this, OnboardingActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         setContentView(R.layout.activity_main);
     }
