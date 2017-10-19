@@ -10,4 +10,10 @@
     <string name="start_button_text">권한허용하고 시작하기</string>
     <string name="loading_title">관심사 분석중…</string>
     <string name="loading_description">앱 정보 기반으로 꼭 맞는 프로젝트를 추천해드려요.</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

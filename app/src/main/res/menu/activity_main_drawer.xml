@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_coin"
+            android:title="Doing Coin" />
+        <item
+            android:id="@+id/nav_doing_project"
+            android:title="신청한 프로젝트" />
+        <item
+            android:id="@+id/nav_done_project"
+            android:title="완료한 프로젝트" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_notice"
+            android:title="공지사항" />
+        <item
+            android:id="@+id/nav_contact_us"
+            android:title="문의 및 건의사항" />
+        <item
+            android:id="@+id/nav_share"
+            android:title="친구에게 추천하기" />
+        <item
+            android:id="@+id/nav_add_project"
+            android:title="내 프로젝트 올리기" />
+    </group>
+
+</menu>
