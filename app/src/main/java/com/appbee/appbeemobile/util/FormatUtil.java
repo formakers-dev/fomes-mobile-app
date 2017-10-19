@@ -9,4 +9,8 @@ public class FormatUtil {
             return categoryName;
         }
     }
+
+    public static String parseEmailName(String email) {
+        return email.split("@")[0];
+    }
 }

@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.activity.LoadingActivity;
 import com.appbee.appbeemobile.activity.LoginActivity;
+import com.appbee.appbeemobile.activity.MainActivity;
 import com.appbee.appbeemobile.activity.PermissionGuideActivity;
 import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
 import com.appbee.appbeemobile.service.InstanceIDService;
@@ -20,4 +21,5 @@ public interface ApplicationComponent {
     void inject(PowerConnectedService powerConnectedService);
     void inject(LoginActivity loginActivity);
     void inject(InstanceIDService instanceIDService);
+    void inject(MainActivity mainActivity);
 }
