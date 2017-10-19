@@ -15,7 +15,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         <service android:name=".service.PowerConnectedService" />
         <!-- 백그라운드 앱의 알림 수신 -->
         <service android:name=".service.MessagingService">
@@ -32,16 +31,19 @@
 
         <activity android:name=".activity.OnboardingActivity">
             <intent-filter>
-             <action android:name="android.intent.action.VIEW"/>
-             <action android:name="android.intent.action.MAIN"/>
-             <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.LoginActivity"/>
-        <activity android:name=".activity.PermissionGuideActivity"/>
-        <activity android:name=".activity.LoadingActivity"/>
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.PermissionGuideActivity" />
+        <activity android:name=".activity.LoadingActivity" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>
