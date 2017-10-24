@@ -8,6 +8,7 @@ android {
         applicationId "com.appbee.appbeemobile"
         minSdkVersion 22
         targetSdkVersion 25
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -96,6 +97,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.0.0'
     // google auth
     compile 'com.google.android.gms:play-services-auth:11.0.2'
+    // google plus
+    compile 'com.google.android.gms:play-services-plus:11.0.2'
     // firebase
     compile 'com.google.firebase:firebase-messaging:11.0.2'
 

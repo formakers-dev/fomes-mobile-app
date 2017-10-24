@@ -13,9 +13,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.model.people.Person;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -64,6 +64,7 @@ public class LoginActivityTest extends ActivityTest {
     private LoginActivity getSubjectAfterSetupGoogleSignIn() {
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
+        when(googleSignInAPIHelper.getCurrentPerson(any())).thenReturn(mock(Person.class));
         when(googleSignInAPIHelper.requestSignInIntent(any())).thenReturn(intent);
         when(localStorageHelper.getAccessToken()).thenReturn("");
         return Robolectric.buildActivity(LoginActivity.class).create().postCreate(null).get();
@@ -81,7 +82,7 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onActivityResult_GoogleSign성공시_user정보를_저장하는API를_호출한다() throws Exception {
+    public void onActivityResult_GoogleSign성공시_Person_Profile정보조회후_user정보를_저장하는API를_호출한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
         mockGoogleSignInResult(true);
@@ -89,11 +90,11 @@ public class LoginActivityTest extends ActivityTest {
 
         subject.onActivityResult(9001, 0, null);
 
+        verify(googleSignInAPIHelper).getCurrentPerson(any());
         verify(userService).signIn(eq("testToken"));
     }
 
     @Test
-    @Ignore
     public void onActivityResult_GoogleSign실패시_오류메시지를_표시한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
@@ -105,7 +106,6 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    @Ignore
     public void onConnectionFailed호출시_GoogleSign실패메시지를_표시한다() throws Exception {
         subject.onConnectionFailed(new ConnectionResult(0));
 
@@ -116,21 +116,30 @@ public class LoginActivityTest extends ActivityTest {
     public void user정보저장이_성공하면_userID를_sharedPreferences에_저장하고_StartActivity를_시작한다() throws Exception {
         doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
 
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail");
+        Person mockPerson = mock(Person.class);
+        when(mockPerson.getGender()).thenReturn(0);
+        Person.AgeRange mockAgeRange = mock(Person.AgeRange.class);
+        when(mockPerson.getAgeRange()).thenReturn(mockAgeRange);
+        when(mockAgeRange.getMin()).thenReturn(10);
+        when(mockAgeRange.getMax()).thenReturn(20);
+
+        subject.signInUser("testIdToken", "testGoogleId", "testEmail", mockPerson);
 
         verify(localStorageHelper).setAccessToken("testAccessToken");
         verify(localStorageHelper).setUserId("testGoogleId");
+        verify(localStorageHelper).setMinAge(10);
+        verify(localStorageHelper).setMaxAge(20);
+        verify(localStorageHelper).setGender(0);
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(PermissionGuideActivity.class.getSimpleName());
     }
 
     @Test
-    @Ignore
     public void user정보저장이_실패하면_오류메세지를_표시한다() throws Exception {
         doAnswer((invocation) -> Observable.error(new HttpException(404))).when(userService).signIn(anyString());
 
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail");
+        subject.signInUser("testIdToken", "testGoogleId", "testEmail", null);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to sign in");
     }
