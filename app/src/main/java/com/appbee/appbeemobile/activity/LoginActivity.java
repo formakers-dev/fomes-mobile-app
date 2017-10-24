@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -18,7 +19,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 import javax.inject.Inject;
 
@@ -29,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
+    private static GoogleApiClient mGoogleApiClient;
 
     @Inject
     UserService userService;
@@ -60,10 +66,12 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestScopes(new Scope(Scopes.PLUS_ME))
                 .build();
 
-        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this /* OnConnectionFailedListener */)
+                .addApi(Plus.API)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -77,10 +85,12 @@ public class LoginActivity extends AppCompatActivity implements
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
+
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 if (account != null) {
-                    signInUser(account.getIdToken(), account.getId(), account.getEmail());
+                    Person person = googleSignInAPIHelper.getCurrentPerson(mGoogleApiClient);
+                    signInUser(account.getIdToken(), account.getId(), account.getEmail(), person);
                 }
             } else {
                 onConnectionFailed(new ConnectionResult(0));
@@ -91,23 +101,27 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        //Toast.makeText(this, R.string.fail_to_connect_google_play, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.fail_to_connect_google_play, Toast.LENGTH_SHORT).show();
     }
 
-    void signInUser(final String googleIdToken, final String googleUserId, final String email) {
+    void signInUser(final String googleIdToken, final String googleUserId, final String email, final Person person) {
         userService.signIn(googleIdToken).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(token -> {
                     Log.d(TAG, "signInUser success");
                     localStorageHelper.setAccessToken(token);
                     localStorageHelper.setUserId(googleUserId);
                     localStorageHelper.setEmail(email);
+                    localStorageHelper.setMinAge(person.getAgeRange().getMin());
+                    localStorageHelper.setMaxAge(person.getAgeRange().getMax());
+                    localStorageHelper.setGender(person.getGender());
 
                     Intent intent = new Intent(getBaseContext(), PermissionGuideActivity.class);
                     startActivity(intent);
                     finish();
                 }, e -> {
                     Log.d(TAG, "signInUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
-                    //Toast.makeText(this, R.string.fail_to_sign_in, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.fail_to_sign_in, Toast.LENGTH_SHORT).show();
                 });
     }
 }
+

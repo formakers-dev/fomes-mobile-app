@@ -15,6 +15,9 @@ public class LocalStorageHelper {
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String KEY_EMAIL = "EMAIL";
+    private static final String KEY_MAX_AGE = "MAX_AGE";
+    private static final String KEY_MIN_AGE = "MIN_AGE";
+    private static final String KEY_GENDER = "GENDER";
 
     private SharedPreferences sf;
 
@@ -30,6 +33,9 @@ public class LocalStorageHelper {
     private long getLong(String key, long defaultValue) {
         return sf.getLong(key, defaultValue);
     }
+    private int getInt(String key, int defaultValue) {
+        return sf.getInt(key, defaultValue);
+    }
 
     private void putString(String key, String value) {
         SharedPreferences.Editor edit = sf.edit();
@@ -40,6 +46,12 @@ public class LocalStorageHelper {
     private void putLong(String key, long value) {
         SharedPreferences.Editor edit = sf.edit();
         edit.putLong(key, value);
+        edit.apply();
+    }
+
+    private void putInt(String key, int value) {
+        SharedPreferences.Editor edit = sf.edit();
+        edit.putInt(key, value);
         edit.apply();
     }
 
@@ -74,5 +86,29 @@ public class LocalStorageHelper {
 
     public void setEmail(String email) {
         putString(KEY_EMAIL, email);
+    }
+
+    public void setMaxAge(int maxAge) {
+        putInt(KEY_MAX_AGE, maxAge);
+    }
+
+    public void setMinAge(int minAge) {
+        putInt(KEY_MIN_AGE, minAge);
+    }
+
+    public void setGender(int gender) {
+        putInt(KEY_GENDER, gender);
+    }
+
+    public int getMinAge() {
+        return getInt(KEY_MIN_AGE, 0);
+    }
+
+    public int getMaxAge() {
+        return getInt(KEY_MAX_AGE, 0);
+    }
+
+    public int getGender() {
+        return getInt(KEY_GENDER, -1);
     }
 }
