@@ -109,9 +109,15 @@ public class LoginActivity extends AppCompatActivity implements
                     localStorageHelper.setAccessToken(token);
                     localStorageHelper.setUserId(googleUserId);
                     localStorageHelper.setEmail(email);
-                    localStorageHelper.setMinAge(person.getAgeRange().getMin());
-                    localStorageHelper.setMaxAge(person.getAgeRange().getMax());
-                    localStorageHelper.setGender(person.getGender());
+
+                    if (person != null) {
+                        int minAge = (person.getAgeRange() != null) ? person.getAgeRange().getMin() : 0;
+                        int maxAge = (person.getAgeRange() != null) ? person.getAgeRange().getMax() : 0;
+
+                        localStorageHelper.setMinAge(minAge);
+                        localStorageHelper.setMaxAge(maxAge);
+                        localStorageHelper.setGender(person.getGender());
+                    }
 
                     Intent intent = new Intent(getBaseContext(), PermissionGuideActivity.class);
                     startActivity(intent);
