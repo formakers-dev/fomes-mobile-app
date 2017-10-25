@@ -57,7 +57,7 @@ public class LoginActivityTest extends ActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         subject = Robolectric.buildActivity(LoginActivity.class).create().get();
     }
 
@@ -144,6 +144,23 @@ public class LoginActivityTest extends ActivityTest {
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(PermissionGuideActivity.class.getSimpleName());
+    }
+
+    @Test
+    public void user정보저장이_성공했으나_연령대정보가_없는경우_기본값을_sharedPreferences에_저장한다() throws Exception {
+        doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
+
+        Person mockPerson = mock(Person.class);
+        when(mockPerson.getGender()).thenReturn(0);
+        when(mockPerson.getAgeRange()).thenReturn(null);
+
+        subject.signInUser("testIdToken", "testGoogleId", "testEmail", mockPerson);
+
+        verify(localStorageHelper).setAccessToken("testAccessToken");
+        verify(localStorageHelper).setUserId("testGoogleId");
+        verify(localStorageHelper).setMinAge(0);
+        verify(localStorageHelper).setMaxAge(0);
+        verify(localStorageHelper).setGender(0);
     }
 
     @Test
