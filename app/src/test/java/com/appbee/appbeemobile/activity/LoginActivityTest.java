@@ -95,10 +95,21 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onActivityResult_GoogleSign실패시_오류메시지를_표시한다() throws Exception {
+    public void onActivityResult_GoogleSign결과실패시_오류메시지를_표시한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
         mockGoogleSignInResult(false);
+
+        subject.onActivityResult(9001, 0, null);
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to connect Google Play Service");
+    }
+
+    @Test
+    public void onActivityResult_GoogleSign성공했으나_계정정보가_없는경우_오류메시지를_표시한다() throws Exception {
+        subject = getSubjectAfterSetupGoogleSignIn();
+
+        mockGoogleSignInResultWithoutAccount(true);
 
         subject.onActivityResult(9001, 0, null);
 
@@ -145,14 +156,20 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     private void mockGoogleSignInResult(boolean isSuccess) {
-        GoogleSignInAccount account = mock(GoogleSignInAccount.class);
-        when(account.getIdToken()).thenReturn("testToken");
-        when(account.getId()).thenReturn("testId");
-        when(account.getDisplayName()).thenReturn("testName");
+        GoogleSignInAccount mockAccount = mock(GoogleSignInAccount.class);
+        when(mockAccount.getIdToken()).thenReturn("testToken");
+        when(mockAccount.getId()).thenReturn("testId");
+        when(mockAccount.getDisplayName()).thenReturn("testName");
 
-        GoogleSignInResult googleSignInResult = new GoogleSignInResult(account, Status.zzaBm);
-        GoogleSignInResult spy = spy(googleSignInResult);
-        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(spy);
-        doReturn(isSuccess).when(spy).isSuccess();
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
+        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockAccount);
+    }
+
+    private void mockGoogleSignInResultWithoutAccount(boolean isSuccess) {
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
+        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
     }
 }
