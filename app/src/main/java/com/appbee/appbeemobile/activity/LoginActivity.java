@@ -85,13 +85,11 @@ public class LoginActivity extends AppCompatActivity implements
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
+            GoogleSignInAccount account = result.getSignInAccount();
 
-            if (result.isSuccess()) {
-                GoogleSignInAccount account = result.getSignInAccount();
-                if (account != null) {
-                    Person person = googleSignInAPIHelper.getCurrentPerson(mGoogleApiClient);
-                    signInUser(account.getIdToken(), account.getId(), account.getEmail(), person);
-                }
+            if (result.isSuccess() && account != null) {
+                Person person = googleSignInAPIHelper.getCurrentPerson(mGoogleApiClient);
+                signInUser(account.getIdToken(), account.getId(), account.getEmail(), person);
             } else {
                 onConnectionFailed(new ConnectionResult(0));
             }
