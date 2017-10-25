@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppService;
@@ -77,6 +78,9 @@ public class LoadingActivityTest extends ActivityTest {
     @Inject
     UserService mockUserService;
 
+    @Inject
+    LocalStorageHelper mockLocalStorageHelper;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
@@ -105,13 +109,34 @@ public class LoadingActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate호출시_유저의정보와_사용이력이있는단기통계데이터를_전송하고_앱목록정보조회API를_호출한다() throws Exception {
+    public void onPostCreate호출시_유저정보를_전송한다() throws Exception {
+        when(mockLocalStorageHelper.getUserId()).thenReturn("userId");
+        when(mockLocalStorageHelper.getEmail()).thenReturn("email@email.com");
+        when(mockLocalStorageHelper.getGender()).thenReturn(0);
+        when(mockLocalStorageHelper.getMaxAge()).thenReturn(20);
+        when(mockLocalStorageHelper.getMinAge()).thenReturn(10);
+        when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("registration-token");
+
+        createSubjectWithPostCreateLifecycle();
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(mockUserService).sendUser(userCaptor.capture());
+
+        assertThat(userCaptor.getValue().getUserId()).isEqualTo("userId");
+        assertThat(userCaptor.getValue().getEmail()).isEqualTo("email@email.com");
+        assertThat(userCaptor.getValue().getGender()).isEqualTo(0);
+        assertThat(userCaptor.getValue().getMaxAge()).isEqualTo(20);
+        assertThat(userCaptor.getValue().getMinAge()).isEqualTo(10);
+        assertThat(userCaptor.getValue().getRegistrationToken()).isEqualTo("registration-token");
+    }
+
+    @Test
+    public void onPostCreate호출시_사용이력이있는단기통계데이터를_전송하고_앱목록정보조회API를_호출한다() throws Exception {
         List<String> usedPackageNameList = Arrays.asList("com.package.name1", "com.package.name2");
         when(mockAppStatService.getUsedPackageNameList()).thenReturn(usedPackageNameList);
 
         LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
-        verify(mockUserService).sendUser(any(User.class));
         verify(mockAppStatService).sendShortTermStats(anyLong());
         verify(mockAppService).getInfos(eq(usedPackageNameList), eq(subject.appInfosServiceCallback));
     }
@@ -126,7 +151,6 @@ public class LoadingActivityTest extends ActivityTest {
     }
 
     @Test
-    @Ignore
     public void appInfosServiceCallback의_onFail을_2번_호출했을때_에러메시지가_표시된다() throws Exception {
         LoadingActivity subject = activityController.create().get();
         subject.appInfosServiceCallback.onFail("ERROR_CODE");

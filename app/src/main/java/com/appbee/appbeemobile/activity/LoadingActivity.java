@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -64,7 +65,7 @@ public class LoadingActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getRegistrationToken()));
+        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getMaxAge(), localStorageHelper.getMinAge(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()));
 
         appStatService.getLastUpdateStatTimestamp()
                 .observeOn(Schedulers.io())
@@ -101,7 +102,7 @@ public class LoadingActivity extends BaseActivity {
                 isServiceAPIFailAlready = true;
                 callAppServiceGetInfoAPI();
             } else {
-                //LoadingActivity.this.runOnUiThread(() -> Toast.makeText(LoadingActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
+                LoadingActivity.this.runOnUiThread(() -> Toast.makeText(LoadingActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
             }
         }
     };

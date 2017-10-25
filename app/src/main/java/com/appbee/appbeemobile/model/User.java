@@ -6,11 +6,15 @@ public class User {
     private String email;
     private int maxAge;
     private int minAge;
-    private String gender;
+    private int gender;
     private String registrationToken;
 
-    public User(String userId, String registrationToken) {
+    public User(String userId, String email, int maxAge, int minAge, int gender, String registrationToken) {
         this.userId = userId;
+        this.email = email;
+        this.maxAge = maxAge;
+        this.minAge = minAge;
+        this.gender = gender;
         this.registrationToken = registrationToken;
     }
 
@@ -46,11 +50,11 @@ public class User {
         this.minAge = minAge;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
