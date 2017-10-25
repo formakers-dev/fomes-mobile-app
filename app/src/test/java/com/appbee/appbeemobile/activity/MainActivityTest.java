@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
+import android.view.View;
+
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
@@ -32,7 +34,16 @@ public class MainActivityTest {
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        when(mockLocalStorageHelper.getEmail()).thenReturn("anyEmail");
         activityController = Robolectric.buildActivity(MainActivity.class);
+    }
+
+    @Test
+    public void onPostCreate시_3페이지를_갖는_배너가_나타난다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+
+        assertThat(subject.titleBannerViewPager.getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.titleBannerViewPager.getAdapter().getCount()).isEqualTo(3);
     }
 
     @Test
