@@ -77,16 +77,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-            if (resultCode == Activity.RESULT_OK) {
-                GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
-                GoogleSignInAccount account = result.getSignInAccount();
+            GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
+            GoogleSignInAccount account = result.getSignInAccount();
 
-                if (result.isSuccess() && account != null) {
-                    googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
-                            .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person));
-                } else {
-                    finishActivityForFail(R.string.fail_to_connect_google_play);
-                }
+            if (resultCode == Activity.RESULT_OK && result.isSuccess() && account != null) {
+                googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
+                        .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
+                                e -> finishActivityForFail(R.string.fail_to_connect_google_play));
             } else {
                 finishActivityForFail(R.string.fail_to_connect_google_play);
             }
