@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.activity;
 
-import android.content.Intent;
 import android.provider.Settings;
 import android.widget.Button;
 
@@ -8,16 +7,15 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
 import javax.inject.Inject;
@@ -43,10 +41,15 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Inject
     AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
+    @Inject
+    LocalStorageHelper mockLocalStorageHelper;
+
     @Before
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
+        when(mockLocalStorageHelper.getEmail()).thenReturn("test@test.com");
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         subject = Robolectric.setupActivity(PermissionGuideActivity.class);
         binder = ButterKnife.bind(this, subject);
     }
@@ -57,45 +60,36 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_startButton이_보여진다() throws Exception {
-        assertThat(permissionButton.isShown()).isTrue();
+    public void onCreate호출시_LocalStorage에저장된이메일이없을경우_온보딩화면으로_이동하고_종료한다() throws Exception {
+        when(mockLocalStorageHelper.getEmail()).thenReturn("");
+        subject = Robolectric.setupActivity(PermissionGuideActivity.class);
+
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(OnboardingActivity.class.getName());
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 
     @Test
-    public void startButton클릭시_권한이없는경우_권할설정페이지가_보여진다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+    public void onCreate호출시_권한이있는경우_MainActivity로_이동한다() throws Exception {
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        subject = Robolectric.setupActivity(PermissionGuideActivity.class);
 
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
+    }
+
+    @Test
+    public void startButton클릭시_권한설정페이지가_보여진다() throws Exception {
         permissionButton.performClick();
 
         assertThat(shadowOf(subject).getNextStartedActivity().getAction()).isEqualTo(Settings.ACTION_USAGE_ACCESS_SETTINGS);
     }
 
     @Test
-    public void startButton클릭시_권한이있는경우_LoadingActivity를_호출한다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-
-        permissionButton.performClick();
-
-        assertMoveToLoadingActivity();
-    }
-
-    private void assertMoveToLoadingActivity() {
-        Intent intent = Shadows.shadowOf(subject).peekNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).isEqualTo(LoadingActivity.class.getCanonicalName());
-    }
-
-    @Test
-    public void 권한설정이_완료되고_돌아오면_LoadingActivity를_호출한다() throws Exception {
+    public void 권한설정이_완료되고_돌아오면_LoadingActivity로_이동한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
-        assertThat(shadowOf(subject).getNextStartedActivityForResult().intent.getComponent().getClassName()).isEqualTo(LoadingActivity.class.getCanonicalName());
-    }
 
-    @Ignore
-    @Test
-    public void 권한설정이_완료되지않고_돌아오면_앱을_종료한다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        subject.onActivityResult(1001, 0, null);
+        assertThat(shadowOf(subject).getNextStartedActivityForResult().intent.getComponent().getClassName()).isEqualTo(LoadingActivity.class.getName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }

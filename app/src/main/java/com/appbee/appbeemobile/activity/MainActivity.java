@@ -58,13 +58,6 @@ public class MainActivity extends BaseActivity
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
-        if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
-            Intent intent = new Intent(this, OnboardingActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-
         setContentView(R.layout.activity_main);
     }
 

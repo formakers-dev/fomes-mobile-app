@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -44,15 +43,5 @@ public class MainActivityTest {
 
         assertThat(subject.titleBannerViewPager.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.titleBannerViewPager.getAdapter().getCount()).isEqualTo(3);
-    }
-
-    @Test
-    public void LocalStorage에저장된이메일이없을경우_온보딩화면으로_이동하고_종료한다() throws Exception {
-        when(mockLocalStorageHelper.getEmail()).thenReturn("");
-
-        subject = activityController.create().get();
-
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(OnboardingActivity.class.getName());
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }
