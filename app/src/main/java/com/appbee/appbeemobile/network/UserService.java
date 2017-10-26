@@ -38,7 +38,7 @@ public class UserService extends AbstractAppBeeService {
     }
 
     public void sendUser(User user) {
-        userAPI.updateNotificationToken(user)
+        userAPI.updateUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);

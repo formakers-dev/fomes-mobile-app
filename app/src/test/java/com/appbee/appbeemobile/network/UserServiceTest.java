@@ -78,11 +78,11 @@ public class UserServiceTest {
 
     @Test
     public void sendUser호출시_유저정보를_서버로_전송한다() throws Exception {
-        when(mockUserAPI.updateNotificationToken(any(User.class))).thenReturn(mock(Observable.class));
+        when(mockUserAPI.updateUser(any(User.class))).thenReturn(mock(Observable.class));
 
         User mockUser = mock(User.class);
         subject.sendUser(mockUser);
 
-        verify(mockUserAPI).updateNotificationToken(mockUser);
+        verify(mockUserAPI).updateUser(mockUser);
     }
 }

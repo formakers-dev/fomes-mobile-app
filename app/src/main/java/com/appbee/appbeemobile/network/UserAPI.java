@@ -18,6 +18,6 @@ public interface UserAPI {
     @POST("/user/apps")
     Observable<Boolean> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<NativeAppInfo> nativeAppInfos);
 
-    @POST("/user/token")
-    Observable<Boolean> updateNotificationToken(@Body User user);
+    @POST("/user")
+    Observable<Boolean> updateUser(@Body User user);
 }
