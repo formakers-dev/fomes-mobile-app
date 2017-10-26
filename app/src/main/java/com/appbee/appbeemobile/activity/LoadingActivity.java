@@ -65,7 +65,7 @@ public class LoadingActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getMaxAge(), localStorageHelper.getMinAge(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()));
+        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()));
 
         appStatService.getLastUpdateStatTimestamp()
                 .observeOn(Schedulers.io())

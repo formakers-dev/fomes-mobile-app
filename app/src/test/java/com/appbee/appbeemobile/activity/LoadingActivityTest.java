@@ -112,9 +112,8 @@ public class LoadingActivityTest extends ActivityTest {
     public void onPostCreate호출시_유저정보를_전송한다() throws Exception {
         when(mockLocalStorageHelper.getUserId()).thenReturn("userId");
         when(mockLocalStorageHelper.getEmail()).thenReturn("email@email.com");
-        when(mockLocalStorageHelper.getGender()).thenReturn(0);
-        when(mockLocalStorageHelper.getMaxAge()).thenReturn(20);
-        when(mockLocalStorageHelper.getMinAge()).thenReturn(10);
+        when(mockLocalStorageHelper.getGender()).thenReturn("male");
+        when(mockLocalStorageHelper.getBirthday()).thenReturn(1999);
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("registration-token");
 
         createSubjectWithPostCreateLifecycle();
@@ -124,9 +123,8 @@ public class LoadingActivityTest extends ActivityTest {
 
         assertThat(userCaptor.getValue().getUserId()).isEqualTo("userId");
         assertThat(userCaptor.getValue().getEmail()).isEqualTo("email@email.com");
-        assertThat(userCaptor.getValue().getGender()).isEqualTo(0);
-        assertThat(userCaptor.getValue().getMaxAge()).isEqualTo(20);
-        assertThat(userCaptor.getValue().getMinAge()).isEqualTo(10);
+        assertThat(userCaptor.getValue().getGender()).isEqualTo("male");
+        assertThat(userCaptor.getValue().getBirthday()).isEqualTo(1999);
         assertThat(userCaptor.getValue().getRegistrationToken()).isEqualTo("registration-token");
     }
 

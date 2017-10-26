@@ -19,15 +19,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
+import com.google.api.services.people.v1.model.Person;
 
 import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -66,12 +64,10 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
-                .requestScopes(new Scope(Scopes.PLUS_ME))
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this /* OnConnectionFailedListener */)
-                .addApi(Plus.API)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -88,8 +84,8 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInAccount account = result.getSignInAccount();
 
             if (result.isSuccess() && account != null) {
-                Person person = googleSignInAPIHelper.getCurrentPerson(mGoogleApiClient);
-                signInUser(account.getIdToken(), account.getId(), account.getEmail(), person);
+                googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
+                        .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person));
             } else {
                 onConnectionFailed(new ConnectionResult(0));
             }
@@ -111,12 +107,8 @@ public class LoginActivity extends AppCompatActivity implements
                     localStorageHelper.setEmail(email);
 
                     if (person != null) {
-                        int minAge = (person.getAgeRange() != null) ? person.getAgeRange().getMin() : 0;
-                        int maxAge = (person.getAgeRange() != null) ? person.getAgeRange().getMax() : 0;
-
-                        localStorageHelper.setMinAge(minAge);
-                        localStorageHelper.setMaxAge(maxAge);
-                        localStorageHelper.setGender(person.getGender());
+                        localStorageHelper.setBirthday(person.getBirthdays() != null ? person.getBirthdays().get(0).getDate().getYear() : 0);
+                        localStorageHelper.setGender(person.getGenders() != null ? person.getGenders().get(0).getValue() : "");
                     }
 
                     Intent intent = new Intent(getBaseContext(), PermissionGuideActivity.class);

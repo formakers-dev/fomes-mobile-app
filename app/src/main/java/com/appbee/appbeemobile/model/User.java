@@ -4,16 +4,14 @@ public class User {
     private String userId;
     private String name;
     private String email;
-    private int maxAge;
-    private int minAge;
-    private int gender;
+    private int birthday;
+    private String gender;
     private String registrationToken;
 
-    public User(String userId, String email, int maxAge, int minAge, int gender, String registrationToken) {
+    public User(String userId, String email, int birthday, String gender, String registrationToken) {
         this.userId = userId;
         this.email = email;
-        this.maxAge = maxAge;
-        this.minAge = minAge;
+        this.birthday = birthday;
         this.gender = gender;
         this.registrationToken = registrationToken;
     }
@@ -34,27 +32,19 @@ public class User {
         this.email = email;
     }
 
-    public int getMaxAge() {
-        return maxAge;
+    public int getBirthday() {
+        return birthday;
     }
 
-    public void setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
+    public void setBirthday(int birthday) {
+        this.birthday = birthday;
     }
 
-    public int getMinAge() {
-        return minAge;
-    }
-
-    public void setMinAge(int minAge) {
-        this.minAge = minAge;
-    }
-
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
