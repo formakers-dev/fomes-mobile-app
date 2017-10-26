@@ -31,9 +31,8 @@ public class LocalStorageHelperTest {
                 .putString("USER_ID", "user_id")
                 .putString("REGISTRATION_TOKEN", "TEST_REGISTRATION_TOKEN")
                 .putString("EMAIL", "appbee0627@gmail.com")
-                .putInt("MIN_AGE", 15)
-                .putInt("MAX_AGE", 30)
-                .putInt("GENDER", 2)
+                .putInt("BIRTHDAY", 19991231)
+                .putString("GENDER", "female")
                 .apply();
     }
 
@@ -82,35 +81,24 @@ public class LocalStorageHelperTest {
     }
 
     @Test
-    public void setMinAge호출시_SharedPreference에_최소나이를_저장한다() throws Exception {
-        subject.setMinAge(10);
-        assertThat(sf.getInt("MIN_AGE", 0)).isEqualTo(10);
+    public void setBirthday호출시_SharedPreference에_생년월일을_저장한다() throws Exception {
+        subject.setBirthday(20000101);
+        assertThat(sf.getInt("BIRTHDAY", 0)).isEqualTo(20000101);
     }
 
     @Test
-    public void setMaxAge호출시_SharedPreference에_최대나이를_저장한다() throws Exception {
-        subject.setMaxAge(20);
-        assertThat(sf.getInt("MAX_AGE", 0)).isEqualTo(20);
+    public void getBirthday호출시_SharedPreference에_저장된_생년월일을_리턴한다() throws Exception {
+        assertThat(subject.getBirthday()).isEqualTo(19991231);
     }
 
     @Test
     public void setGender호출시_SharedPreference에_성별을_저장한다() throws Exception {
-        subject.setGender(1);
-        assertThat(sf.getInt("GENDER", 0)).isEqualTo(1);
-    }
-
-    @Test
-    public void getMinAge호출시_SharedPreference에_저장된_최소나이를_리턴한다() throws Exception {
-        assertThat(subject.getMinAge()).isEqualTo(15);
-    }
-
-    @Test
-    public void getMaxAge호출시_SharedPreference에_저장된_최대나이를_리턴한다() throws Exception {
-        assertThat(subject.getMaxAge()).isEqualTo(30);
+        subject.setGender("male");
+        assertThat(sf.getString("GENDER", "")).isEqualTo("male");
     }
 
     @Test
     public void getGender호출시_SharedPreference에_저장된_성별을_리턴한다() throws Exception {
-        assertThat(subject.getGender()).isEqualTo(2);
+        assertThat(subject.getGender()).isEqualTo("female");
     }
 }

@@ -23,10 +23,4 @@ public class ApplicationModule {
     Context context() {
         return application.getApplicationContext();
     }
-
-    @Singleton
-    @Provides
-    GoogleSignInAPIHelper googleSignInAPIHelper() {
-        return new GoogleSignInAPIHelper();
-    }
 }

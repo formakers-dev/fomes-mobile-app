@@ -12,9 +12,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.plus.model.people.Person;
+import com.google.api.services.people.v1.model.Birthday;
+import com.google.api.services.people.v1.model.Date;
+import com.google.api.services.people.v1.model.Gender;
+import com.google.api.services.people.v1.model.Person;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,18 +28,21 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowToast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -59,12 +65,20 @@ public class LoginActivityTest extends ActivityTest {
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         subject = Robolectric.buildActivity(LoginActivity.class).create().get();
+
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 
     private LoginActivity getSubjectAfterSetupGoogleSignIn() {
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
-        when(googleSignInAPIHelper.getCurrentPerson(any())).thenReturn(mock(Person.class));
+        when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.just(new Person()));
         when(googleSignInAPIHelper.requestSignInIntent(any())).thenReturn(intent);
         when(localStorageHelper.getAccessToken()).thenReturn("");
         return Robolectric.buildActivity(LoginActivity.class).create().postCreate(null).get();
@@ -84,13 +98,14 @@ public class LoginActivityTest extends ActivityTest {
     @Test
     public void onActivityResult_GoogleSign성공시_Person_Profile정보조회후_user정보를_저장하는API를_호출한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
+        GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
 
-        mockGoogleSignInResult(true);
+        mockGoogleSignInResult(mockGoogleSignInAccount, true);
         when(userService.signIn(any())).thenReturn(mock(Observable.class));
 
         subject.onActivityResult(9001, 0, null);
 
-        verify(googleSignInAPIHelper).getCurrentPerson(any());
+        verify(googleSignInAPIHelper).getPerson(eq(mockGoogleSignInAccount));
         verify(userService).signIn(eq("testToken"));
     }
 
@@ -98,7 +113,7 @@ public class LoginActivityTest extends ActivityTest {
     public void onActivityResult_GoogleSign결과실패시_오류메시지를_표시한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
-        mockGoogleSignInResult(false);
+        mockGoogleSignInResult(mock(GoogleSignInAccount.class), false);
 
         subject.onActivityResult(9001, 0, null);
 
@@ -124,43 +139,37 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void user정보저장이_성공하면_userID를_sharedPreferences에_저장하고_StartActivity를_시작한다() throws Exception {
+    public void user정보저장이_성공하면_user정보를_sharedPreferences에_저장하고_PermissionGuideActivity를_시작한다() throws Exception {
         doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
 
-        Person mockPerson = mock(Person.class);
-        when(mockPerson.getGender()).thenReturn(0);
-        Person.AgeRange mockAgeRange = mock(Person.AgeRange.class);
-        when(mockPerson.getAgeRange()).thenReturn(mockAgeRange);
-        when(mockAgeRange.getMin()).thenReturn(10);
-        when(mockAgeRange.getMax()).thenReturn(20);
+        Gender gender = new Gender().setValue("male");
+        Birthday birthday = new Birthday().setDate(new Date().setYear(1999).setMonth(11).setDay(31));
 
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail", mockPerson);
+        Person person = getPerson(gender, birthday);
+
+        subject.signInUser("testIdToken", "testGoogleId", "testEmail", person);
 
         verify(localStorageHelper).setAccessToken("testAccessToken");
         verify(localStorageHelper).setUserId("testGoogleId");
-        verify(localStorageHelper).setMinAge(10);
-        verify(localStorageHelper).setMaxAge(20);
-        verify(localStorageHelper).setGender(0);
+        verify(localStorageHelper).setBirthday(1999);
+        verify(localStorageHelper).setGender("male");
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(PermissionGuideActivity.class.getSimpleName());
     }
 
     @Test
-    public void user정보저장이_성공했으나_연령대정보가_없는경우_기본값을_sharedPreferences에_저장한다() throws Exception {
+    public void user정보저장이_성공했으나_생년월일_및_성별_정보가_없는경우_기본값을_sharedPreferences에_저장한다() throws Exception {
         doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
 
-        Person mockPerson = mock(Person.class);
-        when(mockPerson.getGender()).thenReturn(0);
-        when(mockPerson.getAgeRange()).thenReturn(null);
+        Person person = getPerson(null, null);
 
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail", mockPerson);
+        subject.signInUser("testIdToken", "testGoogleId", "testEmail", person);
 
         verify(localStorageHelper).setAccessToken("testAccessToken");
         verify(localStorageHelper).setUserId("testGoogleId");
-        verify(localStorageHelper).setMinAge(0);
-        verify(localStorageHelper).setMaxAge(0);
-        verify(localStorageHelper).setGender(0);
+        verify(localStorageHelper).setBirthday(0);
+        verify(localStorageHelper).setGender("");
     }
 
     @Test
@@ -172,8 +181,7 @@ public class LoginActivityTest extends ActivityTest {
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to sign in");
     }
 
-    private void mockGoogleSignInResult(boolean isSuccess) {
-        GoogleSignInAccount mockAccount = mock(GoogleSignInAccount.class);
+    private void mockGoogleSignInResult(GoogleSignInAccount mockAccount, boolean isSuccess) {
         when(mockAccount.getIdToken()).thenReturn("testToken");
         when(mockAccount.getId()).thenReturn("testId");
         when(mockAccount.getDisplayName()).thenReturn("testName");
@@ -188,5 +196,20 @@ public class LoginActivityTest extends ActivityTest {
         GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
         when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
         when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
+    }
+
+
+    private Person getPerson(Gender gender, Birthday birthday) {
+        List<Birthday> birthdayList = new ArrayList<>();
+        birthdayList.add(birthday);
+
+        List<Gender> genderList = new ArrayList<>();
+        genderList.add(gender);
+
+        Person person = new Person();
+        person.setBirthdays(birthday != null ? birthdayList : null);
+        person.setGenders(gender != null ? genderList : null);
+
+        return person;
     }
 }

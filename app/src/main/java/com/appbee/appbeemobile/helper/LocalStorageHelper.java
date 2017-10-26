@@ -10,14 +10,14 @@ import javax.inject.Singleton;
 @Singleton
 public class LocalStorageHelper {
 
+    private static final String EMPTY_STRING = "";
     private static final String NAME = "APP_BEE_SHARED_PREFERENCES";
     private static final String KEY_ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String KEY_EMAIL = "EMAIL";
-    private static final String KEY_MAX_AGE = "MAX_AGE";
-    private static final String KEY_MIN_AGE = "MIN_AGE";
     private static final String KEY_GENDER = "GENDER";
+    private static final String KEY_BIRTHDAY = "BIRTHDAY";
 
     private SharedPreferences sf;
 
@@ -60,7 +60,7 @@ public class LocalStorageHelper {
     }
 
     public String getAccessToken() {
-        return getString(KEY_ACCESS_TOKEN, "");
+        return getString(KEY_ACCESS_TOKEN, EMPTY_STRING);
     }
 
     public void setUserId(String userId) {
@@ -68,7 +68,7 @@ public class LocalStorageHelper {
     }
 
     public String getUserId(){
-        return getString(KEY_USER_ID, "");
+        return getString(KEY_USER_ID, EMPTY_STRING);
     }
 
     public void setRegistrationToken(String registrationToken) {
@@ -76,39 +76,31 @@ public class LocalStorageHelper {
     }
 
     public String getRegistrationToken() {
-        return getString(KEY_REGISTRATION_TOKEN, "");
+        return getString(KEY_REGISTRATION_TOKEN, EMPTY_STRING);
     }
 
 
     public String getEmail() {
-        return getString(KEY_EMAIL, "");
+        return getString(KEY_EMAIL, EMPTY_STRING);
     }
 
     public void setEmail(String email) {
         putString(KEY_EMAIL, email);
     }
 
-    public void setMaxAge(int maxAge) {
-        putInt(KEY_MAX_AGE, maxAge);
+    public void setGender(String gender) {
+        putString(KEY_GENDER, gender);
     }
 
-    public void setMinAge(int minAge) {
-        putInt(KEY_MIN_AGE, minAge);
+    public String getGender() {
+        return getString(KEY_GENDER, EMPTY_STRING);
     }
 
-    public void setGender(int gender) {
-        putInt(KEY_GENDER, gender);
+    public int getBirthday() {
+        return getInt(KEY_BIRTHDAY, 0);
     }
 
-    public int getMinAge() {
-        return getInt(KEY_MIN_AGE, 0);
-    }
-
-    public int getMaxAge() {
-        return getInt(KEY_MAX_AGE, 0);
-    }
-
-    public int getGender() {
-        return getInt(KEY_GENDER, -1);
+    public void setBirthday(int birthday) {
+        putInt(KEY_BIRTHDAY, birthday);
     }
 }
