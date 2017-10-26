@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
+
 import com.appbee.appbeemobile.BuildConfig;
 
 import org.junit.Before;
@@ -37,10 +39,16 @@ public class OnboardingActivityTest {
     }
 
     @Test
-    public void 구글ID로시작하기버튼을_클릭하면_LoginActivity로이동하고_OnboardingActivity를종료한다() throws Exception {
+    public void 구글ID로시작하기버튼을_클릭하면_LoginActivity로이동한다() throws Exception {
         subject.loginButton.performClick();
 
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
-        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @Test
+    public void OnActivityResult_resultCode가_OK이면_종료한다() throws Exception {
+        subject.onActivityResult(9002, Activity.RESULT_OK, null);
+
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }

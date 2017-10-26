@@ -1,10 +1,11 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,7 +19,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.api.services.people.v1.model.Person;
 
@@ -27,8 +27,7 @@ import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class LoginActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
@@ -67,7 +66,6 @@ public class LoginActivity extends AppCompatActivity implements
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -78,24 +76,21 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
-            GoogleSignInAccount account = result.getSignInAccount();
+            if (resultCode == Activity.RESULT_OK) {
+                GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
+                GoogleSignInAccount account = result.getSignInAccount();
 
-            if (result.isSuccess() && account != null) {
-                googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
-                        .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person));
+                if (result.isSuccess() && account != null) {
+                    googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
+                            .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person));
+                } else {
+                    finishActivityForFail(R.string.fail_to_connect_google_play);
+                }
             } else {
-                onConnectionFailed(new ConnectionResult(0));
+                finishActivityForFail(R.string.fail_to_connect_google_play);
             }
         }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, R.string.fail_to_connect_google_play, Toast.LENGTH_SHORT).show();
     }
 
     void signInUser(final String googleIdToken, final String googleUserId, final String email, final Person person) {
@@ -113,11 +108,18 @@ public class LoginActivity extends AppCompatActivity implements
 
                     Intent intent = new Intent(getBaseContext(), PermissionGuideActivity.class);
                     startActivity(intent);
+                    setResult(Activity.RESULT_OK);
                     finish();
                 }, e -> {
                     Log.d(TAG, "signInUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
-                    Toast.makeText(this, R.string.fail_to_sign_in, Toast.LENGTH_SHORT).show();
+                    finishActivityForFail(R.string.fail_to_sign_in);
                 });
+    }
+
+    void finishActivityForFail(@StringRes int failStringId) {
+        Toast.makeText(this, failStringId, Toast.LENGTH_SHORT).show();
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }
 
