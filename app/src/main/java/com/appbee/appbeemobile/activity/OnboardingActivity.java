@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -15,6 +16,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class OnboardingActivity extends BaseActivity {
+
+    private static final String TAG = OnboardingActivity.class.getSimpleName();
+    private static final int RC_LOGIN = 9002;
 
     @DrawableRes
     static final int[] ONBOARDING_IMAGES = {
@@ -32,8 +36,7 @@ public class OnboardingActivity extends BaseActivity {
     @OnClick(R.id.login_button)
     public void onLoginButtonClick(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        startActivityForResult(intent, RC_LOGIN);
     }
 
     @Override
@@ -46,5 +49,16 @@ public class OnboardingActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         onboardingViewPager.setAdapter(new CommonPagerAdapter(this, ONBOARDING_IMAGES));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_LOGIN) {
+            if (resultCode == Activity.RESULT_OK) {
+                finish();
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -11,7 +12,6 @@ import com.bumptech.glide.load.HttpException;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.api.services.people.v1.model.Birthday;
 import com.google.api.services.people.v1.model.Date;
 import com.google.api.services.people.v1.model.Gender;
@@ -103,7 +103,7 @@ public class LoginActivityTest extends ActivityTest {
         mockGoogleSignInResult(mockGoogleSignInAccount, true);
         when(userService.signIn(any())).thenReturn(mock(Observable.class));
 
-        subject.onActivityResult(9001, 0, null);
+        subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         verify(googleSignInAPIHelper).getPerson(eq(mockGoogleSignInAccount));
         verify(userService).signIn(eq("testToken"));
@@ -115,7 +115,7 @@ public class LoginActivityTest extends ActivityTest {
 
         mockGoogleSignInResult(mock(GoogleSignInAccount.class), false);
 
-        subject.onActivityResult(9001, 0, null);
+        subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to connect Google Play Service");
     }
@@ -126,14 +126,7 @@ public class LoginActivityTest extends ActivityTest {
 
         mockGoogleSignInResultWithoutAccount(true);
 
-        subject.onActivityResult(9001, 0, null);
-
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to connect Google Play Service");
-    }
-
-    @Test
-    public void onConnectionFailed호출시_GoogleSign실패메시지를_표시한다() throws Exception {
-        subject.onConnectionFailed(new ConnectionResult(0));
+        subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to connect Google Play Service");
     }
