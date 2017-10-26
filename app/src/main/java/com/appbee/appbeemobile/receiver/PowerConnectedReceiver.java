@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.network.AppStatService;
 
 import javax.inject.Inject;
@@ -14,28 +15,32 @@ import rx.schedulers.Schedulers;
 public class PowerConnectedReceiver extends BroadcastReceiver {
     private static final String TAG = PowerConnectedReceiver.class.getSimpleName();
     private AppStatService appStatService;
+    private AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Inject
-    public PowerConnectedReceiver(AppStatService appStatService) {
+    public PowerConnectedReceiver(AppStatService appStatService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
         this.appStatService = appStatService;
+        this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
-            appStatService.getLastUpdateStatTimestamp()
-                    .observeOn(Schedulers.io())
-                    .subscribe(lastUpdateStatTimestamp -> {
-                        appStatService.sendShortTermStats(lastUpdateStatTimestamp)
-                                .observeOn(Schedulers.io())
-                                .subscribe(result -> {
-                                    if(result) {
-                                        Log.d(TAG, "PowerConnectedReceiver send ShortTermStats successfully");
-                                    } else {
-                                        Log.e(TAG, "PowerConnectedReceiver fail to send ShortTermStats");
-                                    }
-                                }, appStatService::logError);
-                    }, appStatService::logError);
+            if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+                appStatService.getLastUpdateStatTimestamp()
+                        .observeOn(Schedulers.io())
+                        .subscribe(lastUpdateStatTimestamp -> {
+                            appStatService.sendShortTermStats(lastUpdateStatTimestamp)
+                                    .observeOn(Schedulers.io())
+                                    .subscribe(result -> {
+                                        if (result) {
+                                            Log.d(TAG, "PowerConnectedReceiver send ShortTermStats successfully");
+                                        } else {
+                                            Log.e(TAG, "PowerConnectedReceiver fail to send ShortTermStats");
+                                        }
+                                    }, appStatService::logError);
+                        }, appStatService::logError);
+            }
         }
     }
 }
