@@ -26,4 +26,37 @@
         android:layout_width="match_parent"
         android:layout_height="150dp">
     </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/recommendation_apps_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recommendation_apps_title"/>
+        <TextView
+            android:id="@+id/recommendation_apps_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recommendation_apps_subtitle"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/appbee_gray">
+        <TextView
+            android:id="@+id/introducing_apps_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/introducing_apps_title"/>
+        <TextView
+            android:id="@+id/introducing_apps_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/introducing_apps_subtitle"/>
+    </LinearLayout>
 </LinearLayout>
