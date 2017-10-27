@@ -19,4 +19,8 @@
     <string name="fail_to_sign_in">Fail to sign in</string>
     <string name="fail_to_connect_google_play">Fail to connect Google Play Service</string>
     <string name="app_service_get_info_api_fail">appList API fail</string>
+    <string name="recommendation_apps_title">당신을 위한 추천 앱*</string>
+    <string name="recommendation_apps_subtitle">인터뷰나 테스트 참여가 가능한 프로젝트입니다.</string>
+    <string name="introducing_apps_title">이런 앱은 어때요*</string>
+    <string name="introducing_apps_subtitle">당신의 응원을 기다리고 있는 프로젝트 입니다.</string>
 </resources>

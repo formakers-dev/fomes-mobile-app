@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -46,6 +44,18 @@ public class MainActivity extends BaseActivity
 
     @BindView(R.id.title_banner_view_pager)
     ViewPager titleBannerViewPager;
+
+    @BindView(R.id.recommendation_apps_title)
+    TextView recommendationAppsTitleTextView;
+
+    @BindView(R.id.recommendation_apps_subtitle)
+    TextView recommendationAppsSubtitleTextView;
+
+    @BindView(R.id.introducing_apps_title)
+    TextView introducingAppsTitle;
+
+    @BindView(R.id.introducing_apps_subtitle)
+    TextView introducingAppsSubtitle;
 
     TextView userIdTextView;
 
