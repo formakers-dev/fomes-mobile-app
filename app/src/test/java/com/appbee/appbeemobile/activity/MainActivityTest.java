@@ -43,8 +43,7 @@ public class MainActivityTest {
 
     @Test
     public void onPostCreate시_당신을위한추천앱_영역이_나타난다() throws Exception {
-        assertThat(subject.recommendationAppsTitleTextView.getText()).isEqualTo("당신을 위한 추천 앱*");
-        assertThat(subject.recommendationAppsSubtitleTextView.getText()).isEqualTo("인터뷰나 테스트 참여가 가능한 프로젝트입니다.");
+        assertThat(subject.recommendationAppsRecyclerview.getAdapter()).isNotNull();
     }
 
     @Test

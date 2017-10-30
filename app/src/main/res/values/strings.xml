@@ -23,4 +23,5 @@
     <string name="recommendation_apps_subtitle">인터뷰나 테스트 참여가 가능한 프로젝트입니다.</string>
     <string name="introducing_apps_title">이런 앱은 어때요*</string>
     <string name="introducing_apps_subtitle">당신의 응원을 기다리고 있는 프로젝트 입니다.</string>
+    <string name="item_card_tag">[%s] 앱을 사용하시는 분의 의견을 구합니다.</string>
 </resources>
