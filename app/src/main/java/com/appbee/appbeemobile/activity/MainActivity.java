@@ -9,18 +9,29 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
+import com.appbee.appbeemobile.adapter.CommonRecyclerViewAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.util.FormatUtil;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity
@@ -44,6 +55,9 @@ public class MainActivity extends BaseActivity
 
     @BindView(R.id.title_banner_view_pager)
     ViewPager titleBannerViewPager;
+
+    @BindView(R.id.recommendation_apps_recyclerview)
+    RecyclerView recommendationAppsRecyclerview;
 
     @BindView(R.id.recommendation_apps_title)
     TextView recommendationAppsTitleTextView;
@@ -88,6 +102,19 @@ public class MainActivity extends BaseActivity
         userIdTextView.setText(FormatUtil.parseEmailName(localStorageHelper.getEmail()));
 
         titleBannerViewPager.setAdapter(new CommonPagerAdapter(this, BANNER_IMAGES));
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recommendationAppsRecyclerview.setLayoutManager(llm);
+
+        // TODO : API 로 프로젝트 정보 로딩후 처리
+        List<Project> projectList = new ArrayList<>();
+        projectList.add(new Project());
+        projectList.add(new Project());
+        projectList.add(new Project());
+
+        CommonRecyclerViewAdapter commonRecyclerViewAdapter = new CommonRecyclerViewAdapter(this, projectList);
+        recommendationAppsRecyclerview.setAdapter(commonRecyclerViewAdapter);
     }
 
     @Override
