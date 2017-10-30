@@ -6,11 +6,11 @@ public class Project {
 
     private String name;
     private String introduce;
-    private String[] images;
-    private String[] apps;
+    private List<String> images;
+    private List<String> apps;
     private String interviewerIntroduce;
     private String description;
-    private String[] descriptionImages;
+    private List<String> descriptionImages;
     private String interviewType;
     private boolean interviewNegotiable;
     private String location;
@@ -21,6 +21,13 @@ public class Project {
     private List<InterviewPlan> plans;
     private String status;
 
+    public Project(String name, String introduce, List<String> images, List<String> apps, String status) {
+        this.name = name;
+        this.introduce = introduce;
+        this.images = images;
+        this.apps = apps;
+        this.status = status;
+    }
 
     public String getName() {
         return name;
@@ -38,20 +45,28 @@ public class Project {
         this.introduce = introduce;
     }
 
-    public String[] getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(String[] images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 
-    public String[] getApps() {
+    public List<String> getApps() {
         return apps;
     }
 
-    public void setApps(String[] apps) {
+    public void setApps(List<String> apps) {
         this.apps = apps;
+    }
+
+    public List<String> getDescriptionImages() {
+        return descriptionImages;
+    }
+
+    public void setDescriptionImages(List<String> descriptionImages) {
+        this.descriptionImages = descriptionImages;
     }
 
     public String getInterviewerIntroduce() {
@@ -68,14 +83,6 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String[] getDescriptionImages() {
-        return descriptionImages;
-    }
-
-    public void setDescriptionImages(String[] descriptionImages) {
-        this.descriptionImages = descriptionImages;
     }
 
     public String getInterviewType() {
