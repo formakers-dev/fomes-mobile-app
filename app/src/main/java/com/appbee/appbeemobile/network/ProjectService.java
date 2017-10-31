@@ -40,4 +40,10 @@ public class ProjectService extends AbstractAppBeeService{
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public Observable<List<Project>> getClabProjects() {
+        return projectAPI.getAllProjects(localStorageHelper.getAccessToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }
