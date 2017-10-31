@@ -5,7 +5,6 @@ import android.view.View;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
-import com.appbee.appbeemobile.adapter.CommonRecyclerViewAdapter;
 import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.Project;
