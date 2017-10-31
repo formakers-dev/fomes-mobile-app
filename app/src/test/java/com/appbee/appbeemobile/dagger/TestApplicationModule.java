@@ -3,7 +3,8 @@ package com.appbee.appbeemobile.dagger;
 import android.content.Context;
 
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.CommonRecyclerViewAdapter;
+import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
+import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
@@ -140,7 +141,13 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    CommonRecyclerViewAdapter commonRecyclerViewAdapter() {
-        return mock(CommonRecyclerViewAdapter.class);
+    RecommendationAppsAdapter recommendationAppsAdapter() {
+        return mock(RecommendationAppsAdapter.class);
+    }
+
+    @Singleton
+    @Provides
+    ClabAppsAdapter clabAppsAdapter() {
+        return mock(ClabAppsAdapter.class);
     }
 }

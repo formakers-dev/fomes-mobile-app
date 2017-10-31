@@ -17,8 +17,9 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
-import com.appbee.appbeemobile.adapter.CommonRecyclerViewAdapter;
+import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
@@ -52,11 +53,8 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.recommendation_apps_recyclerview)
     RecyclerView recommendationAppsRecyclerview;
 
-    @BindView(R.id.introducing_apps_title)
-    TextView introducingAppsTitle;
-
-    @BindView(R.id.introducing_apps_subtitle)
-    TextView introducingAppsSubtitle;
+    @BindView(R.id.clab_apps_recyclerview)
+    RecyclerView clabAppsRecyclerview;
 
     TextView userIdTextView;
 
@@ -67,7 +65,10 @@ public class MainActivity extends BaseActivity
     ProjectService projectService;
 
     @Inject
-    CommonRecyclerViewAdapter commonRecyclerViewAdapter;
+    RecommendationAppsAdapter recommendationAppsRecyclerViewAdapter;
+
+    @Inject
+    ClabAppsAdapter clabAppsRecyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +97,21 @@ public class MainActivity extends BaseActivity
 
         titleBannerViewPager.setAdapter(new CommonPagerAdapter(this, BANNER_IMAGES));
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recommendationAppsRecyclerview.setLayoutManager(llm);
+        LinearLayoutManager recommendLayoutManger = new LinearLayoutManager(this);
+        recommendLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
+        recommendationAppsRecyclerview.setLayoutManager(recommendLayoutManger);
 
         projectService.getAllProjects().subscribe(projectList -> {
-            commonRecyclerViewAdapter.setProjectList(projectList);
-            recommendationAppsRecyclerview.setAdapter(commonRecyclerViewAdapter);
+            recommendationAppsRecyclerViewAdapter.setProjectList(projectList);
+            recommendationAppsRecyclerview.setAdapter(recommendationAppsRecyclerViewAdapter);
+        });
+
+        LinearLayoutManager clabLayoutManger = new LinearLayoutManager(this);
+        clabLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
+        clabAppsRecyclerview.setLayoutManager(clabLayoutManger);
+        projectService.getClabProjects().subscribe(projectList -> {
+            clabAppsRecyclerViewAdapter.setProjectList(projectList);
+            clabAppsRecyclerview.setAdapter(clabAppsRecyclerViewAdapter);
         });
     }
 
