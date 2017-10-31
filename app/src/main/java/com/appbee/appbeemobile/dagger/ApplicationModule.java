@@ -3,7 +3,9 @@ package com.appbee.appbeemobile.dagger;
 import android.content.Context;
 
 import com.appbee.appbeemobile.AppBeeApplication;
-import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.network.ProjectAPI;
+import com.appbee.appbeemobile.network.ProjectService;
 
 import javax.inject.Singleton;
 
@@ -22,5 +24,11 @@ public class ApplicationModule {
     @Provides
     Context context() {
         return application.getApplicationContext();
+    }
+
+    @Singleton
+    @Provides
+    ProjectService projectService(ProjectAPI projectAPI, LocalStorageHelper localStorageHelper) {
+        return new ProjectService(projectAPI, localStorageHelper);
     }
 }

@@ -1,0 +1,43 @@
+package com.appbee.appbeemobile.network;
+
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.Project;
+
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+@Singleton
+public class ProjectService extends AbstractAppBeeService{
+    private static final String TAG = ProjectService.class.getSimpleName();
+    private final ProjectAPI projectAPI;
+    private final LocalStorageHelper localStorageHelper;
+
+    @Inject
+    public ProjectService(ProjectAPI projectAPI, LocalStorageHelper localStorageHelper) {
+        this.projectAPI = projectAPI;
+        this.localStorageHelper = localStorageHelper;
+    }
+
+    @Override
+    protected String getTag() {
+        return TAG;
+    }
+
+    public Observable<List<Project>> getAllProjects() {
+        return projectAPI.getAllProjects(localStorageHelper.getAccessToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<Project> getProject(String projectId) {
+        return projectAPI.getProject(localStorageHelper.getAccessToken(), projectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+}

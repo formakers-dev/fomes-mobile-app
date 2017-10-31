@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.dagger;
 import android.content.Context;
 
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.adapter.CommonRecyclerViewAdapter;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
@@ -10,6 +11,8 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.AppAPI;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.network.ProjectAPI;
+import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 import com.appbee.appbeemobile.network.UserService;
@@ -37,23 +40,9 @@ public class TestApplicationModule {
         return application.getApplicationContext();
     }
 
-    @Provides
-    @Singleton
-    AppUsageDataHelper appUsageDataHelper() {
-        return mock(AppUsageDataHelper.class);
-    }
-
-    @Provides
-    @Singleton
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper() {
-        return mock(AppBeeAndroidNativeHelper.class);
-    }
-
-    @Provides
-    @Singleton
-    AppStatService appStatService() {
-        return mock(AppStatService.class);
-    }
+    /**
+     * API interfaces
+     */
 
     @Provides
     @Singleton
@@ -67,12 +56,22 @@ public class TestApplicationModule {
         return mock(UserAPI.class);
     }
 
-
     @Singleton
     @Provides
     AppAPI appAPI() {
         return mock(AppAPI.class);
     }
+
+
+    @Singleton
+    @Provides
+    ProjectAPI projectAPI() {
+        return mock(ProjectAPI.class);
+    }
+
+    /**
+     * API Service
+     */
 
     @Singleton
     @Provides
@@ -80,11 +79,27 @@ public class TestApplicationModule {
         return mock(AppService.class);
     }
 
+    @Provides
+    @Singleton
+    AppStatService appStatService() {
+        return mock(AppStatService.class);
+    }
+
     @Singleton
     @Provides
     UserService userService() {
         return mock(UserService.class);
     }
+
+    @Singleton
+    @Provides
+    ProjectService projectService() {
+        return mock(ProjectService.class);
+    }
+
+    /**
+     * Helper
+     */
 
     @Singleton
     @Provides
@@ -98,6 +113,18 @@ public class TestApplicationModule {
         return mock(AppRepositoryHelper.class);
     }
 
+    @Provides
+    @Singleton
+    AppUsageDataHelper appUsageDataHelper() {
+        return mock(AppUsageDataHelper.class);
+    }
+
+    @Provides
+    @Singleton
+    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper() {
+        return mock(AppBeeAndroidNativeHelper.class);
+    }
+
     @Singleton
     @Provides
     TimeHelper timeHelper() {
@@ -108,5 +135,12 @@ public class TestApplicationModule {
     @Provides
     GoogleSignInAPIHelper googleSignInAPIHelper() {
         return mock(GoogleSignInAPIHelper.class);
+    }
+
+
+    @Singleton
+    @Provides
+    CommonRecyclerViewAdapter commonRecyclerViewAdapter() {
+        return mock(CommonRecyclerViewAdapter.class);
     }
 }
