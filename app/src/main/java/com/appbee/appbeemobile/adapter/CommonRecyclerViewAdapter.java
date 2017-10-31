@@ -11,9 +11,14 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.Project;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class CommonRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<Project> projectList;
@@ -21,8 +26,12 @@ public class CommonRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int ITEM_VIEW_TYPE = 1;
 
-    public CommonRecyclerViewAdapter(Context context, List<Project> projectList) {
+    @Inject
+    public CommonRecyclerViewAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setProjectList(List<Project> projectList) {
         this.projectList = projectList;
     }
 
@@ -48,9 +57,16 @@ public class CommonRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             Project project = projectList.get(position - 1);
-            ((ItemViewHolder) holder).itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
-            Glide.with(context).asBitmap().load(project.getImages().get(0)).into(((ItemViewHolder) holder).imageView);
-            ((ItemViewHolder) holder).statusTextView.setText(project.getStatus());
+
+            // TODO : 앱 이름, 이미지 패스 유효하지 않거나 여러개인 경우 처리
+            if(project.getApps() != null && project.getApps().size() > 0 ) {
+                ((ItemViewHolder) holder).itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
+            }
+            if(project.getImages() != null && project.getImages().size() > 0) {
+                Glide.with(context).load(project.getImages().get(0)).apply(new RequestOptions().override(1300, 1000).centerCrop())
+                        .into(((ItemViewHolder) holder).imageView);
+            }
+            ((ItemViewHolder) holder).statusTextView.setText(String.valueOf(project.getStatus()));
             ((ItemViewHolder) holder).introduceTextView.setText(project.getIntroduce());
             ((ItemViewHolder) holder).nameTextView.setText(project.getName());
         }

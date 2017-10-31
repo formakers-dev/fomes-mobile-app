@@ -20,12 +20,8 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
 import com.appbee.appbeemobile.adapter.CommonRecyclerViewAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -67,6 +63,12 @@ public class MainActivity extends BaseActivity
     @Inject
     LocalStorageHelper localStorageHelper;
 
+    @Inject
+    ProjectService projectService;
+
+    @Inject
+    CommonRecyclerViewAdapter commonRecyclerViewAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,14 +100,10 @@ public class MainActivity extends BaseActivity
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recommendationAppsRecyclerview.setLayoutManager(llm);
 
-        // TODO : API 로 프로젝트 정보 로딩후 처리
-        List<Project> projectList = new ArrayList<>();
-        projectList.add(new Project("유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f"), Collections.singletonList("지그재그"), "인터뷰 신청 가능"));
-        projectList.add(new Project("유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f"), Collections.singletonList("지그재그"), "인터뷰 신청 가능"));
-        projectList.add(new Project("유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f"), Collections.singletonList("지그재그"), "인터뷰 신청 가능"));
-
-        CommonRecyclerViewAdapter commonRecyclerViewAdapter = new CommonRecyclerViewAdapter(this, projectList);
-        recommendationAppsRecyclerview.setAdapter(commonRecyclerViewAdapter);
+        projectService.getAllProjects().subscribe(projectList -> {
+            commonRecyclerViewAdapter.setProjectList(projectList);
+            recommendationAppsRecyclerview.setAdapter(commonRecyclerViewAdapter);
+        });
     }
 
     @Override

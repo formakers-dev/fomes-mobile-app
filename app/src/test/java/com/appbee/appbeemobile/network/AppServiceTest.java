@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 
@@ -12,6 +13,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class AppServiceTest {
     private static final String TEST_ACCESS_TOKEN = "TEST_ACCESS_TOKEN";
     private AppService subject;

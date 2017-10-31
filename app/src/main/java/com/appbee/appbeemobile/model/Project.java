@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Project {
 
+    private String projectId;
     private String name;
     private String introduce;
     private List<String> images;
@@ -19,14 +20,23 @@ public class Project {
     private String startDate;
     private String endDate;
     private List<InterviewPlan> plans;
-    private String status;
+    private int status;
 
-    public Project(String name, String introduce, List<String> images, List<String> apps, String status) {
+    public Project(String projectId, String name, String introduce, List<String> images, List<String> apps, int status) {
+        this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
         this.images = images;
         this.apps = apps;
         this.status = status;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
     public String getName() {
@@ -149,11 +159,11 @@ public class Project {
         this.plans = plans;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
