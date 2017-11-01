@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.google.common.collect.Lists;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static com.appbee.appbeemobile.adapter.ClabAppsAdapter.HEADER_VIEW_TYPE;
 import static com.appbee.appbeemobile.adapter.ClabAppsAdapter.ITEM_VIEW_TYPE;
@@ -37,6 +40,9 @@ public class ClabAppsAdapterTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.onIOScheduler(Schedulers.immediate());
+
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         List<Project> mockClabProjectList = new ArrayList<>();
@@ -46,6 +52,11 @@ public class ClabAppsAdapterTest {
         when(mockProjectService.getClabProjects()).thenReturn(Observable.just(mockClabProjectList));
 
         subject = new ClabAppsAdapter(RuntimeEnvironment.application, mockProjectService);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 
     @Test

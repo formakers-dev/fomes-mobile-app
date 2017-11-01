@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.activity.DetailActivityTest;
 import com.appbee.appbeemobile.activity.LoadingActivityTest;
 import com.appbee.appbeemobile.activity.LoginActivityTest;
 import com.appbee.appbeemobile.activity.MainActivityTest;
@@ -22,4 +23,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(MainActivityTest mainActivityTest);
     void inject(RecommendationAppsAdapterTest recommendationAppsAdapterTest);
     void inject(ClabAppsAdapterTest clabAppsAdapterTest);
+    void inject(DetailActivityTest detailActivityTest);
 }

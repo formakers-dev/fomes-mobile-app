@@ -6,4 +6,8 @@ public interface AppBeeConstants {
 //        String FORBIDDEN = "403";
         int NOTFOUND = 404;
     }
+
+    interface EXTRA {
+        String PROJECT_ID = "EXTRA_PROJECT_ID";
+    }
 }

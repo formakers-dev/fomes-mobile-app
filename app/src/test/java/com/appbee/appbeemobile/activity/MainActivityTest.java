@@ -8,7 +8,6 @@ import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
 import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +17,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import javax.inject.Inject;
-
-import rx.plugins.RxJavaHooks;
-import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -42,18 +38,10 @@ public class MainActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
-
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         when(mockLocalStorageHelper.getEmail()).thenReturn("anyEmail");
 
         subject = Robolectric.buildActivity(MainActivity.class).create().postCreate(null).get();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        RxJavaHooks.reset();
     }
 
     @Test
