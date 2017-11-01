@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.network.ProjectService;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,12 +30,13 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
     static final int ITEM_VIEW_TYPE = 1;
 
     @Inject
-    public RecommendationAppsAdapter(Context context) {
+    public RecommendationAppsAdapter(Context context, ProjectService projectService) {
         this.context = context;
-    }
-
-    public void setProjectList(List<Project> projectList) {
-        this.projectList = projectList;
+        projectList = new ArrayList<>();
+        projectService.getAllProjects().subscribe(projectList -> {
+            this.projectList = projectList;
+            this.notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -68,7 +71,7 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
                 ((ItemViewHolder) holder).itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
             }
             if(project.getImages() != null && project.getImages().size() > 0) {
-                Glide.with(context).load(project.getImages().get(0)).apply(new RequestOptions().override(1300, 1000).centerCrop())
+                Glide.with(context).load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                         .into(((ItemViewHolder) holder).imageView);
             }
             ((ItemViewHolder) holder).statusTextView.setText(String.valueOf(project.getStatus()));
@@ -98,6 +101,7 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
+        View mView;
         TextView itemCardTagTextView;
         ImageView imageView;
         TextView statusTextView;
@@ -106,7 +110,7 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
 
         ItemViewHolder(View view) {
             super(view);
-
+            mView = view;
             itemCardTagTextView = (TextView) view.findViewById(R.id.item_card_tag);
             imageView = (ImageView) view.findViewById(R.id.project_image);
             statusTextView = (TextView) view.findViewById(R.id.project_status);

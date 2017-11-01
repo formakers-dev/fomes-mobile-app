@@ -55,9 +55,9 @@ public class ProjectServiceTest {
     @Test
     public void getAllProjects호출시_프로젝트_리스트를_리턴한다() throws Exception {
         List<Project> mockProjectList = new ArrayList<>();
-        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f"), Collections.singletonList("지그재그"), 0));
-        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f1"), Collections.singletonList("지그재그2"), 0));
-        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f2"), Collections.singletonList("지그재그3"), 0));
+        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), 0));
+        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!",  Collections.singletonList("지그재그2"), 0));
+        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!",  Collections.singletonList("지그재그3"), 0));
 
         when(mockProjectAPI.getAllProjects(anyString())).thenReturn(Observable.just(mockProjectList));
 
@@ -68,7 +68,6 @@ public class ProjectServiceTest {
             assertThat(project.getProjectId()).isEqualTo("projectId1");
             assertThat(project.getName()).isEqualTo("유어커스텀");
             assertThat(project.getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-            assertThat(project.getImages().get(0)).isEqualTo("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f");
             assertThat(project.getApps().get(0)).isEqualTo("지그재그");
             assertThat(project.getStatus()).isEqualTo(0);
         });
@@ -76,7 +75,7 @@ public class ProjectServiceTest {
 
     @Test
     public void getProject호출시_요청한_프로젝트ID에_해당하는_프로젝트_정보를_리턴한다() throws Exception {
-        Project mockProject = new Project("projectId123", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f"), Collections.singletonList("지그재그"), 0);
+        Project mockProject = new Project("projectId123", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!",  Collections.singletonList("지그재그"), 0);
 
         when(mockProjectAPI.getProject(anyString(), anyString())).thenReturn(Observable.just(mockProject));
 
@@ -85,7 +84,6 @@ public class ProjectServiceTest {
             assertThat(project.getProjectId()).isEqualTo("projectId123");
             assertThat(project.getName()).isEqualTo("유어커스텀");
             assertThat(project.getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-            assertThat(project.getImages().get(0)).isEqualTo("https://firebasestorage.googleapis.com/v0/b/dragonwebapp.appspot.com/o/images%2Frecommandation_app.png?alt=media&token=58b315db-519d-43d8-8a8a-24c89ef5b21f");
             assertThat(project.getApps().get(0)).isEqualTo("지그재그");
             assertThat(project.getStatus()).isEqualTo(0);
         });

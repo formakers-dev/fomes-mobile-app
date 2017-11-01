@@ -7,7 +7,7 @@ public class Project {
     private String projectId;
     private String name;
     private String introduce;
-    private List<String> images;
+    private List<ImageObject> images;
     private List<String> apps;
     private String interviewerIntroduce;
     private String description;
@@ -22,11 +22,10 @@ public class Project {
     private List<InterviewPlan> plans;
     private int status;
 
-    public Project(String projectId, String name, String introduce, List<String> images, List<String> apps, int status) {
+    public Project(String projectId, String name, String introduce, List<String> apps, int status) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
-        this.images = images;
         this.apps = apps;
         this.status = status;
     }
@@ -55,11 +54,11 @@ public class Project {
         this.introduce = introduce;
     }
 
-    public List<String> getImages() {
+    public List<ImageObject> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(List<ImageObject> images) {
         this.images = images;
     }
 
@@ -69,14 +68,6 @@ public class Project {
 
     public void setApps(List<String> apps) {
         this.apps = apps;
-    }
-
-    public List<String> getDescriptionImages() {
-        return descriptionImages;
-    }
-
-    public void setDescriptionImages(List<String> descriptionImages) {
-        this.descriptionImages = descriptionImages;
     }
 
     public String getInterviewerIntroduce() {
@@ -93,6 +84,14 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getDescriptionImages() {
+        return descriptionImages;
+    }
+
+    public void setDescriptionImages(List<String> descriptionImages) {
+        this.descriptionImages = descriptionImages;
     }
 
     public String getInterviewType() {
@@ -167,8 +166,29 @@ public class Project {
         this.status = status;
     }
 
-    private class InterviewPlan {
+    public class InterviewPlan {
         int minute;
         String plan;
+    }
+
+    public class ImageObject {
+        String url;
+        String name;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

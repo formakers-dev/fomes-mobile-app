@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.network.ProjectService;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,19 +23,21 @@ import javax.inject.Singleton;
 @Singleton
 public class ClabAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context context;
+    private List<Project> projectList;
 
     @Inject
-    public ClabAppsAdapter(Context context) {
+    public ClabAppsAdapter(Context context, ProjectService projectService) {
         this.context = context;
+
+        projectList = new ArrayList<>();
+        projectService.getClabProjects().subscribe(projectList -> {
+            this.projectList = projectList;
+            notifyDataSetChanged();
+        });
     }
-    private List<Project> projectList;
 
     static final int HEADER_VIEW_TYPE = 0;
     static final int ITEM_VIEW_TYPE = 1;
-
-    public void setProjectList(List<Project> projectList) {
-        this.projectList = projectList;
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -67,7 +71,7 @@ public class ClabAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ((ItemViewHolder) holder).itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
             }
             if(project.getImages() != null && project.getImages().size() > 0) {
-                Glide.with(context).load(project.getImages().get(0)).apply(new RequestOptions().override(1300, 1000).centerCrop())
+                Glide.with(context).load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                         .into(((ItemViewHolder) holder).imageView);
             }
             ((ItemViewHolder) holder).statusTextView.setText(String.valueOf(project.getStatus()));
@@ -96,7 +100,8 @@ public class ClabAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder{
+        View mView;
         TextView itemCardTagTextView;
         ImageView imageView;
         TextView statusTextView;
@@ -105,7 +110,7 @@ public class ClabAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         ItemViewHolder(View view) {
             super(view);
-
+            mView = view;
             itemCardTagTextView = (TextView) view.findViewById(R.id.item_card_tag);
             imageView = (ImageView) view.findViewById(R.id.project_image);
             statusTextView = (TextView) view.findViewById(R.id.project_status);
