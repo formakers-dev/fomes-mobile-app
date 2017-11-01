@@ -30,6 +30,25 @@ public class Project {
         this.status = status;
     }
 
+    public Project(String projectId, String name, String introduce, List<ImageObject> images, List<String> apps, String interviewerIntroduce, String description, String interviewType, boolean interviewNegotiable, String location, String openDate, String closeDate, String startDate, String endDate, List<InterviewPlan> plans, int status) {
+        this.projectId = projectId;
+        this.name = name;
+        this.introduce = introduce;
+        this.images = images;
+        this.apps = apps;
+        this.interviewerIntroduce = interviewerIntroduce;
+        this.description = description;
+        this.interviewType = interviewType;
+        this.interviewNegotiable = interviewNegotiable;
+        this.location = location;
+        this.openDate = openDate;
+        this.closeDate = closeDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.plans = plans;
+        this.status = status;
+    }
+
     public String getProjectId() {
         return projectId;
     }
@@ -166,12 +185,38 @@ public class Project {
         this.status = status;
     }
 
-    public class InterviewPlan {
+    public static class InterviewPlan {
+        public InterviewPlan(int minute, String plan) {
+            this.minute = minute;
+            this.plan = plan;
+        }
+
         int minute;
         String plan;
+
+        public int getMinute() {
+            return minute;
+        }
+
+        public void setMinute(int minute) {
+            this.minute = minute;
+        }
+
+        public String getPlan() {
+            return plan;
+        }
+
+        public void setPlan(String plan) {
+            this.plan = plan;
+        }
     }
 
-    public class ImageObject {
+    public static class ImageObject {
+        public ImageObject(String url, String name) {
+            this.url = url;
+            this.name = name;
+        }
+
         String url;
         String name;
 

@@ -26,4 +26,5 @@
     <string name="item_card_tag">[%s] 앱을 사용하시는 분의 의견을 구합니다.</string>
     <string name="clab_subtitle">앱 사용패턴 기반으로 당신만을 위해 선별된\nC-lab Fair프로젝트를 소개합니다.</string>
     <string name="clab_title">취향저격 C-lab 프로젝트 둘러보기</string>
+    <string name="default_text">default text</string>
 </resources>

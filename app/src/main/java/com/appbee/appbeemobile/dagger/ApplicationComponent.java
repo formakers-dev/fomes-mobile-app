@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.activity.DetailActivity;
 import com.appbee.appbeemobile.activity.LoadingActivity;
 import com.appbee.appbeemobile.activity.LoginActivity;
 import com.appbee.appbeemobile.activity.MainActivity;
@@ -22,4 +23,5 @@ public interface ApplicationComponent {
     void inject(LoginActivity loginActivity);
     void inject(InstanceIDService instanceIDService);
     void inject(MainActivity mainActivity);
+    void inject(DetailActivity detailActivity);
 }

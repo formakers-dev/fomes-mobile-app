@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.activity.DetailActivity;
 import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -36,7 +37,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         view.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra("EXTRAT_PROJECT_ID", projectId);
+            intent.putExtra(EXTRA.PROJECT_ID, projectId);
             context.startActivity(intent);
         });
     }
