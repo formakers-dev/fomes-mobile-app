@@ -1,7 +1,9 @@
 package com.appbee.appbeemobile.adapter;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,25 +16,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import rx.Observable;
+
+import static com.appbee.appbeemobile.adapter.RecommendationAppsAdapter.HEADER_VIEW_TYPE;
+import static com.appbee.appbeemobile.adapter.RecommendationAppsAdapter.ITEM_VIEW_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class RecommendationAppsAdapterTest {
     private RecommendationAppsAdapter subject;
-    private static final int HEADER_VIEW_TYPE = 0;
-    private static final int ITEM_VIEW_TYPE = 1;
+
+    @Inject
+    ProjectService mockProjectService;
 
     @Before
     public void setUp() throws Exception {
-        subject = new RecommendationAppsAdapter(RuntimeEnvironment.application);
+
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         List<Project> mockRecommendationProjectList = new ArrayList<>();
-        mockRecommendationProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("image_path_1"), Collections.singletonList("지그재그"), 0));
-        mockRecommendationProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("image_path_2"), Collections.singletonList("지그재그2"), 0));
-        mockRecommendationProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("image_path_3"), Collections.singletonList("지그재그3"), 0));
+        mockRecommendationProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), 0));
+        mockRecommendationProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!",Collections.singletonList("지그재그2"), 0));
+        mockRecommendationProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그3"), 0));
+        when(mockProjectService.getAllProjects()).thenReturn(Observable.just(mockRecommendationProjectList));
 
-        subject.setProjectList(mockRecommendationProjectList);
+        subject = new RecommendationAppsAdapter(RuntimeEnvironment.application, mockProjectService);
     }
 
     @Test
@@ -46,7 +58,6 @@ public class RecommendationAppsAdapterTest {
         assertThat(subject.getItem(0).getProjectId()).isEqualTo("projectId1");
         assertThat(subject.getItem(0).getName()).isEqualTo("유어커스텀");
         assertThat(subject.getItem(0).getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-        assertThat(subject.getItem(0).getImages().get(0)).isEqualTo("image_path_1");
         assertThat(subject.getItem(0).getApps().get(0)).isEqualTo("지그재그");
         assertThat(subject.getItem(0).getStatus()).isEqualTo(0);
     }

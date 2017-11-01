@@ -17,7 +17,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <service android:name=".service.PowerConnectedService" />
         <!-- 백그라운드 앱의 알림 수신 -->
-        <service android:name=".service.MessagingService">
+        <service android:name=".service.MessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -42,6 +43,10 @@
         <activity android:name=".activity.LoadingActivity" />
         <activity
             android:name=".activity.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.DetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>

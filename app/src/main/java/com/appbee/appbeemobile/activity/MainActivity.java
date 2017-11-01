@@ -21,7 +21,6 @@ import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
 import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
 
 import javax.inject.Inject;
@@ -62,9 +61,6 @@ public class MainActivity extends BaseActivity
     LocalStorageHelper localStorageHelper;
 
     @Inject
-    ProjectService projectService;
-
-    @Inject
     RecommendationAppsAdapter recommendationAppsRecyclerViewAdapter;
 
     @Inject
@@ -100,19 +96,12 @@ public class MainActivity extends BaseActivity
         LinearLayoutManager recommendLayoutManger = new LinearLayoutManager(this);
         recommendLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         recommendationAppsRecyclerview.setLayoutManager(recommendLayoutManger);
-
-        projectService.getAllProjects().subscribe(projectList -> {
-            recommendationAppsRecyclerViewAdapter.setProjectList(projectList);
-            recommendationAppsRecyclerview.setAdapter(recommendationAppsRecyclerViewAdapter);
-        });
+        recommendationAppsRecyclerview.setAdapter(recommendationAppsRecyclerViewAdapter);
 
         LinearLayoutManager clabLayoutManger = new LinearLayoutManager(this);
         clabLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         clabAppsRecyclerview.setLayoutManager(clabLayoutManger);
-        projectService.getClabProjects().subscribe(projectList -> {
-            clabAppsRecyclerViewAdapter.setProjectList(projectList);
-            clabAppsRecyclerview.setAdapter(clabAppsRecyclerViewAdapter);
-        });
+        clabAppsRecyclerview.setAdapter(clabAppsRecyclerViewAdapter);
     }
 
     @Override
