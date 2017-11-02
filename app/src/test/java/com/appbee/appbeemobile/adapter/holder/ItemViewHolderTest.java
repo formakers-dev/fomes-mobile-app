@@ -41,7 +41,6 @@ public class ItemViewHolderTest {
         assertThat(subject.nameTextView.getText()).isEqualTo("유어커스텀");
         assertThat(subject.introduceTextView.getText()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
         assertThat(subject.itemCardTagTextView.getText()).isEqualTo("[지그재그] 앱을 사용하시는 분의 의견을 구합니다.");
-        assertThat(subject.statusTextView.getText()).isEqualTo("0");
     }
 
     @Test

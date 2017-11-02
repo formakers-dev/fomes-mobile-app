@@ -25,15 +25,33 @@
                     android:layout_alignParentTop="true"
                     android:scaleType="fitCenter"
                     android:src="@drawable/recommandation_app"/>
-                <TextView
-                    android:id="@+id/item_card_tag"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_alignParentTop="true"
-                    android:text="# 지그재그 앱을 사용하시는 분의 의견을 구합니다"
-                    android:textColor="@color/appbee_yellow"/>
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center">
+                    <Button
+                        android:id="@+id/oepn_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="잔소리 가능"/>
+                    <Button
+                        android:id="@+id/favaorite_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="내 취향저격"/>
+                    <Button
+                        android:id="@+id/clab_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="전사 C-Lab"/>
+
+                </LinearLayout>
+
             </RelativeLayout>
 
             <LinearLayout
@@ -45,20 +63,13 @@
                 android:paddingEnd="10dp"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/project_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="인터뷰 신청 가능"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/appbee_yellow"/>
-                <TextView
                     android:id="@+id/project_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!"
-                    android:textSize="12dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentTop="true"
+                    android:text="# 지그재그 앱을 사용하시는 분의 의견을 구합니다"
                     android:textColor="@color/appbee_gray"/>
                 <TextView
                     android:id="@+id/project_name"
@@ -68,6 +79,14 @@
                     android:text="유어커스텀"
                     android:textSize="15dp"
                     android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/project_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!"
+                    android:textSize="12dp"
+                    android:textColor="@color/appbee_yellow"/>
             </LinearLayout>
 
         </LinearLayout>
