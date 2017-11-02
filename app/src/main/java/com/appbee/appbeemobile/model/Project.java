@@ -10,7 +10,7 @@ public class Project {
     private List<ImageObject> images;
     private List<String> apps;
     private String description;
-    private List<String> descriptionImages;
+    private List<ImageObject> descriptionImages;
     private String status;
     private Interviewer interviewer;
     private boolean isCLab;
@@ -24,7 +24,7 @@ public class Project {
         this.status = status;
     }
 
-    public Project(String projectId, String name, String introduce, List<ImageObject> images, List<String> apps, String description, List<String> descriptionImages, String status, Interviewer interviewer, boolean isCLab, Interview interview) {
+    public Project(String projectId, String name, String introduce, List<ImageObject> images, List<String> apps, String description, List<ImageObject> descriptionImages, String status, Interviewer interviewer, boolean isCLab, Interview interview) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -86,11 +86,11 @@ public class Project {
         this.description = description;
     }
 
-    public List<String> getDescriptionImages() {
+    public List<ImageObject> getDescriptionImages() {
         return descriptionImages;
     }
 
-    public void setDescriptionImages(List<String> descriptionImages) {
+    public void setDescriptionImages(List<ImageObject> descriptionImages) {
         this.descriptionImages = descriptionImages;
     }
 

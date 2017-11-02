@@ -12,14 +12,14 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-public class ProjectImagePagerAdapter extends PagerAdapter {
+public class ImagePagerAdapter extends PagerAdapter {
 
     private Context context;
-    private List<Project.ImageObject> images;
+    private List<Project.ImageObject> imageList;
 
-    public ProjectImagePagerAdapter(Context context, List<Project.ImageObject> images) {
+    public ImagePagerAdapter(Context context, List<Project.ImageObject> imageList) {
         this.context = context;
-        this.images = images;
+        this.imageList = imageList;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class ProjectImagePagerAdapter extends PagerAdapter {
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         Glide.with(context)
-                .load(images.get(position).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
+                .load(imageList.get(position).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                 .into(imageView);
 
         container.addView(imageView);
@@ -38,7 +38,7 @@ public class ProjectImagePagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return images.size();
+        return imageList.size();
     }
 
     @Override

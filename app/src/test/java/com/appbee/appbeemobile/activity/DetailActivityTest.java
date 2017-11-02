@@ -6,6 +6,7 @@ import android.view.View;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.google.common.collect.Lists;
@@ -117,8 +118,15 @@ public class DetailActivityTest {
     @Test
     public void onPostCreate시_조회된_interviewer정보를_화면에_보여준다() throws Exception {
         subject = activityController.create().postCreate(null).get();
-        assertThat(subject.interviewerPhotoImgaeView.getTag(R.string.tag_key_image_url)).isEqualTo(null);
+        assertThat(subject.interviewerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo(null);
         assertThat(subject.interviewerNameTextView.getText()).isEqualTo("이호영");
         assertThat(subject.interviewerIntroduceTextView.getText()).contains("17년 삼성전자 C-lab과제 툰스토리 팀");
+    }
+
+    @Test
+    public void onPostCreate시_조회된_project_설명정보를_화면에_보여준다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+        assertThat(subject.projectDescriptionTextView.getText()).contains("지그재그앱은 지그재그입니다");
+        assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
     }
 }

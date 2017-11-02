@@ -73,7 +73,8 @@
                     android:src="@drawable/face"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -117,9 +118,9 @@
                 android:layout_height="wrap_content" />
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/project_image"
+                android:id="@+id/description_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
+                android:layout_height="150dp"></android.support.v4.view.ViewPager>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
