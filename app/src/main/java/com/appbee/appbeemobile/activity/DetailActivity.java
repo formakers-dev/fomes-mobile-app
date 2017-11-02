@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
 import com.bumptech.glide.Glide;
@@ -46,13 +48,19 @@ public class DetailActivity extends BaseActivity {
     TextView appsDescriptionTextView;
 
     @BindView(R.id.interviewer_photo)
-    ImageView interviewerPhotoImgaeView;
+    ImageView interviewerPhotoImageView;
 
     @BindView(R.id.interviewer_name)
     TextView interviewerNameTextView;
 
     @BindView(R.id.interviewer_introduce)
     TextView interviewerIntroduceTextView;
+
+    @BindView(R.id.project_description)
+    TextView projectDescriptionTextView;
+
+    @BindView(R.id.description_image)
+    ViewPager descriptionImageViewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +76,7 @@ public class DetailActivity extends BaseActivity {
 
         String projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
         projectService.getProject(projectId).subscribe(project -> {
-            Glide.with(getApplicationContext())
+            Glide.with(this)
                     .load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                     .into(representationImageView);
 
@@ -77,8 +85,16 @@ public class DetailActivity extends BaseActivity {
             projectIntroduceTextView.setText(project.getIntroduce());
             projectNameTextView.setText(project.getName());
             appsDescriptionTextView.setText(String.format(getString(R.string.apps_description_format), FormatUtil.formatAppsString(project.getApps())));
+
+            Glide.with(this)
+                    .load(project.getInterviewer().getUrl()).apply(new RequestOptions().override(200, 200).centerCrop())
+                    .into(interviewerPhotoImageView);
             interviewerNameTextView.setText(project.getInterviewer().getName());
             interviewerIntroduceTextView.setText(project.getInterviewer().getIntroduce());
+
+            projectDescriptionTextView.setText(project.getDescription());
+            descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
+
         }, error -> Log.d(TAG, error.getMessage()));
     }
 }
