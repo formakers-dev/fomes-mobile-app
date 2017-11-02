@@ -13,11 +13,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp">
-            <ImageView
-                android:id="@+id/representation_image"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_alignParentTop="true"/>
             <Button
                 android:id="@+id/back_button"
                 android:layout_width="wrap_content"
@@ -25,30 +20,37 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:text="앞으로"/>
-
+            <ImageView
+                android:id="@+id/representation_image"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/badge"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
-                <Button
+                <ImageView
+                    android:id="@+id/open_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="참여가능"/>
-                <Button
+                    android:src="@drawable/badge"
+                    android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/favorite_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="취향저격"/>
-                <Button
+                    android:src="@drawable/badge"
+                    android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/clab_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="C-lab과제"/>
+                    android:src="@drawable/badge"
+                    android:visibility="gone"/>
             </LinearLayout>
         </RelativeLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="심층 인터뷰 참가자 모집 중"/>
         <TextView
             android:id="@+id/project_introduce"
             android:layout_width="match_parent"
@@ -62,8 +64,75 @@
         <TextView
             android:id="@+id/apps_description"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/appbee_yellow"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[스노우]앱을 사용하시는 당신이 분명 좋아할거예요"/>
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/interviewer_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/face"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Project Owner"/>
+                    <TextView
+                        android:id="@+id/interviewer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="툰스토리 이호영"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/interviewer_introduce"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-17년 삼성전자 C-lab 과제 툰스토리 팀\nCreatevie Leader\nGood Person\nSmile Guy"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/appbee_yellow"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="저희 프로젝트를 소개합니다." />
+
+            <View
+                android:layout_width="400dp"
+                android:layout_height="2dp"
+                android:background="@color/appbee_black" />
+
+            <TextView
+                android:id="@+id/project_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/project_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -110,74 +179,7 @@
                 android:text="D-3"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/appbee_yellow"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/face"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Project Owner"/>
-                    <TextView
-                        android:id="@+id/interviwer_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="툰스토리 이호영"/>
-                </LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="-17년 삼성전자 C-lab 과제 툰스토리 팀\nCreatevie Leader\nGood Person\nSmile Guy"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/appbee_yellow"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="저희 프로젝트를 소개합니다." />
-
-            <View
-                android:layout_width="400dp"
-                android:layout_height="2dp"
-                android:background="@color/appbee_black" />
-
-            <TextView
-                android:id="@+id/project_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="저희 프로젝트를 소개합니다.\n저희 프로젝트를 소개합니다.\n저희 프로젝트를 소개합니다.\n저희 프로젝트를 소개합니다.\n저희 프로젝트를 소개합니다.\n\n---------\n\n저희 프로젝트를 소개합니다.\n저희 프로젝트를 소개합니다.\n저희 프로젝트를 소개합니다.\n" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/apps_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -293,7 +295,8 @@
             android:background="@color/appbee_yellow"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
