@@ -19,5 +19,5 @@ public interface UserAPI {
     Observable<Boolean> sendAppInfoList(@Header("x-access-token") String accessToken, @Body List<NativeAppInfo> nativeAppInfos);
 
     @POST("/user")
-    Observable<Boolean> updateUser(@Body User user);
+    Observable<Boolean> updateUser(@Header("x-access-token") String accessToken, @Body User user);
 }

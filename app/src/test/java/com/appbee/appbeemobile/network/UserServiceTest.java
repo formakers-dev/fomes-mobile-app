@@ -25,6 +25,7 @@ import rx.schedulers.Schedulers;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -78,11 +79,11 @@ public class UserServiceTest {
 
     @Test
     public void sendUser호출시_유저정보를_서버로_전송한다() throws Exception {
-        when(mockUserAPI.updateUser(any(User.class))).thenReturn(mock(Observable.class));
+        when(mockUserAPI.updateUser(eq("TEST_ACCESS_TOKEN"), any(User.class))).thenReturn(mock(Observable.class));
 
         User mockUser = mock(User.class);
         subject.sendUser(mockUser);
 
-        verify(mockUserAPI).updateUser(mockUser);
+        verify(mockUserAPI).updateUser("TEST_ACCESS_TOKEN", mockUser);
     }
 }
