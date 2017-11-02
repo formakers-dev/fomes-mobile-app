@@ -21,7 +21,8 @@ import javax.inject.Singleton;
 public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<Project> projectList;
+    private List<Project> projectList = new ArrayList<>();
+    private ProjectService projectService;
 
     static final int HEADER_VIEW_TYPE = 0;
     static final int ITEM_VIEW_TYPE = 1;
@@ -29,7 +30,10 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
     @Inject
     public RecommendationAppsAdapter(Context context, ProjectService projectService) {
         this.context = context;
-        projectList = new ArrayList<>();
+        this.projectService = projectService;
+    }
+
+    public void refreshProjectList() {
         projectService.getAllProjects().subscribe(projectList -> {
             this.projectList = projectList;
             this.notifyDataSetChanged();
@@ -47,11 +51,7 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return HEADER_VIEW_TYPE;
-        } else {
-            return ITEM_VIEW_TYPE;
-        }
+        return (position == 0) ? HEADER_VIEW_TYPE : ITEM_VIEW_TYPE;
     }
 
     public Project getItem(int position) {

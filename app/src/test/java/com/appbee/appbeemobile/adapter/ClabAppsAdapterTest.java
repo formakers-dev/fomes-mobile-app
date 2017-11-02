@@ -60,7 +60,8 @@ public class ClabAppsAdapterTest {
     }
 
     @Test
-    public void clabAppsAdapter생성하면_입력한데이터가_바인딩된다() throws Exception {
+    public void refreshProjectList가_호출하면_입력한데이터가_바인딩된다() throws Exception {
+        subject.refreshProjectList();
         assertThat(subject.getItemCount()).isEqualTo(4);
         assertThat(subject.getItemViewType(0)).isEqualTo(HEADER_VIEW_TYPE);
         assertThat(subject.getItemViewType(1)).isEqualTo(ITEM_VIEW_TYPE);

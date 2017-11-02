@@ -19,6 +19,7 @@ import org.robolectric.annotation.Config;
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -51,12 +52,20 @@ public class MainActivityTest {
     }
 
     @Test
-    public void onPostCreate시_당신의참여를기다리는프로젝트를_표시한다() throws Exception {
+    public void onPostCreate시_당신의참여를기다리는프로젝트를_표시하기위한_Adapter를_매핑한다() throws Exception {
         assertThat(subject.recommendationAppsRecyclerview.getAdapter().getClass().getSimpleName()).contains(RecommendationAppsAdapter.class.getSimpleName());
     }
 
     @Test
-    public void onPostCreate시_취향저격Clab프로젝트둘러보기를_조회하여_표시한다() throws Exception {
+    public void onPostCreate시_취향저격Clab프로젝트둘러보기를_표시하기위한_Adapter를_매핑한다() throws Exception {
         assertThat(subject.clabAppsRecyclerview.getAdapter().getClass().getSimpleName()).contains(ClabAppsAdapter.class.getSimpleName());
+    }
+
+    @Test
+    public void onResume시_프로젝트목록정보_갱신을_요청한다() throws Exception {
+        subject.onResume();
+
+        verify(mockRecommendationAppsAdapter).refreshProjectList();
+        verify(mockClabAppsAdapter).refreshProjectList();
     }
 }

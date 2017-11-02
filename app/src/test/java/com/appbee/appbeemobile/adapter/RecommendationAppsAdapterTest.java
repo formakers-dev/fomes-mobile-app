@@ -58,13 +58,14 @@ public class RecommendationAppsAdapterTest {
     }
 
     @Test
-    public void RecommendationAppsAdapter생성하면_입력한데이터가_바인딩된다() throws Exception {
+    public void refreshProjectList를_호출하면_입력한데이터가_바인딩된다() throws Exception {
+        subject.refreshProjectList();
+
         assertThat(subject.getItemCount()).isEqualTo(4);
         assertThat(subject.getItemViewType(0)).isEqualTo(HEADER_VIEW_TYPE);
         assertThat(subject.getItemViewType(1)).isEqualTo(ITEM_VIEW_TYPE);
         assertThat(subject.getItemViewType(2)).isEqualTo(ITEM_VIEW_TYPE);
         assertThat(subject.getItemViewType(3)).isEqualTo(ITEM_VIEW_TYPE);
-
         assertThat(subject.getItem(0).getProjectId()).isEqualTo("projectId1");
         assertThat(subject.getItem(0).getName()).isEqualTo("유어커스텀");
         assertThat(subject.getItem(0).getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
