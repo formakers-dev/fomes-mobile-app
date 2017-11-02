@@ -59,10 +59,12 @@ public class DetailActivityTest {
         RxJavaHooks.onIOScheduler(Schedulers.immediate());
 
         List<Project.ImageObject> imageObjectList = new ArrayList<>();
-        imageObjectList.add(new Project.ImageObject("http://www.imageUrl.com", "imageFileNmae"));
+        imageObjectList.add(new Project.ImageObject("http://www.imageUrl.com", "imageFileName"));
         List<Project.InterviewPlan> interviewPlanList = new ArrayList<>();
         interviewPlanList.add(new Project.InterviewPlan(10, "인트로"));
         interviewPlanList.add(new Project.InterviewPlan(60, "인터뷰"));
+        List<Project.ImageObject> descriptionImageObjectList = new ArrayList<>();
+        descriptionImageObjectList.add(new Project.ImageObject("http://www.descriptionImage.com", "descriptionImage"));
 
         Project.Interview interview = new Project.Interview(interviewPlanList, "20171101", "20171105", true, "20171110", "20171115", "서울대", true, "offline");
         Project.Interviewer interviewer = new Project.Interviewer("이호영", "www.person.com", "-17년 삼성전자 C-lab과제 툰스토리 팀\n-Create Leader");
@@ -73,7 +75,7 @@ public class DetailActivityTest {
                 imageObjectList,
                 Lists.newArrayList("Foodie", "Viva video"),
                 "지그재그앱은 지그재그입니다",
-                null,
+                descriptionImageObjectList,
                 "temporary",
                 interviewer,
                 true,
@@ -92,7 +94,7 @@ public class DetailActivityTest {
     @Test
     @Ignore
     public void onCreate시_전달받은_projectID에_해당하는_project정보를_조회한다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
+        subject = activityController.create().get();
 
         assertThat(subject.getIntent().getStringExtra("EXTRA_PROJECT_ID")).isEqualTo("projectId");
         verify(mockProjectService).getProject(eq("projectId"));
@@ -128,5 +130,15 @@ public class DetailActivityTest {
         subject = activityController.create().postCreate(null).get();
         assertThat(subject.projectDescriptionTextView.getText()).contains("지그재그앱은 지그재그입니다");
         assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
+    }
+
+    @Test
+    public void onPostCreate시_조회된_인터뷰진행정보를_화면에_보여준다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+        assertThat(subject.interviewIntroduceTextView.getText()).contains("유어커스텀");
+        assertThat(subject.typeInterviewInfoView.getText()).contains("offline");
+        assertThat(subject.locationInterviewInfoView.getText()).contains("서울대");
+        assertThat(subject.timeInterviewInfoView.getText()).contains("70");
+        assertThat(subject.dateInterviewInfoView.getText()).contains("20171101");
     }
 }
