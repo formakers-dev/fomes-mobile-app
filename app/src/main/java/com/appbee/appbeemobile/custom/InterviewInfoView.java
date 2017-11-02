@@ -46,4 +46,12 @@ public class InterviewInfoView extends LinearLayout {
         textView.setText(typedArray.getString(R.styleable.InterviewInfo_text));
         imageView.setImageDrawable(typedArray.getDrawable(R.styleable.InterviewInfo_iconDrawable));
     }
+
+    public String getText() {
+        return (String) textView.getText();
+    }
+
+    public void setText(String text) {
+        textView.setText(text);
+    }
 }

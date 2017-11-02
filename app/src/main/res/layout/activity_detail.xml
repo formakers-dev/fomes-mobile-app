@@ -124,54 +124,6 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/appbee_gray"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="인터뷰 종륲"/>
-            <TextView
-                android:id="@+id/interview_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="대면"/>
-            <View
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                android:background="@color/appbee_gray"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="현재 남은자리"/>
-            <TextView
-                android:id="@+id/open_space"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"/>
-            <View
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                android:background="@color/appbee_gray"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="마감까지"/>
-            <TextView
-                android:id="@+id/d_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="D-3"/>
-        </LinearLayout>
-
-
-
-        <View
-            android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/appbee_yellow"/>
 
@@ -188,11 +140,11 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/map"/>
         </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/appbee_yellow"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -202,7 +154,7 @@
                 android:id="@+id/interview_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="당신은 툰스토리 팀이 애타게 찾아헤맨 바로 그 사람!\n지금 참여해서 당신의 의견을 프로젝트에 반영해 보세요.\n보답으로 받는 리워드는 덤이죠!"/>
+                android:text="@string/interview_introduce_text"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,26 +164,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.appbee.appbeemobile.custom.InterviewInfoView
+                    android:id="@+id/interview_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/interview_type_icon"
                     app:text="종류 : 오프라인 1대1 심층 인터뷰(대면)"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
+                    android:id="@+id/interview_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/location_icon"
                     app:text="장소 : 우면 사업장 회의실"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
+                    android:id="@+id/interview_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/calendar_icon"
                     app:text="날짜 : 12월 04일 ~ 12월 07일"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
+                    android:id="@+id/interview_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/time_icon"
                     app:text="시간 : 약 50분"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
+                    android:id="@+id/interview_reward"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/reward_icon"
@@ -277,6 +234,56 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인터뷰 종륲"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="대면"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:background="@color/appbee_gray"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현재 남은자리"/>
+            <TextView
+                android:id="@+id/open_space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:background="@color/appbee_gray"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="마감까지"/>
+            <TextView
+                android:id="@+id/d_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D-3"/>
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/appbee_yellow"/>
+
+
 
         <View
             android:layout_width="match_parent"
