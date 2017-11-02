@@ -24,17 +24,13 @@ public class ClabAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     static final int ITEM_VIEW_TYPE = 1;
 
     private Context context;
-    private List<Project> projectList;
+    private List<Project> projectList = new ArrayList<>();
+    private ProjectService projectService;
 
     @Inject
     public ClabAppsAdapter(Context context, ProjectService projectService) {
         this.context = context;
-
-        projectList = new ArrayList<>();
-        projectService.getClabProjects().subscribe(projectList -> {
-            this.projectList = projectList;
-            notifyDataSetChanged();
-        });
+        this.projectService = projectService;
     }
 
     @Override
@@ -48,11 +44,7 @@ public class ClabAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return HEADER_VIEW_TYPE;
-        } else {
-            return ITEM_VIEW_TYPE;
-        }
+        return (position == 0) ? HEADER_VIEW_TYPE : ITEM_VIEW_TYPE;
     }
 
     public Project getItem(int position) {
@@ -70,5 +62,12 @@ public class ClabAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return this.projectList.size() + 1;
+    }
+
+    public void refreshProjectList() {
+        projectService.getClabProjects().subscribe(projectList -> {
+            this.projectList = projectList;
+            notifyDataSetChanged();
+        });
     }
 }
