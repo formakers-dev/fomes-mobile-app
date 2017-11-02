@@ -1,13 +1,11 @@
 package com.appbee.appbeemobile.adapter.holder;
 
-import android.app.Activity;
 import android.app.Application;
 import android.view.LayoutInflater;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.activity.DetailActivity;
-import com.appbee.appbeemobile.activity.MainActivity;
 import com.appbee.appbeemobile.model.Project;
 
 import org.junit.Before;
@@ -27,12 +25,10 @@ import static org.robolectric.Shadows.shadowOf;
 public class ItemViewHolderTest {
     private ItemViewHolder subject;
 
-
     @Before
     public void setUp() throws Exception {
         subject = new ItemViewHolder(LayoutInflater.from(RuntimeEnvironment.application).inflate(R.layout.item_card, null), RuntimeEnvironment.application);
-
-        subject.bind(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), 0));
+        subject.bind(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
     }
 
     @Test

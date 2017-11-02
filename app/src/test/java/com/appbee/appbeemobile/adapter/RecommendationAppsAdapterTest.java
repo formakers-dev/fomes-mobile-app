@@ -44,9 +44,9 @@ public class RecommendationAppsAdapterTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         List<Project> mockRecommendationProjectList = new ArrayList<>();
-        mockRecommendationProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), 0));
-        mockRecommendationProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!",Collections.singletonList("지그재그2"), 0));
-        mockRecommendationProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그3"), 0));
+        mockRecommendationProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
+        mockRecommendationProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그2"), "temporary"));
+        mockRecommendationProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그3"), "temporary"));
         when(mockProjectService.getAllProjects()).thenReturn(Observable.just(mockRecommendationProjectList));
 
         subject = new RecommendationAppsAdapter(RuntimeEnvironment.application, mockProjectService);
@@ -69,6 +69,6 @@ public class RecommendationAppsAdapterTest {
         assertThat(subject.getItem(0).getName()).isEqualTo("유어커스텀");
         assertThat(subject.getItem(0).getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
         assertThat(subject.getItem(0).getApps().get(0)).isEqualTo("지그재그");
-        assertThat(subject.getItem(0).getStatus()).isEqualTo(0);
+        assertThat(subject.getItem(0).getStatus()).isEqualTo("temporary");
     }
 }

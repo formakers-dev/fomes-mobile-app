@@ -59,14 +59,24 @@ public class DetailActivityTest {
 
         List<Project.ImageObject> imageObjectList = new ArrayList<>();
         imageObjectList.add(new Project.ImageObject("http://www.imageUrl.com", "imageFileNmae"));
-        List<Project.InterviewPlan> interviewPlenList = new ArrayList<>();
-        interviewPlenList.add(new Project.InterviewPlan(10, "인트로"));
-        interviewPlenList.add(new Project.InterviewPlan(60, "인터뷰"));
+        List<Project.InterviewPlan> interviewPlanList = new ArrayList<>();
+        interviewPlanList.add(new Project.InterviewPlan(10, "인트로"));
+        interviewPlanList.add(new Project.InterviewPlan(60, "인터뷰"));
 
+        Project.Interview interview = new Project.Interview(interviewPlanList, "20171101", "20171105", true, "20171110", "20171115", "서울대", true, "offline");
         Project.Interviewer interviewer = new Project.Interviewer("이호영", "www.person.com", "-17년 삼성전자 C-lab과제 툰스토리 팀\n-Create Leader");
-        Project project = new Project("projectId1", "유어커스텀", "증강현실로 한장의 사진에 담는 나만의 추억", imageObjectList, Lists.newArrayList("Foodie", "Viva video"),
-                "지그재그앱은 지그재그입니다", null, "오프라인인터뷰", true, "서울대", "20171101", "20171105", "20171110", "20171115",
-                interviewPlenList, 0, interviewer, true, false, true);
+
+        Project project = new Project("projectId1",
+                "유어커스텀",
+                "증강현실로 한장의 사진에 담는 나만의 추억",
+                imageObjectList,
+                Lists.newArrayList("Foodie", "Viva video"),
+                "지그재그앱은 지그재그입니다",
+                null,
+                "temporary",
+                interviewer,
+                true,
+                interview);
 
         when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(project));
 
@@ -92,8 +102,6 @@ public class DetailActivityTest {
         subject = activityController.create().postCreate(null).get();
 
         assertThat(subject.representationImageView.getTag(R.string.tag_key_image_url)).isEqualTo("http://www.imageUrl.com");
-        assertThat(subject.openBadgeImageView.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.favoriteBadgeImageView.getVisibility()).isEqualTo(View.GONE);
         assertThat(subject.clabBadgeImageView.getVisibility()).isEqualTo(View.VISIBLE);
     }
 
