@@ -43,16 +43,6 @@
                 android:nestedScrollingEnabled="false"
                 android:layout_marginTop="10dp"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/clab_apps_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:background="@color/appbee_gray"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="10dp"/>
-
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

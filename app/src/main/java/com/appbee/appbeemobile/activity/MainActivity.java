@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
 import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
 
 import javax.inject.Inject;
@@ -52,9 +52,6 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.recommendation_apps_recyclerview)
     RecyclerView recommendationAppsRecyclerview;
 
-    @BindView(R.id.clab_apps_recyclerview)
-    RecyclerView clabAppsRecyclerview;
-
     TextView userIdTextView;
 
     @Inject
@@ -64,7 +61,7 @@ public class MainActivity extends BaseActivity
     RecommendationAppsAdapter recommendationAppsRecyclerViewAdapter;
 
     @Inject
-    ClabAppsAdapter clabAppsRecyclerViewAdapter;
+    ProjectService projectService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,18 +94,13 @@ public class MainActivity extends BaseActivity
         recommendLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         recommendationAppsRecyclerview.setLayoutManager(recommendLayoutManger);
         recommendationAppsRecyclerview.setAdapter(recommendationAppsRecyclerViewAdapter);
-
-        LinearLayoutManager clabLayoutManger = new LinearLayoutManager(this);
-        clabLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
-        clabAppsRecyclerview.setLayoutManager(clabLayoutManger);
-        clabAppsRecyclerview.setAdapter(clabAppsRecyclerViewAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        recommendationAppsRecyclerViewAdapter.refreshProjectList();
-        clabAppsRecyclerViewAdapter.refreshProjectList();
+
+        projectService.getAllProjects().subscribe(projectList -> recommendationAppsRecyclerViewAdapter.setProjectList(projectList));
     }
 
     @Override

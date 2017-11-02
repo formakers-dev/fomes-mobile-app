@@ -4,10 +4,13 @@ import android.view.View;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
 import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.network.ProjectService;
+import com.google.common.collect.Lists;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +19,14 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
+
+import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -35,14 +45,23 @@ public class MainActivityTest {
     RecommendationAppsAdapter mockRecommendationAppsAdapter;
 
     @Inject
-    ClabAppsAdapter mockClabAppsAdapter;
+    ProjectService mockProjectService;
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.onIOScheduler(Schedulers.immediate());
+
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+
         when(mockLocalStorageHelper.getEmail()).thenReturn("anyEmail");
 
         subject = Robolectric.buildActivity(MainActivity.class).create().postCreate(null).get();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 
     @Test
@@ -57,15 +76,17 @@ public class MainActivityTest {
     }
 
     @Test
-    public void onPostCreate시_취향저격Clab프로젝트둘러보기를_표시하기위한_Adapter를_매핑한다() throws Exception {
-        assertThat(subject.clabAppsRecyclerview.getAdapter().getClass().getSimpleName()).contains(ClabAppsAdapter.class.getSimpleName());
-    }
+    public void onResume시_프로젝트목록정보를_갱신한다() throws Exception {
+        List<Project> mockProjectList = new ArrayList<>();
+        mockProjectList.add(new Project("projectId4", "리얼포토", "증강현실로 한장의 사진에 담는 나만의 추억", Lists.newArrayList("Foodie", "Viva video"), "temporary"));
+        mockProjectList.add(new Project("projectId5", "엔빵", "모임별로 엔빵해", Lists.newArrayList("카카오뱅크", "토스"), "temporary"));
+        mockProjectList.add(new Project("projectId6", "겜돌이", "게임하자",  Lists.newArrayList("클래시로얄", "리니지"), "temporary"));
 
-    @Test
-    public void onResume시_프로젝트목록정보_갱신을_요청한다() throws Exception {
+        when(mockProjectService.getAllProjects()).thenReturn(Observable.just(mockProjectList));
+
         subject.onResume();
 
-        verify(mockRecommendationAppsAdapter).refreshProjectList();
-        verify(mockClabAppsAdapter).refreshProjectList();
+        verify(mockProjectService).getAllProjects();
+        verify(mockRecommendationAppsAdapter).setProjectList(mockProjectList);
     }
 }
