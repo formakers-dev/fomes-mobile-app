@@ -11,22 +11,12 @@ public class Project {
     private List<String> apps;
     private String description;
     private List<String> descriptionImages;
-    private String interviewType;
-    private boolean interviewNegotiable;
-    private String location;
-    private String openDate;
-    private String closeDate;
-    private String startDate;
-    private String endDate;
-    private List<InterviewPlan> plans;
-    private int status;
+    private String status;
     private Interviewer interviewer;
-
     private boolean isCLab;
-    private boolean isFavorite;
-    private boolean isOpen;
+    private Interview interview;
 
-    public Project(String projectId, String name, String introduce, List<String> apps, int status) {
+    public Project(String projectId, String name, String introduce, List<String> apps, String status) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -34,7 +24,7 @@ public class Project {
         this.status = status;
     }
 
-    public Project(String projectId, String name, String introduce, List<ImageObject> images, List<String> apps, String description, List<String> descriptionImages, String interviewType, boolean interviewNegotiable, String location, String openDate, String closeDate, String startDate, String endDate, List<InterviewPlan> plans, int status, Interviewer interviewer, boolean isCLab, boolean isFavorite, boolean isOpen) {
+    public Project(String projectId, String name, String introduce, List<ImageObject> images, List<String> apps, String description, List<String> descriptionImages, String status, Interviewer interviewer, boolean isCLab, Interview interview) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -42,19 +32,10 @@ public class Project {
         this.apps = apps;
         this.description = description;
         this.descriptionImages = descriptionImages;
-        this.interviewType = interviewType;
-        this.interviewNegotiable = interviewNegotiable;
-        this.location = location;
-        this.openDate = openDate;
-        this.closeDate = closeDate;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.plans = plans;
         this.status = status;
         this.interviewer = interviewer;
         this.isCLab = isCLab;
-        this.isFavorite = isFavorite;
-        this.isOpen = isOpen;
+        this.interview = interview;
     }
 
     public String getProjectId() {
@@ -113,75 +94,11 @@ public class Project {
         this.descriptionImages = descriptionImages;
     }
 
-    public String getInterviewType() {
-        return interviewType;
-    }
-
-    public void setInterviewType(String interviewType) {
-        this.interviewType = interviewType;
-    }
-
-    public boolean isInterviewNegotiable() {
-        return interviewNegotiable;
-    }
-
-    public void setInterviewNegotiable(boolean interviewNegotiable) {
-        this.interviewNegotiable = interviewNegotiable;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getOpenDate() {
-        return openDate;
-    }
-
-    public void setOpenDate(String openDate) {
-        this.openDate = openDate;
-    }
-
-    public String getCloseDate() {
-        return closeDate;
-    }
-
-    public void setCloseDate(String closeDate) {
-        this.closeDate = closeDate;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public List<InterviewPlan> getPlans() {
-        return plans;
-    }
-
-    public void setPlans(List<InterviewPlan> plans) {
-        this.plans = plans;
-    }
-
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -201,26 +118,18 @@ public class Project {
         isCLab = CLab;
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
+    public Interview getInterview() {
+        return interview;
     }
 
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public void setOpen(boolean open) {
-        isOpen = open;
+    public void setInterview(Interview interview) {
+        this.interview = interview;
     }
 
     public static class Interviewer {
-        public String name;
-        public String url;
-        public String introduce;
+        private String name;
+        private String url;
+        private String introduce;
 
         public Interviewer(String name, String url, String introduce) {
             this.name = name;
@@ -254,13 +163,13 @@ public class Project {
     }
 
     public static class InterviewPlan {
+        private int minute;
+        private String plan;
+
         public InterviewPlan(int minute, String plan) {
             this.minute = minute;
             this.plan = plan;
         }
-
-        int minute;
-        String plan;
 
         public int getMinute() {
             return minute;
@@ -280,13 +189,13 @@ public class Project {
     }
 
     public static class ImageObject {
+        private String url;
+        private String name;
+
         public ImageObject(String url, String name) {
             this.url = url;
             this.name = name;
         }
-
-        String url;
-        String name;
 
         public String getUrl() {
             return url;
@@ -302,6 +211,102 @@ public class Project {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    public static class Interview {
+        private List<InterviewPlan> interviewPlanList;
+        private String startDate;
+        private String endDate;
+        private boolean dateNegotiable;
+        private String openDate;
+        private String closeDate;
+        private String location;
+        private boolean locationNegotiable;
+        private String type;
+
+        public Interview(List<InterviewPlan> interviewPlanList, String startDate, String endDate, boolean dateNegotiable, String openDate, String closeDate, String location, boolean locationNegotiable, String type) {
+            this.interviewPlanList = interviewPlanList;
+            this.startDate = startDate;
+            this.openDate = openDate;
+            this.dateNegotiable = dateNegotiable;
+            this.endDate = endDate;
+            this.closeDate = closeDate;
+            this.location = location;
+            this.locationNegotiable = locationNegotiable;
+            this.type = type;
+        }
+
+        public List<InterviewPlan> getInterviewPlanList() {
+            return interviewPlanList;
+        }
+
+        public void setInterviewPlanList(List<InterviewPlan> interviewPlanList) {
+            this.interviewPlanList = interviewPlanList;
+        }
+
+        public String getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(String startDate) {
+            this.startDate = startDate;
+        }
+
+        public String getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(String endDate) {
+            this.endDate = endDate;
+        }
+
+        public boolean isDateNegotiable() {
+            return dateNegotiable;
+        }
+
+        public void setDateNegotiable(boolean dateNegotiable) {
+            this.dateNegotiable = dateNegotiable;
+        }
+
+        public String getOpenDate() {
+            return openDate;
+        }
+
+        public void setOpenDate(String openDate) {
+            this.openDate = openDate;
+        }
+
+        public String getCloseDate() {
+            return closeDate;
+        }
+
+        public void setCloseDate(String closeDate) {
+            this.closeDate = closeDate;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public boolean isLocationNegotiable() {
+            return locationNegotiable;
+        }
+
+        public void setLocationNegotiable(boolean locationNegotiable) {
+            this.locationNegotiable = locationNegotiable;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
         }
     }
 }

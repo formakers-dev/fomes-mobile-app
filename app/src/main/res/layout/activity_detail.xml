@@ -32,18 +32,6 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
                 <ImageView
-                    android:id="@+id/open_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/badge"
-                    android:visibility="gone"/>
-                <ImageView
-                    android:id="@+id/favorite_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/badge"
-                    android:visibility="gone"/>
-                <ImageView
                     android:id="@+id/clab_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

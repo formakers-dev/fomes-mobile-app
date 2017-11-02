@@ -33,12 +33,6 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.representation_image)
     ImageView representationImageView;
 
-    @BindView(R.id.open_badge)
-    ImageView openBadgeImageView;
-
-    @BindView(R.id.favorite_badge)
-    ImageView favoriteBadgeImageView;
-
     @BindView(R.id.clab_badge)
     ImageView clabBadgeImageView;
 
@@ -79,25 +73,12 @@ public class DetailActivity extends BaseActivity {
                     .into(representationImageView);
 
             representationImageView.setTag(R.string.tag_key_image_url, project.getImages().get(0).getUrl());
-            if (project.isCLab()) {
-                clabBadgeImageView.setVisibility(View.VISIBLE);
-            }
-
-            if (project.isFavorite()) {
-                favoriteBadgeImageView.setVisibility(View.VISIBLE);
-            }
-
-            if (project.isOpen()) {
-                openBadgeImageView.setVisibility(View.VISIBLE);
-            }
-
+            clabBadgeImageView.setVisibility(project.isCLab() ? View.VISIBLE : View.GONE);
             projectIntroduceTextView.setText(project.getIntroduce());
             projectNameTextView.setText(project.getName());
             appsDescriptionTextView.setText(String.format(getString(R.string.apps_description_format), FormatUtil.formatAppsString(project.getApps())));
-
             interviewerNameTextView.setText(project.getInterviewer().getName());
             interviewerIntroduceTextView.setText(project.getInterviewer().getIntroduce());
-
         }, error -> Log.d(TAG, error.getMessage()));
     }
 }

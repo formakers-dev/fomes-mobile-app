@@ -46,9 +46,9 @@ public class ClabAppsAdapterTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         List<Project> mockClabProjectList = new ArrayList<>();
-        mockClabProjectList.add(new Project("projectId4", "리얼포토", "증강현실로 한장의 사진에 담는 나만의 추억",  Lists.newArrayList("Foodie", "Viva video"), 0));
-        mockClabProjectList.add(new Project("projectId5", "엔빵", "모임별로 엔빵해", Lists.newArrayList("카카오뱅크", "토스"), 0));
-        mockClabProjectList.add(new Project("projectId6", "겜돌이", "게임하자",  Lists.newArrayList("클래시로얄", "리니지"), 0));
+        mockClabProjectList.add(new Project("projectId4", "리얼포토", "증강현실로 한장의 사진에 담는 나만의 추억", Lists.newArrayList("Foodie", "Viva video"), "temporary"));
+        mockClabProjectList.add(new Project("projectId5", "엔빵", "모임별로 엔빵해", Lists.newArrayList("카카오뱅크", "토스"), "temporary"));
+        mockClabProjectList.add(new Project("projectId6", "겜돌이", "게임하자",  Lists.newArrayList("클래시로얄", "리니지"), "temporary"));
         when(mockProjectService.getClabProjects()).thenReturn(Observable.just(mockClabProjectList));
 
         subject = new ClabAppsAdapter(RuntimeEnvironment.application, mockProjectService);
@@ -71,6 +71,6 @@ public class ClabAppsAdapterTest {
         assertThat(subject.getItem(0).getName()).isEqualTo("리얼포토");
         assertThat(subject.getItem(0).getIntroduce()).isEqualTo("증강현실로 한장의 사진에 담는 나만의 추억");
         assertThat(subject.getItem(0).getApps().get(0)).isEqualTo("Foodie");
-        assertThat(subject.getItem(0).getStatus()).isEqualTo(0);
+        assertThat(subject.getItem(0).getStatus()).isEqualTo("temporary");
     }
 }
