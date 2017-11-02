@@ -1,6 +1,8 @@
 package com.appbee.appbeemobile.util;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
+import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -20,5 +22,14 @@ public class FormatUtilTest {
     public void formatLongCategoryName호출시_카테고리명이4글자이하인경우_그대로_리턴한다() throws Exception {
         assertThat(FormatUtil.formatLongCategoryName("금융")).isEqualTo("금융");
         assertThat(FormatUtil.formatLongCategoryName("비즈니스")).isEqualTo("비즈니스");
+    }
+
+    @Test
+    public void formatAppsString호출시_대괄호로감싼Apps텍스트가리턴된다() throws Exception {
+        List<String> apps = Lists.newArrayList("첫번째앱");
+        assertThat(FormatUtil.formatAppsString(apps)).isEqualTo("[첫번째앱]");
+
+        apps = Lists.newArrayList("첫번째앱", "두번째앱");
+        assertThat(FormatUtil.formatAppsString(apps)).isEqualTo("[첫번째앱][두번째앱]");
     }
 }

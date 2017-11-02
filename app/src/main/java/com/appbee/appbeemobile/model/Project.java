@@ -9,7 +9,6 @@ public class Project {
     private String introduce;
     private List<ImageObject> images;
     private List<String> apps;
-    private String interviewerIntroduce;
     private String description;
     private List<String> descriptionImages;
     private String interviewType;
@@ -21,6 +20,7 @@ public class Project {
     private String endDate;
     private List<InterviewPlan> plans;
     private int status;
+    private Interviewer interviewer;
 
     private boolean isCLab;
     private boolean isFavorite;
@@ -34,14 +34,14 @@ public class Project {
         this.status = status;
     }
 
-    public Project(String projectId, String name, String introduce, List<ImageObject> images, List<String> apps, String interviewerIntroduce, String description, String interviewType, boolean interviewNegotiable, String location, String openDate, String closeDate, String startDate, String endDate, List<InterviewPlan> plans, int status) {
+    public Project(String projectId, String name, String introduce, List<ImageObject> images, List<String> apps, String description, List<String> descriptionImages, String interviewType, boolean interviewNegotiable, String location, String openDate, String closeDate, String startDate, String endDate, List<InterviewPlan> plans, int status, Interviewer interviewer, boolean isCLab, boolean isFavorite, boolean isOpen) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
         this.images = images;
         this.apps = apps;
-        this.interviewerIntroduce = interviewerIntroduce;
         this.description = description;
+        this.descriptionImages = descriptionImages;
         this.interviewType = interviewType;
         this.interviewNegotiable = interviewNegotiable;
         this.location = location;
@@ -51,6 +51,10 @@ public class Project {
         this.endDate = endDate;
         this.plans = plans;
         this.status = status;
+        this.interviewer = interviewer;
+        this.isCLab = isCLab;
+        this.isFavorite = isFavorite;
+        this.isOpen = isOpen;
     }
 
     public String getProjectId() {
@@ -91,14 +95,6 @@ public class Project {
 
     public void setApps(List<String> apps) {
         this.apps = apps;
-    }
-
-    public String getInterviewerIntroduce() {
-        return interviewerIntroduce;
-    }
-
-    public void setInterviewerIntroduce(String interviewerIntroduce) {
-        this.interviewerIntroduce = interviewerIntroduce;
     }
 
     public String getDescription() {
@@ -189,6 +185,14 @@ public class Project {
         this.status = status;
     }
 
+    public Interviewer getInterviewer() {
+        return interviewer;
+    }
+
+    public void setInterviewer(Interviewer interviewer) {
+        this.interviewer = interviewer;
+    }
+
     public boolean isCLab() {
         return isCLab;
     }
@@ -211,6 +215,42 @@ public class Project {
 
     public void setOpen(boolean open) {
         isOpen = open;
+    }
+
+    public static class Interviewer {
+        public String name;
+        public String url;
+        public String introduce;
+
+        public Interviewer(String name, String url, String introduce) {
+            this.name = name;
+            this.url = url;
+            this.introduce = introduce;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getIntroduce() {
+            return introduce;
+        }
+
+        public void setIntroduce(String introduce) {
+            this.introduce = introduce;
+        }
     }
 
     public static class InterviewPlan {
