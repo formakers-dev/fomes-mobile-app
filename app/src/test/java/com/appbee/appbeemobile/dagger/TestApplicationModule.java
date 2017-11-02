@@ -3,12 +3,12 @@ package com.appbee.appbeemobile.dagger;
 import android.content.Context;
 
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.ClabAppsAdapter;
 import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.network.AppAPI;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
@@ -18,7 +18,6 @@ import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
-import com.appbee.appbeemobile.helper.TimeHelper;
 
 import javax.inject.Singleton;
 
@@ -143,11 +142,5 @@ public class TestApplicationModule {
     @Provides
     RecommendationAppsAdapter recommendationAppsAdapter() {
         return mock(RecommendationAppsAdapter.class);
-    }
-
-    @Singleton
-    @Provides
-    ClabAppsAdapter clabAppsAdapter() {
-        return mock(ClabAppsAdapter.class);
     }
 }

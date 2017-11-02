@@ -9,7 +9,6 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.holder.HeaderViewHolder;
 import com.appbee.appbeemobile.adapter.holder.ItemViewHolder;
 import com.appbee.appbeemobile.model.Project;
-import com.appbee.appbeemobile.network.ProjectService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,25 +18,15 @@ import javax.inject.Singleton;
 
 @Singleton
 public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
     private Context context;
     private List<Project> projectList = new ArrayList<>();
-    private ProjectService projectService;
 
     static final int HEADER_VIEW_TYPE = 0;
     static final int ITEM_VIEW_TYPE = 1;
 
     @Inject
-    public RecommendationAppsAdapter(Context context, ProjectService projectService) {
+    public RecommendationAppsAdapter(Context context) {
         this.context = context;
-        this.projectService = projectService;
-    }
-
-    public void refreshProjectList() {
-        projectService.getAllProjects().subscribe(projectList -> {
-            this.projectList = projectList;
-            this.notifyDataSetChanged();
-        });
     }
 
     @Override
@@ -47,6 +36,11 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
         } else {
             return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), context);
         }
+    }
+
+    public void setProjectList(List<Project> projectList) {
+        this.projectList = projectList;
+        this.notifyDataSetChanged();
     }
 
     @Override

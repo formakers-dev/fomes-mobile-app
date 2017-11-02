@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.adapter;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.Project;
-import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,24 +16,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static com.appbee.appbeemobile.adapter.RecommendationAppsAdapter.HEADER_VIEW_TYPE;
 import static com.appbee.appbeemobile.adapter.RecommendationAppsAdapter.ITEM_VIEW_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class RecommendationAppsAdapterTest {
     private RecommendationAppsAdapter subject;
-
-    @Inject
-    ProjectService mockProjectService;
 
     @Before
     public void setUp() throws Exception {
@@ -43,13 +35,7 @@ public class RecommendationAppsAdapterTest {
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        List<Project> mockRecommendationProjectList = new ArrayList<>();
-        mockRecommendationProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
-        mockRecommendationProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그2"), "temporary"));
-        mockRecommendationProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그3"), "temporary"));
-        when(mockProjectService.getAllProjects()).thenReturn(Observable.just(mockRecommendationProjectList));
-
-        subject = new RecommendationAppsAdapter(RuntimeEnvironment.application, mockProjectService);
+        subject = new RecommendationAppsAdapter(RuntimeEnvironment.application);
     }
 
     @After
@@ -58,8 +44,13 @@ public class RecommendationAppsAdapterTest {
     }
 
     @Test
-    public void refreshProjectList를_호출하면_입력한데이터가_바인딩된다() throws Exception {
-        subject.refreshProjectList();
+    public void setProjectList를_호출하면_입력한데이터가_바인딩된다() throws Exception {
+        List<Project> mockProjectList = new ArrayList<>();
+        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
+        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그2"), "temporary"));
+        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그3"), "temporary"));
+
+        subject.setProjectList(mockProjectList);
 
         assertThat(subject.getItemCount()).isEqualTo(4);
         assertThat(subject.getItemViewType(0)).isEqualTo(HEADER_VIEW_TYPE);
