@@ -22,6 +22,10 @@ public class Project {
     private List<InterviewPlan> plans;
     private int status;
 
+    private boolean isCLab;
+    private boolean isFavorite;
+    private boolean isOpen;
+
     public Project(String projectId, String name, String introduce, List<String> apps, int status) {
         this.projectId = projectId;
         this.name = name;
@@ -183,6 +187,30 @@ public class Project {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public boolean isCLab() {
+        return isCLab;
+    }
+
+    public void setCLab(boolean CLab) {
+        isCLab = CLab;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
     }
 
     public static class InterviewPlan {

@@ -20,7 +20,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     View mView;
     TextView itemCardTagTextView;
     ImageView imageView;
-    TextView statusTextView;
     TextView introduceTextView;
     TextView nameTextView;
     String projectId;
@@ -29,9 +28,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         super(view);
         mContext = context;
         mView = view;
-        itemCardTagTextView = (TextView) view.findViewById(R.id.item_card_tag);
+        itemCardTagTextView = (TextView) view.findViewById(R.id.project_tag);
         imageView = (ImageView) view.findViewById(R.id.project_image);
-        statusTextView = (TextView) view.findViewById(R.id.project_status);
         introduceTextView = (TextView) view.findViewById(R.id.project_introduce);
         nameTextView = (TextView) view.findViewById(R.id.project_name);
 
@@ -51,7 +49,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
             Glide.with(mContext).load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                     .into(imageView);
         }
-        statusTextView.setText(String.valueOf(project.getStatus()));
         introduceTextView.setText(project.getIntroduce());
         nameTextView.setText(project.getName());
         projectId = project.getProjectId();
