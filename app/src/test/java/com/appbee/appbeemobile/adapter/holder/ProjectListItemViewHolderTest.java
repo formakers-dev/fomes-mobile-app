@@ -22,12 +22,12 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class ItemViewHolderTest {
-    private ItemViewHolder subject;
+public class ProjectListItemViewHolderTest {
+    private ProjectListItemViewHolder subject;
 
     @Before
     public void setUp() throws Exception {
-        subject = new ItemViewHolder(LayoutInflater.from(RuntimeEnvironment.application).inflate(R.layout.item_card, null), RuntimeEnvironment.application);
+        subject = new ProjectListItemViewHolder(LayoutInflater.from(RuntimeEnvironment.application).inflate(R.layout.item_card, null), RuntimeEnvironment.application);
         subject.bind(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
     }
 
@@ -42,6 +42,6 @@ public class ItemViewHolderTest {
     @Test
     public void ItemView를_클릭하면_DetailActivity로_이동한다() throws Exception {
         subject.mView.performClick();
-        assertThat(shadowOf(((Application) subject.mContext)).getNextStartedActivity().getComponent().getClassName()).contains(DetailActivity.class.getSimpleName());
+        assertThat(shadowOf(((Application) subject.context)).getNextStartedActivity().getComponent().getClassName()).contains(DetailActivity.class.getSimpleName());
     }
 }

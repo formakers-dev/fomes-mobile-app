@@ -1,45 +1,42 @@
 package com.appbee.appbeemobile.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.adapter.holder.HeaderViewHolder;
-import com.appbee.appbeemobile.adapter.holder.ItemViewHolder;
+import com.appbee.appbeemobile.adapter.holder.ProjectListHeaderViewHolder;
+import com.appbee.appbeemobile.adapter.holder.ProjectListItemViewHolder;
 import com.appbee.appbeemobile.model.Project;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
-public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context context;
-    private List<Project> projectList = new ArrayList<>();
+public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private List<Project> projectList;
 
     static final int HEADER_VIEW_TYPE = 0;
     static final int ITEM_VIEW_TYPE = 1;
 
-    @Inject
-    public RecommendationAppsAdapter(Context context) {
-        this.context = context;
+    public ProjectListAdapter(List<Project> projectList) {
+        this.projectList = projectList;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == HEADER_VIEW_TYPE) {
-            return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false), HeaderViewHolder.HEADER_TYPE_RECOMMENDATION);
+            return new ProjectListHeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false));
         } else {
-            return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), context);
+            return new ProjectListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), parent.getContext());
         }
     }
 
     public void setProjectList(List<Project> projectList) {
+        if(this.projectList != null) {
+            this.projectList.clear();
+        }
+
         this.projectList = projectList;
+
         this.notifyDataSetChanged();
     }
 
@@ -54,9 +51,9 @@ public class RecommendationAppsAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ItemViewHolder) {
+        if (holder instanceof ProjectListItemViewHolder) {
             Project project = projectList.get(position - 1);
-            ((ItemViewHolder) holder).bind(project);
+            ((ProjectListItemViewHolder) holder).bind(project);
         }
     }
 
