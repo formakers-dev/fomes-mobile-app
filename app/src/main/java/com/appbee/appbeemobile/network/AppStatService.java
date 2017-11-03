@@ -1,7 +1,5 @@
 package com.appbee.appbeemobile.network;
 
-import android.util.Log;
-
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
@@ -32,20 +30,6 @@ public class AppStatService extends AbstractAppBeeService {
         this.timeHelper = timeHelper;
     }
 
-    public void sendLongTermStatsFor2Years() {
-        StatAPI.sendLongTermStatsYearly(localStorageHelper.getAccessToken(), appUsageDataHelper.getNativeLongTermStatsFor2Years())
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
-    }
-
-    public void sendLongTermStatsFor3Months() {
-        StatAPI.sendLongTermStatsMonthly(localStorageHelper.getAccessToken(), appUsageDataHelper.getLongTermStatsFor3Months())
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
-    }
-
     public Observable<Boolean> sendShortTermStats(long startTime) {
         final String accessToken = localStorageHelper.getAccessToken();
         final long endTime = Math.max(timeHelper.getCurrentTime() - 300000L, startTime);
@@ -70,10 +54,6 @@ public class AppStatService extends AbstractAppBeeService {
         }
 
         return Lists.newArrayList(usedPackageNameSet);
-    }
-
-    public Observable<Integer> getAverageUsedMinutesPerDay() {
-        return StatAPI.getAverageUsedMinutesPerDay(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io());
     }
 
     @Override

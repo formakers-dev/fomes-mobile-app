@@ -2,12 +2,10 @@ package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.model.LongTermStat;
-import com.appbee.appbeemobile.model.NativeAppInfo;
-import com.appbee.appbeemobile.model.NativeLongTermStat;
-import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.ShortTermStat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -63,9 +61,6 @@ public class AppStatServiceTest {
     ArgumentCaptor<List<ShortTermStat>> shortTermStatsCaptor = ArgumentCaptor.forClass(List.class);
 
     @Captor
-    ArgumentCaptor<List<LongTermStat>> longTermStatsCaptor = ArgumentCaptor.forClass(List.class);
-
-    @Captor
     ArgumentCaptor<String> userIdCaptor = ArgumentCaptor.forClass(String.class);
 
     @Before
@@ -81,27 +76,6 @@ public class AppStatServiceTest {
     @After
     public void tearDown() {
         RxJavaHooks.reset();
-    }
-
-    @Test
-    public void sendLongTermStatsFor2Years호출시_연간일별통계를_조회하여_서버로_전송한다() throws Exception {
-        List<NativeLongTermStat> mockNativeLongTermStatList = new ArrayList<>();
-        mockNativeLongTermStatList.add(createMockNativeLongTermStat("anyPackage", 100L, 200L, 300L, 400L));
-
-        when(mockAppUsageDataHelper.getNativeLongTermStatsFor2Years()).thenReturn(mockNativeLongTermStatList);
-        when(mockStatAPI.sendLongTermStatsYearly(anyString(), any(List.class))).thenReturn(mock(Observable.class));
-
-        subject.sendLongTermStatsFor2Years();
-
-        ArgumentCaptor<List<NativeLongTermStat>> navtiveLongTermStatCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockStatAPI).sendLongTermStatsYearly(anyString(), navtiveLongTermStatCaptor.capture());
-        assertThat(navtiveLongTermStatCaptor.getValue().size()).isEqualTo(1);
-        NativeLongTermStat nativeLongTermStat = navtiveLongTermStatCaptor.getValue().get(0);
-        assertEquals(nativeLongTermStat.getPackageName(), "anyPackage");
-        assertEquals(nativeLongTermStat.getBeginTimeStamp(), 100L);
-        assertEquals(nativeLongTermStat.getEndTimeStamp(), 200L);
-        assertEquals(nativeLongTermStat.getLastTimeUsed(), 300L);
-        assertEquals(nativeLongTermStat.getTotalTimeInForeground(), 400L);
     }
 
     @Test
@@ -144,46 +118,5 @@ public class AppStatServiceTest {
 
         assertThat(usedPackageNameList.size()).isEqualTo(1);
         assertThat(usedPackageNameList.get(0)).isEqualTo("com.package.name1");
-    }
-
-    @Test
-    public void sendLongTermStatsFor3Months() throws Exception {
-        List<NativeLongTermStat> nativeLongTermStatList = new ArrayList<>();
-        nativeLongTermStatList.add(new NativeLongTermStat("package1", 100L, 200L, 300L, 400L));
-        nativeLongTermStatList.add(new NativeLongTermStat("package2", 200L, 300L, 400L, 500L));
-        when(mockAppUsageDataHelper.getLongTermStatsFor3Months()).thenReturn(nativeLongTermStatList);
-        when(mockStatAPI.sendLongTermStatsMonthly(anyString(), any(List.class))).thenReturn(mock(Observable.class));
-
-        subject.sendLongTermStatsFor3Months();
-
-        ArgumentCaptor<List> listCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockStatAPI).sendLongTermStatsMonthly(anyString(), listCaptor.capture());
-        List<NativeLongTermStat> list = listCaptor.getValue();
-        assertThat(list.size()).isEqualTo(2);
-        assertThat(list.get(0).getPackageName()).isEqualTo("package1");
-        assertThat(list.get(0).getBeginTimeStamp()).isEqualTo(100L);
-        assertThat(list.get(0).getEndTimeStamp()).isEqualTo(200L);
-        assertThat(list.get(0).getLastTimeUsed()).isEqualTo(300L);
-        assertThat(list.get(0).getTotalTimeInForeground()).isEqualTo(400L);
-    }
-
-    @Test
-    public void getAverageUsedMinutesPerDay호출시_서버에_저장된_정보를_기반으로_하루평균사용시간을_가져온다() throws Exception {
-        int expectedAverageUsedMinutesPerDay = 1234;
-        when(mockStatAPI.getAverageUsedMinutesPerDay(anyString())).thenReturn(Observable.just(expectedAverageUsedMinutesPerDay));
-
-        subject.getAverageUsedMinutesPerDay().observeOn(Schedulers.io()).subscribe(returnedValue -> {
-            assertThat(returnedValue).isEqualTo(expectedAverageUsedMinutesPerDay);
-        });
-    }
-
-    private NativeLongTermStat createMockNativeLongTermStat(String packageName, long beginTimeStamp, long endTimeStamp, long lastTimeUsed, long totalUsedTime) {
-        NativeLongTermStat mockNativeLongTermStat = mock(NativeLongTermStat.class);
-        when(mockNativeLongTermStat.getPackageName()).thenReturn(packageName);
-        when(mockNativeLongTermStat.getBeginTimeStamp()).thenReturn(beginTimeStamp);
-        when(mockNativeLongTermStat.getEndTimeStamp()).thenReturn(endTimeStamp);
-        when(mockNativeLongTermStat.getTotalTimeInForeground()).thenReturn(totalUsedTime);
-        when(mockNativeLongTermStat.getLastTimeUsed()).thenReturn(lastTimeUsed);
-        return mockNativeLongTermStat;
     }
 }
