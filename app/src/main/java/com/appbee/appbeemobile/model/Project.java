@@ -215,7 +215,7 @@ public class Project {
     }
 
     public static class Interview {
-        private List<InterviewPlan> interviewPlanList;
+        private List<InterviewPlan> plans;
         private String startDate;
         private String endDate;
         private boolean dateNegotiable;
@@ -224,25 +224,29 @@ public class Project {
         private String location;
         private boolean locationNegotiable;
         private String type;
+        private int totalCount;
+        private List<String> participants;
 
-        public Interview(List<InterviewPlan> interviewPlanList, String startDate, String endDate, boolean dateNegotiable, String openDate, String closeDate, String location, boolean locationNegotiable, String type) {
-            this.interviewPlanList = interviewPlanList;
+        public Interview(List<InterviewPlan> interviewPlanList, String startDate, String endDate, boolean dateNegotiable, String openDate, String closeDate, String location, boolean locationNegotiable, String type, int totalCount, List<String> participants) {
+            this.plans = interviewPlanList;
             this.startDate = startDate;
-            this.openDate = openDate;
-            this.dateNegotiable = dateNegotiable;
             this.endDate = endDate;
+            this.dateNegotiable = dateNegotiable;
+            this.openDate = openDate;
             this.closeDate = closeDate;
             this.location = location;
             this.locationNegotiable = locationNegotiable;
             this.type = type;
+            this.totalCount = totalCount;
+            this.participants = participants;
         }
 
-        public List<InterviewPlan> getInterviewPlanList() {
-            return interviewPlanList;
+        public List<InterviewPlan> getPlans() {
+            return plans;
         }
 
-        public void setInterviewPlanList(List<InterviewPlan> interviewPlanList) {
-            this.interviewPlanList = interviewPlanList;
+        public void setPlans(List<InterviewPlan> plans) {
+            this.plans = plans;
         }
 
         public String getStartDate() {
@@ -307,6 +311,22 @@ public class Project {
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public int getTotalCount() {
+            return totalCount;
+        }
+
+        public void setTotalCount(int totalCount) {
+            this.totalCount = totalCount;
+        }
+
+        public List<String> getParticipants() {
+            return participants;
+        }
+
+        public void setParticipants(List<String> participants) {
+            this.participants = participants;
         }
     }
 }

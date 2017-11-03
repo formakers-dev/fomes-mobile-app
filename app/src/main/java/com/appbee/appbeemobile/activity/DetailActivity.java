@@ -13,11 +13,17 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.custom.InterviewInfoView;
+import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -30,6 +36,9 @@ public class DetailActivity extends BaseActivity {
 
     @Inject
     ProjectService projectService;
+
+    @Inject
+    TimeHelper timeHelper;
 
     @BindView(R.id.back_button)
     Button backButton;
@@ -79,6 +88,15 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.interview_time)
     InterviewInfoView timeInterviewInfoView;
 
+    @BindView(R.id.interview_type_summary)
+    TextView interviewTypeSummaryTextView;
+
+    @BindView(R.id.available_interviewer_count)
+    TextView availableInterviewerCountTextView;
+
+    @BindView(R.id.d_day)
+    TextView dDayTextView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +110,9 @@ public class DetailActivity extends BaseActivity {
 
         String projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
         projectService.getProject(projectId).subscribe(project -> {
+            Project.Interview interview = project.getInterview();
+            Project.Interviewer interviewer = project.getInterviewer();
+
             Glide.with(this)
                     .load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                     .into(representationImageView);
@@ -102,25 +123,49 @@ public class DetailActivity extends BaseActivity {
             projectNameTextView.setText(project.getName());
             appsDescriptionTextView.setText(String.format(getString(R.string.apps_description_format), FormatUtil.formatAppsString(project.getApps())));
 
+            interviewTypeSummaryTextView.setText(interview.getType());
+            availableInterviewerCountTextView.setText(String.valueOf(interview.getTotalCount() - interview.getParticipants().size()));
+            dDayTextView.setText(String.format(getString(R.string.d_day_text), getDDayFromNow(interview.getCloseDate())));
+
             Glide.with(this)
-                    .load(project.getInterviewer().getUrl()).apply(new RequestOptions().override(200, 200).centerCrop())
+                    .load(interviewer.getUrl()).apply(new RequestOptions().override(200, 200).centerCrop())
                     .into(interviewerPhotoImageView);
-            interviewerNameTextView.setText(project.getInterviewer().getName());
-            interviewerIntroduceTextView.setText(project.getInterviewer().getIntroduce());
+            interviewerNameTextView.setText(interviewer.getName());
+            interviewerIntroduceTextView.setText(interviewer.getIntroduce());
 
             projectDescriptionTextView.setText(project.getDescription());
             descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
 
             interviewIntroduceTextView.setText(String.format(getString(R.string.interview_introduce_text), project.getName()));
-            typeInterviewInfoView.setText(String.format(getString(R.string.interview_type_text), project.getInterview().getType()));
-            locationInterviewInfoView.setText(String.format(getString(R.string.interview_location_text), project.getInterview().getLocation()));
-            dateInterviewInfoView.setText(String.format(getString(R.string.interview_date_text), project.getInterview().getStartDate() + "~" + project.getInterview().getEndDate()));
+            typeInterviewInfoView.setText(String.format(getString(R.string.interview_type_text), interview.getType()));
+            locationInterviewInfoView.setText(String.format(getString(R.string.interview_location_text), interview.getLocation()));
+            dateInterviewInfoView.setText(String.format(getString(R.string.interview_date_text), interview.getStartDate() + "~" + interview.getEndDate()));
 
             int minutes = 0;
-            for(Project.InterviewPlan plan : project.getInterview().getInterviewPlanList()) {
+            for (Project.InterviewPlan plan : interview.getPlans()) {
                 minutes += plan.getMinute();
             }
             timeInterviewInfoView.setText(String.format(getString(R.string.interview_time_text), String.valueOf(minutes)));
         }, error -> Log.d(TAG, error.getMessage()));
     }
+
+    private int getDDayFromNow(String closeDate) {
+        int dDay = 0;
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+            String today = simpleDateFormat.format(timeHelper.getCurrentTime());
+            Date todayDate = simpleDateFormat.parse(today);
+            Date dDayDate = simpleDateFormat.parse(closeDate);
+
+            if (todayDate.compareTo(dDayDate) < 0) {
+                dDay = (int) ((dDayDate.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dDay;
+    }
+
 }

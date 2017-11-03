@@ -19,7 +19,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:text="앞으로"/>
+                android:textSize="32dp"
+                android:text="⟵"/>
             <ImageView
                 android:id="@+id/representation_image"
                 android:layout_width="match_parent"
@@ -43,16 +44,64 @@
             android:id="@+id/project_introduce"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="앱으로 바로 만드는 내 얼굴 이모티콘"/>
+            tools:text="앱으로 바로 만드는 내 얼굴 이모티콘"/>
         <TextView
             android:id="@+id/project_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Toonstory"/>
+            tools:text="Toonstory"/>
         <TextView
             android:id="@+id/apps_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/appbee_gray"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인터뷰 종류"/>
+            <TextView
+                android:id="@+id/interview_type_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="대면"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:background="@color/appbee_gray"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현재 남은자리"/>
+            <TextView
+                android:id="@+id/available_interviewer_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="3"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:background="@color/appbee_gray"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="마감까지"/>
+            <TextView
+                android:id="@+id/d_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="D-3"/>
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -83,13 +132,13 @@
                         android:id="@+id/interviewer_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="툰스토리 이호영"/>
+                        tools:text="툰스토리 이호영"/>
                 </LinearLayout>
                 <TextView
                     android:id="@+id/interviewer_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="-17년 삼성전자 C-lab 과제 툰스토리 팀\nCreatevie Leader\nGood Person\nSmile Guy"/>
+                    tools:text="-17년 삼성전자 C-lab 과제 툰스토리 팀\nCreatevie Leader\nGood Person\nSmile Guy"/>
             </LinearLayout>
         </LinearLayout>
         <View
@@ -115,7 +164,8 @@
             <TextView
                 android:id="@+id/project_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:text="프로젝트 상세 설명"/>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/description_image"
@@ -140,11 +190,11 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/map"/>
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/appbee_yellow"/>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -154,7 +204,7 @@
                 android:id="@+id/interview_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/interview_introduce_text"/>
+                tools:text="@string/interview_introduce_text"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,31 +218,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/interview_type_icon"
-                    app:text="종류 : 오프라인 1대1 심층 인터뷰(대면)"/>
+                    tools:text="종류 : 오프라인 1대1 심층 인터뷰(대면)"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
                     android:id="@+id/interview_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/location_icon"
-                    app:text="장소 : 우면 사업장 회의실"/>
+                    tools:text="장소 : 우면 사업장 회의실"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
                     android:id="@+id/interview_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/calendar_icon"
-                    app:text="날짜 : 12월 04일 ~ 12월 07일"/>
+                    tools:text="날짜 : 12월 04일 ~ 12월 07일"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
                     android:id="@+id/interview_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/time_icon"
-                    app:text="시간 : 약 50분"/>
+                    tools:text="시간 : 약 50분"/>
                 <com.appbee.appbeemobile.custom.InterviewInfoView
                     android:id="@+id/interview_reward"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/reward_icon"
-                    app:text="인터뷰 리워드 : 3만원 리워드 감사한 마음 가득"/>
+                    tools:text="인터뷰 리워드 : 3만원 리워드 감사한 마음 가득"/>
             </LinearLayout>
 
             <View
@@ -203,11 +253,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -216,79 +268,31 @@
                         android:id="@+id/interviewer_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2 / 5"/>
+                        tools:text="2 / 5"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="심층 인터뷰 신청 기간"/>
                     <TextView
-                        android:id="@+id/interview_d_day"
+                        android:id="@+id/interview_end_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="~ 17.12.03"/>
+                        tools:text="~ 17.12.03"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="인터뷰 종륲"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="대면"/>
-            <View
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                android:background="@color/appbee_gray"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="현재 남은자리"/>
-            <TextView
-                android:id="@+id/open_space"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"/>
-            <View
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                android:background="@color/appbee_gray"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="마감까지"/>
-            <TextView
-                android:id="@+id/d_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="D-3"/>
-        </LinearLayout>
-
-
-
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/appbee_yellow"/>
 
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/appbee_yellow"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -314,7 +318,7 @@
                 android:id="@+id/interview_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="우면사업장 / 12.04 ~ 12.07 / 50분 / 3만원 리워드"
+                tools:text="우면사업장 / 12.04 ~ 12.07 / 50분 / 3만원 리워드"
                 android:textAlignment="center"/>
             <TextView
                 android:layout_width="match_parent"
