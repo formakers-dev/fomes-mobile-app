@@ -9,16 +9,6 @@ import java.util.Locale;
 public class FormatUtil {
     private static final String EMPTY_STRING = "";
     public static final SimpleDateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-    public static final SimpleDateFormat DISPLAY_DATE_FORMAT = new SimpleDateFormat("yy.MM.dd", Locale.KOREA);
-
-    public static String formatLongCategoryName(String categoryName) {
-        if (categoryName.length() > 4) {
-            int midIndex = (categoryName.length() + 1) / 2;
-            return categoryName.substring(0, midIndex) + "\n" + categoryName.substring(midIndex);
-        } else {
-            return categoryName;
-        }
-    }
 
     public static String parseEmailName(String email) {
         return email.split("@")[0];
@@ -32,10 +22,11 @@ public class FormatUtil {
         return result;
     }
 
-    public static String formatDisplayDateString(String inputDateString) {
+    public static String convertInputDateFormat(String inputDateString, String displayFormat) {
         try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(displayFormat, Locale.KOREA);
             Date fromDate = INPUT_DATE_FORMAT.parse(inputDateString);
-            return DISPLAY_DATE_FORMAT.format(fromDate);
+            return simpleDateFormat.format(fromDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }

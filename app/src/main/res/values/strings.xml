@@ -32,10 +32,11 @@
     <string name="interview_type_text">종류:%s</string>
     <string name="interview_location_text">장소:%s</string>
     <string name="interview_date_text">날짜:%s</string>
-    <string name="interview_time_text">소요시간:%s</string>
+    <string name="interview_time_text">소요시간:%d분</string>
     <string name="interview_introduce_text">당신은 %s 팀이 애타게 찾아헤맨 바로 그 사람! 지금 참여해서 당신의 의견을 프로젝트에 반영해 보세요. 보답으로 받는 리워드는 덤이죠!</string>
     <string name="d_day_text">D-%d</string>
     <string name="participation_status">%1$d/%2$d</string>
     <string name="close_date">~%s</string>
     <string name="minute">%d분</string>
+    <string name="interview_summary">%1$s / %2$s~%3$s / %4$d분 / 3만원 리워드</string>
 </resources>
