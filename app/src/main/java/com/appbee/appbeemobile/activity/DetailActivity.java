@@ -106,6 +106,9 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.interview_plan)
     ListView interviewPlanListView;
 
+    @BindView(R.id.interview_summary)
+    TextView interviewSummaryTextView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,18 +152,24 @@ public class DetailActivity extends BaseActivity {
             interviewIntroduceTextView.setText(String.format(getString(R.string.interview_introduce_text), project.getName()));
             typeInterviewInfoView.setText(String.format(getString(R.string.interview_type_text), interview.getType()));
             locationInterviewInfoView.setText(String.format(getString(R.string.interview_location_text), interview.getLocation()));
-            dateInterviewInfoView.setText(String.format(getString(R.string.interview_date_text), interview.getStartDate() + "~" + interview.getEndDate()));
+            String interviewStartDate = FormatUtil.convertInputDateFormat(interview.getStartDate(), "MM월 dd일");
+            String interviewEndDate = FormatUtil.convertInputDateFormat(interview.getEndDate(), "MM월 dd일");
+            dateInterviewInfoView.setText(String.format(getString(R.string.interview_date_text), interviewStartDate + "~" + interviewEndDate));
 
             int minutes = 0;
             for (Project.InterviewPlan plan : interview.getPlans()) {
                 minutes += plan.getMinute();
             }
-            timeInterviewInfoView.setText(String.format(getString(R.string.interview_time_text), String.valueOf(minutes)));
+            timeInterviewInfoView.setText(String.format(getString(R.string.interview_time_text), minutes));
 
             participationStatus.setText(String.format(getString(R.string.participation_status), participantCount, interview.getTotalCount()));
-            closeDate.setText(String.format(getString(R.string.close_date), FormatUtil.formatDisplayDateString(interview.getCloseDate())));
+            closeDate.setText(String.format(getString(R.string.close_date), FormatUtil.convertInputDateFormat(interview.getCloseDate(), "yy.MM.dd")));
 
             interviewPlanListView.setAdapter(new PlanListAdapter(interview.getPlans()));
+            String startDate = FormatUtil.convertInputDateFormat(interview.getStartDate(), "MM.dd");
+            String endDate = FormatUtil.convertInputDateFormat(interview.getEndDate(), "MM.dd");
+            interviewSummaryTextView.setText(String.format(getString(R.string.interview_summary), interview.getLocation(), startDate, endDate, minutes));
+
         }, error -> Log.d(TAG, error.getMessage()));
     }
 

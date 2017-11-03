@@ -160,7 +160,7 @@ public class DetailActivityTest {
         assertThat(subject.typeInterviewInfoView.getText()).contains("offline");
         assertThat(subject.locationInterviewInfoView.getText()).contains("서울대");
         assertThat(subject.timeInterviewInfoView.getText()).contains("70");
-        assertThat(subject.dateInterviewInfoView.getText()).contains("20171101");
+        assertThat(subject.dateInterviewInfoView.getText()).contains("11월 01일~11월 05일");
     }
 
     @Test
@@ -180,5 +180,11 @@ public class DetailActivityTest {
         assertThat(planListAdapter.getItem(0).getPlan()).isEqualTo("인트로");
         assertThat(planListAdapter.getItem(1).getMinute()).isEqualTo(60);
         assertThat(planListAdapter.getItem(1).getPlan()).isEqualTo("인터뷰");
+    }
+
+    @Test
+    public void onPostCreate시_신청버튼에_인터뷰Summary정보를_출력한다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+        assertThat(subject.interviewSummaryTextView.getText()).isEqualTo("서울대 / 11.01~11.05 / 70분 / 3만원 리워드");
     }
 }
