@@ -3,7 +3,7 @@ package com.appbee.appbeemobile.dagger;
 import android.content.Context;
 
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
+import com.appbee.appbeemobile.adapter.ProjectListAdapter;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
@@ -140,7 +140,7 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    RecommendationAppsAdapter recommendationAppsAdapter() {
-        return mock(RecommendationAppsAdapter.class);
+    ProjectListAdapter recommendationAppsAdapter() {
+        return mock(ProjectListAdapter.class);
     }
 }

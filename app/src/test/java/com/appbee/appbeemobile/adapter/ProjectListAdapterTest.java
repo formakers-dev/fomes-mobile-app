@@ -19,14 +19,14 @@ import java.util.List;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
-import static com.appbee.appbeemobile.adapter.RecommendationAppsAdapter.HEADER_VIEW_TYPE;
-import static com.appbee.appbeemobile.adapter.RecommendationAppsAdapter.ITEM_VIEW_TYPE;
+import static com.appbee.appbeemobile.adapter.ProjectListAdapter.HEADER_VIEW_TYPE;
+import static com.appbee.appbeemobile.adapter.ProjectListAdapter.ITEM_VIEW_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class RecommendationAppsAdapterTest {
-    private RecommendationAppsAdapter subject;
+public class ProjectListAdapterTest {
+    private ProjectListAdapter subject;
 
     @Before
     public void setUp() throws Exception {
@@ -35,7 +35,12 @@ public class RecommendationAppsAdapterTest {
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        subject = new RecommendationAppsAdapter(RuntimeEnvironment.application);
+        List<Project> mockProjectList = new ArrayList<>();
+        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
+        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그2"), "temporary"));
+        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그3"), "temporary"));
+
+        subject = new ProjectListAdapter(mockProjectList);
     }
 
     @After

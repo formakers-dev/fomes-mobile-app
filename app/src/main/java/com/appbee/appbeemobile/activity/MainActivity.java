@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
-import com.appbee.appbeemobile.adapter.RecommendationAppsAdapter;
+import com.appbee.appbeemobile.adapter.ProjectListAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
@@ -58,10 +58,9 @@ public class MainActivity extends BaseActivity
     LocalStorageHelper localStorageHelper;
 
     @Inject
-    RecommendationAppsAdapter recommendationAppsRecyclerViewAdapter;
-
-    @Inject
     ProjectService projectService;
+
+    private ProjectListAdapter projectListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +92,14 @@ public class MainActivity extends BaseActivity
         LinearLayoutManager recommendLayoutManger = new LinearLayoutManager(this);
         recommendLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         recommendationAppsRecyclerview.setLayoutManager(recommendLayoutManger);
-        recommendationAppsRecyclerview.setAdapter(recommendationAppsRecyclerViewAdapter);
+        projectListAdapter = new ProjectListAdapter(null);
+        recommendationAppsRecyclerview.setAdapter(projectListAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        projectService.getAllProjects().subscribe(projectList -> recommendationAppsRecyclerViewAdapter.setProjectList(projectList));
+        projectService.getAllProjects().subscribe(projectList -> projectListAdapter.setProjectList(projectList));
     }
 
     @Override
