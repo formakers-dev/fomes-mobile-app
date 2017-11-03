@@ -30,16 +30,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void setProjectList(List<Project> projectList) {
-        if(this.projectList != null) {
-            this.projectList.clear();
-        }
-
-        this.projectList = projectList;
-
-        this.notifyDataSetChanged();
-    }
-
     @Override
     public int getItemViewType(int position) {
         return (position == 0) ? HEADER_VIEW_TYPE : ITEM_VIEW_TYPE;

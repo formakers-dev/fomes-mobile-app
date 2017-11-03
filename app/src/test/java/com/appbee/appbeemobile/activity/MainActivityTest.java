@@ -69,7 +69,7 @@ public class MainActivityTest {
 
     @Test
     public void onPostCreate시_당신의참여를기다리는프로젝트를_표시하기위한_Adapter를_매핑한다() throws Exception {
-        assertThat(subject.recommendationAppsRecyclerview.getAdapter().getClass().getSimpleName()).contains(ProjectListAdapter.class.getSimpleName());
+        assertThat(subject.projectListRecyclerView.getAdapter().getClass().getSimpleName()).contains(ProjectListAdapter.class.getSimpleName());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class MainActivityTest {
         subject.onResume();
 
         verify(mockProjectService).getAllProjects();
-        ProjectListAdapter projectListAdapter = (ProjectListAdapter) subject.recommendationAppsRecyclerview.getAdapter();
+        ProjectListAdapter projectListAdapter = (ProjectListAdapter) subject.projectListRecyclerView.getAdapter();
         assertThat(projectListAdapter.getItemCount()).isEqualTo(4);
         assertThat(projectListAdapter.getItem(0)).isEqualTo(mockProjectList.get(0));
         assertThat(projectListAdapter.getItem(1)).isEqualTo(mockProjectList.get(1));
