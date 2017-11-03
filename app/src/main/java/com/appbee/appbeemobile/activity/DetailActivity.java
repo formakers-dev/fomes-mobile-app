@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
+import com.appbee.appbeemobile.adapter.PlanListAdapter;
 import com.appbee.appbeemobile.custom.InterviewInfoView;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
@@ -21,9 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -97,6 +97,15 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.d_day)
     TextView dDayTextView;
 
+    @BindView(R.id.participation_status)
+    TextView participationStatus;
+
+    @BindView(R.id.close_date)
+    TextView closeDate;
+
+    @BindView(R.id.interview_plan)
+    ListView interviewPlanListView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +121,7 @@ public class DetailActivity extends BaseActivity {
         projectService.getProject(projectId).subscribe(project -> {
             Project.Interview interview = project.getInterview();
             Project.Interviewer interviewer = project.getInterviewer();
+            int participantCount = interview.getParticipants().size();
 
             Glide.with(this)
                     .load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
@@ -124,7 +134,7 @@ public class DetailActivity extends BaseActivity {
             appsDescriptionTextView.setText(String.format(getString(R.string.apps_description_format), FormatUtil.formatAppsString(project.getApps())));
 
             interviewTypeSummaryTextView.setText(interview.getType());
-            availableInterviewerCountTextView.setText(String.valueOf(interview.getTotalCount() - interview.getParticipants().size()));
+            availableInterviewerCountTextView.setText(String.valueOf(interview.getTotalCount() - participantCount));
             dDayTextView.setText(String.format(getString(R.string.d_day_text), getDDayFromNow(interview.getCloseDate())));
 
             Glide.with(this)
@@ -146,6 +156,11 @@ public class DetailActivity extends BaseActivity {
                 minutes += plan.getMinute();
             }
             timeInterviewInfoView.setText(String.format(getString(R.string.interview_time_text), String.valueOf(minutes)));
+
+            participationStatus.setText(String.format(getString(R.string.participation_status), participantCount, interview.getTotalCount()));
+            closeDate.setText(String.format(getString(R.string.close_date), FormatUtil.formatDisplayDateString(interview.getCloseDate())));
+
+            interviewPlanListView.setAdapter(new PlanListAdapter(interview.getPlans()));
         }, error -> Log.d(TAG, error.getMessage()));
     }
 
@@ -153,10 +168,9 @@ public class DetailActivity extends BaseActivity {
         int dDay = 0;
 
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-            String today = simpleDateFormat.format(timeHelper.getCurrentTime());
-            Date todayDate = simpleDateFormat.parse(today);
-            Date dDayDate = simpleDateFormat.parse(closeDate);
+            String today = FormatUtil.INPUT_DATE_FORMAT.format(timeHelper.getCurrentTime());
+            Date todayDate = FormatUtil.INPUT_DATE_FORMAT.parse(today);
+            Date dDayDate = FormatUtil.INPUT_DATE_FORMAT.parse(closeDate);
 
             if (todayDate.compareTo(dDayDate) < 0) {
                 dDay = (int) ((dDayDate.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
