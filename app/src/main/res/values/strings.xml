@@ -34,4 +34,5 @@
     <string name="interview_date_text">날짜:%s</string>
     <string name="interview_time_text">소요시간:%s</string>
     <string name="interview_introduce_text">당신은 %s 팀이 애타게 찾아헤맨 바로 그 사람! 지금 참여해서 당신의 의견을 프로젝트에 반영해 보세요. 보답으로 받는 리워드는 덤이죠!</string>
+    <string name="d_day_text">D-%d</string>
 </resources>

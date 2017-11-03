@@ -7,6 +7,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
+import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.google.common.collect.Lists;
@@ -44,6 +45,10 @@ public class DetailActivityTest {
 
     @Inject
     ProjectService mockProjectService;
+
+    @Inject
+    TimeHelper mockTimeHelper;
+
     private ActivityController<DetailActivity> activityController;
 
     @Before
@@ -60,13 +65,14 @@ public class DetailActivityTest {
 
         List<Project.ImageObject> imageObjectList = new ArrayList<>();
         imageObjectList.add(new Project.ImageObject("http://www.imageUrl.com", "imageFileName"));
-        List<Project.InterviewPlan> interviewPlanList = new ArrayList<>();
-        interviewPlanList.add(new Project.InterviewPlan(10, "인트로"));
-        interviewPlanList.add(new Project.InterviewPlan(60, "인터뷰"));
+        List<Project.InterviewPlan> plans = new ArrayList<>();
+        plans.add(new Project.InterviewPlan(10, "인트로"));
+        plans.add(new Project.InterviewPlan(60, "인터뷰"));
         List<Project.ImageObject> descriptionImageObjectList = new ArrayList<>();
         descriptionImageObjectList.add(new Project.ImageObject("http://www.descriptionImage.com", "descriptionImage"));
 
-        Project.Interview interview = new Project.Interview(interviewPlanList, "20171101", "20171105", true, "20171110", "20171115", "서울대", true, "offline");
+        List<String> participantList = Lists.newArrayList("google1234", "google2345");
+        Project.Interview interview = new Project.Interview(plans, "20171101", "20171105", true, "20171110", "20171115", "서울대", true, "offline", 5, participantList);
         Project.Interviewer interviewer = new Project.Interviewer("이호영", "www.person.com", "-17년 삼성전자 C-lab과제 툰스토리 팀\n-Create Leader");
 
         Project project = new Project("projectId1",
@@ -82,6 +88,7 @@ public class DetailActivityTest {
                 interview);
 
         when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(project));
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
 
         activityController = Robolectric.buildActivity(DetailActivity.class, intent);
     }
@@ -115,6 +122,19 @@ public class DetailActivityTest {
         assertThat(subject.projectIntroduceTextView.getText()).isEqualTo("증강현실로 한장의 사진에 담는 나만의 추억");
         assertThat(subject.projectNameTextView.getText()).isEqualTo("유어커스텀");
         assertThat(subject.appsDescriptionTextView.getText()).isEqualTo("[Foodie][Viva video] 앱을 사용하시는 당신과 찰떡궁합!");
+
+        assertThat(subject.interviewTypeSummaryTextView.getText()).isEqualTo("offline");
+        assertThat(subject.availableInterviewerCountTextView.getText()).isEqualTo("3");
+        assertThat(subject.dDayTextView.getText()).isEqualTo("D-12"); // 11/3 ~ 11/15
+    }
+
+    @Test
+    public void onPostCreate시_오늘날짜가_마감일이후인경우_D_Day는_0이_표시된다() throws Exception {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1512097383000L);   //2017-12-01 03:03:03
+
+        subject = activityController.create().postCreate(null).get();
+
+        assertThat(subject.dDayTextView.getText()).isEqualTo("D-0");
     }
 
     @Test
