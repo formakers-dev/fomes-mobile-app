@@ -35,7 +35,7 @@
             </android.support.v4.view.ViewPager>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recommendation_apps_recyclerview"
+                android:id="@+id/project_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"

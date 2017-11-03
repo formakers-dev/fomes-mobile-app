@@ -20,8 +20,12 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
 import com.appbee.appbeemobile.adapter.ProjectListAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,8 +53,8 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.title_banner_view_pager)
     ViewPager titleBannerViewPager;
 
-    @BindView(R.id.recommendation_apps_recyclerview)
-    RecyclerView recommendationAppsRecyclerview;
+    @BindView(R.id.project_list_recycler_view)
+    RecyclerView projectListRecyclerView;
 
     TextView userIdTextView;
 
@@ -60,7 +64,7 @@ public class MainActivity extends BaseActivity
     @Inject
     ProjectService projectService;
 
-    private ProjectListAdapter projectListAdapter;
+    private List<Project> projectList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +95,18 @@ public class MainActivity extends BaseActivity
 
         LinearLayoutManager recommendLayoutManger = new LinearLayoutManager(this);
         recommendLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
-        recommendationAppsRecyclerview.setLayoutManager(recommendLayoutManger);
-        projectListAdapter = new ProjectListAdapter(null);
-        recommendationAppsRecyclerview.setAdapter(projectListAdapter);
+        projectListRecyclerView.setLayoutManager(recommendLayoutManger);
+        projectListRecyclerView.setAdapter(new ProjectListAdapter(projectList));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        projectService.getAllProjects().subscribe(projectList -> projectListAdapter.setProjectList(projectList));
+        projectService.getAllProjects().subscribe(projectList -> {
+            this.projectList.clear();
+            this.projectList.addAll(projectList);
+            projectListRecyclerView.getAdapter().notifyDataSetChanged();
+        });
     }
 
     @Override
