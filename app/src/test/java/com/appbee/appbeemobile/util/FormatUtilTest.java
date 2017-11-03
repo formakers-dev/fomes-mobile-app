@@ -32,4 +32,10 @@ public class FormatUtilTest {
         apps = Lists.newArrayList("첫번째앱", "두번째앱");
         assertThat(FormatUtil.formatAppsString(apps)).isEqualTo("[첫번째앱][두번째앱]");
     }
+
+    @Test
+    public void formatDisplayDateString호출시_화면에표시하기위한_DateFormat으로_입력날짜를_변환하여_리턴한다() throws Exception {
+        String result = FormatUtil.formatDisplayDateString("20170102");
+        assertThat(result).isEqualTo("17.01.02");
+    }
 }

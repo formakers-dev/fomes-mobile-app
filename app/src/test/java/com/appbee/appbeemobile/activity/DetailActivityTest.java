@@ -7,6 +7,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
+import com.appbee.appbeemobile.adapter.PlanListAdapter;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -160,5 +161,24 @@ public class DetailActivityTest {
         assertThat(subject.locationInterviewInfoView.getText()).contains("서울대");
         assertThat(subject.timeInterviewInfoView.getText()).contains("70");
         assertThat(subject.dateInterviewInfoView.getText()).contains("20171101");
+    }
+
+    @Test
+    public void onPostCreate시_조회된_인터뷰신청현황을_화면에_보여준다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+        assertThat(subject.participationStatus.getText()).contains("2/5");
+        assertThat(subject.closeDate.getText()).contains("~17.11.15");
+    }
+
+    @Test
+    public void onPostCreate시_조회된_인터뷰일정을_화면에_보여준다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+
+        PlanListAdapter planListAdapter = (PlanListAdapter) subject.interviewPlanListView.getAdapter();
+        assertThat(planListAdapter.getCount()).isEqualTo(2);
+        assertThat(planListAdapter.getItem(0).getMinute()).isEqualTo(10);
+        assertThat(planListAdapter.getItem(0).getPlan()).isEqualTo("인트로");
+        assertThat(planListAdapter.getItem(1).getMinute()).isEqualTo(60);
+        assertThat(planListAdapter.getItem(1).getPlan()).isEqualTo("인터뷰");
     }
 }

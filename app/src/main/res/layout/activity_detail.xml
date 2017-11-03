@@ -242,7 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:iconDrawable="@drawable/reward_icon"
-                    tools:text="인터뷰 리워드 : 3만원 리워드 감사한 마음 가득"/>
+                    app:text="인터뷰 리워드 : 3만원 리워드 감사한 마음 가득"/>
             </LinearLayout>
 
             <View
@@ -263,9 +263,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="심층 인터뷰 신청 인원"/>
+                        android:text="조언 신청 인원"/>
                     <TextView
-                        android:id="@+id/interviewer_count"
+                        android:id="@+id/participation_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="2 / 5"/>
@@ -278,9 +278,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="심층 인터뷰 신청 기간"/>
+                        android:text="조언 신청 기간"/>
                     <TextView
-                        android:id="@+id/interview_end_date"
+                        android:id="@+id/close_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="~ 17.12.03"/>
@@ -300,11 +300,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="심층 인터뷰 세부 일정"/>
+                android:text="조언을 위한 세부 일정"/>
             <ListView
                 android:id="@+id/interview_plan"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></ListView>
+                android:layout_height="200dp"></ListView>
 
         </LinearLayout>
 
