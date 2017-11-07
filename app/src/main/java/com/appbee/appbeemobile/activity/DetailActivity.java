@@ -30,6 +30,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
@@ -231,6 +232,12 @@ public class DetailActivity extends BaseActivity {
         projectService.postParticipate(projectId).subscribe(result -> {
             if (result) {
                 Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
+            }
+        }, err -> {
+            if (err instanceof HttpException) {
+                Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
             }
         });
     }
