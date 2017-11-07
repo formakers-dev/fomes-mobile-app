@@ -37,6 +37,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -186,5 +187,12 @@ public class DetailActivityTest {
     public void onPostCreate시_신청버튼에_인터뷰Summary정보를_출력한다() throws Exception {
         subject = activityController.create().postCreate(null).get();
         assertThat(subject.interviewSummaryTextView.getText()).isEqualTo("서울대 / 11.01~11.05 / 70분 / 3만원 리워드");
+    }
+
+    @Test
+    public void BackButton클릭시_이전화면으로_복귀한다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+        subject.findViewById(R.id.back_button).performClick();
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }
