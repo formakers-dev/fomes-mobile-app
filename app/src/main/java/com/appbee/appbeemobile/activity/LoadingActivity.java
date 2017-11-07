@@ -97,7 +97,7 @@ public class LoadingActivity extends BaseActivity {
         }
 
         @Override
-        public void onFail(String resultCode) {
+        public void onFail(String errorCode) {
             if (!isServiceAPIFailAlready) {
                 isServiceAPIFailAlready = true;
                 callAppServiceGetInfoAPI();
