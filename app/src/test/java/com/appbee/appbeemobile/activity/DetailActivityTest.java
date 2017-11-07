@@ -30,6 +30,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -202,5 +205,14 @@ public class DetailActivityTest {
         subject.findViewById(R.id.submit_button).performClick();
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("인터뷰참가신청완료!!");
+    }
+
+    @Test
+    public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+        when(mockProjectService.postParticipate(anyString())).thenReturn(Observable.error(new HttpException(Response.error(406, ResponseBody.create(null, "")))));
+
+        subject.findViewById(R.id.submit_button).performClick();
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("406");
     }
 }
