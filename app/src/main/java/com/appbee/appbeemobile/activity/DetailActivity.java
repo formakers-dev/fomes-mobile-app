@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.Observable;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
@@ -40,9 +40,6 @@ public class DetailActivity extends BaseActivity {
 
     @Inject
     TimeHelper timeHelper;
-
-    @BindView(R.id.back_button)
-    Button backButton;
 
     @BindView(R.id.representation_image)
     ImageView representationImageView;
@@ -209,6 +206,11 @@ public class DetailActivity extends BaseActivity {
         }
 
         return dDay;
+    }
+
+    @OnClick(R.id.back_button)
+    void onBackButton(View view) {
+        this.onBackPressed();
     }
 
 }
