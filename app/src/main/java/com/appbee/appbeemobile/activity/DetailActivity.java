@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -108,6 +109,8 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.interview_summary)
     TextView interviewSummaryTextView;
 
+    private String projectId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +122,7 @@ public class DetailActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        String projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
+        projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
         projectService.getProject(projectId).subscribe(this::displayProject,
                 error -> Log.d(TAG, error.getMessage()));
     }
@@ -221,6 +224,15 @@ public class DetailActivity extends BaseActivity {
     @OnClick(R.id.back_button)
     void onBackButton(View view) {
         this.onBackPressed();
+    }
+
+    @OnClick(R.id.submit_button)
+    void onSubmitButton(View view) {
+        projectService.postParticipate(projectId).subscribe(result -> {
+            if (result) {
+                Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

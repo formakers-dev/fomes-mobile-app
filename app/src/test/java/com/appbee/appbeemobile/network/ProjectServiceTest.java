@@ -88,4 +88,11 @@ public class ProjectServiceTest {
             assertThat(project.getStatus()).isEqualTo("temporary");
         });
     }
+
+    @Test
+    public void postParticipate호출시_인터뷰참여API를_호출한다() throws Exception {
+        when(mockProjectAPI.postParticipate(anyString(), anyString())).thenReturn(Observable.just(true));
+
+        subject.postParticipate("projectId").subscribe(result -> assertThat(result).isTrue());
+    }
 }

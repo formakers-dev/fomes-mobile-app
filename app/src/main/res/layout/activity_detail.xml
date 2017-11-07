@@ -306,7 +306,7 @@
         <LinearLayout
             android:id="@+id/submit_button"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:background="@color/appbee_yellow"
             android:orientation="vertical">
             <TextView
