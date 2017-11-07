@@ -1,18 +1,19 @@
 package com.appbee.appbeemobile.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
-import com.appbee.appbeemobile.adapter.PlanListAdapter;
 import com.appbee.appbeemobile.custom.InterviewInfoView;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
@@ -101,8 +102,8 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.close_date)
     TextView closeDate;
 
-    @BindView(R.id.interview_plan)
-    ListView interviewPlanListView;
+    @BindView(R.id.interview_plan_layout)
+    LinearLayout interviewPlanLayout;
 
     @BindView(R.id.interview_summary)
     TextView interviewSummaryTextView;
@@ -149,8 +150,12 @@ public class DetailActivity extends BaseActivity {
 
     private void displayInterviewSummary(Project.Interview interview) {
         interviewTypeSummaryTextView.setText(interview.getType());
-        availableInterviewerCountTextView.setText(String.valueOf(interview.getTotalCount() - interview.getParticipants().size()));
+        availableInterviewerCountTextView.setText(String.valueOf(interview.getTotalCount() - getParticipantCount(interview)));
         dDayTextView.setText(String.format(getString(R.string.d_day_text), getDDayFromNow(interview.getCloseDate())));
+    }
+
+    private int getParticipantCount(Project.Interview interview) {
+        return interview.getParticipants() != null ? interview.getParticipants().size() : 0;
     }
 
     private void displayInterviewer(Project.Interviewer interviewer) {
@@ -174,13 +179,18 @@ public class DetailActivity extends BaseActivity {
         String interviewEndDate = FormatUtil.convertInputDateFormat(interview.getEndDate(), "MM월 dd일");
         dateInterviewInfoView.setText(String.format(getString(R.string.interview_date_text), interviewStartDate + "~" + interviewEndDate));
         timeInterviewInfoView.setText(String.format(getString(R.string.interview_time_text), getTotalInterviewMinute(interview)));
-
-        participationStatus.setText(String.format(getString(R.string.participation_status), interview.getParticipants().size(), interview.getTotalCount()));
+        participationStatus.setText(String.format(getString(R.string.participation_status), getParticipantCount(interview), interview.getTotalCount()));
         closeDate.setText(String.format(getString(R.string.close_date), FormatUtil.convertInputDateFormat(interview.getCloseDate(), "yy.MM.dd")));
     }
 
     private void displayPlans(Project.Interview interview) {
-        interviewPlanListView.setAdapter(new PlanListAdapter(interview.getPlans()));
+        for (Project.InterviewPlan plan : interview.getPlans()) {
+            View planLayout = LayoutInflater.from(this).inflate(R.layout.plan_list_item, null);
+            ((TextView) planLayout.findViewById(R.id.minute)).setText(String.valueOf(plan.getMinute()));
+            ((TextView) planLayout.findViewById(R.id.plan)).setText(plan.getPlan());
+            interviewPlanLayout.addView(planLayout);
+        }
+
         String startDate = FormatUtil.convertInputDateFormat(interview.getStartDate(), "MM.dd");
         String endDate = FormatUtil.convertInputDateFormat(interview.getEndDate(), "MM.dd");
         interviewSummaryTextView.setText(String.format(getString(R.string.interview_summary), interview.getLocation(), startDate, endDate, getTotalInterviewMinute(interview)));
@@ -190,7 +200,7 @@ public class DetailActivity extends BaseActivity {
         return Observable.from(interview.getPlans()).map(Project.InterviewPlan::getMinute).scan((sum, item) -> sum + item).toBlocking().last();
     }
 
-    private int getDDayFromNow(String closeDate) {
+    private int getDDayFromNow(@NonNull String closeDate) {
         int dDay = 0;
 
         try {
