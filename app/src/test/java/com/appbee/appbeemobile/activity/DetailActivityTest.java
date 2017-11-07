@@ -23,12 +23,14 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -53,6 +55,8 @@ public class DetailActivityTest {
 
     private ActivityController<DetailActivity> activityController;
 
+    private Intent intent = new Intent();
+
     @Before
     public void setUp() throws Exception {
 
@@ -60,8 +64,8 @@ public class DetailActivityTest {
         RxJavaHooks.onIOScheduler(Schedulers.immediate());
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        Intent intent = new Intent();
-        intent.putExtra("EXTRA_PROJECT_ID", "projectId");
+
+        intent.putExtra("EXTRA_PROJECT_ID", "projectId1");
 
         RxJavaHooks.onIOScheduler(Schedulers.immediate());
 
@@ -93,6 +97,7 @@ public class DetailActivityTest {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
 
         activityController = Robolectric.buildActivity(DetailActivity.class, intent);
+        subject = activityController.create().postCreate(null).get();
     }
 
     @After
@@ -102,25 +107,19 @@ public class DetailActivityTest {
 
     @Test
     @Ignore
-    public void onCreate시_전달받은_projectID에_해당하는_project정보를_조회한다() throws Exception {
-        subject = activityController.create().get();
-
+    public void onPostCreate시_전달받은_projectID에_해당하는_project정보를_조회한다() throws Exception {
         assertThat(subject.getIntent().getStringExtra("EXTRA_PROJECT_ID")).isEqualTo("projectId");
         verify(mockProjectService).getProject(eq("projectId"));
     }
 
     @Test
     public void onPostCreate시_조회된_project_헤더정보를_화면에_보여준다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
-
         assertThat(subject.representationImageView.getTag(R.string.tag_key_image_url)).isEqualTo("http://www.imageUrl.com");
         assertThat(subject.clabBadgeImageView.getVisibility()).isEqualTo(View.VISIBLE);
     }
 
     @Test
     public void onPostCreate시_조회된_project_제목정보를_화면에_보여준다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
-
         assertThat(subject.projectIntroduceTextView.getText()).isEqualTo("증강현실로 한장의 사진에 담는 나만의 추억");
         assertThat(subject.projectNameTextView.getText()).isEqualTo("유어커스텀");
         assertThat(subject.appsDescriptionTextView.getText()).isEqualTo("[Foodie][Viva video] 앱을 사용하시는 당신과 찰떡궁합!");
@@ -134,14 +133,13 @@ public class DetailActivityTest {
     public void onPostCreate시_오늘날짜가_마감일이후인경우_D_Day는_0이_표시된다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1512097383000L);   //2017-12-01 03:03:03
 
-        subject = activityController.create().postCreate(null).get();
+        subject = Robolectric.buildActivity(DetailActivity.class, intent).create().postCreate(null).get();
 
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-0");
     }
 
     @Test
     public void onPostCreate시_조회된_interviewer정보를_화면에_보여준다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
         assertThat(subject.interviewerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo(null);
         assertThat(subject.interviewerNameTextView.getText()).isEqualTo("이호영");
         assertThat(subject.interviewerIntroduceTextView.getText()).contains("17년 삼성전자 C-lab과제 툰스토리 팀");
@@ -149,14 +147,12 @@ public class DetailActivityTest {
 
     @Test
     public void onPostCreate시_조회된_project_설명정보를_화면에_보여준다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
         assertThat(subject.projectDescriptionTextView.getText()).contains("지그재그앱은 지그재그입니다");
         assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
     }
 
     @Test
     public void onPostCreate시_조회된_인터뷰진행정보를_화면에_보여준다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
         assertThat(subject.interviewIntroduceTextView.getText()).contains("유어커스텀");
         assertThat(subject.typeInterviewInfoView.getText()).contains("offline");
         assertThat(subject.locationInterviewInfoView.getText()).contains("서울대");
@@ -166,15 +162,12 @@ public class DetailActivityTest {
 
     @Test
     public void onPostCreate시_조회된_인터뷰신청현황을_화면에_보여준다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
         assertThat(subject.participationStatus.getText()).contains("2/5");
         assertThat(subject.closeDate.getText()).contains("~17.11.15");
     }
 
     @Test
     public void onPostCreate시_조회된_인터뷰일정을_화면에_보여준다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
-
         assertThat(subject.interviewPlanLayout.getChildCount()).isEqualTo(3);
         assertThat(((TextView) subject.interviewPlanLayout.getChildAt(1).findViewById(R.id.minute)).getText()).isEqualTo("10");
         assertThat(((TextView) subject.interviewPlanLayout.getChildAt(1).findViewById(R.id.plan)).getText()).isEqualTo("인트로");
@@ -184,14 +177,30 @@ public class DetailActivityTest {
 
     @Test
     public void onPostCreate시_신청버튼에_인터뷰Summary정보를_출력한다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
         assertThat(subject.interviewSummaryTextView.getText()).isEqualTo("서울대 / 11.01~11.05 / 70분 / 3만원 리워드");
     }
 
     @Test
     public void BackButton클릭시_이전화면으로_복귀한다() throws Exception {
-        subject = activityController.create().postCreate(null).get();
         subject.findViewById(R.id.back_button).performClick();
         assertThat(shadowOf(subject).isFinishing()).isTrue();
+    }
+
+    @Test
+    public void submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
+        when(mockProjectService.postParticipate(anyString())).thenReturn(Observable.just(true));
+
+        subject.findViewById(R.id.submit_button).performClick();
+
+        verify(mockProjectService).postParticipate("projectId1");
+    }
+
+    @Test
+    public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
+        when(mockProjectService.postParticipate(anyString())).thenReturn(Observable.just(true));
+
+        subject.findViewById(R.id.submit_button).performClick();
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("인터뷰참가신청완료!!");
     }
 }
