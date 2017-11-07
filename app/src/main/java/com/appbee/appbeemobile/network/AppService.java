@@ -48,6 +48,6 @@ public class AppService extends AbstractAppBeeService {
     public interface AppInfosServiceCallback {
         void onSuccess(List<AppInfo> result);
 
-        void onFail(String resultCode);
+        void onFail(String errorCode);
     }
 }

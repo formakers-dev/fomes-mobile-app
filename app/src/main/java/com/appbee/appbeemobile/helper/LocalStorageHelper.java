@@ -30,9 +30,6 @@ public class LocalStorageHelper {
         return sf.getString(key, defaultValue);
     }
 
-    private long getLong(String key, long defaultValue) {
-        return sf.getLong(key, defaultValue);
-    }
     private int getInt(String key, int defaultValue) {
         return sf.getInt(key, defaultValue);
     }
@@ -40,12 +37,6 @@ public class LocalStorageHelper {
     private void putString(String key, String value) {
         SharedPreferences.Editor edit = sf.edit();
         edit.putString(key, value);
-        edit.apply();
-    }
-
-    private void putLong(String key, long value) {
-        SharedPreferences.Editor edit = sf.edit();
-        edit.putLong(key, value);
         edit.apply();
     }
 

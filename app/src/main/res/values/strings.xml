@@ -10,23 +10,16 @@
     <string name="start_button_text">권한허용하고 시작하기</string>
     <string name="loading_title">관심사 분석중…</string>
     <string name="loading_description">앱 정보 기반으로 꼭 맞는 프로젝트를 추천해드려요.</string>
-    <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
     <string name="fail_to_sign_in">Fail to sign in</string>
     <string name="fail_to_connect_google_play">Fail to connect Google Play Service</string>
     <string name="app_service_get_info_api_fail">appList API fail</string>
     <string name="recommendation_apps_title">당신을 위한 추천 앱*</string>
     <string name="recommendation_apps_subtitle">인터뷰나 테스트 참여가 가능한 프로젝트입니다.</string>
-    <string name="introducing_apps_title">이런 앱은 어때요*</string>
-    <string name="introducing_apps_subtitle">당신의 응원을 기다리고 있는 프로젝트 입니다.</string>
     <string name="item_card_tag">[%s] 앱을 사용하시는 분의 의견을 구합니다.</string>
-    <string name="clab_subtitle">앱 사용패턴 기반으로 당신만을 위해 선별된\nC-lab Fair프로젝트를 소개합니다.</string>
-    <string name="clab_title">취향저격 C-lab 프로젝트 둘러보기</string>
-    <string name="default_text">default text</string>
     <string name="apps_description_format">%s 앱을 사용하시는 당신과 찰떡궁합!</string>
     <string name="tag_key_image_url">TAG_KEY_IMAGE_URL</string>
     <string name="interview_type_text">종류:%s</string>

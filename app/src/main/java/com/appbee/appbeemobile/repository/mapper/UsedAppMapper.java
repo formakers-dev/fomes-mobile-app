@@ -4,10 +4,6 @@ import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.repository.model.UsedApp;
 
 public class UsedAppMapper {
-    public static AppInfo toAppInfo(final UsedApp usedApp) {
-        return new AppInfo(usedApp.getPackageName(), usedApp.getAppName(), usedApp.getCategoryId1(), usedApp.getCategoryName1(), usedApp.getCategoryId2(), usedApp.getCategoryName2());
-    }
-
     public static UsedApp toUsedApp(final AppInfo appInfo) {
         final UsedApp usedApp = new UsedApp();
         usedApp.setPackageName(appInfo.getPackageName());
