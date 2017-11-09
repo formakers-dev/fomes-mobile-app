@@ -18,14 +18,14 @@ import rx.schedulers.Schedulers;
 public class AppStatService extends AbstractAppBeeService {
     private static final String TAG = AppStatService.class.getSimpleName();
     private AppUsageDataHelper appUsageDataHelper;
-    private StatAPI StatAPI;
+    private StatAPI statAPI;
     private final LocalStorageHelper localStorageHelper;
     private TimeHelper timeHelper;
 
     @Inject
-    public AppStatService(AppUsageDataHelper appUsageDataHelper, StatAPI StatAPI, LocalStorageHelper localStorageHelper, TimeHelper timeHelper) {
+    public AppStatService(AppUsageDataHelper appUsageDataHelper, StatAPI statAPI, LocalStorageHelper localStorageHelper, TimeHelper timeHelper) {
         this.appUsageDataHelper = appUsageDataHelper;
-        this.StatAPI = StatAPI;
+        this.statAPI = statAPI;
         this.localStorageHelper = localStorageHelper;
         this.timeHelper = timeHelper;
     }
@@ -36,14 +36,14 @@ public class AppStatService extends AbstractAppBeeService {
         final List<ShortTermStat> shortTermStatList = appUsageDataHelper.getShortTermStats(startTime, endTime);
 
         if (!shortTermStatList.isEmpty()) {
-            return StatAPI.sendShortTermStats(accessToken, endTime, shortTermStatList);
+            return statAPI.sendShortTermStats(accessToken, endTime, shortTermStatList);
         } else {
             return Observable.just(true);
         }
     }
 
     public Observable<Long> getLastUpdateStatTimestamp() {
-        return StatAPI.getLastUpdateStatTimestamp(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io());
+        return statAPI.getLastUpdateStatTimestamp(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io());
     }
 
     public List<String> getUsedPackageNameList() {
@@ -54,6 +54,11 @@ public class AppStatService extends AbstractAppBeeService {
         }
 
         return Lists.newArrayList(usedPackageNameSet);
+    }
+
+    public Observable<List<ShortTermStat>> getShortTermStats() {
+        long startTimeStamp = timeHelper.getCurrentTime() - TimeHelper.MILLISECONDS_OF_MONTH;
+        return statAPI.getShortTermStats(localStorageHelper.getAccessToken(), startTimeStamp).subscribeOn(Schedulers.io());
     }
 
     @Override
