@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface StatAPI {
@@ -16,4 +17,7 @@ public interface StatAPI {
 
     @GET("/stats/short/lastUpdateStatTimestamp")
     Observable<Long> getLastUpdateStatTimestamp(@Header("x-access-token") String accessToken);
+
+    @GET("/stats/short")
+    Observable<List<ShortTermStat>> getShortTermStats(@Header("x-access-token") String accessToken, @Query("startTimeStamp") long startTimeStamp);
 }

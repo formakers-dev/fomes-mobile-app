@@ -49,7 +49,7 @@ public class AppStatServiceTest {
     private StatAPI mockStatAPI;
 
     @Mock
-    private TimeHelper timeHelper;
+    private TimeHelper mockTimeHelper;
 
     @Captor
     ArgumentCaptor<List<NativeAppInfo>> appInfos = ArgumentCaptor.forClass(List.class);
@@ -66,7 +66,7 @@ public class AppStatServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper, timeHelper);
+        subject = new AppStatService(mockAppUsageDataHelper, mockStatAPI, mockLocalStorageHelper, mockTimeHelper);
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
 
         RxJavaHooks.reset();
@@ -118,5 +118,22 @@ public class AppStatServiceTest {
 
         assertThat(usedPackageNameList.size()).isEqualTo(1);
         assertThat(usedPackageNameList.get(0)).isEqualTo("com.package.name1");
+    }
+
+    @Test
+    public void getShortTermStats호출시_특정시간으로부터의_단기통계데이터를_서버에서_가져온다() throws Exception {
+        List<ShortTermStat> mockShortTermStats = new ArrayList<>();
+        mockShortTermStats.add(new ShortTermStat("anyPackage1", 1001L, 3000L, 2000L));
+        mockShortTermStats.add(new ShortTermStat("anyPackage2", 1002L, 3000L, 2000L));
+        when(mockTimeHelper.getCurrentTime()).thenReturn(0L);
+        when(mockStatAPI.getShortTermStats(anyString(), anyLong())).thenReturn(Observable.just(mockShortTermStats));
+
+        subject.getShortTermStats().subscribe(result -> {
+            assertThat(result.size()).isEqualTo(2);
+            assertThat(result.get(0).getPackageName()).isEqualTo("anyPackage1");
+            assertThat(result.get(0).getStartTimeStamp()).isEqualTo(1001L);
+            assertThat(result.get(1).getPackageName()).isEqualTo("anyPackage2");
+            assertThat(result.get(1).getStartTimeStamp()).isEqualTo(1002L);
+        });
     }
 }

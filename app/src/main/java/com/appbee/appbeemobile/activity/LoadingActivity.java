@@ -71,7 +71,10 @@ public class LoadingActivity extends BaseActivity {
                 .observeOn(Schedulers.io())
                 .subscribe(lastUpdateStatTimestamp -> appStatService.sendShortTermStats(lastUpdateStatTimestamp)
                         .observeOn(Schedulers.io())
-                        .subscribe(result -> callAppServiceGetInfoAPI(), appStatService::logError), appStatService::logError);
+                        .subscribe(result -> {
+                            callAppServiceGetInfoAPI();
+                            // TODO : 단기통계데이터 get 후, 한달치 데이터 가공하여 appUsages 업데이트하는 API 호출 필요
+                        }, appStatService::logError), appStatService::logError);
     }
 
     private void callAppServiceGetInfoAPI() {
