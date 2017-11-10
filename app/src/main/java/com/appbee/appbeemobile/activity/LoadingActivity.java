@@ -83,7 +83,7 @@ public class LoadingActivity extends BaseActivity {
     }
 
     private void moveToAnalysisResultActivity() {
-        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+        startActivity(new Intent(LoadingActivity.this, OnboardingAnalysisActivity.class));
         finish();
     }
 

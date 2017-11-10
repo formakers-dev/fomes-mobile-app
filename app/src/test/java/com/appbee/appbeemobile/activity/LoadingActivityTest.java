@@ -212,7 +212,7 @@ public class LoadingActivityTest extends ActivityTest {
     }
 
     @Test
-    public void appInfosServiceCallback의_onSuccess를_호출했을때_분석결과화면으로_이동한다() throws Exception {
+    public void appInfosServiceCallback의_onSuccess를_호출했을때_온보딩결과화면으로_이동한다() throws Exception {
         LoadingActivity subject = createSubjectWithPostCreateLifecycle();
         subject.appInfosServiceCallback.onSuccess(mock(List.class));
 
@@ -222,7 +222,7 @@ public class LoadingActivityTest extends ActivityTest {
     private void assertLaunchMainActivity(LoadingActivity subject) {
         ShadowActivity shadowActivity = shadowOf(subject);
         Intent nextStartedActivity = shadowActivity.getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName()).contains(MainActivity.class.getSimpleName());
+        assertThat(nextStartedActivity.getComponent().getClassName()).contains(OnboardingAnalysisActivity.class.getSimpleName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }
