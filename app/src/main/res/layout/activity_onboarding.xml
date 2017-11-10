@@ -4,20 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.appbee.appbeemobile.activity.OnboardingActivity">
+    tools:context="com.appbee.appbeemobile.activity.OnboardingPagerActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/appbee_logo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/greeting_message" />
+    </LinearLayout>
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/next_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/login_button_text"/>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/onboarding_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/login_button">
-    </android.support.v4.view.ViewPager>
-
+        android:text="@string/yes_button"/>
 </RelativeLayout>

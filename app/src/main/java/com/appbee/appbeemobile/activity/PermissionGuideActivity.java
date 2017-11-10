@@ -47,7 +47,7 @@ public class PermissionGuideActivity extends BaseActivity {
 
         // TODO : SignIn여부 판단 코드. 가독성 낮음. 다른 방법 고려하기
         if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
-            Intent intent = new Intent(this, OnboardingActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
             return;
