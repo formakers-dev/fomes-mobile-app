@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -24,10 +26,12 @@ import com.google.api.services.people.v1.model.Person;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
@@ -45,18 +49,24 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     LocalStorageHelper localStorageHelper;
 
+    @BindView(R.id.tnc_title_text)
+    TextView tncAgreeTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
+
+        this.setContentView(R.layout.activity_login);
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        signIn();
+        tncAgreeTextView.setText(Html.fromHtml(getString(R.string.tnc_agree_text)));
+        tncAgreeTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void signIn() {
@@ -103,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                         localStorageHelper.setGender(person.getGenders() != null ? person.getGenders().get(0).getValue() : "");
                     }
 
-                    Intent intent = new Intent(getBaseContext(), PermissionGuideActivity.class);
+                    Intent intent = new Intent(getBaseContext(), OnboardingActivity.class);
                     startActivity(intent);
                     setResult(Activity.RESULT_OK);
                     finish();
@@ -117,6 +127,11 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, failStringId, Toast.LENGTH_SHORT).show();
         setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+    @OnClick(R.id.login_button)
+    void onLoginButtonClick(){
+        signIn();
     }
 }
 

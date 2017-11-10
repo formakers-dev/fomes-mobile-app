@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AppBee</string>
 
-    <string name="login_button_text">구글ID로 시작하기</string>
+    <string name="login_button_text">Google로 쉬운 시작</string>
 
     <string name="permission_guide_title">시작하기전에</string>
     <string name="permission_guide_subtitle">더 나은 서비스를 제공하기 위해 앱 사용정보 접근 허용이 필요합니다.</string>
@@ -32,4 +32,8 @@
     <string name="close_date">~%s</string>
     <string name="minute">%d분</string>
     <string name="interview_summary">%1$s / %2$s~%3$s / %4$d분 / 3만원 리워드</string>
+    <string name="greeting_message">안녕하세요?\n앱비는 당신의 앱 행동패턴 기반으로\n취향저격 프로젝트를 보여드려요</string>
+    <string name="yes_button"><![CDATA[네 좋아요 >]]></string>
+    <string name="tnc_agree_text">버튼을 누르시면 <![CDATA[<a href="http://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="http://appbee.info">개인정보 취급방침</a>]]>에 동의됩니다.</string>
+    <string name="app_subtitle">App Behaviour</string>
 </resources>

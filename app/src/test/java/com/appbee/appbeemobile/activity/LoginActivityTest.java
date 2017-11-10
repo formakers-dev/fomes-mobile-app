@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
@@ -85,8 +86,10 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate호출시_GoogleSignInActivity가_시작된다() throws Exception {
+    public void login버튼_클릭시_GoogleSignInActivity가_시작된다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
+
+        subject.findViewById(R.id.login_button).performClick();
 
         ShadowActivity shadowActivity = shadowOf(subject);
         ShadowActivity.IntentForResult nextStartedActivityForResult = shadowActivity.getNextStartedActivityForResult();
@@ -132,7 +135,7 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void user정보저장이_성공하면_user정보를_sharedPreferences에_저장하고_PermissionGuideActivity를_시작한다() throws Exception {
+    public void user정보저장이_성공하면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
         doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
 
         Gender gender = new Gender().setValue("male");
@@ -148,7 +151,7 @@ public class LoginActivityTest extends ActivityTest {
         verify(localStorageHelper).setGender("male");
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(PermissionGuideActivity.class.getSimpleName());
+        assertThat(intent.getComponent().getClassName()).contains(OnboardingActivity.class.getSimpleName());
     }
 
     @Test
