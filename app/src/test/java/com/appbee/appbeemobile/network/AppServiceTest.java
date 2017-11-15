@@ -83,7 +83,7 @@ public class AppServiceTest {
         mockAppUsageList.add(new AppUsage("packageA", 1000L));
         mockAppUsageList.add(new AppUsage("packageB", 2000L));
         when(mockAppAPI.postUsages(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(true)));
-        subject.postAppUsages(mockAppUsageList);
+        subject.sendAppUsages(mockAppUsageList);
 
         verify(mockAppAPI).postUsages(anyString(), eq(mockAppUsageList));
     }

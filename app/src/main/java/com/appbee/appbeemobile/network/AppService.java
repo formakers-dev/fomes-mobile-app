@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 public class AppService extends AbstractAppBeeService {
@@ -30,11 +31,9 @@ public class AppService extends AbstractAppBeeService {
                 .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
     }
 
-    public void postAppUsages(List<AppUsage> appUsageList) {
-        appAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
+    public Observable<Boolean> sendAppUsages(List<AppUsage> appUsageList) {
+        return appAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList)
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
