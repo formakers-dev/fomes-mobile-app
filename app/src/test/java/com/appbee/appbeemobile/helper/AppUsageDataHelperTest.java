@@ -2,6 +2,9 @@ package com.appbee.appbeemobile.helper;
 
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
+import com.appbee.appbeemobile.network.AppService;
+import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,11 +33,20 @@ public class AppUsageDataHelperTest {
     ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    private AppStatService mockAppStatService;
+    private AppService mockAppService;
+    private AppRepositoryHelper mockAppRepositoryHelper;
+    private TimeHelper mockTimeHelper;
 
     @Before
     public void setUp() throws Exception {
         this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper);
+        this.mockAppStatService = mock(AppStatService.class);
+        this.mockAppService = mock(AppService.class);
+        this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
+        this.mockTimeHelper = mock(TimeHelper.class);
+
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockAppStatService, mockAppService, mockAppRepositoryHelper, mockTimeHelper);
     }
 
     @Test

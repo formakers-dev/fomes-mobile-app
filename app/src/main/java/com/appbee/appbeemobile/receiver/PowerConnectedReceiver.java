@@ -6,44 +6,40 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
-import com.appbee.appbeemobile.network.AppStatService;
-
-import java.util.ArrayList;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 
 import javax.inject.Inject;
 
-import rx.schedulers.Schedulers;
-
 public class PowerConnectedReceiver extends BroadcastReceiver {
     private static final String TAG = PowerConnectedReceiver.class.getSimpleName();
-    private AppStatService appStatService;
+    private AppUsageDataHelper appUsageDataHelper;
     private AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Inject
-    public PowerConnectedReceiver(AppStatService appStatService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
-        this.appStatService = appStatService;
+    public PowerConnectedReceiver(AppUsageDataHelper appUsageDataHelper, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
+        this.appUsageDataHelper = appUsageDataHelper;
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "PowerConnectedReceiver OnReceive");
         if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
-//            if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-//                appStatService.getLastUpdateStatTimestamp()
-//                        .observeOn(Schedulers.io())
-//                        .subscribe(lastUpdateStatTimestamp -> {
-//
-//                            appStatService.sendShortTermStats(new ArrayList<>(), 0L)
-//                                    .observeOn(Schedulers.io())
-//                                    .subscribe(result -> {
-//                                        if (result) {
-//                                            Log.d(TAG, "PowerConnectedReceiver send ShortTermStats successfully");
-//                                        } else {
-//                                            Log.e(TAG, "PowerConnectedReceiver fail to send ShortTermStats");
-//                                        }
-//                                    }, appStatService::logError);
-//                        }, appStatService::logError);
-//            }
+            Log.d(TAG, "PowerConnectedReceiver Action equals");
+            if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+                Log.d(TAG, "PowerConnectedReceiver has permission");
+                appUsageDataHelper.sendShortTermStatAndAppUsages(new AppUsageDataHelper.SendDataCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG, "PowerConnectedReceiver send ShortTermStats successfully");
+                    }
+
+                    @Override
+                    public void onFail() {
+                        Log.e(TAG, "PowerConnectedReceiver fail to send ShortTermStats");
+                    }
+                });
+            }
         }
     }
 }

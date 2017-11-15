@@ -4,15 +4,10 @@ import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.User;
-import com.appbee.appbeemobile.network.AppService;
-import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.UserService;
-import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,13 +19,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowToast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -41,11 +30,7 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,19 +45,7 @@ public class LoadingActivityTest extends ActivityTest {
     private Unbinder binder;
 
     @Inject
-    AppStatService mockAppStatService;
-
-    @Inject
-    AppService mockAppService;
-
-    @Inject
-    AppRepositoryHelper mockAppRepositoryHelper;
-
-    @Inject
     AppUsageDataHelper mockAppUsageDataHelper;
-
-    @Inject
-    AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
     @Inject
     UserService mockUserService;
@@ -85,9 +58,7 @@ public class LoadingActivityTest extends ActivityTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         activityController = Robolectric.buildActivity(LoadingActivity.class);
 
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
-        when(mockAppStatService.sendShortTermStats(any(List.class), anyLong())).thenReturn(Observable.just(true));
+        when(mockUserService.sendUser(any(User.class))).thenReturn(Observable.just(true));
 
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
@@ -114,7 +85,6 @@ public class LoadingActivityTest extends ActivityTest {
         when(mockLocalStorageHelper.getGender()).thenReturn("male");
         when(mockLocalStorageHelper.getBirthday()).thenReturn(1999);
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("registration-token");
-        when(mockUserService.sendUser(any(User.class))).thenReturn(Observable.just(true));
 
         createSubjectWithPostCreateLifecycle();
 
@@ -129,7 +99,40 @@ public class LoadingActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate호출시_ShortTermStats을_가져와_가공() throws Exception {
+    public void 유저정보전송_완료시_통계데이터_서버전송을_요청한다() throws Exception {
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
+        ArgumentCaptor<AppUsageDataHelper.SendDataCallback> sendDataCallbackArgumentCaptor = ArgumentCaptor.forClass(AppUsageDataHelper.SendDataCallback.class);
+
+        verify(mockAppUsageDataHelper).sendShortTermStatAndAppUsages(sendDataCallbackArgumentCaptor.capture());
+        assertThat(sendDataCallbackArgumentCaptor.getValue()).isEqualTo(subject.appUsageDataHelperSendDataCallback);
+    }
+
+    @Test
+    public void 유저정보전송_실패시_에러문구를_출력한다() throws Exception {
+        when(mockUserService.sendUser(any(User.class))).thenReturn(Observable.just(false));
+
+        createSubjectWithPostCreateLifecycle();
+
+        verify(mockAppUsageDataHelper, never()).sendShortTermStatAndAppUsages(any());
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("사용자 정보 저장에 실패하였습니다.");
+    }
+
+    @Test
+    public void 통계데이터_서버전송_완료콜백호출시_분셕결과화면으로_이동한다() throws Exception {
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
+        subject.appUsageDataHelperSendDataCallback.onSuccess();
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(OnboardingAnalysisActivity.class.getSimpleName());
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
+    }
+
+    @Test
+    public void 통계데이터_서버전송_실패콜백호출시_에러문구를_출력한다() throws Exception {
+        LoadingActivity subject = createSubjectWithPostCreateLifecycle();
+        subject.appUsageDataHelperSendDataCallback.onFail();
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("데이터 전송에 실패하였습니다.");
     }
 }

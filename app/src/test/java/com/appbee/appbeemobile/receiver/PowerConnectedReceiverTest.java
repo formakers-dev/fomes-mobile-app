@@ -4,11 +4,10 @@ import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
-import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -17,9 +16,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.List;
-
-import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -30,25 +26,22 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-@Ignore
 public class PowerConnectedReceiverTest {
 
     private PowerConnectedReceiver subject;
 
     @Mock
-    AppStatService mockAppStatService;
+    AppUsageDataHelper mockAppUsageDataHelper;
 
     @Mock
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new PowerConnectedReceiver(mockAppStatService, appBeeAndroidNativeHelper);
+        subject = new PowerConnectedReceiver(mockAppUsageDataHelper, mockAppBeeAndroidNativeHelper);
 
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
-        when(mockAppStatService.sendShortTermStats(any(List.class), 9999L)).thenReturn(Observable.just(true));
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
@@ -63,13 +56,13 @@ public class PowerConnectedReceiverTest {
     public void onReceive에서_PowerConnect되었을때_단기통계데이터를_서버로_전송한다() throws Exception {
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
 
-        verify(mockAppStatService).sendShortTermStats(any(List.class), 9999L);
+        verify(mockAppUsageDataHelper).sendShortTermStatAndAppUsages(any());
     }
 
     @Test
     public void onReceive에서_PowerConnect되었을때_권한이없으면_아무것도하지않는다() throws Exception {
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
-        verify(mockAppStatService, never()).sendShortTermStats(any(List.class), 9999L);
+        verify(mockAppUsageDataHelper, never()).sendShortTermStatAndAppUsages(any());
     }
 }

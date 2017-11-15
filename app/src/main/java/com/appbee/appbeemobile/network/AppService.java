@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.network;
 import android.util.Log;
 
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.AppUsage;
 
 import java.util.List;
@@ -39,11 +38,5 @@ public class AppService extends AbstractAppBeeService {
     @Override
     protected String getTag() {
         return TAG;
-    }
-
-    public interface AppInfosServiceCallback {
-        void onSuccess(List<AppInfo> result);
-
-        void onFail(String errorCode);
     }
 }
