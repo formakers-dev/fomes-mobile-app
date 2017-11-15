@@ -155,7 +155,7 @@ public class AppUsageDataHelperTest {
 
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
 
-        Map<String, Long> map = subject.getShortTermStatsTimeSummary();
+        Map<String, Long> map = subject.getShortTermStatsTimeSummary(0L);
 
         assertThat(map.get("aaaaa")).isEqualTo(86400000L);
         assertThat(map.get("bbbbb")).isNull();

@@ -107,33 +107,4 @@ public class AppStatServiceTest {
         verify(mockStatAPI, never()).sendShortTermStats(anyString(), anyLong(), any(List.class));
     }
 
-    @Test
-    public void getUsedPackageNameList호출시_단기통계에서_사용이력이있는_appList를_리턴한다() throws Exception {
-        List<ShortTermStat> mockShortTermStats = new ArrayList<>();
-        mockShortTermStats.add(new ShortTermStat("com.package.name1", 0L, 100L, 1000L));
-
-        when(mockAppUsageDataHelper.getShortTermStats(0L)).thenReturn(mockShortTermStats);
-
-        List<String> usedPackageNameList = subject.getUsedPackageNameList();
-
-        assertThat(usedPackageNameList.size()).isEqualTo(1);
-        assertThat(usedPackageNameList.get(0)).isEqualTo("com.package.name1");
-    }
-
-    @Test
-    public void getShortTermStats호출시_특정시간으로부터의_단기통계데이터를_서버에서_가져온다() throws Exception {
-        List<ShortTermStat> mockShortTermStats = new ArrayList<>();
-        mockShortTermStats.add(new ShortTermStat("anyPackage1", 1001L, 3000L, 2000L));
-        mockShortTermStats.add(new ShortTermStat("anyPackage2", 1002L, 3000L, 2000L));
-        when(mockTimeHelper.getCurrentTime()).thenReturn(0L);
-        when(mockStatAPI.getShortTermStats(anyString(), anyLong())).thenReturn(Observable.just(mockShortTermStats));
-
-        subject.getShortTermStats().subscribe(result -> {
-            assertThat(result.size()).isEqualTo(2);
-            assertThat(result.get(0).getPackageName()).isEqualTo("anyPackage1");
-            assertThat(result.get(0).getStartTimeStamp()).isEqualTo(1001L);
-            assertThat(result.get(1).getPackageName()).isEqualTo("anyPackage2");
-            assertThat(result.get(1).getStartTimeStamp()).isEqualTo(1002L);
-        });
-    }
 }

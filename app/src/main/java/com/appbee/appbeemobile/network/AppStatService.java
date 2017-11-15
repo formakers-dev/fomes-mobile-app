@@ -4,11 +4,8 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.google.common.collect.Lists;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -44,21 +41,6 @@ public class AppStatService extends AbstractAppBeeService {
 
     public Observable<Long> getLastUpdateStatTimestamp() {
         return statAPI.getLastUpdateStatTimestamp(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io());
-    }
-
-    public List<String> getUsedPackageNameList() {
-        Set<String> usedPackageNameSet = new HashSet<>();
-
-        for (ShortTermStat stat : appUsageDataHelper.getShortTermStats(0L)) {
-            usedPackageNameSet.add(stat.getPackageName());
-        }
-
-        return Lists.newArrayList(usedPackageNameSet);
-    }
-
-    public Observable<List<ShortTermStat>> getShortTermStats() {
-        long startTimeStamp = timeHelper.getCurrentTime() - TimeHelper.MILLISECONDS_OF_MONTH;
-        return statAPI.getShortTermStats(localStorageHelper.getAccessToken(), startTimeStamp).subscribeOn(Schedulers.io());
     }
 
     @Override

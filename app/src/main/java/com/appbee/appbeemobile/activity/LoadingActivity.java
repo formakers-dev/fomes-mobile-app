@@ -72,56 +72,16 @@ public class LoadingActivity extends BaseActivity {
                 .subscribe(lastUpdateStatTimestamp -> appStatService.sendShortTermStats(lastUpdateStatTimestamp)
                         .observeOn(Schedulers.io())
                         .subscribe(result -> {
-                            callAppServiceGetInfoAPI();
+                            LoadingActivity.this.runOnUiThread(() -> {
+                                appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getShortTermStatsTimeSummary(0L));
+                                moveToAnalysisResultActivity();
+                            });
                             // TODO : 단기통계데이터 get 후, 한달치 데이터 가공하여 appUsages 업데이트하는 API 호출 필요
                         }, appStatService::logError), appStatService::logError);
-    }
-
-    private void callAppServiceGetInfoAPI() {
-        usedPackageNameList = appStatService.getUsedPackageNameList();
-        appService.getInfos(usedPackageNameList, appInfosServiceCallback);
     }
 
     private void moveToAnalysisResultActivity() {
         startActivity(new Intent(LoadingActivity.this, OnboardingAnalysisActivity.class));
         finish();
-    }
-
-    AppService.AppInfosServiceCallback appInfosServiceCallback = new AppService.AppInfosServiceCallback() {
-        @Override
-        public void onSuccess(List<AppInfo> appInfos) {
-            callAppServicePostUncrawledApps(appInfos);
-
-            LoadingActivity.this.runOnUiThread(() -> {
-                appRepositoryHelper.insertUsedApps(appInfos);
-                appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getShortTermStatsTimeSummary());
-                moveToAnalysisResultActivity();
-            });
-        }
-
-        @Override
-        public void onFail(String errorCode) {
-            if (!isServiceAPIFailAlready) {
-                isServiceAPIFailAlready = true;
-                callAppServiceGetInfoAPI();
-            } else {
-                LoadingActivity.this.runOnUiThread(() -> Toast.makeText(LoadingActivity.this, R.string.app_service_get_info_api_fail, Toast.LENGTH_SHORT).show());
-            }
-        }
-    };
-
-    private void callAppServicePostUncrawledApps(List<AppInfo> appInfos) {
-        List<String> uncrawledAppList = Observable.from(usedPackageNameList).filter(packageName -> {
-            for (AppInfo app : appInfos) {
-                if (app.getPackageName().equals(packageName)) {
-                    return false;
-                }
-            }
-            return true;
-        }).toList().toBlocking().single();
-
-        if (uncrawledAppList != null && !uncrawledAppList.isEmpty()) {
-            appService.postUncrawledApps(uncrawledAppList);
-        }
     }
 }
