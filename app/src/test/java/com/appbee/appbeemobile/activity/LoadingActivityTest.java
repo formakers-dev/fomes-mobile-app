@@ -87,7 +87,7 @@ public class LoadingActivityTest extends ActivityTest {
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
-        when(mockAppStatService.sendShortTermStats(anyLong())).thenReturn(Observable.just(true));
+        when(mockAppStatService.sendShortTermStats(any(List.class), anyLong())).thenReturn(Observable.just(true));
 
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
@@ -114,6 +114,7 @@ public class LoadingActivityTest extends ActivityTest {
         when(mockLocalStorageHelper.getGender()).thenReturn("male");
         when(mockLocalStorageHelper.getBirthday()).thenReturn(1999);
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("registration-token");
+        when(mockUserService.sendUser(any(User.class))).thenReturn(Observable.just(true));
 
         createSubjectWithPostCreateLifecycle();
 
@@ -125,5 +126,10 @@ public class LoadingActivityTest extends ActivityTest {
         assertThat(userCaptor.getValue().getGender()).isEqualTo("male");
         assertThat(userCaptor.getValue().getBirthday()).isEqualTo(1999);
         assertThat(userCaptor.getValue().getRegistrationToken()).isEqualTo("registration-token");
+    }
+
+    @Test
+    public void onPostCreate호출시_ShortTermStats을_가져와_가공() throws Exception {
+
     }
 }

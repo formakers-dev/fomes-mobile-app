@@ -37,11 +37,9 @@ public class UserService extends AbstractAppBeeService {
                         .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError));
     }
 
-    public void sendUser(User user) {
-        userAPI.updateUser(localStorageHelper.getAccessToken(), user)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
+    public Observable<Boolean> sendUser(User user) {
+        return userAPI.updateUser(localStorageHelper.getAccessToken(), user)
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

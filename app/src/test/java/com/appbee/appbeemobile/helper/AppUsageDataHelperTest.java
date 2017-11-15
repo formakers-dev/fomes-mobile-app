@@ -30,6 +30,9 @@ public class AppUsageDataHelperTest {
     @Captor
     ArgumentCaptor<Long> startTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
+    @Captor
+    ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
+
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
     private TimeHelper mockTimeHelper;
 
@@ -47,7 +50,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1100L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageA", 1000L, 1100L);
@@ -63,7 +66,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageB", 1100L, 1250L);
@@ -77,7 +80,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertThat(shortTermStats.get(0).getPackageName()).isEqualTo("packageB");
@@ -94,7 +97,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1400L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageC", 1200L, 1375L);
@@ -108,7 +111,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
         assertThat(shortTermStats.size()).isEqualTo(1);
         assertConfirmDetailUsageStat(shortTermStats.get(0), "packageA", 1100L, 1300L);
@@ -122,7 +125,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1300L));
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L);
+        List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
         assertThat(shortTermStats.size()).isEqualTo(0);
     }
@@ -140,25 +143,24 @@ public class AppUsageDataHelperTest {
     public void getShortTermStats호출시_파라미터로_넘어온_조회시작시간을_기준으로_통계데이터를_조회한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
 
-        subject.getShortTermStats(200L);
+        subject.getShortTermStats(200L, 300L);
 
-        verify(mockAppBeeAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), anyLong());
+        verify(mockAppBeeAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), endTimeCaptor.capture());
         assertThat(startTimeCaptor.getValue()).isEqualTo(200L);
+        assertThat(endTimeCaptor.getValue()).isEqualTo(300L);
     }
 
     @Test
     public void getShortTermStatsTimeSummary호출시_package별_totalUsedTime의_합을_리턴한다() throws Exception {
-        List<EventStat> preStoredUsageStats = new ArrayList<>();
-        preStoredUsageStats.add(createMockEventStats("aaaaa", 1, 1499914800000L));    //2017-07-12 12:00:00
-        preStoredUsageStats.add(createMockEventStats("aaaaa", 2, 1500001200000L));    //2017-07-14 12:00:00
-        preStoredUsageStats.add(createMockEventStats("bbbbb", 1, 1500001200000L));    //2017-07-14 12:00:00
+        List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
+        mockShortTermStatList.add(new ShortTermStat("packageName1", 1000L, 2000L, 1000L));
+        mockShortTermStatList.add(new ShortTermStat("packageName2", 2000L, 4000L, 2000L));
+        mockShortTermStatList.add(new ShortTermStat("packageName1", 4000L, 9000L, 5000L));
 
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(preStoredUsageStats);
+        Map<String, Long> map = subject.getShortTermStatsTimeSummary(mockShortTermStatList);
 
-        Map<String, Long> map = subject.getShortTermStatsTimeSummary(0L);
-
-        assertThat(map.get("aaaaa")).isEqualTo(86400000L);
-        assertThat(map.get("bbbbb")).isNull();
+        assertThat(map.get("packageName1")).isEqualTo(6000L);
+        assertThat(map.get("packageName2")).isEqualTo(2000L);
     }
 
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
@@ -166,14 +168,5 @@ public class AppUsageDataHelperTest {
         assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
         assertThat(shortTermStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
         assertThat(shortTermStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
-    }
-
-    @NonNull
-    private EventStat createMockEventStats(String packageName, int eventType, long eventTime) {
-        EventStat mockEventStats = mock(EventStat.class);
-        when(mockEventStats.getPackageName()).thenReturn(packageName);
-        when(mockEventStats.getEventType()).thenReturn(eventType);
-        when(mockEventStats.getEventTime()).thenReturn(eventTime);
-        return mockEventStats;
     }
 }

@@ -3,14 +3,15 @@ package com.appbee.appbeemobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
@@ -39,24 +40,20 @@ public class LoadingActivity extends BaseActivity {
     AppUsageDataHelper appUsageDataHelper;
 
     @Inject
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
-
-    @Inject
     LocalStorageHelper localStorageHelper;
 
     @Inject
     UserService userService;
 
-    private List<String> usedPackageNameList;
+    @Inject
+    TimeHelper timeHelper;
 
-    private boolean isServiceAPIFailAlready = false;
+    private static final String TAG = LoadingActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-
-        //Glide.with(this).asGif().load(R.drawable.automated_loading_bowl).into((ImageView) findViewById(R.id.loadingImage));
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
     }
@@ -65,19 +62,31 @@ public class LoadingActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()));
+        userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()))
+                .observeOn(Schedulers.io())
+                .subscribe(result -> sendStatData(), error -> {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoadingActivity.this, "사용자 정보 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    });
+                });
+    }
 
+    private void sendStatData() {
         appStatService.getLastUpdateStatTimestamp()
                 .observeOn(Schedulers.io())
-                .subscribe(lastUpdateStatTimestamp -> appStatService.sendShortTermStats(lastUpdateStatTimestamp)
-                        .observeOn(Schedulers.io())
-                        .subscribe(result -> {
-                            LoadingActivity.this.runOnUiThread(() -> {
-                                appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getShortTermStatsTimeSummary(0L));
-                                moveToAnalysisResultActivity();
-                            });
-                            // TODO : 단기통계데이터 get 후, 한달치 데이터 가공하여 appUsages 업데이트하는 API 호출 필요
-                        }, appStatService::logError), appStatService::logError);
+                .subscribe(lastUpdateStatTimestamp -> {
+                    final long statBasedEndTime = timeHelper.getStatBasedCurrentTime();
+                    final List<ShortTermStat> shortTermStatList = appUsageDataHelper.getShortTermStats(lastUpdateStatTimestamp, statBasedEndTime);
+
+                    appRepositoryHelper.updateTotalUsedTime(appUsageDataHelper.getShortTermStatsTimeSummary(shortTermStatList));
+
+                    Observable.merge(
+                            appStatService.sendShortTermStats(shortTermStatList, statBasedEndTime),
+                            appService.sendAppUsages(appRepositoryHelper.getAppUsages())
+                    ).observeOn(Schedulers.io())
+                            .all(result -> true)
+                            .subscribe(result -> moveToAnalysisResultActivity(), error -> Log.d(TAG, error.getMessage()));
+                }, appStatService::logError);
     }
 
     private void moveToAnalysisResultActivity() {
