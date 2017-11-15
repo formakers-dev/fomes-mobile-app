@@ -72,10 +72,10 @@ public class AppUsageDataHelper {
     }
 
     @NonNull
-    public Map<String, Long> getShortTermStatsTimeSummary() {
+    public Map<String, Long> getShortTermStatsTimeSummary(long startTime) {
         Map<String, Long> map = new HashMap<>();
 
-        for (ShortTermStat shortTermStat : getShortTermStats(0L)) {
+        for (ShortTermStat shortTermStat : getShortTermStats(startTime)) {
             if (map.get(shortTermStat.getPackageName()) == null) {
                 map.put(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime());
             } else {
