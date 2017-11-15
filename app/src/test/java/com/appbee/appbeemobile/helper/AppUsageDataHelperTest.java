@@ -1,7 +1,5 @@
 package com.appbee.appbeemobile.helper;
 
-import android.support.annotation.NonNull;
-
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 
@@ -13,8 +11,6 @@ import org.mockito.Captor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import rx.Observable;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
@@ -34,13 +30,11 @@ public class AppUsageDataHelperTest {
     ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
-    private TimeHelper mockTimeHelper;
 
     @Before
     public void setUp() throws Exception {
         this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
-        this.mockTimeHelper = mock(TimeHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockTimeHelper);
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper);
     }
 
     @Test
@@ -128,15 +122,6 @@ public class AppUsageDataHelperTest {
         List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
         assertThat(shortTermStats.size()).isEqualTo(0);
-    }
-
-    @Test
-    public void getAppList호출시_설치된_앱리스트조회를_요청한다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.getInstalledLaunchableApps()).thenReturn(mock(Observable.class));
-
-        subject.getAppList();
-
-        verify(mockAppBeeAndroidNativeHelper).getInstalledLaunchableApps();
     }
 
     @Test

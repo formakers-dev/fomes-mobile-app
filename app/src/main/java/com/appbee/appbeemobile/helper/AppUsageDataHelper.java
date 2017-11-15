@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.helper;
 import android.support.annotation.NonNull;
 
 import com.appbee.appbeemobile.model.EventStat;
-import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 
 import java.util.ArrayList;
@@ -14,21 +13,16 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
-import rx.schedulers.Schedulers;
-
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 
 @Singleton
 public class AppUsageDataHelper {
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
-    private final TimeHelper timeHelper;
 
     @Inject
-    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, TimeHelper timeHelper) {
+    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
-        this.timeHelper = timeHelper;
     }
 
     @NonNull
@@ -46,7 +40,7 @@ public class AppUsageDataHelper {
 
                 case MOVE_TO_BACKGROUND:
                     if (beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
-                        shortTermStats.add(createDetailUsageStat(eventStat.getPackageName(), beforeForegroundEvent.getEventTime(), eventStat.getEventTime()));
+                        shortTermStats.add(createShortTermStat(eventStat.getPackageName(), beforeForegroundEvent.getEventTime(), eventStat.getEventTime()));
                         beforeForegroundEvent = null;
                     }
                     break;
@@ -56,15 +50,8 @@ public class AppUsageDataHelper {
         return shortTermStats;
     }
 
-    private ShortTermStat createDetailUsageStat(String packageName, long startTimeStamp, long endTimeStamp) {
+    private ShortTermStat createShortTermStat(String packageName, long startTimeStamp, long endTimeStamp) {
         return new ShortTermStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
-    }
-
-    public Observable<List<NativeAppInfo>> getAppList() {
-        return appBeeAndroidNativeHelper.getInstalledLaunchableApps()
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .toList();
     }
 
     @NonNull
