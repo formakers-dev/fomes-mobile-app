@@ -6,6 +6,8 @@ import com.appbee.appbeemobile.network.ProjectAPI;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -18,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
+    private final static long NETWORK_TIMEOUT = 15L;
 
     @Singleton
     @Provides
@@ -26,6 +29,9 @@ public class NetworkModule {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(interceptor);
+        builder.connectTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
+        builder.writeTimeout(30L, TimeUnit.SECONDS);
+        builder.readTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
         return builder.build();
     }
 
