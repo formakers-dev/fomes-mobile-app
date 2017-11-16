@@ -5,18 +5,15 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.widget.Button;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.helper.TimeHelper;
-import com.appbee.appbeemobile.network.UserService;
+import com.appbee.appbeemobile.service.PowerConnectedService;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PermissionGuideActivity extends BaseActivity {
@@ -24,19 +21,10 @@ public class PermissionGuideActivity extends BaseActivity {
     static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
 
     @Inject
-    UserService userService;
-
-    @Inject
-    TimeHelper timeHelper;
-
-    @Inject
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Inject
     LocalStorageHelper localStorageHelper;
-
-    @BindView(R.id.permission_button)
-    Button permissionButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,16 +35,13 @@ public class PermissionGuideActivity extends BaseActivity {
 
         // TODO : SignIn여부 판단 코드. 가독성 낮음. 다른 방법 고려하기
         if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+            moveActivityTo(LoginActivity.class);
             return;
         }
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            startPowerConnectedService();
+            moveActivityTo(MainActivity.class);
         }
     }
 
@@ -66,8 +51,12 @@ public class PermissionGuideActivity extends BaseActivity {
         startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
     }
 
-    void startLoadingActivity() {
-        Intent intent = new Intent(PermissionGuideActivity.this, LoadingActivity.class);
+    private void startPowerConnectedService() {
+        startService(new Intent(this, PowerConnectedService.class));
+    }
+
+    private void moveActivityTo(Class activityClass) {
+        Intent intent = new Intent(this, activityClass);
         startActivity(intent);
         finish();
     }
@@ -76,7 +65,8 @@ public class PermissionGuideActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION
                 && appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            startLoadingActivity();
+            startPowerConnectedService();
+            moveActivityTo(LoadingActivity.class);
         }
     }
 }
