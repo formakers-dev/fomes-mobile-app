@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -15,9 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
+
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -47,6 +53,14 @@ public class AppUsageDataHelperTest {
         this.mockTimeHelper = mock(TimeHelper.class);
 
         subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockAppStatService, mockAppService, mockAppRepositoryHelper, mockTimeHelper);
+
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 
     @Test
@@ -165,5 +179,56 @@ public class AppUsageDataHelperTest {
         assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
         assertThat(shortTermStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
         assertThat(shortTermStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
+    }
+
+    @Test
+    public void sendShortTermStatAndAppUsages호출시_앱통계정보가_db_에_저장된다() throws Exception {
+        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
+        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+
+        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
+        subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
+
+        verify(mockAppRepositoryHelper).updateTotalUsedTime(any(Map.class));
+        verify(mockAppStatService).sendShortTermStats(any(List.class), anyLong());
+        verify(mockAppService).sendAppUsages(any(List.class));
+        verify(mockSendDataCallback).onSuccess();
+    }
+
+    @Test
+    public void sendShortTermStatAndAppUsages호출시_앱단기정보데이터전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
+        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
+        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mock(List.class));
+        when(mockAppStatService.sendShortTermStats(any(List.class), anyLong())).thenReturn(Observable.error(new Throwable()));
+
+        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
+        subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
+
+        verify(mockSendDataCallback).onFail();
+    }
+
+    @Test
+    public void sendShortTermStatAndAppUsages호출시_앱사용정보통계전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
+        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.just(0L));
+        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mock(List.class));
+        when(mockAppService.sendAppUsages(any(List.class))).thenReturn(Observable.error(new Throwable()));
+
+        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
+        subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
+
+        verify(mockSendDataCallback).onFail();
+    }
+
+    @Test
+    public void sendShortTermStatAndAppUsages호출시_최종전송시간API조회에러발생시_Callback의_onFail을_호출한다() throws Exception {
+        when(mockAppStatService.getLastUpdateStatTimestamp()).thenReturn(Observable.error(new Throwable()));
+
+        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
+        subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
+
+        verify(mockSendDataCallback).onFail();
     }
 }
