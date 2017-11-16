@@ -33,6 +33,7 @@ public class LocalStorageHelperTest {
                 .putString("EMAIL", "appbee0627@gmail.com")
                 .putInt("BIRTHDAY", 19991231)
                 .putString("GENDER", "female")
+                .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
                 .apply();
     }
 
@@ -100,5 +101,16 @@ public class LocalStorageHelperTest {
     @Test
     public void getGender호출시_SharedPreference에_저장된_성별을_리턴한다() throws Exception {
         assertThat(subject.getGender()).isEqualTo("female");
+    }
+
+    @Test
+    public void setLastUpdateStatTimestamp호출시_SharedPreference에_생년월일을_저장한다() throws Exception {
+        subject.setLastUpdateStatTimestamp(1000L);
+        assertThat(sf.getLong("LAST_UPDATE_STAT_TIMESTAMP", 0)).isEqualTo(1000L);
+    }
+
+    @Test
+    public void getLastUpdateStatTimestamp호출시_SharedPreference에_저장된_생년월일을_리턴한다() throws Exception {
+        assertThat(subject.getLastUpdateStatTimestamp()).isEqualTo(1000L);
     }
 }
