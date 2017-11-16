@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
+import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
@@ -11,6 +12,8 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
+
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
@@ -54,9 +57,7 @@ public class LoadingActivity extends BaseActivity {
     }
 
     private void toastSendUserErrorMessage() {
-        runOnUiThread(() -> {
-            Toast.makeText(LoadingActivity.this, "사용자 정보 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-        });
+        runOnUiThread(() -> Toast.makeText(LoadingActivity.this, "사용자 정보 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show());
     }
 
     private void sendStatData() {
