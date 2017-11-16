@@ -29,17 +29,20 @@ public class AppUsageDataHelper {
     private final AppService appService;
     private final AppRepositoryHelper appRepositoryHelper;
     private final TimeHelper timeHelper;
+    private final LocalStorageHelper localStorageHelper;
 
     @Inject
     public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper,
                               AppStatService appStatService,
                               AppService appService,
                               AppRepositoryHelper appRepositoryHelper,
+                              LocalStorageHelper localStorageHelper,
                               TimeHelper timeHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
         this.appStatService = appStatService;
         this.appService = appService;
         this.appRepositoryHelper = appRepositoryHelper;
+        this.localStorageHelper = localStorageHelper;
         this.timeHelper = timeHelper;
     }
 
@@ -73,27 +76,24 @@ public class AppUsageDataHelper {
     }
 
     public void sendShortTermStatAndAppUsages(SendDataCallback callback) {
-        appStatService.getLastUpdateStatTimestamp()
-                .observeOn(Schedulers.io())
-                .subscribe(lastUpdateStatTimestamp -> {
-                    final long statBasedEndTime = timeHelper.getStatBasedCurrentTime();
-                    final List<ShortTermStat> shortTermStatList = getShortTermStats(lastUpdateStatTimestamp, statBasedEndTime);
+        final long lastUpdateStatTimestamp = localStorageHelper.getLastUpdateStatTimestamp();
+        final long statBasedEndTime = timeHelper.getStatBasedCurrentTime();
+        final List<ShortTermStat> shortTermStatList = getShortTermStats(lastUpdateStatTimestamp, statBasedEndTime);
 
-                    appRepositoryHelper.updateTotalUsedTime(getShortTermStatsTimeSummary(shortTermStatList));
+        appRepositoryHelper.updateTotalUsedTime(getShortTermStatsTimeSummary(shortTermStatList));
 
-                    Observable.merge(
-                            appStatService.sendShortTermStats(shortTermStatList, statBasedEndTime),
-                            appService.sendAppUsages(appRepositoryHelper.getAppUsages())
-                    ).observeOn(Schedulers.io())
-                            .all(result -> true)
-                            .subscribe(result -> callback.onSuccess(), error -> {
-                                appStatService.logError(error);
-                                callback.onFail();
-                            });
-                }, error -> {
-                    appStatService.logError(error);
-                    callback.onFail();
-                });
+        Observable.merge(
+            appStatService.sendShortTermStats(shortTermStatList),
+            appService.sendAppUsages(appRepositoryHelper.getAppUsages())
+        ).observeOn(Schedulers.io())
+        .all(result -> true)
+        .subscribe(result -> {
+            localStorageHelper.setLastUpdateStatTimestamp(statBasedEndTime);
+            callback.onSuccess();
+        }, error -> {
+            appStatService.logError(error);
+            callback.onFail();
+        });
     }
 
     @NonNull
