@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.helper;
 
 import android.support.annotation.NonNull;
 
+import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppService;
@@ -47,7 +48,7 @@ public class AppUsageDataHelper {
     }
 
     @NonNull
-    public List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
+    List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
         List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
 
@@ -80,40 +81,34 @@ public class AppUsageDataHelper {
         final long statBasedEndTime = timeHelper.getStatBasedCurrentTime();
         final List<ShortTermStat> shortTermStatList = getShortTermStats(lastUpdateStatTimestamp, statBasedEndTime);
 
-        appRepositoryHelper.updateTotalUsedTime(getShortTermStatsTimeSummary(shortTermStatList));
+        appRepositoryHelper.updateTotalUsedTime(getDailyStatSummary(shortTermStatList));
 
         Observable.merge(
-            appStatService.sendShortTermStats(shortTermStatList),
-            appService.sendAppUsages(appRepositoryHelper.getAppUsages())
+                appStatService.sendShortTermStats(shortTermStatList),
+                appService.sendAppUsages(appRepositoryHelper.getAppUsages())
         ).observeOn(Schedulers.io())
-        .all(result -> true)
-        .subscribe(result -> {
-            localStorageHelper.setLastUpdateStatTimestamp(statBasedEndTime);
-            callback.onSuccess();
-        }, error -> {
-            appStatService.logError(error);
-            callback.onFail();
-        });
+                .all(result -> true)
+                .subscribe(result -> {
+                    localStorageHelper.setLastUpdateStatTimestamp(statBasedEndTime);
+                    callback.onSuccess();
+                }, error -> {
+                    appStatService.logError(error);
+                    callback.onFail();
+                });
     }
 
-    @NonNull
-    public Map<String, Long> getShortTermStatsTimeSummary(List<ShortTermStat> shortTermStatList) {
-        Map<String, Long> map = new HashMap<>();
+    List<DailyStatSummary> getDailyStatSummary(List<ShortTermStat> shortTermStatList) {
+        List<DailyStatSummary> dailyStatSummaryList = new ArrayList<>();
 
-        for (ShortTermStat shortTermStat : shortTermStatList) {
-            if (map.get(shortTermStat.getPackageName()) == null) {
-                map.put(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime());
-            } else {
-                map.put(shortTermStat.getPackageName(), map.get(shortTermStat.getPackageName()) + shortTermStat.getTotalUsedTime());
-            }
-        }
+        //TODO : 날짜별 패키지명별 사용시간 합계 리스트 생성하여 리턴
 
-        return map;
+        return dailyStatSummaryList;
     }
 
 
     public interface SendDataCallback {
         void onSuccess();
+
         void onFail();
     }
 }

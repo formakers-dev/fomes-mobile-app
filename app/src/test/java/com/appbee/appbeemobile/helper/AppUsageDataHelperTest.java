@@ -163,19 +163,6 @@ public class AppUsageDataHelperTest {
         assertThat(endTimeCaptor.getValue()).isEqualTo(300L);
     }
 
-    @Test
-    public void getShortTermStatsTimeSummary호출시_package별_totalUsedTime의_합을_리턴한다() throws Exception {
-        List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
-        mockShortTermStatList.add(new ShortTermStat("packageName1", 1000L, 2000L, 1000L));
-        mockShortTermStatList.add(new ShortTermStat("packageName2", 2000L, 4000L, 2000L));
-        mockShortTermStatList.add(new ShortTermStat("packageName1", 4000L, 9000L, 5000L));
-
-        Map<String, Long> map = subject.getShortTermStatsTimeSummary(mockShortTermStatList);
-
-        assertThat(map.get("packageName1")).isEqualTo(6000L);
-        assertThat(map.get("packageName2")).isEqualTo(2000L);
-    }
-
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
         assertThat(shortTermStat.getPackageName()).isEqualTo(packageName);
         assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
@@ -192,7 +179,7 @@ public class AppUsageDataHelperTest {
         AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
         subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
 
-        verify(mockAppRepositoryHelper).updateTotalUsedTime(any(Map.class));
+        verify(mockAppRepositoryHelper).updateTotalUsedTime(any(List.class));
         verify(mockAppStatService).sendShortTermStats(any(List.class));
         verify(mockAppService).sendAppUsages(any(List.class));
         verify(mockLocalStorageHelper).setLastUpdateStatTimestamp(eq(10L));
