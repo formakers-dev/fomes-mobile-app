@@ -1,9 +1,11 @@
 package com.appbee.appbeemobile.repository.helper;
 
 import com.appbee.appbeemobile.model.AppUsage;
+import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.repository.model.AppUsageRealmObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,17 +20,21 @@ public class AppRepositoryHelper {
     public AppRepositoryHelper() {
     }
 
-    public void updateTotalUsedTime(Map<String, Long> map) {
+    public void updateTotalUsedTime(List<DailyStatSummary> dailyStatSummaryList) {
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction(realm -> {
-                for (String packageName : map.keySet()) {
-                    AppUsageRealmObject appUsageRealmObject = realm.where(AppUsageRealmObject.class).equalTo("packageName", packageName).findFirst();
+                for (DailyStatSummary dailyStatSummary : dailyStatSummaryList) {
+                    AppUsageRealmObject appUsageRealmObject = realm.where(AppUsageRealmObject.class)
+                            .equalTo("appUsageKey", dailyStatSummary.getPackageName().concat(String.valueOf(dailyStatSummary.getYyyymmdd())))
+                            .findFirst();
                     if (appUsageRealmObject != null) {
-                        appUsageRealmObject.setTotalUsedTime(appUsageRealmObject.getTotalUsedTime() + map.get(packageName));
+                        appUsageRealmObject.setTotalUsedTime(appUsageRealmObject.getTotalUsedTime() + dailyStatSummary.getTotalUsedTime());
                     } else {
                         appUsageRealmObject = new AppUsageRealmObject();
-                        appUsageRealmObject.setPackageName(packageName);
-                        appUsageRealmObject.setTotalUsedTime(map.get(packageName));
+                        appUsageRealmObject.setAppUsageKey(dailyStatSummary.getPackageName().concat(String.valueOf(dailyStatSummary.getYyyymmdd())));
+                        appUsageRealmObject.setPackageName(dailyStatSummary.getPackageName());
+                        appUsageRealmObject.setYyyymmdd(dailyStatSummary.getYyyymmdd());
+                        appUsageRealmObject.setTotalUsedTime(dailyStatSummary.getTotalUsedTime());
                         realm.copyToRealmOrUpdate(appUsageRealmObject);
                     }
                 }
@@ -38,18 +44,20 @@ public class AppRepositoryHelper {
 
     public List<AppUsage> getAppUsages() {
         List<AppUsage> appUsageList = new ArrayList<>();
+        Map<String, Long> appUsageSummary = new HashMap<>();
 
-        try(Realm realmInstance = Realm.getDefaultInstance()) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
             RealmResults<AppUsageRealmObject> appUsageRealmObjectList = realmInstance.where(AppUsageRealmObject.class).findAll();
-            for(AppUsageRealmObject appUsageRealmObject : appUsageRealmObjectList) {
-                appUsageList.add(toAppUsage(appUsageRealmObject));
+            for (AppUsageRealmObject appUsageRealmObject : appUsageRealmObjectList) {
+                final String packageName = appUsageRealmObject.getPackageName();
+                appUsageSummary.put(packageName, appUsageRealmObject.getTotalUsedTime() + ((appUsageSummary.containsKey(packageName)) ? appUsageSummary.get(packageName) : 0L));
             }
         }
 
-        return appUsageList;
-    }
+        for (Map.Entry<String, Long> appUsageSummaryEntry : appUsageSummary.entrySet()) {
+            appUsageList.add(new AppUsage(appUsageSummaryEntry.getKey(), appUsageSummaryEntry.getValue()));
+        }
 
-    private AppUsage toAppUsage(AppUsageRealmObject appUsageRealmObject) {
-        return new AppUsage(appUsageRealmObject.getPackageName(), appUsageRealmObject.getTotalUsedTime());
+        return appUsageList;
     }
 }
