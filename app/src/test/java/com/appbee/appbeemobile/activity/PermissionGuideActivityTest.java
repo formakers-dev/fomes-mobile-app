@@ -81,7 +81,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void startButton클릭시_권한설정페이지를_표시한다() throws Exception {
+    public void permissionButton클릭시_권한설정페이지를_표시한다() throws Exception {
         permissionButton.performClick();
 
         assertThat(shadowOf(subject).getNextStartedActivity().getAction()).isEqualTo(Settings.ACTION_USAGE_ACCESS_SETTINGS);
@@ -89,7 +89,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 권한설정이_완료되고_돌아오면_PowerConnectedService를_시작하고_LoadingActivity로_이동한다() throws Exception {
+    public void 권한설정이_완료되고_돌아와서_권한이있으면_PowerConnectedService를_시작하고_LoadingActivity로_이동한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
 

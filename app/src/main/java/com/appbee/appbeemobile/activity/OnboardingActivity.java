@@ -18,7 +18,7 @@ public class OnboardingActivity extends BaseActivity {
     @OnClick(R.id.next_button)
     void onNextButtonClick() {
         Intent intent = new Intent(this, PermissionGuideActivity.class);
-        this.startActivity(intent);
+        startActivity(intent);
         finish();
     }
 }
