@@ -58,7 +58,7 @@ public class LoginActivity extends BaseActivity {
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
-        this.setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login);
     }
 
     @Override
@@ -67,6 +67,11 @@ public class LoginActivity extends BaseActivity {
 
         tncAgreeTextView.setText(Html.fromHtml(getString(R.string.tnc_agree_text)));
         tncAgreeTextView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @OnClick(R.id.login_button)
+    void onLoginButtonClick() {
+        signIn();
     }
 
     private void signIn() {
@@ -127,11 +132,6 @@ public class LoginActivity extends BaseActivity {
         Toast.makeText(this, failStringId, Toast.LENGTH_SHORT).show();
         setResult(Activity.RESULT_CANCELED);
         finish();
-    }
-
-    @OnClick(R.id.login_button)
-    void onLoginButtonClick() {
-        signIn();
     }
 }
 

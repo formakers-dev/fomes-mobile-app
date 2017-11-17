@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.method.LinkMovementMethod;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
@@ -42,7 +43,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,31 +79,37 @@ public class LoginActivityTest extends ActivityTest {
     private LoginActivity getSubjectAfterSetupGoogleSignIn() {
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
-        when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.just(new Person()));
         when(googleSignInAPIHelper.requestSignInIntent(any())).thenReturn(intent);
-        when(localStorageHelper.getAccessToken()).thenReturn("");
-        return Robolectric.buildActivity(LoginActivity.class).create().postCreate(null).get();
+
+        return Robolectric.setupActivity(LoginActivity.class);
+    }
+
+    @Test
+    public void onPostCreate시_사용약관에링크가_나타는다() throws Exception {
+        subject = getSubjectAfterSetupGoogleSignIn();
+
+        assertThat(subject.tncAgreeTextView.getMovementMethod().getClass().getSimpleName()).isEqualTo(LinkMovementMethod.class.getSimpleName());
     }
 
     @Test
     public void login버튼_클릭시_GoogleSignInActivity가_시작된다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
-
         subject.findViewById(R.id.login_button).performClick();
 
-        ShadowActivity shadowActivity = shadowOf(subject);
-        ShadowActivity.IntentForResult nextStartedActivityForResult = shadowActivity.getNextStartedActivityForResult();
-
+        ShadowActivity.IntentForResult nextStartedActivityForResult = shadowOf(subject).getNextStartedActivityForResult();
         assertThat(nextStartedActivityForResult.intent.getAction()).contains("GOOGLE_SIGN_IN");
-        assertThat(nextStartedActivityForResult.intent.getComponent().getClassName()).contains("SignInHubActivity");
+        assertThat(nextStartedActivityForResult.intent.getComponent().getClassName()).isEqualTo(SignInHubActivity.class.getName());
     }
 
     @Test
     public void onActivityResult_GoogleSign성공시_Person_Profile정보조회후_user정보를_저장하는API를_호출한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
-        GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
 
+        when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.just(new Person()));
+
+        GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
         mockGoogleSignInResult(mockGoogleSignInAccount, true);
+
         when(userService.signIn(any())).thenReturn(mock(Observable.class));
 
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
@@ -113,34 +119,33 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onActivityResult_GoogleSign결과실패시_오류메시지를_표시한다() throws Exception {
+    public void onActivityResult_GoogleSign결과실패시_오류메시지를_표시하고_액티비티를_종료한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
         mockGoogleSignInResult(mock(GoogleSignInAccount.class), false);
 
         subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to connect Google Play Service");
+        assertFinishActivityForFail("Fail to connect Google Play Service");
     }
 
     @Test
-    public void onActivityResult_GoogleSign성공했으나_계정정보가_없는경우_오류메시지를_표시한다() throws Exception {
+    public void onActivityResult_GoogleSign성공했으나_계정정보가_없는경우_오류메시지를_표시하고_액티비티를_종료한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
         mockGoogleSignInResultWithoutAccount(true);
 
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to connect Google Play Service");
+        assertFinishActivityForFail("Fail to connect Google Play Service");
     }
 
     @Test
     public void user정보저장이_성공하면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
-        doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
+        when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
 
         Gender gender = new Gender().setValue("male");
         Birthday birthday = new Birthday().setDate(new Date().setYear(1999).setMonth(11).setDay(31));
-
         Person person = getPerson(gender, birthday);
 
         subject.signInUser("testIdToken", "testGoogleId", "testEmail", person);
@@ -150,13 +155,12 @@ public class LoginActivityTest extends ActivityTest {
         verify(localStorageHelper).setBirthday(1999);
         verify(localStorageHelper).setGender("male");
 
-        Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(OnboardingActivity.class.getSimpleName());
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains(OnboardingActivity.class.getSimpleName());
     }
 
     @Test
     public void user정보저장이_성공했으나_생년월일_및_성별_정보가_없는경우_기본값을_sharedPreferences에_저장한다() throws Exception {
-        doAnswer((invocation) -> Observable.just("testAccessToken")).when(userService).signIn(anyString());
+        when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
 
         Person person = getPerson(null, null);
 
@@ -170,11 +174,17 @@ public class LoginActivityTest extends ActivityTest {
 
     @Test
     public void user정보저장이_실패하면_오류메세지를_표시한다() throws Exception {
-        doAnswer((invocation) -> Observable.error(new HttpException(404))).when(userService).signIn(anyString());
+        when(userService.signIn(anyString())).thenReturn(Observable.error(new HttpException(404)));
 
         subject.signInUser("testIdToken", "testGoogleId", "testEmail", null);
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Fail to sign in");
+        assertFinishActivityForFail("Fail to sign in");
+    }
+
+    private void assertFinishActivityForFail(String message) {
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo(message);
+        assertThat(shadowOf(subject).getResultCode()).isEqualTo(Activity.RESULT_CANCELED);
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 
     private void mockGoogleSignInResult(GoogleSignInAccount mockAccount, boolean isSuccess) {
@@ -203,6 +213,7 @@ public class LoginActivityTest extends ActivityTest {
         genderList.add(gender);
 
         Person person = new Person();
+        person.setBirthdays(birthday != null ? birthdayList : null);
         person.setBirthdays(birthday != null ? birthdayList : null);
         person.setGenders(gender != null ? genderList : null);
 
