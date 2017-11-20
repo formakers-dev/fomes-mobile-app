@@ -80,6 +80,9 @@ public class AppUsageDataHelper {
     }
 
     public void sendShortTermStatAndAppUsages(SendDataCallback callback) {
+        final int currentDate = Integer.parseInt(FormatUtil.getDateFromTimestamp(timeHelper.getCurrentTime()));
+        appRepositoryHelper.deleteAppUsages(DateUtil.calBeforeDate(currentDate, 30));
+
         final long lastUpdateStatTimestamp = localStorageHelper.getLastUpdateStatTimestamp();
         final long statBasedEndTime = timeHelper.getStatBasedCurrentTime();
         final List<ShortTermStat> shortTermStatList = getShortTermStats(lastUpdateStatTimestamp, statBasedEndTime);
