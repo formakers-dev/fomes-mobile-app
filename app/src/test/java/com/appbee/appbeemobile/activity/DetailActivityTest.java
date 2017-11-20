@@ -88,7 +88,6 @@ public class DetailActivityTest {
                 "유어커스텀",
                 "증강현실로 한장의 사진에 담는 나만의 추억",
                 imageObjectList,
-                Lists.newArrayList("Foodie", "Viva video"),
                 "지그재그앱은 지그재그입니다",
                 descriptionImageObjectList,
                 "temporary",
@@ -125,7 +124,6 @@ public class DetailActivityTest {
     public void onPostCreate시_조회된_project_제목정보를_화면에_보여준다() throws Exception {
         assertThat(subject.projectIntroduceTextView.getText()).isEqualTo("증강현실로 한장의 사진에 담는 나만의 추억");
         assertThat(subject.projectNameTextView.getText()).isEqualTo("유어커스텀");
-        assertThat(subject.appsDescriptionTextView.getText()).isEqualTo("[Foodie][Viva video] 앱을 사용하시는 당신과 찰떡궁합!");
 
         assertThat(subject.interviewTypeSummaryTextView.getText()).isEqualTo("offline");
         assertThat(subject.availableInterviewerCountTextView.getText()).isEqualTo("3");

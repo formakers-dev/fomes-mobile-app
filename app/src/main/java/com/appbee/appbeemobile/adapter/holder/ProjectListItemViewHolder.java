@@ -42,9 +42,9 @@ public class ProjectListItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(@NonNull Project project) {
         // TODO : 앱 이름, 이미지 패스 유효하지 않거나 여러개인 경우 처리
-        if(project.getApps() != null && project.getApps().size() > 0 ) {
-            itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
-        }
+//        if(project.getApps() != null && project.getApps().size() > 0 ) {
+//            itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
+//        }
         if(project.getImages() != null && project.getImages().size() > 0) {
             Glide.with(context).load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                     .into(imageView);

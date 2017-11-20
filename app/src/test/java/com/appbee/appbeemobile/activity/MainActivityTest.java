@@ -80,9 +80,9 @@ public class MainActivityTest {
     @Test
     public void onResume시_프로젝트목록정보를_갱신한다() throws Exception {
         List<Project> mockProjectList = new ArrayList<>();
-        mockProjectList.add(new Project("projectId4", "리얼포토", "증강현실로 한장의 사진에 담는 나만의 추억", Lists.newArrayList("Foodie", "Viva video"), "temporary"));
-        mockProjectList.add(new Project("projectId5", "엔빵", "모임별로 엔빵해", Lists.newArrayList("카카오뱅크", "토스"), "temporary"));
-        mockProjectList.add(new Project("projectId6", "겜돌이", "게임하자", Lists.newArrayList("클래시로얄", "리니지"), "temporary"));
+        mockProjectList.add(new Project("projectId4", "리얼포토", "증강현실로 한장의 사진에 담는 나만의 추억", "temporary"));
+        mockProjectList.add(new Project("projectId5", "엔빵", "모임별로 엔빵해", "temporary"));
+        mockProjectList.add(new Project("projectId6", "겜돌이", "게임하자", "temporary"));
         when(mockProjectService.getAllProjects()).thenReturn(Observable.just(mockProjectList));
 
         subject.onResume();
