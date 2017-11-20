@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.helper;
 
+import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppService;
@@ -8,13 +9,14 @@ import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 import rx.plugins.RxJavaHooks;
@@ -210,5 +212,55 @@ public class AppUsageDataHelperTest {
         subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
 
         verify(mockSendDataCallback).onFail();
+    }
+
+    @Test
+    @Ignore
+    public void getDailyStatSummary호출시_전달된_단기통계정보를_날짜별_앱별로_사용시간을_합산하여_리턴한다() throws Exception {
+        List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
+        mockShortTermStatList.add(new ShortTermStat("package1", 1510974000000L, 1510974001000L, 1000L));     //2017-11-18 03:00:00
+        mockShortTermStatList.add(new ShortTermStat("package1", 1511006400000L, 1511006402000L, 2000L));     //2017-11-18 12:00:00
+        mockShortTermStatList.add(new ShortTermStat("package1", 1511049600000L, 1511049601500L, 1500L));     //2017-11-19 00:00:00
+        mockShortTermStatList.add(new ShortTermStat("package2", 1511006400000L, 1511006403000L, 4000L));     //2017-11-18 12:00:00
+
+        List<DailyStatSummary> dailyStatSummaryList = subject.getDailyStatSummary(mockShortTermStatList);
+
+        sortDailyStatSummaryList(dailyStatSummaryList);
+
+        assertDailyStatSummary(dailyStatSummaryList.get(0), "package1", 20171118, 3000L);
+        assertDailyStatSummary(dailyStatSummaryList.get(1), "package1", 20171119, 1500L);
+        assertDailyStatSummary(dailyStatSummaryList.get(2), "package2", 20171118, 4000L);
+    }
+
+    @Test
+    public void getDailyStatSummary호출시_시작일자와_종료일자가_하루차이가날경우_종료일자의_0시_기준으로_사용시간을_나누어_저장한다() throws Exception {
+        List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
+        mockShortTermStatList.add(new ShortTermStat("package", 1511182800000L, 1511193600000L, 10800000L));     //2017-11-20 22:00:00 ~ 2017-11-21 01:00:00
+
+        List<DailyStatSummary> dailyStatSummaryList = subject.getDailyStatSummary(mockShortTermStatList);
+
+        sortDailyStatSummaryList(dailyStatSummaryList);
+
+        assertDailyStatSummary(dailyStatSummaryList.get(0), "package", 20171120, 7200000L);
+        assertDailyStatSummary(dailyStatSummaryList.get(1), "package", 20171121, 3600000L);
+
+    }
+
+    private void assertDailyStatSummary(DailyStatSummary dailyStatSummary, String packageName, int yyyymmdd, long totalUsedTime) {
+        assertThat(dailyStatSummary.getPackageName()).isEqualTo(packageName);
+        assertThat(dailyStatSummary.getYyyymmdd()).isEqualTo(yyyymmdd);
+        assertThat(dailyStatSummary.getTotalUsedTime()).isEqualTo(totalUsedTime);
+    }
+
+    private void sortDailyStatSummaryList(List<DailyStatSummary> dailyStatSummaryList) {
+        Collections.sort(dailyStatSummaryList, (o1, o2) -> {
+            int i = o1.getPackageName().compareTo(o2.getPackageName());
+
+            if (i == 0) {
+                return o1.getYyyymmdd() - o2.getYyyymmdd();
+            } else {
+                return i;
+            }
+        });
     }
 }

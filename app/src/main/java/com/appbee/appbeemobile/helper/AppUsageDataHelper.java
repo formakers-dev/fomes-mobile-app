@@ -5,9 +5,12 @@ import android.support.annotation.NonNull;
 import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
+import com.appbee.appbeemobile.model.StatKey;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
+import com.appbee.appbeemobile.util.DateUtil;
+import com.appbee.appbeemobile.util.FormatUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,11 +103,42 @@ public class AppUsageDataHelper {
     List<DailyStatSummary> getDailyStatSummary(List<ShortTermStat> shortTermStatList) {
         List<DailyStatSummary> dailyStatSummaryList = new ArrayList<>();
 
-        //TODO : 날짜별 패키지명별 사용시간 합계 리스트 생성하여 리턴
+        Map<StatKey, Long> map = new HashMap<>();
+
+        for (ShortTermStat shortTermStat : shortTermStatList) {
+            StatKey key;
+            if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 0) {
+                key = new StatKey(shortTermStat.getPackageName(), FormatUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp()));
+                mergeTotalUsedTimeByStatKey(map, key, shortTermStat.getTotalUsedTime());
+            } else if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 1) {
+                String startDate = FormatUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp());
+                String endDate = FormatUtil.getDateFromTimestamp(shortTermStat.getEndTimeStamp());
+
+                key = new StatKey(shortTermStat.getPackageName(), startDate);
+                long firstTotalUsedTime = FormatUtil.getTimestampFromDate(endDate) - shortTermStat.getStartTimeStamp();
+                mergeTotalUsedTimeByStatKey(map, key, firstTotalUsedTime);
+
+                key = new StatKey(shortTermStat.getPackageName(), endDate);
+                long secondTotalUsedTime = shortTermStat.getTotalUsedTime() - firstTotalUsedTime;
+                mergeTotalUsedTimeByStatKey(map, key, secondTotalUsedTime);
+            }
+        }
+
+        for (StatKey statKey : map.keySet()) {
+            long value = map.get(statKey);
+            dailyStatSummaryList.add(new DailyStatSummary(statKey.getPackageName(), Integer.parseInt(statKey.getDate()), value));
+        }
 
         return dailyStatSummaryList;
     }
 
+    private void mergeTotalUsedTimeByStatKey(Map<StatKey, Long> map, StatKey statKey, long totalUsedTime) {
+        if (map.get(statKey) != null) {
+            map.put(statKey, map.get(statKey) + totalUsedTime);
+        } else {
+            map.put(statKey, totalUsedTime);
+        }
+    }
 
     public interface SendDataCallback {
         void onSuccess();

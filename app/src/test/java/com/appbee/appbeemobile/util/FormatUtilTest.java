@@ -25,4 +25,18 @@ public class FormatUtilTest {
         String result = FormatUtil.convertInputDateFormat("20170102", "MM.dd");
         assertThat(result).isEqualTo("01.02");
     }
+
+    @Test
+    public void getDateFromTimestamp() throws Exception {
+        long timeStamp = 1511182800000L;        //2017-11-20 22:00:00
+        assertThat(FormatUtil.getDateFromTimestamp(timeStamp)).isEqualTo("20171120");
+        timeStamp = 1511193600000L; // 2017-11-21 01:00:00
+        assertThat(FormatUtil.getDateFromTimestamp(timeStamp)).isEqualTo("20171121");
+    }
+
+    @Test
+    public void getTimestampFromDate호출시_해달날짜의0시의_timestamp를_리턴한다() throws Exception {
+        String date = "20171121";
+        assertThat(FormatUtil.getTimestampFromDate(date)).isEqualTo(1511190000000L); // 2017-11-21 00:00:00   1511190000000
+    }
 }
