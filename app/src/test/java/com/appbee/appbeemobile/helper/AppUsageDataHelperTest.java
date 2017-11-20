@@ -26,6 +26,7 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -173,7 +174,8 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void sendShortTermStatAndAppUsages호출시_앱통계정보가_DB에_저장하고_통계저장API를_호출한다() throws Exception {
+    public void sendShortTermStatAndAppUsages호출시_앱통계정보가_DB에_삭제_저장하고_통계저장API를_호출한다() throws Exception {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockLocalStorageHelper.getLastUpdateStatTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
@@ -181,6 +183,7 @@ public class AppUsageDataHelperTest {
         AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
         subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
 
+        verify(mockAppRepositoryHelper).deleteAppUsages(anyInt());
         verify(mockAppRepositoryHelper).updateTotalUsedTime(any(List.class));
         verify(mockAppStatService).sendShortTermStats(any(List.class));
         verify(mockAppService).sendAppUsages(any(List.class));
@@ -190,6 +193,7 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void sendShortTermStatAndAppUsages호출시_앱단기정보데이터전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockLocalStorageHelper.getLastUpdateStatTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
@@ -203,6 +207,7 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void sendShortTermStatAndAppUsages호출시_앱사용정보통계전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockLocalStorageHelper.getLastUpdateStatTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());

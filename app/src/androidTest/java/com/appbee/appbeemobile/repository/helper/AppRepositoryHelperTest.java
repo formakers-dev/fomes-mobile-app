@@ -17,6 +17,8 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 import static org.junit.Assert.assertEquals;
 
@@ -77,6 +79,23 @@ public class AppRepositoryHelperTest {
         assertEquals(appUsageList.get(1).getTotalUsedTime(), 200L);
         assertEquals(appUsageList.get(2).getPackageName(), "com.package.name3");
         assertEquals(appUsageList.get(2).getTotalUsedTime(), 700L);
+    }
+
+    @Test
+    public void deleteAppUsages호출시_인풋으로_받은날짜_이전_사용기록을_삭제한다() throws Exception {
+        insertDummyData();
+
+        subject.deleteAppUsages(20171118);
+
+        RealmResults<AppUsageRealmObject> all = realm.where(AppUsageRealmObject.class).findAll().sort("yyyymmdd", Sort.ASCENDING, "packageName", Sort.ASCENDING);
+
+        assertEquals(3, all.size());
+        assertEquals("com.package.name2", all.get(0).getPackageName());
+        assertEquals(200L, all.get(0).getTotalUsedTime());
+        assertEquals("com.package.name3", all.get(1).getPackageName());
+        assertEquals(300L, all.get(1).getTotalUsedTime());
+        assertEquals("com.package.name3", all.get(2).getPackageName());
+        assertEquals(400L, all.get(2).getTotalUsedTime());
     }
 
     private void insertDummyData() {

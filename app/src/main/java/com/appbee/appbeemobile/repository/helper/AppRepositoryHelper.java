@@ -60,4 +60,10 @@ public class AppRepositoryHelper {
 
         return appUsageList;
     }
+
+    public void deleteAppUsages(int fromDate) {
+        try (Realm realmInstance = Realm.getDefaultInstance()) {
+            realmInstance.executeTransaction(realm -> realmInstance.where(AppUsageRealmObject.class).lessThan("yyyymmdd", fromDate).findAll().deleteAllFromRealm());
+        }
+    }
 }

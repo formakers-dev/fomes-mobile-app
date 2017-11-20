@@ -15,4 +15,8 @@ public class DateUtilTest {
 
     }
 
+    @Test
+    public void calBeforeDate호출시_입력일자이전의_날짜를_계산하여_리턴한다() throws Exception {
+        assertThat(DateUtil.calBeforeDate(20171121, 30)).isEqualTo(20171022);
+    }
 }
