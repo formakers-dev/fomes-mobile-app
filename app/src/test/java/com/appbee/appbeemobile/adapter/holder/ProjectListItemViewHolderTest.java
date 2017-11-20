@@ -15,8 +15,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.Collections;
-
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -28,7 +26,7 @@ public class ProjectListItemViewHolderTest {
     @Before
     public void setUp() throws Exception {
         subject = new ProjectListItemViewHolder(LayoutInflater.from(RuntimeEnvironment.application).inflate(R.layout.item_card, null), RuntimeEnvironment.application);
-        subject.bind(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
+        subject.bind(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
     }
 
     @Test
@@ -36,7 +34,7 @@ public class ProjectListItemViewHolderTest {
         assertThat(subject.projectId).isEqualTo("projectId1");
         assertThat(subject.nameTextView.getText()).isEqualTo("유어커스텀");
         assertThat(subject.introduceTextView.getText()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-        assertThat(subject.itemCardTagTextView.getText()).isEqualTo("[지그재그] 앱을 사용하시는 분의 의견을 구합니다.");
+//        assertThat(subject.itemCardTagTextView.getText()).isEqualTo("[지그재그] 앱을 사용하시는 분의 의견을 구합니다.");
     }
 
     @Test

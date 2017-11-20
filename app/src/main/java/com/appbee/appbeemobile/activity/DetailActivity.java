@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -149,7 +150,6 @@ public class DetailActivity extends BaseActivity {
         clabBadgeImageView.setVisibility(project.isCLab() ? View.VISIBLE : View.GONE);
         projectIntroduceTextView.setText(project.getIntroduce());
         projectNameTextView.setText(project.getName());
-        appsDescriptionTextView.setText(String.format(getString(R.string.apps_description_format), FormatUtil.formatAppsString(project.getApps())));
     }
 
     private void displayInterviewSummary(Project.Interview interview) {

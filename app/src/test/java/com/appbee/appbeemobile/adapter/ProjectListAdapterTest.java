@@ -29,9 +29,9 @@ public class ProjectListAdapterTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         List<Project> mockProjectList = new ArrayList<>();
-        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그"), "temporary"));
-        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그2"), "temporary"));
-        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", Collections.singletonList("지그재그3"), "temporary"));
+        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
+        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
+        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
 
         subject = new ProjectListAdapter(mockProjectList);
     }
@@ -46,7 +46,6 @@ public class ProjectListAdapterTest {
         assertThat(subject.getItem(0).getProjectId()).isEqualTo("projectId1");
         assertThat(subject.getItem(0).getName()).isEqualTo("유어커스텀");
         assertThat(subject.getItem(0).getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-        assertThat(subject.getItem(0).getApps().get(0)).isEqualTo("지그재그");
         assertThat(subject.getItem(0).getStatus()).isEqualTo("temporary");
     }
 }
