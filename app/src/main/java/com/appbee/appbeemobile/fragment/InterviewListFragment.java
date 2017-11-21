@@ -24,8 +24,6 @@ import butterknife.BindView;
 
 public class InterviewListFragment extends BaseFragment {
 
-    public static final @StringRes int TITLE_RES_ID = R.string.contents_title_interview;
-
     @BindView(R.id.interview_list_recycler_view)
     RecyclerView interviewListRecyclerView;
 

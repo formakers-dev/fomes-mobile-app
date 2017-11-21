@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class ProjectListFragment extends BaseFragment {
-    public static final @StringRes int TITLE_RES_ID = R.string.contents_title_project;
 
     @BindView(R.id.project_list_recycler_view)
     RecyclerView projectListRecyclerView;
