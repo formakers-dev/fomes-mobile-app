@@ -42,16 +42,6 @@
                 android:id="@+id/contents_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/project_list_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

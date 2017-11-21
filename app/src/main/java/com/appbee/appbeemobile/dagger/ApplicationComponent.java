@@ -5,6 +5,7 @@ import com.appbee.appbeemobile.activity.LoadingActivity;
 import com.appbee.appbeemobile.activity.LoginActivity;
 import com.appbee.appbeemobile.activity.MainActivity;
 import com.appbee.appbeemobile.activity.PermissionGuideActivity;
+import com.appbee.appbeemobile.fragment.InterviewListFragment;
 import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
 import com.appbee.appbeemobile.service.InstanceIDService;
 import com.appbee.appbeemobile.service.PowerConnectedService;
@@ -24,4 +25,5 @@ public interface ApplicationComponent {
     void inject(InstanceIDService instanceIDService);
     void inject(MainActivity mainActivity);
     void inject(DetailActivity detailActivity);
+    void inject(InterviewListFragment interviewListFragment);
 }
