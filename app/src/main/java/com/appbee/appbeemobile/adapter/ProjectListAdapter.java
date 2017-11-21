@@ -14,7 +14,7 @@ import com.appbee.appbeemobile.model.Project;
 
 import java.util.List;
 
-public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     static final int HEADER_VIEW_TYPE = 0;
     static final int ITEM_VIEW_TYPE = 1;
@@ -23,10 +23,14 @@ public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final @StringRes int headerTitle;
     private final @StringRes int headerSubTitle;
 
-    public InterviewListAdapter(List<Project> projectList, int headerTitle, int headerSubTitle) {
+    public ProjectListAdapter(List<Project> projectList, int headerTitle, int headerSubTitle) {
         this.projectList = projectList;
         this.headerTitle = headerTitle;
         this.headerSubTitle = headerSubTitle;
+    }
+
+    public boolean isHeader(int position) {
+        return position == 0;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(int position) {
-        return (position == 0) ? HEADER_VIEW_TYPE : ITEM_VIEW_TYPE;
+        return isHeader(position) ? HEADER_VIEW_TYPE : ITEM_VIEW_TYPE;
     }
 
     public Project getItem(int position) {

@@ -45,4 +45,6 @@
     <string name="lets_go_button"><![CDATA[좋아요, 시작할게요 >]]></string>
     <string name="contents_title_interview">체험하기</string>
     <string name="contents_title_project">둘러보기</string>
+    <string name="project_list_header_title">프로젝트 둘러보기</string>
+    <string name="project_list_header_subtitle">새로운 프로젝트를 둘러보고 인사이트를 얻으세요.</string>
 </resources>

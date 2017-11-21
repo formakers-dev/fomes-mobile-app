@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class InterviewListFragment extends BaseFragment {
+
     public static final @StringRes int TITLE_RES_ID = R.string.contents_title_interview;
 
     @BindView(R.id.interview_list_recycler_view)
@@ -32,6 +33,7 @@ public class InterviewListFragment extends BaseFragment {
     ProjectService projectService;
 
     private List<Project> interviewList = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class InterviewListFragment extends BaseFragment {
         LinearLayoutManager interviewLayoutManger = new LinearLayoutManager(getActivity());
         interviewLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         interviewListRecyclerView.setLayoutManager(interviewLayoutManger);
-        interviewListRecyclerView.setAdapter(new InterviewListAdapter(interviewList));
+        interviewListRecyclerView.setAdapter(new InterviewListAdapter(interviewList, R.string.recommendation_apps_title, R.string.recommendation_apps_subtitle));
     }
 
     @Override

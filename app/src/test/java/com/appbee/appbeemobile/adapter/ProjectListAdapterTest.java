@@ -13,14 +13,15 @@ import org.robolectric.annotation.Config;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.appbee.appbeemobile.adapter.InterviewListAdapter.HEADER_VIEW_TYPE;
-import static com.appbee.appbeemobile.adapter.InterviewListAdapter.ITEM_VIEW_TYPE;
+import static com.appbee.appbeemobile.adapter.ProjectListAdapter.HEADER_VIEW_TYPE;
+import static com.appbee.appbeemobile.adapter.ProjectListAdapter.ITEM_VIEW_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class InterviewListAdapterTest {
-    private InterviewListAdapter subject;
+public class ProjectListAdapterTest {
+
+    ProjectListAdapter subject;
 
     @Before
     public void setUp() throws Exception {
@@ -29,7 +30,7 @@ public class InterviewListAdapterTest {
         mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
         mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
 
-        subject = new InterviewListAdapter(mockProjectList, R.string.project_list_header_title, R.string.project_list_header_subtitle);
+        subject = new ProjectListAdapter(mockProjectList, R.string.recommendation_apps_title, R.string.recommendation_apps_subtitle);
     }
 
     @Test
