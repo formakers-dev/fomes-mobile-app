@@ -99,8 +99,8 @@ public class MainActivity extends BaseActivity
         titleBannerViewPager.setAdapter(new CommonPagerAdapter(this, BANNER_IMAGES));
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
-        contentsPagerAdapter.addFragment(new InterviewListFragment(), getString(InterviewListFragment.TITLE_RES_ID));
-        contentsPagerAdapter.addFragment(new ProjectListFragment(), getString(ProjectListFragment.TITLE_RES_ID));
+        contentsPagerAdapter.addFragment(new InterviewListFragment(), getString(R.string.contents_title_interview));
+        contentsPagerAdapter.addFragment(new ProjectListFragment(), getString(R.string.contents_title_project));
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
         tabLayout.setupWithViewPager(contentsViewPager);
