@@ -13,7 +13,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @Singleton
-public class ProjectService extends AbstractAppBeeService{
+public class ProjectService extends AbstractAppBeeService {
     private static final String TAG = ProjectService.class.getSimpleName();
     private final ProjectAPI projectAPI;
     private final LocalStorageHelper localStorageHelper;
@@ -43,6 +43,12 @@ public class ProjectService extends AbstractAppBeeService{
 
     public Observable<Boolean> postParticipate(String projectId) {
         return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<List<Project>> getAllInterviews() {
+        return projectAPI.getAllInterviews(localStorageHelper.getAccessToken())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

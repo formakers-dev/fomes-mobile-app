@@ -19,4 +19,7 @@ public interface ProjectAPI {
 
     @POST("/projects/{id}/participate")
     Observable<Boolean> postParticipate(@Header("x-access-token") String accessToken, @Path("id") String projectId);
+
+    @GET("/projects/interviews")
+    Observable<List<Project>> getAllInterviews(@Header("x-access-token") String accessToken);
 }
