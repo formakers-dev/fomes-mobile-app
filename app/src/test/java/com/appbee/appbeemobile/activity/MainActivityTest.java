@@ -4,11 +4,8 @@ import android.view.View;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.ProjectListAdapter;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
-import com.google.common.collect.Lists;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,17 +16,12 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -78,28 +70,5 @@ public class MainActivityTest {
         assertThat(subject.tabLayout.getTabCount()).isEqualTo(2);
         assertThat(subject.tabLayout.getTabAt(0).getText()).isEqualTo("체험하기");
         assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("둘러보기");
-    }
-
-    @Test
-    public void onPostCreate시_당신의참여를기다리는프로젝트를_표시하기위한_Adapter를_매핑한다() throws Exception {
-        assertThat(subject.projectListRecyclerView.getAdapter().getClass().getSimpleName()).contains(ProjectListAdapter.class.getSimpleName());
-    }
-
-    @Test
-    public void onResume시_프로젝트목록정보를_갱신한다() throws Exception {
-        List<Project> mockProjectList = new ArrayList<>();
-        mockProjectList.add(new Project("projectId4", "리얼포토", "증강현실로 한장의 사진에 담는 나만의 추억", "temporary"));
-        mockProjectList.add(new Project("projectId5", "엔빵", "모임별로 엔빵해", "temporary"));
-        mockProjectList.add(new Project("projectId6", "겜돌이", "게임하자", "temporary"));
-        when(mockProjectService.getAllProjects()).thenReturn(Observable.just(mockProjectList));
-
-        subject.onResume();
-
-        verify(mockProjectService).getAllProjects();
-        ProjectListAdapter projectListAdapter = (ProjectListAdapter) subject.projectListRecyclerView.getAdapter();
-        assertThat(projectListAdapter.getItemCount()).isEqualTo(4);
-        assertThat(projectListAdapter.getItem(0)).isEqualTo(mockProjectList.get(0));
-        assertThat(projectListAdapter.getItem(1)).isEqualTo(mockProjectList.get(1));
-        assertThat(projectListAdapter.getItem(2)).isEqualTo(mockProjectList.get(2));
     }
 }

@@ -5,7 +5,8 @@ import com.appbee.appbeemobile.activity.LoadingActivityTest;
 import com.appbee.appbeemobile.activity.LoginActivityTest;
 import com.appbee.appbeemobile.activity.MainActivityTest;
 import com.appbee.appbeemobile.activity.PermissionGuideActivityTest;
-import com.appbee.appbeemobile.adapter.ProjectListAdapterTest;
+import com.appbee.appbeemobile.adapter.InterviewListAdapterTest;
+import com.appbee.appbeemobile.fragment.InterviewListFragmentTest;
 import com.appbee.appbeemobile.service.PowerConnectedServiceTest;
 
 import javax.inject.Singleton;
@@ -20,6 +21,7 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(PowerConnectedServiceTest powerConnectedServiceTest);
     void inject(LoginActivityTest loginActivityTest);
     void inject(MainActivityTest mainActivityTest);
-    void inject(ProjectListAdapterTest recommendationAppsAdapterTest);
+    void inject(InterviewListAdapterTest recommendationAppsAdapterTest);
     void inject(DetailActivityTest detailActivityTest);
+    void inject(InterviewListFragmentTest interviewListFragmentTest);
 }

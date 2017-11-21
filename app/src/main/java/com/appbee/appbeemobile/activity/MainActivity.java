@@ -11,10 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -22,16 +19,11 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
 import com.appbee.appbeemobile.adapter.ContentsPagerAdapter;
-import com.appbee.appbeemobile.adapter.ProjectListAdapter;
 import com.appbee.appbeemobile.fragment.InterviewListFragment;
 import com.appbee.appbeemobile.fragment.ProjectListFragment;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.FormatUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -63,9 +55,6 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.title_banner_view_pager)
     ViewPager titleBannerViewPager;
 
-    @BindView(R.id.project_list_recycler_view)
-    RecyclerView projectListRecyclerView;
-
     @BindView(R.id.contents_view_pager)
     ViewPager contentsViewPager;
 
@@ -79,8 +68,6 @@ public class MainActivity extends BaseActivity
 
     @Inject
     ProjectService projectService;
-
-    private List<Project> projectList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,21 +104,6 @@ public class MainActivity extends BaseActivity
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
         tabLayout.setupWithViewPager(contentsViewPager);
-
-        LinearLayoutManager recommendLayoutManger = new LinearLayoutManager(this);
-        recommendLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
-        projectListRecyclerView.setLayoutManager(recommendLayoutManger);
-        projectListRecyclerView.setAdapter(new ProjectListAdapter(projectList));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        projectService.getAllProjects().subscribe(projectList -> {
-            this.projectList.clear();
-            this.projectList.addAll(projectList);
-            projectListRecyclerView.getAdapter().notifyDataSetChanged();
-        }, error -> Log.d(TAG, error.getMessage()));
     }
 
     @Override

@@ -11,13 +11,13 @@ import com.appbee.appbeemobile.model.Project;
 
 import java.util.List;
 
-public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Project> projectList;
 
     static final int HEADER_VIEW_TYPE = 0;
     static final int ITEM_VIEW_TYPE = 1;
 
-    public ProjectListAdapter(List<Project> projectList) {
+    public InterviewListAdapter(List<Project> projectList) {
         this.projectList = projectList;
     }
 
