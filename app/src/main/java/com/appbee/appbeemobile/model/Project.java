@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Project {
@@ -13,6 +15,7 @@ public class Project {
     private String status;
     private Interviewer interviewer;
     private boolean isCLab;
+    @SerializedName("interviews")
     private Interview interview;
 
     public Project(String projectId, String name, String introduce, String status) {
@@ -204,6 +207,7 @@ public class Project {
     }
 
     public static class Interview {
+        private long seq;
         private List<InterviewPlan> plans;
         private String startDate;
         private String endDate;
@@ -216,7 +220,8 @@ public class Project {
         private int totalCount;
         private List<String> participants;
 
-        public Interview(List<InterviewPlan> interviewPlanList, String startDate, String endDate, boolean dateNegotiable, String openDate, String closeDate, String location, boolean locationNegotiable, String type, int totalCount, List<String> participants) {
+        public Interview(long seq, List<InterviewPlan> interviewPlanList, String startDate, String endDate, boolean dateNegotiable, String openDate, String closeDate, String location, boolean locationNegotiable, String type, int totalCount, List<String> participants) {
+            this.seq = seq;
             this.plans = interviewPlanList;
             this.startDate = startDate;
             this.endDate = endDate;
@@ -228,6 +233,14 @@ public class Project {
             this.type = type;
             this.totalCount = totalCount;
             this.participants = participants;
+        }
+
+        public long getSeq() {
+            return seq;
+        }
+
+        public void setSeq(long seq) {
+            this.seq = seq;
         }
 
         public List<InterviewPlan> getPlans() {

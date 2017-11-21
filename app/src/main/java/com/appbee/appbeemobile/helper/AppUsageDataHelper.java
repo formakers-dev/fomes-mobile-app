@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
@@ -92,8 +93,10 @@ public class AppUsageDataHelper {
         Observable.merge(
                 appStatService.sendShortTermStats(shortTermStatList),
                 appService.sendAppUsages(appRepositoryHelper.getAppUsages())
-        ).observeOn(Schedulers.io())
+        ).subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .all(result -> true)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     localStorageHelper.setLastUpdateStatTimestamp(statBasedEndTime);
                     callback.onSuccess();

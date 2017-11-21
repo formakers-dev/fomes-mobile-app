@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ public class MainActivity extends BaseActivity
             R.drawable.banner_title_2,
             R.drawable.banner_title_3
     };
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -106,7 +108,7 @@ public class MainActivity extends BaseActivity
             this.projectList.clear();
             this.projectList.addAll(projectList);
             projectListRecyclerView.getAdapter().notifyDataSetChanged();
-        });
+        }, error -> Log.d(TAG, error.getMessage()));
     }
 
     @Override

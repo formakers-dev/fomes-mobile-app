@@ -81,7 +81,7 @@ public class DetailActivityTest {
         descriptionImageObjectList.add(new Project.ImageObject("http://www.descriptionImage.com", "descriptionImage"));
 
         List<String> participantList = Lists.newArrayList("google1234", "google2345");
-        Project.Interview interview = new Project.Interview(plans, "20171101", "20171105", true, "20171110", "20171115", "서울대", true, "offline", 5, participantList);
+        Project.Interview interview = new Project.Interview(1L, plans, "20171101", "20171105", true, "20171110", "20171115", "서울대", true, "offline", 5, participantList);
         Project.Interviewer interviewer = new Project.Interviewer("이호영", "www.person.com", "-17년 삼성전자 C-lab과제 툰스토리 팀\n-Create Leader");
 
         Project project = new Project("projectId1",

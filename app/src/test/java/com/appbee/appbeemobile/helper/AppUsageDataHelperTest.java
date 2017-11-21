@@ -19,6 +19,9 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -61,11 +64,20 @@ public class AppUsageDataHelperTest {
 
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook(){
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
     }
 
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        RxAndroidPlugins.getInstance().reset();
     }
 
     @Test
