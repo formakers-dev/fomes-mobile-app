@@ -73,6 +73,14 @@ public class MainActivityTest {
     }
 
     @Test
+    public void onPostCreate시_2개의_탭과_페이저가_나타난다() throws Exception {
+        assertThat(subject.contentsViewPager.getAdapter().getCount()).isEqualTo(2);
+        assertThat(subject.tabLayout.getTabCount()).isEqualTo(2);
+        assertThat(subject.tabLayout.getTabAt(0).getText()).isEqualTo("체험하기");
+        assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("둘러보기");
+    }
+
+    @Test
     public void onPostCreate시_당신의참여를기다리는프로젝트를_표시하기위한_Adapter를_매핑한다() throws Exception {
         assertThat(subject.projectListRecyclerView.getAdapter().getClass().getSimpleName()).contains(ProjectListAdapter.class.getSimpleName());
     }
