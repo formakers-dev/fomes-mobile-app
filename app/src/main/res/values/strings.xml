@@ -43,4 +43,6 @@
     <string name="yes_button"><![CDATA[네 좋아요 >]]></string>
     <string name="maybe_yes_button"><![CDATA[맞는것 같아요 >]]></string>
     <string name="lets_go_button"><![CDATA[좋아요, 시작할게요 >]]></string>
+    <string name="contents_title_interview">체험하기</string>
+    <string name="contents_title_project">둘러보기</string>
 </resources>

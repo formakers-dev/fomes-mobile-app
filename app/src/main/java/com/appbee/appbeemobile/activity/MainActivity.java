@@ -5,9 +5,11 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +21,10 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
+import com.appbee.appbeemobile.adapter.ContentsPagerAdapter;
 import com.appbee.appbeemobile.adapter.ProjectListAdapter;
+import com.appbee.appbeemobile.fragment.InterviewListFragment;
+import com.appbee.appbeemobile.fragment.ProjectListFragment;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -52,11 +57,20 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
+    @BindView(R.id.main_nested_scrollview)
+    NestedScrollView mainNestedScrollView;
+
     @BindView(R.id.title_banner_view_pager)
     ViewPager titleBannerViewPager;
 
     @BindView(R.id.project_list_recycler_view)
     RecyclerView projectListRecyclerView;
+
+    @BindView(R.id.contents_view_pager)
+    ViewPager contentsViewPager;
+
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
 
     TextView userIdTextView;
 
@@ -93,7 +107,16 @@ public class MainActivity extends BaseActivity
         userIdTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_id);
         userIdTextView.setText(FormatUtil.parseEmailName(localStorageHelper.getEmail()));
 
+        mainNestedScrollView.setFillViewport(true);
+
         titleBannerViewPager.setAdapter(new CommonPagerAdapter(this, BANNER_IMAGES));
+
+        ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
+        contentsPagerAdapter.addFragment(new InterviewListFragment(), getString(InterviewListFragment.TITLE_RES_ID));
+        contentsPagerAdapter.addFragment(new ProjectListFragment(), getString(ProjectListFragment.TITLE_RES_ID));
+        contentsViewPager.setAdapter(contentsPagerAdapter);
+
+        tabLayout.setupWithViewPager(contentsViewPager);
 
         LinearLayoutManager recommendLayoutManger = new LinearLayoutManager(this);
         recommendLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
