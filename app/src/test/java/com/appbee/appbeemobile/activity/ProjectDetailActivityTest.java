@@ -8,7 +8,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.model.Project.ImageObject;
-import com.appbee.appbeemobile.model.Project.Owner;
+import com.appbee.appbeemobile.model.Project.Person;
 import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.After;
@@ -72,7 +72,7 @@ public class ProjectDetailActivityTest {
         imageObjectList.add(new ImageObject("www.imageUrl.com2", "urlName2"));
         imageObjectList.add(new ImageObject("www.imageUrl.com3", "urlName3"));
 
-        Owner owner = new Owner("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
+        Person owner = new Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", true);
 
