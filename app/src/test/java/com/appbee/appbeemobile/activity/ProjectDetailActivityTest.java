@@ -47,8 +47,8 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class DetailActivityTest {
-    private DetailActivity subject;
+public class ProjectDetailActivityTest {
+    private ProjectDetailActivity subject;
 
     @Inject
     ProjectService mockProjectService;
@@ -56,7 +56,7 @@ public class DetailActivityTest {
     @Inject
     TimeHelper mockTimeHelper;
 
-    private ActivityController<DetailActivity> activityController;
+    private ActivityController<ProjectDetailActivity> activityController;
 
     private Intent intent = new Intent();
 
@@ -98,7 +98,7 @@ public class DetailActivityTest {
         when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(project));
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
 
-        activityController = Robolectric.buildActivity(DetailActivity.class, intent);
+        activityController = Robolectric.buildActivity(ProjectDetailActivity.class, intent);
         subject = activityController.create().postCreate(null).get();
     }
 
@@ -134,7 +134,7 @@ public class DetailActivityTest {
     public void onPostCreate시_오늘날짜가_마감일이후인경우_D_Day는_0이_표시된다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1512097383000L);   //2017-12-01 03:03:03
 
-        subject = Robolectric.buildActivity(DetailActivity.class, intent).create().postCreate(null).get();
+        subject = Robolectric.buildActivity(ProjectDetailActivity.class, intent).create().postCreate(null).get();
 
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-0");
     }
