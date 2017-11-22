@@ -41,8 +41,8 @@ public class ProjectService extends AbstractAppBeeService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<Boolean> postParticipate(String projectId) {
-        return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId)
+    public Observable<Boolean> postParticipate(String projectId, long seq) {
+        return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId, seq)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

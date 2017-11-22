@@ -16,7 +16,6 @@ import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -35,8 +34,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
+import retrofit2.HttpException;
 import retrofit2.Response;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -169,19 +168,17 @@ public class InterviewDetailActivityTest {
     }
 
     @Test
-    @Ignore
     public void submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString())).thenReturn(Observable.just(true));
+        when(mockProjectService.postParticipate(anyString(), anyLong())).thenReturn(Observable.just(true));
 
         subject.findViewById(R.id.submit_button).performClick();
 
-        verify(mockProjectService).postParticipate("projectId1");
+        verify(mockProjectService).postParticipate(anyString(), anyLong());
     }
 
     @Test
-    @Ignore
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString())).thenReturn(Observable.just(true));
+        when(mockProjectService.postParticipate(anyString(), anyLong())).thenReturn(Observable.just(true));
 
         subject.findViewById(R.id.submit_button).performClick();
 
@@ -189,9 +186,8 @@ public class InterviewDetailActivityTest {
     }
 
     @Test
-    @Ignore
     public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString())).thenReturn(Observable.error(new HttpException(Response.error(406, ResponseBody.create(null, "")))));
+        when(mockProjectService.postParticipate(anyString(), anyLong())).thenReturn(Observable.error(new HttpException(Response.error(406, ResponseBody.create(null, "")))));
 
         subject.findViewById(R.id.submit_button).performClick();
 
