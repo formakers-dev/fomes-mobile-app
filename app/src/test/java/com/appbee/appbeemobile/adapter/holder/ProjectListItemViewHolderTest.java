@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.activity.DetailActivity;
+import com.appbee.appbeemobile.activity.ProjectDetailActivity;
 import com.appbee.appbeemobile.model.Project;
 
 import org.junit.Before;
@@ -40,6 +40,6 @@ public class ProjectListItemViewHolderTest {
     @Test
     public void ItemView를_클릭하면_DetailActivity로_이동한다() throws Exception {
         subject.mView.performClick();
-        assertThat(shadowOf(((Application) subject.context)).getNextStartedActivity().getComponent().getClassName()).contains(DetailActivity.class.getSimpleName());
+        assertThat(shadowOf(((Application) subject.context)).getNextStartedActivity().getComponent().getClassName()).contains(ProjectDetailActivity.class.getSimpleName());
     }
 }

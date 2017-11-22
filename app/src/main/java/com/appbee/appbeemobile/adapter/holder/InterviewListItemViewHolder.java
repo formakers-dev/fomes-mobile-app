@@ -9,13 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.activity.ProjectDetailActivity;
+import com.appbee.appbeemobile.activity.InterviewDetailActivity;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-public class ProjectListItemViewHolder extends RecyclerView.ViewHolder {
+public class InterviewListItemViewHolder extends RecyclerView.ViewHolder {
     Context context;
     View mView;
     TextView itemCardTagTextView;
@@ -24,7 +24,7 @@ public class ProjectListItemViewHolder extends RecyclerView.ViewHolder {
     TextView nameTextView;
     String projectId;
 
-    public ProjectListItemViewHolder(View view, Context context) {
+    public InterviewListItemViewHolder(View view, Context context) {
         super(view);
         this.context = context;
         mView = view;
@@ -34,7 +34,7 @@ public class ProjectListItemViewHolder extends RecyclerView.ViewHolder {
         nameTextView = (TextView) view.findViewById(R.id.project_name);
 
         view.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ProjectDetailActivity.class);
+            Intent intent = new Intent(context, InterviewDetailActivity.class);
             intent.putExtra(EXTRA.PROJECT_ID, projectId);
             context.startActivity(intent);
         });

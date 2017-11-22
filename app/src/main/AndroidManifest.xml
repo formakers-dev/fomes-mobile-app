@@ -48,7 +48,11 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".activity.DetailActivity"
+            android:name=".activity.ProjectDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.InterviewDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>

@@ -25,7 +25,6 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,8 +35,8 @@ import rx.Observable;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
-public class DetailActivity extends BaseActivity {
-    private static final String TAG = DetailActivity.class.getSimpleName();
+public class ProjectDetailActivity extends BaseActivity {
+    private static final String TAG = ProjectDetailActivity.class.getSimpleName();
 
     @Inject
     ProjectService projectService;
@@ -116,7 +115,7 @@ public class DetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_project_detail);
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
     }
 

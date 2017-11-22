@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.holder.ContentsListHeaderViewHolder;
+import com.appbee.appbeemobile.adapter.holder.InterviewListItemViewHolder;
 import com.appbee.appbeemobile.adapter.holder.ProjectListItemViewHolder;
 import com.appbee.appbeemobile.model.Project;
 
@@ -37,7 +38,7 @@ public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(headerSubTitle);
             return new ContentsListHeaderViewHolder(headerView);
         } else {
-            return new ProjectListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), parent.getContext());
+            return new InterviewListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), parent.getContext());
         }
     }
 
@@ -54,7 +55,7 @@ public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ProjectListItemViewHolder) {
             Project project = projectList.get(position - 1);
-            ((ProjectListItemViewHolder) holder).bind(project);
+            ((InterviewListItemViewHolder) holder).bind(project);
         }
     }
 
