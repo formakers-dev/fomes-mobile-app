@@ -59,10 +59,10 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.apps_description)
     TextView appsDescriptionTextView;
 
-    @BindView(R.id.interviewer_photo)
+    @BindView(R.id.owner_photo)
     ImageView interviewerPhotoImageView;
 
-    @BindView(R.id.interviewer_name)
+    @BindView(R.id.owner_name)
     TextView interviewerNameTextView;
 
     @BindView(R.id.interviewer_introduce)
