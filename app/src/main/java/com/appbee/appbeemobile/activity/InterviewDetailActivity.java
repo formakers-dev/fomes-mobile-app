@@ -102,7 +102,7 @@ public class InterviewDetailActivity extends BaseActivity {
 
         projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
         seq = getIntent().getLongExtra(EXTRA.INTERVIEW_SEQ, 0L);
-        projectService.getInterview(seq).subscribe(this::displayProject, error -> Log.d(TAG, error.getMessage()));
+        projectService.getInterview(projectId, seq).subscribe(this::displayProject, error -> Log.d(TAG, error.getMessage()));
     }
 
     private void displayProject(Project project) {

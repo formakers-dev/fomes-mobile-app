@@ -23,18 +23,6 @@ public class FormatUtil {
         return result;
     }
 
-    public static String convertInputDateFormat(String inputDateString, String displayFormat) {
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(displayFormat, Locale.KOREA);
-            Date fromDate = INPUT_DATE_FORMAT.parse(inputDateString);
-            return simpleDateFormat.format(fromDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return EMPTY_STRING;
-    }
-
     public static String convertInputDateFormat(Date inputDateString, String displayFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(displayFormat, Locale.KOREA);
         return simpleDateFormat.format(inputDateString);
@@ -65,25 +53,25 @@ public class FormatUtil {
 
         int dayNum = cal.get(Calendar.DAY_OF_WEEK);
         switch (dayNum) {
-            case 1:
+            case Calendar.SUNDAY:
+                result = "일";
+                break;
+            case Calendar.MONDAY:
                 result = "월";
                 break;
-            case 2:
-                result = "월";
-                break;
-            case 3:
+            case Calendar.TUESDAY:
                 result = "화";
                 break;
-            case 4:
+            case Calendar.WEDNESDAY:
                 result = "수";
                 break;
-            case 5:
+            case Calendar.THURSDAY:
                 result = "목";
                 break;
-            case 6:
+            case Calendar.FRIDAY:
                 result = "금";
                 break;
-            case 7:
+            case Calendar.SATURDAY:
                 result = "토";
                 break;
         }

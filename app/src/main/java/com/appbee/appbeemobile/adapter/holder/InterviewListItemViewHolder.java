@@ -23,6 +23,7 @@ public class InterviewListItemViewHolder extends RecyclerView.ViewHolder {
     ImageView imageView;
     TextView introduceTextView;
     TextView nameTextView;
+    String projectId;
     long seq;
 
     public InterviewListItemViewHolder(View view, Context context) {
@@ -36,6 +37,7 @@ public class InterviewListItemViewHolder extends RecyclerView.ViewHolder {
 
         view.setOnClickListener(v -> {
             Intent intent = new Intent(context, InterviewDetailActivity.class);
+            intent.putExtra(EXTRA.PROJECT_ID, projectId);
             intent.putExtra(EXTRA.INTERVIEW_SEQ, seq);
             context.startActivity(intent);
         });
@@ -46,7 +48,7 @@ public class InterviewListItemViewHolder extends RecyclerView.ViewHolder {
                 .into(imageView);
         introduceTextView.setText(project.getIntroduce());
         nameTextView.setText(project.getName());
+        projectId = project.getProjectId();
         seq = project.getInterview().getSeq();
-        Log.d("========!!!", seq + "");
     }
 }
