@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ public class InterviewListItemViewHolder extends RecyclerView.ViewHolder {
     ImageView imageView;
     TextView introduceTextView;
     TextView nameTextView;
-    String projectId;
+    long seq;
 
     public InterviewListItemViewHolder(View view, Context context) {
         super(view);
@@ -35,22 +36,17 @@ public class InterviewListItemViewHolder extends RecyclerView.ViewHolder {
 
         view.setOnClickListener(v -> {
             Intent intent = new Intent(context, InterviewDetailActivity.class);
-            intent.putExtra(EXTRA.PROJECT_ID, projectId);
+            intent.putExtra(EXTRA.INTERVIEW_SEQ, seq);
             context.startActivity(intent);
         });
     }
 
     public void bind(@NonNull Project project) {
-        // TODO : 앱 이름, 이미지 패스 유효하지 않거나 여러개인 경우 처리
-//        if(project.getApps() != null && project.getApps().size() > 0 ) {
-//            itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
-//        }
-        if(project.getImages() != null && project.getImages().size() > 0) {
-            Glide.with(context).load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
-                    .into(imageView);
-        }
+        Glide.with(context).load(project.getImage().getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
+                .into(imageView);
         introduceTextView.setText(project.getIntroduce());
         nameTextView.setText(project.getName());
-        projectId = project.getProjectId();
+        seq = project.getInterview().getSeq();
+        Log.d("========!!!", seq + "");
     }
 }

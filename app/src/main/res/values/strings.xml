@@ -24,8 +24,8 @@
     <string name="tag_key_image_url">TAG_KEY_IMAGE_URL</string>
     <string name="interview_type_text">종류:%s</string>
     <string name="interview_location_text">장소:%s</string>
-    <string name="interview_date_text">날짜:%s</string>
-    <string name="interview_time_text">소요시간:%d분</string>
+    <string name="interview_date_text">%1$s (%2$s)</string>
+    <string name="interview_time_text">약 %d분</string>
     <string name="interview_introduce_text">당신은 %s 팀이 애타게 찾아헤맨 바로 그 사람! 지금 참여해서 당신의 의견을 프로젝트에 반영해 보세요. 보답으로 받는 리워드는 덤이죠!</string>
     <string name="d_day_text">D-%d</string>
     <string name="participation_status">%1$d/%2$d</string>
@@ -39,6 +39,7 @@
     <string name="analysis_description">당신은\n음악과 비디오보기 커뮤니케이션과 여행에\n 관심이 많으시네요.</string>
     <string name="onboarding_rewards_description">이런 취향을 앱비가 기억해서\n꼭 맞는 프로젝트를 추천해드릴게요.\n\n마음에 드는 프로젝트가 있다면\n솔직한 조언을 해주고 선물도 받아가세요.</string>
 
+    <string name="apps_text">\'%s\'앱을 사랑하는 당신을 위한</string>
     <!-- Bottom Button -->
     <string name="yes_button"><![CDATA[네 좋아요 >]]></string>
     <string name="maybe_yes_button"><![CDATA[맞는것 같아요 >]]></string>

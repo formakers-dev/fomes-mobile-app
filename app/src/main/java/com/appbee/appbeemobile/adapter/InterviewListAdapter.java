@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.holder.ContentsListHeaderViewHolder;
 import com.appbee.appbeemobile.adapter.holder.InterviewListItemViewHolder;
-import com.appbee.appbeemobile.adapter.holder.ProjectListItemViewHolder;
 import com.appbee.appbeemobile.model.Project;
 
 import java.util.List;
@@ -21,8 +20,12 @@ public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.View
     static final int ITEM_VIEW_TYPE = 1;
 
     private final List<Project> projectList;
-    private final @StringRes int headerTitle;
-    private final @StringRes int headerSubTitle;
+    private final
+    @StringRes
+    int headerTitle;
+    private final
+    @StringRes
+    int headerSubTitle;
 
     public InterviewListAdapter(List<Project> projectList, int headerTitle, int headerSubTitle) {
         this.projectList = projectList;
@@ -53,7 +56,7 @@ public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ProjectListItemViewHolder) {
+        if (holder instanceof InterviewListItemViewHolder) {
             Project project = projectList.get(position - 1);
             ((InterviewListItemViewHolder) holder).bind(project);
         }

@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.appbee.appbeemobile.model.Project.Owner;
+import static com.appbee.appbeemobile.model.Project.Person;
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 public class ProjectDetailActivity extends BaseActivity {
@@ -76,7 +76,7 @@ public class ProjectDetailActivity extends BaseActivity {
     }
 
     private void displayProject(Project project) {
-        Owner owner = project.getOwner();
+        Person owner = project.getOwner();
 
         displayProjectOverview(project);
         displayOwner(owner);
@@ -97,7 +97,7 @@ public class ProjectDetailActivity extends BaseActivity {
         descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
     }
 
-    private void displayOwner(Owner owner) {
+    private void displayOwner(Person owner) {
         Glide.with(this)
                 .load(owner.getUrl()).apply(new RequestOptions().override(200, 200).centerCrop())
                 .into(interviewerPhotoImageView);

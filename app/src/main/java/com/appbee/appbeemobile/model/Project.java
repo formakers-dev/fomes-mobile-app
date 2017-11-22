@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.List;
 
 public class Project {
@@ -12,7 +13,7 @@ public class Project {
     private ImageObject image;
     private String description;
     private List<ImageObject> descriptionImages;
-    private Owner owner;
+    private Person owner;
     private String status;
     private boolean isCLab;
     @SerializedName("interviews")
@@ -43,7 +44,7 @@ public class Project {
     }
 
     // for project test
-    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Owner owner, String status, boolean isCLab) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status, boolean isCLab) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -56,7 +57,7 @@ public class Project {
     }
 
     // for interview test
-    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Owner owner, String status, boolean isCLab, Interview interview) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status, boolean isCLab, Interview interview) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -117,11 +118,11 @@ public class Project {
         this.image = image;
     }
 
-    public Owner getOwner() {
+    public Person getOwner() {
         return owner;
     }
 
-    public void setOwner(Owner owner) {
+    public void setOwner(Person owner) {
         this.owner = owner;
     }
 
@@ -165,12 +166,12 @@ public class Project {
         this.interviewer = interviewer;
     }
 
-    public static class Owner {
+    public static class Person {
         private String name;
         private String url;
         private String introduce;
 
-        public Owner(String name, String url, String introduce) {
+        public Person(String name, String url, String introduce) {
             this.name = name;
             this.url = url;
             this.introduce = introduce;
@@ -291,31 +292,25 @@ public class Project {
 
     public static class Interview {
         private long seq;
+        private List<String> apps;
         private List<InterviewPlan> plans;
-        private String startDate;
-        private String endDate;
-        private boolean dateNegotiable;
-        private String openDate;
-        private String closeDate;
+        private Date openDate;
+        private Date closeDate;
+        private Date interviewDate;
         private String location;
-        private boolean locationNegotiable;
-        private String type;
         private int totalCount;
-        private List<String> participants;
+        private Person interviewer;
 
-        public Interview(long seq, List<InterviewPlan> interviewPlanList, String startDate, String endDate, boolean dateNegotiable, String openDate, String closeDate, String location, boolean locationNegotiable, String type, int totalCount, List<String> participants) {
+        public Interview(long seq, List<String> apps, List<InterviewPlan> interviewPlanList, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount, Person interviewer) {
             this.seq = seq;
+            this.apps = apps;
             this.plans = interviewPlanList;
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.dateNegotiable = dateNegotiable;
             this.openDate = openDate;
             this.closeDate = closeDate;
+            this.interviewDate = interviewDate;
             this.location = location;
-            this.locationNegotiable = locationNegotiable;
-            this.type = type;
             this.totalCount = totalCount;
-            this.participants = participants;
+            this.interviewer = interviewer;
         }
 
         public long getSeq() {
@@ -326,6 +321,14 @@ public class Project {
             this.seq = seq;
         }
 
+        public List<String> getApps() {
+            return apps;
+        }
+
+        public void setApps(List<String> apps) {
+            this.apps = apps;
+        }
+
         public List<InterviewPlan> getPlans() {
             return plans;
         }
@@ -334,44 +337,28 @@ public class Project {
             this.plans = plans;
         }
 
-        public String getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(String startDate) {
-            this.startDate = startDate;
-        }
-
-        public String getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(String endDate) {
-            this.endDate = endDate;
-        }
-
-        public boolean isDateNegotiable() {
-            return dateNegotiable;
-        }
-
-        public void setDateNegotiable(boolean dateNegotiable) {
-            this.dateNegotiable = dateNegotiable;
-        }
-
-        public String getOpenDate() {
+        public Date getOpenDate() {
             return openDate;
         }
 
-        public void setOpenDate(String openDate) {
+        public void setOpenDate(Date openDate) {
             this.openDate = openDate;
         }
 
-        public String getCloseDate() {
+        public Date getCloseDate() {
             return closeDate;
         }
 
-        public void setCloseDate(String closeDate) {
+        public void setCloseDate(Date closeDate) {
             this.closeDate = closeDate;
+        }
+
+        public Date getInterviewDate() {
+            return interviewDate;
+        }
+
+        public void setInterviewDate(Date interviewDate) {
+            this.interviewDate = interviewDate;
         }
 
         public String getLocation() {
@@ -382,22 +369,6 @@ public class Project {
             this.location = location;
         }
 
-        public boolean isLocationNegotiable() {
-            return locationNegotiable;
-        }
-
-        public void setLocationNegotiable(boolean locationNegotiable) {
-            this.locationNegotiable = locationNegotiable;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
         public int getTotalCount() {
             return totalCount;
         }
@@ -406,12 +377,12 @@ public class Project {
             this.totalCount = totalCount;
         }
 
-        public List<String> getParticipants() {
-            return participants;
+        public Person getInterviewer() {
+            return interviewer;
         }
 
-        public void setParticipants(List<String> participants) {
-            this.participants = participants;
+        public void setInterviewer(Person interviewer) {
+            this.interviewer = interviewer;
         }
     }
 }

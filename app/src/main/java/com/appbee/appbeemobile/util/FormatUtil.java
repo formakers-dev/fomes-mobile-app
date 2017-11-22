@@ -35,6 +35,11 @@ public class FormatUtil {
         return EMPTY_STRING;
     }
 
+    public static String convertInputDateFormat(Date inputDateString, String displayFormat) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(displayFormat, Locale.KOREA);
+        return simpleDateFormat.format(inputDateString);
+    }
+
     public static String getDateFromTimestamp(long timeStamp) {
         return INPUT_DATE_FORMAT.format(new Date(timeStamp));
     }
@@ -50,5 +55,38 @@ public class FormatUtil {
         calendar.set(Calendar.MILLISECOND, 0);
 
         return calendar.getTimeInMillis();
+    }
+
+    public static String getDayOfWeek(Date date) {
+        String result = "";
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        int dayNum = cal.get(Calendar.DAY_OF_WEEK);
+        switch (dayNum) {
+            case 1:
+                result = "월";
+                break;
+            case 2:
+                result = "월";
+                break;
+            case 3:
+                result = "화";
+                break;
+            case 4:
+                result = "수";
+                break;
+            case 5:
+                result = "목";
+                break;
+            case 6:
+                result = "금";
+                break;
+            case 7:
+                result = "토";
+                break;
+        }
+        return result;
     }
 }
