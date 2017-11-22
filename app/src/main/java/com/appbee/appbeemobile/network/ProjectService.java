@@ -53,8 +53,8 @@ public class ProjectService extends AbstractAppBeeService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<Project> getInterview(long seq) {
-        return projectAPI.getInterview(localStorageHelper.getAccessToken(), seq)
+    public Observable<Project> getInterview(String projectId, long seq) {
+        return projectAPI.getInterview(localStorageHelper.getAccessToken(), projectId, seq)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

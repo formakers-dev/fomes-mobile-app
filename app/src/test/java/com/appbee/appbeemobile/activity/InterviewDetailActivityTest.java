@@ -9,6 +9,9 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.model.Project.Interview;
+import com.appbee.appbeemobile.model.Project.InterviewPlan;
+import com.appbee.appbeemobile.model.Project.Person;
 import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.After;
@@ -80,12 +83,12 @@ public class InterviewDetailActivityTest {
         imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
         imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
 
-        Project.Person owner = new Project.Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
+        Person owner = new Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
 
-        List<Project.InterviewPlan> interviewPlanList = new ArrayList<>();
-        interviewPlanList.add(new Project.InterviewPlan(10, "인트로"));
-        interviewPlanList.add(new Project.InterviewPlan(60, "인터뷰"));
-        Project.Person interviewer = new Project.Person("인터뷰어", "www.interviewerImage.com", "인터뷰어 소개입니다");
+        List<InterviewPlan> interviewPlanList = new ArrayList<>();
+        interviewPlanList.add(new InterviewPlan(10, "인트로"));
+        interviewPlanList.add(new InterviewPlan(60, "인터뷰"));
+        Person interviewer = new Person("인터뷰어", "www.interviewerImage.com", "인터뷰어 소개입니다");
 
         // month 1월
         Calendar calendar = Calendar.getInstance();
@@ -96,11 +99,11 @@ public class InterviewDetailActivityTest {
         calendar.set(2018, 2, 3);
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
+        Interview interview = new Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", true, interview);
 
-        when(mockProjectService.getInterview(anyLong())).thenReturn(rx.Observable.just(project));
+        when(mockProjectService.getInterview(anyString(), anyLong())).thenReturn(rx.Observable.just(project));
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
 
         activityController = Robolectric.buildActivity(InterviewDetailActivity.class, intent);
@@ -123,7 +126,7 @@ public class InterviewDetailActivityTest {
     @Test
     public void onPostCreate시_조회된_인터뷰요약_정보를_화면에_보여준다() throws Exception {
         assertThat(subject.locationTextView.getText()).isEqualTo("우면사업장");
-        assertThat(subject.dateTextView.getText()).isEqualTo("03/04 (월)");
+        assertThat(subject.dateTextView.getText()).isEqualTo("03/04 (일)");
         assertThat(subject.timeTextView.getText()).isEqualTo("약 70분");
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-120");
     }
