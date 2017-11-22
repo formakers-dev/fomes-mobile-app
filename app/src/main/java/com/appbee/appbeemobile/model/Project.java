@@ -9,9 +9,9 @@ public class Project {
     private String projectId;
     private String name;
     private String introduce;
+    private ImageObject image;
     private String description;
     private List<ImageObject> descriptionImages;
-    private ImageObject image;
     private Owner owner;
     private String status;
     private boolean isCLab;
@@ -43,7 +43,7 @@ public class Project {
     }
 
     // for project test
-    public Project(String projectId, String name, String introduce, String description, List<ImageObject> descriptionImages, ImageObject image, Owner owner, String status, boolean isCLab) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Owner owner, String status, boolean isCLab) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -56,13 +56,13 @@ public class Project {
     }
 
     // for interview test
-    public Project(String projectId, String name, String introduce, String description, List<ImageObject> descriptionImages, ImageObject image, Owner owner, String status, boolean isCLab, Interview interview) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Owner owner, String status, boolean isCLab, Interview interview) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
+        this.image = image;
         this.description = description;
         this.descriptionImages = descriptionImages;
-        this.image = image;
         this.owner = owner;
         this.status = status;
         this.isCLab = isCLab;

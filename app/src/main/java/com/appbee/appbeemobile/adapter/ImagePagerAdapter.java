@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.Project;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -26,13 +27,11 @@ public class ImagePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-
         Glide.with(context)
                 .load(imageList.get(position).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                 .into(imageView);
-
+        imageView.setTag(R.string.tag_key_image_url, imageList.get(position).getUrl());
         container.addView(imageView);
-
         return imageView;
     }
 
