@@ -24,6 +24,7 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -92,9 +93,9 @@ public class ProjectServiceTest {
 
     @Test
     public void postParticipate호출시_인터뷰참여API를_호출한다() throws Exception {
-        when(mockProjectAPI.postParticipate(anyString(), anyString())).thenReturn(Observable.just(true));
+        when(mockProjectAPI.postParticipate(anyString(), anyString(), anyLong())).thenReturn(Observable.just(true));
 
-        subject.postParticipate("projectId").subscribe(result -> assertThat(result).isTrue());
+        subject.postParticipate("projectId", 1L).subscribe(result -> assertThat(result).isTrue());
     }
 
     @Test

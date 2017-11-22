@@ -17,8 +17,8 @@ public interface ProjectAPI {
     @GET("/projects/{id}")
     Observable<Project> getProject(@Header("x-access-token") String accessToken, @Path("id") String projectId);
 
-    @POST("/projects/{id}/participate")
-    Observable<Boolean> postParticipate(@Header("x-access-token") String accessToken, @Path("id") String projectId);
+    @POST("/projects/{id}/{seq}/participate")
+    Observable<Boolean> postParticipate(@Header("x-access-token") String accessToken, @Path("id") String projectId, @Path("seq") long seq);
 
     @GET("/projects/interviews")
     Observable<List<Project>> getAllInterviews(@Header("x-access-token") String accessToken);

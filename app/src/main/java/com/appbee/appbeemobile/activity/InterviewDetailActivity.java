@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -28,6 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.HttpException;
 import rx.Observable;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
@@ -186,17 +188,17 @@ public class InterviewDetailActivity extends BaseActivity {
     @OnClick(R.id.submit_button)
     void onSubmitButton(View view) {
         // TODO: 인터뷰별로 변경
-//        projectService.postParticipate(seq).subscribe(result -> {
-//            if (result) {
-//                Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
-//            }
-//        }, err -> {
-//            if (err instanceof HttpException) {
-//                Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
-//            } else {
-//                Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
-//            }
-//        });
+        projectService.postParticipate(projectId, seq).subscribe(result -> {
+            if (result) {
+                Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
+            }
+        }, err -> {
+            if (err instanceof HttpException) {
+                Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }
