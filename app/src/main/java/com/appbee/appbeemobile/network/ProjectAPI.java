@@ -17,12 +17,12 @@ public interface ProjectAPI {
     @GET("/projects/{id}")
     Observable<Project> getProject(@Header("x-access-token") String accessToken, @Path("id") String projectId);
 
-    @POST("/projects/{id}/{seq}/participate")
-    Observable<Boolean> postParticipate(@Header("x-access-token") String accessToken, @Path("id") String projectId, @Path("seq") long seq);
-
-    @GET("/projects/interviews")
+    @GET("/projects/match/interviews")
     Observable<List<Project>> getAllInterviews(@Header("x-access-token") String accessToken);
 
     @GET("/projects/{id}/interviews/{seq}")
     Observable<Project> getInterview(@Header("x-access-token") String accessToken, @Path("id") String projectId, @Path("seq") long seq);
+
+    @POST("/projects/{id}/interviews/{seq}/participate/{slotId}")
+    Observable<Boolean> postParticipate(@Header("x-access-token") String accessToken, @Path("id") String projectId, @Path("seq") long seq, @Path("slotId") String slotId);
 }

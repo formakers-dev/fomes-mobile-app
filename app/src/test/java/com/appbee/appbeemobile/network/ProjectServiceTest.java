@@ -114,9 +114,9 @@ public class ProjectServiceTest {
 
     @Test
     public void postParticipate호출시_인터뷰참여API를_호출한다() throws Exception {
-        when(mockProjectAPI.postParticipate(anyString(), anyString(), anyLong())).thenReturn(Observable.just(true));
+        when(mockProjectAPI.postParticipate(anyString(), anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
 
-        subject.postParticipate("projectId", 1L).subscribe(result -> assertThat(result).isTrue());
+        subject.postParticipate("projectId", 1L, "").subscribe(result -> assertThat(result).isTrue());
     }
 
     @Test
