@@ -188,7 +188,7 @@ public class InterviewDetailActivity extends BaseActivity {
     @OnClick(R.id.submit_button)
     void onSubmitButton(View view) {
         // TODO: 인터뷰별로 변경
-        projectService.postParticipate(projectId, seq).subscribe(result -> {
+        projectService.postParticipate(projectId, seq, "").subscribe(result -> {
             if (result) {
                 Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
             }

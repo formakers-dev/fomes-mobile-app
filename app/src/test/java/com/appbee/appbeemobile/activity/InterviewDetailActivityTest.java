@@ -169,16 +169,16 @@ public class InterviewDetailActivityTest {
 
     @Test
     public void submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString(), anyLong())).thenReturn(Observable.just(true));
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
 
         subject.findViewById(R.id.submit_button).performClick();
 
-        verify(mockProjectService).postParticipate(anyString(), anyLong());
+        verify(mockProjectService).postParticipate(anyString(), anyLong(), anyString());
     }
 
     @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString(), anyLong())).thenReturn(Observable.just(true));
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
 
         subject.findViewById(R.id.submit_button).performClick();
 
@@ -187,7 +187,7 @@ public class InterviewDetailActivityTest {
 
     @Test
     public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString(), anyLong())).thenReturn(Observable.error(new HttpException(Response.error(406, ResponseBody.create(null, "")))));
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(406, ResponseBody.create(null, "")))));
 
         subject.findViewById(R.id.submit_button).performClick();
 
