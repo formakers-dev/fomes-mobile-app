@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.network;
 import android.util.Log;
 
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.AppUsage;
 
 import java.util.List;
@@ -32,6 +33,12 @@ public class AppService extends AbstractAppBeeService {
 
     public Observable<Boolean> sendAppUsages(List<AppUsage> appUsageList) {
         return appAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<List<AppInfo>> getAppInfo(List<String> packageNameList) {
+        return appAPI.getAppInfos(localStorageHelper.getAccessToken(), packageNameList)
+                .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 
