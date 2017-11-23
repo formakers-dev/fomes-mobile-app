@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -122,7 +123,12 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_share) {
+        if (id == R.id.my_interview) {
+            Intent intent = new Intent(this, MyInterviewActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.my_app_usage_pattern) {
+
+        } else if (id == R.id.appbee_question) {
 
         }
 
@@ -130,4 +136,5 @@ public class MainActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

@@ -3,29 +3,14 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_coin"
-            android:title="Doing Coin" />
+            android:id="@+id/my_interview"
+            android:title="@string/my_interview_text" />
         <item
-            android:id="@+id/nav_doing_project"
-            android:title="신청한 프로젝트" />
+            android:id="@+id/my_app_usage_pattern"
+            android:title="@string/my_app_usage_pattern_text" />
         <item
-            android:id="@+id/nav_done_project"
-            android:title="완료한 프로젝트" />
-    </group>
-
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_notice"
-            android:title="공지사항" />
-        <item
-            android:id="@+id/nav_contact_us"
-            android:title="문의 및 건의사항" />
-        <item
-            android:id="@+id/nav_share"
-            android:title="친구에게 추천하기" />
-        <item
-            android:id="@+id/nav_add_project"
-            android:title="내 프로젝트 올리기" />
+            android:id="@+id/appbee_question"
+            android:title="@string/appbee_question_text" />
     </group>
 
 </menu>

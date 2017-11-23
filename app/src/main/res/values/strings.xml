@@ -51,5 +51,8 @@
     <string name="project_list_header_subtitle">새로운 프로젝트를 둘러보고 인사이트를 얻으세요.</string>
     <string name="personality_apps_text">나의 개성을 보여주는 앱</string>
     <string name="most_used_apps_text">내가 많이 사용하는 앱</string>
+    <string name="my_interview_text">다가오는 유저 인터뷰</string>
+    <string name="my_app_usage_pattern_text">나의 앱 사용패턴 분석 다시 보기</string>
+    <string name="appbee_question_text">앱비에게 문의하기</string>
 
 </resources>
