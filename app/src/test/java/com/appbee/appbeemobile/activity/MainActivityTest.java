@@ -1,8 +1,10 @@
 package com.appbee.appbeemobile.activity;
 
+import android.view.MenuItem;
 import android.view.View;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -22,7 +24,9 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -70,5 +74,13 @@ public class MainActivityTest {
         assertThat(subject.tabLayout.getTabCount()).isEqualTo(2);
         assertThat(subject.tabLayout.getTabAt(0).getText()).isEqualTo("체험하기");
         assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("둘러보기");
+    }
+
+    @Test
+    public void onNavigationItemSelected시_다가오는_인터뷰_버튼이_클릭되었을_경우_신청한_인터뷰리스트_페이지로_이동한다() throws Exception {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.my_interview);
+        subject.onNavigationItemSelected(item);
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains("MyInterviewActivity");
     }
 }
