@@ -51,7 +51,11 @@ public class InterviewListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public Project getItem(int position) {
-        return projectList.get(position);
+        if (position == 0) {
+            throw new IllegalArgumentException("this is a header!");
+        }
+
+        return projectList.get(position - 1);
     }
 
     @Override

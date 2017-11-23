@@ -13,36 +13,48 @@ import org.robolectric.annotation.Config;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.appbee.appbeemobile.adapter.ProjectListAdapter.HEADER_VIEW_TYPE;
-import static com.appbee.appbeemobile.adapter.ProjectListAdapter.ITEM_VIEW_TYPE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class ProjectListAdapterTest {
 
-    ProjectListAdapter subject;
+    private ProjectListAdapter subject;
 
     @Before
     public void setUp() throws Exception {
+        List<Project.ImageObject> imageObjectList = new ArrayList<>();
+        Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com1", "urlName1"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
+
+        Project.Person owner = new Project.Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
+
         List<Project> mockProjectList = new ArrayList<>();
-        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
-        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
-        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
+        mockProjectList.add(new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered"));
+        mockProjectList.add(new Project("projectId2", "릴루미노2", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)2", imageObject, "안녕하세요 릴루미노팀입니다.2", imageObjectList, owner, "registered"));
+
 
         subject = new ProjectListAdapter(mockProjectList, R.string.recommendation_apps_title, R.string.recommendation_apps_subtitle);
     }
 
     @Test
     public void Adapter를_생성하면_입력한데이터가_바인딩된다() throws Exception {
-        assertThat(subject.getItemCount()).isEqualTo(4);
-        assertThat(subject.getItemViewType(0)).isEqualTo(HEADER_VIEW_TYPE);
-        assertThat(subject.getItemViewType(1)).isEqualTo(ITEM_VIEW_TYPE);
-        assertThat(subject.getItemViewType(2)).isEqualTo(ITEM_VIEW_TYPE);
-        assertThat(subject.getItemViewType(3)).isEqualTo(ITEM_VIEW_TYPE);
-        assertThat(subject.getItem(0).getProjectId()).isEqualTo("projectId1");
-        assertThat(subject.getItem(0).getName()).isEqualTo("유어커스텀");
-        assertThat(subject.getItem(0).getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-        assertThat(subject.getItem(0).getStatus()).isEqualTo("temporary");
+        assertThat(subject.getItemCount()).isEqualTo(3);
+
+        assertThat(subject.getItemViewType(0)).isEqualTo(ProjectListAdapter.HEADER_VIEW_TYPE);
+        assertThat(subject.getItemViewType(1)).isEqualTo(ProjectListAdapter.ITEM_VIEW_TYPE);
+        assertThat(subject.getItemViewType(2)).isEqualTo(ProjectListAdapter.ITEM_VIEW_TYPE);
+
+        assertThat(subject.getItem(1).getProjectId()).isEqualTo("projectId");
+        assertThat(subject.getItem(1).getName()).isEqualTo("릴루미노");
+        assertThat(subject.getItem(1).getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
+        assertThat(subject.getItem(1).getStatus()).isEqualTo("registered");
+
+        assertThat(subject.getItem(2).getProjectId()).isEqualTo("projectId2");
+        assertThat(subject.getItem(2).getName()).isEqualTo("릴루미노2");
+        assertThat(subject.getItem(2).getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)2");
+        assertThat(subject.getItem(2).getStatus()).isEqualTo("registered");
     }
 }

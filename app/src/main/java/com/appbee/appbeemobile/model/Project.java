@@ -15,36 +15,14 @@ public class Project {
     private List<ImageObject> descriptionImages;
     private Person owner;
     private String status;
-    private boolean isCLab;
     @SerializedName("interviews")
     private Interview interview;
 
     // TODO: 삭제예정
     private List<ImageObject> images;
-    private Interviewer interviewer;
-
-    public Project(String projectId, String name, String introduce, String status) {
-        this.projectId = projectId;
-        this.name = name;
-        this.introduce = introduce;
-        this.status = status;
-    }
-
-    public Project(String projectId, String name, String introduce, List<ImageObject> images, String description, List<ImageObject> descriptionImages, String status, Interviewer interviewer, boolean isCLab, Interview interview) {
-        this.projectId = projectId;
-        this.name = name;
-        this.introduce = introduce;
-        this.images = images;
-        this.description = description;
-        this.descriptionImages = descriptionImages;
-        this.status = status;
-        this.interviewer = interviewer;
-        this.isCLab = isCLab;
-        this.interview = interview;
-    }
 
     // for project test
-    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status, boolean isCLab) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -53,11 +31,10 @@ public class Project {
         this.image = image;
         this.owner = owner;
         this.status = status;
-        this.isCLab = isCLab;
     }
 
     // for interview test
-    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status, boolean isCLab, Interview interview) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status, Interview interview) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
@@ -66,7 +43,6 @@ public class Project {
         this.descriptionImages = descriptionImages;
         this.owner = owner;
         this.status = status;
-        this.isCLab = isCLab;
         this.interview = interview;
     }
 
@@ -134,14 +110,6 @@ public class Project {
         this.status = status;
     }
 
-    public boolean isCLab() {
-        return isCLab;
-    }
-
-    public void setCLab(boolean CLab) {
-        isCLab = CLab;
-    }
-
     public Interview getInterview() {
         return interview;
     }
@@ -156,14 +124,6 @@ public class Project {
 
     public void setImages(List<ImageObject> images) {
         this.images = images;
-    }
-
-    public Interviewer getInterviewer() {
-        return interviewer;
-    }
-
-    public void setInterviewer(Interviewer interviewer) {
-        this.interviewer = interviewer;
     }
 
     public static class Person {
