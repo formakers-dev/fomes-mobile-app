@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.helper;
 
+import com.appbee.appbeemobile.model.AppUsage;
 import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
@@ -261,6 +262,39 @@ public class AppUsageDataHelperTest {
         assertDailyStatSummary(dailyStatSummaryList.get(0), "package", 20171120, 7200000L);
         assertDailyStatSummary(dailyStatSummaryList.get(1), "package", 20171121, 3600000L);
 
+    }
+
+    @Test
+    public void getSortedUsedApp호출시_totalUsedTime으로_내림차순으로_쩡렬하여_리턴한다() throws Exception {
+        List<AppUsage> mockAppUsageList = new ArrayList<>();
+        mockAppUsageList.add(new AppUsage("package1", 1000L));
+        mockAppUsageList.add(new AppUsage("package2", 2000L));
+        mockAppUsageList.add(new AppUsage("package3", 3000L));
+        when(mockAppRepositoryHelper.getAppUsages()).thenReturn(mockAppUsageList);
+        List<AppUsage> result = subject.getSortedUsedApp();
+
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.get(0).getPackageName()).isEqualTo("package3");
+        assertThat(result.get(0).getTotalUsedTime()).isEqualTo(3000L);
+        assertThat(result.get(1).getPackageName()).isEqualTo("package2");
+        assertThat(result.get(1).getTotalUsedTime()).isEqualTo(2000L);
+        assertThat(result.get(2).getPackageName()).isEqualTo("package1");
+        assertThat(result.get(2).getTotalUsedTime()).isEqualTo(1000L);
+    }
+
+    @Test
+    public void getSortedUsedApp호출시_totalUsedTime이_같을경우_packgeName으로_오름차순하여_리턴한다() throws Exception {
+        List<AppUsage> mockAppUsageList = new ArrayList<>();
+        mockAppUsageList.add(new AppUsage("package3", 1000L));
+        mockAppUsageList.add(new AppUsage("package2", 1000L));
+        mockAppUsageList.add(new AppUsage("package1", 1000L));
+        when(mockAppRepositoryHelper.getAppUsages()).thenReturn(mockAppUsageList);
+        List<AppUsage> result = subject.getSortedUsedApp();
+
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.get(0).getPackageName()).isEqualTo("package1");
+        assertThat(result.get(1).getPackageName()).isEqualTo("package2");
+        assertThat(result.get(2).getPackageName()).isEqualTo("package3");
     }
 
     private void assertDailyStatSummary(DailyStatSummary dailyStatSummary, String packageName, int yyyymmdd, long totalUsedTime) {

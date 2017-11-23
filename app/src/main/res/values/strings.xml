@@ -36,16 +36,20 @@
     <string name="tnc_agree_text">버튼을 누르시면 <![CDATA[<a href="http://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="http://appbee.info">개인정보 취급방침</a>]]>에 동의됩니다.</string>
     <string name="app_subtitle">App Behaviour</string>
 
-    <string name="analysis_description">당신은\n음악과 비디오보기 커뮤니케이션과 여행에\n 관심이 많으시네요.</string>
+    <string name="analysis_title">앱 사용패턴 분석 완료!</string>
+    <string name="analysis_description">이 결과를 기반으로 새 프로젝트와\n유저인터뷰를 추천해 드릴게요.</string>
     <string name="onboarding_rewards_description">이런 취향을 앱비가 기억해서\n꼭 맞는 프로젝트를 추천해드릴게요.\n\n마음에 드는 프로젝트가 있다면\n솔직한 조언을 해주고 선물도 받아가세요.</string>
 
     <string name="apps_text">\'%s\'앱을 사랑하는 당신을 위한</string>
     <!-- Bottom Button -->
     <string name="yes_button"><![CDATA[네 좋아요 >]]></string>
-    <string name="maybe_yes_button"><![CDATA[맞는것 같아요 >]]></string>
+    <string name="next_button">다음으로</string>
     <string name="lets_go_button"><![CDATA[좋아요, 시작할게요 >]]></string>
     <string name="contents_title_interview">체험하기</string>
     <string name="contents_title_project">둘러보기</string>
     <string name="project_list_header_title">프로젝트 둘러보기</string>
     <string name="project_list_header_subtitle">새로운 프로젝트를 둘러보고 인사이트를 얻으세요.</string>
+    <string name="personality_apps_text">나의 개성을 보여주는 앱</string>
+    <string name="most_used_apps_text">내가 많이 사용하는 앱</string>
+
 </resources>

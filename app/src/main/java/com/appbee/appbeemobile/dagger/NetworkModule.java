@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-    private final static long NETWORK_TIMEOUT = 15L;
+    private final static long NETWORK_TIMEOUT = 20L;
 
     @Singleton
     @Provides
