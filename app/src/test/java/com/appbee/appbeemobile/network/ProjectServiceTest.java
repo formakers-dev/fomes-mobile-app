@@ -58,37 +58,58 @@ public class ProjectServiceTest {
 
     @Test
     public void getAllProjects호출시_프로젝트_리스트를_리턴한다() throws Exception {
+        Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
+
+        List<Project.ImageObject> imageObjectList = new ArrayList<>();
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com1", "urlName1"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
+
+        Project.Person owner = new Project.Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
+
         List<Project> mockProjectList = new ArrayList<>();
-        mockProjectList.add(new Project("projectId1", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
-        mockProjectList.add(new Project("projectId2", "유어커스텀2", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
-        mockProjectList.add(new Project("projectId3", "유어커스텀3", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary"));
+        mockProjectList.add(new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered"));
+        mockProjectList.add(new Project("projectId2", "릴루미노2", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)2", imageObject, "안녕하세요 릴루미노팀입니다.2", imageObjectList, owner, "registered"));
 
         when(mockProjectAPI.getAllProjects(anyString())).thenReturn(Observable.just(mockProjectList));
+        List<Project> projectList = subject.getAllProjects().toBlocking().single();
 
-        subject.getAllProjects().subscribe(projectList -> {
-            assertThat(projectList).isNotNull();
-            assertThat(projectList.size()).isEqualTo(3);
-            Project project = projectList.get(0);
-            assertThat(project.getProjectId()).isEqualTo("projectId1");
-            assertThat(project.getName()).isEqualTo("유어커스텀");
-            assertThat(project.getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-            assertThat(project.getStatus()).isEqualTo("temporary");
-        });
+        assertThat(projectList).isNotNull();
+        assertThat(projectList.size()).isEqualTo(2);
+        Project project = projectList.get(0);
+        assertThat(project.getProjectId()).isEqualTo("projectId");
+        assertThat(project.getName()).isEqualTo("릴루미노");
+        assertThat(project.getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
+        assertThat(project.getStatus()).isEqualTo("registered");
+
+        Project project2 = projectList.get(1);
+        assertThat(project2.getProjectId()).isEqualTo("projectId2");
+        assertThat(project2.getName()).isEqualTo("릴루미노2");
+        assertThat(project2.getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)2");
+        assertThat(project2.getStatus()).isEqualTo("registered");
     }
 
     @Test
     public void getProject호출시_요청한_프로젝트ID에_해당하는_프로젝트_정보를_리턴한다() throws Exception {
-        Project mockProject = new Project("projectId123", "유어커스텀", "[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!", "temporary");
+        Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
 
-        when(mockProjectAPI.getProject(anyString(), eq("projectId123"))).thenReturn(Observable.just(mockProject));
+        List<Project.ImageObject> imageObjectList = new ArrayList<>();
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com1", "urlName1"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
 
-        subject.getProject("projectId123").subscribe(project -> {
-            assertThat(project).isNotNull();
-            assertThat(project.getProjectId()).isEqualTo("projectId123");
-            assertThat(project.getName()).isEqualTo("유어커스텀");
-            assertThat(project.getIntroduce()).isEqualTo("[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!");
-            assertThat(project.getStatus()).isEqualTo("temporary");
-        });
+        Project.Person owner = new Project.Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
+
+        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered");
+
+        when(mockProjectAPI.getProject(anyString(), eq("projectId"))).thenReturn(Observable.just(project));
+
+        Project result = subject.getProject("projectId").toBlocking().single();
+        assertThat(result).isNotNull();
+        assertThat(result.getProjectId()).isEqualTo("projectId");
+        assertThat(result.getName()).isEqualTo("릴루미노");
+        assertThat(result.getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
+        assertThat(result.getStatus()).isEqualTo("registered");
     }
 
     @Test
@@ -126,23 +147,23 @@ public class ProjectServiceTest {
 
         Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
 
-        Project mockProject = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", true, interview);
+        Project mockProject = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
         mockProjectList.add(mockProject);
 
         when(mockProjectAPI.getAllInterviews(anyString())).thenReturn(Observable.just(mockProjectList));
 
-        subject.getAllInterviews().subscribe(interviewList -> {
-            assertThat(interviewList.size()).isEqualTo(1);
+        List<Project> interviewList = subject.getAllInterviews().toBlocking().single();
 
-            Project project = interviewList.get(0);
+        assertThat(interviewList.size()).isEqualTo(1);
 
-            assertThat(project.getName()).isEqualTo("릴루미노");
-            assertThat(project.getDescription()).isEqualTo("안녕하세요 릴루미노팀입니다.");
-            assertThat(project.getInterview().getSeq()).isEqualTo(1L);
-            assertThat(project.getInterview().getLocation()).isEqualTo("우면사업장");
-            assertThat(project.getInterview().getTotalCount()).isEqualTo(5);
-        });
+        Project project = interviewList.get(0);
+
+        assertThat(project.getName()).isEqualTo("릴루미노");
+        assertThat(project.getDescription()).isEqualTo("안녕하세요 릴루미노팀입니다.");
+        assertThat(project.getInterview().getSeq()).isEqualTo(1L);
+        assertThat(project.getInterview().getLocation()).isEqualTo("우면사업장");
+        assertThat(project.getInterview().getTotalCount()).isEqualTo(5);
 
     }
 
@@ -172,7 +193,7 @@ public class ProjectServiceTest {
 
         Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
 
-        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", true, interview);
+        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
         when(mockProjectAPI.getInterview(anyString(), eq("projectId"), eq(1L))).thenReturn(Observable.just(project));
 

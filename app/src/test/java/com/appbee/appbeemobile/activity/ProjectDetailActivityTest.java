@@ -74,7 +74,7 @@ public class ProjectDetailActivityTest {
 
         Person owner = new Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
 
-        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", true);
+        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered");
 
         when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(project));
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03

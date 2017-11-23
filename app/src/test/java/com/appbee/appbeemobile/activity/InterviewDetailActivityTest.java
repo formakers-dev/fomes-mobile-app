@@ -100,7 +100,7 @@ public class InterviewDetailActivityTest {
 
         Interview interview = new Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
 
-        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", true, interview);
+        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
         when(mockProjectService.getInterview(anyString(), anyLong())).thenReturn(rx.Observable.just(project));
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03

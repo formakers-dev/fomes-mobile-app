@@ -64,20 +64,27 @@ public class InterviewListFragmentTest {
 
     @Test
     public void onResume시_프로젝트목록정보를_갱신한다() throws Exception {
-        List<Project> mockInterviewList = new ArrayList<>();
-        mockInterviewList.add(new Project("projectId4", "리얼포토", "증강현실로 한장의 사진에 담는 나만의 추억", "temporary"));
-        mockInterviewList.add(new Project("projectId5", "엔빵", "모임별로 엔빵해", "temporary"));
-        mockInterviewList.add(new Project("projectId6", "겜돌이", "게임하자", "temporary"));
-        when(mockProjectService.getAllInterviews()).thenReturn(Observable.just(mockInterviewList));
+        List<Project.ImageObject> imageObjectList = new ArrayList<>();
+        Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com1", "urlName1"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
+
+        Project.Person owner = new Project.Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
+
+        List<Project> mockProjectList = new ArrayList<>();
+        mockProjectList.add(new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered"));
+        mockProjectList.add(new Project("projectId2", "릴루미노2", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)2", imageObject, "안녕하세요 릴루미노팀입니다.2", imageObjectList, owner, "registered"));
+
+        when(mockProjectService.getAllInterviews()).thenReturn(Observable.just(mockProjectList));
 
         controller.resume();
 
         verify(mockProjectService).getAllInterviews();
         InterviewListAdapter interviewListAdapter = (InterviewListAdapter) subject.interviewListRecyclerView.getAdapter();
-        assertThat(interviewListAdapter.getItemCount()).isEqualTo(4);
-        assertThat(interviewListAdapter.getItem(0)).isEqualTo(mockInterviewList.get(0));
-        assertThat(interviewListAdapter.getItem(1)).isEqualTo(mockInterviewList.get(1));
-        assertThat(interviewListAdapter.getItem(2)).isEqualTo(mockInterviewList.get(2));
+        assertThat(interviewListAdapter.getItemCount()).isEqualTo(3);
+        assertThat(interviewListAdapter.getItem(1)).isEqualTo(mockProjectList.get(0));
+        assertThat(interviewListAdapter.getItem(2)).isEqualTo(mockProjectList.get(1));
     }
 
 }
