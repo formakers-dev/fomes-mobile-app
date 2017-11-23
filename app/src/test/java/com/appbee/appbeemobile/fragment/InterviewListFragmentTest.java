@@ -36,7 +36,7 @@ public class InterviewListFragmentTest {
     ProjectService mockProjectService;
 
     private InterviewListFragment subject;
-    private SupportFragmentController controller;
+    private SupportFragmentController<InterviewListFragment> controller;
     private Unbinder unbinder;
 
     @Before

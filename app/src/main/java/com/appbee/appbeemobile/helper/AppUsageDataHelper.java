@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.helper;
 
 import android.support.annotation.NonNull;
 
+import com.appbee.appbeemobile.model.AppUsage;
 import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
@@ -13,6 +14,7 @@ import com.appbee.appbeemobile.util.DateUtil;
 import com.appbee.appbeemobile.util.FormatUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,18 @@ public class AppUsageDataHelper {
         }
 
         return shortTermStats;
+    }
+
+    public List<AppUsage> getSortedUsedApp() {
+        List<AppUsage> appUsageList = appRepositoryHelper.getAppUsages();
+        Collections.sort(appUsageList, (o1, o2) -> {
+            if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
+                return o1.getPackageName().compareTo(o2.getPackageName());
+            } else {
+                return o1.getTotalUsedTime() - o2.getTotalUsedTime() > 0 ? -1 : 1;
+            }
+        });
+        return appUsageList;
     }
 
     private ShortTermStat createShortTermStat(String packageName, long startTimeStamp, long endTimeStamp) {

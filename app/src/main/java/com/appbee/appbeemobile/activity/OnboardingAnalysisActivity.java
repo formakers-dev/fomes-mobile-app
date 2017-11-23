@@ -21,6 +21,7 @@ public class OnboardingAnalysisActivity extends BaseActivity implements IFragmen
         replaceFragment(OnboardingAnalysisFragment.TAG);
     }
 
+    // TODO : replaceFragment, startMainActivityAndFinish 메서드 테스트 필요
     @Override
     public void replaceFragment(@NonNull String fragmentTag) {
         Fragment fragment = null;
