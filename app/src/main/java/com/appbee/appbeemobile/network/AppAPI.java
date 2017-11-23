@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.AppUsage;
 
 import java.util.List;
@@ -15,4 +16,7 @@ public interface AppAPI {
 
     @POST("/apps/usages")
     Observable<Boolean> postUsages(@Header("x-access-token") String accessToken, @Body List<AppUsage> appUsages);
+
+    @POST("/apps/info")
+    Observable<List<AppInfo>> getAppInfos(@Header("x-access-token") String accessToken, @Body List<String> packageNameList);
 }

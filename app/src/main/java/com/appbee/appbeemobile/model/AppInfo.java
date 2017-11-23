@@ -7,14 +7,16 @@ public class AppInfo {
     private String categoryName1;
     private String categoryId2;
     private String categoryName2;
+    private String iconUrl;
 
-    public AppInfo(String packageName, String appName, String categoryId1, String categoryName1, String categoryId2, String categoryName2) {
+    public AppInfo(String packageName, String appName, String categoryId1, String categoryName1, String categoryId2, String categoryName2, String iconUrl) {
         this.packageName = packageName;
         this.appName = appName;
         this.categoryId1 = categoryId1;
         this.categoryName1 = categoryName1;
         this.categoryId2 = categoryId2;
         this.categoryName2 = categoryName2;
+        this.iconUrl = iconUrl;
     }
 
     public String getPackageName() {
@@ -63,5 +65,13 @@ public class AppInfo {
 
     public void setCategoryName2(String categoryName2) {
         this.categoryName2 = categoryName2;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }
