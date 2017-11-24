@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.fragment;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,6 +13,9 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.activity.IFragmentManager;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
+import com.appbee.appbeemobile.network.AppService;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -21,6 +23,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class OnboardingAnalysisFragment extends BaseFragment {
     public static final String TAG = OnboardingAnalysisFragment.class.getSimpleName();
@@ -28,11 +31,13 @@ public class OnboardingAnalysisFragment extends BaseFragment {
     public IFragmentManager fragmentManager;
 
     @Inject
+    AppService appService;
+
+    @Inject
     AppUsageDataHelper appUsageDataHelper;
 
     @Inject
     NativeAppInfoHelper nativeAppInfoHelper;
-
 
     @BindView(R.id.most_personality_app_layout)
     ViewGroup mostPersonalityAppViewGroup;
@@ -51,8 +56,20 @@ public class OnboardingAnalysisFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        appUsageDataHelper.getSortedUsedPackageNames()
-                .concatMapEager(Observable::from)
+        List<String> popularAppsList = appService.getPopularApps();
+
+        Observable<String> sortedUsedPackageNameObservable = appUsageDataHelper.getSortedUsedPackageNames()
+                .observeOn(Schedulers.io())
+                .concatMapEager(Observable::from).cache();
+
+        extractAnalysisDataAndBindTo(mostPersonalityAppViewGroup,
+                sortedUsedPackageNameObservable.filter(packageName -> !popularAppsList.contains(packageName)));
+        extractAnalysisDataAndBindTo(mostUsedAppViewGroup, sortedUsedPackageNameObservable);
+    }
+
+    private void extractAnalysisDataAndBindTo(ViewGroup viewGroup, Observable<String> packageNameObservable) {
+        packageNameObservable
+                .limit(3)
                 .map(packageName -> nativeAppInfoHelper.getNativeAppInfo(packageName))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nativeAppInfo -> {
@@ -67,7 +84,7 @@ public class OnboardingAnalysisFragment extends BaseFragment {
                     }
 
                     ((TextView) itemView.findViewById(R.id.app_name_textview)).setText(nativeAppInfo.getAppName());
-                    mostUsedAppViewGroup.addView(itemView);
+                    viewGroup.addView(itemView);
                 });
     }
 

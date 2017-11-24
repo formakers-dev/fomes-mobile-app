@@ -79,6 +79,8 @@ public class AppUsageDataHelper {
 
     public Observable<List<String>> getSortedUsedPackageNames() {
         return Observable.just(appRepositoryHelper.getAppUsages())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .concatMapEager(Observable::from)
                 .sorted((o1, o2) -> {
                     if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
@@ -87,9 +89,7 @@ public class AppUsageDataHelper {
                         return o1.getTotalUsedTime() - o2.getTotalUsedTime() > 0 ? -1 : 1;
                     }
                 }).map(AppUsage::getPackageName)
-                .limit(3)
-                .toList()
-                .subscribeOn(Schedulers.io());
+                .toList();
     }
 
     private ShortTermStat createShortTermStat(String packageName, long startTimeStamp, long endTimeStamp) {

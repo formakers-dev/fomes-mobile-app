@@ -1,6 +1,9 @@
 package com.appbee.appbeemobile.util;
 
 public interface AppBeeConstants {
+
+    String[] POPULAR_APPS = {"com.nhn.android.search", "com.kakao.talk", "com.google.android.gm"};
+
     interface API_RESPONSE_CODE {
 //        String UNAUTHORIZED = "401";
 //        String FORBIDDEN = "403";

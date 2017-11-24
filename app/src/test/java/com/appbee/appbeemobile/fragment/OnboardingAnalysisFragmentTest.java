@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.fragment;
 
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -9,8 +8,8 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.activity.IFragmentManager;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.network.AppService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,7 +22,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +30,11 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import rx.Observable;
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -44,6 +47,9 @@ public class OnboardingAnalysisFragmentTest {
 
     @Mock
     private IFragmentManager mockFragmentManager;
+
+    @Inject
+    AppService mockAppService;
 
     @Inject
     AppUsageDataHelper mockAppUsageDataHelper;
@@ -59,24 +65,57 @@ public class OnboardingAnalysisFragmentTest {
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         MockitoAnnotations.initMocks(this);
+
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+
+            }
+        });
+
         subject = new OnboardingAnalysisFragment();
         subject.setFragmentManager(mockFragmentManager);
 
         controller = SupportFragmentController.of(subject);
         unbinder = ButterKnife.bind(this, subject.getView());
 
-        List<String> appList = Arrays.asList("packageName1", "packageName2", "packageName3");
+        List<String> appList = Arrays.asList("packageName1", "packageName2", "packageName3", "packageName4", "packageName5");
         when(mockAppUsageDataHelper.getSortedUsedPackageNames()).thenReturn(Observable.just(appList));
-        List<AppInfo> appInfoList = new ArrayList<>();
-        appInfoList.add(new AppInfo("packageName1", "appName1", "categoryId1", "categoryName1", "categoryId2", "categoryName2", "www.iconUrl1.com"));
-        appInfoList.add(new AppInfo("packageName2", "appName2", "categoryId1", "categoryName1", "categoryId2", "categoryName2", "www.iconUrl2.com"));
-        appInfoList.add(new AppInfo("packageName3", "appName3", "categoryId1", "categoryName1", "categoryId2", "categoryName2", "www.iconUrl3.com"));
 
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName1")).thenReturn(new NativeAppInfo("packageName1", "appName1"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName2")).thenReturn(new NativeAppInfo("packageName2", "appName2"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName3")).thenReturn(new NativeAppInfo("packageName3", "appName3"));
+        when(mockNativeAppInfoHelper.getNativeAppInfo("packageName4")).thenReturn(new NativeAppInfo("packageName4", "appName4"));
+        when(mockNativeAppInfoHelper.getNativeAppInfo("packageName5")).thenReturn(new NativeAppInfo("packageName5", "appName5"));
+
+        when(mockAppService.getPopularApps()).thenReturn(Arrays.asList("packageName1", "packageName2"));
 
         controller.create().start().resume();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
+        RxAndroidPlugins.getInstance().reset();
+        unbinder.unbind();
+    }
+
+    @Test
+    public void onViewCreated시_가장인기있는앱을제외하고_가장개성있는앱3개가_나타난다() throws Exception {
+        assertThat(subject.mostPersonalityAppViewGroup.getChildCount()).isEqualTo(3);
+
+        assertThat(((TextView) subject.mostPersonalityAppViewGroup.getChildAt(0).findViewById(R.id.app_name_textview)).getText()).isEqualTo("appName3");
+        assertThat(((TextView) subject.mostPersonalityAppViewGroup.getChildAt(1).findViewById(R.id.app_name_textview)).getText()).isEqualTo("appName4");
+        assertThat(((TextView) subject.mostPersonalityAppViewGroup.getChildAt(2).findViewById(R.id.app_name_textview)).getText()).isEqualTo("appName5");
+
+        assertThat(subject.mostPersonalityAppViewGroup.getChildAt(0).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName3");
+        assertThat(subject.mostPersonalityAppViewGroup.getChildAt(1).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName4");
+        assertThat(subject.mostPersonalityAppViewGroup.getChildAt(2).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName5");
     }
 
     @Test
@@ -87,22 +126,14 @@ public class OnboardingAnalysisFragmentTest {
         assertThat(((TextView) subject.mostUsedAppViewGroup.getChildAt(1).findViewById(R.id.app_name_textview)).getText()).isEqualTo("appName2");
         assertThat(((TextView) subject.mostUsedAppViewGroup.getChildAt(2).findViewById(R.id.app_name_textview)).getText()).isEqualTo("appName3");
 
-        ImageView imageview1 = ((ImageView) subject.mostUsedAppViewGroup.getChildAt(0).findViewById(R.id.app_imageview));
-        assertThat(imageview1.getTag(R.string.tag_key_image_url)).isEqualTo("packageName1");
-        ImageView imageview2 = ((ImageView) subject.mostUsedAppViewGroup.getChildAt(1).findViewById(R.id.app_imageview));
-        assertThat(imageview2.getTag(R.string.tag_key_image_url)).isEqualTo("packageName2");
-        ImageView imageview3 = ((ImageView) subject.mostUsedAppViewGroup.getChildAt(2).findViewById(R.id.app_imageview));
-        assertThat(imageview3.getTag(R.string.tag_key_image_url)).isEqualTo("packageName3");
+        assertThat(subject.mostUsedAppViewGroup.getChildAt(0).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName1");
+        assertThat(subject.mostUsedAppViewGroup.getChildAt(1).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName2");
+        assertThat(subject.mostUsedAppViewGroup.getChildAt(2).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName3");
     }
 
     @Test
     public void nextButton클릭시_OnboardingRewardsFragment로_이동하도록하는_메소드를_호출한다() throws Exception {
         subject.getView().findViewById(R.id.next_button).performClick();
         verify(mockFragmentManager).replaceFragment(anyString());
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        unbinder.unbind();
     }
 }
