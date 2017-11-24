@@ -87,7 +87,6 @@ public class InterviewDetailActivityTest {
         List<InterviewPlan> interviewPlanList = new ArrayList<>();
         interviewPlanList.add(new InterviewPlan(10, "인트로"));
         interviewPlanList.add(new InterviewPlan(60, "인터뷰"));
-        Person interviewer = new Person("인터뷰어", "www.interviewerImage.com", "인터뷰어 소개입니다");
 
         // month 1월
         Calendar calendar = Calendar.getInstance();
@@ -98,7 +97,7 @@ public class InterviewDetailActivityTest {
         calendar.set(2018, 2, 3);
         Date closeDate = calendar.getTime();
 
-        Interview interview = new Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
+        Interview interview = new Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5);
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -143,13 +142,6 @@ public class InterviewDetailActivityTest {
     public void onPostCreate시_조회된_project_설명정보를_화면에_보여준다() throws Exception {
         assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
         assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
-    }
-
-    @Test
-    public void onPostCreate시_조회된_interviewer정보를_화면에_보여준다() throws Exception {
-        assertThat(subject.interviewerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo(null);
-        assertThat(subject.interviewerNameTextView.getText()).isEqualTo("인터뷰어");
-        assertThat(subject.interviewerIntroduceTextView.getText()).contains("인터뷰어 소개입니다");
     }
 
     @Test
