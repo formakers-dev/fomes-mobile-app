@@ -63,9 +63,6 @@ public class OnboardingAnalysisFragmentTest {
 
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        MockitoAnnotations.initMocks(this);
-
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
@@ -77,6 +74,9 @@ public class OnboardingAnalysisFragmentTest {
 
             }
         });
+
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        MockitoAnnotations.initMocks(this);
 
         subject = new OnboardingAnalysisFragment();
         subject.setFragmentManager(mockFragmentManager);

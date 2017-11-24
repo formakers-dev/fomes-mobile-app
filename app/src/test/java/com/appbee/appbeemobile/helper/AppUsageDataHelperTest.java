@@ -55,14 +55,6 @@ public class AppUsageDataHelperTest {
 
     @Before
     public void setUp() throws Exception {
-        this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
-        this.mockAppStatService = mock(AppStatService.class);
-        this.mockAppService = mock(AppService.class);
-        this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
-        this.mockTimeHelper = mock(TimeHelper.class);
-        this.mockLocalStorageHelper = mock(LocalStorageHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockAppStatService, mockAppService, mockAppRepositoryHelper, mockLocalStorageHelper, mockTimeHelper);
-
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
@@ -73,6 +65,14 @@ public class AppUsageDataHelperTest {
                 return Schedulers.immediate();
             }
         });
+
+        this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
+        this.mockAppStatService = mock(AppStatService.class);
+        this.mockAppService = mock(AppService.class);
+        this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
+        this.mockTimeHelper = mock(TimeHelper.class);
+        this.mockLocalStorageHelper = mock(LocalStorageHelper.class);
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockAppStatService, mockAppService, mockAppRepositoryHelper, mockLocalStorageHelper, mockTimeHelper);
     }
 
     @After

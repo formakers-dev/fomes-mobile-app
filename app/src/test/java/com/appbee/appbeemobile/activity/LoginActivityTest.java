@@ -64,11 +64,11 @@ public class LoginActivityTest extends ActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = Robolectric.buildActivity(LoginActivity.class).create().get();
-
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        subject = Robolectric.buildActivity(LoginActivity.class).create().get();
     }
 
     @After

@@ -55,13 +55,13 @@ public class LoadingActivityTest extends ActivityTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         activityController = Robolectric.buildActivity(LoadingActivity.class);
 
         when(mockUserService.sendUser(any(User.class))).thenReturn(Observable.just(true));
-
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
     }
 
     @After
