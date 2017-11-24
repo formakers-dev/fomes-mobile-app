@@ -50,6 +50,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
+        when(mockLocalStorageHelper.getInvitationCode()).thenReturn("CODE");
         when(mockLocalStorageHelper.getEmail()).thenReturn("test@test.com");
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         subject = Robolectric.setupActivity(PermissionGuideActivity.class);
@@ -62,11 +63,21 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_LocalStorage에저장된이메일이없을경우_초대장코드인증화면으로_이동한다() throws Exception {
+    public void onCreate호출시_초대장인증미완료_및_SignIn미완료_시_초대장코드인증화면으로_이동한다() throws Exception {
+        when(mockLocalStorageHelper.getInvitationCode()).thenReturn("");
         when(mockLocalStorageHelper.getEmail()).thenReturn("");
         subject = Robolectric.setupActivity(PermissionGuideActivity.class);
 
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(CodeVerificationActivity.class.getName());
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
+    }
+
+    @Test
+    public void onCreate호출시_초대장인증완료_및_SignIn미완료_시_로그인화면으로_이동한다() throws Exception {
+        when(mockLocalStorageHelper.getEmail()).thenReturn("");
+        subject = Robolectric.setupActivity(PermissionGuideActivity.class);
+
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 

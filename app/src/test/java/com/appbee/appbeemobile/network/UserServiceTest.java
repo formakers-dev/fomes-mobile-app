@@ -67,10 +67,10 @@ public class UserServiceTest {
 
     @Test
     public void verifyRegistrationCode호출시_코드확인_요청을_한다() throws Exception {
-        when(mockUserAPI.verifyRegistrationCode("REGISTRATION_CODE")).thenReturn(mock(Observable.class));
+        when(mockUserAPI.verifyInvitationCode("REGISTRATION_CODE")).thenReturn(mock(Observable.class));
 
-        subject.verifyRegistrationCode("REGISTRATION_CODE");
+        subject.verifyInvitationCode("REGISTRATION_CODE");
 
-        verify(mockUserAPI).verifyRegistrationCode(eq("REGISTRATION_CODE"));
+        verify(mockUserAPI).verifyInvitationCode(eq("REGISTRATION_CODE"));
     }
 }

@@ -19,6 +19,7 @@ public class LocalStorageHelper {
     private static final String KEY_GENDER = "GENDER";
     private static final String KEY_BIRTHDAY = "BIRTHDAY";
     private static final String KEY_LAST_UPDATE_STAT_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
+    private static final String KEY_INVITATION_CODE = "INVITATION_CODE";
 
     private SharedPreferences sf;
 
@@ -111,5 +112,13 @@ public class LocalStorageHelper {
 
     public void setLastUpdateStatTimestamp(long timestamp) {
         putLong(KEY_LAST_UPDATE_STAT_TIMESTAMP, timestamp);
+    }
+
+    public String getInvitationCode() {
+        return getString(KEY_INVITATION_CODE, "");
+    }
+
+    public void setInvitationCode(String code) {
+        putString(KEY_INVITATION_CODE, code);
     }
 }

@@ -30,8 +30,8 @@ public class UserService extends AbstractAppBeeService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Completable verifyRegistrationCode(String code) {
-        return userAPI.verifyRegistrationCode(code)
+    public Completable verifyInvitationCode(String code) {
+        return userAPI.verifyInvitationCode(code)
                 .subscribeOn(Schedulers.io())
                 .toCompletable();
     }

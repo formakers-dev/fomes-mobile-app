@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.UserService;
 
 import javax.inject.Inject;
@@ -22,6 +23,9 @@ public class CodeVerificationActivity extends BaseActivity {
     @Inject
     UserService userService;
 
+    @Inject
+    LocalStorageHelper localStorageHelper;
+
     @BindView(R.id.code_verification_edittext)
     EditText codeVerificationEdittext;
 
@@ -30,9 +34,12 @@ public class CodeVerificationActivity extends BaseActivity {
 
     @OnClick(R.id.code_verification_button)
     public void onClickCodeVerificationButton() {
-        userService.verifyRegistrationCode(codeVerificationEdittext.getText().toString())
+        String code = codeVerificationEdittext.getText().toString();
+
+        userService.verifyInvitationCode(code)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
+                    localStorageHelper.setInvitationCode(code);
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                     finish();
