@@ -44,6 +44,7 @@ public class LoadingActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        // TODO : Completable 로 변경 후 error처리 로직 변경
         userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()))
                 .observeOn(Schedulers.io())
                 .subscribe(result -> {

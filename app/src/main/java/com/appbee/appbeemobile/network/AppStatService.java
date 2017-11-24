@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public class AppStatService extends AbstractAppBeeService {
     private static final String TAG = AppStatService.class.getSimpleName();
@@ -24,7 +25,9 @@ public class AppStatService extends AbstractAppBeeService {
         final String accessToken = localStorageHelper.getAccessToken();
 
         if (!shortTermStatList.isEmpty()) {
-            return statAPI.sendShortTermStats(accessToken, shortTermStatList);
+            return statAPI.sendShortTermStats(accessToken, shortTermStatList)
+                    .doOnError(this::logError)
+                    .subscribeOn(Schedulers.io());
         } else {
             return Observable.just(true);
         }

@@ -70,7 +70,7 @@ public class AppServiceTest {
         mockUncrawledAppList.add("packageNameA");
         mockUncrawledAppList.add("packageNameB");
         mockUncrawledAppList.add("packageNameC");
-        when(mockAppAPI.postUncrawledApps(anyString(), any(List.class))).thenReturn(Observable.just(Response.success(true)));
+        when(mockAppAPI.postUncrawledApps(anyString(), any(List.class))).thenReturn(Observable.just(true));
 
         subject.postUncrawledApps(mockUncrawledAppList);
 
