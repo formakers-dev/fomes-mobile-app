@@ -87,8 +87,8 @@ public class ProjectDetailActivity extends BaseActivity {
     }
 
     private void displayProjectOverview(final Project project) {
-        Glide.with(this)
-                .load(project.getImage().getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
+        Glide.with(this).load(project.getImage().getUrl())
+                .apply(new RequestOptions().override(1300, 1000).centerCrop())
                 .into(representationImageView);
         representationImageView.setTag(R.string.tag_key_image_url, project.getImage().getUrl());
         projectIntroduceTextView.setText(project.getIntroduce());
@@ -101,15 +101,20 @@ public class ProjectDetailActivity extends BaseActivity {
     }
 
     private void displayOwner(Person owner) {
-        Glide.with(this)
-                .load(owner.getUrl()).apply(new RequestOptions().override(200, 200).centerCrop())
-                .into(interviewerPhotoImageView);
-        interviewerPhotoImageView.setTag(R.string.tag_key_image_url, owner.getUrl());
-        interviewerPhotoImageView.setTag(R.string.tag_key_image_url, owner.getUrl());
+        Project.ImageObject ownerImage = owner.getImage();
+
+        if (ownerImage != null) {
+            Glide.with(this).load(ownerImage.getUrl())
+                    .apply(new RequestOptions().override(200, 200).centerCrop())
+                    .into(interviewerPhotoImageView);
+            interviewerPhotoImageView.setTag(R.string.tag_key_image_url, ownerImage.getUrl());
+        } else {
+            interviewerPhotoImageView.setImageResource(R.mipmap.ic_launcher_app);
+        }
+
         interviewerNameTextView.setText(owner.getName());
         interviewerIntroduceTextView.setText(owner.getIntroduce());
     }
-
 
     @OnClick(R.id.back_button)
     void onBackButton(View view) {

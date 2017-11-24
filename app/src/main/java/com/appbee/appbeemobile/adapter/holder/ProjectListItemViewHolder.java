@@ -45,10 +45,9 @@ public class ProjectListItemViewHolder extends RecyclerView.ViewHolder {
 //        if(project.getApps() != null && project.getApps().size() > 0 ) {
 //            itemCardTagTextView.setText(String.format(context.getString(R.string.item_card_tag), project.getApps().get(0)));
 //        }
-        if (project.getImages() != null && project.getImages().size() > 0) {
-            Glide.with(context).load(project.getImages().get(0).getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
-                    .into(imageView);
-        }
+        Glide.with(context).load(project.getImage().getUrl())
+                .apply(new RequestOptions().override(1300, 1000).centerCrop())
+                .into(imageView);
         introduceTextView.setText(project.getIntroduce());
         nameTextView.setText(project.getName());
         projectId = project.getProjectId();

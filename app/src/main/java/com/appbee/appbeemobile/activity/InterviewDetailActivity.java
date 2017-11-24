@@ -62,9 +62,6 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.interview_date)
     TextView dateTextView;
 
-    @BindView(R.id.interview_time)
-    TextView timeTextView;
-
     @BindView(R.id.interview_d_day)
     TextView dDayTextView;
 
@@ -76,9 +73,6 @@ public class InterviewDetailActivity extends BaseActivity {
 
     @BindView(R.id.interview_introduce)
     TextView interviewIntroduceTextView;
-
-    @BindView(R.id.interview_plan_layout)
-    LinearLayout interviewPlanLayout;
 
     private String projectId;
     private long seq;
@@ -107,7 +101,6 @@ public class InterviewDetailActivity extends BaseActivity {
         displayProjectOverview(project);
         displayInterviewSummary(interview);
         displayProjectDetail(project);
-        displayPlans(interview);
     }
 
     private void displayProjectOverview(final Project project) {
@@ -125,26 +118,12 @@ public class InterviewDetailActivity extends BaseActivity {
         String interviewDate = FormatUtil.convertInputDateFormat(interview.getInterviewDate(), "MM/dd");
         String dayOfDay = FormatUtil.getDayOfWeek(interview.getInterviewDate());
         dateTextView.setText(String.format(getString(R.string.interview_date_text), interviewDate, dayOfDay));
-        timeTextView.setText(String.format(getString(R.string.interview_time_text), getTotalInterviewMinute(interview)));
         dDayTextView.setText(String.format(getString(R.string.d_day_text), getDDayFromNow(interview.getCloseDate())));
     }
 
     private void displayProjectDetail(Project project) {
         descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
         projectDescriptionTextView.setText(project.getDescription());
-    }
-
-    private void displayPlans(Project.Interview interview) {
-        for (Project.InterviewPlan plan : interview.getPlans()) {
-            View planLayout = LayoutInflater.from(this).inflate(R.layout.plan_list_item, null);
-            ((TextView) planLayout.findViewById(R.id.minute)).setText(String.valueOf(plan.getMinute()));
-            ((TextView) planLayout.findViewById(R.id.plan)).setText(plan.getPlan());
-            interviewPlanLayout.addView(planLayout);
-        }
-    }
-
-    private int getTotalInterviewMinute(Project.Interview interview) {
-        return Observable.from(interview.getPlans()).map(Project.InterviewPlan::getMinute).scan((sum, item) -> sum + item).toBlocking().last();
     }
 
     private int getDDayFromNow(@NonNull Date closeDate) {

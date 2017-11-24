@@ -1,7 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
-import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
@@ -10,7 +9,6 @@ import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.model.Project.Interview;
-import com.appbee.appbeemobile.model.Project.InterviewPlan;
 import com.appbee.appbeemobile.model.Project.Person;
 import com.appbee.appbeemobile.network.ProjectService;
 
@@ -80,11 +78,7 @@ public class InterviewDetailActivityTest {
         imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
         imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
 
-        Person owner = new Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
-
-        List<InterviewPlan> interviewPlanList = new ArrayList<>();
-        interviewPlanList.add(new InterviewPlan(10, "인트로"));
-        interviewPlanList.add(new InterviewPlan(60, "인터뷰"));
+        Person owner = new Person("프로젝트 담당자", new Project.ImageObject("www.projectOwnerImage.com", "projectOwnerImageName"), "프로젝트 담당자 소개입니다");
 
         // month 1월
         Calendar calendar = Calendar.getInstance();
@@ -95,7 +89,7 @@ public class InterviewDetailActivityTest {
         calendar.set(2018, 2, 3);
         Date closeDate = calendar.getTime();
 
-        Interview interview = new Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5);
+        Interview interview = new Interview(1L, Arrays.asList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", 5);
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -123,7 +117,6 @@ public class InterviewDetailActivityTest {
     public void onPostCreate시_조회된_인터뷰요약_정보를_화면에_보여준다() throws Exception {
         assertThat(subject.locationTextView.getText()).isEqualTo("우면사업장");
         assertThat(subject.dateTextView.getText()).isEqualTo("03/04 (일)");
-        assertThat(subject.timeTextView.getText()).isEqualTo("약 70분");
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-120");
     }
 
@@ -140,15 +133,6 @@ public class InterviewDetailActivityTest {
     public void onPostCreate시_조회된_project_설명정보를_화면에_보여준다() throws Exception {
         assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
         assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
-    }
-
-    @Test
-    public void onPostCreate시_조회된_인터뷰일정을_화면에_보여준다() throws Exception {
-        assertThat(subject.interviewPlanLayout.getChildCount()).isEqualTo(3);
-        assertThat(((TextView) subject.interviewPlanLayout.getChildAt(1).findViewById(R.id.minute)).getText()).isEqualTo("10");
-        assertThat(((TextView) subject.interviewPlanLayout.getChildAt(1).findViewById(R.id.plan)).getText()).isEqualTo("인트로");
-        assertThat(((TextView) subject.interviewPlanLayout.getChildAt(2).findViewById(R.id.minute)).getText()).isEqualTo("60");
-        assertThat(((TextView) subject.interviewPlanLayout.getChildAt(2).findViewById(R.id.plan)).getText()).isEqualTo("인터뷰");
     }
 
     @Test
