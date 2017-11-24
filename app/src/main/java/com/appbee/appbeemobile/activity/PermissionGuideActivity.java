@@ -35,7 +35,7 @@ public class PermissionGuideActivity extends BaseActivity {
 
         // TODO : SignIn여부 판단 코드. 가독성 낮음. 다른 방법 고려하기
         if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
-            moveActivityTo(LoginActivity.class);
+            moveActivityTo(CodeVerificationActivity.class);
             return;
         }
 

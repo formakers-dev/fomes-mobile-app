@@ -62,11 +62,11 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_LocalStorage에저장된이메일이없을경우_로그인화면으로_이동한다() throws Exception {
+    public void onCreate호출시_LocalStorage에저장된이메일이없을경우_초대장코드인증화면으로_이동한다() throws Exception {
         when(mockLocalStorageHelper.getEmail()).thenReturn("");
         subject = Robolectric.setupActivity(PermissionGuideActivity.class);
 
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(CodeVerificationActivity.class.getName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 

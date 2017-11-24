@@ -47,6 +47,15 @@ public class UserServiceTest {
     }
 
     @Test
+    public void signIn호출시_로그인_요청을_서버에_전송한다() throws Exception {
+        when(mockUserAPI.signInUser("GOOGLE_TOKEN")).thenReturn(mock(Observable.class));
+
+        subject.signIn("GOOGLE_TOKEN");
+
+        verify(mockUserAPI).signInUser(eq("GOOGLE_TOKEN"));
+    }
+
+    @Test
     public void sendUser호출시_유저정보를_서버로_전송한다() throws Exception {
         when(mockUserAPI.updateUser(eq("TEST_ACCESS_TOKEN"), any(User.class))).thenReturn(mock(Observable.class));
 
@@ -54,5 +63,14 @@ public class UserServiceTest {
         subject.sendUser(mockUser);
 
         verify(mockUserAPI).updateUser("TEST_ACCESS_TOKEN", mockUser);
+    }
+
+    @Test
+    public void verifyRegistrationCode호출시_코드확인_요청을_한다() throws Exception {
+        when(mockUserAPI.verifyRegistrationCode("REGISTRATION_CODE")).thenReturn(mock(Observable.class));
+
+        subject.verifyRegistrationCode("REGISTRATION_CODE");
+
+        verify(mockUserAPI).verifyRegistrationCode(eq("REGISTRATION_CODE"));
     }
 }

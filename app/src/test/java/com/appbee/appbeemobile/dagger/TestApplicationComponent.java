@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.activity.CodeVerificationActivityTest;
 import com.appbee.appbeemobile.activity.InterviewDetailActivityTest;
 import com.appbee.appbeemobile.activity.ProjectDetailActivityTest;
 import com.appbee.appbeemobile.activity.LoadingActivityTest;
@@ -30,4 +31,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(InterviewListFragmentTest interviewListFragmentTest);
     void inject(ProjectListFragmentTest projectListFragmentTest);
     void inject(OnboardingAnalysisFragmentTest onboardingAnalysisFragmentTest);
+    void inject(CodeVerificationActivityTest codeVerificationActivityTest);
 }
