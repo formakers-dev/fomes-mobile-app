@@ -73,8 +73,6 @@ public class InterviewDetailActivityTest {
         intent.putExtra("EXTRA_INTERVIEW_SEQ", 1L);
         intent.putExtra("EXTRA_PROJECT_ID", "projectId");
 
-        RxJavaHooks.onIOScheduler(Schedulers.immediate());
-
         Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
 
         List<Project.ImageObject> imageObjectList = new ArrayList<>();

@@ -20,6 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class ProjectListFragment extends BaseFragment {
 
@@ -58,10 +59,12 @@ public class ProjectListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        projectService.getAllProjects().subscribe(result -> {
-            projectList.clear();
-            projectList.addAll(result);
-            projectListRecyclerView.getAdapter().notifyDataSetChanged();
-        });
+        projectService.getAllProjects()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    projectList.clear();
+                    projectList.addAll(result);
+                    projectListRecyclerView.getAdapter().notifyDataSetChanged();
+                });
     }
 }

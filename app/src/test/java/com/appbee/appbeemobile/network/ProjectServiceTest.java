@@ -43,12 +43,12 @@ public class ProjectServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
         MockitoAnnotations.initMocks(this);
         subject = new ProjectService(mockProjectAPI, mockLocalStorageHelper);
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_TOKEN");
-
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
     }
 
     @After

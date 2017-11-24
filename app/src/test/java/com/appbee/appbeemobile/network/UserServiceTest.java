@@ -33,12 +33,12 @@ public class UserServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
         MockitoAnnotations.initMocks(this);
         subject = new UserService(mockUserAPI, mockLocalStorageHelper);
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
-
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
     }
 
     @After

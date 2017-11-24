@@ -48,12 +48,12 @@ public class CodeVerificationActivityTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
         ((TestAppBeeApplication) (RuntimeEnvironment.application)).getComponent().inject(this);
 
         subject = Robolectric.setupActivity(CodeVerificationActivity.class);
-
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
     }
 
     @After

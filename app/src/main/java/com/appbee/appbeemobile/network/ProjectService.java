@@ -32,35 +32,30 @@ public class ProjectService extends AbstractAppBeeService {
     public Observable<List<Project>> getAllProjects() {
         return projectAPI.getAllProjects(localStorageHelper.getAccessToken())
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<Project> getProject(String projectId) {
         return projectAPI.getProject(localStorageHelper.getAccessToken(), projectId)
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<Boolean> postParticipate(String projectId, long seq, String slotId) {
         return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId)
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<List<Project>> getAllInterviews() {
         return projectAPI.getAllInterviews(localStorageHelper.getAccessToken())
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<Project> getInterview(String projectId, long seq) {
         return projectAPI.getInterview(localStorageHelper.getAccessToken(), projectId, seq)
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
     }
 }

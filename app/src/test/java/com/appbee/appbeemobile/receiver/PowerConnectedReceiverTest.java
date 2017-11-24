@@ -38,13 +38,13 @@ public class PowerConnectedReceiverTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
         MockitoAnnotations.initMocks(this);
         subject = new PowerConnectedReceiver(mockAppUsageDataHelper, mockAppBeeAndroidNativeHelper);
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
     }
 
     @After

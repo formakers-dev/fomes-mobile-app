@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 
 import static com.appbee.appbeemobile.model.Project.Person;
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
@@ -72,7 +73,9 @@ public class ProjectDetailActivity extends BaseActivity {
         super.onPostCreate(savedInstanceState);
 
         projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
-        projectService.getProject(projectId).subscribe(this::displayProject);
+        projectService.getProject(projectId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::displayProject);
     }
 
     private void displayProject(Project project) {

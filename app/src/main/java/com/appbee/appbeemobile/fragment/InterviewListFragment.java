@@ -20,6 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class InterviewListFragment extends BaseFragment {
 
@@ -52,10 +53,12 @@ public class InterviewListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        projectService.getAllInterviews().subscribe(result -> {
-            interviewList.clear();
-            interviewList.addAll(result);
-            interviewListRecyclerView.getAdapter().notifyDataSetChanged();
-        });
+        projectService.getAllInterviews()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    interviewList.clear();
+                    interviewList.addAll(result);
+                    interviewListRecyclerView.getAdapter().notifyDataSetChanged();
+                });
     }
 }
