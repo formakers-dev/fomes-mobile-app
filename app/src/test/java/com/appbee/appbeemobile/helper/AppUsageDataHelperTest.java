@@ -270,13 +270,15 @@ public class AppUsageDataHelperTest {
         mockAppUsageList.add(new AppUsage("package1", 1000L));
         mockAppUsageList.add(new AppUsage("package2", 2000L));
         mockAppUsageList.add(new AppUsage("package3", 3000L));
+        mockAppUsageList.add(new AppUsage("package4", 4000L));
         when(mockAppRepositoryHelper.getAppUsages()).thenReturn(mockAppUsageList);
         List<String> result = subject.getSortedUsedPackageNames().toBlocking().single();
 
-        assertThat(result.size()).isEqualTo(3);
-        assertThat(result.get(0)).isEqualTo("package3");
-        assertThat(result.get(1)).isEqualTo("package2");
-        assertThat(result.get(2)).isEqualTo("package1");
+        assertThat(result.size()).isEqualTo(4);
+        assertThat(result.get(0)).isEqualTo("package4");
+        assertThat(result.get(1)).isEqualTo("package3");
+        assertThat(result.get(2)).isEqualTo("package2");
+        assertThat(result.get(3)).isEqualTo("package1");
     }
 
     @Test
@@ -285,13 +287,15 @@ public class AppUsageDataHelperTest {
         mockAppUsageList.add(new AppUsage("package3", 1000L));
         mockAppUsageList.add(new AppUsage("package2", 1000L));
         mockAppUsageList.add(new AppUsage("package1", 1000L));
+        mockAppUsageList.add(new AppUsage("package4", 1000L));
         when(mockAppRepositoryHelper.getAppUsages()).thenReturn(mockAppUsageList);
         List<String> result = subject.getSortedUsedPackageNames().toBlocking().single();
 
-        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.size()).isEqualTo(4);
         assertThat(result.get(0)).isEqualTo("package1");
         assertThat(result.get(1)).isEqualTo("package2");
         assertThat(result.get(2)).isEqualTo("package3");
+        assertThat(result.get(3)).isEqualTo("package4");
     }
 
     private void assertDailyStatSummary(DailyStatSummary dailyStatSummary, String packageName, int yyyymmdd, long totalUsedTime) {
