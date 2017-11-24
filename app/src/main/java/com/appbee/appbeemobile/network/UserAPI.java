@@ -6,6 +6,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import rx.Observable;
 
 public interface UserAPI {
@@ -14,4 +15,7 @@ public interface UserAPI {
 
     @POST("/user")
     Observable<Boolean> updateUser(@Header("x-access-token") String accessToken, @Body User user);
+
+    @GET("/user/verifyRegistrationCode/{code}")
+    Observable<Void> verifyRegistrationCode(@Path("code") String code);
 }

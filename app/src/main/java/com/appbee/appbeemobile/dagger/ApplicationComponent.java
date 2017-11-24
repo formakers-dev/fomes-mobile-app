@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.activity.CodeVerificationActivity;
 import com.appbee.appbeemobile.activity.MyInterviewActivity;
 import com.appbee.appbeemobile.activity.ProjectDetailActivity;
 import com.appbee.appbeemobile.activity.InterviewDetailActivity;
@@ -34,4 +35,5 @@ public interface ApplicationComponent {
     void inject(ProjectListFragment projectListFragment);
     void inject(OnboardingAnalysisFragment onboardingAnalysisFragment);
     void inject(MyInterviewActivity myInterviewActivity);
+    void inject(CodeVerificationActivity CodeVerificationActivity);
 }

@@ -5,6 +5,7 @@ import com.appbee.appbeemobile.model.User;
 
 import javax.inject.Inject;
 
+import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -27,6 +28,12 @@ public class UserService extends AbstractAppBeeService {
     public Observable<Boolean> sendUser(User user) {
         return userAPI.updateUser(localStorageHelper.getAccessToken(), user)
                 .subscribeOn(Schedulers.io());
+    }
+
+    public Completable verifyRegistrationCode(String code) {
+        return userAPI.verifyRegistrationCode(code)
+                .subscribeOn(Schedulers.io())
+                .toCompletable();
     }
 
     @Override
