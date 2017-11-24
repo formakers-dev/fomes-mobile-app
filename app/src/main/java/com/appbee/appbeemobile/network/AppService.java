@@ -28,13 +28,15 @@ public class AppService extends AbstractAppBeeService {
 
     public void postUncrawledApps(List<String> uncrawledPackageNameList) {
         appAPI.postUncrawledApps(localStorageHelper.getAccessToken(), uncrawledPackageNameList)
+                .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)), this::logError);
+                .subscribe(response -> Log.d(TAG, String.valueOf(response)));
     }
 
     public Observable<Boolean> sendAppUsages(List<AppUsage> appUsageList) {
         return appAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList)
+                .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 

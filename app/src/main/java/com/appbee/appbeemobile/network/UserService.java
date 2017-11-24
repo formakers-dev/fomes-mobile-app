@@ -22,16 +22,20 @@ public class UserService extends AbstractAppBeeService {
     }
 
     public Observable<String> signIn(String googleIdToken) {
-        return userAPI.signInUser(googleIdToken).subscribeOn(Schedulers.io());
+        return userAPI.signInUser(googleIdToken)
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<Boolean> sendUser(User user) {
         return userAPI.updateUser(localStorageHelper.getAccessToken(), user)
+                .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 
     public Completable verifyInvitationCode(String code) {
         return userAPI.verifyInvitationCode(code)
+                .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .toCompletable();
     }

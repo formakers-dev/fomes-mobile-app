@@ -72,7 +72,7 @@ public class ProjectDetailActivity extends BaseActivity {
         super.onPostCreate(savedInstanceState);
 
         projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
-        projectService.getProject(projectId).subscribe(this::displayProject, error -> Log.d(TAG, error.getMessage()));
+        projectService.getProject(projectId).subscribe(this::displayProject);
     }
 
     private void displayProject(Project project) {
