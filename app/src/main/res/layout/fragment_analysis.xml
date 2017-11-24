@@ -25,6 +25,12 @@
         android:layout_height="wrap_content"
         android:text="@string/personality_apps_text" />
 
+    <LinearLayout
+        android:id="@+id/most_personality_app_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -35,16 +41,16 @@
         android:layout_height="wrap_content"
         android:text="@string/most_used_apps_text" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/appbee_yellow" />
-
     <LinearLayout
         android:id="@+id/most_used_app_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"></LinearLayout>
+        android:orientation="horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/appbee_yellow" />
 
     <Button
         android:id="@+id/next_button"

@@ -10,8 +10,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Process;
 
-import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import java.util.ArrayList;
 import java.util.List;
