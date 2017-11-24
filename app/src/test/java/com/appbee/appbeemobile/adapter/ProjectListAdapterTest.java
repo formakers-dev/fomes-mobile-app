@@ -29,7 +29,7 @@ public class ProjectListAdapterTest {
         imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
         imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
 
-        Project.Person owner = new Project.Person("프로젝트 담당자", "www.projectOwnerImage.com", "프로젝트 담당자 소개입니다");
+        Project.Person owner = new Project.Person("프로젝트 담당자", new Project.ImageObject("www.projectOwnerImage.com", "projectOwnerImageName"), "프로젝트 담당자 소개입니다");
 
         List<Project> mockProjectList = new ArrayList<>();
         mockProjectList.add(new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered"));

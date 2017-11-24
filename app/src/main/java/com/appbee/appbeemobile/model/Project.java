@@ -1,5 +1,8 @@
 package com.appbee.appbeemobile.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -17,9 +20,6 @@ public class Project {
     private String status;
     @SerializedName("interviews")
     private Interview interview;
-
-    // TODO: 삭제예정
-    private List<ImageObject> images;
 
     // for project test
     public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status) {
@@ -78,6 +78,7 @@ public class Project {
         this.description = description;
     }
 
+    @NonNull
     public List<ImageObject> getDescriptionImages() {
         return descriptionImages;
     }
@@ -86,6 +87,7 @@ public class Project {
         this.descriptionImages = descriptionImages;
     }
 
+    @NonNull
     public ImageObject getImage() {
         return image;
     }
@@ -118,22 +120,14 @@ public class Project {
         this.interview = interview;
     }
 
-    public List<ImageObject> getImages() {
-        return images;
-    }
-
-    public void setImages(List<ImageObject> images) {
-        this.images = images;
-    }
-
     public static class Person {
         private String name;
-        private String url;
+        private ImageObject image;
         private String introduce;
 
-        public Person(String name, String url, String introduce) {
+        public Person(String name, ImageObject image, String introduce) {
             this.name = name;
-            this.url = url;
+            this.image = image;
             this.introduce = introduce;
         }
 
@@ -145,12 +139,13 @@ public class Project {
             this.name = name;
         }
 
-        public String getUrl() {
-            return url;
+        @Nullable
+        public ImageObject getImage() {
+            return image;
         }
 
-        public void setUrl(String url) {
-            this.url = url;
+        public void setImage(ImageObject image) {
+            this.image = image;
         }
 
         public String getIntroduce() {
@@ -159,32 +154,6 @@ public class Project {
 
         public void setIntroduce(String introduce) {
             this.introduce = introduce;
-        }
-    }
-
-    public static class InterviewPlan {
-        private int minute;
-        private String plan;
-
-        public InterviewPlan(int minute, String plan) {
-            this.minute = minute;
-            this.plan = plan;
-        }
-
-        public int getMinute() {
-            return minute;
-        }
-
-        public void setMinute(int minute) {
-            this.minute = minute;
-        }
-
-        public String getPlan() {
-            return plan;
-        }
-
-        public void setPlan(String plan) {
-            this.plan = plan;
         }
     }
 
@@ -217,17 +186,15 @@ public class Project {
     public static class Interview {
         private long seq;
         private List<String> apps;
-        private List<InterviewPlan> plans;
         private Date openDate;
         private Date closeDate;
         private Date interviewDate;
         private String location;
         private int totalCount;
 
-        public Interview(long seq, List<String> apps, List<InterviewPlan> interviewPlanList, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount) {
+        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount) {
             this.seq = seq;
             this.apps = apps;
-            this.plans = interviewPlanList;
             this.openDate = openDate;
             this.closeDate = closeDate;
             this.interviewDate = interviewDate;
@@ -249,14 +216,6 @@ public class Project {
 
         public void setApps(List<String> apps) {
             this.apps = apps;
-        }
-
-        public List<InterviewPlan> getPlans() {
-            return plans;
-        }
-
-        public void setPlans(List<InterviewPlan> plans) {
-            this.plans = plans;
         }
 
         public Date getOpenDate() {

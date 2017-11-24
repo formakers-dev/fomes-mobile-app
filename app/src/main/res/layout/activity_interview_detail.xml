@@ -140,20 +140,6 @@
                 android:layout_width="1dp"
                 android:layout_height="30dp"
                 android:background="@color/appbee_gray"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="인터뷰 시간"/>
-                <TextView
-                    android:id="@+id/interview_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="40분"/>
-            </LinearLayout>
             <View
                 android:layout_width="1dp"
                 android:layout_height="30dp"
@@ -195,21 +181,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="프로젝트 상세 설명"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/appbee_yellow"/>
-
-        <LinearLayout android:id="@+id/interview_plan_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="조언을 위한 세부 일정"/>
         </LinearLayout>
 
         <View
