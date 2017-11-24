@@ -34,6 +34,7 @@ public class LocalStorageHelperTest {
                 .putInt("BIRTHDAY", 19991231)
                 .putString("GENDER", "female")
                 .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
+                .putString("INVITATION_CODE", "CODE")
                 .apply();
     }
 
@@ -112,5 +113,16 @@ public class LocalStorageHelperTest {
     @Test
     public void getLastUpdateStatTimestamp호출시_SharedPreference에_저장된_생년월일을_리턴한다() throws Exception {
         assertThat(subject.getLastUpdateStatTimestamp()).isEqualTo(1000L);
+    }
+
+    @Test
+    public void setInvitationCode호출시_SharedPreference에_인증코드를_저장한다() throws Exception {
+        subject.setInvitationCode("CODE");
+        assertThat(sf.getString("INVITATION_CODE", "")).isEqualTo("CODE");
+    }
+
+    @Test
+    public void getInvitationCode호출시_SharedPreference에_저장된_인증코드를_리턴한다() throws Exception {
+        assertThat(subject.getInvitationCode()).isEqualTo("CODE");
     }
 }

@@ -16,6 +16,6 @@ public interface UserAPI {
     @POST("/user")
     Observable<Boolean> updateUser(@Header("x-access-token") String accessToken, @Body User user);
 
-    @GET("/user/verifyRegistrationCode/{code}")
-    Observable<Void> verifyRegistrationCode(@Path("code") String code);
+    @GET("/user/verifyInvitationCode/{code}")
+    Observable<Void> verifyInvitationCode(@Path("code") String code);
 }

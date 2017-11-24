@@ -33,9 +33,14 @@ public class PermissionGuideActivity extends BaseActivity {
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
         setContentView(R.layout.activity_permission_guide);
 
-        // TODO : SignIn여부 판단 코드. 가독성 낮음. 다른 방법 고려하기
-        if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
+        // TODO : 초기상태 - 인증완료 상태 패턴 적용하여 관리하는 방안 고려
+        if (TextUtils.isEmpty(localStorageHelper.getInvitationCode())) {
             moveActivityTo(CodeVerificationActivity.class);
+            return;
+        }
+
+        if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
+            moveActivityTo(LoginActivity.class);
             return;
         }
 
