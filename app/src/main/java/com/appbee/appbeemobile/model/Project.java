@@ -162,42 +162,6 @@ public class Project {
         }
     }
 
-    public static class Interviewer {
-        private String name;
-        private String url;
-        private String introduce;
-
-        public Interviewer(String name, String url, String introduce) {
-            this.name = name;
-            this.url = url;
-            this.introduce = introduce;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getIntroduce() {
-            return introduce;
-        }
-
-        public void setIntroduce(String introduce) {
-            this.introduce = introduce;
-        }
-    }
-
     public static class InterviewPlan {
         private int minute;
         private String plan;
@@ -259,9 +223,8 @@ public class Project {
         private Date interviewDate;
         private String location;
         private int totalCount;
-        private Person interviewer;
 
-        public Interview(long seq, List<String> apps, List<InterviewPlan> interviewPlanList, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount, Person interviewer) {
+        public Interview(long seq, List<String> apps, List<InterviewPlan> interviewPlanList, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount) {
             this.seq = seq;
             this.apps = apps;
             this.plans = interviewPlanList;
@@ -270,7 +233,6 @@ public class Project {
             this.interviewDate = interviewDate;
             this.location = location;
             this.totalCount = totalCount;
-            this.interviewer = interviewer;
         }
 
         public long getSeq() {
@@ -335,14 +297,6 @@ public class Project {
 
         public void setTotalCount(int totalCount) {
             this.totalCount = totalCount;
-        }
-
-        public Person getInterviewer() {
-            return interviewer;
-        }
-
-        public void setInterviewer(Person interviewer) {
-            this.interviewer = interviewer;
         }
     }
 }

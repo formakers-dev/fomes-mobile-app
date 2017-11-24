@@ -67,15 +67,6 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.interview_d_day)
     TextView dDayTextView;
 
-    @BindView(R.id.interviewer_photo)
-    ImageView interviewerPhotoImageView;
-
-    @BindView(R.id.interviewer_name)
-    TextView interviewerNameTextView;
-
-    @BindView(R.id.interviewer_introduce)
-    TextView interviewerIntroduceTextView;
-
     @BindView(R.id.project_description)
     TextView projectDescriptionTextView;
 
@@ -109,11 +100,9 @@ public class InterviewDetailActivity extends BaseActivity {
 
     private void displayProject(Project project) {
         Project.Interview interview = project.getInterview();
-        Project.Person interviewer = project.getInterview().getInterviewer();
 
         displayProjectOverview(project);
         displayInterviewSummary(interview);
-        displayInterviewer(interviewer);
         displayProjectDetail(project);
         displayPlans(interview);
     }
@@ -149,14 +138,6 @@ public class InterviewDetailActivity extends BaseActivity {
             ((TextView) planLayout.findViewById(R.id.plan)).setText(plan.getPlan());
             interviewPlanLayout.addView(planLayout);
         }
-    }
-
-    private void displayInterviewer(Project.Person interviewer) {
-        Glide.with(this)
-                .load(interviewer.getUrl()).apply(new RequestOptions().override(200, 200).centerCrop())
-                .into(interviewerPhotoImageView);
-        interviewerNameTextView.setText(interviewer.getName());
-        interviewerIntroduceTextView.setText(interviewer.getIntroduce());
     }
 
     private int getTotalInterviewMinute(Project.Interview interview) {

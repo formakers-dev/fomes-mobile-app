@@ -135,7 +135,6 @@ public class ProjectServiceTest {
         List<Project.InterviewPlan> interviewPlanList = new ArrayList<>();
         interviewPlanList.add(new Project.InterviewPlan(10, "인트로"));
         interviewPlanList.add(new Project.InterviewPlan(60, "인터부"));
-        Project.Person interviewer = new Project.Person("인터뷰어", "www.interviewerImage.com", "인터뷰어 소개입니다");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2017, 1, 4);
@@ -145,7 +144,7 @@ public class ProjectServiceTest {
         calendar.set(2017, 1, 3);
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
+        Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5);
 
         Project mockProject = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -181,7 +180,6 @@ public class ProjectServiceTest {
         List<Project.InterviewPlan> interviewPlanList = new ArrayList<>();
         interviewPlanList.add(new Project.InterviewPlan(10, "인트로"));
         interviewPlanList.add(new Project.InterviewPlan(60, "인터뷰"));
-        Project.Person interviewer = new Project.Person("인터뷰어", "www.interviewerImage.com", "인터뷰어 소개입니다");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2018, 2, 4);   // 1월
@@ -191,7 +189,7 @@ public class ProjectServiceTest {
         calendar.set(2018, 2, 3);   // 1월
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5, interviewer);
+        Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewPlanList, interviewDate, openDate, closeDate, "우면사업장", 5);
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -218,10 +216,6 @@ public class ProjectServiceTest {
             assertThat(result.getInterview().getPlans().get(0).getPlan()).isEqualTo("인트로");
             assertThat(result.getInterview().getPlans().get(1).getMinute()).isEqualTo(60);
             assertThat(result.getInterview().getPlans().get(1).getPlan()).isEqualTo("인터뷰");
-            assertThat(result.getInterview().getInterviewer().getName()).isEqualTo("인터뷰어");
-            assertThat(result.getInterview().getInterviewer().getUrl()).isEqualTo("www.interviewerImage.com");
-            assertThat(result.getInterview().getInterviewer().getIntroduce()).isEqualTo("인터뷰어 소개입니다");
-
         });
 
     }
