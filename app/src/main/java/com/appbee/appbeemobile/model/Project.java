@@ -191,8 +191,10 @@ public class Project {
         private Date interviewDate;
         private String location;
         private int totalCount;
+        private List<String> timeSlots;
+        private String selectedTimeSlot;
 
-        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount) {
+        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount, List<String> timeSlots, String selectedTimeSlot) {
             this.seq = seq;
             this.apps = apps;
             this.openDate = openDate;
@@ -200,6 +202,8 @@ public class Project {
             this.interviewDate = interviewDate;
             this.location = location;
             this.totalCount = totalCount;
+            this.timeSlots = timeSlots;
+            this.selectedTimeSlot = selectedTimeSlot;
         }
 
         public long getSeq() {
@@ -256,6 +260,22 @@ public class Project {
 
         public void setTotalCount(int totalCount) {
             this.totalCount = totalCount;
+        }
+
+        public List<String> getTimeSlots() {
+            return timeSlots;
+        }
+
+        public void setTimeSlots(List<String> timeSlots) {
+            this.timeSlots = timeSlots;
+        }
+
+        public String getSelectedTimeSlot() {
+            return selectedTimeSlot;
+        }
+
+        public void setSelectedTimeSlot(String selectedTimeSlot) {
+            this.selectedTimeSlot = selectedTimeSlot;
         }
     }
 }

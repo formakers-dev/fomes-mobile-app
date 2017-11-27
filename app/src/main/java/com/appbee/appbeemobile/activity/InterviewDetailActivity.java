@@ -4,16 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
@@ -29,8 +29,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import retrofit2.HttpException;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
@@ -74,6 +72,21 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.interview_introduce)
     TextView interviewIntroduceTextView;
 
+    @BindView(R.id.submit_button_layout)
+    LinearLayout submitButtonLayout;
+
+    @BindView(R.id.detail_plans_layout)
+    LinearLayout detailPlansLayout;
+
+    @BindView(R.id.detail_plans_title)
+    TextView detailPlansTitle;
+
+    @BindView(R.id.detail_plans_description)
+    TextView detailPlansDescription;
+
+    @BindView(R.id.detail_plans_recycler_view)
+    RecyclerView detailPlansRecyclerView;
+
     private String projectId;
     private long seq;
 
@@ -101,6 +114,7 @@ public class InterviewDetailActivity extends BaseActivity {
         displayProjectOverview(project);
         displayInterviewSummary(interview);
         displayProjectDetail(project);
+        displayProjectDetailPlans(project);
     }
 
     private void displayProjectOverview(final Project project) {
@@ -126,6 +140,20 @@ public class InterviewDetailActivity extends BaseActivity {
         projectDescriptionTextView.setText(project.getDescription());
     }
 
+    private void displayProjectDetailPlans(Project project) {
+        detailPlansTitle.setText(String.format(getString(R.string.interview_detail_plans_title_format), project.getName()));
+        String interviewDate = FormatUtil.convertInputDateFormat(project.getInterview().getInterviewDate(), "M월 d일");
+        String dayOfDay = FormatUtil.getDayOfWeek(project.getInterview().getInterviewDate());
+        detailPlansDescription.setText(String.format(getString(R.string.interview_detail_plans_description_format), interviewDate, dayOfDay, project.getInterview().getLocation()));
+
+
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        detailPlansRecyclerView.setLayoutManager(horizontalLayoutManager);
+
+        DetailPlansAdapter detailPlansAdapter = new DetailPlansAdapter(project.getInterview().getTimeSlots());
+        detailPlansRecyclerView.setAdapter(detailPlansAdapter);
+    }
+
     private int getDDayFromNow(@NonNull Date closeDate) {
         int dDay = 0;
 
@@ -148,22 +176,23 @@ public class InterviewDetailActivity extends BaseActivity {
         this.onBackPressed();
     }
 
-    @OnClick(R.id.submit_button)
+    @OnClick(R.id.submit_button_layout)
     void onSubmitButton(View view) {
+        detailPlansLayout.setVisibility(View.VISIBLE);
         // TODO: 인터뷰별로 변경
-        projectService.postParticipate(projectId, seq, "")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    if (result) {
-                        Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
-                    }
-                }, err -> {
-                    if (err instanceof HttpException) {
-                        Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
-                    }
-                });
+//        projectService.postParticipate(projectId, seq, "")
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(result -> {
+//                    if (result) {
+//                        Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
+//                    }
+//                }, err -> {
+//                    if (err instanceof HttpException) {
+//                        Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
+//                    } else {
+//                        Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
+//                    }
+//                });
     }
 
 }
