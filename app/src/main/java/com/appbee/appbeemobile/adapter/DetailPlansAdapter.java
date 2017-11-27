@@ -16,6 +16,8 @@ public class DetailPlansAdapter extends RecyclerView.Adapter<DetailPlansHolder> 
 
     private final List<String> timeSlots;
 
+    private String selectedTimeSlot;
+
     public DetailPlansAdapter(List<String> timeSlots) {
         this.timeSlots = timeSlots;
     }
@@ -30,6 +32,7 @@ public class DetailPlansAdapter extends RecyclerView.Adapter<DetailPlansHolder> 
     public void onBindViewHolder(DetailPlansHolder holder, int position) {
         String timeSlot = timeSlots.get(position);
         holder.button.setText(String.format(Locale.KOREA, "%02d:00", Integer.parseInt(timeSlot.substring(4))));
+        holder.button.setOnClickListener(v -> selectedTimeSlot = timeSlot);
     }
 
     @Override
@@ -39,5 +42,13 @@ public class DetailPlansAdapter extends RecyclerView.Adapter<DetailPlansHolder> 
 
     public String getItem(int position) {
         return timeSlots.get(position);
+    }
+
+    public void setSelectedTimeSlot(int postion) {
+        this.selectedTimeSlot = timeSlots.get(postion);
+    }
+
+    public String getSelectedTimeSlot() {
+        return selectedTimeSlot;
     }
 }

@@ -100,8 +100,8 @@ public class CodeVerificationActivityTest {
         assertThat(dialog).isNotNull();
 
         ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
-        assertThat(shadowAlertDialog.getTitle()).isEqualTo("초대장코드오류");
-        assertThat(shadowAlertDialog.getMessage()).isEqualTo("초대 코드를 다시 확인해주세요.");
+        assertThat(shadowAlertDialog.getTitle()).isEqualTo("코드를 확인해주세요.");
+        assertThat(shadowAlertDialog.getMessage()).isEqualTo("유효하지 않은 초대장 코드 입니다.");
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
 
