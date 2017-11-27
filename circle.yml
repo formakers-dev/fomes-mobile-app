@@ -14,6 +14,7 @@ dependencies:
     pre:
         - touch app/google-services.json
         - echo $GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/google-services.json
+        - mkdir app/src/release
         - touch app/src/release/google-services.json
         - echo $RELEASE_GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/src/release/google-services.json
         - aws s3 cp s3://appbeepkg/appbee.jks app/appbee.jks
