@@ -141,7 +141,7 @@ public class ProjectServiceTest {
         calendar.set(2017, 1, 3);
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", 5, Arrays.asList("time8", "time9", "time10"), "");
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "");
 
         Project mockProject = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -182,7 +182,7 @@ public class ProjectServiceTest {
         calendar.set(2018, 2, 3);   // 1월
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", 5, Arrays.asList("time8", "time9", "time10"), "");
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "");
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -205,6 +205,44 @@ public class ProjectServiceTest {
             assertThat(result.getDescriptionImages().get(2).getUrl()).isEqualTo("www.imageUrl.com3");
             assertThat(result.getDescription()).isEqualTo("안녕하세요 릴루미노팀입니다.");
         });
+    }
 
+    @Test
+    public void getRegisteredInterviews호출시_사용자가_신청한_인터뷰조회_API를_호출한다() throws Exception {
+        Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
+
+        List<Project.ImageObject> imageObjectList = new ArrayList<>();
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com1", "urlName1"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
+        imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
+
+        Project.Person owner = new Project.Person("프로젝트 담당자", new Project.ImageObject("www.projectOwnerImage.com", "projectOwnerImageName"), "프로젝트 담당자 소개입니다");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2018, 2, 4);   // 1월
+        Date interviewDate = calendar.getTime();
+        calendar.set(2018, 2, 2);   // 1월
+        Date openDate = calendar.getTime();
+        calendar.set(2018, 2, 3);   // 1월
+        Date closeDate = calendar.getTime();
+
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "time9", "010-9999-8888");
+
+        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
+
+        when(mockProjectAPI.getRegisteredInterviews(anyString())).thenReturn(Observable.just(Collections.singletonList(project)));
+
+        List<Project> projectList = subject.getRegisteredInterviews().toBlocking().single();
+
+        assertThat(projectList.size()).isEqualTo(1);
+
+        assertThat(projectList.get(0).getName()).isEqualTo("릴루미노");
+        assertThat(projectList.get(0).getInterview().getLocation()).isEqualTo("우면사업장");
+        assertThat(projectList.get(0).getInterview().getLocationDescription()).isEqualTo("오시는길입니다");
+        assertThat(projectList.get(0).getInterview().getInterviewDate()).isEqualTo(interviewDate);
+        assertThat(projectList.get(0).getInterview().getOpenDate()).isEqualTo(openDate);
+        assertThat(projectList.get(0).getInterview().getCloseDate()).isEqualTo(closeDate);
+        assertThat(projectList.get(0).getInterview().getSelectedTimeSlot()).isEqualTo("time9");
+        assertThat(projectList.get(0).getInterview().getEmergencyPhone()).isEqualTo("010-9999-8888");
     }
 }

@@ -40,20 +40,26 @@ public class ProjectService extends AbstractAppBeeService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<Boolean> postParticipate(String projectId, long seq, String slotId) {
-        return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId)
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
-    }
-
     public Observable<List<Project>> getAllInterviews() {
         return projectAPI.getAllInterviews(localStorageHelper.getAccessToken())
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 
+    public Observable<List<Project>> getRegisteredInterviews() {
+        return projectAPI.getRegisteredInterviews(localStorageHelper.getAccessToken())
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io());
+    }
+
     public Observable<Project> getInterview(String projectId, long seq) {
         return projectAPI.getInterview(localStorageHelper.getAccessToken(), projectId, seq)
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<Boolean> postParticipate(String projectId, long seq, String slotId) {
+        return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }

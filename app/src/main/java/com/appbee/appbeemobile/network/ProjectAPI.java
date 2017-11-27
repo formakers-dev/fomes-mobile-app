@@ -20,6 +20,9 @@ public interface ProjectAPI {
     @GET("/projects/match/interviews")
     Observable<List<Project>> getAllInterviews(@Header("x-access-token") String accessToken);
 
+    @GET("/projects/registered/interviews")
+    Observable<List<Project>> getRegisteredInterviews(@Header("x-access-token") String accessToken);
+
     @GET("/projects/{id}/interviews/{seq}")
     Observable<Project> getInterview(@Header("x-access-token") String accessToken, @Path("id") String projectId, @Path("seq") long seq);
 
