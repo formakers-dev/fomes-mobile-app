@@ -190,20 +190,24 @@ public class Project {
         private Date closeDate;
         private Date interviewDate;
         private String location;
+        private String locationDescription;
         private int totalCount;
         private List<String> timeSlots;
         private String selectedTimeSlot;
+        private String emergencyPhone;
 
-        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, int totalCount, List<String> timeSlots, String selectedTimeSlot) {
+        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone) {
             this.seq = seq;
             this.apps = apps;
             this.openDate = openDate;
             this.closeDate = closeDate;
             this.interviewDate = interviewDate;
             this.location = location;
+            this.locationDescription = locationDescription;
             this.totalCount = totalCount;
             this.timeSlots = timeSlots;
             this.selectedTimeSlot = selectedTimeSlot;
+            this.emergencyPhone = emergencyPhone;
         }
 
         public long getSeq() {
@@ -254,6 +258,14 @@ public class Project {
             this.location = location;
         }
 
+        public String getLocationDescription() {
+            return locationDescription;
+        }
+
+        public void setLocationDescription(String locationDescription) {
+            this.locationDescription = locationDescription;
+        }
+
         public int getTotalCount() {
             return totalCount;
         }
@@ -276,6 +288,14 @@ public class Project {
 
         public void setSelectedTimeSlot(String selectedTimeSlot) {
             this.selectedTimeSlot = selectedTimeSlot;
+        }
+
+        public String getEmergencyPhone() {
+            return emergencyPhone;
+        }
+
+        public void setEmergencyPhone(String emergencyPhone) {
+            this.emergencyPhone = emergencyPhone;
         }
     }
 }
