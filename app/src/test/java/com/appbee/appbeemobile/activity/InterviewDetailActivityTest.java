@@ -170,7 +170,32 @@ public class InterviewDetailActivityTest {
     }
 
     @Test
-    @Ignore
+    public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
+        subject.submitButtonLayout.performClick();
+
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+
+        subject.submitButtonLayout.performClick();
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("인터뷰참가신청완료!!");
+    }
+
+    @Test
+    public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+        subject.submitButtonLayout.performClick();
+
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+
+        int errorCode = 406;
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+
+        subject.submitButtonLayout.performClick();
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo(String.valueOf(errorCode));
+    }
+
+    @Test
     public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하고_submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
         subject.submitButtonLayout.performClick();
 
@@ -201,25 +226,4 @@ public class InterviewDetailActivityTest {
 
         assertThat(shadowAlertDialog.hasBeenDismissed()).isTrue();
     }
-
-    @Test
-    @Ignore
-    public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-
-        subject.findViewById(R.id.submit_button_layout).performClick();
-
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("인터뷰참가신청완료!!");
-    }
-
-    @Test
-    @Ignore
-    public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(406, ResponseBody.create(null, "")))));
-
-        subject.findViewById(R.id.submit_button_layout).performClick();
-
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("406");
-    }
-
 }
