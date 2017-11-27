@@ -16,6 +16,7 @@ import org.robolectric.annotation.Config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -140,7 +141,7 @@ public class ProjectServiceTest {
         calendar.set(2017, 1, 3);
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", 5);
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", 5, Arrays.asList("time8", "time9", "time10"), "");
 
         Project mockProject = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -181,7 +182,7 @@ public class ProjectServiceTest {
         calendar.set(2018, 2, 3);   // 1월
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Arrays.asList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", 5);
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", 5, Arrays.asList("time8", "time9", "time10"), "");
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 

@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="MissingPrefix">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp">
@@ -211,15 +210,61 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/submit_button"
+            android:id="@+id/submit_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/appbee_yellow"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/detail_plans_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="세부일정 선택"/>
+                <TextView
+                    android:id="@+id/detail_plans_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="[앱] 툰스토리 유저 인터뷰 - 40분"/>
+                <TextView
+                    android:id="@+id/detail_plans_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="12월 11일 (월) 우면사업장"/>
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:background="#ffffff">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/detail_plans_recycler_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:isScrollContainer="false"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="10dp">
+                        </android.support.v7.widget.RecyclerView>
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* 유저인터뷰 신청 후 확정이 되면 안내해드립니다(일주일 내)\n* 확정 후 취소 / 당일 노쇼 / 지각은 패널티가 부과됩니다.\n* 정확한 인터뷰 회의실과 담당자 번호는 확정 후 알려드립니다."/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="심층 인터뷰 신청하기"
+                android:text="@string/interview_submit_button"
                 android:textAlignment="center"/>
         </LinearLayout>
     </LinearLayout>

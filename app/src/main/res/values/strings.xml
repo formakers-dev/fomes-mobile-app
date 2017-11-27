@@ -58,5 +58,8 @@
     <string name="code_verification_message">사전 신청하신 임직원 분들께 메일로\n발송된 초대장 코드를 입력해주세요.</string>
     <string name="code_verification_button_name">인증</string>
     <string name="code_verification_warning">* 초대장 코드에 문제가 있으시면 앱비로 연락주세요.</string>
+    <string name="interview_submit_button">유저 인터뷰 신청하기</string>
+    <string name="interview_detail_plans_title_format">%s 유저 인터뷰</string>
+    <string name="interview_detail_plans_description_format">%1$s (%2$s) %3$s</string>
 
 </resources>
