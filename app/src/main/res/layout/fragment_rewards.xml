@@ -1,30 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.appbee.appbeemobile.fragment.OnboardingAnalysisFragment">
+    tools:ignore="MissingPrefix">
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/appbee_yellow"
+        android:text="@string/start_button"
+        android:textColor="@color/appbee_gray"
+        android:textSize="26dp"
+        app:font="BMJUA" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/gift"/>
+            android:src="@drawable/reward_bee" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
             android:gravity="center"
-            android:text="@string/onboarding_rewards_description" />
+            android:lineSpacingExtra="4dp"
+            android:text="@string/onboarding_rewards_title"
+            android:textColor="@color/appbee_gray"
+            android:textSize="26dp"
+            app:font="BMJUA" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:gravity="center"
+            android:text="@string/onboarding_rewards_description"
+            android:textColor="@color/appbee_warm_gray"
+            android:textSize="16dp" />
+
     </LinearLayout>
 
-    <Button android:id="@+id/next_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="@string/lets_go_button"/>
-</FrameLayout>
+</RelativeLayout>
