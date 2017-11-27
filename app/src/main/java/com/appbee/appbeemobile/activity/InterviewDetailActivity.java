@@ -198,7 +198,8 @@ public class InterviewDetailActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result) {
-                        Toast.makeText(this, "인터뷰참가신청완료!!", Toast.LENGTH_LONG).show();
+                        AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
                     }
                 }, err -> {
                     if (err instanceof HttpException) {
