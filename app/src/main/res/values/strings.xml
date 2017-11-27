@@ -65,5 +65,7 @@
     <string name="negative_button_name">닫기</string>
     <string name="invitation_code_dialog_title">코드를 확인해주세요.</string>
     <string name="invitation_code_dialog_message">유효하지 않은 초대장 코드 입니다.</string>
+    <string name="dialog_registered_interview_success_title">신청이 완료되었습니다.</string>
+    <string name="dialog_registered_interview_success_message">인터뷰 확정이 되면 푸시가 갑니다.\n확정 후 안내 메일을 참고해주세요.</string>
 
 </resources>

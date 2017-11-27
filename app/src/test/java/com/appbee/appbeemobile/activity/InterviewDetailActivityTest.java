@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -18,7 +19,6 @@ import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -179,7 +179,13 @@ public class InterviewDetailActivityTest {
 
         subject.submitButtonLayout.performClick();
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("인터뷰참가신청완료!!");
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(dialog).isNotNull();
+
+        View rootView = shadowOf(dialog).getView();
+        assertThat(shadowOf(((ImageView) rootView.findViewById(R.id.dialog_image)).getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.dialog_success_image);
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_title)).getText()).isEqualTo("신청이 완료되었습니다.");
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_message)).getText()).contains("인터뷰 확정이 되면");
     }
 
     @Test
