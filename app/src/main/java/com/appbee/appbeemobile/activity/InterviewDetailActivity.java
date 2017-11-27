@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -198,7 +200,13 @@ public class InterviewDetailActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result) {
-                        AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), (dialog, which) -> dialog.dismiss());
+                        DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
+                            dialog.dismiss();
+                            Intent intent = new Intent(InterviewDetailActivity.this, MyInterviewActivity.class);
+                            startActivity(intent);
+                            finish();
+                        };
+                        AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), onClickListener);
                         alertDialog.show();
                     }
                 }, err -> {

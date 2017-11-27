@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
@@ -171,6 +172,20 @@ public class InterviewDetailActivityTest {
     }
 
     @Test
+    public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하고_submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
+        subject.submitButtonLayout.performClick();
+
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+
+        subject.submitButtonLayout.performClick();
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(mockProjectService).postParticipate(anyString(), anyLong(), captor.capture());
+        assertThat(captor.getValue()).isEqualTo("time8");
+    }
+
+    @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
         subject.submitButtonLayout.performClick();
 
@@ -189,6 +204,24 @@ public class InterviewDetailActivityTest {
     }
 
     @Test
+    public void 인터뷰_참여완료_팝업의_확인버튼을클릭시_팝업을_닫고_다가오는_유저인터뷰_페이지로_이동한다() throws Exception {
+        subject.submitButtonLayout.performClick();
+
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+
+        subject.submitButtonLayout.performClick();
+
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+        assertThat(shadowOf(dialog).hasBeenDismissed()).isTrue();
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MyInterviewActivity.class.getName());
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @Test
     public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
         subject.submitButtonLayout.performClick();
 
@@ -200,20 +233,6 @@ public class InterviewDetailActivityTest {
         subject.submitButtonLayout.performClick();
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo(String.valueOf(errorCode));
-    }
-
-    @Test
-    public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하고_submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
-        subject.submitButtonLayout.performClick();
-
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
-
-        subject.submitButtonLayout.performClick();
-
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(mockProjectService).postParticipate(anyString(), anyLong(), captor.capture());
-        assertThat(captor.getValue()).isEqualTo("time8");
     }
 
     @Test
