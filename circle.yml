@@ -14,6 +14,8 @@ dependencies:
     pre:
         - touch app/google-services.json
         - echo $GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/google-services.json
+        - touch app/src/release/google-services.json
+        - echo $RELEASE_GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/src/release/google-services.json
         - aws s3 cp s3://appbeepkg/appbee.jks app/appbee.jks
         - echo y | android update sdk --no-ui --all --filter "tools,android-25,build-tools-25.0.1,platform-tools,extra-android-m2repository,extra-android-support,extra-google-m2repository,extra-google-google_play_services"
         - echo y | $ANDROID_HOME/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
