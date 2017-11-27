@@ -38,13 +38,14 @@
 
     <string name="analysis_title">앱 사용패턴 분석 완료!</string>
     <string name="analysis_description">이 결과를 기반으로 새 프로젝트와\n유저인터뷰를 추천해 드릴게요.</string>
-    <string name="onboarding_rewards_description">이런 취향을 앱비가 기억해서\n꼭 맞는 프로젝트를 추천해드릴게요.\n\n마음에 드는 프로젝트가 있다면\n솔직한 조언을 해주고 선물도 받아가세요.</string>
+    <string name="onboarding_rewards_title">신상앱 유저인터뷰 체험하고\n리워드를 받아가세요.</string>
+    <string name="onboarding_rewards_description">인사이트 얻고, 인터뷰 하고, 리워드 받고!</string>
 
     <string name="apps_text">\'%s\'앱을 사랑하는 당신을 위한</string>
     <!-- Bottom Button -->
     <string name="yes_button"><![CDATA[네 좋아요 >]]></string>
     <string name="next_button">다음으로</string>
-    <string name="lets_go_button"><![CDATA[좋아요, 시작할게요 >]]></string>
+    <string name="start_button">시작하기</string>
     <string name="contents_title_interview">체험하기</string>
     <string name="contents_title_project">둘러보기</string>
     <string name="project_list_header_title">프로젝트 둘러보기</string>
