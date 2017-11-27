@@ -54,9 +54,9 @@
     <string name="my_interview_text">다가오는 유저 인터뷰</string>
     <string name="my_app_usage_pattern_text">나의 앱 사용패턴 분석 다시 보기</string>
     <string name="appbee_question_text">앱비에게 문의하기</string>
-    <string name="code_verification_title">앱비 초대장 코드 인증을 부탁드립니다.</string>
-    <string name="code_verification_message">사전 신청하신 임직원 분들께 메일로 발송된 초대장 코드를 입력해주세요.</string>
+    <string name="code_verification_title">앱비 초대장 코드\n인증을 부탁드립니다.</string>
+    <string name="code_verification_message">사전 신청하신 임직원 분들께 메일로\n발송된 초대장 코드를 입력해주세요.</string>
     <string name="code_verification_button_name">인증</string>
-    <string name="code_verification_warning">* 앱비 서비스는 초대장 코드가 없다면 이용이 어려워요.</string>
+    <string name="code_verification_warning">* 초대장 코드에 문제가 있으시면 앱비로 연락주세요.</string>
 
 </resources>

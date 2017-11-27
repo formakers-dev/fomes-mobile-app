@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Appbee colors -->
+    <color name="appbee_yellow">#FFCD00</color>
+    <color name="appbee_gray">#4a4a4a</color>
+    <color name="appbee_light_gray">#d4d4d4</color>
+    <color name="appbee_black">#000000</color>
+
+    <!-- Android Default colors -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="appbee_yellow">#FFBC00</color>
-    <color name="appbee_gray">#50000000</color>
-    <color name="appbee_black">#000000</color>
 </resources>
