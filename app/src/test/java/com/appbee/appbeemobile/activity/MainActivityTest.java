@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -7,7 +8,6 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,15 +30,12 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MainActivityTest {
+public class MainActivityTest extends ActivityTest {
 
     private MainActivity subject;
 
     @Inject
     LocalStorageHelper mockLocalStorageHelper;
-
-    @Inject
-    ProjectService mockProjectService;
 
     @Before
     public void setUp() throws Exception {
@@ -82,5 +79,19 @@ public class MainActivityTest {
         when(item.getItemId()).thenReturn(R.id.my_interview);
         subject.onNavigationItemSelected(item);
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains("MyInterviewActivity");
+    }
+
+    @Test
+    public void onNavigationItemSelected시_앱비에게문의하기_메뉴을_클릭하면_메일을_보내는앱을_호출한다() throws Exception {
+        MenuItem menuItem = mock(MenuItem.class);
+        when(menuItem.getItemId()).thenReturn(R.id.appbee_question);
+
+        subject.onNavigationItemSelected(menuItem);
+
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedIntent.getType()).isEqualTo("message/rfc822");
+        assertThat(nextStartedIntent.getStringArrayExtra(Intent.EXTRA_EMAIL)).isEqualTo(new String[]{"admin@appbee.info"});
+        assertThat(nextStartedIntent.getStringExtra(Intent.EXTRA_SUBJECT)).isEqualTo("[문의]");
+        assertThat(nextStartedIntent.getStringExtra(Intent.EXTRA_TEXT)).isEqualTo("앱비에게 문의해주세요");
     }
 }

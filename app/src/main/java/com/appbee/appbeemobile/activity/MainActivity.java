@@ -129,7 +129,12 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.my_app_usage_pattern) {
 
         } else if (id == R.id.appbee_question) {
-
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("message/rfc822");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"admin@appbee.info"});
+            intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]");
+            intent.putExtra(Intent.EXTRA_TEXT, "앱비에게 문의해주세요");
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
