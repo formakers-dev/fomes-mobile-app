@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
@@ -219,8 +220,9 @@ public class InterviewDetailActivityTest {
         assertThat(dialog).isNotNull();
 
         ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
-        assertThat(shadowAlertDialog.getTitle()).isEqualTo("시간을 선택해주세요.");
-        assertThat(shadowAlertDialog.getMessage()).isEqualTo("세부일정 선택은 필수입니다.");
+        View rootView = shadowAlertDialog.getView();
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_title)).getText()).isEqualTo("시간을 선택해주세요.");
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_message)).getText()).isEqualTo("세부일정 선택은 필수입니다.");
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
 

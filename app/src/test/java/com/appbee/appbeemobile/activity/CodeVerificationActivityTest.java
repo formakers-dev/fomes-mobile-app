@@ -1,8 +1,11 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
+import android.view.View;
+import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.UserService;
@@ -100,8 +103,9 @@ public class CodeVerificationActivityTest {
         assertThat(dialog).isNotNull();
 
         ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
-        assertThat(shadowAlertDialog.getTitle()).isEqualTo("코드를 확인해주세요.");
-        assertThat(shadowAlertDialog.getMessage()).isEqualTo("유효하지 않은 초대장 코드 입니다.");
+        View rootView = shadowAlertDialog.getView();
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_title)).getText()).isEqualTo("코드를 확인해주세요.");
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_message)).getText()).isEqualTo("유효하지 않은 초대장 코드 입니다.");
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
 

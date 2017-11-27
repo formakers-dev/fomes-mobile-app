@@ -3,8 +3,12 @@ package com.appbee.appbeemobile.custom;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +40,10 @@ public class AppBeeAlertDialogTest {
         subject = new AppBeeAlertDialog(RuntimeEnvironment.application, "팝업타이틀", "팝업메시지", mockPositiveOnClickListener, mockNegativeOnClickListener);
     }
 
+    private void setUpWithImageAndPositiveButton() throws Exception {
+        subject = new AppBeeAlertDialog(RuntimeEnvironment.application, R.drawable.dialog_success_image, "팝업타이틀", "팝업메시지", mockPositiveOnClickListener);
+    }
+
     @Test
     public void 확인버튼만있는다얼로그생성시_showTest() throws Exception {
         setUpWithPositiveButtonOnly();
@@ -46,8 +54,10 @@ public class AppBeeAlertDialogTest {
         assertThat(dialog).isNotNull();
 
         ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
-        assertThat(shadowAlertDialog.getTitle()).isEqualTo("팝업타이틀");
-        assertThat(shadowAlertDialog.getMessage()).isEqualTo("팝업메시지");
+        View rootView = shadowAlertDialog.getView();
+
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_title)).getText()).isEqualTo("팝업타이틀");
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_message)).getText()).isEqualTo("팝업메시지");
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
 
@@ -64,13 +74,36 @@ public class AppBeeAlertDialogTest {
         assertThat(dialog).isNotNull();
 
         ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
-        assertThat(shadowAlertDialog.getTitle()).isEqualTo("팝업타이틀");
-        assertThat(shadowAlertDialog.getMessage()).isEqualTo("팝업메시지");
+        View rootView = shadowAlertDialog.getView();
+
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_title)).getText()).isEqualTo("팝업타이틀");
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_message)).getText()).isEqualTo("팝업메시지");
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
         verify(mockPositiveOnClickListener).onClick(any(DialogInterface.class), anyInt());
 
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick();
         verify(mockNegativeOnClickListener).onClick(any(DialogInterface.class), anyInt());
+    }
+
+    @Test
+    public void 확인버튼과이미지가있는다얼로그생성시_showTest() throws Exception {
+        setUpWithImageAndPositiveButton();
+
+        subject.show();
+
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(dialog).isNotNull();
+
+        ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
+        View rootView = shadowAlertDialog.getView();
+
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_title)).getText()).isEqualTo("팝업타이틀");
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_message)).getText()).isEqualTo("팝업메시지");
+        assertThat(shadowOf(((ImageView) rootView.findViewById(R.id.dialog_image)).getDrawable()).getCreatedFromResId()).isEqualTo(R.drawable.dialog_success_image);
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+
+        verify(mockPositiveOnClickListener).onClick(any(DialogInterface.class), anyInt());
     }
 }
