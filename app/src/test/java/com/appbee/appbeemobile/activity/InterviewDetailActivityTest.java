@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
 
@@ -19,11 +20,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
@@ -150,9 +153,8 @@ public class InterviewDetailActivityTest {
     }
 
 
-
     @Test
-    public void 세부일정선택영역이_나타나지_않은_상태에서_submit클릭시_세부일정선택영역을_표시한다() throws Exception {
+    public void 세부일정선택영역이_나타나지_않은_상태에서_submit클릭시_세부일정선택영역만을_표시한다() throws Exception {
         subject.submitButtonLayout.performClick();
 
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.VISIBLE);
@@ -162,16 +164,42 @@ public class InterviewDetailActivityTest {
         assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(0)).isEqualTo("time8");
         assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(1)).isEqualTo("time9");
         assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(2)).isEqualTo("time10");
+
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(dialog).isNull();
     }
 
     @Test
     @Ignore
-    public void submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
+    public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하고_submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
+        subject.submitButtonLayout.performClick();
+
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
 
-        subject.findViewById(R.id.submit_button_layout).performClick();
+        subject.submitButtonLayout.performClick();
 
-        verify(mockProjectService).postParticipate(anyString(), anyLong(), anyString());
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(mockProjectService).postParticipate(anyString(), anyLong(), captor.capture());
+        assertThat(captor.getValue()).isEqualTo("time8");
+    }
+
+    @Test
+    public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하지않은상태에서_submitButton클릭시_경고팝업을_표시한다() throws Exception {
+        subject.submitButtonLayout.performClick();
+
+        subject.submitButtonLayout.performClick();
+
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(dialog).isNotNull();
+
+        ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
+        assertThat(shadowAlertDialog.getTitle()).isEqualTo("시간을 선택해주세요.");
+        assertThat(shadowAlertDialog.getMessage()).isEqualTo("세부일정 선택은 필수입니다.");
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+
+        assertThat(shadowAlertDialog.hasBeenDismissed()).isTrue();
     }
 
     @Test

@@ -1,6 +1,5 @@
 package com.appbee.appbeemobile.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +8,7 @@ import android.widget.EditText;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.UserService;
 
@@ -44,11 +44,8 @@ public class CodeVerificationActivity extends BaseActivity {
                     startActivity(intent);
                     finish();
                 }, throwable -> {
-                    AlertDialog.Builder warnDialogBuilder = new AlertDialog.Builder(this);
-                    warnDialogBuilder.setTitle("초대장코드오류");
-                    warnDialogBuilder.setMessage("초대 코드를 다시 확인해주세요.");
-                    warnDialogBuilder.setPositiveButton("확인", (dialog, which) -> dialog.dismiss());
-                    warnDialogBuilder.create().show();
+                    AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.invitation_code_dialog_title), getString(R.string.invitation_code_dialog_message), (dialog, which) -> dialog.dismiss());
+                    appBeeAlertDialog.show();
                 });
     }
 

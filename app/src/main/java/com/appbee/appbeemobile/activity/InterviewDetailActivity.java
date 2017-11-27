@@ -15,6 +15,7 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
+import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -178,9 +179,21 @@ public class InterviewDetailActivity extends BaseActivity {
 
     @OnClick(R.id.submit_button_layout)
     void onSubmitButton(View view) {
-        detailPlansLayout.setVisibility(View.VISIBLE);
+        if (detailPlansLayout.getVisibility() == View.GONE) {
+            detailPlansLayout.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        String slotId = ((DetailPlansAdapter) detailPlansRecyclerView.getAdapter()).getSelectedTimeSlot();
+
+        if (slotId == null || slotId.isEmpty()) {
+            AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, "시간을 선택해주세요.", "세부일정 선택은 필수입니다.", (dialog, which) -> dialog.dismiss());
+            alertDialog.show();
+            return;
+        }
+
         // TODO: 인터뷰별로 변경
-//        projectService.postParticipate(projectId, seq, "")
+//        projectService.postParticipate(projectId, seq, slotId)
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(result -> {
 //                    if (result) {
