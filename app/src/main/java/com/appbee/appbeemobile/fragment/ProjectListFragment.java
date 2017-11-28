@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -43,7 +44,7 @@ public class ProjectListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MainListAdapter mainListAdapter = new MainListAdapter(projectList, R.string.project_list_header_title, R.string.project_list_header_subtitle, true);
+        MainListAdapter mainListAdapter = new MainListAdapter(projectList);
 
         GridLayoutManager projectListLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         projectListLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -53,6 +54,12 @@ public class ProjectListFragment extends BaseFragment {
             }
         });
         projectListRecyclerView.setLayoutManager(projectListLayoutManager);
+
+        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_header, projectListRecyclerView, false);
+        ((TextView) headerView.findViewById(R.id.item_header_title)).setText(R.string.project_list_header_title);
+        ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(R.string.project_list_header_subtitle);
+        mainListAdapter.setHeaderView(headerView);
+
         projectListRecyclerView.setAdapter(mainListAdapter);
     }
 
