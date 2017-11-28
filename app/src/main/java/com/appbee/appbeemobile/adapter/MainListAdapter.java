@@ -14,7 +14,7 @@ import com.appbee.appbeemobile.model.Project;
 
 import java.util.List;
 
-public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     static final int HEADER_VIEW_TYPE = 0;
     static final int ITEM_VIEW_TYPE = 1;
@@ -22,11 +22,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final List<Project> projectList;
     private final @StringRes int headerTitle;
     private final @StringRes int headerSubTitle;
+    private final boolean isHeaderVisible;
 
-    public ProjectListAdapter(List<Project> projectList, int headerTitle, int headerSubTitle) {
+    public MainListAdapter(List<Project> projectList, int headerTitle, int headerSubTitle, boolean isHeaderVisible) {
         this.projectList = projectList;
         this.headerTitle = headerTitle;
         this.headerSubTitle = headerSubTitle;
+        this.isHeaderVisible = isHeaderVisible;
     }
 
     public boolean isHeader(int position) {
@@ -39,7 +41,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
             ((TextView) headerView.findViewById(R.id.item_header_title)).setText(headerTitle);
             ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(headerSubTitle);
-            headerView.findViewById(R.id.item_header_badge).setVisibility(View.VISIBLE);
+            headerView.findViewById(R.id.item_header_badge).setVisibility(isHeaderVisible ? View.VISIBLE : View.GONE);
             return new ContentsListHeaderViewHolder(headerView);
         } else {
             return new ProjectListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), parent.getContext());
