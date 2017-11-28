@@ -31,7 +31,6 @@
         </service>
 
         <activity android:name=".activity.OnboardingActivity"/>
-        <activity android:name=".activity.OnboardingPagerActivity"/>
         <activity android:name=".activity.OnboardingAnalysisActivity"/>
         <activity android:name=".activity.CodeVerificationActivity" />
         <activity android:name=".activity.LoginActivity" />

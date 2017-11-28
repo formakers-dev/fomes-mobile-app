@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="39dp"
             android:layout_marginStart="39dp"
-            android:background="@drawable/google_signin_button_normal"
+            android:background="@drawable/google_signin_button"
             android:text="@string/login_button_text"
             android:textColor="@color/appbee_gray"
             android:textSize="16dp"
