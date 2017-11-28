@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp">
+
     <TextView
         android:id="@+id/item_header_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="25dp"
-        android:textStyle="bold"/>
+        android:layout_marginTop="25dp"
+        android:textColor="@color/appbee_gray"
+        android:textSize="28dp"
+        app:font="BMJUA"
+        tools:ignore="MissingPrefix" />
+
     <TextView
         android:id="@+id/item_header_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="15dp"/>
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="14dp" />
 </LinearLayout>
