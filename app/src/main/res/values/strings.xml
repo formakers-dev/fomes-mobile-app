@@ -83,5 +83,7 @@
     <string name="show_project_information_button">프로젝트 설명 다시 보기</string>
     <string name="cancel_penalty">* 확정 후 취소 / 노쇼 / 지각은 패널티가 부과될 수 있습니다.</string>
     <string name="rewards_coffee_coupon">커피 쿠폰</string>
+    <string name="introduce_my_project">저희 프로젝트를 소개합니다.</string>
+    <string name="project_owner">창작자</string>
 
 </resources>

@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -105,7 +104,7 @@ public class ProjectDetailActivity extends BaseActivity {
 
         if (ownerImage != null) {
             Glide.with(this).load(ownerImage.getUrl())
-                    .apply(new RequestOptions().override(200, 200).centerCrop())
+                    .apply(new RequestOptions().override(200, 200).circleCrop())
                     .into(interviewerPhotoImageView);
             interviewerPhotoImageView.setTag(R.string.tag_key_image_url, ownerImage.getUrl());
         } else {
