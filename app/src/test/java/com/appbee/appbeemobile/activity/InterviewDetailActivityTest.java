@@ -116,7 +116,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void onPostCreate시_조회된_인터뷰_제목_정보를_화면에_보여준다() throws Exception {
         assertThat(subject.representationImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.imageUrl.com");
-        assertThat(subject.appsDescriptionTextView.getText()).isEqualTo("'네이버웹툰'앱을 사랑하는 당신을 위한");
+        assertThat(subject.appsDescriptionTextView.getText()).isEqualTo("'네이버웹툰' 앱 유저에게 추천");
         assertThat(subject.projectNameTextView.getText()).isEqualTo("[앱] 릴루미노");
         assertThat(subject.projectIntroduceTextView.getText()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
     }

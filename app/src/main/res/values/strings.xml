@@ -68,12 +68,7 @@
     <string name="invitation_code_dialog_message">유효하지 않은 초대장 코드 입니다.</string>
     <string name="dialog_registered_interview_success_title">신청이 완료되었습니다.</string>
     <string name="dialog_registered_interview_success_message">인터뷰 확정이 되면 푸시가 갑니다.\n확정 후 안내 메일을 참고해주세요.</string>
-    <string name="recommand_to_user_of_similar_app">%s 앱 유저에게 추천</string>
-    <string name="rewards_coffee_coupon">커피 쿠폰</string>
-    <string name="introduce_my_project">저희 프로젝트를 소개합니다.</string>
-    <string name="project_owner">창작자</string>
-
-    <!-- 다가오는 유저인터뷰 화면 관련 -->
+    <string name="recommand_to_user_of_similar_app">\'%s\' 앱 유저에게 추천</string>
     <string name="registered_interview_title">다가오는 유저 인터뷰</string>
     <string name="cancel_button">취소하기</string>
     <string name="interview_notice_title1">인터뷰 신청 후 ‘확정’을 기다려주세요.</string>
@@ -87,6 +82,22 @@
     <string name="interview_notice_description6">( 담당자 번호는 인터뷰 신청 후 확정되면 안내됩니다.)</string>
     <string name="show_project_information_button">프로젝트 설명 다시 보기</string>
     <string name="cancel_penalty">* 확정 후 취소 / 노쇼 / 지각은 패널티가 부과될 수 있습니다.</string>
+    <string name="rewards_coffee_coupon">커피 쿠폰</string>
+    <string name="introduce_my_project">저희 프로젝트를 소개합니다.</string>
+    <string name="project_owner">창작자</string>
+    <string name="notice_interview_process_title">유저인터뷰 신청 전 읽어주세요</string>
+    <string name="interview_date_title">인터뷰 날짜</string>
+    <string name="interview_type_title">인터뷰 종류</string>
+    <string name="interview_location_title">인터뷰 장소</string>
+    <string name="interview_rewards_title">감사 선물</string>
+    <string name="interview_duration_title">인터뷰 시간</string>
+    <string name="interview_close_date_title">신청 마감 날짜</string>
+    <string name="interview_introduce_title">인터뷰 안내</string>
+    <string name="interview_progress_guide_close">확정\n신청 마감/확정</string>
+    <string name="interview_progress_guide_request">신청\n신청 버튼 클릭</string>
+    <string name="interview_progress_guide_end">완료\n인터뷰 진행/완료</string>
+    <string name="interview_detail_plan_title">세부일정 선택</string>
+    <string name="interview_detail_plan_description">* 유저인터뷰 신청 후 확정이 되면 안내해드립니다(일주일 내)\n* 확정 후 취소 / 당일 노쇼 / 지각은 패널티가 부과됩니다.\n* 정확한 인터뷰 회의실과 담당자 번호는 확정 후 알려드립니다.</string>
     <string name="registered_interview_formated_title">%s 유저 인터뷰</string>
     <string name="registered_interview_date_location">%1$s %2$s %3$02d:00</string>
     <string name="registered_interview_open_date">신청\n%s</string>

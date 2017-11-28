@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="62dp"
+    android:background="@drawable/interview_progress_background">
+
+    <TextView
+        android:id="@+id/interview_progress_close_date"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/interview_progress_guide_close"
+        android:textColor="@color/appbee_sky_blue"
+        android:textSize="11dp" />
+
+    <View
+        android:layout_width="48dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_toStartOf="@id/interview_progress_close_date"
+        android:background="@color/appbee_sky_blue" />
+
+    <TextView
+        android:id="@+id/interview_progress_open_date"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="30dp"
+        android:layout_toStartOf="@id/interview_progress_close_date"
+        android:gravity="center"
+        android:text="@string/interview_progress_guide_request"
+        android:textColor="@color/appbee_sky_blue"
+        android:textSize="11dp" />
+
+    <View
+        android:layout_width="48dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/interview_progress_close_date"
+        android:background="@color/appbee_sky_blue" />
+
+    <TextView
+        android:id="@+id/interview_progress_date"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@id/interview_progress_close_date"
+        android:gravity="center"
+        android:text="@string/interview_progress_guide_end"
+        android:textColor="@color/appbee_sky_blue"
+        android:textSize="11dp" />
+</RelativeLayout>
