@@ -15,7 +15,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class OnboardingActivityTest {
+public class OnboardingActivityTest extends ActivityTest {
     private OnboardingActivity subject;
 
     @Before

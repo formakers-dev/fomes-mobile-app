@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.adapter.CommonPagerAdapter;
 import com.appbee.appbeemobile.adapter.ContentsPagerAdapter;
 import com.appbee.appbeemobile.fragment.InterviewListFragment;
 import com.appbee.appbeemobile.fragment.ProjectListFragment;
@@ -33,12 +31,6 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @DrawableRes
-    static final int[] BANNER_IMAGES = {
-            R.drawable.banner_title_1,
-            R.drawable.banner_title_2,
-            R.drawable.banner_title_3
-    };
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
@@ -52,9 +44,6 @@ public class MainActivity extends BaseActivity
 
     @BindView(R.id.main_nested_scrollview)
     NestedScrollView mainNestedScrollView;
-
-    @BindView(R.id.title_banner_view_pager)
-    ViewPager titleBannerViewPager;
 
     @BindView(R.id.contents_view_pager)
     ViewPager contentsViewPager;
@@ -96,8 +85,6 @@ public class MainActivity extends BaseActivity
         userIdTextView.setText(FormatUtil.parseEmailName(localStorageHelper.getEmail()));
 
         mainNestedScrollView.setFillViewport(true);
-
-        titleBannerViewPager.setAdapter(new CommonPagerAdapter(this, BANNER_IMAGES));
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
         contentsPagerAdapter.addFragment(new InterviewListFragment(), getString(R.string.contents_title_interview));

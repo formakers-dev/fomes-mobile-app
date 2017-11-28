@@ -45,7 +45,8 @@
         <activity android:name=".activity.LoadingActivity" />
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="">
         </activity>
         <activity
             android:name=".activity.ProjectDetailActivity"
