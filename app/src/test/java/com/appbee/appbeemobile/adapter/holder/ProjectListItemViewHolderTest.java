@@ -49,7 +49,7 @@ public class ProjectListItemViewHolderTest {
         assertThat(subject.projectId).isEqualTo("projectId");
         assertThat(subject.nameTextView.getText()).isEqualTo("릴루미노");
         assertThat(subject.introduceTextView.getText()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
-//        assertThat(subject.itemCardTagTextView.getText()).isEqualTo("[지그재그] 앱을 사용하시는 분의 의견을 구합니다.");
+//        assertThat(subject.projectDescriptionTextView.getText()).isEqualTo("[지그재그] 앱을 사용하시는 분의 의견을 구합니다.");
     }
 
     @Test
