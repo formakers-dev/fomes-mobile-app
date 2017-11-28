@@ -49,7 +49,7 @@ public class RegisteredInterviewListAdapterTest {
         Date closeDate = createMockDate(2017, DECEMBER, 31);
 
         Project.Person owner = new Project.Person("김앱비", null, "");
-        Project.Interview interview = new Project.Interview(0, null, interviewDate, openDate, closeDate, "우면사업장", "C동 1층 107호 회의실", 0, null, "time15", "010-1234-5678");
+        Project.Interview interview = new Project.Interview(0, null, interviewDate, openDate, closeDate, "우면사업장", "C동 1층 107호 회의실", 0, null, "time15", "010-1234-5678", "오프라인");
 
         Project project = new Project("1", "툰스토리", "", null, "", null, owner, "", interview);
         List<Project> projectList = new ArrayList<>();
