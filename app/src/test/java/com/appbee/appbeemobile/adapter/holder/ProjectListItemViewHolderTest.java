@@ -28,7 +28,7 @@ public class ProjectListItemViewHolderTest {
 
     @Before
     public void setUp() throws Exception {
-        subject = new ProjectListItemViewHolder(LayoutInflater.from(RuntimeEnvironment.application).inflate(R.layout.item_card, null), RuntimeEnvironment.application);
+        subject = new ProjectListItemViewHolder(LayoutInflater.from(RuntimeEnvironment.application).inflate(R.layout.interview_item_card, null), RuntimeEnvironment.application);
 
         Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
 
