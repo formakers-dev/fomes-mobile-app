@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.adapter.ProjectListAdapter;
+import com.appbee.appbeemobile.adapter.MainListAdapter;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 
@@ -43,17 +43,17 @@ public class ProjectListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ProjectListAdapter projectListAdapter = new ProjectListAdapter(projectList, R.string.project_list_header_title, R.string.project_list_header_subtitle);
+        MainListAdapter mainListAdapter = new MainListAdapter(projectList, R.string.project_list_header_title, R.string.project_list_header_subtitle, true);
 
         GridLayoutManager projectListLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         projectListLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return projectListAdapter.isHeader(position) ? projectListLayoutManager.getSpanCount() : 1;
+                return mainListAdapter.isHeader(position) ? projectListLayoutManager.getSpanCount() : 1;
             }
         });
         projectListRecyclerView.setLayoutManager(projectListLayoutManager);
-        projectListRecyclerView.setAdapter(projectListAdapter);
+        projectListRecyclerView.setAdapter(mainListAdapter);
     }
 
     @Override

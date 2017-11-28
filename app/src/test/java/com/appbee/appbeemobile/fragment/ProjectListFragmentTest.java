@@ -2,7 +2,7 @@ package com.appbee.appbeemobile.fragment;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.ProjectListAdapter;
+import com.appbee.appbeemobile.adapter.MainListAdapter;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 
@@ -61,7 +61,7 @@ public class ProjectListFragmentTest {
 
     @Test
     public void onPostCreate시_프로젝트리스트를_표시하기위한_Adapter를_매핑한다() throws Exception {
-        assertThat(subject.projectListRecyclerView.getAdapter().getClass().getSimpleName()).contains(ProjectListAdapter.class.getSimpleName());
+        assertThat(subject.projectListRecyclerView.getAdapter().getClass().getSimpleName()).contains(MainListAdapter.class.getSimpleName());
     }
 
     @Test
@@ -83,9 +83,9 @@ public class ProjectListFragmentTest {
         controller.resume();
 
         verify(mockProjectService).getAllProjects();
-        ProjectListAdapter projectListAdapter = (ProjectListAdapter) subject.projectListRecyclerView.getAdapter();
-        assertThat(projectListAdapter.getItemCount()).isEqualTo(3);
-        assertThat(projectListAdapter.getItem(1)).isEqualTo(mockProjectList.get(0));
-        assertThat(projectListAdapter.getItem(2)).isEqualTo(mockProjectList.get(1));
+        MainListAdapter mainListAdapter = (MainListAdapter) subject.projectListRecyclerView.getAdapter();
+        assertThat(mainListAdapter.getItemCount()).isEqualTo(3);
+        assertThat(mainListAdapter.getItem(1)).isEqualTo(mockProjectList.get(0));
+        assertThat(mainListAdapter.getItem(2)).isEqualTo(mockProjectList.get(1));
     }
 }

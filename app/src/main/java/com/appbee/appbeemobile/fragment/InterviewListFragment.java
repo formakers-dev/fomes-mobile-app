@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.adapter.InterviewListAdapter;
+import com.appbee.appbeemobile.adapter.MainListAdapter;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 
@@ -46,7 +46,7 @@ public class InterviewListFragment extends BaseFragment {
         LinearLayoutManager interviewLayoutManger = new LinearLayoutManager(getActivity());
         interviewLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         interviewListRecyclerView.setLayoutManager(interviewLayoutManger);
-        interviewListRecyclerView.setAdapter(new InterviewListAdapter(interviewList, R.string.recommendation_apps_title, R.string.recommendation_apps_subtitle));
+        interviewListRecyclerView.setAdapter(new MainListAdapter(interviewList, R.string.recommendation_apps_title, R.string.recommendation_apps_subtitle, false));
     }
 
     @Override
