@@ -69,14 +69,26 @@ public class MyInterviewActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    ActionListener actionListener = projectId -> {
-        Intent intent = new Intent(MyInterviewActivity.this, ProjectDetailActivity.class);
-        intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
-        startActivity(intent);
+    ActionListener actionListener = new ActionListener() {
+        @Override
+        public void onSelectProject(String projectId) {
+            Intent intent = new Intent(MyInterviewActivity.this, ProjectDetailActivity.class);
+            intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onRequestToCancelInterview(String projectId, long interviewSeq) {
+            Intent intent = new Intent(MyInterviewActivity.this, CancelInterviewActivity.class);
+            intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
+            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
+            startActivity(intent);
+        }
     };
 
     public interface ActionListener {
         void onSelectProject(String projectId);
+        void onRequestToCancelInterview(String projectId, long interviewSeq);
     }
 }
 
