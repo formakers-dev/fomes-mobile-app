@@ -69,6 +69,19 @@
     <string name="dialog_registered_interview_success_title">신청이 완료되었습니다.</string>
     <string name="dialog_registered_interview_success_message">인터뷰 확정이 되면 푸시가 갑니다.\n확정 후 안내 메일을 참고해주세요.</string>
     <string name="recommand_to_user_of_similar_app">%s 앱 유저에게 추천</string>
+    <string name="registered_interview_title">다가오는 유저 인터뷰</string>
+    <string name="cancel_button">취소하기</string>
+    <string name="interview_notice_title1">인터뷰 신청 후 ‘확정’을 기다려주세요.</string>
+    <string name="interview_notice_description1">확정된 인터뷰만 실제로 진행됩니다. 조금만 기다려주세요.</string>
+    <string name="interview_notice_description2">신청 마감일 이후 앱비에서 확인 후 확정 푸시를 보내드립니다.</string>
+    <string name="interview_notice_title2">확정 후 취소/ 노쇼 / 지각은 패널티가 있을 수 있습니다.</string>
+    <string name="interview_notice_title3">확정 후 변동 시 인터뷰 담당자에게 꼭 연락주세요.</string>
+    <string name="interview_notice_description3">인터뷰는 약속입니다. 준비하신 분들께 예의를 지켜주세요.</string>
+    <string name="interview_notice_description4">( 확정 후 취소 / 노쇼 / 지각 패널티 : 3개월간 신청 불가)</string>
+    <string name="interview_notice_description5">피치못할 사정이 생겼을 때 대응할 수 있도록 협조해주세요.</string>
+    <string name="interview_notice_description6">( 담당자 번호는 인터뷰 신청 후 확정되면 안내됩니다.)</string>
+    <string name="show_project_information_button">프로젝트 설명 다시 보기</string>
+    <string name="cancel_penalty">* 확정 후 취소 / 노쇼 / 지각은 패널티가 부과될 수 있습니다.</string>
     <string name="rewards_coffee_coupon">커피 쿠폰</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MyInterviewActivity extends BaseActivity {
@@ -52,8 +54,17 @@ public class MyInterviewActivity extends BaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         interviewRecyclerView.setLayoutManager(linearLayoutManager);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getDrawable(R.drawable.line_divider));
+        interviewRecyclerView.addItemDecoration(dividerItemDecoration);
+
         RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper);
         interviewRecyclerView.setAdapter(registeredInterviewListAdapter);
+    }
+
+    @OnClick(R.id.back_button)
+    public void onBackButtonClick() {
+        super.onBackPressed();
     }
 }
 
