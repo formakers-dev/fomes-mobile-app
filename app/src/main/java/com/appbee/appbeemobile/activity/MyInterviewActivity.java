@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -20,7 +22,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MyInterviewActivity extends BaseActivity {
@@ -41,6 +42,11 @@ public class MyInterviewActivity extends BaseActivity {
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
         setContentView(R.layout.activity_my_interview);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button);
     }
 
     @Override
@@ -64,9 +70,15 @@ public class MyInterviewActivity extends BaseActivity {
         interviewRecyclerView.setAdapter(registeredInterviewListAdapter);
     }
 
-    @OnClick(R.id.back_button)
-    public void onBackButtonClick() {
-        super.onBackPressed();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     ActionListener actionListener = new ActionListener() {
@@ -88,6 +100,7 @@ public class MyInterviewActivity extends BaseActivity {
 
     public interface ActionListener {
         void onSelectProject(String projectId);
+
         void onRequestToCancelInterview(String projectId, long interviewSeq);
     }
 }

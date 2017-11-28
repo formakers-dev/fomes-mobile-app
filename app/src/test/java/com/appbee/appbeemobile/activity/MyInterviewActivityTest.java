@@ -1,9 +1,9 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
+import android.view.MenuItem;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -69,10 +69,11 @@ public class MyInterviewActivityTest extends ActivityTest {
     }
 
     @Test
-    public void backButton클릭시_메인화면으로_이동한다() throws Exception {
-        subject.onPostCreate(null);
+    public void home클릭시_메인화면으로_이동한다() throws Exception {
+        MenuItem homeMenuItem = mock(MenuItem.class);
+        when(homeMenuItem.getItemId()).thenReturn(android.R.id.home);
 
-        subject.findViewById(R.id.back_button).performClick();
+        subject.onOptionsItemSelected(homeMenuItem);
 
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
