@@ -6,6 +6,7 @@
     <color name="appbee_light_gray">#d4d4d4</color>
     <color name="appbee_warm_gray">#808080</color>
     <color name="appbee_pale_gray">#f0f0f1</color>
+    <color name="appbee_sky_blue">#00c8ff</color>
     <color name="appbee_black">#000000</color>
 
     <!-- Android Default colors -->

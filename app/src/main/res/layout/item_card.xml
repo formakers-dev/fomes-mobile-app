@@ -1,104 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    app:cardCornerRadius="5dp"
+    app:cardElevation="2dp"
+    tools:ignore="MissingPrefix">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="2dp">
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/project_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/recommandation_app" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingEnd="21dp"
+            android:paddingStart="21dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/project_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/recommandation_app" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/oepn_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:text="잔소리 가능" />
-
-                    <Button
-                        android:id="@+id/favaorite_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:text="내 취향저격" />
-
-                    <Button
-                        android:id="@+id/clab_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:text="전사 C-Lab" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/project_tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="10dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:paddingTop="10dp">
+                android:layout_marginTop="22dp"
+                android:text="텍스트를 치면 살아나는 캐릭터! 인공지능으로 나만의 웹툰을 만들고 공유해보세요."
+                android:textColor="@android:color/black"
+                android:textSize="15dp" />
 
-                <TextView
-                    android:id="@+id/project_introduce"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="# 지그재그 앱을 사용하시는 분의 의견을 구합니다"
-                    android:textColor="@color/appbee_gray" />
+            <TextView
+                android:id="@+id/project_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="유어커스텀"
+                android:textColor="@color/appbee_warm_gray"
+                android:textSize="12dp"
+                app:font="medium" />
 
-                <TextView
-                    android:id="@+id/project_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="유어커스텀"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/project_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!"
-                    android:textColor="@color/appbee_yellow"
-                    android:textSize="12dp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/project_introduce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/recommand_to_user_of_similar_app"
+                android:textColor="@color/appbee_sky_blue"
+                android:textSize="13dp" />
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
 
-</LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/appbee_pale_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/oepn_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="우면사업장"
+                android:textColor="@color/appbee_warm_gray"
+                android:textSize="11dp"
+                app:font="medium" />
+
+            <Button
+                android:id="@+id/favaorite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="대면인터뷰"
+                android:textColor="@color/appbee_warm_gray"
+                android:textSize="11dp"
+                app:font="medium" />
+
+            <Button
+                android:id="@+id/clab_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="커피쿠폰"
+                android:textColor="@color/appbee_warm_gray"
+                android:textSize="11dp"
+                app:font="medium" />
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
