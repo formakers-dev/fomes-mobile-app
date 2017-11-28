@@ -39,7 +39,7 @@ public class MainListAdapterTest {
         mockProjectList.add(new Project("projectId2", "릴루미노2", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)2", imageObject, "안녕하세요 릴루미노팀입니다.2", imageObjectList, owner, "registered"));
 
 
-        subject = new MainListAdapter(mockProjectList);
+        subject = new MainListAdapter(mockProjectList, MainListAdapter.INTERVIEW_ITEM_VIEW_TYPE);
         subject.setHeaderView(mock(View.class));
     }
 
@@ -48,8 +48,8 @@ public class MainListAdapterTest {
         assertThat(subject.getItemCount()).isEqualTo(3);
 
         assertThat(subject.getItemViewType(0)).isEqualTo(MainListAdapter.HEADER_VIEW_TYPE);
-        assertThat(subject.getItemViewType(1)).isEqualTo(MainListAdapter.ITEM_VIEW_TYPE);
-        assertThat(subject.getItemViewType(2)).isEqualTo(MainListAdapter.ITEM_VIEW_TYPE);
+        assertThat(subject.getItemViewType(1)).isEqualTo(MainListAdapter.INTERVIEW_ITEM_VIEW_TYPE);
+        assertThat(subject.getItemViewType(2)).isEqualTo(MainListAdapter.INTERVIEW_ITEM_VIEW_TYPE);
 
         assertThat(subject.getItem(1).getProjectId()).isEqualTo("projectId");
         assertThat(subject.getItem(1).getName()).isEqualTo("릴루미노");

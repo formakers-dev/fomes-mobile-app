@@ -120,6 +120,21 @@ public class Project {
         this.interview = interview;
     }
 
+    @Override
+    public String toString() {
+        return "Project{" +
+                "projectId='" + projectId + '\'' +
+                ", name='" + name + '\'' +
+                ", introduce='" + introduce + '\'' +
+                ", image=" + image +
+                ", description='" + description + '\'' +
+                ", descriptionImages=" + descriptionImages +
+                ", owner=" + owner +
+                ", status='" + status + '\'' +
+                ", interview=" + interview +
+                '}';
+    }
+
     public static class Person {
         private String name;
         private ImageObject image;
@@ -155,6 +170,15 @@ public class Project {
         public void setIntroduce(String introduce) {
             this.introduce = introduce;
         }
+
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "name='" + name + '\'' +
+                    ", image=" + image +
+                    ", introduce='" + introduce + '\'' +
+                    '}';
+        }
     }
 
     public static class ImageObject {
@@ -181,6 +205,14 @@ public class Project {
         public void setName(String name) {
             this.name = name;
         }
+
+        @Override
+        public String toString() {
+            return "ImageObject{" +
+                    "url='" + url + '\'' +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
     }
 
     public static class Interview {
@@ -195,8 +227,9 @@ public class Project {
         private List<String> timeSlots;
         private String selectedTimeSlot;
         private String emergencyPhone;
+        private String type;
 
-        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone) {
+        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type) {
             this.seq = seq;
             this.apps = apps;
             this.openDate = openDate;
@@ -208,6 +241,7 @@ public class Project {
             this.timeSlots = timeSlots;
             this.selectedTimeSlot = selectedTimeSlot;
             this.emergencyPhone = emergencyPhone;
+            this.type = type;
         }
 
         public long getSeq() {
@@ -296,6 +330,32 @@ public class Project {
 
         public void setEmergencyPhone(String emergencyPhone) {
             this.emergencyPhone = emergencyPhone;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return "Interview{" +
+                    "seq=" + seq +
+                    ", apps=" + apps +
+                    ", openDate=" + openDate +
+                    ", closeDate=" + closeDate +
+                    ", interviewDate=" + interviewDate +
+                    ", location='" + location + '\'' +
+                    ", locationDescription='" + locationDescription + '\'' +
+                    ", totalCount=" + totalCount +
+                    ", timeSlots=" + timeSlots +
+                    ", selectedTimeSlot='" + selectedTimeSlot + '\'' +
+                    ", emergencyPhone='" + emergencyPhone + '\'' +
+                    ", type='" + type + '\'' +
+                    '}';
         }
     }
 }

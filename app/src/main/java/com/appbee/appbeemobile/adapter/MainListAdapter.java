@@ -1,29 +1,32 @@
 package com.appbee.appbeemobile.adapter;
 
-import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.holder.ContentsListHeaderViewHolder;
+import com.appbee.appbeemobile.adapter.holder.InterviewListItemViewHolder;
 import com.appbee.appbeemobile.adapter.holder.ProjectListItemViewHolder;
 import com.appbee.appbeemobile.model.Project;
 
 import java.util.List;
 
+// TODO : 변경 필요 - 변경 포인트 : 헤더, 아이템뷰타입
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     static final int HEADER_VIEW_TYPE = 0;
-    static final int ITEM_VIEW_TYPE = 1;
+    public static final int PROJECT_ITEM_VIEW_TYPE = 1;
+    public static final int INTERVIEW_ITEM_VIEW_TYPE = 2;
 
     private final List<Project> projectList;
     private View headerView;
+    private int itemViewType;
 
-    public MainListAdapter(List<Project> projectList) {
+    public MainListAdapter(List<Project> projectList, int itemViewType) {
         this.projectList = projectList;
+        this.itemViewType = itemViewType;
     }
 
     public void setHeaderView(View headerView) {
@@ -38,14 +41,20 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == HEADER_VIEW_TYPE) {
             return new ContentsListHeaderViewHolder(headerView);
+        } else if (viewType == PROJECT_ITEM_VIEW_TYPE) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false);
+            return new ProjectListItemViewHolder(itemView, parent.getContext());
+        } else if (viewType == INTERVIEW_ITEM_VIEW_TYPE){
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false);
+            return new InterviewListItemViewHolder(itemView, parent.getContext());
         } else {
-            return new ProjectListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), parent.getContext());
+            throw new IllegalArgumentException("itemViewType is wrong!");
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return isHeader(position) ? HEADER_VIEW_TYPE : ITEM_VIEW_TYPE;
+        return isHeader(position) ? HEADER_VIEW_TYPE : itemViewType;
     }
 
     public Project getItem(int position) {
@@ -61,6 +70,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof ProjectListItemViewHolder) {
             Project project = projectList.get(position - 1);
             ((ProjectListItemViewHolder) holder).bind(project);
+        } else if (holder instanceof InterviewListItemViewHolder) {
+            Project project = projectList.get(position - 1);
+            ((InterviewListItemViewHolder) holder).bind(project);
         }
     }
 

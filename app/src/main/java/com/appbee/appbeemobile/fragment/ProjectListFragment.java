@@ -44,7 +44,7 @@ public class ProjectListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MainListAdapter mainListAdapter = new MainListAdapter(projectList);
+        MainListAdapter mainListAdapter = new MainListAdapter(projectList, MainListAdapter.PROJECT_ITEM_VIEW_TYPE);
 
         GridLayoutManager projectListLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         projectListLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {

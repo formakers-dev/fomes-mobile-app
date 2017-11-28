@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardPreventCornerOverlap="false"
+    android:foreground="@drawable/interview_item_background"
     app:cardCornerRadius="5dp"
     app:cardElevation="0dp"
-    tools:ignore="MissingPrefix"
-    android:foreground="@drawable/interview_item_background">
+    app:cardPreventCornerOverlap="false"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,11 +30,10 @@
             android:paddingStart="21dp">
 
             <TextView
-                android:id="@+id/project_tag"
+                android:id="@+id/project_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:text="텍스트를 치면 살아나는 캐릭터! 인공지능으로 나만의 웹툰을 만들고 공유해보세요."
                 android:textColor="@android:color/black"
                 android:textSize="15dp" />
 
@@ -43,13 +42,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:text="유어커스텀"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="12dp"
                 app:font="medium" />
 
             <TextView
-                android:id="@+id/project_introduce"
+                android:id="@+id/interview_similar_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -69,40 +67,40 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:layout_gravity="bottom"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/oepn_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/location_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:text="우면사업장"
+                android:gravity="center"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="11dp"
                 app:font="medium" />
 
-            <Button
-                android:id="@+id/favaorite_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/type_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:text="대면인터뷰"
+                android:gravity="center"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="11dp"
                 app:font="medium" />
 
-            <Button
-                android:id="@+id/clab_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/rewards_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:background="@android:color/transparent"
-                android:text="커피쿠폰"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="11dp"
                 app:font="medium" />

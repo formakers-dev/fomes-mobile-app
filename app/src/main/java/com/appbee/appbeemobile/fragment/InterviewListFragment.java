@@ -58,7 +58,7 @@ public class InterviewListFragment extends BaseFragment {
         ((TextView) headerView.findViewById(R.id.item_header_title)).setText(R.string.recommendation_apps_title);
         ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(R.string.recommendation_apps_subtitle);
 
-        MainListAdapter mainListAdapter = new MainListAdapter(interviewList);
+        MainListAdapter mainListAdapter = new MainListAdapter(interviewList, MainListAdapter.INTERVIEW_ITEM_VIEW_TYPE);
         mainListAdapter.setHeaderView(headerView);
 
         interviewListRecyclerView.setAdapter(mainListAdapter);
