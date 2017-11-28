@@ -1,9 +1,9 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
-import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -12,11 +12,11 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
-
-import java.util.function.Consumer;
+import com.bumptech.glide.Glide;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import rx.schedulers.Schedulers;
 
 public class LoadingActivity extends BaseActivity {
@@ -29,6 +29,9 @@ public class LoadingActivity extends BaseActivity {
 
     @Inject
     UserService userService;
+
+    @BindView(R.id.loading_imageview)
+    ImageView loadingImageView;
 
     private static final String TAG = LoadingActivity.class.getSimpleName();
 
@@ -43,6 +46,8 @@ public class LoadingActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        Glide.with(this).asGif().load(R.drawable.loading_bowl).into(loadingImageView);
 
         // TODO : Completable 로 변경 후 error처리 로직 변경
         userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()))
