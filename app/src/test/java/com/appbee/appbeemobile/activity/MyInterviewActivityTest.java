@@ -1,10 +1,13 @@
 package com.appbee.appbeemobile.activity;
 
+import android.content.Intent;
+
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -72,5 +75,15 @@ public class MyInterviewActivityTest extends ActivityTest {
         subject.findViewById(R.id.back_button).performClick();
 
         assertThat(shadowOf(subject).isFinishing()).isTrue();
+    }
+
+    @Test
+    public void onSelectProject호출시_해당프로젝트_상세조회_페이지로_이동한다() throws Exception {
+        subject.actionListener.onSelectProject("12345");
+
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedIntent.getComponent().getShortClassName()).isEqualTo(".activity.ProjectDetailActivity");
+        assertThat(nextStartedIntent.hasExtra(AppBeeConstants.EXTRA.PROJECT_ID));
+        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
     }
 }

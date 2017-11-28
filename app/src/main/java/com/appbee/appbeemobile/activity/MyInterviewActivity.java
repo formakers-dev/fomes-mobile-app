@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,6 +13,7 @@ import com.appbee.appbeemobile.adapter.RegisteredInterviewListAdapter;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import java.util.List;
 
@@ -58,13 +60,23 @@ public class MyInterviewActivity extends BaseActivity {
         dividerItemDecoration.setDrawable(getDrawable(R.drawable.line_divider));
         interviewRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper);
+        RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper, actionListener);
         interviewRecyclerView.setAdapter(registeredInterviewListAdapter);
     }
 
     @OnClick(R.id.back_button)
     public void onBackButtonClick() {
         super.onBackPressed();
+    }
+
+    ActionListener actionListener = projectId -> {
+        Intent intent = new Intent(MyInterviewActivity.this, ProjectDetailActivity.class);
+        intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
+        startActivity(intent);
+    };
+
+    public interface ActionListener {
+        void onSelectProject(String projectId);
     }
 }
 

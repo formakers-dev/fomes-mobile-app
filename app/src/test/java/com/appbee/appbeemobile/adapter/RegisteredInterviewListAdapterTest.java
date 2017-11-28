@@ -3,7 +3,7 @@ package com.appbee.appbeemobile.adapter;
 import android.widget.LinearLayout;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.activity.MyInterviewActivity;
 import com.appbee.appbeemobile.adapter.holder.RegisteredInterviewItemViewHolder;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
@@ -11,6 +11,8 @@ import com.appbee.appbeemobile.model.Project;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -20,26 +22,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class RegisteredInterviewListAdapterTest {
-
+    private static final int DECEMBER = 11, JANUARY = 0;
     private RegisteredInterviewListAdapter subject;
 
-    @Inject
-    TimeHelper mockTimeHelper;
+    @Mock
+    private TimeHelper mockTimeHelper;
+
+    @Mock
+    private MyInterviewActivity.ActionListener mockListener;
 
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
-
-        final int DECEMBER = 11, JANUARY = 0;
+        MockitoAnnotations.initMocks(this);
 
         Date mockToday = createMockDate(2017, DECEMBER, 29);
         when(mockTimeHelper.getCurrentTime()).thenReturn(mockToday.getTime());
@@ -55,7 +58,7 @@ public class RegisteredInterviewListAdapterTest {
         List<Project> projectList = new ArrayList<>();
         projectList.add(project);
 
-        subject = new RegisteredInterviewListAdapter(projectList, mockTimeHelper);
+        subject = new RegisteredInterviewListAdapter(projectList, mockTimeHelper, mockListener);
     }
 
     private Date createMockDate(int year, int month, int day) {
@@ -80,5 +83,16 @@ public class RegisteredInterviewListAdapterTest {
         assertThat(holder.emergencyPhone.getText()).isEqualTo("* 비상연락처 : 010-1234-5678");
     }
 
-    //TODO: D-Day 경과 시 미표시, 취소하기처리, 버튼 처리, 프로젝트 설명 다시보기 처리
+    @Test
+    public void 프로젝트_설명_다시보기_버튼을_클릭하면_인터뷰_상세페이지로_이동하는Listener에_프로젝트ID를_전달한다() throws Exception {
+        RegisteredInterviewItemViewHolder holder = subject.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 0);
+
+        subject.onBindViewHolder(holder, 0);
+
+        holder.showInterviewButton.performClick();
+
+        verify(mockListener).onSelectProject(eq("1"));
+    }
+
+    //TODO: 취소하기처리
 }

@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
@@ -15,6 +16,7 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
     public TextView interviewDateTextView;
     public TextView interviewLocation;
     public TextView emergencyPhone;
+    public Button showInterviewButton;
 
     public RegisteredInterviewItemViewHolder(View view) {
         super(view);
@@ -26,5 +28,6 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
         this.interviewDateTextView = (TextView) view.findViewById(R.id.interview_date);
         this.interviewLocation = (TextView) view.findViewById(R.id.interview_location);
         this.emergencyPhone = (TextView) view.findViewById(R.id.emergency_phone);
+        this.showInterviewButton = ((Button) view.findViewById(R.id.show_interview_button));
     }
 }
