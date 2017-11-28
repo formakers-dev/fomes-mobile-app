@@ -4,7 +4,7 @@
     android:id="@+id/interview_list_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
     android:nestedScrollingEnabled="true"
     android:layout_marginTop="10dp"/>

@@ -39,6 +39,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
             ((TextView) headerView.findViewById(R.id.item_header_title)).setText(headerTitle);
             ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(headerSubTitle);
+            headerView.findViewById(R.id.item_header_badge).setVisibility(View.VISIBLE);
             return new ContentsListHeaderViewHolder(headerView);
         } else {
             return new ProjectListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), parent.getContext());

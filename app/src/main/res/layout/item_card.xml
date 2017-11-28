@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:cardElevation="2dp"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:id="@+id/project_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/recommandation_app"/>
+                    android:src="@drawable/recommandation_app" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_alignParentBottom="true"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/oepn_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:text="잔소리 가능"/>
+                        android:text="잔소리 가능" />
+
                     <Button
                         android:id="@+id/favaorite_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:text="내 취향저격"/>
+                        android:text="내 취향저격" />
+
                     <Button
                         android:id="@+id/clab_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:text="전사 C-Lab"/>
+                        android:text="전사 C-Lab" />
 
                 </LinearLayout>
 
@@ -57,20 +63,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:orientation="vertical"
                 android:paddingBottom="10dp"
-                android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:orientation="vertical">
+                android:paddingStart="10dp"
+                android:paddingTop="10dp">
+
                 <TextView
                     android:id="@+id/project_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
                     android:layout_alignParentTop="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="# 지그재그 앱을 사용하시는 분의 의견을 구합니다"
-                    android:textColor="@color/appbee_gray"/>
+                    android:textColor="@color/appbee_gray" />
+
                 <TextView
                     android:id="@+id/project_name"
                     android:layout_width="match_parent"
@@ -78,15 +86,16 @@
                     android:layout_marginTop="10dp"
                     android:text="유어커스텀"
                     android:textSize="15dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/project_tag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="[쇼핑] 장농 속 잠든 옷, 커스텀으로 재탄생!"
-                    android:textSize="12dp"
-                    android:textColor="@color/appbee_yellow"/>
+                    android:textColor="@color/appbee_yellow"
+                    android:textSize="12dp" />
             </LinearLayout>
 
         </LinearLayout>
