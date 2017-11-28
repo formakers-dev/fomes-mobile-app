@@ -53,7 +53,7 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
         holder.interviewNameTextView.setText(String.format(context.getString(R.string.registered_interview_formated_title), project.getName()));
 
         int dDay = DateUtil.calDateDiff(timeHelper.getCurrentTime(), project.getInterview().getInterviewDate().getTime());
-        holder.interviewDDayTextView.setText(String.format(context.getString(R.string.registered_interview_d_day), dDay));
+        holder.interviewDDayTextView.setText(String.format(context.getString(R.string.d_day_text), dDay));
     }
 
     private void bindInterviewProgressFlow(RegisteredInterviewItemViewHolder holder, Project project) {
