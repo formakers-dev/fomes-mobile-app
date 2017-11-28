@@ -114,9 +114,9 @@ public class ProjectDetailActivityTest extends ActivityTest {
 
     @Test
     public void onPostCreate시_조회된_owner정보를_화면에_보여준다() throws Exception {
-        assertThat(subject.interviewerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.projectOwnerImage.com");
-        assertThat(subject.interviewerNameTextView.getText()).isEqualTo("프로젝트 담당자");
-        assertThat(subject.interviewerIntroduceTextView.getText()).contains("프로젝트 담당자 소개입니다");
+        assertThat(subject.ownerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.projectOwnerImage.com");
+        assertThat(subject.ownerNameTextView.getText()).isEqualTo("프로젝트 담당자");
+        assertThat(subject.ownerIntroduceTextView.getText()).contains("프로젝트 담당자 소개입니다");
     }
 
     @Test

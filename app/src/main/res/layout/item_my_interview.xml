@@ -62,55 +62,12 @@
             android:background="@android:color/transparent"/>
     </LinearLayout>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="62dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/interview_progress_background">
-
-        <TextView
-            android:id="@+id/interview_close_date"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textColor="@color/appbee_sky_blue"
-            tools:text="확정\n17.11.30" />
-
-        <View
-            android:layout_width="48dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_toStartOf="@id/interview_close_date"
-            android:background="@color/appbee_sky_blue" />
-
-        <TextView
-            android:id="@+id/interview_open_date"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="30dp"
-            android:layout_toStartOf="@id/interview_close_date"
-            android:gravity="center"
-            tools:text="신청\n17.11.30" />
-
-        <View
-            android:layout_width="48dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_toEndOf="@id/interview_close_date"
-            android:background="@color/appbee_gray" />
-
-        <TextView
-            android:id="@+id/interview_date"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="30dp"
-            android:layout_toEndOf="@id/interview_close_date"
-            android:gravity="center"
-            tools:text="완료\n17.11.30" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+        <include layout="@layout/interview_progress_layout" />
+    </FrameLayout>
 
     <TextView
         android:layout_width="match_parent"

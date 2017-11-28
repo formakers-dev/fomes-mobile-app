@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,136 +42,18 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/appbee_pale_gray"
-            android:orientation="vertical"
             android:paddingBottom="60dp"
             android:paddingTop="45dp">
 
-            <LinearLayout
+            <include
+                layout="@layout/interview_notice_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16.8dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="12.4dp"
-                    android:layout_height="9.3dp"
-                    android:src="@drawable/dialog_success_image" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10.8dp"
-                    android:text="@string/interview_notice_title1"
-                    android:textColor="@color/appbee_gray"
-                    android:textSize="13dp"
-                    app:font="medium" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/interview_notice_description1"
-                android:textColor="@color/appbee_warm_gray"
-                android:textSize="11dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="3dp"
-                android:text="@string/interview_notice_description2"
-                android:textColor="@color/appbee_warm_gray"
-                android:textSize="11dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16.8dp"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="12.4dp"
-                    android:layout_height="9.3dp"
-                    android:src="@drawable/dialog_success_image" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10.8dp"
-                    android:text="@string/interview_notice_title2"
-                    android:textColor="@color/appbee_gray"
-                    android:textSize="13dp"
-                    app:font="medium" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/interview_notice_description3"
-                android:textColor="@color/appbee_warm_gray"
-                android:textSize="11dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="3dp"
-                android:text="@string/interview_notice_description4"
-                android:textColor="@color/appbee_warm_gray"
-                android:textSize="11dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16.8dp"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="12.4dp"
-                    android:layout_height="9.3dp"
-                    android:src="@drawable/dialog_success_image" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10.8dp"
-                    android:text="@string/interview_notice_title3"
-                    android:textColor="@color/appbee_gray"
-                    android:textSize="13dp"
-                    app:font="medium" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/interview_notice_description5"
-                android:textColor="@color/appbee_warm_gray"
-                android:textSize="11dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="3dp"
-                android:text="@string/interview_notice_description6"
-                android:textColor="@color/appbee_warm_gray"
-                android:textSize="11dp" />
-        </LinearLayout>
+                android:layout_height="wrap_content" />
+        </FrameLayout>
     </LinearLayout>
 
 </ScrollView>

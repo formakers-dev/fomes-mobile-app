@@ -50,13 +50,13 @@ public class ProjectDetailActivity extends BaseActivity {
     ViewPager descriptionImageViewPager;
 
     @BindView(R.id.owner_photo)
-    ImageView interviewerPhotoImageView;
+    ImageView ownerPhotoImageView;
 
     @BindView(R.id.owner_name)
-    TextView interviewerNameTextView;
+    TextView ownerNameTextView;
 
     @BindView(R.id.interviewer_introduce)
-    TextView interviewerIntroduceTextView;
+    TextView ownerIntroduceTextView;
 
     private String projectId;
 
@@ -105,14 +105,14 @@ public class ProjectDetailActivity extends BaseActivity {
         if (ownerImage != null) {
             Glide.with(this).load(ownerImage.getUrl())
                     .apply(new RequestOptions().override(200, 200).circleCrop())
-                    .into(interviewerPhotoImageView);
-            interviewerPhotoImageView.setTag(R.string.tag_key_image_url, ownerImage.getUrl());
+                    .into(ownerPhotoImageView);
+            ownerPhotoImageView.setTag(R.string.tag_key_image_url, ownerImage.getUrl());
         } else {
-            interviewerPhotoImageView.setImageResource(R.mipmap.ic_launcher_app);
+            ownerPhotoImageView.setImageResource(R.mipmap.ic_launcher_app);
         }
 
-        interviewerNameTextView.setText(owner.getName());
-        interviewerIntroduceTextView.setText(owner.getIntroduce());
+        ownerNameTextView.setText(owner.getName());
+        ownerIntroduceTextView.setText(owner.getIntroduce());
     }
 
     @OnClick(R.id.back_button)

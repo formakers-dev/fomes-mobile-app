@@ -24,9 +24,9 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
         this.interviewNameTextView = (TextView) view.findViewById(R.id.interview_name);
         this.interviewDDayTextView = (TextView) view.findViewById(R.id.interview_d_day);
         this.interviewDateLocationTextView = (TextView) view.findViewById(R.id.interview_date_location);
-        this.interviewOpenDateTextView = (TextView) view.findViewById(R.id.interview_open_date);
-        this.interviewCloseDateTextView = (TextView) view.findViewById(R.id.interview_close_date);
-        this.interviewDateTextView = (TextView) view.findViewById(R.id.interview_date);
+        this.interviewOpenDateTextView = (TextView) view.findViewById(R.id.interview_progress_open_date);
+        this.interviewCloseDateTextView = (TextView) view.findViewById(R.id.interview_progress_close_date);
+        this.interviewDateTextView = (TextView) view.findViewById(R.id.interview_progress_date);
         this.interviewLocation = (TextView) view.findViewById(R.id.interview_location);
         this.emergencyPhone = (TextView) view.findViewById(R.id.emergency_phone);
         this.showInterviewButton = ((Button) view.findViewById(R.id.show_interview_button));

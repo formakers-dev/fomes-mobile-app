@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -56,11 +57,17 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.project_introduce)
     TextView projectIntroduceTextView;
 
+    @BindView(R.id.interview_type_textview)
+    TextView typeTextView;
+
     @BindView(R.id.interview_location)
     TextView locationTextView;
 
     @BindView(R.id.interview_date)
     TextView dateTextView;
+
+    @BindView(R.id.interview_duration)
+    TextView durationTextView;
 
     @BindView(R.id.interview_d_day)
     TextView dDayTextView;
@@ -73,6 +80,15 @@ public class InterviewDetailActivity extends BaseActivity {
 
     @BindView(R.id.interview_introduce)
     TextView interviewIntroduceTextView;
+
+    @BindView(R.id.owner_photo)
+    ImageView ownerPhotoImageView;
+
+    @BindView(R.id.owner_name)
+    TextView ownerNameTextView;
+
+    @BindView(R.id.interviewer_introduce)
+    TextView ownerIntroduceTextView;
 
     @BindView(R.id.submit_button_layout)
     LinearLayout submitButtonLayout;
@@ -113,23 +129,26 @@ public class InterviewDetailActivity extends BaseActivity {
     private void displayProject(Project project) {
         Project.Interview interview = project.getInterview();
 
-        displayProjectOverview(project);
-        displayInterviewSummary(interview);
-        displayProjectDetail(project);
-        displayProjectDetailPlans(project);
+        bindProjectOverview(project);
+        bindInterviewOverview(interview);
+        bindProjectDetail(project);
+        bindInterviewDetail(interview);
+        bindOwnerDetail(project.getOwner());
+        bindInterviewRequestLayout(project);
     }
 
-    private void displayProjectOverview(final Project project) {
+    private void bindProjectOverview(final Project project) {
         Glide.with(this)
                 .load(project.getImage().getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                 .into(representationImageView);
         representationImageView.setTag(R.string.tag_key_image_url, project.getImage().getUrl());
-        appsDescriptionTextView.setText(String.format(getString(R.string.apps_text), project.getInterview().getApps().get(0)));
+        appsDescriptionTextView.setText(String.format(getString(R.string.recommand_to_user_of_similar_app), project.getInterview().getApps().get(0)));
         projectNameTextView.setText(project.getName());
         projectIntroduceTextView.setText(project.getIntroduce());
     }
 
-    private void displayInterviewSummary(Project.Interview interview) {
+    private void bindInterviewOverview(Project.Interview interview) {
+        typeTextView.setText(interview.getType());
         locationTextView.setText(interview.getLocation());
         String interviewDate = FormatUtil.convertInputDateFormat(interview.getInterviewDate(), "MM/dd");
         String dayOfDay = DateUtil.getDayOfWeek(interview.getInterviewDate());
@@ -137,23 +156,46 @@ public class InterviewDetailActivity extends BaseActivity {
         dDayTextView.setText(String.format(getString(R.string.d_day_text), DateUtil.calDateDiff(timeHelper.getCurrentTime(), interview.getCloseDate().getTime())));
     }
 
-    private void displayProjectDetail(Project project) {
+    private void bindProjectDetail(Project project) {
         descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
         projectDescriptionTextView.setText(project.getDescription());
     }
 
-    private void displayProjectDetailPlans(Project project) {
+    private void bindInterviewRequestLayout(Project project) {
         detailPlansTitle.setText(String.format(getString(R.string.interview_detail_plans_title_format), project.getName()));
         String interviewDate = FormatUtil.convertInputDateFormat(project.getInterview().getInterviewDate(), "M월 d일");
         String dayOfDay = DateUtil.getDayOfWeek(project.getInterview().getInterviewDate());
         detailPlansDescription.setText(String.format(getString(R.string.interview_detail_plans_description_format), interviewDate, dayOfDay, project.getInterview().getLocation()));
 
-
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         detailPlansRecyclerView.setLayoutManager(horizontalLayoutManager);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.interview_time_slot_divider, null));
+        detailPlansRecyclerView.addItemDecoration(dividerItemDecoration);
+
         DetailPlansAdapter detailPlansAdapter = new DetailPlansAdapter(project.getInterview().getTimeSlots());
         detailPlansRecyclerView.setAdapter(detailPlansAdapter);
+    }
+
+    private void bindOwnerDetail(Project.Person owner) {
+        Project.ImageObject ownerImage = owner.getImage();
+
+        if (ownerImage != null) {
+            Glide.with(this).load(ownerImage.getUrl())
+                    .apply(new RequestOptions().override(200, 200).circleCrop())
+                    .into(ownerPhotoImageView);
+            ownerPhotoImageView.setTag(R.string.tag_key_image_url, ownerImage.getUrl());
+        } else {
+            ownerPhotoImageView.setImageResource(R.mipmap.ic_launcher_app);
+        }
+
+        ownerNameTextView.setText(owner.getName());
+        ownerIntroduceTextView.setText(owner.getIntroduce());
+    }
+
+    private void bindInterviewDetail(Project.Interview interview) {
+//        interviewIntroduceTextView.setText(interview.get);
     }
 
     @OnClick(R.id.back_button)
