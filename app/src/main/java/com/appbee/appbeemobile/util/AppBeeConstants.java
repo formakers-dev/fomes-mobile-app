@@ -4,12 +4,6 @@ public interface AppBeeConstants {
 
     String[] POPULAR_APPS = {"com.nhn.android.search", "com.kakao.talk", "com.google.android.gm"};
 
-    interface API_RESPONSE_CODE {
-//        String UNAUTHORIZED = "401";
-//        String FORBIDDEN = "403";
-        int NOTFOUND = 404;
-    }
-
     interface EXTRA {
         String PROJECT_ID = "EXTRA_PROJECT_ID";
         String INTERVIEW_SEQ = "EXTRA_INTERVIEW_SEQ";

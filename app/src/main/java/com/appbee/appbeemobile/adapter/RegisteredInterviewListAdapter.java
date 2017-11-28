@@ -58,12 +58,9 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
 
     private void bindInterviewProgressFlow(RegisteredInterviewItemViewHolder holder, Project project) {
         String interviewDateString = FormatUtil.toShortDateFormat(project.getInterview().getInterviewDate());
-        String interviewTimeString = project.getInterview().getSelectedTimeSlot().substring(4);
-        if(interviewTimeString.length() == 1) {
-            interviewTimeString = "0" + interviewTimeString;
-        }
+        int interviewTime = Integer.parseInt(project.getInterview().getSelectedTimeSlot().substring(4));
 
-        holder.interviewDateLocationTextView.setText(String.format(context.getString(R.string.registered_interview_date_location), interviewDateString, project.getInterview().getLocation(), interviewTimeString));
+        holder.interviewDateLocationTextView.setText(String.format(context.getString(R.string.registered_interview_date_location), interviewDateString, project.getInterview().getLocation(), interviewTime));
         holder.interviewOpenDateTextView.setText(String.format(context.getString(R.string.registered_interview_open_date), FormatUtil.toLongDateFormat(project.getInterview().getOpenDate())));
         holder.interviewCloseDateTextView.setText(String.format(context.getString(R.string.registered_interview_close_date), FormatUtil.toLongDateFormat(project.getInterview().getCloseDate())));
         holder.interviewDateTextView.setText(String.format(context.getString(R.string.registered_interview_complete_date), FormatUtil.toLongDateFormat(project.getInterview().getInterviewDate())));
@@ -73,6 +70,7 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
         holder.interviewLocation.setText(String.format(context.getString(R.string.registered_interview_location), project.getInterview().getLocation(), project.getInterview().getLocationDescription()));
         holder.emergencyPhone.setText(String.format(context.getString(R.string.registered_interview_emergency_phone), project.getInterview().getEmergencyPhone()));
         holder.showInterviewButton.setOnClickListener(v -> listener.onSelectProject(project.getProjectId()));
+        holder.cancelInterviewButton.setOnClickListener(v -> listener.onRequestToCancelInterview(project.getProjectId(), project.getInterview().getSeq()));
     }
 
     @Override

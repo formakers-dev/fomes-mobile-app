@@ -57,6 +57,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity android:name=".activity.MyInterviewActivity" />
+        <activity android:name=".activity.CancelInterviewActivity" />
     </application>
 
 </manifest>

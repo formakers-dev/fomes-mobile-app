@@ -16,6 +16,7 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
     public TextView interviewDateTextView;
     public TextView interviewLocation;
     public TextView emergencyPhone;
+    public Button cancelInterviewButton;
     public Button showInterviewButton;
 
     public RegisteredInterviewItemViewHolder(View view) {
@@ -29,5 +30,6 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
         this.interviewLocation = (TextView) view.findViewById(R.id.interview_location);
         this.emergencyPhone = (TextView) view.findViewById(R.id.emergency_phone);
         this.showInterviewButton = ((Button) view.findViewById(R.id.show_interview_button));
+        this.cancelInterviewButton = ((Button) view.findViewById(R.id.interview_cancel_button));
     }
 }

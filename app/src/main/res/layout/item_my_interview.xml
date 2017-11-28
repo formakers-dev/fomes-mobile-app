@@ -51,14 +51,15 @@
             app:font="medium"
             tools:text="12월 11일 (월) 우면사업장 15:00" />
 
-        <TextView
+        <Button
             android:id="@+id/interview_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="@string/cancel_button"
             android:textColor="@color/appbee_warm_gray"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <RelativeLayout

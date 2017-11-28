@@ -83,7 +83,16 @@ public class MyInterviewActivityTest extends ActivityTest {
 
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedIntent.getComponent().getShortClassName()).isEqualTo(".activity.ProjectDetailActivity");
-        assertThat(nextStartedIntent.hasExtra(AppBeeConstants.EXTRA.PROJECT_ID));
         assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
+    }
+
+    @Test
+    public void onRequestToCancelProject호출시_인터뷰취소요청페이지로_이동한다() throws Exception {
+        subject.actionListener.onRequestToCancelInterview("12345", 11L);
+
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedIntent.getComponent().getShortClassName()).isEqualTo(".activity.CancelInterviewActivity");
+        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
+        assertThat(nextStartedIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(11L);
     }
 }
