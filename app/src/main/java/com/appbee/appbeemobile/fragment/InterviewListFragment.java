@@ -27,7 +27,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class InterviewListFragment extends BaseFragment {
 
-    @BindView(R.id.interview_list_recycler_view)
+    @BindView(R.id.main_list_recycler_view)
     RecyclerView interviewListRecyclerView;
 
     @Inject
@@ -39,7 +39,7 @@ public class InterviewListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((AppBeeApplication) getActivity().getApplication()).getComponent().inject(this);
-        return inflater.inflate(R.layout.fragment_interview_list, container, false);
+        return inflater.inflate(R.layout.fragment_main_list, container, false);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class InterviewListFragment extends BaseFragment {
         interviewListRecyclerView.setLayoutManager(interviewLayoutManger);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.blank_divier, null));
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.interview_list_divider, null));
         interviewListRecyclerView.addItemDecoration(dividerItemDecoration);
 
         View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_header, interviewListRecyclerView, false);

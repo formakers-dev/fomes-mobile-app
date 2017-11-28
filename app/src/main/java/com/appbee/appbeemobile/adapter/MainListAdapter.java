@@ -42,10 +42,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (viewType == HEADER_VIEW_TYPE) {
             return new ContentsListHeaderViewHolder(headerView);
         } else if (viewType == PROJECT_ITEM_VIEW_TYPE) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_item_card, parent, false);
             return new ProjectListItemViewHolder(itemView, parent.getContext());
         } else if (viewType == INTERVIEW_ITEM_VIEW_TYPE){
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.interview_item_card, parent, false);
             return new InterviewListItemViewHolder(itemView, parent.getContext());
         } else {
             throw new IllegalArgumentException("itemViewType is wrong!");

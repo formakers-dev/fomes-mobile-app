@@ -14,6 +14,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.MainListAdapter;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.view.decorator.ContentDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class ProjectListFragment extends BaseFragment {
 
-    @BindView(R.id.project_list_recycler_view)
+    @BindView(R.id.main_list_recycler_view)
     RecyclerView projectListRecyclerView;
 
     @Inject
@@ -37,7 +38,7 @@ public class ProjectListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((AppBeeApplication) getActivity().getApplication()).getComponent().inject(this);
-        return inflater.inflate(R.layout.fragment_project_list, container, false);
+        return inflater.inflate(R.layout.fragment_main_list, container, false);
     }
 
     @Override
@@ -45,6 +46,10 @@ public class ProjectListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         MainListAdapter mainListAdapter = new MainListAdapter(projectList, MainListAdapter.PROJECT_ITEM_VIEW_TYPE);
+
+        ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.GRID);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.project_list_divider, null));
+        projectListRecyclerView.addItemDecoration(dividerItemDecoration);
 
         GridLayoutManager projectListLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         projectListLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -58,6 +63,7 @@ public class ProjectListFragment extends BaseFragment {
         View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_header, projectListRecyclerView, false);
         ((TextView) headerView.findViewById(R.id.item_header_title)).setText(R.string.project_list_header_title);
         ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(R.string.project_list_header_subtitle);
+        headerView.findViewById(R.id.item_header_badge).setVisibility(View.VISIBLE);
         mainListAdapter.setHeaderView(headerView);
 
         projectListRecyclerView.setAdapter(mainListAdapter);
