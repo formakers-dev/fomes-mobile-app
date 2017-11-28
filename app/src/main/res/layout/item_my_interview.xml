@@ -1,85 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingEnd="25dp"
+    android:paddingStart="25dp"
+    android:paddingTop="20dp"
+    tools:ignore="MissingPrefix">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/interview_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="툰스토리 유저 인터뷰"/>
+            android:textColor="@color/appbee_warm_gray"
+            android:textSize="14dp"
+            app:font="medium"
+            tools:text="툰스토리 유저 인터뷰" />
+
         <TextView
             android:id="@+id/interview_d_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="D-1"/>
+            android:layout_marginStart="10dp"
+            android:textColor="@color/appbee_sky_blue"
+            android:textSize="14dp"
+            app:font="medium"
+            tools:text="D-1" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/interview_date_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="12월 11일 (월) 우면사업장 15:00"/>
-        <Button
+            android:textColor="@color/appbee_gray"
+            android:textSize="18dp"
+            app:font="medium"
+            tools:text="12월 11일 (월) 우면사업장 15:00" />
+
+        <TextView
             android:id="@+id/interview_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="취소하기"/>
+            android:layout_marginStart="15dp"
+            android:text="@string/cancel_button"
+            android:textColor="@color/appbee_warm_gray"
+            android:textSize="12dp" />
     </LinearLayout>
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/interview_open_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="신청\n17.11.30"/>
-        <View
-            android:layout_width="30dp"
-            android:layout_height="1dp"
-            android:background="@color/appbee_gray"/>
+        android:layout_height="62dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/interview_progress_background">
+
         <TextView
             android:id="@+id/interview_close_date"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            tools:text="확정\n17.11.30"/>
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/appbee_sky_blue"
+            tools:text="확정\n17.11.30" />
+
         <View
-            android:layout_width="30dp"
+            android:layout_width="48dp"
             android:layout_height="1dp"
-            android:background="@color/appbee_gray"/>
+            android:layout_marginTop="20dp"
+            android:layout_toStartOf="@id/interview_close_date"
+            android:background="@color/appbee_sky_blue" />
+
+        <TextView
+            android:id="@+id/interview_open_date"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
+            android:layout_toStartOf="@id/interview_close_date"
+            android:gravity="center"
+            tools:text="신청\n17.11.30" />
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/interview_close_date"
+            android:background="@color/appbee_gray" />
+
         <TextView
             android:id="@+id/interview_date"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            tools:text="완료\n17.11.30"/>
-    </LinearLayout>
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/interview_close_date"
+            android:gravity="center"
+            tools:text="완료\n17.11.30" />
+    </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="* 확정 후 취소 / 노쇼 / 지각은 패널티가 부과될 수 있습니다."/>
+        android:layout_marginTop="15dp"
+        android:text="@string/cancel_penalty"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp" />
+
     <TextView
         android:id="@+id/interview_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="* 인터뷰 위치 : 우면사업장 C동 1층 107호 회의실\n"/>
+        android:layout_marginTop="3dp"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp"
+        tools:text="* 인터뷰 위치 : 우면사업장 C동 1층 107호 회의실\n" />
+
     <TextView
         android:id="@+id/emergency_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="* 비상연락처 : 010-1234-5678"/>
+        android:layout_marginTop="3dp"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp"
+        tools:text="* 비상연락처 : 010-1234-5678" />
+
     <Button
         android:id="@+id/show_interview_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="프로젝트 설명 다시 보기"/>
+        android:layout_marginTop="21dp"
+        android:background="@drawable/yellow_button"
+        android:text="@string/show_project_information_button"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="16dp" />
 
 </LinearLayout>

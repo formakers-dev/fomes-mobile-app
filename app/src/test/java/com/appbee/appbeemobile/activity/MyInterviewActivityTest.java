@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -39,12 +41,12 @@ public class MyInterviewActivityTest extends ActivityTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         subject = Robolectric.buildActivity(MyInterviewActivity.class).create().get();
+
+        when(projectService.getRegisteredInterviews()).thenReturn(Observable.just(null));
     }
 
     @Test
     public void onPostCreate호출시_신청한인터뷰목록조회API를_호출한다() throws Exception {
-        when(projectService.getRegisteredInterviews()).thenReturn(Observable.just(null));
-
         subject.onPostCreate(null);
 
         verify(projectService).getRegisteredInterviews();
@@ -61,5 +63,14 @@ public class MyInterviewActivityTest extends ActivityTest {
         subject.onPostCreate(null);
 
         assertThat(subject.interviewRecyclerView.getAdapter().getItemCount()).isEqualTo(2);
+    }
+
+    @Test
+    public void backButton클릭시_메인화면으로_이동한다() throws Exception {
+        subject.onPostCreate(null);
+
+        subject.findViewById(R.id.back_button).performClick();
+
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 }

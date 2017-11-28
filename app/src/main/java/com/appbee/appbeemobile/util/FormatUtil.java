@@ -2,11 +2,9 @@ package com.appbee.appbeemobile.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class FormatUtil {
-    private static final String EMPTY_STRING = "";
     private static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("M월 d일 (E)", Locale.KOREA);
     private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yy.M.d (E)", Locale.KOREA);
 
