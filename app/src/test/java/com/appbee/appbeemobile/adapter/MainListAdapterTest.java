@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.adapter;
 
+import android.view.View;
+
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.model.Project;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -36,7 +39,8 @@ public class MainListAdapterTest {
         mockProjectList.add(new Project("projectId2", "릴루미노2", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)2", imageObject, "안녕하세요 릴루미노팀입니다.2", imageObjectList, owner, "registered"));
 
 
-        subject = new MainListAdapter(mockProjectList, R.string.recommendation_apps_title, R.string.recommendation_apps_subtitle, false);
+        subject = new MainListAdapter(mockProjectList);
+        subject.setHeaderView(mock(View.class));
     }
 
     @Test

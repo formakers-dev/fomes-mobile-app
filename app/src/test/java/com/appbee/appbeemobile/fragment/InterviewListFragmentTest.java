@@ -2,7 +2,7 @@ package com.appbee.appbeemobile.fragment;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.InterviewListAdapter;
+import com.appbee.appbeemobile.adapter.MainListAdapter;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 
@@ -59,7 +59,7 @@ public class InterviewListFragmentTest {
 
     @Test
     public void onPostCreate시_당신의참여를기다리는프로젝트를_표시하기위한_Adapter를_매핑한다() throws Exception {
-        assertThat(subject.interviewListRecyclerView.getAdapter().getClass().getSimpleName()).contains(InterviewListAdapter.class.getSimpleName());
+        assertThat(subject.interviewListRecyclerView.getAdapter().getClass().getSimpleName()).contains(MainListAdapter.class.getSimpleName());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class InterviewListFragmentTest {
         controller.resume();
 
         verify(mockProjectService).getAllInterviews();
-        InterviewListAdapter interviewListAdapter = (InterviewListAdapter) subject.interviewListRecyclerView.getAdapter();
+        MainListAdapter interviewListAdapter = (MainListAdapter) subject.interviewListRecyclerView.getAdapter();
         assertThat(interviewListAdapter.getItemCount()).isEqualTo(3);
         assertThat(interviewListAdapter.getItem(1)).isEqualTo(mockProjectList.get(0));
         assertThat(interviewListAdapter.getItem(2)).isEqualTo(mockProjectList.get(1));

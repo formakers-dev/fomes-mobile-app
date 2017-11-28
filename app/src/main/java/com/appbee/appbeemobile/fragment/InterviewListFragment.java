@@ -2,17 +2,20 @@ package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.MainListAdapter;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.view.decorator.ContentDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +49,19 @@ public class InterviewListFragment extends BaseFragment {
         LinearLayoutManager interviewLayoutManger = new LinearLayoutManager(getActivity());
         interviewLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         interviewListRecyclerView.setLayoutManager(interviewLayoutManger);
-        interviewListRecyclerView.setAdapter(new MainListAdapter(interviewList, R.string.recommendation_apps_title, R.string.recommendation_apps_subtitle, false));
+
+        ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.blank_divier, null));
+        interviewListRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_header, interviewListRecyclerView, false);
+        ((TextView) headerView.findViewById(R.id.item_header_title)).setText(R.string.recommendation_apps_title);
+        ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(R.string.recommendation_apps_subtitle);
+
+        MainListAdapter mainListAdapter = new MainListAdapter(interviewList);
+        mainListAdapter.setHeaderView(headerView);
+
+        interviewListRecyclerView.setAdapter(mainListAdapter);
     }
 
     @Override

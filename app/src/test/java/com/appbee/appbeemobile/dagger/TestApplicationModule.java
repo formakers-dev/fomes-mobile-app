@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.dagger;
 import android.content.Context;
 
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.adapter.InterviewListAdapter;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
@@ -137,10 +136,4 @@ public class TestApplicationModule {
         return mock(GoogleSignInAPIHelper.class);
     }
 
-
-    @Singleton
-    @Provides
-    InterviewListAdapter recommendationAppsAdapter() {
-        return mock(InterviewListAdapter.class);
-    }
 }

@@ -20,15 +20,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     static final int ITEM_VIEW_TYPE = 1;
 
     private final List<Project> projectList;
-    private final @StringRes int headerTitle;
-    private final @StringRes int headerSubTitle;
-    private final boolean isHeaderVisible;
+    private View headerView;
 
-    public MainListAdapter(List<Project> projectList, int headerTitle, int headerSubTitle, boolean isHeaderVisible) {
+    public MainListAdapter(List<Project> projectList) {
         this.projectList = projectList;
-        this.headerTitle = headerTitle;
-        this.headerSubTitle = headerSubTitle;
-        this.isHeaderVisible = isHeaderVisible;
+    }
+
+    public void setHeaderView(View headerView) {
+        this.headerView = headerView;
     }
 
     public boolean isHeader(int position) {
@@ -38,10 +37,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == HEADER_VIEW_TYPE) {
-            View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
-            ((TextView) headerView.findViewById(R.id.item_header_title)).setText(headerTitle);
-            ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(headerSubTitle);
-            headerView.findViewById(R.id.item_header_badge).setVisibility(isHeaderVisible ? View.VISIBLE : View.GONE);
             return new ContentsListHeaderViewHolder(headerView);
         } else {
             return new ProjectListItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false), parent.getContext());
