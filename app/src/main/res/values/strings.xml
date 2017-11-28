@@ -85,5 +85,13 @@
     <string name="rewards_coffee_coupon">커피 쿠폰</string>
     <string name="introduce_my_project">저희 프로젝트를 소개합니다.</string>
     <string name="project_owner">창작자</string>
+    <string name="registered_interview_formated_title">%s 유저 인터뷰</string>
+    <string name="registered_interview_d_day">D-%d</string>
+    <string name="registered_interview_date_location">%1$s %2$s %3$s:00</string>
+    <string name="registered_interview_open_date">신청\n%s</string>
+    <string name="registered_interview_close_date">확정\n%s</string>
+    <string name="registered_interview_complete_date">완료\n%s</string>
+    <string name="registered_interview_location">* 인터뷰 위치 : %1$s %2$s</string>
+    <string name="registered_interview_emergency_phone">* 비상연락처 : %s</string>
 
 </resources>
