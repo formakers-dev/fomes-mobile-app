@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
@@ -57,12 +56,6 @@ public class MainActivityTest extends ActivityTest {
     @Test
     public void onPostCreate시_메뉴에_사용자의_아이디가_포맷에_맞게_보여진다() throws Exception {
         assertThat(subject.userIdTextView.getText()).isEqualTo("anyEmail");
-    }
-
-    @Test
-    public void onPostCreate시_3페이지를_갖는_배너가_나타난다() throws Exception {
-        assertThat(subject.titleBannerViewPager.getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.titleBannerViewPager.getAdapter().getCount()).isEqualTo(3);
     }
 
     @Test

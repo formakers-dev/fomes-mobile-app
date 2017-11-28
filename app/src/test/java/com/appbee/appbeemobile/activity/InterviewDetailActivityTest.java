@@ -56,7 +56,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class InterviewDetailActivityTest {
+public class InterviewDetailActivityTest extends ActivityTest {
     private InterviewDetailActivity subject;
 
     @Inject

@@ -38,7 +38,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class CodeVerificationActivityTest {
+public class CodeVerificationActivityTest extends ActivityTest {
 
     @Inject
     UserService mockUserService;
