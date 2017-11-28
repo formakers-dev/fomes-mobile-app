@@ -12,4 +12,15 @@
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MainTabTheme" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/appbee_yellow</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabTextAppearance">@style/MainTabTheme.TextAppearance</item>
+    </style>
+
+    <style name="MainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/appbee_gray</item>
+        <item name="textAllCaps">true</item>
+    </style>
 </resources>
