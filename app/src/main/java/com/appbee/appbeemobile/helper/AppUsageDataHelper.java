@@ -11,7 +11,6 @@ import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.DateUtil;
-import com.appbee.appbeemobile.util.FormatUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +96,7 @@ public class AppUsageDataHelper {
     }
 
     public void sendShortTermStatAndAppUsages(SendDataCallback callback) {
-        final int currentDate = Integer.parseInt(FormatUtil.getDateFromTimestamp(timeHelper.getCurrentTime()));
+        final int currentDate = Integer.parseInt(DateUtil.getDateFromTimestamp(timeHelper.getCurrentTime()));
         appRepositoryHelper.deleteAppUsages(DateUtil.calBeforeDate(currentDate, 30));
 
         final long lastUpdateStatTimestamp = localStorageHelper.getLastUpdateStatTimestamp();
@@ -130,20 +129,21 @@ public class AppUsageDataHelper {
         for (ShortTermStat shortTermStat : shortTermStatList) {
             StatKey key;
             if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 0) {
-                key = new StatKey(shortTermStat.getPackageName(), FormatUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp()));
+                key = new StatKey(shortTermStat.getPackageName(), DateUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp()));
                 mergeTotalUsedTimeByStatKey(map, key, shortTermStat.getTotalUsedTime());
             } else if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 1) {
-                String startDate = FormatUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp());
-                String endDate = FormatUtil.getDateFromTimestamp(shortTermStat.getEndTimeStamp());
+                String startDate = DateUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp());
+                String endDate = DateUtil.getDateFromTimestamp(shortTermStat.getEndTimeStamp());
 
                 key = new StatKey(shortTermStat.getPackageName(), startDate);
-                long firstTotalUsedTime = FormatUtil.getTimestampFromDate(endDate) - shortTermStat.getStartTimeStamp();
+                long firstTotalUsedTime = DateUtil.getTimestampFromDate(endDate) - shortTermStat.getStartTimeStamp();
                 mergeTotalUsedTimeByStatKey(map, key, firstTotalUsedTime);
 
                 key = new StatKey(shortTermStat.getPackageName(), endDate);
                 long secondTotalUsedTime = shortTermStat.getTotalUsedTime() - firstTotalUsedTime;
                 mergeTotalUsedTimeByStatKey(map, key, secondTotalUsedTime);
             }
+            // FIXME : 시작일 ~ 종료일 1일 초과인 경우 처리
         }
 
         for (StatKey statKey : map.keySet()) {

@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,12 +21,10 @@ import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.util.DateUtil;
 import com.appbee.appbeemobile.util.FormatUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
-import java.text.ParseException;
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -135,9 +132,9 @@ public class InterviewDetailActivity extends BaseActivity {
     private void displayInterviewSummary(Project.Interview interview) {
         locationTextView.setText(interview.getLocation());
         String interviewDate = FormatUtil.convertInputDateFormat(interview.getInterviewDate(), "MM/dd");
-        String dayOfDay = FormatUtil.getDayOfWeek(interview.getInterviewDate());
+        String dayOfDay = DateUtil.getDayOfWeek(interview.getInterviewDate());
         dateTextView.setText(String.format(getString(R.string.interview_date_text), interviewDate, dayOfDay));
-        dDayTextView.setText(String.format(getString(R.string.d_day_text), getDDayFromNow(interview.getCloseDate())));
+        dDayTextView.setText(String.format(getString(R.string.d_day_text), DateUtil.calDateDiff(timeHelper.getCurrentTime(), interview.getCloseDate().getTime())));
     }
 
     private void displayProjectDetail(Project project) {
@@ -148,7 +145,7 @@ public class InterviewDetailActivity extends BaseActivity {
     private void displayProjectDetailPlans(Project project) {
         detailPlansTitle.setText(String.format(getString(R.string.interview_detail_plans_title_format), project.getName()));
         String interviewDate = FormatUtil.convertInputDateFormat(project.getInterview().getInterviewDate(), "M월 d일");
-        String dayOfDay = FormatUtil.getDayOfWeek(project.getInterview().getInterviewDate());
+        String dayOfDay = DateUtil.getDayOfWeek(project.getInterview().getInterviewDate());
         detailPlansDescription.setText(String.format(getString(R.string.interview_detail_plans_description_format), interviewDate, dayOfDay, project.getInterview().getLocation()));
 
 
@@ -157,23 +154,6 @@ public class InterviewDetailActivity extends BaseActivity {
 
         DetailPlansAdapter detailPlansAdapter = new DetailPlansAdapter(project.getInterview().getTimeSlots());
         detailPlansRecyclerView.setAdapter(detailPlansAdapter);
-    }
-
-    private int getDDayFromNow(@NonNull Date closeDate) {
-        int dDay = 0;
-
-        try {
-            String today = FormatUtil.INPUT_DATE_FORMAT.format(timeHelper.getCurrentTime());
-            Date todayDate = FormatUtil.INPUT_DATE_FORMAT.parse(today);
-
-            if (todayDate.compareTo(closeDate) < 0) {
-                dDay = (int) ((closeDate.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return dDay;
     }
 
     @OnClick(R.id.back_button)
