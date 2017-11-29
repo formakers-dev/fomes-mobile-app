@@ -115,5 +115,7 @@
     <string name="dialog_cancel_message">확정 후 취소하셨기 때문에\n패널티가 있을 수 있습니다.</string>
     <string name="cancel_interview_name_status">%1$s 유저인터뷰 : %2$s</string>
     <string name="cancel_interview_date_location">%1$s %2$s %3$02d:00</string>
+    <string name="rewards_starbucks">스벅 쿠폰 3만원</string>
+    <string name="interview_duration_40_mins">약 40분</string>
 
 </resources>

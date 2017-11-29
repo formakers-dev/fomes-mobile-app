@@ -11,9 +11,11 @@
         android:id="@+id/scroll_view_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -185,7 +187,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
-                            android:text="스벅 쿠폰 3만원"
+                            android:text="@string/rewards_starbucks"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
                             app:font="medium" />
@@ -255,15 +257,14 @@
                             android:textSize="12dp" />
 
                         <TextView
-                            android:id="@+id/interview_duration"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
+                            android:text="@string/interview_duration_40_mins"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
-                            app:font="medium"
-                            tools:text="우면사업장" />
+                            app:font="medium" />
                     </LinearLayout>
 
                     <View
@@ -328,23 +329,25 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginBottom="41dp"
                         android:layout_marginEnd="98dp"
                         android:layout_marginStart="98dp"
                         android:layout_marginTop="3dp"
                         android:background="@color/appbee_gray" />
 
-                    <VideoView
+                    <FrameLayout
+                        android:id="@+id/project_video_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="41dp" />
+                        android:layout_marginBottom="54dp"
+                        android:visibility="gone" />
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/description_image"
                         android:layout_width="match_parent"
                         android:layout_height="270dp"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="54dp" />
+                        android:layout_marginStart="20dp" />
 
                     <TextView
                         android:id="@+id/project_description"
@@ -409,11 +412,11 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/owner_photo"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:src="@drawable/project_owner_default_image" />
+                        <ImageView
+                            android:id="@+id/owner_photo"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/project_owner_default_image" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -502,7 +505,6 @@
 
         </ScrollView>
     </FrameLayout>
-
 
 
     <LinearLayout
