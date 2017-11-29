@@ -42,6 +42,9 @@ public class RegisteredInterviewListAdapterTest {
 
     private RegisteredInterviewItemViewHolder holder;
 
+    private Date mockInterviewDate1;
+    private Date mockInterviewDate2;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -49,16 +52,18 @@ public class RegisteredInterviewListAdapterTest {
         Date mockToday = createMockDate(2017, DECEMBER, 29);
         when(mockTimeHelper.getCurrentTime()).thenReturn(mockToday.getTime());
 
-        Date interviewDate = createMockDate(2018, JANUARY, 12);
+        mockInterviewDate1 = createMockDate(2018, JANUARY, 12);
         Date openDate = createMockDate(2017, DECEMBER, 1);
         Date closeDate = createMockDate(2017, DECEMBER, 31);
 
         Project.Person owner = new Project.Person("김앱비", null, "");
 
-        Project.Interview interview1 = new Project.Interview(11L, null, interviewDate, openDate, closeDate, "우면사업장", "C동 1층 107호 회의실", 0, null, "time15", "010-1234-5678", "오프라인");
+        Project.Interview interview1 = new Project.Interview(11L, null, mockInterviewDate1, openDate, closeDate, "우면사업장", "C동 1층 107호 회의실", 0, null, "time15", "010-1234-5678", "오프라인");
         Project project1 = new Project("12345", "툰스토리", "", null, "", null, owner, "", interview1);
 
-        Project.Interview interview2 = new Project.Interview(22L, null, createMockDate(2017, DECEMBER, 30), createMockDate(2017, DECEMBER, 28), createMockDate(2017, DECEMBER, 29), "수원사업장", "5층 회의실", 5, null, "time8", "010-1111-2222", "온라인");
+        mockInterviewDate2 = createMockDate(2017, DECEMBER, 30);
+
+        Project.Interview interview2 = new Project.Interview(22L, null, mockInterviewDate2, createMockDate(2017, DECEMBER, 28), createMockDate(2017, DECEMBER, 29), "수원사업장", "5층 회의실", 5, null, "time8", "010-1111-2222", "온라인");
         Project project2 = new Project("67890", "토토", "", null, "", null, owner, "", interview2);
 
         List<Project> projectList = new ArrayList<>();
@@ -105,10 +110,12 @@ public class RegisteredInterviewListAdapterTest {
     public void 취소하기_버튼을_클릭하면_ActionListener의_onRequestToCancelInterview에_프로젝트ID를_전달한다() throws Exception {
         subject.onBindViewHolder(holder, 0);
         holder.cancelInterviewButton.performClick();
-        verify(mockListener).onRequestToCancelInterview(eq("12345"), eq(11L));
+        verify(mockListener).onRequestToCancelInterview(eq("12345"), eq(11L), eq("time15"), eq("툰스토리"), eq(""), eq(mockInterviewDate1), eq("우면사업장"));
 
         subject.onBindViewHolder(holder, 1);
         holder.cancelInterviewButton.performClick();
-        verify(mockListener).onRequestToCancelInterview(eq("67890"), eq(22L));
+        verify(mockListener).onRequestToCancelInterview(eq("67890"), eq(22L), eq("time8"), eq("토토"), eq(""), eq(mockInterviewDate2), eq("수원사업장"));
+
+        // TODO : 인터뷰 상태 처리하여 전달달
     }
 }

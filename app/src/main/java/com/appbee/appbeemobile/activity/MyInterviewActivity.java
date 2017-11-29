@@ -17,6 +17,7 @@ import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -90,10 +91,15 @@ public class MyInterviewActivity extends BaseActivity {
         }
 
         @Override
-        public void onRequestToCancelInterview(String projectId, long interviewSeq) {
+        public void onRequestToCancelInterview(String projectId, long interviewSeq, String timeSlot, String projectName, String interviewStatus, Date interviewDate, String location) {
             Intent intent = new Intent(MyInterviewActivity.this, CancelInterviewActivity.class);
             intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
             intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
+            intent.putExtra(AppBeeConstants.EXTRA.TIME_SLOT, timeSlot);
+            intent.putExtra(AppBeeConstants.EXTRA.PROJECT_NAME, projectName);
+            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS, interviewStatus);
+            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE, interviewDate);
+            intent.putExtra(AppBeeConstants.EXTRA.LOCATION, location);
             startActivity(intent);
         }
     };
@@ -101,7 +107,7 @@ public class MyInterviewActivity extends BaseActivity {
     public interface ActionListener {
         void onSelectProject(String projectId);
 
-        void onRequestToCancelInterview(String projectId, long interviewSeq);
+        void onRequestToCancelInterview(String projectId, long interviewSeq, String timeSlot, String projectName, String interviewStatus, Date interviewDate, String location);
     }
 }
 

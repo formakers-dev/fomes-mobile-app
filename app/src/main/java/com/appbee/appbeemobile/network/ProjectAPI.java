@@ -28,4 +28,7 @@ public interface ProjectAPI {
 
     @POST("/projects/{id}/interviews/{seq}/participate/{slotId}")
     Observable<Boolean> postParticipate(@Header("x-access-token") String accessToken, @Path("id") String projectId, @Path("seq") long seq, @Path("slotId") String slotId);
+
+    @POST("/projects/{id}/interviews/{seq}/cancel/{slotId}")
+    Observable<Boolean> postCancleParticipate(@Header("x-access-token") String accessToken, @Path("id") String projectId, @Path("seq") long seq, @Path("slotId") String slotId);
 }

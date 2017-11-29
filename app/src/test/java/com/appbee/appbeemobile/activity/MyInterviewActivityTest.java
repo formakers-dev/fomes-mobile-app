@@ -18,6 +18,8 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -89,11 +91,19 @@ public class MyInterviewActivityTest extends ActivityTest {
 
     @Test
     public void onRequestToCancelProject호출시_인터뷰취소요청페이지로_이동한다() throws Exception {
-        subject.actionListener.onRequestToCancelInterview("12345", 11L);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2017, 11, 4);
+        Date interviewDate = calendar.getTime();
+
+        subject.actionListener.onRequestToCancelInterview("12345", 11L, "time8", "WHOn", "확정", interviewDate, "우면사업장");
 
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedIntent.getComponent().getShortClassName()).isEqualTo(".activity.CancelInterviewActivity");
         assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
         assertThat(nextStartedIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(11L);
+        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_NAME)).isEqualTo("WHOn");
+        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS)).isEqualTo("확정");
+        assertThat(nextStartedIntent.getSerializableExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE)).isEqualTo(interviewDate);
+        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.LOCATION)).isEqualTo("우면사업장");
     }
 }
