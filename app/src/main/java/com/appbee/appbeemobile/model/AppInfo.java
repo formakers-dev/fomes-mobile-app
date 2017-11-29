@@ -9,6 +9,11 @@ public class AppInfo {
     private String categoryName2;
     private String iconUrl;
 
+    public AppInfo(String packageName, String appName) {
+        this.packageName = packageName;
+        this.appName = appName;
+    }
+
     public AppInfo(String packageName, String appName, String categoryId1, String categoryName1, String categoryId2, String categoryName2, String iconUrl) {
         this.packageName = packageName;
         this.appName = appName;
@@ -73,5 +78,18 @@ public class AppInfo {
 
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "AppInfo{" +
+                "packageName='" + packageName + '\'' +
+                ", appName='" + appName + '\'' +
+                ", categoryId1='" + categoryId1 + '\'' +
+                ", categoryName1='" + categoryName1 + '\'' +
+                ", categoryId2='" + categoryId2 + '\'' +
+                ", categoryName2='" + categoryName2 + '\'' +
+                ", iconUrl='" + iconUrl + '\'' +
+                '}';
     }
 }

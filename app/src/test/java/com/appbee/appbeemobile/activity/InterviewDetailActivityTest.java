@@ -13,6 +13,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.model.Project.Interview;
 import com.appbee.appbeemobile.model.Project.Person;
@@ -98,7 +99,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         calendar.set(2018, 2, 3);
         Date closeDate = calendar.getTime();
 
-        Interview interview = new Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
+        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
         Project project = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
         when(mockProjectService.getInterview(anyString(), anyLong())).thenReturn(rx.Observable.just(project));

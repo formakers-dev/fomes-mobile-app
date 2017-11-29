@@ -142,7 +142,7 @@ public class InterviewDetailActivity extends BaseActivity {
                 .load(project.getImage().getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
                 .into(representationImageView);
         representationImageView.setTag(R.string.tag_key_image_url, project.getImage().getUrl());
-        appsDescriptionTextView.setText(String.format(getString(R.string.recommand_to_user_of_similar_app), project.getInterview().getApps().get(0)));
+        appsDescriptionTextView.setText(String.format(getString(R.string.recommand_to_user_of_similar_app), project.getInterview().getApps().get(0).getAppName()));
         projectNameTextView.setText(project.getName());
         projectIntroduceTextView.setText(project.getIntroduce());
     }
