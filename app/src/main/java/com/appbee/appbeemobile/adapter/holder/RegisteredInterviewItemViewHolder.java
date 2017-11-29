@@ -18,6 +18,8 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
     public TextView emergencyPhone;
     public Button cancelInterviewButton;
     public Button showInterviewButton;
+    public View lineBetweenOpenCloseDateView;
+    public View lineBetweenCloseInterviewDateView;
 
     public RegisteredInterviewItemViewHolder(View view) {
         super(view);
@@ -31,5 +33,7 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
         this.emergencyPhone = (TextView) view.findViewById(R.id.emergency_phone);
         this.showInterviewButton = ((Button) view.findViewById(R.id.show_interview_button));
         this.cancelInterviewButton = ((Button) view.findViewById(R.id.interview_cancel_button));
+        this.lineBetweenOpenCloseDateView = view.findViewById(R.id.line_between_open_close_date);
+        this.lineBetweenCloseInterviewDateView = view.findViewById(R.id.line_between_close_interview_date);
     }
 }
