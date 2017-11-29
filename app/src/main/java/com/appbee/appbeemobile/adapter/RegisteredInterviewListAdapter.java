@@ -70,7 +70,7 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
         holder.interviewLocation.setText(String.format(context.getString(R.string.registered_interview_location), project.getInterview().getLocation(), project.getInterview().getLocationDescription()));
         holder.emergencyPhone.setText(String.format(context.getString(R.string.registered_interview_emergency_phone), project.getInterview().getEmergencyPhone()));
         holder.showInterviewButton.setOnClickListener(v -> listener.onSelectProject(project.getProjectId()));
-        holder.cancelInterviewButton.setOnClickListener(v -> listener.onRequestToCancelInterview(project.getProjectId(), project.getInterview().getSeq()));
+        holder.cancelInterviewButton.setOnClickListener(v -> listener.onRequestToCancelInterview(project.getProjectId(), project.getInterview().getSeq(), project.getInterview().getSelectedTimeSlot(), project.getName(), "", project.getInterview().getInterviewDate(), project.getInterview().getLocation()));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.dagger;
 
+import com.appbee.appbeemobile.activity.CancelInterviewActivity;
+import com.appbee.appbeemobile.activity.CancelInterviewActivityTest;
 import com.appbee.appbeemobile.activity.CodeVerificationActivityTest;
 import com.appbee.appbeemobile.activity.InterviewDetailActivityTest;
 import com.appbee.appbeemobile.activity.MyInterviewActivityTest;
@@ -34,4 +36,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(CodeVerificationActivityTest codeVerificationActivityTest);
     void inject(MyInterviewActivityTest myInterviewActivityTest);
     void inject(RegisteredInterviewListAdapterTest registeredInterviewListAdapterTest);
+    void inject(CancelInterviewActivityTest cancelInterviewActivityTest);
 }
