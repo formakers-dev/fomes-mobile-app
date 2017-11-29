@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 apply from: "build-jacoco.gradle"
 
 android {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
@@ -26,17 +29,20 @@ android {
             debuggable true
             testCoverageEnabled true
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://' + InetAddress.getLocalHost().getHostAddress() + ':8080/"';
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "${properties.getProperty("YOUTUBE_API_KEY")}";
         }
         development {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbeesvr.herokuapp.com/"';
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "${properties.getProperty("YOUTUBE_API_KEY")}";
             signingConfig signingConfigs.release
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbee-server.azurewebsites.net"';
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "${properties.getProperty("YOUTUBE_API_KEY")}";
             signingConfig signingConfigs.release
         }
     }
@@ -115,6 +121,9 @@ dependencies {
 
     // firebase
     compile 'com.google.firebase:firebase-messaging:11.0.2'
+
+    // youtube player api
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.22'

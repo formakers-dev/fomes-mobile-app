@@ -19,8 +19,8 @@
                 android:id="@+id/representation_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
                 android:foreground="@drawable/project_image_gradation"
+                android:scaleType="centerCrop"
                 android:src="@drawable/recommandation_app" />
 
             <ImageButton
@@ -59,8 +59,8 @@
                 android:id="@+id/project_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
                 android:layout_marginBottom="19dp"
+                android:layout_marginTop="11dp"
                 android:gravity="center"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="17dp" />
@@ -92,31 +92,33 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginBottom="41dp"
                 android:layout_marginEnd="98dp"
                 android:layout_marginStart="98dp"
                 android:layout_marginTop="3dp"
                 android:background="@color/appbee_gray" />
 
-            <VideoView
+            <FrameLayout
+                android:id="@+id/project_video_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="41dp" />
+                android:layout_marginBottom="54dp"
+                android:visibility="gone" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/description_image"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="54dp" />
+                android:layout_marginStart="20dp" />
 
             <TextView
                 android:id="@+id/project_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="54dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="54dp"
                 android:gravity="center"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="12dp" />

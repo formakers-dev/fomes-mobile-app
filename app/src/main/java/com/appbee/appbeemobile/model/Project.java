@@ -1,7 +1,6 @@
 package com.appbee.appbeemobile.model;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -15,6 +14,7 @@ public class Project {
     private String introduce;
     private ImageObject image;
     private String description;
+    private String videoUrl;
     private List<ImageObject> descriptionImages;
     private Person owner;
     private String status;
@@ -22,11 +22,12 @@ public class Project {
     private Interview interview;
 
     // for project test
-    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, String videoUrl, List<ImageObject> descriptionImages, Person owner, String status) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
         this.description = description;
+        this.videoUrl = videoUrl;
         this.descriptionImages = descriptionImages;
         this.image = image;
         this.owner = owner;
@@ -34,12 +35,13 @@ public class Project {
     }
 
     // for interview test
-    public Project(String projectId, String name, String introduce, ImageObject image, String description, List<ImageObject> descriptionImages, Person owner, String status, Interview interview) {
+    public Project(String projectId, String name, String introduce, ImageObject image, String description, String videoUrl, List<ImageObject> descriptionImages, Person owner, String status, Interview interview) {
         this.projectId = projectId;
         this.name = name;
         this.introduce = introduce;
         this.image = image;
         this.description = description;
+        this.videoUrl = videoUrl;
         this.descriptionImages = descriptionImages;
         this.owner = owner;
         this.status = status;
@@ -76,6 +78,14 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
     @NonNull

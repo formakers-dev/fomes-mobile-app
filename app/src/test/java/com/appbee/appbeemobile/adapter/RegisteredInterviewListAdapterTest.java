@@ -66,12 +66,12 @@ public class RegisteredInterviewListAdapterTest {
         Project.Person owner = new Project.Person("김앱비", null, "");
 
         Project.Interview interview1 = new Project.Interview(11L, null, "인터뷰소개", mockInterviewDate1, openDate, closeDate, "우면사업장", "C동 1층 107호 회의실", 0, null, "time15", "010-1234-5678", "오프라인");
-        Project project1 = new Project("12345", "툰스토리", "", null, "", null, owner, "", interview1);
+        Project project1 = new Project("12345", "툰스토리", "", null, "", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", null, owner, "", interview1);
 
         mockInterviewDate2 = createMockDate(2017, DECEMBER, 30);
 
         Project.Interview interview2 = new Project.Interview(22L, null, "인터뷰소개", mockInterviewDate2, createMockDate(2017, DECEMBER, 27), createMockDate(2017, DECEMBER, 28), "수원사업장", "5층 회의실", 5, null, "time8", "010-1111-2222", "온라인");
-        Project project2 = new Project("67890", "토토", "", null, "", null, owner, "", interview2);
+        Project project2 = new Project("67890", "토토", "", null, "", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", null, owner, "", interview2);
 
         List<Project> projectList = new ArrayList<>();
         projectList.add(project1);
