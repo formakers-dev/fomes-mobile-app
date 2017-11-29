@@ -60,6 +60,7 @@
     <string name="code_verification_button_name">인증</string>
     <string name="code_verification_warning">* 초대장 코드에 문제가 있으시면 앱비로 연락주세요.</string>
     <string name="interview_submit_button">유저 인터뷰 신청하기</string>
+    <string name="registered_interview_submit_button">이미 신청한 인터뷰입니다.</string>
     <string name="interview_detail_plans_title_format">%s 유저 인터뷰</string>
     <string name="interview_detail_plans_description_format">%1$s (%2$s) %3$s</string>
     <string name="confirm_button_name">확인</string>

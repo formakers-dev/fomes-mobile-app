@@ -3,6 +3,8 @@ package com.appbee.appbeemobile.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -106,6 +110,15 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.detail_plans_recycler_view)
     RecyclerView detailPlansRecyclerView;
 
+    @BindView(R.id.submit_arrow_button)
+    Button submitArrowButton;
+
+    @BindView(R.id.submit_button)
+    Button submitButton;
+
+    @BindView(R.id.scroll_view_layout)
+    FrameLayout scrollViewLayout;
+
     private String projectId;
     private long seq;
 
@@ -136,6 +149,17 @@ public class InterviewDetailActivity extends BaseActivity {
         bindInterviewDetail(interview);
         bindOwnerDetail(project.getOwner());
         bindInterviewRequestLayout(project);
+        bindButtonLayout(!TextUtils.isEmpty(project.getInterview().getSelectedTimeSlot()));
+    }
+
+    private void bindButtonLayout(boolean isRegisteredInterview) {
+        if (isRegisteredInterview) {
+            submitArrowButton.setVisibility(View.GONE);
+            submitButton.setText(R.string.registered_interview_submit_button);
+            submitButton.setTextColor(getColorValue(R.color.appbee_warm_gray));
+            submitButton.setBackgroundColor(getColorValue(R.color.appbee_dim_gray));
+            submitButton.setClickable(false);
+        }
     }
 
     private void bindProjectOverview(final Project project) {
@@ -203,10 +227,25 @@ public class InterviewDetailActivity extends BaseActivity {
         this.onBackPressed();
     }
 
-    @OnClick(R.id.submit_button_layout)
+    @OnClick(R.id.submit_arrow_button)
+    void onClickOpenDetailLayout(View view) {
+        if (detailPlansLayout.getVisibility() == View.GONE) {
+            detailPlansLayout.setVisibility(View.VISIBLE);
+            submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
+            scrollViewLayout.setForeground(new ColorDrawable(getColorValue(R.color.appbee_dim_foreground)));
+        } else {
+            detailPlansLayout.setVisibility(View.GONE);
+            submitArrowButton.setBackground(getDrawable(R.drawable.submit_open));
+            scrollViewLayout.setForeground(new ColorDrawable(getColorValue(android.R.color.transparent)));
+        }
+    }
+
+    @OnClick(R.id.submit_button)
     void onSubmitButton(View view) {
         if (detailPlansLayout.getVisibility() == View.GONE) {
             detailPlansLayout.setVisibility(View.VISIBLE);
+            submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
+            scrollViewLayout.setForeground(new ColorDrawable(getColorValue(R.color.appbee_dim_foreground)));
             return;
         }
 
@@ -240,4 +279,13 @@ public class InterviewDetailActivity extends BaseActivity {
                 });
     }
 
+    private
+    @ColorInt
+    int getColorValue(@ColorRes int colorResId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return getResources().getColor(colorResId);
+        } else {
+            return getResources().getColor(colorResId, null);
+        }
+    }
 }
