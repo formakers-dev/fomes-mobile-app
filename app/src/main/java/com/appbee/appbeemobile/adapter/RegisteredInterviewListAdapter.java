@@ -2,6 +2,8 @@ package com.appbee.appbeemobile.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,13 +102,8 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
     }
 
     private void extractColorResId() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.skyBlueColorId = context.getResources().getColor(R.color.appbee_sky_blue, null);
-            this.lightGrayColorId = context.getResources().getColor(R.color.appbee_light_gray, null);
-        } else {
-            this.skyBlueColorId = context.getResources().getColor(R.color.appbee_sky_blue);
-            this.lightGrayColorId = context.getResources().getColor(R.color.appbee_light_gray);
-        }
+        this.skyBlueColorId = getColorValue(R.color.appbee_sky_blue);
+        this.lightGrayColorId = getColorValue(R.color.appbee_light_gray);
     }
 
     private String getInterviewStatus(Project project) {
@@ -128,5 +125,15 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
             interviewStatus = "확정";
         }
         return interviewStatus;
+    }
+
+    private
+    @ColorInt
+    int getColorValue(@ColorRes int colorResId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return context.getResources().getColor(colorResId);
+        } else {
+            return context.getResources().getColor(colorResId, null);
+        }
     }
 }
