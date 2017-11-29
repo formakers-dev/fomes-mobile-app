@@ -79,6 +79,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     private int grayColorId;
     private int dimForegroundColorId;
     private int transparentColorId;
+    private Project mockProject;
 
     @Before
     public void setUp() throws Exception {
@@ -91,6 +92,16 @@ public class InterviewDetailActivityTest extends ActivityTest {
         intent.putExtra("EXTRA_INTERVIEW_SEQ", 1L);
         intent.putExtra("EXTRA_PROJECT_ID", "projectId");
 
+        setupMockProject();
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
+
+        activityController = Robolectric.buildActivity(InterviewDetailActivity.class, intent);
+        subject = activityController.create().postCreate(null).get();
+
+        extractColorIds();
+    }
+
+    private void setupMockProject() {
         Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
 
         List<Project.ImageObject> imageObjectList = new ArrayList<>();
@@ -100,25 +111,20 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         Person owner = new Person("프로젝트 담당자", new Project.ImageObject("www.projectOwnerImage.com", "projectOwnerImageName"), "프로젝트 담당자 소개입니다");
 
-        // month 1월
+        int MARCH = 2;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 2, 4);
+        calendar.set(2018, MARCH, 4);
         Date interviewDate = calendar.getTime();
-        calendar.set(2018, 2, 2);
+        calendar.set(2018, MARCH, 2);
         Date openDate = calendar.getTime();
-        calendar.set(2018, 2, 3);
+        calendar.set(2018, MARCH, 3);
         Date closeDate = calendar.getTime();
 
         Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
-        Project project = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", imageObjectList, owner, "registered", interview);
+        mockProject = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", imageObjectList, owner, "registered");
+        mockProject.setInterview(interview);
 
-        when(mockProjectService.getInterview(anyString(), anyLong())).thenReturn(rx.Observable.just(project));
-        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
-
-        activityController = Robolectric.buildActivity(InterviewDetailActivity.class, intent);
-        subject = activityController.create().postCreate(null).get();
-
-        extractColorIds();
+        when(mockProjectService.getInterview(anyString(), anyLong())).thenReturn(Observable.just(mockProject));
     }
 
     @After
@@ -182,7 +188,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     @Config(minSdk = 22)
     public void onPostCreate시_이미신청된인터뷰가조회되면_이미신청한인터뷰안내형태의_submit버튼이나타난다다() throws Exception {
-        mockRegisteredInterview();
+        mockProject.getInterview().setSelectedTimeSlot("time8");
 
         subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
 
@@ -344,31 +350,6 @@ public class InterviewDetailActivityTest extends ActivityTest {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
 
         assertThat(shadowAlertDialog.hasBeenDismissed()).isTrue();
-    }
-
-    private void mockRegisteredInterview() {
-        Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
-
-        List<Project.ImageObject> imageObjectList = new ArrayList<>();
-        imageObjectList.add(new Project.ImageObject("www.imageUrl.com1", "urlName1"));
-        imageObjectList.add(new Project.ImageObject("www.imageUrl.com2", "urlName2"));
-        imageObjectList.add(new Project.ImageObject("www.imageUrl.com3", "urlName3"));
-
-        Person owner = new Person("프로젝트 담당자", new Project.ImageObject("www.projectOwnerImage.com", "projectOwnerImageName"), "프로젝트 담당자 소개입니다");
-
-        // month 1월
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 2, 4);
-        Date interviewDate = calendar.getTime();
-        calendar.set(2018, 2, 2);
-        Date openDate = calendar.getTime();
-        calendar.set(2018, 2, 3);
-        Date closeDate = calendar.getTime();
-
-        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "time8", "", "오프라인 인터뷰");
-        Project project = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
-
-        when(mockProjectService.getInterview(anyString(), anyLong())).thenReturn(rx.Observable.just(project));
     }
 
     private void extractColorIds() {

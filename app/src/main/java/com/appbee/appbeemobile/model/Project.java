@@ -21,7 +21,6 @@ public class Project {
     @SerializedName("interviews")
     private Interview interview;
 
-    // for project test
     public Project(String projectId, String name, String introduce, ImageObject image, String description, String videoUrl, List<ImageObject> descriptionImages, Person owner, String status) {
         this.projectId = projectId;
         this.name = name;
@@ -32,20 +31,6 @@ public class Project {
         this.image = image;
         this.owner = owner;
         this.status = status;
-    }
-
-    // for interview test
-    public Project(String projectId, String name, String introduce, ImageObject image, String description, String videoUrl, List<ImageObject> descriptionImages, Person owner, String status, Interview interview) {
-        this.projectId = projectId;
-        this.name = name;
-        this.introduce = introduce;
-        this.image = image;
-        this.description = description;
-        this.videoUrl = videoUrl;
-        this.descriptionImages = descriptionImages;
-        this.owner = owner;
-        this.status = status;
-        this.interview = interview;
     }
 
     public String getProjectId() {
