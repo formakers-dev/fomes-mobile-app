@@ -5,12 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
+import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -46,6 +48,9 @@ public class ProjectDetailActivity extends BaseActivity {
 
     @BindView(R.id.project_description)
     TextView projectDescriptionTextView;
+
+    @BindView(R.id.project_video_layout)
+    FrameLayout projectVideoLayout;
 
     @BindView(R.id.description_image)
     ViewPager descriptionImageViewPager;
@@ -84,6 +89,7 @@ public class ProjectDetailActivity extends BaseActivity {
         displayProjectOverview(project);
         displayOwner(owner);
         displayProjectDetail(project);
+        displayProjectVideo(project.getVideoUrl());
     }
 
     private void displayProjectOverview(final Project project) {
@@ -93,11 +99,6 @@ public class ProjectDetailActivity extends BaseActivity {
         representationImageView.setTag(R.string.tag_key_image_url, project.getImage().getUrl());
         projectIntroduceTextView.setText(project.getIntroduce());
         projectNameTextView.setText(project.getName());
-    }
-
-    private void displayProjectDetail(Project project) {
-        projectDescriptionTextView.setText(project.getDescription());
-        descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
     }
 
     private void displayOwner(Person owner) {
@@ -113,6 +114,25 @@ public class ProjectDetailActivity extends BaseActivity {
 
         ownerNameTextView.setText(owner.getName());
         ownerIntroduceTextView.setText(owner.getIntroduce());
+    }
+
+    private void displayProjectDetail(Project project) {
+        projectDescriptionTextView.setText(project.getDescription());
+        descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
+    }
+
+    private void displayProjectVideo(String videoUrl) {
+        if (!TextUtils.isEmpty(videoUrl)) {
+            projectVideoLayout.setVisibility(View.VISIBLE);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL, videoUrl);
+
+            ProjectYoutubePlayerFragment youTubePlayerFragment = new ProjectYoutubePlayerFragment();
+            youTubePlayerFragment.setArguments(bundle);
+
+            getFragmentManager().beginTransaction().add(R.id.project_video_layout, youTubePlayerFragment, "YouTubePlayerFragment").commit();
+        }
     }
 
     @OnClick(R.id.back_button)

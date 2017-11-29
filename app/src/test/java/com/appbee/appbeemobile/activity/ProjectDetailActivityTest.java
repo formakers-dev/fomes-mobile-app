@@ -1,10 +1,13 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Fragment;
 import android.content.Intent;
+import android.view.View;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.model.Project.ImageObject;
@@ -13,7 +16,6 @@ import com.appbee.appbeemobile.network.ProjectService;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -53,6 +55,8 @@ public class ProjectDetailActivityTest extends ActivityTest {
 
     private Intent intent = new Intent();
 
+    private Project mockProject;
+
     @Before
     public void setUp() throws Exception {
 
@@ -74,13 +78,12 @@ public class ProjectDetailActivityTest extends ActivityTest {
 
         Person owner = new Person("프로젝트 담당자", new Project.ImageObject("www.projectOwnerImage.com", "projectOwnerImageName"), "프로젝트 담당자 소개입니다");
 
-        Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered");
+        mockProject = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", imageObjectList, owner, "registered");
 
-        when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(project));
+        when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(mockProject));
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
 
         activityController = Robolectric.buildActivity(ProjectDetailActivity.class, intent);
-        subject = activityController.create().postCreate(null).get();
     }
 
     @After
@@ -89,38 +92,52 @@ public class ProjectDetailActivityTest extends ActivityTest {
     }
 
     @Test
-    @Ignore
     public void onPostCreate시_전달받은_projectID에_해당하는_project정보를_조회한다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+
         assertThat(subject.getIntent().getStringExtra("EXTRA_PROJECT_ID")).isEqualTo("projectId");
         verify(mockProjectService).getProject(eq("projectId"));
     }
 
     @Test
-    public void onPostCreate시_조회된_project_헤더정보를_화면에_보여준다() throws Exception {
+    public void onPostCreate시_조회된_project_정보를_화면에_보여준다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+
         assertThat(subject.representationImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.imageUrl.com");
         assertThat(subject.projectNameTextView.getText()).isEqualTo("릴루미노");
         assertThat(subject.projectIntroduceTextView.getText()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
-    }
 
+        // 비디오레이아웃을 보여준다
+        Fragment youTubePlayerFragment = subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment");
+        assertThat(youTubePlayerFragment).isNotNull();
+        assertThat(youTubePlayerFragment.getArguments().getString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL)).isEqualTo("https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be");
+        assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.VISIBLE);
 
-    @Test
-    public void onPostCreate시_조회된_project_상세설명정보를_화면에_보여준다() throws Exception {
+        // 상세설명정보를_화면에_보여준다
         assertThat(subject.descriptionImageViewPager.getAdapter().getCount()).isEqualTo(3);
-//        assertThat(subject.descriptionImageViewPager.getChildAt(0).getTag()).isEqualTo("www.imageUrl.com1");
-//        assertThat(subject.descriptionImageViewPager.getChildAt(1).getTag()).isEqualTo("www.imageUrl.com2");
-//        assertThat(subject.descriptionImageViewPager.getChildAt(2).getTag()).isEqualTo("www.imageUrl.com3");
         assertThat(subject.projectDescriptionTextView.getText()).isEqualTo("안녕하세요 릴루미노팀입니다.");
-    }
 
-    @Test
-    public void onPostCreate시_조회된_owner정보를_화면에_보여준다() throws Exception {
+        // owner정보를_화면에_보여준다
         assertThat(subject.ownerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.projectOwnerImage.com");
         assertThat(subject.ownerNameTextView.getText()).isEqualTo("프로젝트 담당자");
         assertThat(subject.ownerIntroduceTextView.getText()).contains("프로젝트 담당자 소개입니다");
     }
 
     @Test
+    public void onPostCreate시_비디오정보가_없는경우_비디오레이아웃을_숨긴다() throws Exception {
+        mockProject.setVideoUrl("");
+        when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(mockProject));
+
+        subject = activityController.create().postCreate(null).get();
+
+        assertThat(subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment")).isNull();
+        assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
     public void BackButton클릭시_이전화면으로_복귀한다() throws Exception {
+        subject = activityController.create().postCreate(null).get();
+
         subject.findViewById(R.id.back_button).performClick();
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
