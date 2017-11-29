@@ -110,7 +110,7 @@ public class ProjectDetailActivityTest extends ActivityTest {
         // 비디오레이아웃을 보여준다
         Fragment youTubePlayerFragment = subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment");
         assertThat(youTubePlayerFragment).isNotNull();
-        assertThat(youTubePlayerFragment.getArguments().getString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL)).isEqualTo("https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be");
+        assertThat(youTubePlayerFragment.getArguments().getString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_ID)).isEqualTo("o-rnYD47wmo");
         assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.VISIBLE);
 
         // 상세설명정보를_화면에_보여준다
@@ -126,10 +126,22 @@ public class ProjectDetailActivityTest extends ActivityTest {
     @Test
     public void onPostCreate시_비디오정보가_없는경우_비디오레이아웃을_숨긴다() throws Exception {
         mockProject.setVideoUrl("");
-        when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(mockProject));
 
         subject = activityController.create().postCreate(null).get();
 
+        assertHideVideoLayout();
+    }
+
+    @Test
+    public void onPostCreate시_비디오정보가_유투브URL이_아닌_경우_비디오레이아웃을_숨긴다() throws Exception {
+        mockProject.setVideoUrl("http://www.naver.com/4.mp4");
+
+        subject = activityController.create().postCreate(null).get();
+
+        assertHideVideoLayout();
+    }
+
+    private void assertHideVideoLayout() {
         assertThat(subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment")).isNull();
         assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.GONE);
     }

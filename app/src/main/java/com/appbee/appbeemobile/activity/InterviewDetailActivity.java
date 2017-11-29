@@ -157,11 +157,13 @@ public class InterviewDetailActivity extends BaseActivity {
     }
 
     private void bindProjectVideo(String videoUrl) {
-        if (!TextUtils.isEmpty(videoUrl)) {
+        String youTubeId = FormatUtil.parseYouTubeId(videoUrl);
+
+        if (!TextUtils.isEmpty(youTubeId)) {
             projectVideoLayout.setVisibility(View.VISIBLE);
 
             Bundle bundle = new Bundle();
-            bundle.putString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL, videoUrl);
+            bundle.putString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_ID, youTubeId);
 
             ProjectYoutubePlayerFragment youTubePlayerFragment = new ProjectYoutubePlayerFragment();
             youTubePlayerFragment.setArguments(bundle);

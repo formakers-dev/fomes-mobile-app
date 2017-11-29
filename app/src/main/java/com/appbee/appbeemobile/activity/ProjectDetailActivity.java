@@ -16,6 +16,7 @@ import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.util.FormatUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -122,11 +123,13 @@ public class ProjectDetailActivity extends BaseActivity {
     }
 
     private void displayProjectVideo(String videoUrl) {
-        if (!TextUtils.isEmpty(videoUrl)) {
+        String youTubeId = FormatUtil.parseYouTubeId(videoUrl);
+
+        if (!TextUtils.isEmpty(youTubeId)) {
             projectVideoLayout.setVisibility(View.VISIBLE);
 
             Bundle bundle = new Bundle();
-            bundle.putString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL, videoUrl);
+            bundle.putString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_ID, youTubeId);
 
             ProjectYoutubePlayerFragment youTubePlayerFragment = new ProjectYoutubePlayerFragment();
             youTubePlayerFragment.setArguments(bundle);
