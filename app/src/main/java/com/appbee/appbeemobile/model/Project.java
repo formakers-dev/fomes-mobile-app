@@ -217,7 +217,7 @@ public class Project {
 
     public static class Interview {
         private long seq;
-        private List<String> apps;
+        private List<AppInfo> apps;
         private Date openDate;
         private Date closeDate;
         private Date interviewDate;
@@ -229,7 +229,7 @@ public class Project {
         private String emergencyPhone;
         private String type;
 
-        public Interview(long seq, List<String> apps, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type) {
+        public Interview(long seq, List<AppInfo> apps, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type) {
             this.seq = seq;
             this.apps = apps;
             this.openDate = openDate;
@@ -252,11 +252,11 @@ public class Project {
             this.seq = seq;
         }
 
-        public List<String> getApps() {
+        public List<AppInfo> getApps() {
             return apps;
         }
 
-        public void setApps(List<String> apps) {
+        public void setApps(List<AppInfo> apps) {
             this.apps = apps;
         }
 

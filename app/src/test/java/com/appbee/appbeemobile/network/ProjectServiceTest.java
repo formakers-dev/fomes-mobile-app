@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.Project;
 
 import org.junit.After;
@@ -26,7 +27,6 @@ import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyShort;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -142,7 +142,7 @@ public class ProjectServiceTest {
         calendar.set(2017, 1, 3);
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
 
         Project mockProject = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -183,7 +183,7 @@ public class ProjectServiceTest {
         calendar.set(2018, 2, 3);   // 1월
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
@@ -194,7 +194,8 @@ public class ProjectServiceTest {
             assertThat(result.getInterview().getSeq()).isEqualTo(1L);
             assertThat(result.getImage().getUrl()).isEqualTo("www.imageUrl.com");
             assertThat(result.getInterview().getApps().size()).isEqualTo(1);
-            assertThat(result.getInterview().getApps().get(0)).isEqualTo("네이버웹툰");
+            assertThat(result.getInterview().getApps().get(0).getPackageName()).isEqualTo("com.naver.webtoon");
+            assertThat(result.getInterview().getApps().get(0).getAppName()).isEqualTo("네이버웹툰");
             assertThat(result.getName()).isEqualTo("릴루미노");
             assertThat(result.getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
             assertThat(result.getInterview().getLocation()).isEqualTo("우면사업장");
@@ -227,7 +228,7 @@ public class ProjectServiceTest {
         calendar.set(2018, 2, 3);   // 1월
         Date closeDate = calendar.getTime();
 
-        Project.Interview interview = new Project.Interview(1L, Collections.singletonList("네이버웹툰"), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "time9", "010-9999-8888", "오프라인 테스트");
+        Project.Interview interview = new Project.Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "time9", "010-9999-8888", "오프라인 테스트");
 
         Project project = new Project("projectId", "릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
