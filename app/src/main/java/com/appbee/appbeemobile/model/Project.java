@@ -154,7 +154,7 @@ public class Project {
             this.name = name;
         }
 
-        @Nullable
+        @NonNull
         public ImageObject getImage() {
             return image;
         }

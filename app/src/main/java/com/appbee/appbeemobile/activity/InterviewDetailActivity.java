@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -181,13 +182,12 @@ public class InterviewDetailActivity extends BaseActivity {
     private void bindOwnerDetail(Project.Person owner) {
         Project.ImageObject ownerImage = owner.getImage();
 
-        if (ownerImage != null) {
-            Glide.with(this).load(ownerImage.getUrl())
+        String ownerImageUrl = ownerImage.getUrl();
+        if (!TextUtils.isEmpty(ownerImageUrl)) {
+            Glide.with(this).load(ownerImageUrl)
                     .apply(new RequestOptions().override(200, 200).circleCrop())
                     .into(ownerPhotoImageView);
             ownerPhotoImageView.setTag(R.string.tag_key_image_url, ownerImage.getUrl());
-        } else {
-            ownerPhotoImageView.setImageResource(R.mipmap.ic_launcher_app);
         }
 
         ownerNameTextView.setText(owner.getName());
