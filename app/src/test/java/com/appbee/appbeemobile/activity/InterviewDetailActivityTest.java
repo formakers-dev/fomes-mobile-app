@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +16,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
+import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.Project;
@@ -30,7 +32,6 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowToast;
@@ -70,8 +71,6 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Inject
     TimeHelper mockTimeHelper;
 
-    private ActivityController<InterviewDetailActivity> activityController;
-
     private Intent intent = new Intent();
     private int dimGrayColorId;
     private int yellowColorId;
@@ -95,8 +94,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         setupMockProject();
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
 
-        activityController = Robolectric.buildActivity(InterviewDetailActivity.class, intent);
-        subject = activityController.create().postCreate(null).get();
+        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
 
         extractColorIds();
     }
@@ -145,6 +143,12 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(subject.dateTextView.getText()).isEqualTo("03/04 (일)");
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-120");
 
+        // 비디오레이아웃을 보여준다
+        Fragment youTubePlayerFragment = subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment");
+        assertThat(youTubePlayerFragment).isNotNull();
+        assertThat(youTubePlayerFragment.getArguments().getString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL)).isEqualTo("https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be");
+        assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.VISIBLE);
+
         // 프로젝트 설명
         assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
         assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
@@ -156,6 +160,17 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(subject.ownerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.projectOwnerImage.com");
         assertThat(subject.ownerNameTextView.getText()).isEqualTo("프로젝트 담당자");
         assertThat(subject.ownerIntroduceTextView.getText()).isEqualTo("프로젝트 담당자 소개입니다");
+    }
+
+    @Test
+    public void onPostCreate시_비디오정보가_없는경우_비디오레이아웃을_숨긴다() throws Exception {
+        mockProject.setVideoUrl("");
+        when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(mockProject));
+
+        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+
+        assertThat(subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment")).isNull();
+        assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test

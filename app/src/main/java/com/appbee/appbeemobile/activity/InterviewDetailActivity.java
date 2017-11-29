@@ -26,6 +26,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
+import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -73,9 +74,6 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.interview_date)
     TextView dateTextView;
 
-    @BindView(R.id.interview_duration)
-    TextView durationTextView;
-
     @BindView(R.id.interview_d_day)
     TextView dDayTextView;
 
@@ -121,6 +119,9 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.scroll_view_layout)
     FrameLayout scrollViewLayout;
 
+    @BindView(R.id.project_video_layout)
+    FrameLayout projectVideoLayout;
+
     private String projectId;
     private long seq;
 
@@ -148,10 +149,25 @@ public class InterviewDetailActivity extends BaseActivity {
         bindProjectOverview(project);
         bindInterviewOverview(interview);
         bindProjectDetail(project);
+        bindProjectVideo(project.getVideoUrl());
         bindInterviewDetail(interview);
         bindOwnerDetail(project.getOwner());
         bindInterviewRequestLayout(project);
         bindButtonLayout(!TextUtils.isEmpty(project.getInterview().getSelectedTimeSlot()));
+    }
+
+    private void bindProjectVideo(String videoUrl) {
+        if (!TextUtils.isEmpty(videoUrl)) {
+            projectVideoLayout.setVisibility(View.VISIBLE);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL, videoUrl);
+
+            ProjectYoutubePlayerFragment youTubePlayerFragment = new ProjectYoutubePlayerFragment();
+            youTubePlayerFragment.setArguments(bundle);
+
+            getFragmentManager().beginTransaction().add(R.id.project_video_layout, youTubePlayerFragment, "YouTubePlayerFragment").commit();
+        }
     }
 
     private void bindButtonLayout(boolean isRegisteredInterview) {
