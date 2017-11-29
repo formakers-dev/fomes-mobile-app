@@ -5,15 +5,18 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.Button;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.service.PowerConnectedService;
+import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PermissionGuideActivity extends BaseActivity {
@@ -25,6 +28,9 @@ public class PermissionGuideActivity extends BaseActivity {
 
     @Inject
     LocalStorageHelper localStorageHelper;
+
+    @BindView(R.id.permission_button)
+    Button permissionButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,8 +51,20 @@ public class PermissionGuideActivity extends BaseActivity {
         }
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            startPowerConnectedService();
-            moveActivityTo(MainActivity.class);
+            String projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
+            String interviewSeq = getIntent().getStringExtra(EXTRA.INTERVIEW_SEQ);
+
+            if(!TextUtils.isEmpty(projectId) && !TextUtils.isEmpty(interviewSeq)) {
+                Intent intent = new Intent(this, InterviewDetailActivity.class);
+                intent.putExtra(EXTRA.PROJECT_ID, projectId);
+                intent.putExtra(EXTRA.INTERVIEW_SEQ, Long.parseLong(interviewSeq));
+
+                startActivity(intent);
+                finish();
+            } else {
+                startPowerConnectedService();
+                moveActivityTo(MainActivity.class);
+            }
         }
     }
 
