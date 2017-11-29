@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import rx.schedulers.Schedulers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -143,9 +145,21 @@ public class CancelInterviewActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 뒤로가가_버튼클릭시_현재페이지를_종료한다() throws Exception {
+    public void 아니오버튼을_클릭하면_이전화면으로_이동한다() throws Exception {
         subject = activityContorller.create().postCreate(null).get();
-        subject.findViewById(R.id.back_button).performClick();
+
+        subject.findViewById(R.id.cancel_no).performClick();
+
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
+    }
+
+    @Test
+    public void home클릭시_이전화면으로_이동한다() throws Exception {
+        MenuItem homeMenuItem = mock(MenuItem.class);
+        when(homeMenuItem.getItemId()).thenReturn(android.R.id.home);
+
+        subject = activityContorller.create().get();
+        subject.onOptionsItemSelected(homeMenuItem);
 
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
