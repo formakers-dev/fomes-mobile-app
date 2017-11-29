@@ -11,15 +11,16 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="@string/interview_progress_guide_close"
-        android:textColor="@color/appbee_sky_blue"
+        android:textColor="@color/appbee_light_gray"
         android:textSize="11dp" />
 
     <View
+        android:id="@+id/line_between_open_close_date"
         android:layout_width="48dp"
         android:layout_height="1dp"
         android:layout_marginTop="20dp"
         android:layout_toStartOf="@id/interview_progress_close_date"
-        android:background="@color/appbee_sky_blue" />
+        android:background="@color/appbee_light_gray" />
 
     <TextView
         android:id="@+id/interview_progress_open_date"
@@ -30,15 +31,16 @@
         android:layout_toStartOf="@id/interview_progress_close_date"
         android:gravity="center"
         android:text="@string/interview_progress_guide_request"
-        android:textColor="@color/appbee_sky_blue"
+        android:textColor="@color/appbee_light_gray"
         android:textSize="11dp" />
 
     <View
+        android:id="@+id/line_between_close_interview_date"
         android:layout_width="48dp"
         android:layout_height="1dp"
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@id/interview_progress_close_date"
-        android:background="@color/appbee_sky_blue" />
+        android:background="@color/appbee_light_gray" />
 
     <TextView
         android:id="@+id/interview_progress_date"
@@ -49,6 +51,6 @@
         android:layout_toEndOf="@id/interview_progress_close_date"
         android:gravity="center"
         android:text="@string/interview_progress_guide_end"
-        android:textColor="@color/appbee_sky_blue"
+        android:textColor="@color/appbee_light_gray"
         android:textSize="11dp" />
 </RelativeLayout>

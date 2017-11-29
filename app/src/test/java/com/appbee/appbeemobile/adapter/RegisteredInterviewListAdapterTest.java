@@ -1,8 +1,12 @@
 package com.appbee.appbeemobile.adapter;
 
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.LinearLayout;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.activity.MyInterviewActivity;
 import com.appbee.appbeemobile.adapter.holder.RegisteredInterviewItemViewHolder;
 import com.appbee.appbeemobile.helper.TimeHelper;
@@ -30,6 +34,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 public class RegisteredInterviewListAdapterTest {
     private static final int DECEMBER = 11, JANUARY = 0;
     private RegisteredInterviewListAdapter subject;
@@ -44,6 +49,8 @@ public class RegisteredInterviewListAdapterTest {
 
     private Date mockInterviewDate1;
     private Date mockInterviewDate2;
+    private int skyBlueColorId;
+    private int lightGrayColorId;
 
     @Before
     public void setUp() throws Exception {
@@ -63,12 +70,20 @@ public class RegisteredInterviewListAdapterTest {
 
         mockInterviewDate2 = createMockDate(2017, DECEMBER, 30);
 
-        Project.Interview interview2 = new Project.Interview(22L, null, mockInterviewDate2, createMockDate(2017, DECEMBER, 28), createMockDate(2017, DECEMBER, 29), "수원사업장", "5층 회의실", 5, null, "time8", "010-1111-2222", "온라인");
+        Project.Interview interview2 = new Project.Interview(22L, null, mockInterviewDate2, createMockDate(2017, DECEMBER, 27), createMockDate(2017, DECEMBER, 28), "수원사업장", "5층 회의실", 5, null, "time8", "010-1111-2222", "온라인");
         Project project2 = new Project("67890", "토토", "", null, "", null, owner, "", interview2);
 
         List<Project> projectList = new ArrayList<>();
         projectList.add(project1);
         projectList.add(project2);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            skyBlueColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_sky_blue, null);
+            lightGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_light_gray, null);
+        } else {
+            skyBlueColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_sky_blue);
+            lightGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_light_gray);
+        }
 
         subject = new RegisteredInterviewListAdapter(projectList, mockTimeHelper, mockListener);
         holder = subject.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 0);
@@ -95,6 +110,32 @@ public class RegisteredInterviewListAdapterTest {
     }
 
     @Test
+    @Config(minSdk = 22)
+    public void 인터뷰신청상태_데이터가_바인딩되면_인터뷰상태를_표시한다() throws Exception {
+        // 신청상태 : openDate < 현재일자 < closeDate
+        //  12.01 < 2017.12.29 < 12.31
+        subject.onBindViewHolder(holder, 0);
+        assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(skyBlueColorId);
+        assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(lightGrayColorId);
+        assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(lightGrayColorId);
+        assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(lightGrayColorId);
+        assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(lightGrayColorId);
+    }
+
+    @Test
+    @Config(minSdk = 22)
+    public void 인터뷰확정상태_데이터가_바인딩되면_인터뷰상태를_표시한다() throws Exception {
+        // 확정상태 : closeDate < 현재일자 < interviewDate + 인터뷰시간
+        //  12.28 < 12.29 < 12.30 08:00
+        subject.onBindViewHolder(holder, 1);
+        assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(skyBlueColorId);
+        assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(skyBlueColorId);
+        assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(skyBlueColorId);
+        assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(lightGrayColorId);
+        assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(lightGrayColorId);
+    }
+
+    @Test
     public void 프로젝트_설명_다시보기_버튼을_클릭하면_ActionListener의_onSelectProject에_프로젝트ID를_전달한다() throws Exception {
         subject.onBindViewHolder(holder, 0);
         holder.showInterviewButton.performClick();
@@ -105,17 +146,14 @@ public class RegisteredInterviewListAdapterTest {
         verify(mockListener).onSelectProject(eq("67890"));
     }
 
-
     @Test
     public void 취소하기_버튼을_클릭하면_ActionListener의_onRequestToCancelInterview에_프로젝트ID를_전달한다() throws Exception {
         subject.onBindViewHolder(holder, 0);
         holder.cancelInterviewButton.performClick();
-        verify(mockListener).onRequestToCancelInterview(eq("12345"), eq(11L), eq("time15"), eq("툰스토리"), eq(""), eq(mockInterviewDate1), eq("우면사업장"));
+        verify(mockListener).onRequestToCancelInterview(eq("12345"), eq(11L), eq("time15"), eq("툰스토리"), eq("신청"), eq(mockInterviewDate1), eq("우면사업장"));
 
         subject.onBindViewHolder(holder, 1);
         holder.cancelInterviewButton.performClick();
-        verify(mockListener).onRequestToCancelInterview(eq("67890"), eq(22L), eq("time8"), eq("토토"), eq(""), eq(mockInterviewDate2), eq("수원사업장"));
-
-        // TODO : 인터뷰 상태 처리하여 전달달
+        verify(mockListener).onRequestToCancelInterview(eq("67890"), eq(22L), eq("time8"), eq("토토"), eq("확정"), eq(mockInterviewDate2), eq("수원사업장"));
     }
 }
