@@ -99,7 +99,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         calendar.set(2018, 2, 3);
         Date closeDate = calendar.getTime();
 
-        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
+        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
         Project project = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", imageObjectList, owner, "registered", interview);
 
         when(mockProjectService.getInterview(anyString(), anyLong())).thenReturn(rx.Observable.just(project));
@@ -115,18 +115,29 @@ public class InterviewDetailActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate시_조회된_인터뷰_제목_정보를_화면에_보여준다() throws Exception {
+    public void onPostCreate시_조회된_인터뷰_상세_정보를_화면에_보여준다() throws Exception {
+        // 프로젝트 요약 내용
         assertThat(subject.representationImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.imageUrl.com");
         assertThat(subject.appsDescriptionTextView.getText()).isEqualTo("'네이버웹툰' 앱 유저에게 추천");
         assertThat(subject.projectNameTextView.getText()).isEqualTo("[앱] 릴루미노");
         assertThat(subject.projectIntroduceTextView.getText()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
-    }
 
-    @Test
-    public void onPostCreate시_조회된_인터뷰요약_정보를_화면에_보여준다() throws Exception {
+        // 인터뷰요약 정보
         assertThat(subject.locationTextView.getText()).isEqualTo("우면사업장");
         assertThat(subject.dateTextView.getText()).isEqualTo("03/04 (일)");
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-120");
+
+        // 프로젝트 설명
+        assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
+        assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
+
+        // 조회된 인터뷰 소개 정보
+        assertThat(subject.interviewIntroduceTextView.getText()).contains("인터뷰소개");
+
+        // 조회된 대표자 정보
+        assertThat(subject.ownerPhotoImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.projectOwnerImage.com");
+        assertThat(subject.ownerNameTextView.getText()).isEqualTo("프로젝트 담당자");
+        assertThat(subject.ownerIntroduceTextView.getText()).isEqualTo("프로젝트 담당자 소개입니다");
     }
 
     @Test
@@ -139,12 +150,6 @@ public class InterviewDetailActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate시_조회된_project_설명정보를_화면에_보여준다() throws Exception {
-        assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
-        assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
-    }
-
-    @Test
     public void onPostCreate시_세부일정선택영역이_나타나지않는다() throws Exception {
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.GONE);
     }
@@ -154,7 +159,6 @@ public class InterviewDetailActivityTest extends ActivityTest {
         subject.findViewById(R.id.back_button).performClick();
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
-
 
     @Test
     public void 세부일정선택영역이_나타나지_않은_상태에서_submit클릭시_세부일정선택영역만을_표시한다() throws Exception {

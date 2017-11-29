@@ -218,6 +218,7 @@ public class Project {
     public static class Interview {
         private long seq;
         private List<AppInfo> apps;
+        private String introduce;
         private Date openDate;
         private Date closeDate;
         private Date interviewDate;
@@ -229,9 +230,10 @@ public class Project {
         private String emergencyPhone;
         private String type;
 
-        public Interview(long seq, List<AppInfo> apps, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type) {
+        public Interview(long seq, List<AppInfo> apps, String introduce, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type) {
             this.seq = seq;
             this.apps = apps;
+            this.introduce = introduce;
             this.openDate = openDate;
             this.closeDate = closeDate;
             this.interviewDate = interviewDate;
@@ -242,6 +244,14 @@ public class Project {
             this.selectedTimeSlot = selectedTimeSlot;
             this.emergencyPhone = emergencyPhone;
             this.type = type;
+        }
+
+        public String getIntroduce() {
+            return introduce;
+        }
+
+        public void setIntroduce(String introduce) {
+            this.introduce = introduce;
         }
 
         public long getSeq() {
@@ -345,6 +355,7 @@ public class Project {
             return "Interview{" +
                     "seq=" + seq +
                     ", apps=" + apps +
+                    ", introduce='" + introduce + '\'' +
                     ", openDate=" + openDate +
                     ", closeDate=" + closeDate +
                     ", interviewDate=" + interviewDate +

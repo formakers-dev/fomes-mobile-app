@@ -195,7 +195,7 @@ public class InterviewDetailActivity extends BaseActivity {
     }
 
     private void bindInterviewDetail(Project.Interview interview) {
-//        interviewIntroduceTextView.setText(interview.get);
+        interviewIntroduceTextView.setText(interview.getIntroduce());
     }
 
     @OnClick(R.id.back_button)
