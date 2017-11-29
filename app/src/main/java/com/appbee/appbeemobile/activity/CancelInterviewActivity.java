@@ -4,7 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +43,14 @@ public class CancelInterviewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cancel_interview);
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
+
+        setContentView(R.layout.activity_cancel_interview);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button);
     }
 
     @Override
@@ -59,13 +66,24 @@ public class CancelInterviewActivity extends BaseActivity {
                 Integer.parseInt(timeSlot.substring(4))));
     }
 
-    @OnClick(R.id.back_button)
-    void onBackButtonClick() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @OnClick(R.id.cancel_no)
+    void onClickNo() {
         super.onBackPressed();
     }
 
     @OnClick(R.id.cancel_yes)
-    void onClickCancel(View view) {
+    void onClickYes() {
         projectService.postCancelParticipate(projectId, seq, timeSlot)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
