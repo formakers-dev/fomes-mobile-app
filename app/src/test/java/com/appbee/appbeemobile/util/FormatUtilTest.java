@@ -32,4 +32,22 @@ public class FormatUtilTest {
         String result = FormatUtil.toLongDateFormat(calendar.getTime());
         assertThat(result).isEqualTo("17.2.2 (목)");
     }
+
+    @Test
+    public void parseYouTubeId호출시_url내용중_유투브ID를_파싱하여_리턴한다() throws Exception {
+        assertThat(FormatUtil.parseYouTubeId("www.youtube.com/watch?v=O92yHB0MDZ8&index=9&list=RDYso2Bbo5Ptk")).isEqualTo("O92yHB0MDZ8");
+        assertThat(FormatUtil.parseYouTubeId("http://www.youtube.com/watch?v=O92yHB0MDZ8&index=9&list=RDYso2Bbo5Ptk")).isEqualTo("O92yHB0MDZ8");
+        assertThat(FormatUtil.parseYouTubeId("youtu.be/O92yHB0MDZ8")).isEqualTo("O92yHB0MDZ8");
+        assertThat(FormatUtil.parseYouTubeId("https://youtu.be/O92yHB0MDZ8?list=RDYso2Bbo5Ptk&t=2039")).isEqualTo("O92yHB0MDZ8");
+    }
+
+    @Test
+    public void parseYouTubeId호출시_유투브URL이_아닌경우_null을_리턴한다() throws Exception {
+        assertThat(FormatUtil.parseYouTubeId("www.dyoudfagtubse.com/watch?v=O92yHB0MDZ8&index=9&list=RDYso2Bbo5Ptk")).isNull();
+    }
+
+    @Test
+    public void parseYouTubeId호출시_유투브URL이_null인경우_null을_리턴한다() throws Exception {
+        assertThat(FormatUtil.parseYouTubeId(null)).isNull();
+    }
 }

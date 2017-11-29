@@ -146,7 +146,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         // 비디오레이아웃을 보여준다
         Fragment youTubePlayerFragment = subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment");
         assertThat(youTubePlayerFragment).isNotNull();
-        assertThat(youTubePlayerFragment.getArguments().getString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_URL)).isEqualTo("https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be");
+        assertThat(youTubePlayerFragment.getArguments().getString(ProjectYoutubePlayerFragment.EXTRA_YOUTUBE_ID)).isEqualTo("o-rnYD47wmo");
         assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.VISIBLE);
 
         // 프로젝트 설명
@@ -165,10 +165,22 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void onPostCreate시_비디오정보가_없는경우_비디오레이아웃을_숨긴다() throws Exception {
         mockProject.setVideoUrl("");
-        when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(mockProject));
 
         subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
 
+        assertHideVideoLayout();
+    }
+
+    @Test
+    public void onPostCreate시_비디오정보가_유투브URL이_아닌_경우_비디오레이아웃을_숨긴다() throws Exception {
+        mockProject.setVideoUrl("http://www.naver.com/4.mp4");
+
+        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+
+        assertHideVideoLayout();
+    }
+
+    private void assertHideVideoLayout() {
         assertThat(subject.getFragmentManager().findFragmentByTag("YouTubePlayerFragment")).isNull();
         assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.GONE);
     }
@@ -277,7 +289,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 세부일정선택영역이_나타난_상태에서_submitArrowButton클릭시_세부일정선택영이_사라진다() throws Exception {
+    public void 세부일정선택영역이_나타난_상태에서_submitArrowButton클릭시_세부일정선택영역이_사라진다() throws Exception {
         subject.submitArrowButton.performClick();
 
         subject.submitArrowButton.performClick();
@@ -288,7 +300,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     @Config(minSdk = 22)
-    public void 세부일정선택영이_나타나면_scrollView영역이Dim처리된다() throws Exception {
+    public void 세부일정선택영역이_나타나면_scrollView영역이Dim처리된다() throws Exception {
         subject.submitArrowButton.performClick();
 
         assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(dimForegroundColorId);
