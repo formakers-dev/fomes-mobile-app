@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -100,14 +102,15 @@ public class MyInterviewActivityTest extends ActivityTest {
 
         subject.onItemClickListener.onClickCancelInterview("12345", 11L, "time8", "WHOn", "확정", interviewDate, "우면사업장");
 
-        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
-        assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo(CancelInterviewActivity.class.getName());
-        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
-        assertThat(nextStartedIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(11L);
-        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_NAME)).isEqualTo("WHOn");
-        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS)).isEqualTo("확정");
-        assertThat(nextStartedIntent.getSerializableExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE)).isEqualTo(interviewDate);
-        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.LOCATION)).isEqualTo("우면사업장");
+        ShadowActivity.IntentForResult nextStartedIntentForResult = shadowOf(subject).getNextStartedActivityForResult();
+        assertThat(nextStartedIntentForResult.requestCode).isEqualTo(1001);
+        assertThat(nextStartedIntentForResult.intent.getComponent().getClassName()).isEqualTo(CancelInterviewActivity.class.getName());
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
+        assertThat(nextStartedIntentForResult.intent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(11L);
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_NAME)).isEqualTo("WHOn");
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS)).isEqualTo("확정");
+        assertThat(nextStartedIntentForResult.intent.getSerializableExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE)).isEqualTo(interviewDate);
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.LOCATION)).isEqualTo("우면사업장");
     }
 
     @Test
@@ -128,5 +131,12 @@ public class MyInterviewActivityTest extends ActivityTest {
 
         assertThat(subject.findViewById(R.id.not_found_interview_text).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.interview_recycler_view).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    public void 인터뷰취소완료시_다가오는인터뷰목록을_다시_로드한다() throws Exception {
+        subject.onActivityResult(1001, Activity.RESULT_OK, null);
+
+        verify(projectService).getRegisteredInterviews();
     }
 }

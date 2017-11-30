@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,8 @@ import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MyInterviewActivity extends BaseActivity {
+
+    private static final int CANCEL_INTERVIEW_REQUEST_CODE = 1001;
 
     @Inject
     ProjectService projectService;
@@ -39,6 +43,8 @@ public class MyInterviewActivity extends BaseActivity {
 
     @BindView(R.id.not_found_interview_text)
     View notFoundInterviewView;
+
+    List<Project> projectList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,20 +64,6 @@ public class MyInterviewActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        projectService.getRegisteredInterviews()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(projectList -> {
-                    displayInterviewsLayout(projectList == null || projectList.isEmpty());
-                    bindRegisteredInterviews(projectList);
-                });
-    }
-
-    private void displayInterviewsLayout(boolean isEmpty) {
-        interviewRecyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-        notFoundInterviewView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-    }
-
-    private void bindRegisteredInterviews(List<Project> projectList) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         interviewRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -81,6 +73,30 @@ public class MyInterviewActivity extends BaseActivity {
 
         RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper, onItemClickListener);
         interviewRecyclerView.setAdapter(registeredInterviewListAdapter);
+
+        requestRegisteredInterviews();
+    }
+
+    private void requestRegisteredInterviews() {
+        projectService.getRegisteredInterviews()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(projectList -> {
+                    displayInterviewsLayout(projectList == null || projectList.isEmpty());
+                    if (interviewRecyclerView.getVisibility() == View.VISIBLE) {
+                        refreshInterviewRecyclerView(projectList);
+                    }
+                });
+    }
+
+    private void displayInterviewsLayout(boolean isEmpty) {
+        interviewRecyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        notFoundInterviewView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    }
+
+    private void refreshInterviewRecyclerView(List<Project> projectList) {
+        this.projectList.clear();
+        this.projectList.addAll(projectList);
+        interviewRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -91,6 +107,15 @@ public class MyInterviewActivity extends BaseActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CANCEL_INTERVIEW_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            requestRegisteredInterviews();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -113,7 +138,7 @@ public class MyInterviewActivity extends BaseActivity {
             intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS, interviewStatus);
             intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE, interviewDate);
             intent.putExtra(AppBeeConstants.EXTRA.LOCATION, location);
-            startActivity(intent);
+            startActivityForResult(intent, CANCEL_INTERVIEW_REQUEST_CODE);
         }
     };
 
