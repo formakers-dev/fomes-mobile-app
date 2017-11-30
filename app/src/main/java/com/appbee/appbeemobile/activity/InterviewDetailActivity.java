@@ -3,10 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
@@ -27,6 +24,7 @@ import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
+import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -52,6 +50,9 @@ public class InterviewDetailActivity extends BaseActivity {
 
     @Inject
     TimeHelper timeHelper;
+
+    @Inject
+    ResourceHelper resourceHelper;
 
     @BindView(R.id.representation_image)
     ImageView representationImageView;
@@ -176,8 +177,8 @@ public class InterviewDetailActivity extends BaseActivity {
         if (isRegisteredInterview) {
             submitArrowButton.setVisibility(View.GONE);
             submitButton.setText(R.string.registered_interview_submit_button);
-            submitButton.setTextColor(getColorValue(R.color.appbee_warm_gray));
-            submitButton.setBackgroundColor(getColorValue(R.color.appbee_dim_gray));
+            submitButton.setTextColor(resourceHelper.getColorValue(R.color.appbee_warm_gray));
+            submitButton.setBackgroundColor(resourceHelper.getColorValue(R.color.appbee_dim_gray));
             submitButton.setClickable(false);
         }
     }
@@ -252,11 +253,11 @@ public class InterviewDetailActivity extends BaseActivity {
         if (detailPlansLayout.getVisibility() == View.GONE) {
             detailPlansLayout.setVisibility(View.VISIBLE);
             submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
-            scrollViewLayout.setForeground(new ColorDrawable(getColorValue(R.color.appbee_dim_foreground)));
+            scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(R.color.appbee_dim_foreground)));
         } else {
             detailPlansLayout.setVisibility(View.GONE);
             submitArrowButton.setBackground(getDrawable(R.drawable.submit_open));
-            scrollViewLayout.setForeground(new ColorDrawable(getColorValue(android.R.color.transparent)));
+            scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(android.R.color.transparent)));
         }
     }
 
@@ -265,7 +266,7 @@ public class InterviewDetailActivity extends BaseActivity {
         if (detailPlansLayout.getVisibility() == View.GONE) {
             detailPlansLayout.setVisibility(View.VISIBLE);
             submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
-            scrollViewLayout.setForeground(new ColorDrawable(getColorValue(R.color.appbee_dim_foreground)));
+            scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(R.color.appbee_dim_foreground)));
             return;
         }
 
@@ -297,15 +298,5 @@ public class InterviewDetailActivity extends BaseActivity {
                         Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
                     }
                 });
-    }
-
-    private
-    @ColorInt
-    int getColorValue(@ColorRes int colorResId) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return getResources().getColor(colorResId);
-        } else {
-            return getResources().getColor(colorResId, null);
-        }
     }
 }

@@ -9,6 +9,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.activity.MyInterviewActivity;
 import com.appbee.appbeemobile.adapter.holder.RegisteredInterviewItemViewHolder;
+import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 
@@ -43,14 +44,17 @@ public class RegisteredInterviewListAdapterTest {
     private TimeHelper mockTimeHelper;
 
     @Mock
+    private ResourceHelper mockResourceHelper;
+
+    @Mock
     private MyInterviewActivity.OnItemClickListener mockListener;
 
     private RegisteredInterviewItemViewHolder holder;
 
     private Date mockInterviewDate1;
     private Date mockInterviewDate2;
-    private int skyBlueColorId;
-    private int lightGrayColorId;
+    private final int SKY_BLUE_COLOR = 1;
+    private final int LIGHT_GRAY_COLOR = 2;
 
     @Before
     public void setUp() throws Exception {
@@ -79,22 +83,10 @@ public class RegisteredInterviewListAdapterTest {
         projectList.add(project1);
         projectList.add(project2);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            skyBlueColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_sky_blue, null);
-            lightGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_light_gray, null);
-        } else {
-            skyBlueColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_sky_blue);
-            lightGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_light_gray);
-        }
+        mockColorValue();
 
-        subject = new RegisteredInterviewListAdapter(projectList, mockTimeHelper, mockListener);
+        subject = new RegisteredInterviewListAdapter(projectList, mockTimeHelper, mockListener, mockResourceHelper);
         holder = subject.onCreateViewHolder(new LinearLayout(RuntimeEnvironment.application), 0);
-    }
-
-    private Date createMockDate(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        return calendar.getTime();
     }
 
     @Test
@@ -117,11 +109,11 @@ public class RegisteredInterviewListAdapterTest {
         // 신청상태 : openDate < 현재일자 < closeDate
         //  12.01 < 2017.12.29 < 12.31
         subject.onBindViewHolder(holder, 0);
-        assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(skyBlueColorId);
-        assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(lightGrayColorId);
-        assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(lightGrayColorId);
-        assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(lightGrayColorId);
-        assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(lightGrayColorId);
+        assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
+        assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(LIGHT_GRAY_COLOR);
+        assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
+        assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(LIGHT_GRAY_COLOR);
+        assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
     }
 
     @Test
@@ -130,11 +122,11 @@ public class RegisteredInterviewListAdapterTest {
         // 확정상태 : closeDate < 현재일자 < interviewDate + 인터뷰시간
         //  12.28 < 12.29 < 12.30 08:00
         subject.onBindViewHolder(holder, 1);
-        assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(skyBlueColorId);
-        assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(skyBlueColorId);
-        assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(skyBlueColorId);
-        assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(lightGrayColorId);
-        assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(lightGrayColorId);
+        assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
+        assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(SKY_BLUE_COLOR);
+        assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
+        assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(LIGHT_GRAY_COLOR);
+        assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
     }
 
     @Test
@@ -157,5 +149,17 @@ public class RegisteredInterviewListAdapterTest {
         subject.onBindViewHolder(holder, 1);
         holder.cancelInterviewButton.performClick();
         verify(mockListener).onClickCancelInterview(eq("67890"), eq(22L), eq("time8"), eq("토토"), eq("확정"), eq(mockInterviewDate2), eq("수원사업장"));
+    }
+
+
+    private Date createMockDate(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        return calendar.getTime();
+    }
+
+    private void mockColorValue() {
+        when(mockResourceHelper.getColorValue(R.color.appbee_sky_blue)).thenReturn(SKY_BLUE_COLOR);
+        when(mockResourceHelper.getColorValue(R.color.appbee_light_gray)).thenReturn(LIGHT_GRAY_COLOR);
     }
 }

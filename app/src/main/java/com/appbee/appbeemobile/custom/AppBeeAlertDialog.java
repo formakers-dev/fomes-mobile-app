@@ -3,9 +3,6 @@ package com.appbee.appbeemobile.custom;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.helper.ResourceHelper;
 
 public class AppBeeAlertDialog extends AlertDialog {
 
@@ -100,17 +98,7 @@ public class AppBeeAlertDialog extends AlertDialog {
 
         positiveButton.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.type_face_medium)));
         positiveButton.setTextSize(20);
-        positiveButton.setTextColor(getColorValue(R.color.appbee_warm_gray));
+        positiveButton.setTextColor(new ResourceHelper(context).getColorValue(R.color.appbee_warm_gray));
         positiveButton.setLayoutParams(lp);
-    }
-
-    private
-    @ColorInt
-    int getColorValue(@ColorRes int colorResId) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return context.getResources().getColor(colorResId);
-        } else {
-            return context.getResources().getColor(colorResId, null);
-        }
     }
 }

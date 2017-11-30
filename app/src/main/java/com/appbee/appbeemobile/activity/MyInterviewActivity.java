@@ -14,6 +14,7 @@ import android.view.View;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.RegisteredInterviewListAdapter;
+import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -37,6 +38,9 @@ public class MyInterviewActivity extends BaseActivity {
 
     @Inject
     TimeHelper timeHelper;
+
+    @Inject
+    ResourceHelper resourceHelper;
 
     @BindView(R.id.interview_recycler_view)
     RecyclerView interviewRecyclerView;
@@ -71,7 +75,7 @@ public class MyInterviewActivity extends BaseActivity {
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.line_divider, null));
         interviewRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper, onItemClickListener);
+        RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper, onItemClickListener, resourceHelper);
         interviewRecyclerView.setAdapter(registeredInterviewListAdapter);
 
         requestRegisteredInterviews();

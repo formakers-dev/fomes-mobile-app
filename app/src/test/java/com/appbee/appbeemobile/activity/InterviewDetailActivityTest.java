@@ -17,6 +17,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
+import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.Project;
@@ -71,13 +72,16 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Inject
     TimeHelper mockTimeHelper;
 
+    @Inject
+    ResourceHelper mockResourceHelper;
+
     private Intent intent = new Intent();
-    private int dimGrayColorId;
-    private int yellowColorId;
-    private int warmGrayColorId;
-    private int grayColorId;
-    private int dimForegroundColorId;
-    private int transparentColorId;
+    private final int DIM_GRAY_COLOR = 1;
+    private final int YELLOW_COLOR = 2;
+    private final int WARM_GRAY_COLOR = 3;
+    private final int GRAY_COLOR = 4;
+    private final int DIM_FOREGROUND_COLOR = 5;
+    private final int TRANSPARENT_COLOR = 6;
     private Project mockProject;
 
     @Before
@@ -93,10 +97,9 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         setupMockProject();
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
+        mockColorValue();
 
         subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
-
-        extractColorIds();
     }
 
     private void setupMockProject() {
@@ -207,8 +210,6 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(shadowOf(subject.submitArrowButton.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.submit_open);
         assertThat(subject.submitArrowButton.isClickable()).isTrue();
         assertThat(subject.submitButton.getText()).isEqualTo("유저 인터뷰 신청하기");
-        assertThat(subject.submitButton.getCurrentTextColor()).isEqualTo(grayColorId);
-        assertThat(((ColorDrawable) subject.submitButton.getBackground()).getColor()).isEqualTo(yellowColorId);
         assertThat(subject.submitButton.isClickable()).isTrue();
     }
 
@@ -221,8 +222,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         assertThat(subject.submitArrowButton.getVisibility()).isEqualTo(View.GONE);
         assertThat(subject.submitButton.getText()).isEqualTo("이미 신청한 인터뷰입니다.");
-        assertThat(subject.submitButton.getCurrentTextColor()).isEqualTo(warmGrayColorId);
-        assertThat(((ColorDrawable) subject.submitButton.getBackground()).getColor()).isEqualTo(dimGrayColorId);
+        assertThat(subject.submitButton.getCurrentTextColor()).isEqualTo(WARM_GRAY_COLOR);
+        assertThat(((ColorDrawable) subject.submitButton.getBackground()).getColor()).isEqualTo(DIM_GRAY_COLOR);
         assertThat(subject.submitButton.isClickable()).isFalse();
     }
 
@@ -255,7 +256,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(dialog).isNull();
 
         assertThat(shadowOf(subject.submitArrowButton.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.submit_close);
-        assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(dimForegroundColorId);
+        assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(DIM_FOREGROUND_COLOR);
     }
 
     @Test
@@ -303,11 +304,11 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void 세부일정선택영역이_나타나면_scrollView영역이Dim처리된다() throws Exception {
         subject.submitArrowButton.performClick();
 
-        assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(dimForegroundColorId);
+        assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(DIM_FOREGROUND_COLOR);
 
         subject.submitArrowButton.performClick();
 
-        assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(transparentColorId);
+        assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(TRANSPARENT_COLOR);
     }
 
     @Test
@@ -379,21 +380,12 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(shadowAlertDialog.hasBeenDismissed()).isTrue();
     }
 
-    private void extractColorIds() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            dimGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_dim_gray, null);
-            dimForegroundColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_dim_foreground, null);
-            warmGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_warm_gray, null);
-            grayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_gray, null);
-            yellowColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_yellow, null);
-            transparentColorId = RuntimeEnvironment.application.getResources().getColor(android.R.color.transparent, null);
-        } else {
-            dimGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_dim_gray);
-            dimForegroundColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_dim_foreground);
-            warmGrayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_warm_gray);
-            grayColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_gray);
-            yellowColorId = RuntimeEnvironment.application.getResources().getColor(R.color.appbee_yellow);
-            transparentColorId = RuntimeEnvironment.application.getResources().getColor(android.R.color.transparent);
-        }
+    private void mockColorValue() {
+        when(mockResourceHelper.getColorValue(R.color.appbee_dim_gray)).thenReturn(DIM_GRAY_COLOR);
+        when(mockResourceHelper.getColorValue(R.color.appbee_dim_foreground)).thenReturn(DIM_FOREGROUND_COLOR);
+        when(mockResourceHelper.getColorValue(R.color.appbee_warm_gray)).thenReturn(WARM_GRAY_COLOR);
+        when(mockResourceHelper.getColorValue(R.color.appbee_gray)).thenReturn(GRAY_COLOR);
+        when(mockResourceHelper.getColorValue(R.color.appbee_yellow)).thenReturn(YELLOW_COLOR);
+        when(mockResourceHelper.getColorValue(android.R.color.transparent)).thenReturn(TRANSPARENT_COLOR);
     }
 }

@@ -1,16 +1,16 @@
 package com.appbee.appbeemobile.dagger;
 
-import com.appbee.appbeemobile.activity.CancelInterviewActivity;
 import com.appbee.appbeemobile.activity.CancelInterviewActivityTest;
 import com.appbee.appbeemobile.activity.CodeVerificationActivityTest;
 import com.appbee.appbeemobile.activity.InterviewDetailActivityTest;
-import com.appbee.appbeemobile.activity.MyInterviewActivityTest;
-import com.appbee.appbeemobile.activity.ProjectDetailActivityTest;
 import com.appbee.appbeemobile.activity.LoadingActivityTest;
 import com.appbee.appbeemobile.activity.LoginActivityTest;
 import com.appbee.appbeemobile.activity.MainActivityTest;
+import com.appbee.appbeemobile.activity.MyInterviewActivityTest;
 import com.appbee.appbeemobile.activity.PermissionGuideActivityTest;
+import com.appbee.appbeemobile.activity.ProjectDetailActivityTest;
 import com.appbee.appbeemobile.adapter.RegisteredInterviewListAdapterTest;
+import com.appbee.appbeemobile.custom.AppBeeAlertDialogTest;
 import com.appbee.appbeemobile.fragment.InterviewListFragmentTest;
 import com.appbee.appbeemobile.fragment.OnboardingAnalysisFragmentTest;
 import com.appbee.appbeemobile.fragment.ProjectListFragmentTest;
@@ -37,4 +37,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(MyInterviewActivityTest myInterviewActivityTest);
     void inject(RegisteredInterviewListAdapterTest registeredInterviewListAdapterTest);
     void inject(CancelInterviewActivityTest cancelInterviewActivityTest);
+    void inject(AppBeeAlertDialogTest appBeeAlertDialogTest);
 }
