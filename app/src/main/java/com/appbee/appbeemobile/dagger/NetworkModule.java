@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.dagger;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.network.AppAPI;
+import com.appbee.appbeemobile.network.ConfigAPI;
 import com.appbee.appbeemobile.network.ProjectAPI;
 import com.appbee.appbeemobile.network.StatAPI;
 import com.appbee.appbeemobile.network.UserAPI;
@@ -68,5 +69,11 @@ public class NetworkModule {
     @Provides
     ProjectAPI projectAPI(Retrofit retrofit) {
         return retrofit.create(ProjectAPI.class);
+    }
+
+    @Singleton
+    @Provides
+    ConfigAPI configAPI(Retrofit retrofit) {
+        return retrofit.create(ConfigAPI.class);
     }
 }
