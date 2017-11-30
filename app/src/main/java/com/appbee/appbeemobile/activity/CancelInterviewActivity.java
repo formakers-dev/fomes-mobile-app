@@ -1,7 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -90,8 +90,7 @@ public class CancelInterviewActivity extends BaseActivity {
                     if (result) {
                         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
                             dialog.dismiss();
-                            Intent intent = new Intent(CancelInterviewActivity.this, MyInterviewActivity.class);
-                            startActivity(intent);
+                            setResult(Activity.RESULT_OK);
                             finish();
                         };
                         AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_cancel_image, getString(R.string.dialog_cancel_title), getString(R.string.dialog_cancel_message), onClickListener);

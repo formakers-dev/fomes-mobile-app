@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +22,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowToast;
@@ -53,8 +53,9 @@ public class CancelInterviewActivityTest extends ActivityTest {
     @Inject
     ProjectService mockProjectService;
 
-    ActivityController<CancelInterviewActivity> activityContorller;
     private CancelInterviewActivity subject;
+    private Intent intent = new Intent();
+    private MenuItem homeMenuItem = mock(MenuItem.class);
 
     @Before
     public void setUp() throws Exception {
@@ -63,12 +64,13 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
+        when(homeMenuItem.getItemId()).thenReturn(android.R.id.home);
+
         // month 1월
         Calendar calendar = Calendar.getInstance();
         calendar.set(2017, 11, 4);
         Date interviewDate = calendar.getTime();
 
-        Intent intent = new Intent();
         intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, "projectId");
         intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 1L);
         intent.putExtra(AppBeeConstants.EXTRA.TIME_SLOT, "time15");
@@ -77,7 +79,9 @@ public class CancelInterviewActivityTest extends ActivityTest {
         intent.putExtra(AppBeeConstants.EXTRA.PROJECT_NAME, "WHOn");
         intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS, "확정");
 
-        activityContorller = Robolectric.buildActivity(CancelInterviewActivity.class, intent);
+        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+
+        subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
     }
 
     @After
@@ -87,9 +91,6 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
     @Test
     public void 취소버튼클릭시_취소요청시_인터뷰취소_API를_호출한다() throws Exception {
-        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-        subject = activityContorller.create().postCreate(null).get();
-
         subject.findViewById(R.id.cancel_yes).performClick();
 
         verify(mockProjectService).postCancelParticipate(anyString(), anyLong(), anyString());
@@ -97,16 +98,12 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
     @Test
     public void onPostCreate시_인터뷰관련데이터가_화면에_바인딩된다() throws Exception {
-        subject = activityContorller.create().postCreate(null).get();
         assertThat(subject.interviewNameStatusTextView.getText()).isEqualTo("WHOn 유저인터뷰 : 확정");
         assertThat(subject.interviewDateLocationTextView.getText()).isEqualTo("12월 4일 (월) 우면사업장 15:00");
     }
 
     @Test
     public void 인터뷰취소요청이_성공하면_취소완료_팝업이_호출된다() throws Exception {
-        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-        subject = activityContorller.create().postCreate(null).get();
-
         subject.findViewById(R.id.cancel_yes).performClick();
 
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
@@ -119,17 +116,14 @@ public class CancelInterviewActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 인터뷰취소팝업_확인_버튼을_클릭하면_팝업을_닫고_다가오는_유저인터뷰_페이지로_이동한다() throws Exception {
-        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-        subject = activityContorller.create().postCreate(null).get();
-
+    public void 인터뷰취소팝업_확인_버튼을_클릭하면_팝업을_닫고_이전페이지로_복귀한다() throws Exception {
         subject.findViewById(R.id.cancel_yes).performClick();
 
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
         assertThat(shadowOf(dialog).hasBeenDismissed()).isTrue();
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MyInterviewActivity.class.getName());
+        assertThat(shadowOf(subject).getResultCode()).isEqualTo(Activity.RESULT_OK);
         assertThat(subject.isFinishing()).isTrue();
     }
 
@@ -137,7 +131,8 @@ public class CancelInterviewActivityTest extends ActivityTest {
     public void 인터뷰취소요청이_실패하면_오류메시지를_토스트로_보여준다() throws Exception {
         int errorCode = 406;
         when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
-        subject = activityContorller.create().postCreate(null).get();
+
+        subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
 
         subject.findViewById(R.id.cancel_yes).performClick();
 
@@ -146,8 +141,6 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
     @Test
     public void 아니오버튼을_클릭하면_이전화면으로_이동한다() throws Exception {
-        subject = activityContorller.create().postCreate(null).get();
-
         subject.findViewById(R.id.cancel_no).performClick();
 
         assertThat(shadowOf(subject).isFinishing()).isTrue();
@@ -155,10 +148,6 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
     @Test
     public void home클릭시_이전화면으로_이동한다() throws Exception {
-        MenuItem homeMenuItem = mock(MenuItem.class);
-        when(homeMenuItem.getItemId()).thenReturn(android.R.id.home);
-
-        subject = activityContorller.create().get();
         subject.onOptionsItemSelected(homeMenuItem);
 
         assertThat(shadowOf(subject).isFinishing()).isTrue();
