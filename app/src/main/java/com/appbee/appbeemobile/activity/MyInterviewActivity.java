@@ -89,7 +89,7 @@ public class MyInterviewActivity extends BaseActivity {
                     if (interviewRecyclerView.getVisibility() == View.VISIBLE) {
                         refreshInterviewRecyclerView(projectList);
                     }
-                });
+                }, this::logError);
     }
 
     private void displayInterviewsLayout(boolean isEmpty) {

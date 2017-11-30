@@ -82,7 +82,7 @@ public class ProjectListFragment extends BaseFragment {
                 .subscribe(projectList -> {
                     displayEmptyContentTextView(projectList == null || projectList.isEmpty());
                     refreshProjectRecyclerView(projectList);
-                });
+                }, this::logError);
     }
 
     private void displayEmptyContentTextView(boolean isEmpty) {

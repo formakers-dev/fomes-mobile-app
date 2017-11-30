@@ -33,7 +33,7 @@
     <string name="interview_summary">%1$s / %2$s~%3$s / %4$d분 / 3만원 리워드</string>
     <string name="greeting_title">환영합니다!</string>
     <string name="greeting_message">앱비는 당신의 앱 사용패턴을 분석해서\n새 프로젝트 &amp; 유저 인터뷰를 보여드려요.</string>
-    <string name="tnc_agree_text">버튼을 누르시면 <![CDATA[<a href="http://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="http://appbee.info">개인정보 취급방침</a>]]>에 동의됩니다.</string>
+    <string name="tnc_agree_text">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1t11gomrftWIlXFmJ9ZAqXjHLb1SAjkmcMdxwItXWtf4/edit?usp=sharing">사용약관 및 개인정보 취급방침</a>]]>에 동의됩니다.</string>
     <string name="app_subtitle">App Behaviour</string>
 
     <string name="analysis_title">앱 사용패턴 분석 완료!</string>

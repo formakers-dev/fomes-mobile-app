@@ -78,7 +78,7 @@ public class InterviewListFragment extends BaseFragment {
                 .subscribe(interviewList -> {
                     displayEmptyContentTextView(interviewList == null || interviewList.isEmpty());
                     refreshInterviewRecyclerView(interviewList);
-                });
+                }, this::logError);
     }
 
     private void displayEmptyContentTextView(boolean isEmpty) {
