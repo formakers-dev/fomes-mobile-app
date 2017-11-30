@@ -68,6 +68,12 @@ android.applicationVariants.all {
     it.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
 }
 
+android.applicationVariants.all { variant ->
+    def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
+    def buildType = "${variant.buildType.name.capitalize()}"
+    tasks["compile${productFlavor}${buildType}UnitTestSources"].dependsOn(tasks["merge${productFlavor}${buildType}Assets"])
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
