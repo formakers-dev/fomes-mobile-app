@@ -3,9 +3,9 @@ package com.appbee.appbeemobile.activity;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.fragment.OnboardingAnalysisFragment;
+import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
 import com.appbee.appbeemobile.fragment.OnboardingRewardsFragment;
-import com.appbee.appbeemobile.shadow.ShadowOnboardingAnalysisFragment;
+import com.appbee.appbeemobile.shadow.ShadowAppUsageAnalysisFragment;
 import com.appbee.appbeemobile.shadow.ShadowOnboardingRewardFragment;
 
 import org.junit.Before;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, shadows = {ShadowOnboardingAnalysisFragment.class, ShadowOnboardingRewardFragment.class})
+@Config(constants = BuildConfig.class, shadows = {ShadowAppUsageAnalysisFragment.class, ShadowOnboardingRewardFragment.class})
 public class OnboardingAnalysisActivityTest {
 
     private OnboardingAnalysisActivity subject;
@@ -31,7 +31,7 @@ public class OnboardingAnalysisActivityTest {
 
     @Test
     public void onCreated가호출되면_OnboardingAnalysisFragment를_생성한다() throws Exception {
-        assertThat(subject.getSupportFragmentManager().findFragmentByTag(OnboardingAnalysisFragment.TAG)).isNotNull();
+        assertThat(subject.getSupportFragmentManager().findFragmentByTag(AppUsageAnalysisFragment.TAG)).isNotNull();
     }
 
     @Test

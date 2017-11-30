@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.fragment.OnboardingAnalysisFragment;
+import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
 import com.appbee.appbeemobile.fragment.OnboardingRewardsFragment;
 
 import butterknife.OnClick;
@@ -25,13 +25,13 @@ public class OnboardingAnalysisActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new OnboardingAnalysisFragment(), OnboardingAnalysisFragment.TAG);
+        fragmentTransaction.replace(R.id.fragment_container, new AppUsageAnalysisFragment(), AppUsageAnalysisFragment.TAG);
         fragmentTransaction.commit();
     }
 
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
-        if (fragmentManager.findFragmentByTag(OnboardingAnalysisFragment.TAG) != null) {
+        if (fragmentManager.findFragmentByTag(AppUsageAnalysisFragment.TAG) != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, new OnboardingRewardsFragment(), OnboardingRewardsFragment.TAG);
             fragmentTransaction.commit();
