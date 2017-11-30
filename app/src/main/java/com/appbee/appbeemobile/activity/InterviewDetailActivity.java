@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -119,6 +120,9 @@ public class InterviewDetailActivity extends BaseActivity {
 
     @BindView(R.id.scroll_view_layout)
     FrameLayout scrollViewLayout;
+
+    @BindView(R.id.scroll_view)
+    ScrollView scrollView;
 
     @BindView(R.id.project_video_layout)
     FrameLayout projectVideoLayout;
@@ -251,22 +255,16 @@ public class InterviewDetailActivity extends BaseActivity {
     @OnClick(R.id.submit_arrow_button)
     void onClickOpenDetailLayout(View view) {
         if (detailPlansLayout.getVisibility() == View.GONE) {
-            detailPlansLayout.setVisibility(View.VISIBLE);
-            submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
-            scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(R.color.appbee_dim_foreground)));
+            showDetailPlanLayout();
         } else {
-            detailPlansLayout.setVisibility(View.GONE);
-            submitArrowButton.setBackground(getDrawable(R.drawable.submit_open));
-            scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(android.R.color.transparent)));
+            hideDetailPlanLayout();
         }
     }
 
     @OnClick(R.id.submit_button)
     void onSubmitButton(View view) {
         if (detailPlansLayout.getVisibility() == View.GONE) {
-            detailPlansLayout.setVisibility(View.VISIBLE);
-            submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
-            scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(R.color.appbee_dim_foreground)));
+            showDetailPlanLayout();
             return;
         }
 
@@ -298,5 +296,22 @@ public class InterviewDetailActivity extends BaseActivity {
                         Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private void showDetailPlanLayout() {
+        detailPlansLayout.setVisibility(View.VISIBLE);
+        submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
+        scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(R.color.appbee_dim_foreground)));
+        scrollView.setOnTouchListener((v, event) -> {
+            hideDetailPlanLayout();
+            return false;
+        });
+    }
+
+    private void hideDetailPlanLayout() {
+        detailPlansLayout.setVisibility(View.GONE);
+        submitArrowButton.setBackground(getDrawable(R.drawable.submit_open));
+        scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(android.R.color.transparent)));
+        scrollView.setOnTouchListener(null);
     }
 }
