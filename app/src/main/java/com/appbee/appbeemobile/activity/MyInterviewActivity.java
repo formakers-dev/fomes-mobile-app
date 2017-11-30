@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -36,6 +37,9 @@ public class MyInterviewActivity extends BaseActivity {
     @BindView(R.id.interview_recycler_view)
     RecyclerView interviewRecyclerView;
 
+    @BindView(R.id.not_found_interview_text)
+    View notFoundInterviewView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +60,23 @@ public class MyInterviewActivity extends BaseActivity {
 
         projectService.getRegisteredInterviews()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::showRegisteredInterviews);
+                .subscribe(projectList -> {
+                    displayInterviewsLayout(projectList == null || projectList.isEmpty());
+                    bindRegisteredInterviews(projectList);
+                });
     }
 
-    private void showRegisteredInterviews(List<Project> projectList) {
+    private void displayInterviewsLayout(boolean isEmpty) {
+        interviewRecyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        notFoundInterviewView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    }
+
+    private void bindRegisteredInterviews(List<Project> projectList) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         interviewRecyclerView.setLayoutManager(linearLayoutManager);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getDrawable(R.drawable.line_divider));
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.line_divider, null));
         interviewRecyclerView.addItemDecoration(dividerItemDecoration);
 
         RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper, actionListener);
