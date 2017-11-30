@@ -114,7 +114,8 @@ public class MainActivity extends BaseActivity
             Intent intent = new Intent(this, MyInterviewActivity.class);
             startActivity(intent);
         } else if (id == R.id.my_app_usage_pattern) {
-
+            Intent intent = new Intent(this, MyAppUsageActivity.class);
+            startActivity(intent);
         } else if (id == R.id.appbee_question) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("message/rfc822");

@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,9 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class OnboardingAnalysisFragment extends BaseFragment {
-    public static final String TAG = OnboardingAnalysisFragment.class.getSimpleName();
+public class AppUsageAnalysisFragment extends BaseFragment {
+    public static final String TAG = AppUsageAnalysisFragment.class.getSimpleName();
+    private String description = "";
 
     @Inject
     AppService appService;
@@ -41,6 +43,16 @@ public class OnboardingAnalysisFragment extends BaseFragment {
     @BindView(R.id.most_used_app_layout)
     ViewGroup mostUsedAppViewGroup;
 
+    @BindView(R.id.analysis_description)
+    TextView analysisDescription;
+
+    public AppUsageAnalysisFragment() {
+    }
+
+    public AppUsageAnalysisFragment(String description) {
+        this.description = description;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +63,10 @@ public class OnboardingAnalysisFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(!TextUtils.isEmpty(description)) {
+            analysisDescription.setText(description);
+        }
 
         List<String> popularAppsList = appService.getPopularApps();
 
@@ -83,5 +99,4 @@ public class OnboardingAnalysisFragment extends BaseFragment {
                     viewGroup.addView(itemView);
                 });
     }
-
 }

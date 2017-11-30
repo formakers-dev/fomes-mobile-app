@@ -10,7 +10,7 @@ import com.appbee.appbeemobile.activity.LoginActivity;
 import com.appbee.appbeemobile.activity.MainActivity;
 import com.appbee.appbeemobile.activity.PermissionGuideActivity;
 import com.appbee.appbeemobile.fragment.InterviewListFragment;
-import com.appbee.appbeemobile.fragment.OnboardingAnalysisFragment;
+import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
 import com.appbee.appbeemobile.fragment.ProjectListFragment;
 import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
 import com.appbee.appbeemobile.service.InstanceIDService;
@@ -34,7 +34,7 @@ public interface ApplicationComponent {
     void inject(InterviewDetailActivity interviewDetailActivity);
     void inject(InterviewListFragment interviewListFragment);
     void inject(ProjectListFragment projectListFragment);
-    void inject(OnboardingAnalysisFragment onboardingAnalysisFragment);
+    void inject(AppUsageAnalysisFragment appUsageAnalysisFragment);
     void inject(MyInterviewActivity myInterviewActivity);
     void inject(CodeVerificationActivity CodeVerificationActivity);
     void inject(CancelInterviewActivity cancelInterviewActivity);

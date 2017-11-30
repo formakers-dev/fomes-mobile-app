@@ -123,5 +123,8 @@
 
     <string name="type_face_bmjua">BMJUA.otf</string>
     <string name="type_face_medium">NotoSans-Medium.otf</string>
+    <string name="type_face_normal">NotoSans-Regular.otf</string>
+    <string name="my_app_usage_title">앱 사용패턴 다시 분석하기</string>
+    <string name="my_analysis_description">지금으로부터 최근 일주일동안\n앱 사용패턴을 분석해 보았어요.</string>
 
 </resources>

@@ -13,8 +13,6 @@ import org.robolectric.annotation.Implements;
 
 @Implements(value = OnboardingRewardsFragment.class)
 public class ShadowOnboardingRewardFragment extends BaseFragment{
-    public ShadowOnboardingRewardFragment() {
-    }
 
     @Nullable
     @Override

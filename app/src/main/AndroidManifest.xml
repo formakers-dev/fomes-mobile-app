@@ -67,6 +67,7 @@
         </activity>
         <activity android:name=".activity.MyInterviewActivity" />
         <activity android:name=".activity.CancelInterviewActivity" />
+        <activity android:name=".activity.MyAppUsageActivity" />
     </application>
 
 </manifest>

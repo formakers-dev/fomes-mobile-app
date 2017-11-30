@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class OnboardingAnalysisFragmentTest {
+public class AppUsageAnalysisFragmentTest {
 
     @Inject
     AppService mockAppService;
@@ -50,8 +50,8 @@ public class OnboardingAnalysisFragmentTest {
     @Inject
     NativeAppInfoHelper mockNativeAppInfoHelper;
 
-    private OnboardingAnalysisFragment subject;
-    private SupportFragmentController<OnboardingAnalysisFragment> controller;
+    private AppUsageAnalysisFragment subject;
+    private SupportFragmentController<AppUsageAnalysisFragment> controller;
     private Unbinder unbinder;
 
     @Before
@@ -71,11 +71,6 @@ public class OnboardingAnalysisFragmentTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         MockitoAnnotations.initMocks(this);
 
-        subject = new OnboardingAnalysisFragment();
-
-        controller = SupportFragmentController.of(subject);
-        unbinder = ButterKnife.bind(this, subject.getView());
-
         List<String> appList = Arrays.asList("packageName1", "packageName2", "packageName3", "packageName4", "packageName5");
         when(mockAppUsageDataHelper.getSortedUsedPackageNames()).thenReturn(Observable.just(appList));
 
@@ -86,6 +81,21 @@ public class OnboardingAnalysisFragmentTest {
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName5")).thenReturn(new NativeAppInfo("packageName5", "appName5"));
 
         when(mockAppService.getPopularApps()).thenReturn(Arrays.asList("packageName1", "packageName2"));
+    }
+
+    private void setupWithoutDescription() {
+        subject = new AppUsageAnalysisFragment();
+        controller = SupportFragmentController.of(subject);
+        unbinder = ButterKnife.bind(this, subject.getView());
+
+        controller.create().start().resume();
+    }
+
+
+    private void setupWithAnalysisDescription(String analysisDescription) {
+        subject = new AppUsageAnalysisFragment(analysisDescription);
+        controller = SupportFragmentController.of(subject);
+        unbinder = ButterKnife.bind(this, subject.getView());
 
         controller.create().start().resume();
     }
@@ -99,6 +109,7 @@ public class OnboardingAnalysisFragmentTest {
 
     @Test
     public void onViewCreated시_가장인기있는앱을제외하고_가장개성있는앱3개가_나타난다() throws Exception {
+        setupWithoutDescription();
         assertThat(subject.mostPersonalityAppViewGroup.getChildCount()).isEqualTo(3);
 
         assertThat(((TextView) subject.mostPersonalityAppViewGroup.getChildAt(0).findViewById(R.id.app_name_textview)).getText()).isEqualTo("appName3");
@@ -112,6 +123,7 @@ public class OnboardingAnalysisFragmentTest {
 
     @Test
     public void onViewCreated시_가장많이사용한앱3개가_나타난다() throws Exception {
+        setupWithoutDescription();
         assertThat(subject.mostUsedAppViewGroup.getChildCount()).isEqualTo(3);
 
         assertThat(((TextView) subject.mostUsedAppViewGroup.getChildAt(0).findViewById(R.id.app_name_textview)).getText()).isEqualTo("appName1");
@@ -122,4 +134,11 @@ public class OnboardingAnalysisFragmentTest {
         assertThat(subject.mostUsedAppViewGroup.getChildAt(1).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName2");
         assertThat(subject.mostUsedAppViewGroup.getChildAt(2).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName3");
     }
+
+    @Test
+    public void 분석결과설명과함께fragment를생성하는경우_onViewCreated시_해당설명을_표시한다() throws Exception {
+        setupWithAnalysisDescription("분석결과설명");
+        assertThat(subject.analysisDescription.getText()).isEqualTo("분석결과설명");
+    }
+
 }

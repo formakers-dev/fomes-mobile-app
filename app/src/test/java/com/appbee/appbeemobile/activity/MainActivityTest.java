@@ -90,7 +90,6 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
-    @Ignore
     public void onNavigationItemSelected시_앱사용패턴다시분석하기_메뉴을_클릭하면_성향분석페이지로이동한다() throws Exception {
         MenuItem menuItem = mock(MenuItem.class);
         when(menuItem.getItemId()).thenReturn(R.id.my_app_usage_pattern);
@@ -98,6 +97,6 @@ public class MainActivityTest extends ActivityTest {
         subject.onNavigationItemSelected(menuItem);
 
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
-//        assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo()
+        assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo(MyAppUsageActivity.class.getCanonicalName());
     }
 }

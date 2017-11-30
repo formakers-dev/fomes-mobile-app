@@ -6,15 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
 import com.appbee.appbeemobile.fragment.BaseFragment;
-import com.appbee.appbeemobile.fragment.OnboardingAnalysisFragment;
 
 import org.robolectric.annotation.Implements;
 
-@Implements(value = OnboardingAnalysisFragment.class)
-public class ShadowOnboardingAnalysisFragment extends BaseFragment{
-    public ShadowOnboardingAnalysisFragment() {
-    }
+@Implements(value = AppUsageAnalysisFragment.class)
+public class ShadowAppUsageAnalysisFragment extends BaseFragment {
 
     @Nullable
     @Override
