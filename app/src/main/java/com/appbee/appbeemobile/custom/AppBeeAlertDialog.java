@@ -2,6 +2,8 @@ package com.appbee.appbeemobile.custom;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Typeface;
 import android.support.annotation.DrawableRes;
 import android.view.LayoutInflater;
@@ -15,45 +17,36 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.ResourceHelper;
 
-public class AppBeeAlertDialog extends AlertDialog {
+public class AppBeeAlertDialog {
 
     private final Context context;
     private final String title;
     private final String message;
-    private int resId = Integer.MIN_VALUE;
+    private int iconResId = Integer.MIN_VALUE;
     private OnClickListener positiveButtonOnClickListener = null;
     private OnClickListener negativeButtonOnClickListener = null;
+    private OnCancelListener onCancelListener = null;
     private AlertDialog alertDialog;
 
-    public AppBeeAlertDialog(Context context, String title, String message, OnClickListener positiveButtonOnClickListener) {
-        super(context);
-        this.context = context;
-        this.title = title;
-        this.message = message;
-        this.positiveButtonOnClickListener = positiveButtonOnClickListener;
-        createDialog();
-    }
-
     public AppBeeAlertDialog(Context context, String title, String message, OnClickListener positiveButtonOnClickListener, OnClickListener negativeButtonOnClickListener) {
-        super(context);
         this.context = context;
         this.title = title;
         this.message = message;
         this.positiveButtonOnClickListener = positiveButtonOnClickListener;
         this.negativeButtonOnClickListener = negativeButtonOnClickListener;
+    }
 
-        createDialog();
+    public AppBeeAlertDialog(Context context, String title, String message, OnClickListener positiveButtonOnClickListener) {
+        this(context, title, message, positiveButtonOnClickListener, null);
     }
 
     public AppBeeAlertDialog(Context context, @DrawableRes int resId, String title, String message, OnClickListener positiveButtonOnClickListener) {
-        super(context);
-        this.context = context;
-        this.resId = resId;
-        this.title = title;
-        this.message = message;
-        this.positiveButtonOnClickListener = positiveButtonOnClickListener;
+        this(context, title, message, positiveButtonOnClickListener, null);
+        this.iconResId = resId;
+    }
 
-        createDialog();
+    public void setOnCancelListener(OnCancelListener onCancelListener) {
+        this.onCancelListener = onCancelListener;
     }
 
     private void createDialog() {
@@ -67,9 +60,10 @@ public class AppBeeAlertDialog extends AlertDialog {
         TextView messageTextView = ((TextView) view.findViewById(R.id.dialog_message));
         titleTextView.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.type_face_bmjua)));
         titleTextView.setText(title);
+
         messageTextView.setText(message);
-        if (resId != Integer.MIN_VALUE) {
-            imageView.setImageResource(resId);
+        if (iconResId != Integer.MIN_VALUE) {
+            imageView.setImageResource(iconResId);
             imageView.setVisibility(View.VISIBLE);
         }
 
@@ -78,13 +72,21 @@ public class AppBeeAlertDialog extends AlertDialog {
         if (positiveButtonOnClickListener != null) {
             builder.setPositiveButton(R.string.confirm_button_name, positiveButtonOnClickListener);
         }
+
         if (negativeButtonOnClickListener != null) {
             builder.setNegativeButton(R.string.negative_button_name, negativeButtonOnClickListener);
         }
+
+        if (onCancelListener != null) {
+            builder.setOnCancelListener(onCancelListener);
+        }
+
         alertDialog = builder.create();
     }
 
     public void show() {
+        createDialog();
+
         if (alertDialog != null) {
             alertDialog.show();
             setButtonStyle();

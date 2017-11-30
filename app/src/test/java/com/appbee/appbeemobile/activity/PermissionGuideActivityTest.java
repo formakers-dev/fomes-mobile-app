@@ -1,12 +1,17 @@
 package com.appbee.appbeemobile.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.network.ConfigService;
 import com.appbee.appbeemobile.service.PowerConnectedService;
 import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
@@ -19,10 +24,12 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowAlertDialog;
 
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -32,6 +39,9 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Inject
     AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+
+    @Inject
+    ConfigService mockConfigService;
 
     @Inject
     LocalStorageHelper mockLocalStorageHelper;
@@ -44,7 +54,56 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockLocalStorageHelper.getInvitationCode()).thenReturn("CODE");
         when(mockLocalStorageHelper.getEmail()).thenReturn("test@test.com");
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        when(mockConfigService.getAppVersion()).thenReturn(1L);
         activityController = Robolectric.buildActivity(PermissionGuideActivity.class);
+    }
+
+    @Test
+    public void onCreate호출시_최소앱버전코드확인API를_호출한다() throws Exception {
+        activityController.create().get();
+
+        verify(mockConfigService).getAppVersion();
+    }
+
+    @Test
+    public void 최소앱버전코드확인API호출결과_최소앱버전보다_현재버전코드가_작은경우_업데이트_안내_팝업이_나타난다() throws Exception {
+        when(mockConfigService.getAppVersion()).thenReturn(2L);
+
+        PermissionGuideActivity subject = activityController.create().get();
+
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(dialog).isNotNull();
+
+        ShadowAlertDialog shadowAlertDialog = shadowOf(dialog);
+        View rootView = shadowAlertDialog.getView();
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_title)).getText()).isEqualTo("신규 버전 업데이트");
+        assertThat(((TextView) rootView.findViewById(R.id.dialog_message)).getText()).isEqualTo("AppBee의 신규 버전이 업데이트 되었습니다.\n마켓에서 업데이트 진행 후 이용 부탁드립니다.");
+    }
+
+    @Test
+    public void 업데이트_안내_팝업의_확인버튼_선택시_마켓으로_이동후_앱을_종료한다() throws Exception {
+        when(mockConfigService.getAppVersion()).thenReturn(2L);
+
+        PermissionGuideActivity subject = activityController.create().get();
+
+        ShadowAlertDialog.getLatestAlertDialog().getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+
+        Intent nextIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextIntent.getAction()).isEqualTo(Intent.ACTION_VIEW);
+        assertThat(nextIntent.getDataString()).isEqualTo("market://details?id=com.appbee.appbeemobile");
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @Test
+    public void 업데이트_안내_팝업을_취소하면_앱을_종료한다() throws Exception {
+        when(mockConfigService.getAppVersion()).thenReturn(2L);
+
+        PermissionGuideActivity subject = activityController.create().get();
+
+        ShadowAlertDialog.getLatestAlertDialog().cancel();
+
+        assertThat(shadowOf(subject).getNextStartedActivity()).isNull();
+        assertThat(subject.isFinishing()).isTrue();
     }
 
     @Test

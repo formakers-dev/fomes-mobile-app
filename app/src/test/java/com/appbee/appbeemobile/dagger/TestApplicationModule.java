@@ -12,6 +12,8 @@ import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.network.AppAPI;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
+import com.appbee.appbeemobile.network.ConfigAPI;
+import com.appbee.appbeemobile.network.ConfigService;
 import com.appbee.appbeemobile.network.ProjectAPI;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.network.StatAPI;
@@ -69,6 +71,12 @@ public class TestApplicationModule {
         return mock(ProjectAPI.class);
     }
 
+    @Singleton
+    @Provides
+    ConfigAPI configAPI() {
+        return mock(ConfigAPI.class);
+    }
+
     /**
      * API Service
      */
@@ -95,6 +103,12 @@ public class TestApplicationModule {
     @Provides
     ProjectService projectService() {
         return mock(ProjectService.class);
+    }
+
+    @Singleton
+    @Provides
+    ConfigService configService() {
+        return mock(ConfigService.class);
     }
 
     /**
