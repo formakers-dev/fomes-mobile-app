@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.receiver;
 import android.content.Intent;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 
@@ -10,11 +11,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
+import javax.inject.Inject;
 
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -30,10 +32,10 @@ public class PowerConnectedReceiverTest {
 
     private PowerConnectedReceiver subject;
 
-    @Mock
+    @Inject
     AppUsageDataHelper mockAppUsageDataHelper;
 
-    @Mock
+    @Inject
     AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
     @Before
@@ -42,7 +44,8 @@ public class PowerConnectedReceiverTest {
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
         MockitoAnnotations.initMocks(this);
-        subject = new PowerConnectedReceiver(mockAppUsageDataHelper, mockAppBeeAndroidNativeHelper);
+        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
+        subject = new PowerConnectedReceiver();
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
     }

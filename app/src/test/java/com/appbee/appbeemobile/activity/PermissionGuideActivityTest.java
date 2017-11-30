@@ -12,7 +12,6 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ConfigService;
-import com.appbee.appbeemobile.service.PowerConnectedService;
 import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 import org.junit.Before;
@@ -126,11 +125,10 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_권한이있는경우_PowerConnectedService를_시작하고_MainActivity로_이동한다() throws Exception {
+    public void onCreate호출시_권한이있는경우_MainActivity로_이동한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         PermissionGuideActivity subject = activityController.create().postCreate(null).get();
 
-        assertThat(shadowOf(subject).getNextStartedService().getComponent().getClassName()).isEqualTo(PowerConnectedService.class.getName());
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
@@ -165,13 +163,12 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 권한설정이_완료되고_돌아와서_권한이있으면_PowerConnectedService를_시작하고_LoadingActivity로_이동한다() throws Exception {
+    public void 권한설정이_완료되고_돌아와서_권한이있으면_LoadingActivity로_이동한다() throws Exception {
         PermissionGuideActivity subject = activityController.create().postCreate(null).get();
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
 
-        assertThat(shadowOf(subject).getNextStartedService().getComponent().getClassName()).isEqualTo(PowerConnectedService.class.getName());
         assertThat(shadowOf(subject).getNextStartedActivityForResult().intent.getComponent().getClassName()).isEqualTo(LoadingActivity.class.getName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }

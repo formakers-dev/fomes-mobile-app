@@ -24,7 +24,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/appbee_yellow" />
 
-        <service android:name=".service.PowerConnectedService" />
         <!-- 백그라운드 앱의 알림 수신 -->
         <service android:name=".service.MessagingService"
             android:exported="true">
@@ -38,6 +37,13 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".receiver.PowerConnectedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".activity.OnboardingActivity"/>
         <activity android:name=".activity.OnboardingAnalysisActivity"/>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 
@@ -12,18 +13,20 @@ import javax.inject.Inject;
 
 public class PowerConnectedReceiver extends BroadcastReceiver {
     private static final String TAG = PowerConnectedReceiver.class.getSimpleName();
-    private AppUsageDataHelper appUsageDataHelper;
-    private AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Inject
-    public PowerConnectedReceiver(AppUsageDataHelper appUsageDataHelper, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
-        this.appUsageDataHelper = appUsageDataHelper;
-        this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
-    }
+    AppUsageDataHelper appUsageDataHelper;
+
+    @Inject
+    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+
+    public PowerConnectedReceiver() {}
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "PowerConnectedReceiver OnReceive");
+        ((AppBeeApplication) context.getApplicationContext()).getComponent().inject(this);
+
         if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
             Log.d(TAG, "PowerConnectedReceiver Action equals");
             if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {

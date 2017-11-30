@@ -14,7 +14,7 @@ import com.appbee.appbeemobile.custom.AppBeeAlertDialogTest;
 import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragmentTest;
 import com.appbee.appbeemobile.fragment.InterviewListFragmentTest;
 import com.appbee.appbeemobile.fragment.ProjectListFragmentTest;
-import com.appbee.appbeemobile.service.PowerConnectedServiceTest;
+import com.appbee.appbeemobile.receiver.PowerConnectedReceiverTest;
 
 import javax.inject.Singleton;
 
@@ -25,7 +25,6 @@ import dagger.Component;
 public interface TestApplicationComponent extends ApplicationComponent {
     void inject(LoadingActivityTest mainActivity);
     void inject(PermissionGuideActivityTest startActivityTest);
-    void inject(PowerConnectedServiceTest powerConnectedServiceTest);
     void inject(LoginActivityTest loginActivityTest);
     void inject(MainActivityTest mainActivityTest);
     void inject(ProjectDetailActivityTest projectDetailActivityTest);
@@ -38,4 +37,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(RegisteredInterviewListAdapterTest registeredInterviewListAdapterTest);
     void inject(CancelInterviewActivityTest cancelInterviewActivityTest);
     void inject(AppBeeAlertDialogTest appBeeAlertDialogTest);
+    void inject(PowerConnectedReceiverTest powerConnectedReceiverTest);
 }
