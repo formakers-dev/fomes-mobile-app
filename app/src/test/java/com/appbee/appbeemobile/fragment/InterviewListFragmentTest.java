@@ -1,6 +1,9 @@
 package com.appbee.appbeemobile.fragment;
 
+import android.view.View;
+
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.MainListAdapter;
 import com.appbee.appbeemobile.model.Project;
@@ -87,4 +90,21 @@ public class InterviewListFragmentTest {
         assertThat(interviewListAdapter.getItem(2)).isEqualTo(mockProjectList.get(1));
     }
 
+    @Test
+    public void 인터뷰목록이_null인경우_인터뷰가_없다는_텍스트를_표시한다() throws Exception {
+        when(mockProjectService.getAllInterviews()).thenReturn(Observable.just(null));
+
+        controller.resume();
+
+        assertThat(subject.getView().findViewById(R.id.empty_content_text_view).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void 인터뷰목록이_없는경우_인터뷰가_없다는_텍스트를_표시한다() throws Exception {
+        when(mockProjectService.getAllInterviews()).thenReturn(Observable.just(new ArrayList<>()));
+
+        controller.resume();
+
+        assertThat(subject.getView().findViewById(R.id.empty_content_text_view).getVisibility()).isEqualTo(View.VISIBLE);
+    }
 }

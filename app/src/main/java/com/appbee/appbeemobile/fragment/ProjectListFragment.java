@@ -29,6 +29,9 @@ public class ProjectListFragment extends BaseFragment {
     @BindView(R.id.main_list_recycler_view)
     RecyclerView projectListRecyclerView;
 
+    @BindView(R.id.empty_content_text_view)
+    TextView emptyContentTextView;
+
     @Inject
     ProjectService projectService;
 
@@ -44,6 +47,8 @@ public class ProjectListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        emptyContentTextView.setText(R.string.empty_project);
 
         MainListAdapter mainListAdapter = new MainListAdapter(projectList, MainListAdapter.PROJECT_ITEM_VIEW_TYPE);
 
@@ -74,10 +79,19 @@ public class ProjectListFragment extends BaseFragment {
         super.onResume();
         projectService.getAllProjects()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    projectList.clear();
-                    projectList.addAll(result);
-                    projectListRecyclerView.getAdapter().notifyDataSetChanged();
+                .subscribe(projectList -> {
+                    displayEmptyContentTextView(projectList == null || projectList.isEmpty());
+                    refreshProjectRecyclerView(projectList);
                 });
+    }
+
+    private void displayEmptyContentTextView(boolean isEmpty) {
+        emptyContentTextView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    }
+
+    private void refreshProjectRecyclerView(List<Project> projectList) {
+        this.projectList.clear();
+        this.projectList.addAll(projectList);
+        projectListRecyclerView.getAdapter().notifyDataSetChanged();
     }
 }

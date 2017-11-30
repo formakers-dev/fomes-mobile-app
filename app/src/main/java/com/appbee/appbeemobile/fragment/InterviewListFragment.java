@@ -30,6 +30,9 @@ public class InterviewListFragment extends BaseFragment {
     @BindView(R.id.main_list_recycler_view)
     RecyclerView interviewListRecyclerView;
 
+    @BindView(R.id.empty_content_text_view)
+    TextView emptyContentTextView;
+
     @Inject
     ProjectService projectService;
 
@@ -45,6 +48,8 @@ public class InterviewListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        emptyContentTextView.setText(R.string.empty_interview);
 
         LinearLayoutManager interviewLayoutManger = new LinearLayoutManager(getActivity());
         interviewLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
@@ -70,10 +75,19 @@ public class InterviewListFragment extends BaseFragment {
 
         projectService.getAllInterviews()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    interviewList.clear();
-                    interviewList.addAll(result);
-                    interviewListRecyclerView.getAdapter().notifyDataSetChanged();
+                .subscribe(interviewList -> {
+                    displayEmptyContentTextView(interviewList == null || interviewList.isEmpty());
+                    refreshInterviewRecyclerView(interviewList);
                 });
+    }
+
+    private void displayEmptyContentTextView(boolean isEmpty) {
+        emptyContentTextView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    }
+
+    private void refreshInterviewRecyclerView(List<Project> interviewList) {
+        this.interviewList.clear();
+        this.interviewList.addAll(interviewList);
+        interviewListRecyclerView.getAdapter().notifyDataSetChanged();
     }
 }

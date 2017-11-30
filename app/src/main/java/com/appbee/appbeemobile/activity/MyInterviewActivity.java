@@ -41,8 +41,8 @@ public class MyInterviewActivity extends BaseActivity {
     @BindView(R.id.interview_recycler_view)
     RecyclerView interviewRecyclerView;
 
-    @BindView(R.id.not_found_registered_interview_text)
-    View notFoundRegisteredInterviewText;
+    @BindView(R.id.empty_content_text_view)
+    View emptyContentTextView;
 
     List<Project> projectList = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class MyInterviewActivity extends BaseActivity {
 
     private void displayInterviewsLayout(boolean isEmpty) {
         interviewRecyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-        notFoundRegisteredInterviewText.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        emptyContentTextView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
     }
 
     private void refreshInterviewRecyclerView(List<Project> projectList) {
