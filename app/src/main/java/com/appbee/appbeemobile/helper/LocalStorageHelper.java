@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,6 +62,7 @@ public class LocalStorageHelper {
         putString(KEY_ACCESS_TOKEN, accessToken);
     }
 
+    @NonNull
     public String getAccessToken() {
         return getString(KEY_ACCESS_TOKEN, EMPTY_STRING);
     }
@@ -69,6 +71,7 @@ public class LocalStorageHelper {
         putString(KEY_USER_ID, userId);
     }
 
+    @NonNull
     public String getUserId(){
         return getString(KEY_USER_ID, EMPTY_STRING);
     }
@@ -77,11 +80,12 @@ public class LocalStorageHelper {
         putString(KEY_REGISTRATION_TOKEN, registrationToken);
     }
 
+    @NonNull
     public String getRegistrationToken() {
         return getString(KEY_REGISTRATION_TOKEN, EMPTY_STRING);
     }
 
-
+    @NonNull
     public String getEmail() {
         return getString(KEY_EMAIL, EMPTY_STRING);
     }
@@ -94,6 +98,7 @@ public class LocalStorageHelper {
         putString(KEY_GENDER, gender);
     }
 
+    @NonNull
     public String getGender() {
         return getString(KEY_GENDER, EMPTY_STRING);
     }
@@ -114,8 +119,9 @@ public class LocalStorageHelper {
         putLong(KEY_LAST_UPDATE_STAT_TIMESTAMP, timestamp);
     }
 
+    @NonNull
     public String getInvitationCode() {
-        return getString(KEY_INVITATION_CODE, "");
+        return getString(KEY_INVITATION_CODE, EMPTY_STRING);
     }
 
     public void setInvitationCode(String code) {

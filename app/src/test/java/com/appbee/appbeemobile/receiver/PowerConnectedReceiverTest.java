@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -38,6 +39,9 @@ public class PowerConnectedReceiverTest {
     @Inject
     AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
+    @Inject
+    LocalStorageHelper mockLocalStorageHelper;
+
     @Before
     public void setUp() throws Exception {
         RxJavaHooks.reset();
@@ -48,6 +52,7 @@ public class PowerConnectedReceiverTest {
         subject = new PowerConnectedReceiver();
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockLocalStorageHelper.getAccessToken()).thenReturn("myToken");
     }
 
     @After
@@ -65,6 +70,13 @@ public class PowerConnectedReceiverTest {
     @Test
     public void onReceive에서_PowerConnect되었을때_권한이없으면_아무것도하지않는다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
+        verify(mockAppUsageDataHelper, never()).sendShortTermStatAndAppUsages(any());
+    }
+
+    @Test
+    public void onReceive에서_PowerConnect되었을때_로그인상태가_아니면_아무것도하지않는다() throws Exception {
+        when(mockLocalStorageHelper.getAccessToken()).thenReturn("");
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
         verify(mockAppUsageDataHelper, never()).sendShortTermStatAndAppUsages(any());
     }
