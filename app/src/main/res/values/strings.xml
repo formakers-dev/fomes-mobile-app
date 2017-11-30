@@ -119,4 +119,7 @@
     <string name="interview_duration_40_mins">약 40분</string>
     <string name="not_found_interview_text">신청하신 유저 인터뷰가 없습니다.</string>
 
+    <string name="type_face_bmjua">BMJUA.otf</string>
+    <string name="type_face_medium">NotoSans-Medium.otf</string>
+
 </resources>
