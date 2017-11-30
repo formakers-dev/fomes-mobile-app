@@ -12,6 +12,7 @@ import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -47,6 +50,9 @@ public class MyInterviewActivityTest extends ActivityTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.onIOScheduler(Schedulers.immediate());
+
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         subject = Robolectric.buildActivity(MyInterviewActivity.class).create().get();
@@ -56,6 +62,11 @@ public class MyInterviewActivityTest extends ActivityTest {
         mockProjectList.add(mock(Project.class));
 
         when(projectService.getRegisteredInterviews()).thenReturn(rx.Observable.just(mockProjectList));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 
     @Test
