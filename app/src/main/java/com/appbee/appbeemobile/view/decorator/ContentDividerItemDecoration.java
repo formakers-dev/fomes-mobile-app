@@ -125,7 +125,11 @@ public class ContentDividerItemDecoration extends RecyclerView.ItemDecoration {
         } else if (orientation == HORIZONTAL) {
             outRect.set(0, 0, divider.getIntrinsicWidth(), 0);
         } else {
-            outRect.set(0, 0, divider.getIntrinsicWidth(), divider.getIntrinsicHeight());
+            if (position % 2 == 0) {
+                outRect.set(0, 0, 0, divider.getIntrinsicHeight());
+            } else {
+                outRect.set(0, 0, divider.getIntrinsicWidth(), divider.getIntrinsicHeight());
+            }
         }
     }
 }
