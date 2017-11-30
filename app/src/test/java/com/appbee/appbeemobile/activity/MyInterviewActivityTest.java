@@ -70,7 +70,7 @@ public class MyInterviewActivityTest extends ActivityTest {
         subject.onPostCreate(null);
 
         assertThat(subject.interviewRecyclerView.getAdapter().getItemCount()).isEqualTo(2);
-        assertThat(subject.findViewById(R.id.not_found_registered_interview_text).getVisibility()).isEqualTo(View.GONE);
+        assertThat(subject.findViewById(R.id.empty_content_text_view).getVisibility()).isEqualTo(View.GONE);
         assertThat(subject.findViewById(R.id.interview_recycler_view).getVisibility()).isEqualTo(View.VISIBLE);
     }
 
@@ -119,7 +119,7 @@ public class MyInterviewActivityTest extends ActivityTest {
 
         subject.onPostCreate(null);
 
-        assertThat(subject.findViewById(R.id.not_found_registered_interview_text).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.findViewById(R.id.empty_content_text_view).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.interview_recycler_view).getVisibility()).isEqualTo(View.GONE);
     }
 
@@ -129,7 +129,7 @@ public class MyInterviewActivityTest extends ActivityTest {
 
         subject.onPostCreate(null);
 
-        assertThat(subject.findViewById(R.id.not_found_registered_interview_text).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.findViewById(R.id.empty_content_text_view).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.interview_recycler_view).getVisibility()).isEqualTo(View.GONE);
     }
 
