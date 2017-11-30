@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -294,6 +295,16 @@ public class InterviewDetailActivityTest extends ActivityTest {
         subject.submitArrowButton.performClick();
 
         subject.submitArrowButton.performClick();
+
+        assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.GONE);
+        assertThat(shadowOf(subject.submitArrowButton.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.submit_open);
+    }
+
+    @Test
+    public void 세부일정선택영역이_나타난_상태에서_scrollView터치시_세부일정선택영역이_사라진다() throws Exception {
+        subject.submitArrowButton.performClick();
+
+        subject.scrollView.dispatchTouchEvent(MotionEvent.obtain(100L, 100L, MotionEvent.ACTION_DOWN, 100, 100, 0));
 
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.GONE);
         assertThat(shadowOf(subject.submitArrowButton.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.submit_open);
