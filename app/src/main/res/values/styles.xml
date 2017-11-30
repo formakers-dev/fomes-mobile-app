@@ -23,4 +23,9 @@
         <item name="android:textColor">@color/appbee_gray</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <style name="NavigationViewTextAppearance" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@color/appbee_gray</item>
+        <item name="android:textSize">16dp</item>
+    </style>
 </resources>
