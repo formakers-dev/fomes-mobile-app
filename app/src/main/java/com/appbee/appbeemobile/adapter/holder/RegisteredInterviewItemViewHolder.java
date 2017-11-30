@@ -14,6 +14,9 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
     public TextView interviewOpenDateTextView;
     public TextView interviewCloseDateTextView;
     public TextView interviewDateTextView;
+    public TextView interviewOpenTitleTextView;
+    public TextView interviewCloseTitleTextView;
+    public TextView interviewDateTitleTextView;
     public TextView interviewLocation;
     public TextView emergencyPhone;
     public Button cancelInterviewButton;
@@ -29,6 +32,9 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
         this.interviewOpenDateTextView = (TextView) view.findViewById(R.id.interview_progress_open_date);
         this.interviewCloseDateTextView = (TextView) view.findViewById(R.id.interview_progress_close_date);
         this.interviewDateTextView = (TextView) view.findViewById(R.id.interview_progress_date);
+        this.interviewOpenTitleTextView = (TextView) view.findViewById(R.id.interview_progress_open_title);
+        this.interviewCloseTitleTextView = (TextView) view.findViewById(R.id.interview_progress_close_title);
+        this.interviewDateTitleTextView = (TextView) view.findViewById(R.id.interview_progress_date_title);
         this.interviewLocation = (TextView) view.findViewById(R.id.interview_location);
         this.emergencyPhone = (TextView) view.findViewById(R.id.emergency_phone);
         this.showInterviewButton = ((Button) view.findViewById(R.id.show_interview_button));

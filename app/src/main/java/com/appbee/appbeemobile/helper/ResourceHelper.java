@@ -24,7 +24,7 @@ public class ResourceHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return context.getResources().getColor(colorResId);
         } else {
-            return context.getResources().getColor(colorResId, null);
+            return context.getColor(colorResId);
         }
     }
 }

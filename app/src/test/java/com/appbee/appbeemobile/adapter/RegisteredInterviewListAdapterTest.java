@@ -96,9 +96,9 @@ public class RegisteredInterviewListAdapterTest {
         assertThat(holder.interviewNameTextView.getText()).isEqualTo("툰스토리 유저 인터뷰");
         assertThat(holder.interviewDDayTextView.getText()).isEqualTo("D-14");
         assertThat(holder.interviewDateLocationTextView.getText()).isEqualTo("1월 12일 (금) 우면사업장 15:00");
-        assertThat(holder.interviewOpenDateTextView.getText()).isEqualTo("신청\n17.12.1 (금)");
-        assertThat(holder.interviewCloseDateTextView.getText()).isEqualTo("확정\n17.12.31 (일)");
-        assertThat(holder.interviewDateTextView.getText()).isEqualTo("완료\n18.1.12 (금)");
+        assertThat(holder.interviewOpenDateTextView.getText()).isEqualTo("17.12.1 (금)");
+        assertThat(holder.interviewCloseDateTextView.getText()).isEqualTo("17.12.31 (일)");
+        assertThat(holder.interviewDateTextView.getText()).isEqualTo("18.1.12 (금)");
         assertThat(holder.interviewLocation.getText()).isEqualTo("* 인터뷰 위치 : 우면사업장 C동 1층 107호 회의실");
         assertThat(holder.emergencyPhone.getText()).isEqualTo("* 비상연락처 : 010-1234-5678");
     }
@@ -110,10 +110,13 @@ public class RegisteredInterviewListAdapterTest {
         //  12.01 < 2017.12.29 < 12.31
         subject.onBindViewHolder(holder, 0);
         assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
+        assertThat(holder.interviewOpenTitleTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
         assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(LIGHT_GRAY_COLOR);
         assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
+        assertThat(holder.interviewCloseTitleTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
         assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(LIGHT_GRAY_COLOR);
         assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
+        assertThat(holder.interviewDateTitleTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
     }
 
     @Test
@@ -123,10 +126,13 @@ public class RegisteredInterviewListAdapterTest {
         //  12.28 < 12.29 < 12.30 08:00
         subject.onBindViewHolder(holder, 1);
         assertThat(holder.interviewOpenDateTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
+        assertThat(holder.interviewOpenTitleTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
         assertThat(((ColorDrawable) holder.lineBetweenOpenCloseDateView.getBackground()).getColor()).isEqualTo(SKY_BLUE_COLOR);
         assertThat(holder.interviewCloseDateTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
+        assertThat(holder.interviewCloseTitleTextView.getCurrentTextColor()).isEqualTo(SKY_BLUE_COLOR);
         assertThat(((ColorDrawable) holder.lineBetweenCloseInterviewDateView.getBackground()).getColor()).isEqualTo(LIGHT_GRAY_COLOR);
         assertThat(holder.interviewDateTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
+        assertThat(holder.interviewDateTitleTextView.getCurrentTextColor()).isEqualTo(LIGHT_GRAY_COLOR);
     }
 
     @Test
