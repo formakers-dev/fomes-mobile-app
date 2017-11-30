@@ -55,7 +55,7 @@ public class InterviewListFragment extends BaseFragment {
         interviewLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
         interviewListRecyclerView.setLayoutManager(interviewLayoutManger);
 
-        ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.interview_list_divider, null));
         interviewListRecyclerView.addItemDecoration(dividerItemDecoration);
 
