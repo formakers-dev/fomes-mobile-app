@@ -32,7 +32,13 @@ public class DetailPlansAdapter extends RecyclerView.Adapter<DetailPlansHolder> 
     public void onBindViewHolder(DetailPlansHolder holder, int position) {
         String timeSlot = timeSlots.get(position);
         holder.button.setText(String.format(Locale.KOREA, "%02d:00", Integer.parseInt(timeSlot.substring(4))));
-        holder.button.setOnClickListener(v -> selectedTimeSlot = timeSlot);
+        holder.button.setOnClickListener(v -> {
+            selectedTimeSlot = timeSlot;
+            notifyItemRangeChanged(0, position);
+            notifyItemRangeChanged(position + 1, timeSlots.size() - position - 1);
+        });
+
+        holder.button.setChecked(false);
     }
 
     @Override
