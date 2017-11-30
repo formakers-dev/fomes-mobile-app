@@ -58,13 +58,23 @@ public class DetailPlansAdapterTest {
     @Test
     public void onBindViewHolder_buttonOnClickTest() throws Exception {
         View itemView = LayoutInflater.from(RuntimeEnvironment.application).inflate(R.layout.item_time_button, null, false);
-        DetailPlansHolder holder = new DetailPlansHolder(itemView);
+        DetailPlansHolder holder0 = new DetailPlansHolder(itemView);
 
-        subject.onBindViewHolder(holder, 2);
+        subject.onBindViewHolder(holder0, 0);
 
-        holder.button.performClick();
+        holder0.button.performClick();
 
-        assertThat(subject.getSelectedTimeSlot()).isEqualTo("time10");
+        assertThat(subject.getSelectedTimeSlot()).isEqualTo("time8");
+        assertThat(holder0.button.isChecked()).isTrue();
+
+        DetailPlansHolder holder1 = new DetailPlansHolder(itemView);
+        subject.onBindViewHolder(holder1, 1);
+        holder1.button.performClick();
+
+        assertThat(subject.getSelectedTimeSlot()).isEqualTo("time9");
+        assertThat(holder1.button.isChecked()).isTrue();
+
+        //TODO: holder1선택시 holder0선택이 취소되는 로직 검증
     }
 
     @Test
