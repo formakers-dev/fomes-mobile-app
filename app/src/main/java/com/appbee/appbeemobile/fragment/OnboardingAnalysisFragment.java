@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.activity.IFragmentManager;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.network.AppService;
@@ -20,15 +19,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class OnboardingAnalysisFragment extends BaseFragment {
     public static final String TAG = OnboardingAnalysisFragment.class.getSimpleName();
-
-    public IFragmentManager fragmentManager;
 
     @Inject
     AppService appService;
@@ -88,13 +84,4 @@ public class OnboardingAnalysisFragment extends BaseFragment {
                 });
     }
 
-    public OnboardingAnalysisFragment setFragmentManager(IFragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
-        return this;
-    }
-
-    @OnClick(R.id.next_button)
-    public void onNextButtonClick() {
-        fragmentManager.replaceFragment(OnboardingRewardsFragment.TAG);
-    }
 }
