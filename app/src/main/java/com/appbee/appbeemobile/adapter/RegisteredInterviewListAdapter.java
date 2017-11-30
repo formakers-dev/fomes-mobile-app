@@ -1,9 +1,6 @@
 package com.appbee.appbeemobile.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +9,7 @@ import android.view.ViewGroup;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.activity.MyInterviewActivity;
 import com.appbee.appbeemobile.adapter.holder.RegisteredInterviewItemViewHolder;
+import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.util.DateUtil;
@@ -28,21 +26,20 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
     private final List<Project> projectList;
     private final TimeHelper timeHelper;
     private final MyInterviewActivity.OnItemClickListener listener;
+    private final ResourceHelper resourceHelper;
     private Context context;
-    private int skyBlueColorId;
-    private int lightGrayColorId;
 
     @Inject
-    public RegisteredInterviewListAdapter(List<Project> projectList, TimeHelper timeHelper, MyInterviewActivity.OnItemClickListener listener) {
+    public RegisteredInterviewListAdapter(List<Project> projectList, TimeHelper timeHelper, MyInterviewActivity.OnItemClickListener listener, ResourceHelper resourceHelper) {
         this.projectList = projectList;
         this.timeHelper = timeHelper;
         this.listener = listener;
+        this.resourceHelper = resourceHelper;
     }
 
     @Override
     public RegisteredInterviewItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.context = parent.getContext();
-        extractColorResId();
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_interview, parent, false);
         return new RegisteredInterviewItemViewHolder(itemView);
     }
@@ -66,6 +63,9 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
     }
 
     private void bindInterviewProgressFlow(RegisteredInterviewItemViewHolder holder, Project project, String interviewStatus) {
+        int skyBlueColorId = resourceHelper.getColorValue(R.color.appbee_sky_blue);
+        int lightGrayColorId = resourceHelper.getColorValue(R.color.appbee_light_gray);
+
         if ("신청".equals(interviewStatus)) {
             holder.interviewOpenDateTextView.setTextColor(skyBlueColorId);
             holder.lineBetweenOpenCloseDateView.setBackgroundColor(lightGrayColorId);
@@ -101,11 +101,6 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
         return projectList.size();
     }
 
-    private void extractColorResId() {
-        this.skyBlueColorId = getColorValue(R.color.appbee_sky_blue);
-        this.lightGrayColorId = getColorValue(R.color.appbee_light_gray);
-    }
-
     private String getInterviewStatus(Project project) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeHelper.getCurrentTime());
@@ -125,15 +120,5 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
             interviewStatus = "확정";
         }
         return interviewStatus;
-    }
-
-    private
-    @ColorInt
-    int getColorValue(@ColorRes int colorResId) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return context.getResources().getColor(colorResId);
-        } else {
-            return context.getResources().getColor(colorResId, null);
-        }
     }
 }
