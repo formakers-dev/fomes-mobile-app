@@ -27,13 +27,13 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
 
     private final List<Project> projectList;
     private final TimeHelper timeHelper;
-    private final MyInterviewActivity.ActionListener listener;
+    private final MyInterviewActivity.OnItemClickListener listener;
     private Context context;
     private int skyBlueColorId;
     private int lightGrayColorId;
 
     @Inject
-    public RegisteredInterviewListAdapter(List<Project> projectList, TimeHelper timeHelper, MyInterviewActivity.ActionListener listener) {
+    public RegisteredInterviewListAdapter(List<Project> projectList, TimeHelper timeHelper, MyInterviewActivity.OnItemClickListener listener) {
         this.projectList = projectList;
         this.timeHelper = timeHelper;
         this.listener = listener;
@@ -92,8 +92,8 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
     }
 
     private void bindButtonListener(RegisteredInterviewItemViewHolder holder, Project project, String interviewStatus) {
-        holder.cancelInterviewButton.setOnClickListener(v -> listener.onRequestToCancelInterview(project.getProjectId(), project.getInterview().getSeq(), project.getInterview().getSelectedTimeSlot(), project.getName(), interviewStatus, project.getInterview().getInterviewDate(), project.getInterview().getLocation()));
-        holder.showInterviewButton.setOnClickListener(v -> listener.onSelectProject(project.getProjectId()));
+        holder.cancelInterviewButton.setOnClickListener(v -> listener.onClickCancelInterview(project.getProjectId(), project.getInterview().getSeq(), project.getInterview().getSelectedTimeSlot(), project.getName(), interviewStatus, project.getInterview().getInterviewDate(), project.getInterview().getLocation()));
+        holder.showInterviewButton.setOnClickListener(v -> listener.onClickInterviewDetail(project.getProjectId(), project.getInterview().getSeq()));
     }
 
     @Override

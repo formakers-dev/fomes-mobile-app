@@ -79,7 +79,7 @@ public class MyInterviewActivity extends BaseActivity {
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.line_divider, null));
         interviewRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper, actionListener);
+        RegisteredInterviewListAdapter registeredInterviewListAdapter = new RegisteredInterviewListAdapter(projectList, timeHelper, onItemClickListener);
         interviewRecyclerView.setAdapter(registeredInterviewListAdapter);
     }
 
@@ -94,16 +94,17 @@ public class MyInterviewActivity extends BaseActivity {
         }
     }
 
-    ActionListener actionListener = new ActionListener() {
+    OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
-        public void onSelectProject(String projectId) {
-            Intent intent = new Intent(MyInterviewActivity.this, ProjectDetailActivity.class);
+        public void onClickInterviewDetail(String projectId, long interviewSeq) {
+            Intent intent = new Intent(MyInterviewActivity.this, InterviewDetailActivity.class);
             intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
+            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
             startActivity(intent);
         }
 
         @Override
-        public void onRequestToCancelInterview(String projectId, long interviewSeq, String timeSlot, String projectName, String interviewStatus, Date interviewDate, String location) {
+        public void onClickCancelInterview(String projectId, long interviewSeq, String timeSlot, String projectName, String interviewStatus, Date interviewDate, String location) {
             Intent intent = new Intent(MyInterviewActivity.this, CancelInterviewActivity.class);
             intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
             intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
@@ -116,10 +117,10 @@ public class MyInterviewActivity extends BaseActivity {
         }
     };
 
-    public interface ActionListener {
-        void onSelectProject(String projectId);
+    public interface OnItemClickListener {
+        void onClickInterviewDetail(String projectId, long interviewSeq);
 
-        void onRequestToCancelInterview(String projectId, long interviewSeq, String timeSlot, String projectName, String interviewStatus, Date interviewDate, String location);
+        void onClickCancelInterview(String projectId, long interviewSeq, String timeSlot, String projectName, String interviewStatus, Date interviewDate, String location);
     }
 }
 
