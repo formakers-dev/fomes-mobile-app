@@ -67,23 +67,38 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
         int lightGrayColorId = resourceHelper.getColorValue(R.color.appbee_light_gray);
 
         if ("신청".equals(interviewStatus)) {
+            holder.interviewOpenTitleTextView.setTextColor(skyBlueColorId);
             holder.interviewOpenDateTextView.setTextColor(skyBlueColorId);
             holder.lineBetweenOpenCloseDateView.setBackgroundColor(lightGrayColorId);
             holder.interviewCloseDateTextView.setTextColor(lightGrayColorId);
+            holder.interviewCloseTitleTextView.setTextColor(lightGrayColorId);
             holder.lineBetweenCloseInterviewDateView.setBackgroundColor(lightGrayColorId);
             holder.interviewDateTextView.setTextColor(lightGrayColorId);
+            holder.interviewDateTitleTextView.setTextColor(lightGrayColorId);
         } else if ("확정".equals(interviewStatus)) {
             holder.interviewOpenDateTextView.setTextColor(skyBlueColorId);
+            holder.interviewOpenTitleTextView.setTextColor(skyBlueColorId);
             holder.lineBetweenOpenCloseDateView.setBackgroundColor(skyBlueColorId);
             holder.interviewCloseDateTextView.setTextColor(skyBlueColorId);
+            holder.interviewCloseTitleTextView.setTextColor(skyBlueColorId);
             holder.lineBetweenCloseInterviewDateView.setBackgroundColor(lightGrayColorId);
             holder.interviewDateTextView.setTextColor(lightGrayColorId);
+            holder.interviewDateTitleTextView.setTextColor(lightGrayColorId);
+        } else {
+            holder.interviewOpenDateTextView.setTextColor(skyBlueColorId);
+            holder.interviewOpenTitleTextView.setTextColor(skyBlueColorId);
+            holder.lineBetweenOpenCloseDateView.setBackgroundColor(skyBlueColorId);
+            holder.interviewCloseDateTextView.setTextColor(skyBlueColorId);
+            holder.interviewCloseTitleTextView.setTextColor(skyBlueColorId);
+            holder.lineBetweenCloseInterviewDateView.setBackgroundColor(skyBlueColorId);
+            holder.interviewDateTextView.setTextColor(skyBlueColorId);
+            holder.interviewDateTitleTextView.setTextColor(skyBlueColorId);
         }
 
         holder.interviewDateLocationTextView.setText(String.format(context.getString(R.string.registered_interview_date_location), FormatUtil.toShortDateFormat(project.getInterview().getInterviewDate()), project.getInterview().getLocation(), Integer.parseInt(project.getInterview().getSelectedTimeSlot().substring(4))));
-        holder.interviewOpenDateTextView.setText(String.format(context.getString(R.string.registered_interview_open_date), FormatUtil.toLongDateFormat(project.getInterview().getOpenDate())));
-        holder.interviewCloseDateTextView.setText(String.format(context.getString(R.string.registered_interview_close_date), FormatUtil.toLongDateFormat(project.getInterview().getCloseDate())));
-        holder.interviewDateTextView.setText(String.format(context.getString(R.string.registered_interview_complete_date), FormatUtil.toLongDateFormat(project.getInterview().getInterviewDate())));
+        holder.interviewOpenDateTextView.setText(FormatUtil.toLongDateFormat(project.getInterview().getOpenDate()));
+        holder.interviewCloseDateTextView.setText(FormatUtil.toLongDateFormat(project.getInterview().getCloseDate()));
+        holder.interviewDateTextView.setText(FormatUtil.toLongDateFormat(project.getInterview().getInterviewDate()));
     }
 
     private void bindLocationAndEmergencyPhone(RegisteredInterviewItemViewHolder holder, Project project) {
@@ -113,12 +128,13 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(project.getInterview().getSelectedTimeSlot().substring(4)));
         Date interviewDate = calendar.getTime();
 
-        String interviewStatus = "";
+        String interviewStatus = "완료";
         if (openDate.compareTo(currentDate) < 0 && currentDate.compareTo(closeDate) < 0) {
             interviewStatus = "신청";
         } else if (closeDate.compareTo(currentDate) < 0 && currentDate.compareTo(interviewDate) < 0) {
             interviewStatus = "확정";
         }
+
         return interviewStatus;
     }
 }
