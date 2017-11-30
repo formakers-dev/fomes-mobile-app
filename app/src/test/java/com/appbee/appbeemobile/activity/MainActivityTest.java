@@ -10,6 +10,7 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -86,5 +87,17 @@ public class MainActivityTest extends ActivityTest {
         assertThat(nextStartedIntent.getStringArrayExtra(Intent.EXTRA_EMAIL)).isEqualTo(new String[]{"admin@appbee.info"});
         assertThat(nextStartedIntent.getStringExtra(Intent.EXTRA_SUBJECT)).isEqualTo("[문의]");
         assertThat(nextStartedIntent.getStringExtra(Intent.EXTRA_TEXT)).isEqualTo("앱비에게 문의해주세요");
+    }
+
+    @Test
+    @Ignore
+    public void onNavigationItemSelected시_앱사용패턴다시분석하기_메뉴을_클릭하면_성향분석페이지로이동한다() throws Exception {
+        MenuItem menuItem = mock(MenuItem.class);
+        when(menuItem.getItemId()).thenReturn(R.id.my_app_usage_pattern);
+
+        subject.onNavigationItemSelected(menuItem);
+
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+//        assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo()
     }
 }

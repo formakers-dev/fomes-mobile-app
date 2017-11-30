@@ -5,7 +5,6 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.activity.IFragmentManager;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.model.NativeAppInfo;
@@ -15,7 +14,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -37,16 +35,11 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class OnboardingAnalysisFragmentTest {
-
-    @Mock
-    private IFragmentManager mockFragmentManager;
 
     @Inject
     AppService mockAppService;
@@ -79,7 +72,6 @@ public class OnboardingAnalysisFragmentTest {
         MockitoAnnotations.initMocks(this);
 
         subject = new OnboardingAnalysisFragment();
-        subject.setFragmentManager(mockFragmentManager);
 
         controller = SupportFragmentController.of(subject);
         unbinder = ButterKnife.bind(this, subject.getView());
@@ -129,11 +121,5 @@ public class OnboardingAnalysisFragmentTest {
         assertThat(subject.mostUsedAppViewGroup.getChildAt(0).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName1");
         assertThat(subject.mostUsedAppViewGroup.getChildAt(1).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName2");
         assertThat(subject.mostUsedAppViewGroup.getChildAt(2).findViewById(R.id.app_imageview).getTag(R.string.tag_key_image_url)).isEqualTo("packageName3");
-    }
-
-    @Test
-    public void nextButton클릭시_OnboardingRewardsFragment로_이동하도록하는_메소드를_호출한다() throws Exception {
-        subject.getView().findViewById(R.id.next_button).performClick();
-        verify(mockFragmentManager).replaceFragment(anyString());
     }
 }

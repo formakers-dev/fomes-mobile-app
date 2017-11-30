@@ -1,14 +1,14 @@
 package com.appbee.appbeemobile.fragment;
 
+import android.widget.TextView;
+
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.activity.IFragmentManager;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -17,14 +17,11 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class OnboardingRewardsFragmentTest {
-
-    @Mock
-    private IFragmentManager mockFragmentManager;
 
     private OnboardingRewardsFragment subject;
     private Unbinder unbinder;
@@ -33,20 +30,18 @@ public class OnboardingRewardsFragmentTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         subject = new OnboardingRewardsFragment();
-        subject.setFragmentManager(mockFragmentManager);
 
         SupportFragmentTestUtil.startFragment(subject);
         unbinder = ButterKnife.bind(this, subject.getView());
     }
 
+    @Test
+    public void OnboardingRewardsFragment생성시_리워드소개화면이보인다() throws Exception {
+        assertThat(((TextView) subject.getView().findViewById(R.id.reward_title)).getText()).isEqualTo("신상앱 유저인터뷰 체험하고\n리워드를 받아가세요.");
+    }
+
     @After
     public void tearDown() throws Exception {
         unbinder.unbind();
-    }
-
-    @Test
-    public void nextButton클릭시_MainActivity로_이동하도록하는_메소드를호출한다() throws Exception {
-        subject.getView().findViewById(R.id.next_button).performClick();
-        verify(mockFragmentManager).startMainActivityAndFinish();
     }
 }
