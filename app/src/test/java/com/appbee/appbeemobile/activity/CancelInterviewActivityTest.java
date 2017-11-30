@@ -66,9 +66,9 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
         when(homeMenuItem.getItemId()).thenReturn(android.R.id.home);
 
-        // month 1월
+        int DECEMBER = 11;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, 11, 4);
+        calendar.set(2017, DECEMBER, 4);
         Date interviewDate = calendar.getTime();
 
         intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, "projectId");

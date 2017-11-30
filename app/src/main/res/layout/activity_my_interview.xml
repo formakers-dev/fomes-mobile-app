@@ -41,18 +41,11 @@
             android:background="@android:color/white">
 
             <TextView
-                android:id="@+id/not_found_interview_text"
-                android:layout_width="match_parent"
-                android:layout_height="102dp"
+                android:id="@+id/not_found_registered_interview_text"
+                style="@style/EmptyContentView"
                 android:layout_marginBottom="30dp"
-                android:layout_marginEnd="14dp"
-                android:layout_marginStart="14dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/no_interview_background"
-                android:gravity="center"
                 android:text="@string/not_found_interview_text"
-                android:textColor="@color/appbee_warm_gray"
-                android:textSize="13dp"
                 android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView
