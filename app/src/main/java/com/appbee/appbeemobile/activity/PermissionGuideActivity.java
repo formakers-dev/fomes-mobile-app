@@ -15,7 +15,6 @@ import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ConfigService;
-import com.appbee.appbeemobile.service.PowerConnectedService;
 import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 import javax.inject.Inject;
@@ -83,7 +82,6 @@ public class PermissionGuideActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             } else {
-                startPowerConnectedService();
                 moveActivityTo(MainActivity.class);
             }
         }
@@ -93,10 +91,6 @@ public class PermissionGuideActivity extends BaseActivity {
     void onPermissionButtonClick() {
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
-    }
-
-    private void startPowerConnectedService() {
-        startService(new Intent(this, PowerConnectedService.class));
     }
 
     private void moveActivityTo(Class activityClass) {
@@ -109,7 +103,6 @@ public class PermissionGuideActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION
                 && appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            startPowerConnectedService();
             moveActivityTo(LoadingActivity.class);
         }
     }
