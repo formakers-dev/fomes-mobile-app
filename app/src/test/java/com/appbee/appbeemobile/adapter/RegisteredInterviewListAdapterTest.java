@@ -43,7 +43,7 @@ public class RegisteredInterviewListAdapterTest {
     private TimeHelper mockTimeHelper;
 
     @Mock
-    private MyInterviewActivity.ActionListener mockListener;
+    private MyInterviewActivity.OnItemClickListener mockListener;
 
     private RegisteredInterviewItemViewHolder holder;
 
@@ -138,24 +138,24 @@ public class RegisteredInterviewListAdapterTest {
     }
 
     @Test
-    public void 프로젝트_설명_다시보기_버튼을_클릭하면_ActionListener의_onSelectProject에_프로젝트ID를_전달한다() throws Exception {
+    public void 프로젝트_설명_다시보기_버튼을_클릭하면_OnItemClickListener의_onClickInterviewDetail에_프로젝트ID를_전달한다() throws Exception {
         subject.onBindViewHolder(holder, 0);
         holder.showInterviewButton.performClick();
-        verify(mockListener).onSelectProject(eq("12345"));
+        verify(mockListener).onClickInterviewDetail(eq("12345"), eq(11L));
 
         subject.onBindViewHolder(holder, 1);
         holder.showInterviewButton.performClick();
-        verify(mockListener).onSelectProject(eq("67890"));
+        verify(mockListener).onClickInterviewDetail(eq("67890"), eq(22L));
     }
 
     @Test
-    public void 취소하기_버튼을_클릭하면_ActionListener의_onRequestToCancelInterview에_프로젝트ID를_전달한다() throws Exception {
+    public void 취소하기_버튼을_클릭하면_OnItemClickListener의_onClickCancelInterview에_프로젝트ID를_전달한다() throws Exception {
         subject.onBindViewHolder(holder, 0);
         holder.cancelInterviewButton.performClick();
-        verify(mockListener).onRequestToCancelInterview(eq("12345"), eq(11L), eq("time15"), eq("툰스토리"), eq("신청"), eq(mockInterviewDate1), eq("우면사업장"));
+        verify(mockListener).onClickCancelInterview(eq("12345"), eq(11L), eq("time15"), eq("툰스토리"), eq("신청"), eq(mockInterviewDate1), eq("우면사업장"));
 
         subject.onBindViewHolder(holder, 1);
         holder.cancelInterviewButton.performClick();
-        verify(mockListener).onRequestToCancelInterview(eq("67890"), eq(22L), eq("time8"), eq("토토"), eq("확정"), eq(mockInterviewDate2), eq("수원사업장"));
+        verify(mockListener).onClickCancelInterview(eq("67890"), eq(22L), eq("time8"), eq("토토"), eq("확정"), eq(mockInterviewDate2), eq("수원사업장"));
     }
 }

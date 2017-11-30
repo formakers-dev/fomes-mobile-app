@@ -83,24 +83,25 @@ public class MyInterviewActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onSelectProject호출시_해당프로젝트_상세조회_페이지로_이동한다() throws Exception {
-        subject.actionListener.onSelectProject("12345");
+    public void onClickInterviewDetail호출시_해당_인터뷰_상세조회_페이지로_이동한다() throws Exception {
+        subject.onItemClickListener.onClickInterviewDetail("12345", 1L);
 
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
-        assertThat(nextStartedIntent.getComponent().getShortClassName()).isEqualTo(".activity.ProjectDetailActivity");
+        assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo(InterviewDetailActivity.class.getName());
         assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
+        assertThat(nextStartedIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(1L);
     }
 
     @Test
-    public void onRequestToCancelProject호출시_인터뷰취소요청페이지로_이동한다() throws Exception {
+    public void onClickCancelInterview호출시_인터뷰취소요청페이지로_이동한다() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2017, 11, 4);
         Date interviewDate = calendar.getTime();
 
-        subject.actionListener.onRequestToCancelInterview("12345", 11L, "time8", "WHOn", "확정", interviewDate, "우면사업장");
+        subject.onItemClickListener.onClickCancelInterview("12345", 11L, "time8", "WHOn", "확정", interviewDate, "우면사업장");
 
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
-        assertThat(nextStartedIntent.getComponent().getShortClassName()).isEqualTo(".activity.CancelInterviewActivity");
+        assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo(CancelInterviewActivity.class.getName());
         assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
         assertThat(nextStartedIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(11L);
         assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_NAME)).isEqualTo("WHOn");
