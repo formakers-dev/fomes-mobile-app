@@ -2,8 +2,10 @@ package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -47,7 +49,11 @@ public class MyInterviewActivityTest extends ActivityTest {
 
         subject = Robolectric.buildActivity(MyInterviewActivity.class).create().get();
 
-        when(projectService.getRegisteredInterviews()).thenReturn(Observable.just(null));
+        List<Project> mockProjectList = new ArrayList<>();
+        mockProjectList.add(mock(Project.class));
+        mockProjectList.add(mock(Project.class));
+
+        when(projectService.getRegisteredInterviews()).thenReturn(rx.Observable.just(mockProjectList));
     }
 
     @Test
@@ -58,16 +64,12 @@ public class MyInterviewActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 신청한인터뷰목록조회API호출시_한건이상의목록을_리턴받은경우_interviewRecyclerview에_결과를_셋팅한다() throws Exception {
-        List<Project> mockProjectList = new ArrayList<>();
-        mockProjectList.add(mock(Project.class));
-        mockProjectList.add(mock(Project.class));
-
-        when(projectService.getRegisteredInterviews()).thenReturn(rx.Observable.just(mockProjectList));
-
+    public void 신청한인터뷰목록조회API호출시_한건이상의목록을_리턴받은경우_interviewRecyclerview에_결과표시한다() throws Exception {
         subject.onPostCreate(null);
 
         assertThat(subject.interviewRecyclerView.getAdapter().getItemCount()).isEqualTo(2);
+        assertThat(subject.findViewById(R.id.not_found_interview_text).getVisibility()).isEqualTo(View.GONE);
+        assertThat(subject.findViewById(R.id.interview_recycler_view).getVisibility()).isEqualTo(View.VISIBLE);
     }
 
     @Test
@@ -105,5 +107,25 @@ public class MyInterviewActivityTest extends ActivityTest {
         assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS)).isEqualTo("확정");
         assertThat(nextStartedIntent.getSerializableExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE)).isEqualTo(interviewDate);
         assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.LOCATION)).isEqualTo("우면사업장");
+    }
+
+    @Test
+    public void 다가오는인터뷰가_null인경우_인터뷰목록표시없이_유저인터뷰가_없다는_텍스트를_표시한다() throws Exception {
+        when(projectService.getRegisteredInterviews()).thenReturn(Observable.just(null));
+
+        subject.onPostCreate(null);
+
+        assertThat(subject.findViewById(R.id.not_found_interview_text).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.findViewById(R.id.interview_recycler_view).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    public void 다가오는인터뷰가_없는경우_인터뷰목록표시없이_유저인터뷰가_없다는_텍스트를_표시한다() throws Exception {
+        when(projectService.getRegisteredInterviews()).thenReturn(Observable.just(new ArrayList<>()));
+
+        subject.onPostCreate(null);
+
+        assertThat(subject.findViewById(R.id.not_found_interview_text).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.findViewById(R.id.interview_recycler_view).getVisibility()).isEqualTo(View.GONE);
     }
 }

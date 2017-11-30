@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appbee_pale_gray"
     tools:ignore="MissingPrefix">
 
     <LinearLayout
@@ -34,17 +35,34 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/interview_recycler_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
 
-        </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:id="@+id/not_found_interview_text"
+                android:layout_width="match_parent"
+                android:layout_height="102dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/no_interview_background"
+                android:gravity="center"
+                android:text="@string/not_found_interview_text"
+                android:textColor="@color/appbee_warm_gray"
+                android:textSize="13dp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/interview_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/appbee_pale_gray"
             android:paddingBottom="60dp"
             android:paddingTop="45dp">
 
