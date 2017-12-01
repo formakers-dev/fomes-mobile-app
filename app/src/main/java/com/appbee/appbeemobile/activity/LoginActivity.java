@@ -91,10 +91,14 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == RC_SIGN_IN) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                return;
+            }
+
             GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
             GoogleSignInAccount account = result.getSignInAccount();
-
             if (resultCode == Activity.RESULT_OK && result.isSuccess() && account != null) {
                 googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
                         .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
