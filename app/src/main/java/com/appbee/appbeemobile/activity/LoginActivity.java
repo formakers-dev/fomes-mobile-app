@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(token -> {
                     Log.d(TAG, "signInUser success");
                     localStorageHelper.setAccessToken(token);
-                    localStorageHelper.setUserId(googleUserId);
+                    localStorageHelper.setUserId(googleSignInAPIHelper.getProvider() + googleUserId);
                     localStorageHelper.setEmail(email);
 
                     if (person != null) {

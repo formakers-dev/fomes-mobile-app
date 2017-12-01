@@ -143,6 +143,7 @@ public class LoginActivityTest extends ActivityTest {
     @Test
     public void user정보저장이_성공하면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
         when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
+        when(googleSignInAPIHelper.getProvider()).thenReturn("google");
 
         Gender gender = new Gender().setValue("male");
         Birthday birthday = new Birthday().setDate(new Date().setYear(1999).setMonth(11).setDay(31));
@@ -151,7 +152,7 @@ public class LoginActivityTest extends ActivityTest {
         subject.signInUser("testIdToken", "testGoogleId", "testEmail", person);
 
         verify(localStorageHelper).setAccessToken("testAccessToken");
-        verify(localStorageHelper).setUserId("testGoogleId");
+        verify(localStorageHelper).setUserId("googletestGoogleId");
         verify(localStorageHelper).setBirthday(1999);
         verify(localStorageHelper).setGender("male");
 
@@ -161,13 +162,14 @@ public class LoginActivityTest extends ActivityTest {
     @Test
     public void user정보저장이_성공했으나_생년월일_및_성별_정보가_없는경우_기본값을_sharedPreferences에_저장한다() throws Exception {
         when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
+        when(googleSignInAPIHelper.getProvider()).thenReturn("google");
 
         Person person = getPerson(null, null);
 
         subject.signInUser("testIdToken", "testGoogleId", "testEmail", person);
 
         verify(localStorageHelper).setAccessToken("testAccessToken");
-        verify(localStorageHelper).setUserId("testGoogleId");
+        verify(localStorageHelper).setUserId("googletestGoogleId");
         verify(localStorageHelper).setBirthday(0);
         verify(localStorageHelper).setGender("");
     }
