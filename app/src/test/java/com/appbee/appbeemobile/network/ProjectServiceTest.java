@@ -118,7 +118,8 @@ public class ProjectServiceTest {
     public void postParticipate호출시_인터뷰참여API를_호출한다() throws Exception {
         when(mockProjectAPI.postParticipate(anyString(), anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
 
-        subject.postParticipate("projectId", 1L, "").subscribe(result -> assertThat(result).isTrue());
+        Boolean result = subject.postParticipate("projectId", 1L, "").toBlocking().single();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -191,24 +192,23 @@ public class ProjectServiceTest {
 
         when(mockProjectAPI.getInterview(anyString(), eq("projectId"), eq(1L))).thenReturn(Observable.just(project));
 
-        subject.getInterview("projectId", 1L).subscribe(result -> {
-            assertThat(result.getProjectId()).isEqualTo("projectId");
-            assertThat(result.getInterview().getSeq()).isEqualTo(1L);
-            assertThat(result.getImage().getUrl()).isEqualTo("www.imageUrl.com");
-            assertThat(result.getInterview().getApps().size()).isEqualTo(1);
-            assertThat(result.getInterview().getApps().get(0).getPackageName()).isEqualTo("com.naver.webtoon");
-            assertThat(result.getInterview().getApps().get(0).getAppName()).isEqualTo("네이버웹툰");
-            assertThat(result.getName()).isEqualTo("릴루미노");
-            assertThat(result.getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
-            assertThat(result.getInterview().getLocation()).isEqualTo("우면사업장");
-            assertThat(result.getInterview().getInterviewDate()).isEqualTo(interviewDate);
-            assertThat(result.getInterview().getCloseDate()).isEqualTo(closeDate);
-            assertThat(result.getDescriptionImages().size()).isEqualTo(3);
-            assertThat(result.getDescriptionImages().get(0).getUrl()).isEqualTo("www.imageUrl.com1");
-            assertThat(result.getDescriptionImages().get(1).getUrl()).isEqualTo("www.imageUrl.com2");
-            assertThat(result.getDescriptionImages().get(2).getUrl()).isEqualTo("www.imageUrl.com3");
-            assertThat(result.getDescription()).isEqualTo("안녕하세요 릴루미노팀입니다.");
-        });
+        Project result = subject.getInterview("projectId", 1L).toBlocking().single();
+        assertThat(result.getProjectId()).isEqualTo("projectId");
+        assertThat(result.getInterview().getSeq()).isEqualTo(1L);
+        assertThat(result.getImage().getUrl()).isEqualTo("www.imageUrl.com");
+        assertThat(result.getInterview().getApps().size()).isEqualTo(1);
+        assertThat(result.getInterview().getApps().get(0).getPackageName()).isEqualTo("com.naver.webtoon");
+        assertThat(result.getInterview().getApps().get(0).getAppName()).isEqualTo("네이버웹툰");
+        assertThat(result.getName()).isEqualTo("릴루미노");
+        assertThat(result.getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
+        assertThat(result.getInterview().getLocation()).isEqualTo("우면사업장");
+        assertThat(result.getInterview().getInterviewDate()).isEqualTo(interviewDate);
+        assertThat(result.getInterview().getCloseDate()).isEqualTo(closeDate);
+        assertThat(result.getDescriptionImages().size()).isEqualTo(3);
+        assertThat(result.getDescriptionImages().get(0).getUrl()).isEqualTo("www.imageUrl.com1");
+        assertThat(result.getDescriptionImages().get(1).getUrl()).isEqualTo("www.imageUrl.com2");
+        assertThat(result.getDescriptionImages().get(2).getUrl()).isEqualTo("www.imageUrl.com3");
+        assertThat(result.getDescription()).isEqualTo("안녕하세요 릴루미노팀입니다.");
     }
 
     @Test
