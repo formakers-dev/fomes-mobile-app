@@ -66,4 +66,8 @@ public class GoogleSignInAPIHelper {
             }
         });
     }
+
+    public String getProvider() {
+        return "google";
+    }
 }
