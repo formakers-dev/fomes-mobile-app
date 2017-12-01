@@ -122,4 +122,6 @@
 -keep class com.google.api.** { *; }
 -dontwarn com.google.api.**
 
--keep class com.appbee.appbeemobile.model.**
+# AppBee Model
+-keep class com.appbee.appbeemobile.model.** { *; }
+-dontwarn com.appbee.appbeemobile.model.**
