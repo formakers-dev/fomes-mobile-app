@@ -44,6 +44,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -124,7 +125,7 @@ public class LoginActivityTest extends ActivityTest {
 
         mockGoogleSignInResult(mock(GoogleSignInAccount.class), false);
 
-        subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
+        subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         assertFinishActivityForFail("Fail to connect Google Play Service");
     }
@@ -138,6 +139,15 @@ public class LoginActivityTest extends ActivityTest {
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         assertFinishActivityForFail("Fail to connect Google Play Service");
+    }
+
+    @Test
+    public void onActivityResult_요청취소시_아무것도하지않고_리턴한다() throws Exception {
+        subject = getSubjectAfterSetupGoogleSignIn();
+
+        subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
+
+        verify(googleSignInAPIHelper, times(0)).requestSignInIntent(any());
     }
 
     @Test
