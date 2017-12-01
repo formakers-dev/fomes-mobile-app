@@ -311,6 +311,15 @@ public class InterviewDetailActivityTest extends ActivityTest {
     }
 
     @Test
+    public void 세부일정선택영역이_나타난_상태에서_세부일정영역클릭시_세부일정선택영역이_사라지지않는다() throws Exception {
+        subject.submitButton.performClick();
+
+        subject.detailPlansLayout.performClick();
+
+        assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
     @Config(minSdk = 22)
     public void 세부일정선택영역이_나타나면_scrollView영역이Dim처리된다() throws Exception {
         subject.submitArrowButton.performClick();

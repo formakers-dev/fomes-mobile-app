@@ -302,6 +302,11 @@ public class InterviewDetailActivity extends BaseActivity {
         detailPlansLayout.setVisibility(View.VISIBLE);
         submitArrowButton.setBackground(getDrawable(R.drawable.submit_close));
         scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(R.color.appbee_dim_foreground)));
+
+        detailPlansLayout.setOnClickListener(v -> {
+            return;
+        });
+
         scrollView.setOnTouchListener((v, event) -> {
             hideDetailPlanLayout();
             return false;
