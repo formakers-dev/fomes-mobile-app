@@ -2,7 +2,8 @@ package com.appbee.appbeemobile.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,8 +12,9 @@ import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
+import com.appbee.appbeemobile.adapter.DescriptionImageAdapter;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
+import com.appbee.appbeemobile.helper.ImageLoader;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -38,6 +40,9 @@ public class ProjectDetailActivity extends BaseActivity {
     @Inject
     TimeHelper timeHelper;
 
+    @Inject
+    ImageLoader imageLoader;
+
     @BindView(R.id.representation_image)
     ImageView representationImageView;
 
@@ -53,8 +58,8 @@ public class ProjectDetailActivity extends BaseActivity {
     @BindView(R.id.project_video_layout)
     FrameLayout projectVideoLayout;
 
-    @BindView(R.id.description_image)
-    ViewPager descriptionImageViewPager;
+    @BindView(R.id.description_image_recycler_view)
+    RecyclerView descriptionImageRecyclerView;
 
     @BindView(R.id.owner_photo)
     ImageView ownerPhotoImageView;
@@ -119,7 +124,9 @@ public class ProjectDetailActivity extends BaseActivity {
 
     private void displayProjectDetail(Project project) {
         projectDescriptionTextView.setText(project.getDescription());
-        descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        descriptionImageRecyclerView.setLayoutManager(horizontalLayoutManager);
+        descriptionImageRecyclerView.setAdapter(new DescriptionImageAdapter(project.getDescriptionImages(), imageLoader));
     }
 
     private void displayProjectVideo(String videoUrl) {

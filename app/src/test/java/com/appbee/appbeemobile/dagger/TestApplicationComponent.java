@@ -9,6 +9,7 @@ import com.appbee.appbeemobile.activity.MainActivityTest;
 import com.appbee.appbeemobile.activity.MyInterviewActivityTest;
 import com.appbee.appbeemobile.activity.PermissionGuideActivityTest;
 import com.appbee.appbeemobile.activity.ProjectDetailActivityTest;
+import com.appbee.appbeemobile.adapter.DescriptionImageAdapterTest;
 import com.appbee.appbeemobile.adapter.RegisteredInterviewListAdapterTest;
 import com.appbee.appbeemobile.custom.AppBeeAlertDialogTest;
 import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragmentTest;
@@ -38,4 +39,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(CancelInterviewActivityTest cancelInterviewActivityTest);
     void inject(AppBeeAlertDialogTest appBeeAlertDialogTest);
     void inject(PowerConnectedReceiverTest powerConnectedReceiverTest);
+    void inject(DescriptionImageAdapterTest descriptionImageAdapterTest);
 }

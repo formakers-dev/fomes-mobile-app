@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
+import com.appbee.appbeemobile.adapter.DescriptionImageAdapter;
 import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
-import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
@@ -155,7 +155,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         // 프로젝트 설명
         assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
-        assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
+        assertThat(subject.descriptionImageRecyclerView.getAdapter().getClass().getSimpleName()).contains(DescriptionImageAdapter.class.getSimpleName());
 
         // 조회된 인터뷰 소개 정보
         assertThat(subject.interviewIntroduceTextView.getText()).contains("인터뷰소개");
@@ -201,7 +201,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void onPostCreate시_조회된_project_설명정보를_화면에_보여준다() throws Exception {
         assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
-        assertThat(subject.descriptionImageViewPager.getAdapter().getClass().getSimpleName()).contains(ImagePagerAdapter.class.getSimpleName());
+        assertThat(subject.descriptionImageRecyclerView.getAdapter().getClass().getSimpleName()).contains(DescriptionImageAdapter.class.getSimpleName());
     }
 
     @Test

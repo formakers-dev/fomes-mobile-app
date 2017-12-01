@@ -6,6 +6,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
+import com.appbee.appbeemobile.helper.ImageLoader;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
@@ -149,6 +150,12 @@ public class TestApplicationModule {
     @Provides
     ResourceHelper resourceHelper() {
         return mock(ResourceHelper.class);
+    }
+
+    @Singleton
+    @Provides
+    ImageLoader imageLoader() {
+        return mock(ImageLoader.class);
     }
 
     @Singleton
