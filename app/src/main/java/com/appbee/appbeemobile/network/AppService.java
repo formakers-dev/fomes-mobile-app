@@ -1,13 +1,8 @@
 package com.appbee.appbeemobile.network;
 
-import android.util.Log;
-
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.AppUsage;
-import com.appbee.appbeemobile.util.AppBeeConstants;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,28 +21,10 @@ public class AppService extends AbstractAppBeeService {
         this.localStorageHelper = localStorageHelper;
     }
 
-    public void postUncrawledApps(List<String> uncrawledPackageNameList) {
-        appAPI.postUncrawledApps(localStorageHelper.getAccessToken(), uncrawledPackageNameList)
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(response -> Log.d(TAG, String.valueOf(response)));
-    }
-
     public Observable<Boolean> sendAppUsages(List<AppUsage> appUsageList) {
         return appAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
-    }
-
-    public Observable<List<AppInfo>> getAppInfo(List<String> packageNameList) {
-        return appAPI.getAppInfos(localStorageHelper.getAccessToken(), packageNameList)
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
-    }
-
-    public List<String> getPopularApps() {
-        return Arrays.asList(AppBeeConstants.POPULAR_APPS);
     }
 
     @Override
