@@ -350,6 +350,25 @@ public class InterviewDetailActivityTest extends ActivityTest {
     }
 
     @Test
+    public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시후_팝업이닫히면_다가오는_인터뷰페이지로이동한다() throws Exception {
+        subject.submitButton.performClick();
+
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+
+        subject.submitButton.performClick();
+
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(dialog).isNotNull();
+
+        dialog.cancel();
+
+        assertThat(shadowOf(dialog).hasBeenDismissed()).isTrue();
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MyInterviewActivity.class.getName());
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @Test
     public void 인터뷰_참여완료_팝업의_확인버튼을클릭시_팝업을_닫고_다가오는_유저인터뷰_페이지로_이동한다() throws Exception {
         subject.submitButton.performClick();
 
