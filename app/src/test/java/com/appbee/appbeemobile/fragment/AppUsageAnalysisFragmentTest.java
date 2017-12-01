@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -92,8 +94,12 @@ public class AppUsageAnalysisFragmentTest {
     }
 
 
-    private void setupWithAnalysisDescription(String analysisDescription) {
-        subject = new AppUsageAnalysisFragment(analysisDescription);
+    private void setupWithAnalysisDescription(@StringRes int analysisDescriptionResId) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppUsageAnalysisFragment.EXTRA_DESCRIPTION_RES_ID, analysisDescriptionResId);
+        subject = new AppUsageAnalysisFragment();
+        subject.setArguments(bundle);
+
         controller = SupportFragmentController.of(subject);
         unbinder = ButterKnife.bind(this, subject.getView());
 
@@ -137,8 +143,8 @@ public class AppUsageAnalysisFragmentTest {
 
     @Test
     public void 분석결과설명과함께fragment를생성하는경우_onViewCreated시_해당설명을_표시한다() throws Exception {
-        setupWithAnalysisDescription("분석결과설명");
-        assertThat(subject.analysisDescription.getText()).isEqualTo("분석결과설명");
+        setupWithAnalysisDescription(R.string.analysis_title);
+        assertThat(subject.analysisDescription.getText()).isEqualTo(subject.getString(R.string.analysis_title));
     }
 
 }

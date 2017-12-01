@@ -1,6 +1,8 @@
 package com.appbee.appbeemobile.activity;
 
 
+import android.support.v4.app.Fragment;
+
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
@@ -31,7 +33,9 @@ public class OnboardingAnalysisActivityTest {
 
     @Test
     public void onCreated가호출되면_OnboardingAnalysisFragment를_생성한다() throws Exception {
-        assertThat(subject.getSupportFragmentManager().findFragmentByTag(AppUsageAnalysisFragment.TAG)).isNotNull();
+        Fragment appUsageAnalysisFragment = subject.getSupportFragmentManager().findFragmentByTag(AppUsageAnalysisFragment.TAG);
+        assertThat(appUsageAnalysisFragment).isNotNull();
+        assertThat(appUsageAnalysisFragment.getArguments().getInt(AppUsageAnalysisFragment.EXTRA_DESCRIPTION_RES_ID)).isEqualTo(R.string.analysis_description);
     }
 
     @Test
