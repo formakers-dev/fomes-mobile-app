@@ -8,7 +8,6 @@
     <string name="app_data_permission">앱 사용정보 접근 권한</string>
     <string name="app_data_permission_text">* 당신에게 프로젝트를 추천하기 위한 용도로만 사용합니다.</string>
     <string name="permission_button_text">권한 허용하러 가기</string>
-    <string name="loading_title">관심사 분석중…</string>
     <string name="loading_description">당신만의 독특한 앱 사용패턴 분석중…</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -16,35 +15,21 @@
 
     <string name="fail_to_sign_in">Fail to sign in</string>
     <string name="fail_to_connect_google_play">Fail to connect Google Play Service</string>
-    <string name="app_service_get_info_api_fail">appList API fail</string>
     <string name="recommendation_apps_title">유저 인터뷰 체험하기</string>
     <string name="recommendation_apps_subtitle">앱 사용패턴 기반 신청가능한 유저 인터뷰 입니다.</string>
-    <string name="item_card_tag">[%s] 앱을 사용하시는 분의 의견을 구합니다.</string>
-    <string name="apps_description_format">%s 앱을 사용하시는 당신과 찰떡궁합!</string>
     <string name="tag_key_image_url">TAG_KEY_IMAGE_URL</string>
-    <string name="interview_type_text">종류:%s</string>
-    <string name="interview_location_text">장소:%s</string>
     <string name="interview_date_text">%1$s (%2$s)</string>
-    <string name="interview_time_text">약 %d분</string>
-    <string name="interview_introduce_text">당신은 %s 팀이 애타게 찾아헤맨 바로 그 사람! 지금 참여해서 당신의 의견을 프로젝트에 반영해 보세요. 보답으로 받는 리워드는 덤이죠!</string>
     <string name="d_day_text">D-%d</string>
-    <string name="participation_status">%1$d/%2$d</string>
-    <string name="close_date">~%s</string>
-    <string name="minute">%d분</string>
-    <string name="interview_summary">%1$s / %2$s~%3$s / %4$d분 / 3만원 리워드</string>
     <string name="greeting_title">환영합니다!</string>
     <string name="greeting_message">앱비는 당신의 앱 사용패턴을 분석해서\n새 프로젝트 &amp; 유저 인터뷰를 보여드려요.</string>
     <string name="tnc_agree_text">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1t11gomrftWIlXFmJ9ZAqXjHLb1SAjkmcMdxwItXWtf4/edit?usp=sharing">사용약관 및 개인정보 취급방침</a>]]>에 동의됩니다.</string>
-    <string name="app_subtitle">App Behaviour</string>
 
     <string name="analysis_title">앱 사용패턴 분석 완료!</string>
     <string name="analysis_description">이 결과를 기반으로 새 프로젝트와\n유저인터뷰를 추천해 드릴게요.</string>
     <string name="onboarding_rewards_title">신상앱 유저인터뷰 체험하고\n리워드를 받아가세요.</string>
     <string name="onboarding_rewards_description">인사이트 얻고, 인터뷰 하고, 리워드 받고!</string>
 
-    <string name="apps_text">\'%s\'앱을 사랑하는 당신을 위한</string>
     <!-- Bottom Button -->
-    <string name="yes_button"><![CDATA[네 좋아요 >]]></string>
     <string name="next_button">다음으로</string>
     <string name="start_button">시작하기</string>
     <string name="contents_title_interview">체험하기</string>
@@ -124,7 +109,6 @@
 
     <string name="type_face_bmjua">BMJUA.otf</string>
     <string name="type_face_medium">NotoSans-Medium.otf</string>
-    <string name="type_face_normal">NotoSans-Regular.otf</string>
     <string name="my_app_usage_title">앱 사용패턴 다시 분석하기</string>
     <string name="my_analysis_description">지금으로부터 최근 일주일동안\n앱 사용패턴을 분석해 보았어요.</string>
 

@@ -19,8 +19,7 @@
             android:id="@+id/project_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:src="@drawable/recommandation_app" />
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
