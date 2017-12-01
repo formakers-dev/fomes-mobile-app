@@ -119,5 +119,7 @@
 # Google
 -keep class com.google.**
 -dontwarn com.google.**
+-keep class com.google.api.** { *; }
+-dontwarn com.google.api.**
 
 -keep class com.appbee.appbeemobile.model.**
