@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,10 +20,11 @@ import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
+import com.appbee.appbeemobile.adapter.DescriptionImageAdapter;
 import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
-import com.appbee.appbeemobile.adapter.ImagePagerAdapter;
 import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
+import com.appbee.appbeemobile.helper.ImageLoader;
 import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
@@ -51,6 +51,9 @@ public class InterviewDetailActivity extends BaseActivity {
 
     @Inject
     TimeHelper timeHelper;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @Inject
     ResourceHelper resourceHelper;
@@ -82,8 +85,8 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.project_description)
     TextView projectDescriptionTextView;
 
-    @BindView(R.id.description_image)
-    ViewPager descriptionImageViewPager;
+    @BindView(R.id.description_image_recycler_view)
+    RecyclerView descriptionImageRecyclerView;
 
     @BindView(R.id.interview_introduce)
     TextView interviewIntroduceTextView;
@@ -207,7 +210,10 @@ public class InterviewDetailActivity extends BaseActivity {
     }
 
     private void bindProjectDetail(Project project) {
-        descriptionImageViewPager.setAdapter(new ImagePagerAdapter(this, project.getDescriptionImages()));
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        descriptionImageRecyclerView.setLayoutManager(horizontalLayoutManager);
+
+        descriptionImageRecyclerView.setAdapter(new DescriptionImageAdapter(project.getDescriptionImages(), imageLoader));
         projectDescriptionTextView.setText(project.getDescription());
     }
 

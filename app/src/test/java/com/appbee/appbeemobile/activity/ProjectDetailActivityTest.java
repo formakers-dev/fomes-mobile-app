@@ -114,7 +114,7 @@ public class ProjectDetailActivityTest extends ActivityTest {
         assertThat(subject.findViewById(R.id.project_video_layout).getVisibility()).isEqualTo(View.VISIBLE);
 
         // 상세설명정보를_화면에_보여준다
-        assertThat(subject.descriptionImageViewPager.getAdapter().getCount()).isEqualTo(3);
+        assertThat(subject.descriptionImageRecyclerView.getAdapter().getItemCount()).isEqualTo(3);
         assertThat(subject.projectDescriptionTextView.getText()).isEqualTo("안녕하세요 릴루미노팀입니다.");
 
         // owner정보를_화면에_보여준다
