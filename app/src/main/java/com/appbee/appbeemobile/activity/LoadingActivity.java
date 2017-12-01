@@ -9,10 +9,10 @@ import android.widget.Toast;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
+import com.appbee.appbeemobile.helper.ImageLoader;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
-import com.bumptech.glide.Glide;
 
 import javax.inject.Inject;
 
@@ -29,6 +29,9 @@ public class LoadingActivity extends BaseActivity {
 
     @Inject
     UserService userService;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @BindView(R.id.loading_imageview)
     ImageView loadingImageView;
@@ -47,7 +50,7 @@ public class LoadingActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        Glide.with(this).asGif().load(R.drawable.loading_bowl).into(loadingImageView);
+        imageLoader.loadGifImage(loadingImageView, R.drawable.loading_bowl);
 
         // TODO : Completable 로 변경 후 error처리 로직 변경
         userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()))

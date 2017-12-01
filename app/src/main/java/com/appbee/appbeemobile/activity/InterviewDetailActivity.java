@@ -31,7 +31,6 @@ import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.util.DateUtil;
 import com.appbee.appbeemobile.util.FormatUtil;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import javax.inject.Inject;
@@ -191,9 +190,7 @@ public class InterviewDetailActivity extends BaseActivity {
     }
 
     private void bindProjectOverview(final Project project) {
-        Glide.with(this)
-                .load(project.getImage().getUrl()).apply(new RequestOptions().override(1300, 1000).centerCrop())
-                .into(representationImageView);
+        imageLoader.loadImage(representationImageView, project.getImage().getUrl(), new RequestOptions().override(1300, 1000).centerCrop());
         representationImageView.setTag(R.string.tag_key_image_url, project.getImage().getUrl());
         appsDescriptionTextView.setText(String.format(getString(R.string.recommand_to_user_of_similar_app), project.getInterview().getApps().get(0).getAppName()));
         projectNameTextView.setText(project.getName());
@@ -239,9 +236,7 @@ public class InterviewDetailActivity extends BaseActivity {
 
         String ownerImageUrl = ownerImage.getUrl();
         if (!TextUtils.isEmpty(ownerImageUrl)) {
-            Glide.with(this).load(ownerImageUrl)
-                    .apply(new RequestOptions().override(200, 200).circleCrop())
-                    .into(ownerPhotoImageView);
+            imageLoader.loadImage(ownerPhotoImageView, ownerImageUrl, new RequestOptions().override(200, 200).circleCrop());
             ownerPhotoImageView.setTag(R.string.tag_key_image_url, ownerImage.getUrl());
         }
 
