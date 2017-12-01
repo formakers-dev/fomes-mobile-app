@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ import rx.schedulers.Schedulers;
 
 public class AppUsageAnalysisFragment extends BaseFragment {
     public static final String TAG = AppUsageAnalysisFragment.class.getSimpleName();
-    private String description = "";
+    public static final String EXTRA_DESCRIPTION_RES_ID = "DESCRIPTION_RES_ID";
 
     @Inject
     AppService appService;
@@ -49,10 +48,6 @@ public class AppUsageAnalysisFragment extends BaseFragment {
     public AppUsageAnalysisFragment() {
     }
 
-    public AppUsageAnalysisFragment(String description) {
-        this.description = description;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,8 +59,10 @@ public class AppUsageAnalysisFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!TextUtils.isEmpty(description)) {
-            analysisDescription.setText(description);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            int descriptionStringResId = arguments.getInt(EXTRA_DESCRIPTION_RES_ID, R.string.empty);
+            analysisDescription.setText(descriptionStringResId);
         }
 
         List<String> popularAppsList = appService.getPopularApps();
