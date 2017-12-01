@@ -13,6 +13,7 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.network.AppService;
+import com.appbee.appbeemobile.network.ConfigService;
 
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class AppUsageAnalysisFragment extends BaseFragment {
 
     @Inject
     AppService appService;
+
+    @Inject
+    ConfigService configService;
 
     @Inject
     AppUsageDataHelper appUsageDataHelper;
@@ -65,7 +69,7 @@ public class AppUsageAnalysisFragment extends BaseFragment {
             analysisDescription.setText(descriptionStringResId);
         }
 
-        List<String> popularAppsList = appService.getPopularApps();
+        List<String> popularAppsList = configService.getExcludePackageNames();
 
         Observable<String> sortedUsedPackageNameObservable = appUsageDataHelper.getSortedUsedPackageNames()
                 .observeOn(Schedulers.io())

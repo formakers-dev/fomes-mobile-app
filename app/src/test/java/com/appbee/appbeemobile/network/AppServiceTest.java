@@ -63,20 +63,6 @@ public class AppServiceTest {
         RxJavaHooks.reset();
     }
 
-
-    @Test
-    public void postUncrawledApps호출시_크롤링되지_않은_앱목록을_서버로_전송된다() throws Exception {
-        List<String> mockUncrawledAppList = new ArrayList<>();
-        mockUncrawledAppList.add("packageNameA");
-        mockUncrawledAppList.add("packageNameB");
-        mockUncrawledAppList.add("packageNameC");
-        when(mockAppAPI.postUncrawledApps(anyString(), any(List.class))).thenReturn(Observable.just(true));
-
-        subject.postUncrawledApps(mockUncrawledAppList);
-
-        verify(mockAppAPI).postUncrawledApps(anyString(), eq(mockUncrawledAppList));
-    }
-
     @Test
     public void postAppUsages호출시_앱별_사용정보통계를_서버로_전송한다() throws Exception {
         List<AppUsage> mockAppUsageList = new ArrayList<>();

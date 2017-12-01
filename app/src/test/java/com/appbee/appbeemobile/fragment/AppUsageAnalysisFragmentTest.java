@@ -11,6 +11,7 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.network.AppService;
+import com.appbee.appbeemobile.network.ConfigService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,6 +46,9 @@ public class AppUsageAnalysisFragmentTest {
 
     @Inject
     AppService mockAppService;
+
+    @Inject
+    ConfigService mockConfigService;
 
     @Inject
     AppUsageDataHelper mockAppUsageDataHelper;
@@ -82,7 +86,7 @@ public class AppUsageAnalysisFragmentTest {
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName4")).thenReturn(new NativeAppInfo("packageName4", "appName4"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName5")).thenReturn(new NativeAppInfo("packageName5", "appName5"));
 
-        when(mockAppService.getPopularApps()).thenReturn(Arrays.asList("packageName1", "packageName2"));
+        when(mockConfigService.getExcludePackageNames()).thenReturn(Arrays.asList("packageName1", "packageName2"));
     }
 
     private void setupWithoutDescription() {
