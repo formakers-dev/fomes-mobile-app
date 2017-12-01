@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -49,8 +50,13 @@ public class CancelInterviewActivity extends BaseActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button);
+
+        ActionBar supportActionBar = getSupportActionBar();
+
+        if(supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setHomeAsUpIndicator(R.drawable.back_button);
+        }
     }
 
     @Override
@@ -88,12 +94,9 @@ public class CancelInterviewActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result) {
-                        DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
-                            dialog.dismiss();
-                            setResult(Activity.RESULT_OK);
-                            finish();
-                        };
+                        DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
                         AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_cancel_image, getString(R.string.dialog_cancel_title), getString(R.string.dialog_cancel_message), onClickListener);
+                        alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
                         alertDialog.show();
                     }
                 }, err -> {
@@ -103,5 +106,11 @@ public class CancelInterviewActivity extends BaseActivity {
                         Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private void moveToMyInterviewActivity(DialogInterface dialog) {
+        dialog.dismiss();
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 }

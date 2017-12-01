@@ -280,13 +280,9 @@ public class InterviewDetailActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result) {
-                        DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
-                            dialog.dismiss();
-                            Intent intent = new Intent(InterviewDetailActivity.this, MyInterviewActivity.class);
-                            startActivity(intent);
-                            finish();
-                        };
+                        DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
                         AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), onClickListener);
+                        alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
                         alertDialog.show();
                     }
                 }, err -> {
@@ -318,5 +314,12 @@ public class InterviewDetailActivity extends BaseActivity {
         submitArrowButton.setBackground(getDrawable(R.drawable.submit_open));
         scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(android.R.color.transparent)));
         scrollView.setOnTouchListener(null);
+    }
+
+    private void moveToMyInterviewActivity(DialogInterface dialog) {
+        dialog.dismiss();
+        Intent intent = new Intent(InterviewDetailActivity.this, MyInterviewActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

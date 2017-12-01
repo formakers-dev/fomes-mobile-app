@@ -116,6 +116,19 @@ public class CancelInterviewActivityTest extends ActivityTest {
     }
 
     @Test
+    public void 인터뷰취소요청이_성공하면_취소완료_팝업이_호출된상태에서_팝업이_닫히면_이전페이지로_이동한다() throws Exception {
+        subject.findViewById(R.id.cancel_yes).performClick();
+
+        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+
+        dialog.cancel();
+
+        assertThat(shadowOf(dialog).hasBeenDismissed()).isTrue();
+        assertThat(shadowOf(subject).getResultCode()).isEqualTo(Activity.RESULT_OK);
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @Test
     public void 인터뷰취소팝업_확인_버튼을_클릭하면_팝업을_닫고_이전페이지로_복귀한다() throws Exception {
         subject.findViewById(R.id.cancel_yes).performClick();
 
