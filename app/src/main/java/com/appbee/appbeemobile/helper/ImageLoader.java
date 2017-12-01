@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.helper;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -31,10 +32,10 @@ public class ImageLoader {
                 .into(imageView);
     }
 
-    public void loadGifImage(ImageView imageView, String imageUrl) {
+    public void loadGifImage(ImageView imageView, @DrawableRes int resId) {
         Glide.with(context)
                 .asGif()
-                .load(imageUrl)
+                .load(resId)
                 .into(imageView);
     }
 }
