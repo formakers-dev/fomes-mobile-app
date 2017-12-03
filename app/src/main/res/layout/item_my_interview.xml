@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="20dp"
+    android:paddingBottom="16dp"
     android:paddingEnd="25dp"
     android:paddingStart="25dp"
     android:paddingTop="20dp"
@@ -95,14 +95,20 @@
         android:textSize="12dp"
         tools:text="* 비상연락처 : 010-1234-5678" />
 
-    <Button
-        android:id="@+id/show_interview_button"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/interview_cancel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
-        android:background="@drawable/yellow_button"
-        android:text="@string/show_project_information_button"
+        android:layout_marginTop="9dp"
+        android:text="* 인터뷰를 취소하려면 눌러주세요 (취소 패널티 주의"
+        android:textSize="12dp"
         android:textColor="@color/appbee_warm_gray"
-        android:textSize="16dp" />
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="95dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/appbee_warm_gray" />
 
 </LinearLayout>
