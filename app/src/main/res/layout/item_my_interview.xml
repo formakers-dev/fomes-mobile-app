@@ -50,16 +50,6 @@
             android:textSize="18dp"
             app:font="medium"
             tools:text="12월 11일 (월) 우면사업장 15:00" />
-
-        <Button
-            android:id="@+id/interview_cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="@string/cancel_button"
-            android:textColor="@color/appbee_warm_gray"
-            android:textSize="12dp"
-            android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <FrameLayout
@@ -95,6 +85,15 @@
         android:textSize="12dp"
         tools:text="* 비상연락처 : 010-1234-5678" />
 
+    <Button
+        android:id="@+id/show_interview_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/yellow_button"
+        android:text="@string/show_project_information_button"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="16dp" />
     <TextView
         android:id="@+id/interview_cancel"
         android:layout_width="wrap_content"
