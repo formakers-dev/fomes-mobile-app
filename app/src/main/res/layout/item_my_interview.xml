@@ -99,15 +99,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
-        android:text="* 인터뷰를 취소하려면 눌러주세요 (취소 패널티 주의"
+        android:text="@string/my_interview_cancel_warning"
         android:textSize="12dp"
         android:textColor="@color/appbee_warm_gray"
         />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginTop="0dp"
-        android:background="@color/appbee_warm_gray" />
 
 </LinearLayout>

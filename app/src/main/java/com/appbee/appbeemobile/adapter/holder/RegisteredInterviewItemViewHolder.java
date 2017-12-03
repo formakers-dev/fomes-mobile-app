@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.adapter.holder;
 
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,7 @@ public class RegisteredInterviewItemViewHolder extends RecyclerView.ViewHolder {
         this.emergencyPhone = (TextView) view.findViewById(R.id.emergency_phone);
         this.showInterviewButton = ((Button) view.findViewById(R.id.show_interview_button));
         this.cancelInterviewTextView = ((TextView) view.findViewById(R.id.interview_cancel));
+        this.cancelInterviewTextView.setPaintFlags(this.cancelInterviewTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         this.lineBetweenOpenCloseDateView = view.findViewById(R.id.line_between_open_close_date);
         this.lineBetweenCloseInterviewDateView = view.findViewById(R.id.line_between_close_interview_date);
     }
