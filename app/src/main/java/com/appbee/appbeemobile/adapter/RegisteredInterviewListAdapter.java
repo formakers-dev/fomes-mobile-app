@@ -107,7 +107,7 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
     }
 
     private void bindButtonListener(RegisteredInterviewItemViewHolder holder, Project project, String interviewStatus) {
-        holder.cancelInterviewButton.setOnClickListener(v -> listener.onClickCancelInterview(project.getProjectId(), project.getInterview().getSeq(), project.getInterview().getSelectedTimeSlot(), project.getName(), interviewStatus, project.getInterview().getInterviewDate(), project.getInterview().getLocation()));
+        holder.cancelInterviewTextView.setOnClickListener(v -> listener.onClickCancelInterview(project.getProjectId(), project.getInterview().getSeq(), project.getInterview().getSelectedTimeSlot(), project.getName(), interviewStatus, project.getInterview().getInterviewDate(), project.getInterview().getLocation()));
         holder.showInterviewButton.setOnClickListener(v -> listener.onClickInterviewDetail(project.getProjectId(), project.getInterview().getSeq()));
     }
 

@@ -149,11 +149,11 @@ public class RegisteredInterviewListAdapterTest {
     @Test
     public void 취소하기_버튼을_클릭하면_OnItemClickListener의_onClickCancelInterview에_프로젝트ID를_전달한다() throws Exception {
         subject.onBindViewHolder(holder, 0);
-        holder.cancelInterviewButton.performClick();
+        holder.cancelInterviewTextView.performClick();
         verify(mockListener).onClickCancelInterview(eq("12345"), eq(11L), eq("time15"), eq("툰스토리"), eq("신청"), eq(mockInterviewDate1), eq("우면사업장"));
 
         subject.onBindViewHolder(holder, 1);
-        holder.cancelInterviewButton.performClick();
+        holder.cancelInterviewTextView.performClick();
         verify(mockListener).onClickCancelInterview(eq("67890"), eq(22L), eq("time8"), eq("토토"), eq("확정"), eq(mockInterviewDate2), eq("수원사업장"));
     }
 
