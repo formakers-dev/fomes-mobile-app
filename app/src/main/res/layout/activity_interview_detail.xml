@@ -30,8 +30,8 @@
                     <ImageView
                         android:id="@+id/representation_image"
                         android:layout_width="match_parent"
+                        android:foreground="@drawable/image_underline_background"
                         android:layout_height="220dp"
-                        android:foreground="@drawable/project_image_gradation"
                         android:scaleType="centerCrop"/>
 
                     <ImageButton
