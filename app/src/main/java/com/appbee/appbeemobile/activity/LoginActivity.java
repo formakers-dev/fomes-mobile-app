@@ -32,8 +32,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity {
-
     private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String UNKNOWN_GENDER = "unknown";
     private static final int RC_SIGN_IN = 9001;
     private static GoogleApiClient mGoogleApiClient;
 
@@ -102,7 +102,7 @@ public class LoginActivity extends BaseActivity {
             if (resultCode == Activity.RESULT_OK && result.isSuccess() && account != null) {
                 googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
                         .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
-                                e -> finishActivityForFail(R.string.fail_to_connect_google_play));
+                                e -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), null));
             } else {
                 finishActivityForFail(R.string.fail_to_connect_google_play);
             }
@@ -119,7 +119,10 @@ public class LoginActivity extends BaseActivity {
 
                     if (person != null) {
                         localStorageHelper.setBirthday(person.getBirthdays() != null ? person.getBirthdays().get(0).getDate().getYear() : 0);
-                        localStorageHelper.setGender(person.getGenders() != null ? person.getGenders().get(0).getValue() : "");
+                        localStorageHelper.setGender(person.getGenders() != null ? person.getGenders().get(0).getValue() : UNKNOWN_GENDER);
+                    } else {
+                        localStorageHelper.setBirthday(0);
+                        localStorageHelper.setGender(UNKNOWN_GENDER);
                     }
 
                     Intent intent = new Intent(getBaseContext(), OnboardingActivity.class);
@@ -133,9 +136,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     void finishActivityForFail(@StringRes int failStringId) {
-        Toast.makeText(this, failStringId, Toast.LENGTH_SHORT).show();
-        setResult(Activity.RESULT_CANCELED);
-        finish();
+        runOnUiThread(() -> {
+            Toast.makeText(LoginActivity.this, failStringId, Toast.LENGTH_SHORT).show();
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        });
     }
 }
-
