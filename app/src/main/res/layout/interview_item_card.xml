@@ -17,8 +17,9 @@
         <ImageView
             android:id="@+id/project_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop" />
+            android:layout_height="165dp"
+            android:scaleType="centerCrop"
+            android:foreground="@drawable/image_underline_background"/>
 
         <LinearLayout
             android:layout_width="match_parent"
