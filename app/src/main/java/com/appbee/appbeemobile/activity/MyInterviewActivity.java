@@ -82,14 +82,16 @@ public class MyInterviewActivity extends BaseActivity {
     }
 
     private void requestRegisteredInterviews() {
-        projectService.getRegisteredInterviews()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(projectList -> {
-                    displayInterviewsLayout(projectList == null || projectList.isEmpty());
-                    if (interviewRecyclerView.getVisibility() == View.VISIBLE) {
-                        refreshInterviewRecyclerView(projectList);
-                    }
-                }, this::logError);
+        addToCompositeSubscription(
+                projectService.getRegisteredInterviews()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(projectList -> {
+                            displayInterviewsLayout(projectList == null || projectList.isEmpty());
+                            if (interviewRecyclerView.getVisibility() == View.VISIBLE) {
+                                refreshInterviewRecyclerView(projectList);
+                            }
+                        }, this::logError)
+        );
     }
 
     private void displayInterviewsLayout(boolean isEmpty) {

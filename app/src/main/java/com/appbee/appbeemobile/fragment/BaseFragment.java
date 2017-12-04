@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,9 +10,17 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 public class BaseFragment extends Fragment {
     Unbinder unbinder;
+
+    final CompositeSubscription compositeSubscription = new CompositeSubscription();
+
+    protected void addCompositeSubscription(@NonNull final Subscription subscription) {
+        compositeSubscription.add(subscription);
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -21,7 +30,9 @@ public class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        if(unbinder != null) {
+        compositeSubscription.clear();
+
+        if (unbinder != null) {
             unbinder.unbind();
         }
         super.onDestroyView();

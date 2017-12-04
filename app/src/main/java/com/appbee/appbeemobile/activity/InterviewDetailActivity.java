@@ -146,9 +146,12 @@ public class InterviewDetailActivity extends BaseActivity {
 
         projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
         seq = getIntent().getLongExtra(EXTRA.INTERVIEW_SEQ, 0L);
-        projectService.getInterview(projectId, seq)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::displayProject);
+
+        addToCompositeSubscription(
+                projectService.getInterview(projectId, seq)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::displayProject)
+        );
     }
 
     private void displayProject(Project project) {
@@ -280,24 +283,26 @@ public class InterviewDetailActivity extends BaseActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-        projectService.postParticipate(projectId, seq, slotId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        addToCompositeSubscription(
+                projectService.postParticipate(projectId, seq, slotId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-                    if (result) {
-                        DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
-                        AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), onClickListener);
-                        alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
-                        alertDialog.show();
-                    }
-                }, err -> {
-                    if (err instanceof HttpException) {
-                        Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
-                    }
-                });
+                            if (result) {
+                                DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
+                                AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), onClickListener);
+                                alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
+                                alertDialog.show();
+                            }
+                        }, err -> {
+                            if (err instanceof HttpException) {
+                                Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
+                            }
+                        })
+        );
     }
 
     private void showDetailPlanLayout() {

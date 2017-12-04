@@ -2,7 +2,6 @@ package com.appbee.appbeemobile.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,12 +72,14 @@ public class InterviewListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        projectService.getAllInterviews()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(interviewList -> {
-                    displayEmptyContentTextView(interviewList == null || interviewList.isEmpty());
-                    refreshInterviewRecyclerView(interviewList);
-                }, this::logError);
+        addCompositeSubscription(
+                projectService.getAllInterviews()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(interviewList -> {
+                            displayEmptyContentTextView(interviewList == null || interviewList.isEmpty());
+                            refreshInterviewRecyclerView(interviewList);
+                        }, this::logError)
+        );
     }
 
     private void displayEmptyContentTextView(boolean isEmpty) {

@@ -83,9 +83,12 @@ public class ProjectDetailActivity extends BaseActivity {
         super.onPostCreate(savedInstanceState);
 
         projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
-        projectService.getProject(projectId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::displayProject);
+
+        addToCompositeSubscription(
+                projectService.getProject(projectId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::displayProject)
+        );
     }
 
     private void displayProject(Project project) {
@@ -144,5 +147,4 @@ public class ProjectDetailActivity extends BaseActivity {
     void onBackButton(View view) {
         this.onBackPressed();
     }
-
 }
