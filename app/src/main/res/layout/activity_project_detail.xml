@@ -20,7 +20,7 @@
                 android:id="@+id/representation_image"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:foreground="@drawable/project_image_gradation"
+                android:foreground="@drawable/image_underline_background"
                 android:scaleType="centerCrop" />
 
             <ImageButton
