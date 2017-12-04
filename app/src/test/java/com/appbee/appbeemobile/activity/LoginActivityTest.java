@@ -86,7 +86,7 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate시_사용약관에링크가_나타는다() throws Exception {
+    public void onPostCreate시_사용약관에링크가_나타난다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
         assertThat(subject.tncAgreeTextView.getMovementMethod().getClass().getSimpleName()).isEqualTo(LinkMovementMethod.class.getSimpleName());
@@ -181,7 +181,21 @@ public class LoginActivityTest extends ActivityTest {
         verify(localStorageHelper).setAccessToken("testAccessToken");
         verify(localStorageHelper).setUserId("googletestGoogleId");
         verify(localStorageHelper).setBirthday(0);
-        verify(localStorageHelper).setGender("");
+        verify(localStorageHelper).setGender("unknown");
+    }
+
+    @Test
+    public void user정보저장이_성공했으나_생년월일_및_성별_정보조회에_실패한_경우_기본값을_sharedPreferences에_저장한다() throws Exception {
+        when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.error(new Throwable()));
+        when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
+        when(googleSignInAPIHelper.getProvider()).thenReturn("google");
+
+        subject.signInUser("testIdToken", "testGoogleId", "testEmail", null);
+
+        verify(localStorageHelper).setAccessToken("testAccessToken");
+        verify(localStorageHelper).setUserId("googletestGoogleId");
+        verify(localStorageHelper).setBirthday(0);
+        verify(localStorageHelper).setGender("unknown");
     }
 
     @Test
