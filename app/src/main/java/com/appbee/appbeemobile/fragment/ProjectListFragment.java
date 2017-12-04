@@ -77,12 +77,15 @@ public class ProjectListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        projectService.getAllProjects()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(projectList -> {
-                    displayEmptyContentTextView(projectList == null || projectList.isEmpty());
-                    refreshProjectRecyclerView(projectList);
-                }, this::logError);
+
+        addCompositeSubscription(
+                projectService.getAllProjects()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(projectList -> {
+                            displayEmptyContentTextView(projectList == null || projectList.isEmpty());
+                            refreshProjectRecyclerView(projectList);
+                        }, this::logError)
+        );
     }
 
     private void displayEmptyContentTextView(boolean isEmpty) {

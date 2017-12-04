@@ -22,38 +22,39 @@ public class LocalStorageHelper {
     private static final String KEY_LAST_UPDATE_STAT_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
     private static final String KEY_INVITATION_CODE = "INVITATION_CODE";
 
-    private SharedPreferences sf;
+    private SharedPreferences sharedPreferences;
 
     @Inject
     public LocalStorageHelper(Context context) {
-        this.sf = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        this.sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
 
     private String getString(String key, String defaultValue) {
-        return sf.getString(key, defaultValue);
+        return sharedPreferences.getString(key, defaultValue);
     }
 
     private int getInt(String key, int defaultValue) {
-        return sf.getInt(key, defaultValue);
+        return sharedPreferences.getInt(key, defaultValue);
     }
+
     private long getLong(String key, long defaultValue) {
-        return sf.getLong(key, defaultValue);
+        return sharedPreferences.getLong(key, defaultValue);
     }
 
     private void putString(String key, String value) {
-        SharedPreferences.Editor edit = sf.edit();
+        SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key, value);
         edit.apply();
     }
 
     private void putInt(String key, int value) {
-        SharedPreferences.Editor edit = sf.edit();
+        SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(key, value);
         edit.apply();
     }
 
     private void putLong(String key, long value) {
-        SharedPreferences.Editor edit = sf.edit();
+        SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putLong(key, value);
         edit.apply();
     }
@@ -72,7 +73,7 @@ public class LocalStorageHelper {
     }
 
     @NonNull
-    public String getUserId(){
+    public String getUserId() {
         return getString(KEY_USER_ID, EMPTY_STRING);
     }
 

@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,11 +12,19 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 public class BaseActivity extends AppCompatActivity {
     private Unbinder binder;
 
     final String TAG = BaseActivity.class.getSimpleName();
+
+    final CompositeSubscription compositeSubscription = new CompositeSubscription();
+
+    protected void addToCompositeSubscription(@NonNull final Subscription subscription) {
+        compositeSubscription.add(subscription);
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -31,9 +40,12 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        compositeSubscription.clear();
+
         if (binder != null) {
             binder.unbind();
         }
+
         super.onDestroy();
     }
 

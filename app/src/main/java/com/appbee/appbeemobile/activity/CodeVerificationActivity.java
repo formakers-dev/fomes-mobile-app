@@ -36,17 +36,19 @@ public class CodeVerificationActivity extends BaseActivity {
     public void onClickCodeVerificationButton() {
         String code = codeVerificationEdittext.getText().toString();
 
-        userService.verifyInvitationCode(code)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    localStorageHelper.setInvitationCode(code);
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                }, throwable -> {
-                    AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.invitation_code_dialog_title), getString(R.string.invitation_code_dialog_message), (dialog, which) -> dialog.dismiss());
-                    appBeeAlertDialog.show();
-                });
+        addToCompositeSubscription(
+                userService.verifyInvitationCode(code)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            localStorageHelper.setInvitationCode(code);
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }, throwable -> {
+                            AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.invitation_code_dialog_title), getString(R.string.invitation_code_dialog_message), (dialog, which) -> dialog.dismiss());
+                            appBeeAlertDialog.show();
+                        })
+        );
     }
 
     @Override

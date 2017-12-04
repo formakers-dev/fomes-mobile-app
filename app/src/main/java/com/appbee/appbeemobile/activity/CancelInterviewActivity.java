@@ -54,7 +54,7 @@ public class CancelInterviewActivity extends BaseActivity {
 
         ActionBar supportActionBar = getSupportActionBar();
 
-        if(supportActionBar != null) {
+        if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setHomeAsUpIndicator(R.drawable.back_button);
         }
@@ -93,23 +93,25 @@ public class CancelInterviewActivity extends BaseActivity {
     void onClickYes() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-        projectService.postCancelParticipate(projectId, seq, timeSlot)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    if (result) {
-                        DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
-                        AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_cancel_image, getString(R.string.dialog_cancel_title), getString(R.string.dialog_cancel_message), onClickListener);
-                        alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
-                        alertDialog.show();
-                    }
-                }, err -> {
-                    if (err instanceof HttpException) {
-                        Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
-                    }
-                });
+        addToCompositeSubscription(
+                projectService.postCancelParticipate(projectId, seq, timeSlot)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            if (result) {
+                                DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
+                                AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_cancel_image, getString(R.string.dialog_cancel_title), getString(R.string.dialog_cancel_message), onClickListener);
+                                alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
+                                alertDialog.show();
+                            }
+                        }, err -> {
+                            if (err instanceof HttpException) {
+                                Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
+                            }
+                        })
+        );
     }
 
     private void moveToMyInterviewActivity(DialogInterface dialog) {

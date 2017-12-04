@@ -1,7 +1,6 @@
 package com.appbee.appbeemobile.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -42,9 +41,6 @@ public class LoginActivity extends BaseActivity {
 
     @Inject
     GoogleSignInAPIHelper googleSignInAPIHelper;
-
-    @Inject
-    Context context;
 
     @Inject
     LocalStorageHelper localStorageHelper;
@@ -100,9 +96,11 @@ public class LoginActivity extends BaseActivity {
             GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
             GoogleSignInAccount account = result.getSignInAccount();
             if (resultCode == Activity.RESULT_OK && result.isSuccess() && account != null) {
-                googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
-                        .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
-                                e -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), null));
+                addToCompositeSubscription(
+                        googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
+                                .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
+                                        e -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), null))
+                );
             } else {
                 finishActivityForFail(R.string.fail_to_connect_google_play);
             }
@@ -110,29 +108,31 @@ public class LoginActivity extends BaseActivity {
     }
 
     void signInUser(final String googleIdToken, final String googleUserId, final String email, final Person person) {
-        userService.signIn(googleIdToken).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(token -> {
-                    Log.d(TAG, "signInUser success");
-                    localStorageHelper.setAccessToken(token);
-                    localStorageHelper.setUserId(googleSignInAPIHelper.getProvider() + googleUserId);
-                    localStorageHelper.setEmail(email);
+        addToCompositeSubscription(
+                userService.signIn(googleIdToken).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(token -> {
+                            Log.d(TAG, "signInUser success");
+                            localStorageHelper.setAccessToken(token);
+                            localStorageHelper.setUserId(googleSignInAPIHelper.getProvider() + googleUserId);
+                            localStorageHelper.setEmail(email);
 
-                    if (person != null) {
-                        localStorageHelper.setBirthday(person.getBirthdays() != null ? person.getBirthdays().get(0).getDate().getYear() : 0);
-                        localStorageHelper.setGender(person.getGenders() != null ? person.getGenders().get(0).getValue() : UNKNOWN_GENDER);
-                    } else {
-                        localStorageHelper.setBirthday(0);
-                        localStorageHelper.setGender(UNKNOWN_GENDER);
-                    }
+                            if (person != null) {
+                                localStorageHelper.setBirthday(person.getBirthdays() != null ? person.getBirthdays().get(0).getDate().getYear() : 0);
+                                localStorageHelper.setGender(person.getGenders() != null ? person.getGenders().get(0).getValue() : UNKNOWN_GENDER);
+                            } else {
+                                localStorageHelper.setBirthday(0);
+                                localStorageHelper.setGender(UNKNOWN_GENDER);
+                            }
 
-                    Intent intent = new Intent(getBaseContext(), OnboardingActivity.class);
-                    startActivity(intent);
-                    setResult(Activity.RESULT_OK);
-                    finish();
-                }, e -> {
-                    Log.d(TAG, "signInUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
-                    finishActivityForFail(R.string.fail_to_sign_in);
-                });
+                            Intent intent = new Intent(getBaseContext(), OnboardingActivity.class);
+                            startActivity(intent);
+                            setResult(Activity.RESULT_OK);
+                            finish();
+                        }, e -> {
+                            Log.d(TAG, "signInUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
+                            finishActivityForFail(R.string.fail_to_sign_in);
+                        })
+        );
     }
 
     void finishActivityForFail(@StringRes int failStringId) {

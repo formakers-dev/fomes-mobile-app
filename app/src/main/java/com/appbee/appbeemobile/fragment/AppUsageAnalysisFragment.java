@@ -81,23 +81,25 @@ public class AppUsageAnalysisFragment extends BaseFragment {
     }
 
     private void extractAnalysisDataAndBindTo(ViewGroup viewGroup, Observable<String> packageNameObservable) {
-        packageNameObservable
-                .limit(3)
-                .map(packageName -> nativeAppInfoHelper.getNativeAppInfo(packageName))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(nativeAppInfo -> {
-                    View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_app, null);
-                    ImageView iconImageView = ((ImageView) itemView.findViewById(R.id.app_imageview));
-                    iconImageView.setTag(R.string.tag_key_image_url, nativeAppInfo.getPackageName());
+        addCompositeSubscription(
+                packageNameObservable
+                        .limit(3)
+                        .map(packageName -> nativeAppInfoHelper.getNativeAppInfo(packageName))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(nativeAppInfo -> {
+                            View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_app, null);
+                            ImageView iconImageView = ((ImageView) itemView.findViewById(R.id.app_imageview));
+                            iconImageView.setTag(R.string.tag_key_image_url, nativeAppInfo.getPackageName());
 
-                    if (nativeAppInfo.getIcon() != null) {
-                        iconImageView.setImageDrawable(nativeAppInfo.getIcon());
-                    } else {
-                        iconImageView.setImageResource(R.mipmap.ic_launcher_app);
-                    }
+                            if (nativeAppInfo.getIcon() != null) {
+                                iconImageView.setImageDrawable(nativeAppInfo.getIcon());
+                            } else {
+                                iconImageView.setImageResource(R.mipmap.ic_launcher_app);
+                            }
 
-                    ((TextView) itemView.findViewById(R.id.app_name_textview)).setText(nativeAppInfo.getAppName());
-                    viewGroup.addView(itemView);
-                });
+                            ((TextView) itemView.findViewById(R.id.app_name_textview)).setText(nativeAppInfo.getAppName());
+                            viewGroup.addView(itemView);
+                        })
+        );
     }
 }
