@@ -13,6 +13,7 @@ import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class AppUsageDataHelper {
     }
 
     @NonNull
-    List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
+    public List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
         List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
 
@@ -75,6 +76,7 @@ public class AppUsageDataHelper {
 
         return shortTermStats;
     }
+
 
     public Observable<List<String>> getSortedUsedPackageNames() {
         return Observable.just(appRepositoryHelper.getAppUsages())
@@ -152,6 +154,44 @@ public class AppUsageDataHelper {
         }
 
         return dailyStatSummaryList;
+    }
+
+    public List<ShortTermStat> getWeeklyStatSummaryList() {
+        long endTimestamp = timeHelper.getCurrentTime();
+        long startTimestamp = endTimestamp - (7L * 24 * 60 * 60 * 1000);
+
+        List<ShortTermStat> shortTermStatList = new ArrayList<>();
+
+        summaryShortTermStat(endTimestamp, startTimestamp, shortTermStatList);
+        sortShortTermStat(shortTermStatList);
+
+        return shortTermStatList;
+    }
+
+    private void summaryShortTermStat(long endTimestamp, long startTimestamp, List<ShortTermStat> shortTermStatList) {
+        Map<String, Long> map = new HashMap<>();
+
+        for (ShortTermStat shortTermStat : getShortTermStats(startTimestamp, endTimestamp)) {
+            if (map.containsKey(shortTermStat.getPackageName())) {
+                map.put(shortTermStat.getPackageName(), map.get(shortTermStat.getPackageName()) + shortTermStat.getTotalUsedTime());
+            } else {
+                map.put(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime());
+            }
+        }
+
+        for (String key : map.keySet()) {
+            shortTermStatList.add(new ShortTermStat(key, 0L, 0L, map.get(key)));
+        }
+    }
+
+    private void sortShortTermStat(List<ShortTermStat> shortTermStatList) {
+        Collections.sort(shortTermStatList, (o1, o2) -> {
+            if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
+                return o1.getPackageName().compareTo(o2.getPackageName());
+            } else {
+                return (int) (o2.getTotalUsedTime() - o1.getTotalUsedTime());
+            }
+        });
     }
 
     private void mergeTotalUsedTimeByStatKey(Map<StatKey, Long> map, StatKey statKey, long totalUsedTime) {

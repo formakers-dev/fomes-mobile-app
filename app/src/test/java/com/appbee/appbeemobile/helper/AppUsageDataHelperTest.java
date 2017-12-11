@@ -299,6 +299,33 @@ public class AppUsageDataHelperTest {
         assertThat(result.get(3)).isEqualTo("package4");
     }
 
+    @Test
+    public void getWeeklyStatSummaryList호출시_app별_사용시간_합계를_구한다() throws Exception {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1512950400000L); // 2017-12-11
+        List<EventStat> mockEventStatList = new ArrayList<>();
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1250L));
+        mockEventStatList.add(new EventStat("packageB", MOVE_TO_FOREGROUND, 1100L));
+        mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1400L));
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1200L));
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1375L));
+        // B 300
+        // A 250
+        // C 175
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+
+        List<ShortTermStat> weeklyStatSummaryList = subject.getWeeklyStatSummaryList();
+
+        assertThat(weeklyStatSummaryList.size()).isEqualTo(3);
+        assertThat(weeklyStatSummaryList.get(0).getPackageName()).isEqualTo("packageB");
+        assertThat(weeklyStatSummaryList.get(0).getTotalUsedTime()).isEqualTo(300L);
+        assertThat(weeklyStatSummaryList.get(1).getPackageName()).isEqualTo("packageA");
+        assertThat(weeklyStatSummaryList.get(1).getTotalUsedTime()).isEqualTo(250L);
+        assertThat(weeklyStatSummaryList.get(2).getPackageName()).isEqualTo("packageC");
+        assertThat(weeklyStatSummaryList.get(2).getTotalUsedTime()).isEqualTo(175L);
+
+    }
+
     private void assertDailyStatSummary(DailyStatSummary dailyStatSummary, String packageName, int yyyymmdd, long totalUsedTime) {
         assertThat(dailyStatSummary.getPackageName()).isEqualTo(packageName);
         assertThat(dailyStatSummary.getYyyymmdd()).isEqualTo(yyyymmdd);

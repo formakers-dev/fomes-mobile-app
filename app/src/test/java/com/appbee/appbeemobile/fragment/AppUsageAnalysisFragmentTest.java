@@ -9,7 +9,9 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
+import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.ConfigService;
 
@@ -23,6 +25,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +33,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
@@ -56,6 +58,9 @@ public class AppUsageAnalysisFragmentTest {
     @Inject
     NativeAppInfoHelper mockNativeAppInfoHelper;
 
+    @Inject
+    TimeHelper mockTimeHelper;
+
     private AppUsageAnalysisFragment subject;
     private SupportFragmentController<AppUsageAnalysisFragment> controller;
     private Unbinder unbinder;
@@ -77,16 +82,21 @@ public class AppUsageAnalysisFragmentTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         MockitoAnnotations.initMocks(this);
 
-        List<String> appList = Arrays.asList("packageName1", "packageName2", "packageName3", "packageName4", "packageName5");
-        when(mockAppUsageDataHelper.getSortedUsedPackageNames()).thenReturn(Observable.just(appList));
+        List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
+        mockShortTermStatList.add(new ShortTermStat("packageName1", 0L, 0L, 5000L));     //2017-11-18 03:00:00
+        mockShortTermStatList.add(new ShortTermStat("packageName2", 0L, 0L, 4000L));     //2017-11-18 12:00:00
+        mockShortTermStatList.add(new ShortTermStat("packageName3", 0L, 0L, 3000L));     //2017-11-19 00:00:00
+        mockShortTermStatList.add(new ShortTermStat("packageName4", 0L, 0L, 2000L));     //2017-11-18 12:00:00
+        mockShortTermStatList.add(new ShortTermStat("packageName5", 0L, 0L, 1000L));     //2017-11-18 12:00:00
+
+        when(mockAppUsageDataHelper.getWeeklyStatSummaryList()).thenReturn(mockShortTermStatList);
+        when(mockConfigService.getExcludePackageNames()).thenReturn(Arrays.asList("packageName1", "packageName2"));
 
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName1")).thenReturn(new NativeAppInfo("packageName1", "appName1"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName2")).thenReturn(new NativeAppInfo("packageName2", "appName2"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName3")).thenReturn(new NativeAppInfo("packageName3", "appName3"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName4")).thenReturn(new NativeAppInfo("packageName4", "appName4"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName5")).thenReturn(new NativeAppInfo("packageName5", "appName5"));
-
-        when(mockConfigService.getExcludePackageNames()).thenReturn(Arrays.asList("packageName1", "packageName2"));
     }
 
     private void setupWithoutDescription() {
@@ -96,7 +106,6 @@ public class AppUsageAnalysisFragmentTest {
 
         controller.create().start().resume();
     }
-
 
     private void setupWithAnalysisDescription(@StringRes int analysisDescriptionResId) {
         Bundle bundle = new Bundle();
