@@ -34,7 +34,7 @@ public class CodeVerificationActivity extends BaseActivity {
 
     @OnClick(R.id.code_verification_button)
     public void onClickCodeVerificationButton() {
-        String code = codeVerificationEdittext.getText().toString();
+        String code = codeVerificationEdittext.getText().toString().trim();
 
         addToCompositeSubscription(
                 userService.verifyInvitationCode(code)

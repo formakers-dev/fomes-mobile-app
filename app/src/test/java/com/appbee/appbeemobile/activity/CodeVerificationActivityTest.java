@@ -80,6 +80,17 @@ public class CodeVerificationActivityTest extends ActivityTest {
         verify(mockUserService).verifyInvitationCode(eq("앱비코드123"));
     }
 
+
+    @Test
+    public void 앞뒤공백이포함된코드를입력하면_공백을trim한_코드로_코드확인API를_호출한다() throws Exception {
+        when(mockUserService.verifyInvitationCode(anyString())).thenReturn(Completable.complete());
+        subject.codeVerificationEdittext.setText(" _앱비코드_ ");
+
+        subject.codeVerificationButton.performClick();
+
+        verify(mockUserService).verifyInvitationCode(eq("_앱비코드_"));
+    }
+
     @Test
     public void 코드인증에_성공시_초대장코드를저장하고_로그인화면으로_이동한다() throws Exception {
         when(mockUserService.verifyInvitationCode(anyString())).thenReturn(Completable.complete());

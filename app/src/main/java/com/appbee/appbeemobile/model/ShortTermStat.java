@@ -2,14 +2,14 @@ package com.appbee.appbeemobile.model;
 
 public class ShortTermStat {
     private String packageName;
-    private long startTimeStamp;
-    private long endTimeStamp;
+    private long startTimestamp;
+    private long endTimestamp;
     private long totalUsedTime;
 
-    public ShortTermStat(String packageName, long startTimeStamp, long endTimeStamp, long totalUsedTime) {
+    public ShortTermStat(String packageName, long startTimestamp, long endTimeStamp, long totalUsedTime) {
         this.packageName = packageName;
-        this.startTimeStamp = startTimeStamp;
-        this.endTimeStamp = endTimeStamp;
+        this.startTimestamp = startTimestamp;
+        this.endTimestamp = endTimeStamp;
         this.totalUsedTime = totalUsedTime;
     }
 
@@ -21,20 +21,20 @@ public class ShortTermStat {
         this.packageName = packageName;
     }
 
-    public long getStartTimeStamp() {
-        return startTimeStamp;
+    public long getStartTimestamp() {
+        return startTimestamp;
     }
 
-    public void setStartTimeStamp(long startTimeStamp) {
-        this.startTimeStamp = startTimeStamp;
+    public void setStartTimestamp(long startTimestamp) {
+        this.startTimestamp = startTimestamp;
     }
 
-    public long getEndTimeStamp() {
-        return endTimeStamp;
+    public long getEndTimestamp() {
+        return endTimestamp;
     }
 
-    public void setEndTimeStamp(long endTimeStamp) {
-        this.endTimeStamp = endTimeStamp;
+    public void setEndTimestamp(long endTimestamp) {
+        this.endTimestamp = endTimestamp;
     }
 
     public long getTotalUsedTime() {

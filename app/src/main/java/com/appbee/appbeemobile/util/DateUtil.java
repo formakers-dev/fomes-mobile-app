@@ -42,8 +42,8 @@ public class DateUtil {
     }
 
 
-    public static String getDateFromTimestamp(long timeStamp) {
-        return INPUT_DATE_FORMAT.format(new Date(timeStamp));
+    public static String getDateFromTimestamp(long timestamp) {
+        return INPUT_DATE_FORMAT.format(new Date(timestamp));
     }
 
     public static long getTimestampFromDate(String date) {
