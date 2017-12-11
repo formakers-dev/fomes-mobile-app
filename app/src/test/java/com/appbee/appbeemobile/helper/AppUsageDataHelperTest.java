@@ -181,8 +181,8 @@ public class AppUsageDataHelperTest {
 
     private void assertConfirmDetailUsageStat(ShortTermStat shortTermStat, String packageName, long startTimeStamp, long endTimeStamp) {
         assertThat(shortTermStat.getPackageName()).isEqualTo(packageName);
-        assertThat(shortTermStat.getStartTimestamp()).isEqualTo(startTimeStamp);
-        assertThat(shortTermStat.getEndTimestamp()).isEqualTo(endTimeStamp);
+        assertThat(shortTermStat.getStartTimeStamp()).isEqualTo(startTimeStamp);
+        assertThat(shortTermStat.getEndTimeStamp()).isEqualTo(endTimeStamp);
         assertThat(shortTermStat.getTotalUsedTime()).isEqualTo(endTimeStamp - startTimeStamp);
     }
 
