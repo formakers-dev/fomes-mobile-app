@@ -29,10 +29,10 @@ public class DateUtilTest {
 
     @Test
     public void getDateFromTimestamp() throws Exception {
-        long timeStamp = 1511182800000L;        //2017-11-20 22:00:00
-        assertThat(DateUtil.getDateFromTimestamp(timeStamp)).isEqualTo("20171120");
-        timeStamp = 1511193600000L; // 2017-11-21 01:00:00
-        assertThat(DateUtil.getDateFromTimestamp(timeStamp)).isEqualTo("20171121");
+        long timestamp = 1511182800000L;        //2017-11-20 22:00:00
+        assertThat(DateUtil.getDateFromTimestamp(timestamp)).isEqualTo("20171120");
+        timestamp = 1511193600000L; // 2017-11-21 01:00:00
+        assertThat(DateUtil.getDateFromTimestamp(timestamp)).isEqualTo("20171121");
     }
 
     @Test

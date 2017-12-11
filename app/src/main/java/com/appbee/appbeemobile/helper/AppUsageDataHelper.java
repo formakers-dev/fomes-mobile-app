@@ -91,8 +91,8 @@ public class AppUsageDataHelper {
                 .toList();
     }
 
-    private ShortTermStat createShortTermStat(String packageName, long startTimeStamp, long endTimeStamp) {
-        return new ShortTermStat(packageName, startTimeStamp, endTimeStamp, endTimeStamp - startTimeStamp);
+    private ShortTermStat createShortTermStat(String packageName, long startTimestamp, long endTimestamp) {
+        return new ShortTermStat(packageName, startTimestamp, endTimestamp, endTimestamp - startTimestamp);
     }
 
     public void sendShortTermStatAndAppUsages(SendDataCallback callback) {
@@ -128,15 +128,15 @@ public class AppUsageDataHelper {
 
         for (ShortTermStat shortTermStat : shortTermStatList) {
             StatKey key;
-            if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 0) {
-                key = new StatKey(shortTermStat.getPackageName(), DateUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp()));
+            if (DateUtil.calDateDiff(shortTermStat.getStartTimestamp(), shortTermStat.getEndTimestamp()) == 0) {
+                key = new StatKey(shortTermStat.getPackageName(), DateUtil.getDateFromTimestamp(shortTermStat.getStartTimestamp()));
                 mergeTotalUsedTimeByStatKey(map, key, shortTermStat.getTotalUsedTime());
-            } else if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 1) {
-                String startDate = DateUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp());
-                String endDate = DateUtil.getDateFromTimestamp(shortTermStat.getEndTimeStamp());
+            } else if (DateUtil.calDateDiff(shortTermStat.getStartTimestamp(), shortTermStat.getEndTimestamp()) == 1) {
+                String startDate = DateUtil.getDateFromTimestamp(shortTermStat.getStartTimestamp());
+                String endDate = DateUtil.getDateFromTimestamp(shortTermStat.getEndTimestamp());
 
                 key = new StatKey(shortTermStat.getPackageName(), startDate);
-                long firstTotalUsedTime = DateUtil.getTimestampFromDate(endDate) - shortTermStat.getStartTimeStamp();
+                long firstTotalUsedTime = DateUtil.getTimestampFromDate(endDate) - shortTermStat.getStartTimestamp();
                 mergeTotalUsedTimeByStatKey(map, key, firstTotalUsedTime);
 
                 key = new StatKey(shortTermStat.getPackageName(), endDate);

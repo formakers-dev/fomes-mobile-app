@@ -1,5 +1,7 @@
 package com.appbee.appbeemobile.repository.helper;
 
+import android.util.Log;
+
 import com.appbee.appbeemobile.model.AppUsage;
 import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.repository.model.AppUsageRealmObject;
@@ -13,6 +15,7 @@ import javax.inject.Inject;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.exceptions.RealmException;
 
 public class AppRepositoryHelper {
 
@@ -39,6 +42,8 @@ public class AppRepositoryHelper {
                     }
                 }
             });
+        } catch(RealmException e) {
+            Log.d(AppRepositoryHelper.class.getSimpleName(), e.getMessage());
         }
     }
 

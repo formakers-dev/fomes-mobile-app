@@ -55,8 +55,8 @@ public class AppStatServiceTest {
         verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
         assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
-        assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
-        assertEquals(actualShortTermStat.getEndTimeStamp(), 3000L);
+        assertEquals(actualShortTermStat.getStartTimestamp(), 1000L);
+        assertEquals(actualShortTermStat.getEndTimestamp(), 3000L);
         assertEquals(actualShortTermStat.getTotalUsedTime(), 2000L);
     }
 
