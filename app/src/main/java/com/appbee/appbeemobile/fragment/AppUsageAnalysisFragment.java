@@ -12,17 +12,19 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
+import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.model.NativeAppInfo;
+import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.ConfigService;
+import com.google.api.client.util.Lists;
+import com.google.common.collect.Iterables;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class AppUsageAnalysisFragment extends BaseFragment {
     public static final String TAG = AppUsageAnalysisFragment.class.getSimpleName();
@@ -39,6 +41,10 @@ public class AppUsageAnalysisFragment extends BaseFragment {
 
     @Inject
     NativeAppInfoHelper nativeAppInfoHelper;
+
+    @Inject
+    TimeHelper timeHelper;
+
 
     @BindView(R.id.most_personality_app_layout)
     ViewGroup mostPersonalityAppViewGroup;
@@ -71,35 +77,31 @@ public class AppUsageAnalysisFragment extends BaseFragment {
 
         List<String> popularAppsList = configService.getExcludePackageNames();
 
-        Observable<String> sortedUsedPackageNameObservable = appUsageDataHelper.getSortedUsedPackageNames()
-                .observeOn(Schedulers.io())
-                .concatMapEager(Observable::from).cache();
+        List<ShortTermStat> shortTermStatList = appUsageDataHelper.getWeeklyStatSummaryList();
 
-        extractAnalysisDataAndBindTo(mostPersonalityAppViewGroup,
-                sortedUsedPackageNameObservable.filter(packageName -> !popularAppsList.contains(packageName)));
-        extractAnalysisDataAndBindTo(mostUsedAppViewGroup, sortedUsedPackageNameObservable);
+        List<ShortTermStat> personalityAppList = Lists.newArrayList(Iterables.filter(shortTermStatList, input -> input !=null && !popularAppsList.contains(input.getPackageName())));
+
+
+        extractAnalysisDataAndBindTo(mostPersonalityAppViewGroup, personalityAppList);
+        extractAnalysisDataAndBindTo(mostUsedAppViewGroup, shortTermStatList);
     }
 
-    private void extractAnalysisDataAndBindTo(ViewGroup viewGroup, Observable<String> packageNameObservable) {
-        addCompositeSubscription(
-                packageNameObservable
-                        .limit(3)
-                        .map(packageName -> nativeAppInfoHelper.getNativeAppInfo(packageName))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(nativeAppInfo -> {
-                            View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_app, null);
-                            ImageView iconImageView = ((ImageView) itemView.findViewById(R.id.app_imageview));
-                            iconImageView.setTag(R.string.tag_key_image_url, nativeAppInfo.getPackageName());
+    private void extractAnalysisDataAndBindTo(ViewGroup viewGroup, List<ShortTermStat> shortTermStatList) {
+        Iterables.limit(shortTermStatList, 3)
+                .forEach(shortTermStat -> {
+                    NativeAppInfo nativeAppInfo = nativeAppInfoHelper.getNativeAppInfo(shortTermStat.getPackageName());
 
-                            if (nativeAppInfo.getIcon() != null) {
-                                iconImageView.setImageDrawable(nativeAppInfo.getIcon());
-                            } else {
-                                iconImageView.setImageResource(R.mipmap.ic_launcher_app);
-                            }
+                    View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_app, null);
+                    ImageView iconImageView = ((ImageView) itemView.findViewById(R.id.app_imageview));
+                    iconImageView.setTag(R.string.tag_key_image_url, nativeAppInfo.getPackageName());
 
-                            ((TextView) itemView.findViewById(R.id.app_name_textview)).setText(nativeAppInfo.getAppName());
-                            viewGroup.addView(itemView);
-                        })
-        );
+                    if (nativeAppInfo.getIcon() != null) {
+                        iconImageView.setImageDrawable(nativeAppInfo.getIcon());
+                    } else {
+                        iconImageView.setImageResource(R.mipmap.ic_launcher_app);
+                    }
+                    ((TextView) itemView.findViewById(R.id.app_name_textview)).setText(nativeAppInfo.getAppName());
+                    viewGroup.addView(itemView);
+                });
     }
 }
