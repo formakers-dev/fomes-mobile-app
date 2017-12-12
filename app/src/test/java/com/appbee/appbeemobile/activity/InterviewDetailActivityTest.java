@@ -16,7 +16,6 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.DescriptionImageAdapter;
-import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
@@ -261,10 +260,10 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.detailPlansTitle.getText()).isEqualTo("[앱] 릴루미노 유저 인터뷰");
         assertThat(subject.detailPlansDescription.getText()).isEqualTo("3월 4일 (일) 우면사업장");
-        assertThat(subject.detailPlansRecyclerView.getAdapter().getItemCount()).isEqualTo(3);
-        assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(0)).isEqualTo("time8");
-        assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(1)).isEqualTo("time9");
-        assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(2)).isEqualTo("time10");
+        assertThat(subject.timeSlotRadioGroup.getChildCount()).isEqualTo(3);
+        assertThat(subject.timeSlotRadioGroup.getChildAt(0).getId()).isEqualTo(8);
+        assertThat(subject.timeSlotRadioGroup.getChildAt(1).getId()).isEqualTo(9);
+        assertThat(subject.timeSlotRadioGroup.getChildAt(2).getId()).isEqualTo(10);
 
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         assertThat(dialog).isNull();
@@ -280,10 +279,10 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.detailPlansTitle.getText()).isEqualTo("[앱] 릴루미노 유저 인터뷰");
         assertThat(subject.detailPlansDescription.getText()).isEqualTo("3월 4일 (일) 우면사업장");
-        assertThat(subject.detailPlansRecyclerView.getAdapter().getItemCount()).isEqualTo(3);
-        assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(0)).isEqualTo("time8");
-        assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(1)).isEqualTo("time9");
-        assertThat(((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).getItem(2)).isEqualTo("time10");
+        assertThat(subject.timeSlotRadioGroup.getChildCount()).isEqualTo(3);
+        assertThat(subject.timeSlotRadioGroup.getChildAt(0).getId()).isEqualTo(8);
+        assertThat(subject.timeSlotRadioGroup.getChildAt(1).getId()).isEqualTo(9);
+        assertThat(subject.timeSlotRadioGroup.getChildAt(2).getId()).isEqualTo(10);
 
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         assertThat(dialog).isNull();
@@ -294,7 +293,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         subject.submitButton.performClick();
 
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
 
         subject.submitButton.performClick();
 
@@ -347,8 +346,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
         subject.submitButton.performClick();
-
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
 
         subject.submitButton.performClick();
@@ -365,8 +363,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시후_팝업이닫히면_다가오는_인터뷰페이지로이동한다() throws Exception {
         subject.submitButton.performClick();
-
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
 
         subject.submitButton.performClick();
@@ -384,8 +381,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void 인터뷰_참여완료_팝업의_확인버튼을클릭시_팝업을_닫고_다가오는_유저인터뷰_페이지로_이동한다() throws Exception {
         subject.submitButton.performClick();
-
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
 
         subject.submitButton.performClick();
@@ -402,9 +398,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
         subject.submitButton.performClick();
-
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
-
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
         int errorCode = 406;
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
 
@@ -416,8 +410,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void 신청한슬롯의인터뷰가마감되어_인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
         subject.submitButton.performClick();
-
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
 
         int errorCode = 409;
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
@@ -434,8 +427,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     public void 신청한슬롯의인터뷰가마감되어_인터뷰참여실패팝업이_표시된경우_확인버튼을클릭했을때_인터뷰상세조회화면을_리프레시한다() throws Exception {
         subject.submitButton.performClick();
-
-        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
 
         int errorCode = 409;
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
