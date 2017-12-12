@@ -5,16 +5,18 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +24,6 @@ import android.widget.Toast;
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.DescriptionImageAdapter;
-import com.appbee.appbeemobile.adapter.DetailPlansAdapter;
 import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
 import com.appbee.appbeemobile.helper.ImageLoader;
@@ -34,6 +35,8 @@ import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.DateUtil;
 import com.appbee.appbeemobile.util.FormatUtil;
 import com.bumptech.glide.request.RequestOptions;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -113,9 +116,6 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.detail_plans_description)
     TextView detailPlansDescription;
 
-    @BindView(R.id.detail_plans_recycler_view)
-    RecyclerView detailPlansRecyclerView;
-
     @BindView(R.id.submit_arrow_button)
     Button submitArrowButton;
 
@@ -130,6 +130,9 @@ public class InterviewDetailActivity extends BaseActivity {
 
     @BindView(R.id.project_video_layout)
     FrameLayout projectVideoLayout;
+
+    @BindView(R.id.time_slot_radio_group)
+    RadioGroup timeSlotRadioGroup;
 
     private String projectId;
     private long seq;
@@ -231,15 +234,16 @@ public class InterviewDetailActivity extends BaseActivity {
         String dayOfDay = DateUtil.getDayOfWeek(project.getInterview().getInterviewDate());
         detailPlansDescription.setText(String.format(getString(R.string.interview_detail_plans_description_format), interviewDate, dayOfDay, project.getInterview().getLocation()));
 
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        detailPlansRecyclerView.setLayoutManager(horizontalLayoutManager);
+        for (String timeSlot : project.getInterview().getTimeSlots()) {
+            RadioButton radioButton = (RadioButton) LayoutInflater.from(this).inflate(R.layout.item_time_button, null);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.interview_time_slot_divider, null));
-        detailPlansRecyclerView.addItemDecoration(dividerItemDecoration);
+            int timeSlotId = Integer.parseInt(timeSlot.substring(4));
 
-        DetailPlansAdapter detailPlansAdapter = new DetailPlansAdapter(project.getInterview().getTimeSlots());
-        detailPlansRecyclerView.setAdapter(detailPlansAdapter);
+            radioButton.setId(timeSlotId);
+            radioButton.setText(String.format(Locale.KOREA, "%02d:00", timeSlotId));
+
+            timeSlotRadioGroup.addView(radioButton);
+        }
     }
 
     private void bindOwnerDetail(Project.Person owner) {
@@ -280,13 +284,15 @@ public class InterviewDetailActivity extends BaseActivity {
             return;
         }
 
-        String slotId = ((DetailPlansAdapter) detailPlansRecyclerView.getAdapter()).getSelectedTimeSlot();
-
-        if (slotId == null || slotId.isEmpty()) {
+        int radioButtonId = timeSlotRadioGroup.getCheckedRadioButtonId();
+        if (radioButtonId < 0) {
             AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, "시간을 선택해주세요.", "세부일정 선택은 필수입니다.", (dialog, which) -> dialog.dismiss());
             alertDialog.show();
             return;
         }
+
+        RadioButton radioButton = (RadioButton) timeSlotRadioGroup.findViewById(radioButtonId);
+        String slotId = "time" + radioButton.getId();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
