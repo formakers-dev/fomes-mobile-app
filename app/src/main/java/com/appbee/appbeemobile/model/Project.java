@@ -224,9 +224,8 @@ public class Project {
         private String selectedTimeSlot;
         private String emergencyPhone;
         private String type;
-        private int availableCount;
 
-        public Interview(long seq, List<AppInfo> apps, String introduce, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type, int availableCount) {
+        public Interview(long seq, List<AppInfo> apps, String introduce, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type) {
             this.seq = seq;
             this.apps = apps;
             this.introduce = introduce;
@@ -240,7 +239,6 @@ public class Project {
             this.selectedTimeSlot = selectedTimeSlot;
             this.emergencyPhone = emergencyPhone;
             this.type = type;
-            this.availableCount = availableCount;
         }
 
         public String getIntroduce() {
@@ -345,14 +343,6 @@ public class Project {
 
         public void setType(String type) {
             this.type = type;
-        }
-
-        public int getAvailableCount() {
-            return availableCount;
-        }
-
-        public void setAvailableCount(int availableCount) {
-            this.availableCount = availableCount;
         }
 
         @Override

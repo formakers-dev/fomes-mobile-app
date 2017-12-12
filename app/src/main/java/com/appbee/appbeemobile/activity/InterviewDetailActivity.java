@@ -165,7 +165,7 @@ public class InterviewDetailActivity extends BaseActivity {
         bindInterviewDetail(interview);
         bindOwnerDetail(project.getOwner());
         bindInterviewRequestLayout(project);
-        bindButtonLayout(project.getInterview().getSelectedTimeSlot(), project.getInterview().getAvailableCount());
+        bindButtonLayout(project.getInterview().getSelectedTimeSlot(), project.getInterview().getTimeSlots().size());
     }
 
     private void bindProjectVideo(String videoUrl) {
@@ -184,14 +184,14 @@ public class InterviewDetailActivity extends BaseActivity {
         }
     }
 
-    private void bindButtonLayout(String selectedTimeSlot, int availableCount) {
+    private void bindButtonLayout(String selectedTimeSlot, int timeSlotSize) {
         if (!TextUtils.isEmpty(selectedTimeSlot)) {
             submitArrowButton.setVisibility(View.GONE);
             submitButton.setText(R.string.registered_interview_submit_button);
             submitButton.setTextColor(resourceHelper.getColorValue(R.color.appbee_warm_gray));
             submitButton.setBackgroundColor(resourceHelper.getColorValue(R.color.appbee_dim_gray));
             submitButton.setClickable(false);
-        } else if (availableCount == 0) {
+        } else if (timeSlotSize == 0) {
             submitArrowButton.setVisibility(View.GONE);
             submitButton.setText(R.string.closed_interview_submit_button);
             submitButton.setTextColor(resourceHelper.getColorValue(R.color.appbee_warm_gray));
@@ -326,7 +326,7 @@ public class InterviewDetailActivity extends BaseActivity {
         scrollViewLayout.setForeground(new ColorDrawable(resourceHelper.getColorValue(R.color.appbee_dim_foreground)));
 
         detailPlansLayout.setOnClickListener(v -> {
-            return;
+            // do nothing
         });
 
         scrollView.setOnTouchListener((v, event) -> {
