@@ -123,7 +123,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         calendar.set(2018, MARCH, 3);
         Date closeDate = calendar.getTime();
 
-        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰", 5);
+        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
         mockProject = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", imageObjectList, owner, "registered");
         mockProject.setInterview(interview);
 
@@ -231,7 +231,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void onPostCreate시_신청이_마감된인터뷰가조회되면_신청이_마감된_인터뷰안내형태의_submit버튼이나타난다() throws Exception {
-        mockProject.getInterview().setAvailableCount(0);
+        mockProject.getInterview().setTimeSlots(new ArrayList<>());
 
         subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
 
