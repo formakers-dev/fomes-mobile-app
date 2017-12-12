@@ -66,7 +66,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void 최소앱버전코드확인API호출결과_최소앱버전보다_현재버전코드가_작은경우_업데이트_안내_팝업이_나타난다() throws Exception {
-        when(mockConfigService.getAppVersion()).thenReturn(2L);
+        when(mockConfigService.getAppVersion()).thenReturn(Long.MAX_VALUE);
 
         PermissionGuideActivity subject = activityController.create().get();
 
@@ -81,7 +81,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void 업데이트_안내_팝업의_확인버튼_선택시_마켓으로_이동후_앱을_종료한다() throws Exception {
-        when(mockConfigService.getAppVersion()).thenReturn(2L);
+        when(mockConfigService.getAppVersion()).thenReturn(Long.MAX_VALUE);
 
         PermissionGuideActivity subject = activityController.create().get();
 
@@ -95,7 +95,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void 업데이트_안내_팝업을_취소하면_앱을_종료한다() throws Exception {
-        when(mockConfigService.getAppVersion()).thenReturn(2L);
+        when(mockConfigService.getAppVersion()).thenReturn(Long.MAX_VALUE);
 
         PermissionGuideActivity subject = activityController.create().get();
 
