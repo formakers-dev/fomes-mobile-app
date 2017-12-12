@@ -310,20 +310,26 @@ public class InterviewDetailActivity extends BaseActivity {
                             }
                         }, err -> {
                             if (err instanceof HttpException) {
-                                int errCode = ((HttpException) err).code();
-                                if (errCode == AppBeeConstants.HTTP_CODE.HTTP_CODE_409_CONFILICT) {
-                                    DialogInterface.OnClickListener onClickListener = (dialog, which) -> refreshInterviewDetailActivity(dialog);
-                                    AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, getString(R.string.dialog_interview_register_fail_title), getString(R.string.dialog_interview_register_fail_409_message), onClickListener);
-                                    alertDialog.setOnCancelListener(this::refreshInterviewDetailActivity);
-                                    alertDialog.show();
-                                } else {
-                                    Toast.makeText(this, String.valueOf(errCode), Toast.LENGTH_LONG).show();
-                                }
+                                showPostParticipateHttpErrorMessage((HttpException) err);
                             } else {
                                 Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
                             }
                         })
         );
+    }
+
+    private void showPostParticipateHttpErrorMessage(HttpException err) {
+        switch (err.code()) {
+            case AppBeeConstants.HTTP_STATUS.CODE_409_CONFLICT:
+            case AppBeeConstants.HTTP_STATUS.CODE_412_PRECONDITION_FAILED:
+                DialogInterface.OnClickListener onClickListener = (dialog, which) -> refreshInterviewDetailActivity(dialog);
+                AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, getString(R.string.dialog_interview_register_fail_title), getString(R.string.dialog_interview_register_fail_message), onClickListener);
+                alertDialog.setOnCancelListener(this::refreshInterviewDetailActivity);
+                alertDialog.show();
+                break;
+            default:
+                Toast.makeText(this, R.string.participate_http_fail_message, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void showDetailPlanLayout() {

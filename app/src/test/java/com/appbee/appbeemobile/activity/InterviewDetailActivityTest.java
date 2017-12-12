@@ -404,15 +404,32 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         subject.submitButton.performClick();
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo(String.valueOf(errorCode));
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("인터뷰 신청에 실패하였습니다.");
     }
 
     @Test
-    public void 신청한슬롯의인터뷰가마감되어_인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+    public void 신청한슬롯을_이미다른사람이_신청하여_인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
         subject.submitButton.performClick();
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
 
         int errorCode = 409;
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+
+        subject.submitButton.performClick();
+
+        AlertDialog alertDialog = ShadowAlertDialog.getLatestAlertDialog();
+
+        assertThat(alertDialog).isNotNull();
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_title)).getText()).isEqualTo("인터뷰 신청 실패");
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_message)).getText()).isEqualTo("선택한 일정의 인터뷰 신청이 마감되었습니다.");
+    }
+
+    @Test
+    public void 이미마감되거나_신청기한이_아닌_인터뷰신청에_대해_인터뷰참여실패팝업을_표시한다() throws Exception {
+        subject.submitButton.performClick();
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
+
+        int errorCode = 412;
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
 
         subject.submitButton.performClick();
