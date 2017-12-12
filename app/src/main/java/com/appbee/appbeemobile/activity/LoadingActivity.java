@@ -56,19 +56,12 @@ public class LoadingActivity extends BaseActivity {
         addToCompositeSubscription(
                 userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()))
                         .observeOn(Schedulers.io())
-                        .subscribe(result -> {
-                                    if (result) {
-                                        sendStatData();
-                                    } else {
-                                        toastSendUserErrorMessage();
-                                    }
-                                },
-                                error -> toastSendUserErrorMessage())
+                        .subscribe(this::sendStatData, error -> toastSendUserErrorMessage())
         );
     }
 
     private void toastSendUserErrorMessage() {
-        runOnUiThread(() -> Toast.makeText(LoadingActivity.this, "사용자 정보 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> Toast.makeText(LoadingActivity.this, R.string.user_http_fail_message, Toast.LENGTH_SHORT).show());
     }
 
     private void sendStatData() {
@@ -83,7 +76,7 @@ public class LoadingActivity extends BaseActivity {
 
         @Override
         public void onFail() {
-            Toast.makeText(LoadingActivity.this, "데이터 전송에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoadingActivity.this, R.string.app_usage_data_http_fail_message, Toast.LENGTH_SHORT).show();
         }
     };
 

@@ -13,7 +13,7 @@ import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
 import com.appbee.appbeemobile.fragment.InterviewListFragment;
 import com.appbee.appbeemobile.fragment.ProjectListFragment;
 import com.appbee.appbeemobile.receiver.PowerConnectedReceiver;
-import com.appbee.appbeemobile.service.InstanceIDService;
+import com.appbee.appbeemobile.service.MessagingTokenService;
 
 import javax.inject.Singleton;
 
@@ -26,7 +26,6 @@ public interface ApplicationComponent {
     void inject(PowerConnectedReceiver powerConnectedReceiver);
     void inject(PermissionGuideActivity permissionGuideActivity);
     void inject(LoginActivity loginActivity);
-    void inject(InstanceIDService instanceIDService);
     void inject(MainActivity mainActivity);
     void inject(ProjectDetailActivity projectDetailActivity);
     void inject(InterviewDetailActivity interviewDetailActivity);
@@ -36,4 +35,5 @@ public interface ApplicationComponent {
     void inject(MyInterviewActivity myInterviewActivity);
     void inject(CodeVerificationActivity CodeVerificationActivity);
     void inject(CancelInterviewActivity cancelInterviewActivity);
+    void inject(MessagingTokenService messagingTokenService);
 }

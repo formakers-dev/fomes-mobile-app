@@ -14,7 +14,7 @@ public interface UserAPI {
     Observable<String> signInUser(@Header("x-id-token") String googleIdToken);
 
     @POST("/user")
-    Observable<Boolean> updateUser(@Header("x-access-token") String accessToken, @Body User user);
+    Observable<Void> updateUser(@Header("x-access-token") String accessToken, @Body User user);
 
     @GET("/user/verifyInvitationCode/{code}")
     Observable<Void> verifyInvitationCode(@Path("code") String code);

@@ -32,7 +32,7 @@
             </intent-filter>
         </service>
         <!-- 등록토큰의 생성, 순환 업데이트 처리 -->
-        <service android:name=".service.InstanceIDService">
+        <service android:name=".service.MessagingTokenService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

@@ -8,6 +8,7 @@ import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.ImageLoader;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.helper.MessagingHelper;
 import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.network.AppAPI;
@@ -162,6 +163,12 @@ public class TestApplicationModule {
     @Provides
     GoogleSignInAPIHelper googleSignInAPIHelper() {
         return mock(GoogleSignInAPIHelper.class);
+    }
+
+    @Singleton
+    @Provides
+    MessagingHelper messagingHelper() {
+        return mock(MessagingHelper.class);
     }
 
 }
