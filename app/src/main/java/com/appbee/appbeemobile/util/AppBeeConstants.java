@@ -10,4 +10,8 @@ public interface AppBeeConstants {
         String PROJECT_NAME = "EXTRA_PROJECT_NAME";
         String INTERVIEW_STATUS = "EXTRA_INTERVIEW_STATUS";
     }
+
+    interface HTTP_CODE {
+        int HTTP_CODE_409_CONFILICT = 409;
+    }
 }

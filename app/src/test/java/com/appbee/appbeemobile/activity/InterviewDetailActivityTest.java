@@ -25,6 +25,7 @@ import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.model.Project.Interview;
 import com.appbee.appbeemobile.model.Project.Person;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,8 +49,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
-import retrofit2.HttpException;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -122,7 +123,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         calendar.set(2018, MARCH, 3);
         Date closeDate = calendar.getTime();
 
-        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
+        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰", 5);
         mockProject = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", imageObjectList, owner, "registered");
         mockProject.setInterview(interview);
 
@@ -228,6 +229,18 @@ public class InterviewDetailActivityTest extends ActivityTest {
         assertThat(subject.submitButton.isClickable()).isFalse();
     }
 
+    @Test
+    public void onPostCreate시_신청이_마감된인터뷰가조회되면_신청이_마감된_인터뷰안내형태의_submit버튼이나타난다() throws Exception {
+        mockProject.getInterview().setAvailableCount(0);
+
+        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+
+        assertThat(subject.submitArrowButton.getVisibility()).isEqualTo(View.GONE);
+        assertThat(subject.submitButton.getText()).isEqualTo("신청이 마감된 인터뷰입니다.");
+        assertThat(subject.submitButton.getCurrentTextColor()).isEqualTo(WARM_GRAY_COLOR);
+        assertThat(((ColorDrawable) subject.submitButton.getBackground()).getColor()).isEqualTo(DIM_GRAY_COLOR);
+        assertThat(subject.submitButton.isClickable()).isFalse();
+    }
 
     @Test
     public void onPostCreate시_세부일정선택영역이_나타나지않는다() throws Exception {
@@ -398,6 +411,48 @@ public class InterviewDetailActivityTest extends ActivityTest {
         subject.submitButton.performClick();
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo(String.valueOf(errorCode));
+    }
+
+    @Test
+    public void 신청한슬롯의인터뷰가마감되어_인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+        subject.submitButton.performClick();
+
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+
+        int errorCode = 409;
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+
+        subject.submitButton.performClick();
+
+        AlertDialog alertDialog = ShadowAlertDialog.getLatestAlertDialog();
+
+        assertThat(alertDialog).isNotNull();
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_title)).getText()).isEqualTo("인터뷰 신청 실패");
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_message)).getText()).isEqualTo("선택한 일정의 인터뷰 신청이 마감되었습니다.");
+    }
+
+    @Test
+    public void 신청한슬롯의인터뷰가마감되어_인터뷰참여실패팝업이_표시된경우_확인버튼을클릭했을때_인터뷰상세조회화면을_리프레시한다() throws Exception {
+        subject.submitButton.performClick();
+
+        ((DetailPlansAdapter) subject.detailPlansRecyclerView.getAdapter()).setSelectedTimeSlot(0);
+
+        int errorCode = 409;
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+
+        subject.submitButton.performClick();
+
+        AlertDialog alertDialog = ShadowAlertDialog.getLatestAlertDialog();
+
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+        assertThat(shadowOf(alertDialog).hasBeenDismissed()).isTrue();
+        assertThat(subject.isFinishing()).isTrue();
+
+        Intent nextIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextIntent.getComponent().getClassName()).isEqualTo(InterviewDetailActivity.class.getName());
+        assertThat(nextIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("projectId");
+        assertThat(nextIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(1L);
     }
 
     @Test
