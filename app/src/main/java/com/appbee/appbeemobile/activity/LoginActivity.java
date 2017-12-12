@@ -129,7 +129,7 @@ public class LoginActivity extends BaseActivity {
                             setResult(Activity.RESULT_OK);
                             finish();
                         }, e -> {
-                            Log.d(TAG, "signInUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
+                            Log.e(TAG, "signInUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
                             finishActivityForFail(R.string.fail_to_sign_in);
                         })
         );

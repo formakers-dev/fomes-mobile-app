@@ -25,7 +25,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.Observable;
+import rx.Completable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -61,7 +61,7 @@ public class LoadingActivityTest extends ActivityTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         activityController = Robolectric.buildActivity(LoadingActivity.class);
 
-        when(mockUserService.sendUser(any(User.class))).thenReturn(Observable.just(true));
+        when(mockUserService.sendUser(any(User.class))).thenReturn(Completable.complete());
     }
 
     @After
@@ -110,7 +110,7 @@ public class LoadingActivityTest extends ActivityTest {
 
     @Test
     public void 유저정보전송_실패시_에러문구를_출력한다() throws Exception {
-        when(mockUserService.sendUser(any(User.class))).thenReturn(Observable.just(false));
+        when(mockUserService.sendUser(any(User.class))).thenReturn(Completable.error(new Exception()));
 
         createSubjectWithPostCreateLifecycle();
 

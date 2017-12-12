@@ -119,4 +119,8 @@
     <string name="dialog_interview_register_fail_title">인터뷰 신청 실패</string>
     <string name="dialog_interview_register_fail_409_message">선택한 일정의 인터뷰 신청이 마감되었습니다.</string>
 
+    <!-- Error Messages -->
+    <string name="app_usage_data_http_fail_message">데이터 전송에 실패하였습니다.</string>
+    <string name="user_http_fail_message">사용자 정보 저장에 실패하였습니다.</string>
+
 </resources>

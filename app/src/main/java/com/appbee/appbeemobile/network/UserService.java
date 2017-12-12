@@ -27,10 +27,11 @@ public class UserService extends AbstractAppBeeService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<Boolean> sendUser(User user) {
+    public Completable sendUser(User user) {
         return userAPI.updateUser(localStorageHelper.getAccessToken(), user)
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .toCompletable();
     }
 
     public Completable verifyInvitationCode(String code) {

@@ -16,6 +16,7 @@ import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragmentTest;
 import com.appbee.appbeemobile.fragment.InterviewListFragmentTest;
 import com.appbee.appbeemobile.fragment.ProjectListFragmentTest;
 import com.appbee.appbeemobile.receiver.PowerConnectedReceiverTest;
+import com.appbee.appbeemobile.service.MessagingTokenServiceTest;
 
 import javax.inject.Singleton;
 
@@ -40,4 +41,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(AppBeeAlertDialogTest appBeeAlertDialogTest);
     void inject(PowerConnectedReceiverTest powerConnectedReceiverTest);
     void inject(DescriptionImageAdapterTest descriptionImageAdapterTest);
+    void inject(MessagingTokenServiceTest instanceIDServiceTest);
 }

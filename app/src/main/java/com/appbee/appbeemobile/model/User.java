@@ -4,9 +4,13 @@ public class User {
     private String userId;
     private String name;
     private String email;
-    private int birthday;
+    private Integer birthday;
     private String gender;
     private String registrationToken;
+
+    public User(String registrationToken) {
+        this.registrationToken = registrationToken;
+    }
 
     public User(String userId, String email, int birthday, String gender, String registrationToken) {
         this.userId = userId;
