@@ -30,6 +30,7 @@ import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 import com.appbee.appbeemobile.util.DateUtil;
 import com.appbee.appbeemobile.util.FormatUtil;
 import com.bumptech.glide.request.RequestOptions;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import retrofit2.HttpException;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
@@ -164,7 +165,7 @@ public class InterviewDetailActivity extends BaseActivity {
         bindInterviewDetail(interview);
         bindOwnerDetail(project.getOwner());
         bindInterviewRequestLayout(project);
-        bindButtonLayout(!TextUtils.isEmpty(project.getInterview().getSelectedTimeSlot()));
+        bindButtonLayout(project.getInterview().getSelectedTimeSlot(), project.getInterview().getAvailableCount());
     }
 
     private void bindProjectVideo(String videoUrl) {
@@ -183,10 +184,16 @@ public class InterviewDetailActivity extends BaseActivity {
         }
     }
 
-    private void bindButtonLayout(boolean isRegisteredInterview) {
-        if (isRegisteredInterview) {
+    private void bindButtonLayout(String selectedTimeSlot, int availableCount) {
+        if (!TextUtils.isEmpty(selectedTimeSlot)) {
             submitArrowButton.setVisibility(View.GONE);
             submitButton.setText(R.string.registered_interview_submit_button);
+            submitButton.setTextColor(resourceHelper.getColorValue(R.color.appbee_warm_gray));
+            submitButton.setBackgroundColor(resourceHelper.getColorValue(R.color.appbee_dim_gray));
+            submitButton.setClickable(false);
+        } else if (availableCount == 0) {
+            submitArrowButton.setVisibility(View.GONE);
+            submitButton.setText(R.string.closed_interview_submit_button);
             submitButton.setTextColor(resourceHelper.getColorValue(R.color.appbee_warm_gray));
             submitButton.setBackgroundColor(resourceHelper.getColorValue(R.color.appbee_dim_gray));
             submitButton.setClickable(false);
@@ -297,7 +304,15 @@ public class InterviewDetailActivity extends BaseActivity {
                             }
                         }, err -> {
                             if (err instanceof HttpException) {
-                                Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
+                                int errCode = ((HttpException) err).code();
+                                if (errCode == AppBeeConstants.HTTP_CODE.HTTP_CODE_409_CONFILICT) {
+                                    DialogInterface.OnClickListener onClickListener = (dialog, which) -> refreshInterviewDetailActivity(dialog);
+                                    AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, getString(R.string.dialog_interview_register_fail_title), getString(R.string.dialog_interview_register_fail_409_message), onClickListener);
+                                    alertDialog.setOnCancelListener(this::refreshInterviewDetailActivity);
+                                    alertDialog.show();
+                                } else {
+                                    Toast.makeText(this, String.valueOf(errCode), Toast.LENGTH_LONG).show();
+                                }
                             } else {
                                 Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
                             }
@@ -330,6 +345,17 @@ public class InterviewDetailActivity extends BaseActivity {
     private void moveToMyInterviewActivity(DialogInterface dialog) {
         dialog.dismiss();
         Intent intent = new Intent(InterviewDetailActivity.this, MyInterviewActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void refreshInterviewDetailActivity(DialogInterface dialog) {
+        dialog.dismiss();
+        Intent intent = new Intent(InterviewDetailActivity.this, InterviewDetailActivity.class);
+
+        intent.putExtra(EXTRA.PROJECT_ID, projectId);
+        intent.putExtra(EXTRA.INTERVIEW_SEQ, seq);
+
         startActivity(intent);
         finish();
     }
