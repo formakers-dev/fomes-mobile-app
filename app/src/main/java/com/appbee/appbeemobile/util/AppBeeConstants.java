@@ -11,7 +11,8 @@ public interface AppBeeConstants {
         String INTERVIEW_STATUS = "EXTRA_INTERVIEW_STATUS";
     }
 
-    interface HTTP_CODE {
-        int HTTP_CODE_409_CONFILICT = 409;
+    interface HTTP_STATUS {
+        int CODE_409_CONFLICT = 409;
+        int CODE_412_PRECONDITION_FAILED = 412;
     }
 }
