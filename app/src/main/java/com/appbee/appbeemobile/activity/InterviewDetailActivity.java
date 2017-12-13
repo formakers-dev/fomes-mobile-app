@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -322,14 +323,21 @@ public class InterviewDetailActivity extends BaseActivity {
         switch (err.code()) {
             case AppBeeConstants.HTTP_STATUS.CODE_409_CONFLICT:
             case AppBeeConstants.HTTP_STATUS.CODE_412_PRECONDITION_FAILED:
-                DialogInterface.OnClickListener onClickListener = (dialog, which) -> refreshInterviewDetailActivity(dialog);
-                AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, getString(R.string.dialog_interview_register_fail_title), getString(R.string.dialog_interview_register_fail_message), onClickListener);
-                alertDialog.setOnCancelListener(this::refreshInterviewDetailActivity);
-                alertDialog.show();
+                showHttpErrorAlertDialog(R.string.dialog_interview_register_fail_message);
+                break;
+            case AppBeeConstants.HTTP_STATUS.CODE_405_METHOD_NOT_ALLOWED:
+                showHttpErrorAlertDialog(R.string.dialog_interview_already_registered_fail_message);
                 break;
             default:
                 Toast.makeText(this, R.string.participate_http_fail_message, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void showHttpErrorAlertDialog(@StringRes int messageResId) {
+        DialogInterface.OnClickListener onClickListener = (dialog, which) -> refreshInterviewDetailActivity(dialog);
+        AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, getString(R.string.dialog_interview_register_fail_title), getString(messageResId), onClickListener);
+        alertDialog.setOnCancelListener(this::refreshInterviewDetailActivity);
+        alertDialog.show();
     }
 
     private void showDetailPlanLayout() {
