@@ -24,7 +24,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowToast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -141,15 +140,67 @@ public class CancelInterviewActivityTest extends ActivityTest {
     }
 
     @Test
-    public void 인터뷰취소요청이_실패하면_오류메시지를_토스트로_보여준다() throws Exception {
-        int errorCode = 406;
-        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+    public void 인터뷰취소신청시_취소기한이_지난경우_팝업메시지를_표시한다() throws Exception {
+        setupCancelHttpError(412);
 
+        subject.findViewById(R.id.cancel_yes).performClick();
+
+        assertAlertDialogAndFinishActivity("인터뷰 취소 실패", "취소 기한이 지난 인터뷰입니다.");
+    }
+
+    @Test
+    public void 인터뷰취소요청이_존재하지않는_시간대취소요청으로_실패하면_팝업메시지를_표시한다() throws Exception {
+        setupCancelHttpError(416);
+
+        subject.findViewById(R.id.cancel_yes).performClick();
+
+        assertAlertDialogAndFinishActivity("인터뷰 취소 실패", "인터뷰 취소에 실패하였습니다.");
+    }
+
+    @Test
+    public void 인터뷰취소신청시_다른사람신청건에_대한_취소요청인_경우_팝업메시지를_표시한다() throws Exception {
+        setupCancelHttpError(406);
+
+        subject.findViewById(R.id.cancel_yes).performClick();
+
+        assertAlertDialogAndFinishActivity("인터뷰 취소 실패", "인터뷰 취소에 실패하였습니다.");
+    }
+
+    @Test
+    public void 인터뷰취소요청이_알수없는오류로_실패한경우_팝업메시지를_표시한다() throws Exception {
+        setupCancelHttpError(500);
+
+        subject.findViewById(R.id.cancel_yes).performClick();
+
+        assertAlertDialogAndFinishActivity("인터뷰 취소 실패", "인터뷰 취소에 실패하였습니다.");
+    }
+
+    @Test
+    public void 인터뷰취소요청이_HTTP오류가_아닌_이유로_실패한경우_팝업메시지를_표시한다() throws Exception {
+        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new Exception("Unknown Error")));
         subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
 
         subject.findViewById(R.id.cancel_yes).performClick();
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo(String.valueOf(errorCode));
+        assertAlertDialogAndFinishActivity("인터뷰 취소 실패", "인터뷰 취소에 실패하였습니다.");
+    }
+
+    private void assertAlertDialogAndFinishActivity(String title, String message) {
+        AlertDialog alertDialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(alertDialog).isNotNull();
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_title)).getText()).isEqualTo(title);
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_message)).getText()).isEqualTo(message);
+
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+
+        assertThat(shadowOf(alertDialog).hasBeenDismissed()).isTrue();
+        assertThat(shadowOf(subject).getResultCode()).isEqualTo(Activity.RESULT_OK);
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    private void setupCancelHttpError(int errorCode) {
+        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+        subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
     }
 
     @Test

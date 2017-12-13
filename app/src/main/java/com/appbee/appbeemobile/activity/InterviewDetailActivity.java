@@ -295,7 +295,7 @@ public class InterviewDetailActivity extends BaseActivity {
         RadioButton radioButton = (RadioButton) timeSlotRadioGroup.findViewById(radioButtonId);
         String slotId = "time" + radioButton.getId();
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         addToCompositeSubscription(
                 projectService.postParticipate(projectId, seq, slotId)
@@ -310,6 +310,8 @@ public class InterviewDetailActivity extends BaseActivity {
                                 alertDialog.show();
                             }
                         }, err -> {
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                             if (err instanceof HttpException) {
                                 showPostParticipateHttpErrorMessage((HttpException) err);
                             } else {
