@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -91,27 +91,41 @@ public class CancelInterviewActivity extends BaseActivity {
 
     @OnClick(R.id.cancel_yes)
     void onClickYes() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         addToCompositeSubscription(
                 projectService.postCancelParticipate(projectId, seq, timeSlot)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(result -> {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                             if (result) {
-                                DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
-                                AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_cancel_image, getString(R.string.dialog_cancel_title), getString(R.string.dialog_cancel_message), onClickListener);
-                                alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
-                                alertDialog.show();
+                                showSuccessAlertDialog();
                             }
                         }, err -> {
-                            if (err instanceof HttpException) {
-                                Toast.makeText(this, String.valueOf(((HttpException) err).code()), Toast.LENGTH_LONG).show();
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                            if (err instanceof HttpException && ((HttpException) err).code() == 412) {
+                                showErrorAlertDialog(R.string.dialog_interview_cancel_fail_message);
                             } else {
-                                Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
+                                showErrorAlertDialog(R.string.participate_cancel_http_fail_message);
                             }
                         })
         );
+    }
+
+    private void showSuccessAlertDialog() {
+        DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
+        final AppBeeAlertDialog dialog = new AppBeeAlertDialog(this, R.drawable.dialog_cancel_image, getString(R.string.dialog_cancel_title), getString(R.string.dialog_cancel_message), onClickListener);
+        dialog.setOnCancelListener(this::moveToMyInterviewActivity);
+        dialog.show();
+    }
+
+    private void showErrorAlertDialog(@StringRes int messageResId) {
+        DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
+        AppBeeAlertDialog dialog = new AppBeeAlertDialog(this, getString(R.string.dialog_interview_cancel_fail_title), getString(messageResId), onClickListener);
+        dialog.setOnCancelListener(this::moveToMyInterviewActivity);
+        dialog.show();
     }
 
     private void moveToMyInterviewActivity(DialogInterface dialog) {
