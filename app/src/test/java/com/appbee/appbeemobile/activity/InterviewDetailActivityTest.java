@@ -345,9 +345,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
-        subject.submitButton.performClick();
-        subject.timeSlotRadioGroup.getChildAt(0).performClick();
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        setupForPreparationOfParticipation();
 
         subject.submitButton.performClick();
 
@@ -362,9 +360,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시후_팝업이닫히면_다가오는_인터뷰페이지로이동한다() throws Exception {
-        subject.submitButton.performClick();
-        subject.timeSlotRadioGroup.getChildAt(0).performClick();
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        setupForPreparationOfParticipation();
 
         subject.submitButton.performClick();
 
@@ -373,16 +369,12 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         dialog.cancel();
 
-        assertThat(shadowOf(dialog).hasBeenDismissed()).isTrue();
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MyInterviewActivity.class.getName());
-        assertThat(subject.isFinishing()).isTrue();
+        assertMoveToMyInterviewActivity(dialog);
     }
 
     @Test
     public void 인터뷰_참여완료_팝업의_확인버튼을클릭시_팝업을_닫고_다가오는_유저인터뷰_페이지로_이동한다() throws Exception {
-        subject.submitButton.performClick();
-        subject.timeSlotRadioGroup.getChildAt(0).performClick();
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        setupForPreparationOfParticipation();
 
         subject.submitButton.performClick();
 
@@ -390,17 +382,33 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
+        assertMoveToMyInterviewActivity(dialog);
+    }
+
+    private void setupForPreparationOfParticipation() {
+        subject.submitButton.performClick();
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+    }
+
+    private void assertMoveToMyInterviewActivity(AlertDialog dialog) {
         assertThat(shadowOf(dialog).hasBeenDismissed()).isTrue();
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MyInterviewActivity.class.getName());
         assertThat(subject.isFinishing()).isTrue();
     }
 
     @Test
-    public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+    public void 이미_신청한인터뷰인_경우_인터뷰참여실패팝업을_표시한다() throws Exception {
+        setupParticipateError(405);
+
         subject.submitButton.performClick();
-        subject.timeSlotRadioGroup.getChildAt(0).performClick();
-        int errorCode = 406;
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+
+        assertAlertDialog("인터뷰 신청 실패", "이미 신청한 인터뷰입니다.");
+    }
+
+    @Test
+    public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+        setupParticipateError(406);
 
         subject.submitButton.performClick();
 
@@ -409,45 +417,38 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 신청한슬롯을_이미다른사람이_신청하여_인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
-        subject.submitButton.performClick();
-        subject.timeSlotRadioGroup.getChildAt(0).performClick();
-
-        int errorCode = 409;
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+        setupParticipateError(409);
 
         subject.submitButton.performClick();
 
-        AlertDialog alertDialog = ShadowAlertDialog.getLatestAlertDialog();
-
-        assertThat(alertDialog).isNotNull();
-        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_title)).getText()).isEqualTo("인터뷰 신청 실패");
-        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_message)).getText()).isEqualTo("선택한 일정의 인터뷰 신청이 마감되었습니다.");
+        assertAlertDialog("인터뷰 신청 실패", "선택한 일정의 인터뷰 신청이 마감되었습니다.");
     }
 
     @Test
     public void 이미마감되거나_신청기한이_아닌_인터뷰신청에_대해_인터뷰참여실패팝업을_표시한다() throws Exception {
+        setupParticipateError(412);
+
+        subject.submitButton.performClick();
+
+        assertAlertDialog("인터뷰 신청 실패", "선택한 일정의 인터뷰 신청이 마감되었습니다.");
+    }
+
+    private void assertAlertDialog(String exprectedTitle, String expectedMessage) {
+        AlertDialog alertDialog = ShadowAlertDialog.getLatestAlertDialog();
+        assertThat(alertDialog).isNotNull();
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_title)).getText()).isEqualTo(exprectedTitle);
+        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_message)).getText()).isEqualTo(expectedMessage);
+    }
+
+    private void setupParticipateError(int httpErrorCode) {
         subject.submitButton.performClick();
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
-
-        int errorCode = 412;
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
-
-        subject.submitButton.performClick();
-
-        AlertDialog alertDialog = ShadowAlertDialog.getLatestAlertDialog();
-
-        assertThat(alertDialog).isNotNull();
-        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_title)).getText()).isEqualTo("인터뷰 신청 실패");
-        assertThat(((TextView) shadowOf(alertDialog).getView().findViewById(R.id.dialog_message)).getText()).isEqualTo("선택한 일정의 인터뷰 신청이 마감되었습니다.");
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(httpErrorCode, ResponseBody.create(null, "")))));
     }
 
     @Test
     public void 신청한슬롯의인터뷰가마감되어_인터뷰참여실패팝업이_표시된경우_확인버튼을클릭했을때_인터뷰상세조회화면을_리프레시한다() throws Exception {
-        subject.submitButton.performClick();
-        subject.timeSlotRadioGroup.getChildAt(0).performClick();
-
-        int errorCode = 409;
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+        setupParticipateError(409);
 
         subject.submitButton.performClick();
 

@@ -118,6 +118,7 @@
     <string name="my_interview_cancel_warning">* 인터뷰를 취소하려면 눌러주세요 (취소 패널티 주의)</string>
     <string name="dialog_interview_register_fail_title">인터뷰 신청 실패</string>
     <string name="dialog_interview_register_fail_message">선택한 일정의 인터뷰 신청이 마감되었습니다.</string>
+    <string name="dialog_interview_already_registered_fail_message">이미 신청한 인터뷰입니다.</string>
 
     <!-- Error Messages -->
     <string name="app_usage_data_http_fail_message">데이터 전송에 실패하였습니다.</string>
