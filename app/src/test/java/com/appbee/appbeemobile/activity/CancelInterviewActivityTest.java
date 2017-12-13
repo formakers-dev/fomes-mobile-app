@@ -175,6 +175,7 @@ public class CancelInterviewActivityTest extends ActivityTest {
         assertAlertDialogAndFinishActivity("인터뷰 취소 실패", "인터뷰 취소에 실패하였습니다.");
     }
 
+
     @Test
     public void 인터뷰취소요청이_HTTP오류가_아닌_이유로_실패한경우_팝업메시지를_표시한다() throws Exception {
         when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new Exception("Unknown Error")));

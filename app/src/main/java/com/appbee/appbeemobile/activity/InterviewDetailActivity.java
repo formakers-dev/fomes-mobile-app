@@ -20,7 +20,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
@@ -304,10 +303,7 @@ public class InterviewDetailActivity extends BaseActivity {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                             if (result) {
-                                DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
-                                AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), onClickListener);
-                                alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
-                                alertDialog.show();
+                                showSuccessAlertDialog();
                             }
                         }, err -> {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -315,7 +311,7 @@ public class InterviewDetailActivity extends BaseActivity {
                             if (err instanceof HttpException) {
                                 showPostParticipateHttpErrorMessage((HttpException) err);
                             } else {
-                                Toast.makeText(this, String.valueOf(err.getCause()), Toast.LENGTH_LONG).show();
+                                showErrorAlertDialog(R.string.participate_http_fail_message);
                             }
                         })
         );
@@ -325,17 +321,24 @@ public class InterviewDetailActivity extends BaseActivity {
         switch (err.code()) {
             case AppBeeConstants.HTTP_STATUS.CODE_409_CONFLICT:
             case AppBeeConstants.HTTP_STATUS.CODE_412_PRECONDITION_FAILED:
-                showHttpErrorAlertDialog(R.string.dialog_interview_register_fail_message);
+                showErrorAlertDialog(R.string.dialog_interview_register_fail_message);
                 break;
             case AppBeeConstants.HTTP_STATUS.CODE_405_METHOD_NOT_ALLOWED:
-                showHttpErrorAlertDialog(R.string.dialog_interview_already_registered_fail_message);
+                showErrorAlertDialog(R.string.dialog_interview_already_registered_fail_message);
                 break;
             default:
-                Toast.makeText(this, R.string.participate_http_fail_message, Toast.LENGTH_LONG).show();
+                showErrorAlertDialog(R.string.participate_http_fail_message);
         }
     }
 
-    private void showHttpErrorAlertDialog(@StringRes int messageResId) {
+    private void showSuccessAlertDialog() {
+        DialogInterface.OnClickListener onClickListener = (dialog, which) -> moveToMyInterviewActivity(dialog);
+        AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, R.drawable.dialog_success_image, getString(R.string.dialog_registered_interview_success_title), getString(R.string.dialog_registered_interview_success_message), onClickListener);
+        alertDialog.setOnCancelListener(this::moveToMyInterviewActivity);
+        alertDialog.show();
+    }
+
+    private void showErrorAlertDialog(@StringRes int messageResId) {
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> refreshInterviewDetailActivity(dialog);
         AppBeeAlertDialog alertDialog = new AppBeeAlertDialog(this, getString(R.string.dialog_interview_register_fail_title), getString(messageResId), onClickListener);
         alertDialog.setOnCancelListener(this::refreshInterviewDetailActivity);

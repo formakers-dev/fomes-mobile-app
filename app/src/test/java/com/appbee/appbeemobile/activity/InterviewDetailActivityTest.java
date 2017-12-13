@@ -36,7 +36,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -412,7 +411,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         subject.submitButton.performClick();
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("인터뷰 신청에 실패하였습니다.");
+        assertAlertDialog("인터뷰 신청 실패", "인터뷰 신청에 실패하였습니다.");
     }
 
     @Test
@@ -431,6 +430,17 @@ public class InterviewDetailActivityTest extends ActivityTest {
         subject.submitButton.performClick();
 
         assertAlertDialog("인터뷰 신청 실패", "선택한 일정의 인터뷰 신청이 마감되었습니다.");
+    }
+
+    @Test
+    public void HTTP오류가_아닌이유로_인터뷰신청에_실패한경우_인터뷰신청실패팝업을_표시한다() throws Exception {
+        subject.submitButton.performClick();
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new Exception("Unknown")));
+
+        subject.submitButton.performClick();
+
+        assertAlertDialog("인터뷰 신청 실패", "인터뷰 신청에 실패하였습니다.");
     }
 
     private void assertAlertDialog(String exprectedTitle, String expectedMessage) {
