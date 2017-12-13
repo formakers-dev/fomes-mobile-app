@@ -52,7 +52,6 @@ public class LoadingActivity extends BaseActivity {
 
         imageLoader.loadGifImage(loadingImageView, R.drawable.loading_bowl);
 
-        // TODO : Completable 로 변경 후 error처리 로직 변경
         addToCompositeSubscription(
                 userService.sendUser(new User(localStorageHelper.getUserId(), localStorageHelper.getEmail(), localStorageHelper.getBirthday(), localStorageHelper.getGender(), localStorageHelper.getRegistrationToken()))
                         .observeOn(Schedulers.io())
