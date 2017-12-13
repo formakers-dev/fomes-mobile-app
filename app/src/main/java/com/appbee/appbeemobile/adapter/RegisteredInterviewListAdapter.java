@@ -103,7 +103,7 @@ public class RegisteredInterviewListAdapter extends RecyclerView.Adapter<Registe
 
     private void bindLocationAndEmergencyPhone(RegisteredInterviewItemViewHolder holder, Project project) {
         holder.interviewLocation.setText(String.format(context.getString(R.string.registered_interview_location), project.getInterview().getLocation(), project.getInterview().getLocationDescription()));
-        holder.emergencyPhone.setText(String.format(context.getString(R.string.registered_interview_emergency_phone), project.getInterview().getEmergencyPhone()));
+        holder.emergencyPhone.setText(project.getInterview().getEmergencyPhone());
     }
 
     private void bindButtonListener(RegisteredInterviewItemViewHolder holder, Project project, String interviewStatus) {

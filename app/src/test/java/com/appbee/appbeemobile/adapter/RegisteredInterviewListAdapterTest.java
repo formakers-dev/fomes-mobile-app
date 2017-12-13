@@ -100,7 +100,7 @@ public class RegisteredInterviewListAdapterTest {
         assertThat(holder.interviewCloseDateTextView.getText()).isEqualTo("17.12.31 (일)");
         assertThat(holder.interviewDateTextView.getText()).isEqualTo("18.1.12 (금)");
         assertThat(holder.interviewLocation.getText()).isEqualTo("* 인터뷰 위치 : 우면사업장 C동 1층 107호 회의실");
-        assertThat(holder.emergencyPhone.getText()).isEqualTo("* 비상연락처 : 010-1234-5678");
+        assertThat(holder.emergencyPhone.getText()).isEqualTo("010-1234-5678");
     }
 
     @Test
