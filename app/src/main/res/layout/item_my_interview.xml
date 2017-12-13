@@ -77,13 +77,21 @@
         tools:text="* 인터뷰 위치 : 우면사업장 C동 1층 107호 회의실\n" />
 
     <TextView
-        android:id="@+id/emergency_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:textColor="@color/appbee_warm_gray"
         android:textSize="12dp"
-        tools:text="* 비상연락처 : 010-1234-5678" />
+        android:text="@string/registered_interview_emergency_phone_title" />
+    <TextView
+        android:id="@+id/emergency_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp"
+        tools:text="010-1234-5678" />
 
     <Button
         android:id="@+id/show_interview_button"
