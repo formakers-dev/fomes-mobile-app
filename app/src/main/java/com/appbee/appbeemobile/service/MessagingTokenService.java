@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.service;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -37,6 +38,14 @@ public class MessagingTokenService extends FirebaseInstanceIdService {
         String refreshedToken = messagingHelper.getMessagingToken();
 
         if (!localStorageHelper.getRegistrationToken().equals(refreshedToken)) {
+
+            // 로그인 여부 처리
+            if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
+                Log.e(TAG, "Not Signed User");
+                localStorageHelper.setRegistrationToken(refreshedToken);
+                return;
+            }
+
             User user = new User(refreshedToken);
             userService.sendUser(user)
                     .observeOn(AndroidSchedulers.mainThread())
