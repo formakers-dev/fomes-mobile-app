@@ -18,8 +18,6 @@ public class LocalStorageHelper {
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String KEY_EMAIL = "EMAIL";
-    private static final String KEY_GENDER = "GENDER";
-    private static final String KEY_BIRTHDAY = "BIRTHDAY";
     private static final String KEY_LAST_UPDATE_STAT_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
     private static final String KEY_INVITATION_CODE = "INVITATION_CODE";
 
@@ -34,10 +32,6 @@ public class LocalStorageHelper {
         return sharedPreferences.getString(key, defaultValue);
     }
 
-    private int getInt(String key, int defaultValue) {
-        return sharedPreferences.getInt(key, defaultValue);
-    }
-
     private long getLong(String key, long defaultValue) {
         return sharedPreferences.getLong(key, defaultValue);
     }
@@ -45,12 +39,6 @@ public class LocalStorageHelper {
     private void putString(String key, String value) {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key, value);
-        edit.apply();
-    }
-
-    private void putInt(String key, int value) {
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt(key, value);
         edit.apply();
     }
 
@@ -94,23 +82,6 @@ public class LocalStorageHelper {
 
     public void setEmail(String email) {
         putString(KEY_EMAIL, email);
-    }
-
-    public void setGender(String gender) {
-        putString(KEY_GENDER, gender);
-    }
-
-    @NonNull
-    public String getGender() {
-        return getString(KEY_GENDER, EMPTY_STRING);
-    }
-
-    public int getBirthday() {
-        return getInt(KEY_BIRTHDAY, 0);
-    }
-
-    public void setBirthday(int birthday) {
-        putInt(KEY_BIRTHDAY, birthday);
     }
 
     public long getLastUpdateStatTimestamp() {

@@ -8,15 +8,12 @@ public class User {
     private String gender;
     private String registrationToken;
 
-    public User(String registrationToken) {
-        this.registrationToken = registrationToken;
-    }
-
-    public User(String userId, String email, int birthday, String gender, String registrationToken) {
+    public User(String userId, String email) {
         this.userId = userId;
         this.email = email;
-        this.birthday = birthday;
-        this.gender = gender;
+    }
+
+    public User(String registrationToken) {
         this.registrationToken = registrationToken;
     }
 

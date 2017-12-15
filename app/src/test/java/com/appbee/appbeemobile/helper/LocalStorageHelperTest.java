@@ -83,28 +83,6 @@ public class LocalStorageHelperTest {
     }
 
     @Test
-    public void setBirthday호출시_SharedPreference에_생년월일을_저장한다() throws Exception {
-        subject.setBirthday(20000101);
-        assertThat(sf.getInt("BIRTHDAY", 0)).isEqualTo(20000101);
-    }
-
-    @Test
-    public void getBirthday호출시_SharedPreference에_저장된_생년월일을_리턴한다() throws Exception {
-        assertThat(subject.getBirthday()).isEqualTo(19991231);
-    }
-
-    @Test
-    public void setGender호출시_SharedPreference에_성별을_저장한다() throws Exception {
-        subject.setGender("male");
-        assertThat(sf.getString("GENDER", "")).isEqualTo("male");
-    }
-
-    @Test
-    public void getGender호출시_SharedPreference에_저장된_성별을_리턴한다() throws Exception {
-        assertThat(subject.getGender()).isEqualTo("female");
-    }
-
-    @Test
     public void setLastUpdateStatTimestamp호출시_SharedPreference에_생년월일을_저장한다() throws Exception {
         subject.setLastUpdateStatTimestamp(1000L);
         assertThat(sf.getLong("LAST_UPDATE_STAT_TIMESTAMP", 0)).isEqualTo(1000L);

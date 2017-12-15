@@ -35,6 +35,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Completable;
 import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -111,12 +112,12 @@ public class LoginActivityTest extends ActivityTest {
         GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
         mockGoogleSignInResult(mockGoogleSignInAccount, true);
 
-        when(userService.signIn(any())).thenReturn(mock(Observable.class));
+        when(userService.generateAppBeeToken(any())).thenReturn(anyString());
 
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         verify(googleSignInAPIHelper).getPerson(eq(mockGoogleSignInAccount));
-        verify(userService).signIn(eq("testToken"));
+        verify(userService).generateAppBeeToken(eq("testToken"));
     }
 
     @Test
@@ -152,7 +153,8 @@ public class LoginActivityTest extends ActivityTest {
 
     @Test
     public void user정보저장이_성공하면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
-        when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
+        when(userService.generateAppBeeToken(anyString())).thenReturn("testAccessToken");
+        when(userService.sendUser(any())).thenReturn(Completable.complete());
         when(googleSignInAPIHelper.getProvider()).thenReturn("google");
 
         Gender gender = new Gender().setValue("male");
@@ -163,44 +165,13 @@ public class LoginActivityTest extends ActivityTest {
 
         verify(localStorageHelper).setAccessToken("testAccessToken");
         verify(localStorageHelper).setUserId("googletestGoogleId");
-        verify(localStorageHelper).setBirthday(1999);
-        verify(localStorageHelper).setGender("male");
 
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains(OnboardingActivity.class.getSimpleName());
     }
 
     @Test
-    public void user정보저장이_성공했으나_생년월일_및_성별_정보가_없는경우_기본값을_sharedPreferences에_저장한다() throws Exception {
-        when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
-        when(googleSignInAPIHelper.getProvider()).thenReturn("google");
-
-        Person person = getPerson(null, null);
-
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail", person);
-
-        verify(localStorageHelper).setAccessToken("testAccessToken");
-        verify(localStorageHelper).setUserId("googletestGoogleId");
-        verify(localStorageHelper).setBirthday(0);
-        verify(localStorageHelper).setGender("unknown");
-    }
-
-    @Test
-    public void user정보저장이_성공했으나_생년월일_및_성별_정보조회에_실패한_경우_기본값을_sharedPreferences에_저장한다() throws Exception {
-        when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.error(new Throwable()));
-        when(userService.signIn(anyString())).thenReturn(Observable.just("testAccessToken"));
-        when(googleSignInAPIHelper.getProvider()).thenReturn("google");
-
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail", null);
-
-        verify(localStorageHelper).setAccessToken("testAccessToken");
-        verify(localStorageHelper).setUserId("googletestGoogleId");
-        verify(localStorageHelper).setBirthday(0);
-        verify(localStorageHelper).setGender("unknown");
-    }
-
-    @Test
     public void user정보저장이_실패하면_오류메세지를_표시한다() throws Exception {
-        when(userService.signIn(anyString())).thenReturn(Observable.error(new HttpException(404)));
+        when(userService.generateAppBeeToken(anyString())).thenReturn("");
 
         subject.signInUser("testIdToken", "testGoogleId", "testEmail", null);
 
