@@ -50,7 +50,7 @@ public class UserServiceTest {
     public void signIn호출시_로그인_요청을_서버에_전송한다() throws Exception {
         when(mockUserAPI.signInUser("GOOGLE_TOKEN")).thenReturn(mock(Observable.class));
 
-        subject.signIn("GOOGLE_TOKEN");
+        subject.generateAppBeeToken("GOOGLE_TOKEN");
 
         verify(mockUserAPI).signInUser(eq("GOOGLE_TOKEN"));
     }

@@ -79,43 +79,13 @@ public class LoadingActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate호출시_유저정보를_전송한다() throws Exception {
-        when(mockLocalStorageHelper.getUserId()).thenReturn("userId");
-        when(mockLocalStorageHelper.getEmail()).thenReturn("email@email.com");
-        when(mockLocalStorageHelper.getGender()).thenReturn("male");
-        when(mockLocalStorageHelper.getBirthday()).thenReturn(1999);
-        when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("registration-token");
-
-        createSubjectWithPostCreateLifecycle();
-
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(mockUserService).sendUser(userCaptor.capture());
-
-        assertThat(userCaptor.getValue().getUserId()).isEqualTo("userId");
-        assertThat(userCaptor.getValue().getEmail()).isEqualTo("email@email.com");
-        assertThat(userCaptor.getValue().getGender()).isEqualTo("male");
-        assertThat(userCaptor.getValue().getBirthday()).isEqualTo(1999);
-        assertThat(userCaptor.getValue().getRegistrationToken()).isEqualTo("registration-token");
-    }
-
-    @Test
-    public void 유저정보전송_완료시_통계데이터_서버전송을_요청한다() throws Exception {
+    public void onPostCreate호출시_통계데이터를_전송한다() throws Exception {
         LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
         ArgumentCaptor<AppUsageDataHelper.SendDataCallback> sendDataCallbackArgumentCaptor = ArgumentCaptor.forClass(AppUsageDataHelper.SendDataCallback.class);
 
         verify(mockAppUsageDataHelper).sendShortTermStatAndAppUsages(sendDataCallbackArgumentCaptor.capture());
         assertThat(sendDataCallbackArgumentCaptor.getValue()).isEqualTo(subject.appUsageDataHelperSendDataCallback);
-    }
-
-    @Test
-    public void 유저정보전송_실패시_에러문구를_출력한다() throws Exception {
-        when(mockUserService.sendUser(any(User.class))).thenReturn(Completable.error(new Exception()));
-
-        createSubjectWithPostCreateLifecycle();
-
-        verify(mockAppUsageDataHelper, never()).sendShortTermStatAndAppUsages(any());
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("사용자 정보 저장에 실패하였습니다.");
     }
 
     @Test

@@ -6,7 +6,6 @@ import com.appbee.appbeemobile.model.User;
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.Observable;
 import rx.schedulers.Schedulers;
 
 public class UserService extends AbstractAppBeeService {
@@ -21,10 +20,13 @@ public class UserService extends AbstractAppBeeService {
         this.localStorageHelper = localStorageHelper;
     }
 
-    public Observable<String> signIn(String googleIdToken) {
+    public String generateAppBeeToken(String googleIdToken) {
         return userAPI.signInUser(googleIdToken)
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .onErrorReturn(throwable -> "")
+                .subscribeOn(Schedulers.io())
+                .toBlocking()
+                .single();
     }
 
     public Completable sendUser(User user) {
