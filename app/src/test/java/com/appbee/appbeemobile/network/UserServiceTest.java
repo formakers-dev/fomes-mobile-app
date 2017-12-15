@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -15,7 +16,9 @@ import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,26 +51,45 @@ public class UserServiceTest {
 
     @Test
     public void signIn호출시_로그인_요청을_서버에_전송한다() throws Exception {
-        when(mockUserAPI.signInUser("GOOGLE_TOKEN")).thenReturn(mock(Observable.class));
+        when(mockUserAPI.signIn(anyString(), any(User.class))).thenReturn(mock(Observable.class));
 
-        subject.generateAppBeeToken("GOOGLE_TOKEN");
+        User mockUser = mock(User.class);
+        subject.signIn("GOOGLE_TOKEN", mockUser);
 
-        verify(mockUserAPI).signInUser(eq("GOOGLE_TOKEN"));
+        verify(mockUserAPI).signIn("GOOGLE_TOKEN", mockUser);
     }
 
     @Test
     public void sendUser호출시_유저정보를_서버로_전송한다() throws Exception {
-        when(mockUserAPI.updateUser(eq("TEST_ACCESS_TOKEN"), any(User.class))).thenReturn(mock(Observable.class));
+        when(mockUserAPI.update(anyString(), any(User.class))).thenReturn(mock(Observable.class));
 
         User mockUser = mock(User.class);
         subject.sendUser(mockUser);
 
-        verify(mockUserAPI).updateUser("TEST_ACCESS_TOKEN", mockUser);
+        verify(mockUserAPI).update("TEST_ACCESS_TOKEN", mockUser);
+    }
+
+    @Test
+    public void updateRegistrationToken호출시_푸시토큰정보를_서버에_전송한다() throws Exception {
+        when(mockUserAPI.update(anyString(), any(User.class))).thenReturn(mock(Observable.class));
+
+        subject.updateRegistrationToken("REFRESHED_PUSH_TOKEN");
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(mockUserAPI).update(eq("TEST_ACCESS_TOKEN"), userCaptor.capture());
+
+        User userArgument = userCaptor.getValue();
+        assertThat(userArgument.getRegistrationToken()).isEqualTo("REFRESHED_PUSH_TOKEN");
+        assertThat(userArgument.getName()).isNull();
+        assertThat(userArgument.getUserId()).isNull();
+        assertThat(userArgument.getEmail()).isNull();
+        assertThat(userArgument.getGender()).isNull();
+        assertThat(userArgument.getBirthday()).isNull();
     }
 
     @Test
     public void verifyRegistrationCode호출시_코드확인_요청을_한다() throws Exception {
-        when(mockUserAPI.verifyInvitationCode("REGISTRATION_CODE")).thenReturn(mock(Observable.class));
+        when(mockUserAPI.verifyInvitationCode(anyString())).thenReturn(mock(Observable.class));
 
         subject.verifyInvitationCode("REGISTRATION_CODE");
 

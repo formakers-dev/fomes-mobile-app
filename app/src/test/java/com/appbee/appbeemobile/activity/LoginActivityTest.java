@@ -9,8 +9,8 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
-import com.bumptech.glide.load.HttpException;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
@@ -104,7 +104,7 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onActivityResult_GoogleSign성공시_Person_Profile정보조회후_user정보를_저장하는API를_호출한다() throws Exception {
+    public void onActivityResult_GoogleSign성공시_Person_Profile정보조회후_signIn_API를_호출한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
         when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.just(new Person()));
@@ -112,12 +112,12 @@ public class LoginActivityTest extends ActivityTest {
         GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
         mockGoogleSignInResult(mockGoogleSignInAccount, true);
 
-        when(userService.generateAppBeeToken(any())).thenReturn(anyString());
+        when(userService.signIn(anyString(), any())).thenReturn(Observable.just("accessToken"));
 
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         verify(googleSignInAPIHelper).getPerson(eq(mockGoogleSignInAccount));
-        verify(userService).generateAppBeeToken(eq("testToken"));
+        verify(userService).signIn(eq("testToken"), any(User.class));
     }
 
     @Test
@@ -132,7 +132,7 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onActivityResult_GoogleSign성공했으나_계정정보가_없는경우_오류메시지를_표시하고_액티비티를_종료한다() throws Exception {
+    public void onActivityResult_GoogleSign성공했으나_구글계정정보가_없는경우_오류메시지를_표시하고_액티비티를_종료한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
         mockGoogleSignInResultWithoutAccount(true);
@@ -152,8 +152,8 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void user정보저장이_성공하면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
-        when(userService.generateAppBeeToken(anyString())).thenReturn("testAccessToken");
+    public void signInAPI_성공응답을_받으면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
+        when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
         when(userService.sendUser(any())).thenReturn(Completable.complete());
         when(googleSignInAPIHelper.getProvider()).thenReturn("google");
 
@@ -170,8 +170,8 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void user정보저장이_실패하면_오류메세지를_표시한다() throws Exception {
-        when(userService.generateAppBeeToken(anyString())).thenReturn("");
+    public void signInAPI_실패응답을_받으면_오류메세지를_표시한다() throws Exception {
+        when(userService.signIn(anyString(), any())).thenReturn(Observable.error(new Throwable()));
 
         subject.signInUser("testIdToken", "testGoogleId", "testEmail", null);
 
