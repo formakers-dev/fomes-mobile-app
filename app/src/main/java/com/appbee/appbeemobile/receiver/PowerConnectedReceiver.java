@@ -46,15 +46,13 @@ public class PowerConnectedReceiver extends BroadcastReceiver {
         if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
             Log.d(TAG, "PowerConnectedReceiver Action equals");
 
-            if (!TextUtils.isEmpty(localStorageHelper.getAccessToken())
-                    && appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+            if (localStorageHelper.isLoggedIn() && appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
                 Log.d(TAG, "PowerConnectedReceiver has permission");
 
                 // 노티 토큰 업데이트 로직 추가 - onRefreshToken 에서 에러난 경우에 대한 대비책
-                String refreshedToken = messagingHelper.getMessagingToken();
+                final String refreshedToken = messagingHelper.getMessagingToken();
                 if (!localStorageHelper.getRegistrationToken().equals(refreshedToken)) {
-                    User user = new User(refreshedToken);
-                    userService.sendUser(user)
+                    userService.updateRegistrationToken(refreshedToken)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(() -> {
                                 Log.d(TAG, "Token Refresh is Completed!");

@@ -22,6 +22,7 @@ import rx.Completable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,7 @@ public class MessagingTokenServiceTest {
         when(messagingHelper.getMessagingToken()).thenReturn("NEW_TOKEN");
         when(localStorageHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");
         when(localStorageHelper.isLoggedIn()).thenReturn(true);
-        when(mockUserService.sendUser(any(User.class))).thenReturn(Completable.complete());
+        when(mockUserService.updateRegistrationToken(anyString())).thenReturn(Completable.complete());
         subject = Robolectric.setupService(MessagingTokenService.class);
     }
 
@@ -63,18 +64,15 @@ public class MessagingTokenServiceTest {
     }
 
     @Test
-    public void 가입한_유저가_아닌_경우_사용자_업데이트API를_호출하지_않는다() throws Exception {
+    public void 가입한_유저가_아닌_경우_사용자푸시토큰_업데이트API를_호출하지_않는다() throws Exception {
         when(localStorageHelper.isLoggedIn()).thenReturn(false);
         subject.onTokenRefresh();
         verify(mockUserService, never()).sendUser(any(User.class));
     }
 
     @Test
-    public void 토큰이_갱신되었을_경우_사용자_업데이트API를_호출한다() throws Exception {
+    public void 토큰이_갱신되었을_경우_사용자푸시토큰_업데이트API를_호출한다() throws Exception {
         subject.onTokenRefresh();
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-        verify(mockUserService).sendUser(captor.capture());
-        User user = captor.getValue();
-        assertThat(user.getRegistrationToken()).isEqualTo("NEW_TOKEN");
+        verify(mockUserService).updateRegistrationToken("NEW_TOKEN");
     }
 }

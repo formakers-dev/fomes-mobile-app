@@ -1,12 +1,10 @@
 package com.appbee.appbeemobile.service;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.MessagingHelper;
-import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -35,19 +33,15 @@ public class MessagingTokenService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         Log.d(TAG, "onTokenRefresh");
-        String refreshedToken = messagingHelper.getMessagingToken();
+        final String refreshedToken = messagingHelper.getMessagingToken();
+        final String oldToken = localStorageHelper.getRegistrationToken();
 
-        if (!localStorageHelper.getRegistrationToken().equals(refreshedToken)) {
+        if (!localStorageHelper.isLoggedIn()) {
+            Log.e(TAG, "Not Signed User");
+            localStorageHelper.setRegistrationToken(refreshedToken);
 
-            // 로그인 여부 처리
-            if (!localStorageHelper.isLoggedIn()) {
-                Log.e(TAG, "Not Signed User");
-                localStorageHelper.setRegistrationToken(refreshedToken);
-                return;
-            }
-
-            User user = new User(refreshedToken);
-            userService.sendUser(user)
+        } else if (!oldToken.equals(refreshedToken)) {
+            userService.updateRegistrationToken(refreshedToken)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         Log.d(TAG, "Token Refresh is Completed!");

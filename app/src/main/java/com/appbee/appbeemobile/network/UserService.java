@@ -36,6 +36,13 @@ public class UserService extends AbstractAppBeeService {
                 .toCompletable();
     }
 
+    public Completable updateRegistrationToken(String registrationToken) {
+        return userAPI.updateUser(localStorageHelper.getAccessToken(), new User(registrationToken))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .toCompletable();
+    }
+
     public Completable verifyInvitationCode(String code) {
         return userAPI.verifyInvitationCode(code)
                 .doOnError(this::logError)
