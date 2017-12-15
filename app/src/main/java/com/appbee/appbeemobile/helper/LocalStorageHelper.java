@@ -102,6 +102,6 @@ public class LocalStorageHelper {
     }
 
     public boolean isLoggedIn() {
-        return !TextUtils.isEmpty(getEmail());
+        return !TextUtils.isEmpty(getAccessToken());
     }
 }
