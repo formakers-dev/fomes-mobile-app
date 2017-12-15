@@ -51,7 +51,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         when(mockLocalStorageHelper.getInvitationCode()).thenReturn("CODE");
-        when(mockLocalStorageHelper.getEmail()).thenReturn("test@test.com");
+        when(mockLocalStorageHelper.isLoggedIn()).thenReturn(true);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         when(mockConfigService.getAppVersion()).thenReturn(1L);
         activityController = Robolectric.buildActivity(PermissionGuideActivity.class);
@@ -68,7 +68,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void 최소앱버전코드확인API호출결과_최소앱버전보다_현재버전코드가_작은경우_업데이트_안내_팝업이_나타난다() throws Exception {
         when(mockConfigService.getAppVersion()).thenReturn(Long.MAX_VALUE);
 
-        PermissionGuideActivity subject = activityController.create().get();
+        activityController.create().get();
 
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         assertThat(dialog).isNotNull();
@@ -106,9 +106,8 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onCreate호출시_초대장인증미완료_및_SignIn미완료_시_초대장코드인증화면으로_이동한다() throws Exception {
+    public void onCreate호출시_초대장인증미완료시_초대장코드인증화면으로_이동한다() throws Exception {
         when(mockLocalStorageHelper.getInvitationCode()).thenReturn("");
-        when(mockLocalStorageHelper.getEmail()).thenReturn("");
         PermissionGuideActivity subject = activityController.create().postCreate(null).get();
 
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(CodeVerificationActivity.class.getName());
@@ -117,7 +116,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void onCreate호출시_초대장인증완료_및_SignIn미완료_시_로그인화면으로_이동한다() throws Exception {
-        when(mockLocalStorageHelper.getEmail()).thenReturn("");
+        when(mockLocalStorageHelper.isLoggedIn()).thenReturn(false);
         PermissionGuideActivity subject = activityController.create().postCreate(null).get();
 
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
