@@ -65,7 +65,7 @@ public class PermissionGuideActivity extends BaseActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
+        if (!localStorageHelper.isLoggedIn()) {
             moveActivityTo(LoginActivity.class);
             return;
         }
@@ -74,7 +74,7 @@ public class PermissionGuideActivity extends BaseActivity {
             String projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
             String interviewSeq = getIntent().getStringExtra(EXTRA.INTERVIEW_SEQ);
 
-            if(!TextUtils.isEmpty(projectId) && !TextUtils.isEmpty(interviewSeq)) {
+            if (!TextUtils.isEmpty(projectId) && !TextUtils.isEmpty(interviewSeq)) {
                 Intent intent = new Intent(this, InterviewDetailActivity.class);
                 intent.putExtra(EXTRA.PROJECT_ID, projectId);
                 intent.putExtra(EXTRA.INTERVIEW_SEQ, Long.parseLong(interviewSeq));

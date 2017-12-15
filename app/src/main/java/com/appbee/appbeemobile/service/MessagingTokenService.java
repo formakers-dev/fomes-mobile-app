@@ -40,7 +40,7 @@ public class MessagingTokenService extends FirebaseInstanceIdService {
         if (!localStorageHelper.getRegistrationToken().equals(refreshedToken)) {
 
             // 로그인 여부 처리
-            if (TextUtils.isEmpty(localStorageHelper.getEmail())) {
+            if (!localStorageHelper.isLoggedIn()) {
                 Log.e(TAG, "Not Signed User");
                 localStorageHelper.setRegistrationToken(refreshedToken);
                 return;

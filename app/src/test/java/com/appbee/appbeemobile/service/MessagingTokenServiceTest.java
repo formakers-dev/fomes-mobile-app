@@ -46,14 +46,14 @@ public class MessagingTokenServiceTest {
 
         when(messagingHelper.getMessagingToken()).thenReturn("NEW_TOKEN");
         when(localStorageHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");
-        when(localStorageHelper.getEmail()).thenReturn("email");
+        when(localStorageHelper.isLoggedIn()).thenReturn(true);
         when(mockUserService.sendUser(any(User.class))).thenReturn(Completable.complete());
         subject = Robolectric.setupService(MessagingTokenService.class);
     }
 
     @Test
     public void 가입한_유저가_아닌_경우_갱신된_토큰정보를_로컬에_저장한다() throws Exception {
-        when(localStorageHelper.getEmail()).thenReturn("");
+        when(localStorageHelper.isLoggedIn()).thenReturn(false);
 
         subject.onTokenRefresh();
 
@@ -64,7 +64,7 @@ public class MessagingTokenServiceTest {
 
     @Test
     public void 가입한_유저가_아닌_경우_사용자_업데이트API를_호출하지_않는다() throws Exception {
-        when(localStorageHelper.getEmail()).thenReturn("");
+        when(localStorageHelper.isLoggedIn()).thenReturn(false);
         subject.onTokenRefresh();
         verify(mockUserService, never()).sendUser(any(User.class));
     }

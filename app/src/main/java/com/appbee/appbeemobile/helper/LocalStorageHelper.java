@@ -4,6 +4,7 @@ package com.appbee.appbeemobile.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -127,5 +128,9 @@ public class LocalStorageHelper {
 
     public void setInvitationCode(String code) {
         putString(KEY_INVITATION_CODE, code);
+    }
+
+    public boolean isLoggedIn() {
+        return !TextUtils.isEmpty(getEmail());
     }
 }
