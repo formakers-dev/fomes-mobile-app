@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.TextView;
@@ -29,6 +28,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity {
@@ -98,7 +98,9 @@ public class LoginActivity extends BaseActivity {
             GoogleSignInAccount account = result.getSignInAccount();
             if (resultCode == Activity.RESULT_OK && result.isSuccess() && account != null) {
                 addToCompositeSubscription(
-                        googleSignInAPIHelper.getPerson(account).subscribeOn(Schedulers.io())
+                        googleSignInAPIHelper.getPerson(account)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
                                         e -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), null))
                 );
@@ -109,20 +111,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     void signInUser(final String googleIdToken, final String googleUserId, final String email, final Person person) {
-        String token = userService.generateAppBeeToken(googleIdToken);
+        final String userId = googleSignInAPIHelper.getProvider() + googleUserId;
 
-        if (TextUtils.isEmpty(token)) {
-            Log.e(TAG, "signInUser Failed");
-            finishActivityForFail(R.string.fail_to_sign_in);
-            return;
-        }
-
-        localStorageHelper.setAccessToken(token);
-        localStorageHelper.setUserId(googleSignInAPIHelper.getProvider() + googleUserId);
-        localStorageHelper.setEmail(email);
-
-        User user = new User(localStorageHelper.getUserId(), localStorageHelper.getEmail());
-        user.setRegistrationToken(localStorageHelper.getRegistrationToken());
+        final User user = new User(userId, email, localStorageHelper.getRegistrationToken());
 
         if (person != null) {
             user.setBirthday(person.getBirthdays() != null ? person.getBirthdays().get(0).getDate().getYear() : 0);
@@ -133,10 +124,15 @@ public class LoginActivity extends BaseActivity {
         }
 
         addToCompositeSubscription(
-                userService.sendUser(user)
-                        .observeOn(Schedulers.io())
-                        .subscribe(this::moveToOnBoardingActivity, e -> {
-                            Log.e(TAG, "sendUser Failed e=" + e.getMessage() + ", cause=" + e.getCause());
+                userService.signIn(googleIdToken, user)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(accessToken -> {
+                            localStorageHelper.setAccessToken(accessToken);
+                            localStorageHelper.setUserId(userId);
+                            localStorageHelper.setEmail(email);
+                            moveToOnBoardingActivity();
+                        }, e -> {
+                            Log.e(TAG, "signInUser Failed");
                             finishActivityForFail(R.string.fail_to_sign_in);
                         })
         );
@@ -150,10 +146,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     void finishActivityForFail(@StringRes int failStringId) {
-        runOnUiThread(() -> {
-            Toast.makeText(LoginActivity.this, failStringId, Toast.LENGTH_SHORT).show();
-            setResult(Activity.RESULT_CANCELED);
-            finish();
-        });
+        Toast.makeText(LoginActivity.this, failStringId, Toast.LENGTH_SHORT).show();
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

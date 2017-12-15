@@ -8,9 +8,10 @@ public class User {
     private String gender;
     private String registrationToken;
 
-    public User(String userId, String email) {
+    public User(String userId, String email, String registrationToken) {
         this.userId = userId;
         this.email = email;
+        this.registrationToken = registrationToken;
     }
 
     public User(String registrationToken) {
@@ -33,7 +34,7 @@ public class User {
         this.email = email;
     }
 
-    public int getBirthday() {
+    public Integer getBirthday() {
         return birthday;
     }
 

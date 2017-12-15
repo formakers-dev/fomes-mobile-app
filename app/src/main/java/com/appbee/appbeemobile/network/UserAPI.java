@@ -10,11 +10,11 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 public interface UserAPI {
-    @GET("/user/auth")
-    Observable<String> signInUser(@Header("x-id-token") String googleIdToken);
+    @POST("/user/auth")
+    Observable<String> signIn(@Header("x-id-token") String googleIdToken, @Body User user);
 
     @POST("/user")
-    Observable<Void> updateUser(@Header("x-access-token") String accessToken, @Body User user);
+    Observable<Void> update(@Header("x-access-token") String accessToken, @Body User user);
 
     @GET("/user/verifyInvitationCode/{code}")
     Observable<Void> verifyInvitationCode(@Path("code") String code);
