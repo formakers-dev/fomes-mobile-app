@@ -50,6 +50,7 @@ import javax.inject.Inject;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Completable;
 import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -292,7 +293,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하고_submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
         subject.submitButton.performClick();
 
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.complete());
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
 
         subject.submitButton.performClick();
@@ -413,7 +414,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     private void setupForPreparationOfParticipation() {
         subject.submitButton.performClick();
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.complete());
     }
 
     private void assertMoveToMyInterviewActivity(AlertDialog dialog) {
@@ -462,7 +463,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void HTTP오류가_아닌이유로_인터뷰신청에_실패한경우_인터뷰신청실패팝업을_표시한다() throws Exception {
         subject.submitButton.performClick();
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new Exception("Unknown")));
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.error(new Exception("Unknown")));
 
         subject.submitButton.performClick();
 
@@ -479,7 +480,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     private void setupParticipateError(int httpErrorCode) {
         subject.submitButton.performClick();
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
-        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(httpErrorCode, ResponseBody.create(null, "")))));
+        when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.error(new HttpException(Response.error(httpErrorCode, ResponseBody.create(null, "")))));
     }
 
     @Test

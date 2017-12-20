@@ -323,12 +323,9 @@ public class InterviewDetailActivity extends BaseActivity {
         addToCompositeSubscription(
                 projectService.postParticipate(projectId, seq, slotId)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
+                        .subscribe(() -> {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                            if (result) {
-                                showSuccessAlertDialog();
-                            }
+                            showSuccessAlertDialog();
                         }, err -> {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
