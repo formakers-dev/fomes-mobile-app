@@ -133,18 +133,36 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void FCM_Noti를_통해_Activity가_실행되고_권한이있는경우_onCreate호출시_메인화면으로_이동한다() throws Exception {
+    public void FCM_모집Noti를_통해_Activity가_실행되고_권한이있는경우_onCreate호출시_메인화면으로_이동한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         Intent intent = new Intent();
         intent.putExtra(EXTRA.PROJECT_ID, "testProjectId");
         intent.putExtra(EXTRA.INTERVIEW_SEQ, "1");
+        intent.putExtra(EXTRA.NOTIFICATION_TYPE, "모집");
 
         PermissionGuideActivity subject = Robolectric.buildActivity(PermissionGuideActivity.class, intent).create().postCreate(null).get();
 
         Intent nextStartedActivityIntent = shadowOf(subject).getNextStartedActivity();
 
         assertThat(nextStartedActivityIntent.getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @Test
+    public void FCM_확정Noti를_통해_Activity가_실행되고_권한이있는경우_onCreate호출시_다가오는_인터뷰화면으로_이동한다() throws Exception {
+        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA.PROJECT_ID, "testProjectId");
+        intent.putExtra(EXTRA.INTERVIEW_SEQ, "1");
+        intent.putExtra(EXTRA.NOTIFICATION_TYPE, "확정");
+
+        PermissionGuideActivity subject = Robolectric.buildActivity(PermissionGuideActivity.class, intent).create().postCreate(null).get();
+
+        Intent nextStartedActivityIntent = shadowOf(subject).getNextStartedActivity();
+
+        assertThat(nextStartedActivityIntent.getComponent().getClassName()).isEqualTo(MyInterviewActivity.class.getName());
         assertThat(subject.isFinishing()).isTrue();
     }
 

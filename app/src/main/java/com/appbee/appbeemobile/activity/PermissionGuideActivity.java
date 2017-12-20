@@ -15,6 +15,7 @@ import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ConfigService;
+import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import javax.inject.Inject;
 
@@ -46,15 +47,7 @@ public class PermissionGuideActivity extends BaseActivity {
         setContentView(R.layout.activity_permission_guide);
 
         if (BuildConfig.VERSION_CODE < configService.getAppVersion()) {
-
-            AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.app_update_dialog_title), getString(R.string.app_update_dialog_message), (dialog, which) -> {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("market://details?id=com.appbee.appbeemobile"));
-                startActivity(intent);
-                finishAffinity();
-            });
-            appBeeAlertDialog.setOnCancelListener(dialog -> finishAffinity());
-            appBeeAlertDialog.show();
+            displayVersionUpdateDialog();
             return;
         }
 
@@ -70,8 +63,26 @@ public class PermissionGuideActivity extends BaseActivity {
         }
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            moveActivityTo(MainActivity.class);
+            String notification = getIntent().getStringExtra(AppBeeConstants.EXTRA.NOTIFICATION_TYPE);
+            if ("확정".equals(notification)) {
+                moveActivityTo(MyInterviewActivity.class);
+            } else {
+                moveActivityTo(MainActivity.class);
+            }
         }
+    }
+
+    private void displayVersionUpdateDialog() {
+        AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.app_update_dialog_title), getString(R.string.app_update_dialog_message), (dialog, which) -> moveToPlayStore());
+        appBeeAlertDialog.setOnCancelListener(dialog -> finishAffinity());
+        appBeeAlertDialog.show();
+    }
+
+    private void moveToPlayStore() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=com.appbee.appbeemobile"));
+        startActivity(intent);
+        finishAffinity();
     }
 
     @OnClick(R.id.permission_button)

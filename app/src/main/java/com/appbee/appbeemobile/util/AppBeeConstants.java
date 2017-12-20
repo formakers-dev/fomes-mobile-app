@@ -9,6 +9,7 @@ public interface AppBeeConstants {
         String INTERVIEW_DATE = "EXTRA_INTERVIEW_DATE";
         String PROJECT_NAME = "EXTRA_PROJECT_NAME";
         String INTERVIEW_STATUS = "EXTRA_INTERVIEW_STATUS";
+        String NOTIFICATION_TYPE = "EXTRA_NOTIFICATION_TYPE";
     }
 
     interface HTTP_STATUS {
