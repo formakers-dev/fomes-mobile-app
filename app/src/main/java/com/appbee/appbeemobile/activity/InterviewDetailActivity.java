@@ -49,6 +49,9 @@ import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 public class InterviewDetailActivity extends BaseActivity {
     private static final String TAG = InterviewDetailActivity.class.getSimpleName();
+    private static final String RADIO_BUTTON_CHECKING = "checking";
+    private static final String RADIO_BUTTON_CHECKED = "checked";
+    private static final String RADIO_BUTTON_UNCHECKED = "";
 
     @Inject
     ProjectService projectService;
@@ -241,6 +244,27 @@ public class InterviewDetailActivity extends BaseActivity {
 
             radioButton.setId(timeSlotId);
             radioButton.setText(String.format(Locale.KOREA, "%02d:00", timeSlotId));
+
+            radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    buttonView.setTag(RADIO_BUTTON_CHECKING);
+                } else {
+                    buttonView.setTag(RADIO_BUTTON_UNCHECKED);
+                }
+            });
+
+            radioButton.setOnClickListener(v -> {
+                final RadioButton selectedButton = ((RadioButton) v);
+
+                if (selectedButton.isChecked()) {
+                    if (RADIO_BUTTON_CHECKING.equals(v.getTag())) {
+                        selectedButton.setTag(RADIO_BUTTON_CHECKED);
+                    } else if (RADIO_BUTTON_CHECKED.equals(v.getTag())) {
+                        timeSlotRadioGroup.clearCheck();
+                        selectedButton.setTag(RADIO_BUTTON_UNCHECKED);
+                    }
+                }
+            });
 
             timeSlotRadioGroup.addView(radioButton);
         }
