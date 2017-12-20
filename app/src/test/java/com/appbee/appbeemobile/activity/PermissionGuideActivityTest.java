@@ -133,7 +133,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     }
 
     @Test
-    public void FCM_Noti를_통해_Activity가_실행되고_권한이있는경우_onCreate호출시_인터뷰상세화면으로_이동한다() throws Exception {
+    public void FCM_Noti를_통해_Activity가_실행되고_권한이있는경우_onCreate호출시_메인화면으로_이동한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         Intent intent = new Intent();
@@ -144,10 +144,8 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
         Intent nextStartedActivityIntent = shadowOf(subject).getNextStartedActivity();
 
-        assertThat(nextStartedActivityIntent.getComponent().getClassName()).isEqualTo(InterviewDetailActivity.class.getName());
+        assertThat(nextStartedActivityIntent.getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
         assertThat(subject.isFinishing()).isTrue();
-        assertThat(nextStartedActivityIntent.getStringExtra(EXTRA.PROJECT_ID)).isEqualTo("testProjectId");
-        assertThat(nextStartedActivityIntent.getLongExtra(EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(1L);
     }
 
     @Test

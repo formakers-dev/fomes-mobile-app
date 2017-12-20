@@ -15,7 +15,6 @@ import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ConfigService;
-import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 import javax.inject.Inject;
 
@@ -71,19 +70,7 @@ public class PermissionGuideActivity extends BaseActivity {
         }
 
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            String projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
-            String interviewSeq = getIntent().getStringExtra(EXTRA.INTERVIEW_SEQ);
-
-            if (!TextUtils.isEmpty(projectId) && !TextUtils.isEmpty(interviewSeq)) {
-                Intent intent = new Intent(this, InterviewDetailActivity.class);
-                intent.putExtra(EXTRA.PROJECT_ID, projectId);
-                intent.putExtra(EXTRA.INTERVIEW_SEQ, Long.parseLong(interviewSeq));
-
-                startActivity(intent);
-                finish();
-            } else {
-                moveActivityTo(MainActivity.class);
-            }
+            moveActivityTo(MainActivity.class);
         }
     }
 
