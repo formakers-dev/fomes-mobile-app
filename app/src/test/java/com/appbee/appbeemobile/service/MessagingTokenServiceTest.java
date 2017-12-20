@@ -67,7 +67,7 @@ public class MessagingTokenServiceTest {
     public void 가입한_유저가_아닌_경우_사용자푸시토큰_업데이트API를_호출하지_않는다() throws Exception {
         when(localStorageHelper.isLoggedIn()).thenReturn(false);
         subject.onTokenRefresh();
-        verify(mockUserService, never()).sendUser(any(User.class));
+        verify(mockUserService, never()).updateRegistrationToken(anyString());
     }
 
     @Test
