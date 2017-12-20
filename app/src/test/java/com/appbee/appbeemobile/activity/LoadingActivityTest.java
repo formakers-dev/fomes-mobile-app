@@ -60,8 +60,6 @@ public class LoadingActivityTest extends ActivityTest {
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         activityController = Robolectric.buildActivity(LoadingActivity.class);
-
-        when(mockUserService.sendUser(any(User.class))).thenReturn(Completable.complete());
     }
 
     @After

@@ -60,16 +60,6 @@ public class UserServiceTest {
     }
 
     @Test
-    public void sendUser호출시_유저정보를_서버로_전송한다() throws Exception {
-        when(mockUserAPI.update(anyString(), any(User.class))).thenReturn(mock(Observable.class));
-
-        User mockUser = mock(User.class);
-        subject.sendUser(mockUser);
-
-        verify(mockUserAPI).update("TEST_ACCESS_TOKEN", mockUser);
-    }
-
-    @Test
     public void updateRegistrationToken호출시_푸시토큰정보를_서버에_전송한다() throws Exception {
         when(mockUserAPI.update(anyString(), any(User.class))).thenReturn(mock(Observable.class));
 

@@ -29,13 +29,6 @@ public class UserService extends AbstractAppBeeService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Completable sendUser(User user) {
-        return userAPI.update(localStorageHelper.getAccessToken(), user)
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .toCompletable();
-    }
-
     public Completable updateRegistrationToken(String registrationToken) {
         return userAPI.update(localStorageHelper.getAccessToken(), new User(registrationToken))
                 .doOnError(this::logError)

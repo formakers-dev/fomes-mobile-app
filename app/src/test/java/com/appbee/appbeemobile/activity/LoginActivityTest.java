@@ -154,7 +154,6 @@ public class LoginActivityTest extends ActivityTest {
     @Test
     public void signInAPI_성공응답을_받으면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
         when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
-        when(userService.sendUser(any())).thenReturn(Completable.complete());
         when(googleSignInAPIHelper.getProvider()).thenReturn("google");
 
         Gender gender = new Gender().setValue("male");
