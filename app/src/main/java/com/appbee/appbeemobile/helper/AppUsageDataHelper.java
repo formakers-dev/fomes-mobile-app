@@ -2,12 +2,10 @@ package com.appbee.appbeemobile.helper;
 
 import android.support.annotation.NonNull;
 
-import com.appbee.appbeemobile.model.AppUsage;
 import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.model.StatKey;
-import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 import com.appbee.appbeemobile.util.DateUtil;
@@ -21,7 +19,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,7 +29,6 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 public class AppUsageDataHelper {
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final AppStatService appStatService;
-    private final AppService appService;
     private final AppRepositoryHelper appRepositoryHelper;
     private final TimeHelper timeHelper;
     private final LocalStorageHelper localStorageHelper;
@@ -40,20 +36,18 @@ public class AppUsageDataHelper {
     @Inject
     public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper,
                               AppStatService appStatService,
-                              AppService appService,
                               AppRepositoryHelper appRepositoryHelper,
                               LocalStorageHelper localStorageHelper,
                               TimeHelper timeHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
         this.appStatService = appStatService;
-        this.appService = appService;
         this.appRepositoryHelper = appRepositoryHelper;
         this.localStorageHelper = localStorageHelper;
         this.timeHelper = timeHelper;
     }
 
     @NonNull
-    public List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
+    List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
         List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
 
@@ -77,50 +71,52 @@ public class AppUsageDataHelper {
         return shortTermStats;
     }
 
-
-    public Observable<List<String>> getSortedUsedPackageNames() {
-        return Observable.just(appRepositoryHelper.getAppUsages())
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .concatMapEager(Observable::from)
-                .sorted((o1, o2) -> {
-                    if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
-                        return o1.getPackageName().compareTo(o2.getPackageName());
-                    } else {
-                        return o1.getTotalUsedTime() - o2.getTotalUsedTime() > 0 ? -1 : 1;
-                    }
-                }).map(AppUsage::getPackageName)
-                .toList();
-    }
-
     private ShortTermStat createShortTermStat(String packageName, long startTimestamp, long endTimestamp) {
         return new ShortTermStat(packageName, startTimestamp, endTimestamp, endTimestamp - startTimestamp);
     }
 
-    public void sendShortTermStatAndAppUsages(SendDataCallback callback) {
-        final int currentDate = Integer.parseInt(DateUtil.getDateFromTimestamp(timeHelper.getCurrentTime()));
-        appRepositoryHelper.deleteAppUsages(DateUtil.calBeforeDate(currentDate, 30));
+    public void sendShortTermStats(SendDataCallback callback) {
+        final long from = localStorageHelper.getLastUpdateShortTermStatTimestamp();
+        final long to = timeHelper.getStatBasedCurrentTime();
+        final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
 
-        final long lastUpdateStatTimestamp = localStorageHelper.getLastUpdateStatTimestamp();
-        final long statBasedEndTime = timeHelper.getStatBasedCurrentTime();
-        final List<ShortTermStat> shortTermStatList = getShortTermStats(lastUpdateStatTimestamp, statBasedEndTime);
-
-        appRepositoryHelper.updateTotalUsedTime(getDailyStatSummary(shortTermStatList));
-
-        Observable.merge(
-                appStatService.sendShortTermStats(shortTermStatList),
-                appService.sendAppUsages(appRepositoryHelper.getAppUsages())
-        ).subscribeOn(Schedulers.io())
+        appStatService.sendShortTermStats(shortTermStatList)
+                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .all(result -> true)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    localStorageHelper.setLastUpdateStatTimestamp(statBasedEndTime);
+                .subscribe(() -> {
+                    localStorageHelper.setLastUpdateShortTermStatTimestamp(to);
                     callback.onSuccess();
                 }, error -> {
                     appStatService.logError(error);
                     callback.onFail();
                 });
+    }
+
+    public void sendAppUsages(SendDataCallback callback) {
+        final long to = timeHelper.getStatBasedCurrentTime();
+        deleteOldAppUsage();
+        updateAppUsage(localStorageHelper.getLastUpdateAppUsageTimestamp(), to);
+
+        appStatService.sendAppUsages(appRepositoryHelper.getAppUsages())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    localStorageHelper.setLastUpdateAppUsageTimestamp(to);
+                    callback.onSuccess();
+                }, error -> {
+                    appStatService.logError(error);
+                    callback.onFail();
+                });
+    }
+
+    private void updateAppUsage(long from, long to) {
+        final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
+        appRepositoryHelper.updateTotalUsedTime(getDailyStatSummary(shortTermStatList));
+    }
+
+    private void deleteOldAppUsage() {
+        final int currentDate = Integer.parseInt(DateUtil.getDateFromTimestamp(timeHelper.getCurrentTime()));
+        appRepositoryHelper.deleteAppUsages(DateUtil.calBeforeDate(currentDate, 30));
     }
 
     List<DailyStatSummary> getDailyStatSummary(List<ShortTermStat> shortTermStatList) {

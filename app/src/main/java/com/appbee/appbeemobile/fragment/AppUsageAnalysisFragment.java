@@ -15,7 +15,6 @@ import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.ConfigService;
 import com.google.api.client.util.Lists;
 import com.google.common.collect.Iterables;
@@ -29,9 +28,6 @@ import butterknife.BindView;
 public class AppUsageAnalysisFragment extends BaseFragment {
     public static final String TAG = AppUsageAnalysisFragment.class.getSimpleName();
     public static final String EXTRA_DESCRIPTION_RES_ID = "DESCRIPTION_RES_ID";
-
-    @Inject
-    AppService appService;
 
     @Inject
     ConfigService configService;

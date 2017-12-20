@@ -3,7 +3,6 @@ package com.appbee.appbeemobile.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -11,7 +10,6 @@ import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.MessagingHelper;
-import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
 
 import javax.inject.Inject;
@@ -36,7 +34,8 @@ public class PowerConnectedReceiver extends BroadcastReceiver {
     @Inject
     UserService userService;
 
-    public PowerConnectedReceiver() {}
+    public PowerConnectedReceiver() {
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -60,18 +59,27 @@ public class PowerConnectedReceiver extends BroadcastReceiver {
                             }, (throwable) -> Log.e(TAG, throwable.toString()));
                 }
 
-                appUsageDataHelper.sendShortTermStatAndAppUsages(new AppUsageDataHelper.SendDataCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "PowerConnectedReceiver send ShortTermStats successfully");
-                    }
-
-                    @Override
-                    public void onFail() {
-                        Log.e(TAG, "PowerConnectedReceiver fail to send ShortTermStats");
-                    }
-                });
+                appUsageDataHelper.sendShortTermStats(new SendStatsCallback("shortTermStats"));
+                appUsageDataHelper.sendAppUsages(new SendStatsCallback("appUsages"));
             }
+        }
+    }
+
+    private class SendStatsCallback implements AppUsageDataHelper.SendDataCallback {
+        private final String statsType;
+
+        private SendStatsCallback(String statsType) {
+            this.statsType = statsType;
+        }
+
+        @Override
+        public void onSuccess() {
+            Log.d(TAG, "PowerConnectedReceiver send " + statsType + " successfully");
+        }
+
+        @Override
+        public void onFail() {
+            Log.d(TAG, "PowerConnectedReceiver send " + statsType + " fail");
         }
     }
 }

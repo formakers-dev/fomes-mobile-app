@@ -50,7 +50,7 @@ public class LoadingActivity extends BaseActivity {
 
         imageLoader.loadGifImage(loadingImageView, R.drawable.loading_bowl);
 
-        appUsageDataHelper.sendShortTermStatAndAppUsages(appUsageDataHelperSendDataCallback);
+        appUsageDataHelper.sendAppUsages(appUsageDataHelperSendDataCallback);
     }
 
     AppUsageDataHelper.SendDataCallback appUsageDataHelperSendDataCallback = new AppUsageDataHelper.SendDataCallback() {

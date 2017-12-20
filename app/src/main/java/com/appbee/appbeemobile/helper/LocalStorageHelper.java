@@ -18,7 +18,8 @@ public class LocalStorageHelper {
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String KEY_EMAIL = "EMAIL";
-    private static final String KEY_LAST_UPDATE_STAT_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
+    private static final String KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
+    private static final String KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP = "LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP";
     private static final String KEY_INVITATION_CODE = "INVITATION_CODE";
 
     private SharedPreferences sharedPreferences;
@@ -84,12 +85,20 @@ public class LocalStorageHelper {
         putString(KEY_EMAIL, email);
     }
 
-    public long getLastUpdateStatTimestamp() {
-        return getLong(KEY_LAST_UPDATE_STAT_TIMESTAMP, 0L);
+    public long getLastUpdateAppUsageTimestamp() {
+        return getLong(KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP, 0L);
     }
 
-    public void setLastUpdateStatTimestamp(long timestamp) {
-        putLong(KEY_LAST_UPDATE_STAT_TIMESTAMP, timestamp);
+    public void setLastUpdateAppUsageTimestamp(long timestamp) {
+        putLong(KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP, timestamp);
+    }
+
+    public long getLastUpdateShortTermStatTimestamp() {
+        return getLong(KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP, 0L);
+    }
+
+    public void setLastUpdateShortTermStatTimestamp(long timestamp) {
+        putLong(KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP, timestamp);
     }
 
     @NonNull

@@ -11,5 +11,5 @@ import rx.Observable;
 
 public interface StatAPI {
     @POST("/stats/short")
-    Observable<Boolean> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
+    Observable<Void> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
 }

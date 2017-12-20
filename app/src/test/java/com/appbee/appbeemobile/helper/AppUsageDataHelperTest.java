@@ -1,10 +1,8 @@
 package com.appbee.appbeemobile.helper;
 
-import com.appbee.appbeemobile.model.AppUsage;
 import com.appbee.appbeemobile.model.DailyStatSummary;
 import com.appbee.appbeemobile.model.EventStat;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.repository.helper.AppRepositoryHelper;
 
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import rx.Observable;
+import rx.Completable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
@@ -48,7 +46,6 @@ public class AppUsageDataHelperTest {
 
     private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
     private AppStatService mockAppStatService;
-    private AppService mockAppService;
     private AppRepositoryHelper mockAppRepositoryHelper;
     private TimeHelper mockTimeHelper;
     private LocalStorageHelper mockLocalStorageHelper;
@@ -68,11 +65,10 @@ public class AppUsageDataHelperTest {
 
         this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
         this.mockAppStatService = mock(AppStatService.class);
-        this.mockAppService = mock(AppService.class);
         this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
         this.mockTimeHelper = mock(TimeHelper.class);
         this.mockLocalStorageHelper = mock(LocalStorageHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockAppStatService, mockAppService, mockAppRepositoryHelper, mockLocalStorageHelper, mockTimeHelper);
+        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockAppStatService, mockAppRepositoryHelper, mockLocalStorageHelper, mockTimeHelper);
     }
 
     @After
@@ -187,47 +183,62 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    public void sendShortTermStatAndAppUsages호출시_앱통계정보가_DB에_삭제_저장하고_통계저장API를_호출한다() throws Exception {
+    public void sendShortTermStat호출시_단기통계저장API를_호출한다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
-        when(mockLocalStorageHelper.getLastUpdateStatTimestamp()).thenReturn(0L);
+        when(mockLocalStorageHelper.getLastUpdateShortTermStatTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+        when(mockAppStatService.sendShortTermStats(any(List.class))).thenReturn(Completable.complete());
 
         AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
-        subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
+        subject.sendShortTermStats(mockSendDataCallback);
 
-        verify(mockAppRepositoryHelper).deleteAppUsages(anyInt());
-        verify(mockAppRepositoryHelper).updateTotalUsedTime(any(List.class));
         verify(mockAppStatService).sendShortTermStats(any(List.class));
-        verify(mockAppService).sendAppUsages(any(List.class));
-        verify(mockLocalStorageHelper).setLastUpdateStatTimestamp(eq(10L));
+        verify(mockLocalStorageHelper).setLastUpdateShortTermStatTimestamp(eq(10L));
         verify(mockSendDataCallback).onSuccess();
     }
 
     @Test
-    public void sendShortTermStatAndAppUsages호출시_앱단기정보데이터전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
+    public void sendShortTermStat처리중_단기통계저장API_에러발생시_Callback의_onFail을_호출한다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
-        when(mockLocalStorageHelper.getLastUpdateStatTimestamp()).thenReturn(0L);
+        when(mockLocalStorageHelper.getLastUpdateShortTermStatTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
-        when(mockAppStatService.sendShortTermStats(any(List.class))).thenReturn(Observable.error(new Throwable()));
+        when(mockAppStatService.sendShortTermStats(any(List.class))).thenReturn(Completable.error(new Throwable()));
 
         AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
-        subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
+        subject.sendShortTermStats(mockSendDataCallback);
 
         verify(mockSendDataCallback).onFail();
     }
 
     @Test
-    public void sendShortTermStatAndAppUsages호출시_앱사용정보통계전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
+    public void sendAppUsages호출시_앱통계정보가_DB에_삭제_저장하고_통계저장API를_호출한다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
-        when(mockLocalStorageHelper.getLastUpdateStatTimestamp()).thenReturn(0L);
+        when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
+        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+        when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.complete());
+        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
+        subject.sendAppUsages(mockSendDataCallback);
+
+        verify(mockAppRepositoryHelper).deleteAppUsages(anyInt());
+        verify(mockAppRepositoryHelper).updateTotalUsedTime(any(List.class));
+        verify(mockAppStatService).sendAppUsages(any(List.class));
+        verify(mockLocalStorageHelper).setLastUpdateAppUsageTimestamp(eq(10L));
+        verify(mockSendDataCallback).onSuccess();
+    }
+
+    @Test
+    public void sendAppUsages호출시_앱사용정보통계전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
+        when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
-        when(mockAppService.sendAppUsages(any(List.class))).thenReturn(Observable.error(new Throwable()));
+        when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.error(new Throwable()));
 
         AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
-        subject.sendShortTermStatAndAppUsages(mockSendDataCallback);
+        subject.sendAppUsages(mockSendDataCallback);
 
         verify(mockSendDataCallback).onFail();
     }
@@ -263,40 +274,6 @@ public class AppUsageDataHelperTest {
         assertDailyStatSummary(dailyStatSummaryList.get(0), "package", 20171120, 7200000L);
         assertDailyStatSummary(dailyStatSummaryList.get(1), "package", 20171121, 3600000L);
 
-    }
-
-    @Test
-    public void getSortedUsedPackageNames호출시_totalUsedTime으로_내림차순으로_정렬하여_리턴한다() throws Exception {
-        List<AppUsage> mockAppUsageList = new ArrayList<>();
-        mockAppUsageList.add(new AppUsage("package1", 1000L));
-        mockAppUsageList.add(new AppUsage("package2", 2000L));
-        mockAppUsageList.add(new AppUsage("package3", 3000L));
-        mockAppUsageList.add(new AppUsage("package4", 4000L));
-        when(mockAppRepositoryHelper.getAppUsages()).thenReturn(mockAppUsageList);
-        List<String> result = subject.getSortedUsedPackageNames().toBlocking().single();
-
-        assertThat(result.size()).isEqualTo(4);
-        assertThat(result.get(0)).isEqualTo("package4");
-        assertThat(result.get(1)).isEqualTo("package3");
-        assertThat(result.get(2)).isEqualTo("package2");
-        assertThat(result.get(3)).isEqualTo("package1");
-    }
-
-    @Test
-    public void getSortedUsedPackageNames호출시_totalUsedTime이_같을경우_packgeName으로_오름차순하여_리턴한다() throws Exception {
-        List<AppUsage> mockAppUsageList = new ArrayList<>();
-        mockAppUsageList.add(new AppUsage("package3", 1000L));
-        mockAppUsageList.add(new AppUsage("package2", 1000L));
-        mockAppUsageList.add(new AppUsage("package1", 1000L));
-        mockAppUsageList.add(new AppUsage("package4", 1000L));
-        when(mockAppRepositoryHelper.getAppUsages()).thenReturn(mockAppUsageList);
-        List<String> result = subject.getSortedUsedPackageNames().toBlocking().single();
-
-        assertThat(result.size()).isEqualTo(4);
-        assertThat(result.get(0)).isEqualTo("package1");
-        assertThat(result.get(1)).isEqualTo("package2");
-        assertThat(result.get(2)).isEqualTo("package3");
-        assertThat(result.get(3)).isEqualTo("package4");
     }
 
     @Test

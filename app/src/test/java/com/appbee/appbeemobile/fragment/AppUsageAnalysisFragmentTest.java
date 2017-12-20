@@ -9,10 +9,8 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
-import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
-import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.ConfigService;
 
 import org.junit.After;
@@ -47,9 +45,6 @@ import static org.mockito.Mockito.when;
 public class AppUsageAnalysisFragmentTest {
 
     @Inject
-    AppService mockAppService;
-
-    @Inject
     ConfigService mockConfigService;
 
     @Inject
@@ -57,9 +52,6 @@ public class AppUsageAnalysisFragmentTest {
 
     @Inject
     NativeAppInfoHelper mockNativeAppInfoHelper;
-
-    @Inject
-    TimeHelper mockTimeHelper;
 
     private AppUsageAnalysisFragment subject;
     private SupportFragmentController<AppUsageAnalysisFragment> controller;

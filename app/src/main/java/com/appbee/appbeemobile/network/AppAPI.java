@@ -11,5 +11,5 @@ import rx.Observable;
 
 public interface AppAPI {
     @POST("/apps/usages")
-    Observable<Boolean> postUsages(@Header("x-access-token") String accessToken, @Body List<AppUsage> appUsages);
+    Observable<Void> postUsages(@Header("x-access-token") String accessToken, @Body List<AppUsage> appUsages);
 }

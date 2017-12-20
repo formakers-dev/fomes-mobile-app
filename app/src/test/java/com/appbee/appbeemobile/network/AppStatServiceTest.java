@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.network;
 
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.model.AppUsage;
 import com.appbee.appbeemobile.model.ShortTermStat;
 
 import org.junit.Before;
@@ -19,6 +20,7 @@ import rx.Observable;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -31,6 +33,8 @@ public class AppStatServiceTest {
 
     @Mock
     private LocalStorageHelper mockLocalStorageHelper;
+    @Mock
+    private AppAPI mockAppAPI;
 
     @Mock
     private StatAPI mockStatAPI;
@@ -38,7 +42,7 @@ public class AppStatServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = new AppStatService(mockStatAPI, mockLocalStorageHelper);
+        subject = new AppStatService(mockAppAPI, mockStatAPI, mockLocalStorageHelper);
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
@@ -67,4 +71,14 @@ public class AppStatServiceTest {
         verify(mockStatAPI, never()).sendShortTermStats(anyString(), any(List.class));
     }
 
+    @Test
+    public void postAppUsages호출시_앱별_사용정보통계를_서버로_전송한다() throws Exception {
+        List<AppUsage> mockAppUsageList = new ArrayList<>();
+        mockAppUsageList.add(new AppUsage("packageA", 1000L));
+        mockAppUsageList.add(new AppUsage("packageB", 2000L));
+        when(mockAppAPI.postUsages(anyString(), any(List.class))).thenReturn(mock(Observable.class));
+        subject.sendAppUsages(mockAppUsageList);
+
+        verify(mockAppAPI).postUsages(anyString(), eq(mockAppUsageList));
+    }
 }
