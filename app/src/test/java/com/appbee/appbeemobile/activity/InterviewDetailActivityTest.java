@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -382,6 +383,31 @@ public class InterviewDetailActivityTest extends ActivityTest {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 
         assertMoveToMyInterviewActivity(dialog);
+    }
+
+    @Test
+    public void 세부일정중_특정시간을_선택하면_RadioGroup의_체크값이_해당시간으로_설정된다() throws Exception {
+        setupForPreparationOfParticipation();
+
+        RadioButton checkedRadioButton = ((RadioButton) subject.timeSlotRadioGroup.getChildAt(0));
+        assertThat(subject.timeSlotRadioGroup.getCheckedRadioButtonId()).isEqualTo(checkedRadioButton.getId());
+    }
+
+    @Test
+    public void 세부일정중_특정시간이_선택된상태에서_다른_시간을_클릭하면_선택한_시간으로_라디오그룹의_체크된_버튼이_변경된다() throws Exception {
+        setupForPreparationOfParticipation();
+        subject.timeSlotRadioGroup.getChildAt(1).performClick();
+
+        RadioButton checkedRadioButton = ((RadioButton) subject.timeSlotRadioGroup.getChildAt(1));
+        assertThat(subject.timeSlotRadioGroup.getCheckedRadioButtonId()).isEqualTo(checkedRadioButton.getId());
+    }
+
+    @Test
+    public void 세부일정중_특정시간이_선택된상태에서_해당_시간을_다시_클릭하면_RadioGroup의_체크상태를_해제한다() throws Exception {
+        setupForPreparationOfParticipation();
+        subject.timeSlotRadioGroup.getChildAt(0).performClick();
+
+        assertThat(subject.timeSlotRadioGroup.getCheckedRadioButtonId()).isEqualTo(-1);
     }
 
     private void setupForPreparationOfParticipation() {
