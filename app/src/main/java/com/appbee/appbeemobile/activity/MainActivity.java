@@ -13,6 +13,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
@@ -29,7 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity
 
     @Inject
     ProjectService projectService;
+    private Runnable pendingRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +78,12 @@ public class MainActivity extends BaseActivity
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+
+        toggle.setDrawerSlideAnimationEnabled(true);
         toggle.syncState();
+
+        drawer.addDrawerListener(toggle);
+        drawer.addDrawerListener(this);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -107,27 +113,50 @@ public class MainActivity extends BaseActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.my_interview) {
-            Intent intent = new Intent(this, MyInterviewActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.my_app_usage_pattern) {
-            Intent intent = new Intent(this, MyAppUsageActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.appbee_question) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("message/rfc822");
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"admin@appbee.info"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]");
-            intent.putExtra(Intent.EXTRA_TEXT, "앱비에게 문의해주세요");
-            startActivity(intent);
-        }
+        pendingRunnable = () -> {
+            int id = item.getItemId();
+            if (id == R.id.my_interview) {
+                Intent intent = new Intent(MainActivity.this, MyInterviewActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.my_app_usage_pattern) {
+                Intent intent = new Intent(MainActivity.this, MyAppUsageActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.appbee_question) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"admin@appbee.info"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]");
+                intent.putExtra(Intent.EXTRA_TEXT, "앱비에게 문의해주세요");
+                startActivity(intent);
+            }
+        };
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        if (pendingRunnable != null) {
+            runOnUiThread(pendingRunnable);
+            pendingRunnable = null;
+        }
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
+    }
 }

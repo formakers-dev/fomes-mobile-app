@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
+import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 
 import com.appbee.appbeemobile.BuildConfig;
@@ -10,7 +11,6 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -68,19 +68,36 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onNavigationItemSelected시_다가오는_인터뷰_버튼이_클릭되었을_경우_신청한_인터뷰리스트_페이지로_이동한다() throws Exception {
+    public void onPostCreate시_toolbar의_메뉴버튼클릭시_drawer가_열린다() throws Exception {
+        subject.toolbar.getChildAt(0).performClick();
+
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isTrue();
+    }
+
+    @Test
+    public void onNavigationItemSelected시_다가오는_인터뷰_버튼이_클릭되었을_경우_열려있는메뉴를_닫고_신청한_인터뷰리스트_페이지로_이동한다() throws Exception {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.my_interview);
+
         subject.onNavigationItemSelected(item);
+
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isFalse();
+
+        subject.onDrawerClosed(subject.drawer);
+
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains("MyInterviewActivity");
     }
 
     @Test
-    public void onNavigationItemSelected시_앱비에게문의하기_메뉴을_클릭하면_메일을_보내는앱을_호출한다() throws Exception {
+    public void onNavigationItemSelected시_앱비에게문의하기_메뉴을_클릭하면_열려있는메뉴를_닫고_메일을_보내는앱을_호출한다() throws Exception {
         MenuItem menuItem = mock(MenuItem.class);
         when(menuItem.getItemId()).thenReturn(R.id.appbee_question);
 
         subject.onNavigationItemSelected(menuItem);
+
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isFalse();
+
+        subject.onDrawerClosed(subject.drawer);
 
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedIntent.getType()).isEqualTo("message/rfc822");
@@ -90,13 +107,29 @@ public class MainActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onNavigationItemSelected시_앱사용패턴다시분석하기_메뉴을_클릭하면_성향분석페이지로이동한다() throws Exception {
+    public void onNavigationItemSelected시_앱사용패턴다시분석하기_메뉴을_클릭하면_열려있는메뉴를_닫고_성향분석페이지로이동한다() throws Exception {
         MenuItem menuItem = mock(MenuItem.class);
         when(menuItem.getItemId()).thenReturn(R.id.my_app_usage_pattern);
 
         subject.onNavigationItemSelected(menuItem);
 
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isFalse();
+
+        subject.onDrawerClosed(subject.drawer);
+
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo(MyAppUsageActivity.class.getCanonicalName());
+    }
+
+    @Test
+    public void onNavigationItem선택하지않고_drawer를_닫으면_다음화면으로_이동하지않는다() throws Exception {
+        subject.toolbar.getChildAt(0).performClick();
+
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isTrue();
+
+        subject.onDrawerClosed(subject.drawer);
+
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedIntent).isNull();
     }
 }
