@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
-import rx.Observable;
+import rx.Completable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -78,7 +78,7 @@ public class CancelInterviewActivityTest extends ActivityTest {
         intent.putExtra(AppBeeConstants.EXTRA.PROJECT_NAME, "WHOn");
         intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS, "확정");
 
-        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
+        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.complete());
 
         subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
     }
@@ -178,7 +178,7 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
     @Test
     public void 인터뷰취소요청이_HTTP오류가_아닌_이유로_실패한경우_팝업메시지를_표시한다() throws Exception {
-        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new Exception("Unknown Error")));
+        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.error(new Exception("Unknown Error")));
         subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
 
         subject.findViewById(R.id.cancel_yes).performClick();
@@ -200,7 +200,7 @@ public class CancelInterviewActivityTest extends ActivityTest {
     }
 
     private void setupCancelHttpError(int errorCode) {
-        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+        when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
         subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
     }
 

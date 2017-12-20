@@ -26,7 +26,6 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -242,13 +241,5 @@ public class ProjectServiceTest {
         assertThat(projectList.get(0).getInterview().getSelectedTimeSlot()).isEqualTo("time9");
         assertThat(projectList.get(0).getInterview().getEmergencyPhone()).isEqualTo("010-9999-8888");
         assertThat(projectList.get(0).getInterview().getIntroduce()).isEqualTo("인터뷰소개");
-    }
-
-    @Test
-    public void postCancelParticipate를호출시요청한인터뷰취소API를호출한다() throws Exception {
-        when(mockProjectAPI.postCancleParticipate(anyString(), anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-
-        Boolean result = subject.postCancelParticipate("projectId", 1L, "time9").toBlocking().single();
-        assertThat(result).isTrue();
     }
 }

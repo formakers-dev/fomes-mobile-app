@@ -66,9 +66,10 @@ public class ProjectService extends AbstractAppBeeService {
                 .toCompletable();
     }
 
-    public Observable<Boolean> postCancelParticipate(String project, long seq, String slotId) {
+    public Completable postCancelParticipate(String project, long seq, String slotId) {
         return projectAPI.postCancleParticipate(localStorageHelper.getAccessToken(), project, seq, slotId)
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .toCompletable();
     }
 }

@@ -96,12 +96,9 @@ public class CancelInterviewActivity extends BaseActivity {
         addToCompositeSubscription(
                 projectService.postCancelParticipate(projectId, seq, timeSlot)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
+                        .subscribe(() -> {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                            if (result) {
-                                showSuccessAlertDialog();
-                            }
+                            showSuccessAlertDialog();
                         }, err -> {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
