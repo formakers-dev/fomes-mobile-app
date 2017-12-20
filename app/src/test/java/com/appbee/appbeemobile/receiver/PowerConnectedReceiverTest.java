@@ -58,7 +58,7 @@ public class PowerConnectedReceiverTest {
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
         MockitoAnnotations.initMocks(this);
-        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         subject = new PowerConnectedReceiver();
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
@@ -84,23 +84,26 @@ public class PowerConnectedReceiverTest {
     }
 
     @Test
-    public void onReceive에서_PowerConnect되었을때_단기통계데이터를_서버로_전송한다() throws Exception {
+    public void onReceive에서_PowerConnect되었을때_단기통계데이터와_앱사용통계정보를_서버로_전송한다() throws Exception {
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
 
-        verify(mockAppUsageDataHelper).sendShortTermStatAndAppUsages(any());
+        verify(mockAppUsageDataHelper).sendShortTermStats(any());
+        verify(mockAppUsageDataHelper).sendAppUsages(any());
     }
 
     @Test
     public void onReceive에서_PowerConnect되었을때_권한이없으면_아무것도하지않는다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
-        verify(mockAppUsageDataHelper, never()).sendShortTermStatAndAppUsages(any());
+        verify(mockAppUsageDataHelper, never()).sendShortTermStats(any());
+        verify(mockAppUsageDataHelper, never()).sendAppUsages(any());
     }
 
     @Test
     public void onReceive에서_PowerConnect되었을때_로그인상태가_아니면_아무것도하지않는다() throws Exception {
         when(mockLocalStorageHelper.isLoggedIn()).thenReturn(false);
         subject.onReceive(RuntimeEnvironment.application.getApplicationContext(), new Intent(Intent.ACTION_POWER_CONNECTED));
-        verify(mockAppUsageDataHelper, never()).sendShortTermStatAndAppUsages(any());
+        verify(mockAppUsageDataHelper, never()).sendShortTermStats(any());
+        verify(mockAppUsageDataHelper, never()).sendAppUsages(any());
     }
 }

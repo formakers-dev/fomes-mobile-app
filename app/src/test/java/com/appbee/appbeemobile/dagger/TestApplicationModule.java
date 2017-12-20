@@ -12,7 +12,6 @@ import com.appbee.appbeemobile.helper.MessagingHelper;
 import com.appbee.appbeemobile.helper.ResourceHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.network.AppAPI;
-import com.appbee.appbeemobile.network.AppService;
 import com.appbee.appbeemobile.network.AppStatService;
 import com.appbee.appbeemobile.network.ConfigAPI;
 import com.appbee.appbeemobile.network.ConfigService;
@@ -82,13 +81,6 @@ public class TestApplicationModule {
     /**
      * API Service
      */
-
-    @Singleton
-    @Provides
-    AppService appService() {
-        return mock(AppService.class);
-    }
-
     @Provides
     @Singleton
     AppStatService appStatService() {

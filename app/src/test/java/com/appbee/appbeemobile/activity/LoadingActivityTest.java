@@ -6,7 +6,6 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
-import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
 
 import org.junit.After;
@@ -25,15 +24,11 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.Completable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -77,12 +72,12 @@ public class LoadingActivityTest extends ActivityTest {
     }
 
     @Test
-    public void onPostCreate호출시_통계데이터를_전송한다() throws Exception {
+    public void onPostCreate호출시_AppUsage데이터를_전송한다() throws Exception {
         LoadingActivity subject = createSubjectWithPostCreateLifecycle();
 
         ArgumentCaptor<AppUsageDataHelper.SendDataCallback> sendDataCallbackArgumentCaptor = ArgumentCaptor.forClass(AppUsageDataHelper.SendDataCallback.class);
 
-        verify(mockAppUsageDataHelper).sendShortTermStatAndAppUsages(sendDataCallbackArgumentCaptor.capture());
+        verify(mockAppUsageDataHelper).sendAppUsages(sendDataCallbackArgumentCaptor.capture());
         assertThat(sendDataCallbackArgumentCaptor.getValue()).isEqualTo(subject.appUsageDataHelperSendDataCallback);
     }
 
