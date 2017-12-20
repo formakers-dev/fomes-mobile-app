@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -58,10 +59,11 @@ public class ProjectService extends AbstractAppBeeService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<Boolean> postParticipate(String projectId, long seq, String slotId) {
+    public Completable postParticipate(String projectId, long seq, String slotId) {
         return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId)
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .toCompletable();
     }
 
     public Observable<Boolean> postCancelParticipate(String project, long seq, String slotId) {

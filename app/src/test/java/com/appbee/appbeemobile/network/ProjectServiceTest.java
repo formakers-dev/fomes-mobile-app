@@ -115,14 +115,6 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void postParticipate호출시_인터뷰참여API를_호출한다() throws Exception {
-        when(mockProjectAPI.postParticipate(anyString(), anyString(), anyLong(), anyString())).thenReturn(Observable.just(true));
-
-        Boolean result = subject.postParticipate("projectId", 1L, "").toBlocking().single();
-        assertThat(result).isTrue();
-    }
-
-    @Test
     public void getAllInterview호출시_인터뷰조회API를_호출한다() throws Exception {
         List<Project> mockProjectList = new ArrayList<>();
 
