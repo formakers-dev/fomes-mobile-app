@@ -8,6 +8,7 @@ import android.support.annotation.StringRes;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +18,7 @@ import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.api.services.people.v1.model.Person;
@@ -28,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -49,6 +49,11 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tnc_title_text)
     TextView tncAgreeTextView;
 
+    @BindView(R.id.login_button_layout)
+    View loginButtonLayout;
+
+    private boolean isSilentSignedIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +69,24 @@ public class LoginActivity extends BaseActivity {
 
         tncAgreeTextView.setText(Html.fromHtml(getString(R.string.tnc_agree_text)));
         tncAgreeTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        mGoogleApiClient = googleSignInAPIHelper.createGoogleApiClient(getString(R.string.default_web_client_id));
+        silentSignIn();
+    }
+
+    private void silentSignIn() {
+        Observable.fromCallable(() -> googleSignInAPIHelper.requestSilentSignInResult(mGoogleApiClient))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(googleSignInResult -> {
+                    if (googleSignInResult != null && googleSignInResult.isSuccess()) {
+                        isSilentSignedIn = true;
+                        verifyGoogleSignInResult(googleSignInResult);
+                    } else {
+                        isSilentSignedIn = false;
+                        loginButtonLayout.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     @OnClick(R.id.login_button)
@@ -72,15 +95,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void signIn() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
         Intent signInIntent = googleSignInAPIHelper.requestSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -94,23 +108,31 @@ public class LoginActivity extends BaseActivity {
                 return;
             }
 
-            GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
-            GoogleSignInAccount account = result.getSignInAccount();
-            if (resultCode == Activity.RESULT_OK && result.isSuccess() && account != null) {
-                addToCompositeSubscription(
-                        googleSignInAPIHelper.getPerson(account)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
-                                        e -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), null))
-                );
+            if (resultCode == Activity.RESULT_OK) {
+                GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
+                verifyGoogleSignInResult(result);
             } else {
                 finishActivityForFail(R.string.fail_to_connect_google_play);
             }
         }
     }
 
-    void signInUser(final String googleIdToken, final String googleUserId, final String email, final Person person) {
+    private void verifyGoogleSignInResult(GoogleSignInResult result) {
+        GoogleSignInAccount account = result.getSignInAccount();
+        if (result.isSuccess() && account != null) {
+            addToCompositeSubscription(
+                    googleSignInAPIHelper.getPerson(account)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(person -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), person),
+                                    e -> signInUser(account.getIdToken(), account.getId(), account.getEmail(), null))
+            );
+        } else {
+            finishActivityForFail(R.string.fail_to_connect_google_play);
+        }
+    }
+
+    private void signInUser(final String googleIdToken, final String googleUserId, final String email, final Person person) {
         final String userId = googleSignInAPIHelper.getProvider() + googleUserId;
 
         final User user = new User(userId, email, localStorageHelper.getRegistrationToken());
@@ -130,7 +152,8 @@ public class LoginActivity extends BaseActivity {
                             localStorageHelper.setAccessToken(accessToken);
                             localStorageHelper.setUserId(userId);
                             localStorageHelper.setEmail(email);
-                            moveToOnBoardingActivity();
+
+                            moveToNextActivity();
                         }, e -> {
                             Log.e(TAG, "signInUser Failed");
                             finishActivityForFail(R.string.fail_to_sign_in);
@@ -138,8 +161,15 @@ public class LoginActivity extends BaseActivity {
         );
     }
 
-    private void moveToOnBoardingActivity() {
-        Intent intent = new Intent(getBaseContext(), OnboardingActivity.class);
+    private void moveToNextActivity() {
+        Intent intent;
+
+        if (isSilentSignedIn) {
+            intent = new Intent(getBaseContext(), MainActivity.class);
+        } else {
+            intent = new Intent(getBaseContext(), OnboardingActivity.class);
+        }
+
         startActivity(intent);
         setResult(Activity.RESULT_OK);
         finish();

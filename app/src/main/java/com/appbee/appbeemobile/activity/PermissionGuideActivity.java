@@ -91,12 +91,6 @@ public class PermissionGuideActivity extends BaseActivity {
         startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
     }
 
-    private void moveActivityTo(Class activityClass) {
-        Intent intent = new Intent(this, activityClass);
-        startActivity(intent);
-        finish();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION
