@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,6 +48,12 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         super.onDestroy();
+    }
+
+    protected void moveActivityTo(Class activityClass) {
+        Intent intent = new Intent(this, activityClass);
+        startActivity(intent);
+        finish();
     }
 
     public void logError(Throwable error) {

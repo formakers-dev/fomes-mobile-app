@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.method.LinkMovementMethod;
+import android.view.View;
 
 import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
@@ -23,6 +24,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -35,7 +38,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Completable;
 import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -64,13 +66,21 @@ public class LoginActivityTest extends ActivityTest {
     @Inject
     LocalStorageHelper localStorageHelper;
 
+    @Mock
+    GoogleSignInAccount mockGoogleSignInAccount;
+
     @Before
     public void setUp() throws Exception {
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
+        MockitoAnnotations.initMocks(this);
+
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = Robolectric.buildActivity(LoginActivity.class).create().get();
+
+        Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
+        intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
+        when(googleSignInAPIHelper.requestSignInIntent(any())).thenReturn(intent);
     }
 
     @After
@@ -79,11 +89,48 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     private LoginActivity getSubjectAfterSetupGoogleSignIn() {
-        Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
-        intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
-        when(googleSignInAPIHelper.requestSignInIntent(any())).thenReturn(intent);
+        mockGoogleSignInResult(true);
+        mockPerson();
+        when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
 
         return Robolectric.setupActivity(LoginActivity.class);
+    }
+
+    private LoginActivity getSubjectAfterSetupGoogleSilentSignedIn() {
+        GoogleSignInResult mockGoogleSignInResult = mockGoogleSignInResult(true);
+        mockPerson();
+        when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
+
+        when(googleSignInAPIHelper.requestSilentSignInResult(any())).thenReturn(mockGoogleSignInResult);
+
+        return Robolectric.setupActivity(LoginActivity.class);
+    }
+
+    private void mockPerson() {
+        Gender gender = new Gender().setValue("male");
+        Birthday birthday = new Birthday().setDate(new Date().setYear(1999).setMonth(11).setDay(31));
+        when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.just(getPerson(gender, birthday)));
+    }
+
+    private GoogleSignInResult mockGoogleSignInResult(boolean isSuccess) {
+        when(mockGoogleSignInAccount.getIdToken()).thenReturn("testToken");
+        when(mockGoogleSignInAccount.getId()).thenReturn("testId");
+        when(mockGoogleSignInAccount.getDisplayName()).thenReturn("testName");
+        when(mockGoogleSignInAccount.getEmail()).thenReturn("testEmail");
+        when(googleSignInAPIHelper.getProvider()).thenReturn("google");
+
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
+        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockGoogleSignInAccount);
+
+        return mockGoogleSignInResult;
+    }
+
+    private void mockGoogleSignInResultWithoutAccount(boolean isSuccess) {
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
+        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
     }
 
     @Test
@@ -107,11 +154,6 @@ public class LoginActivityTest extends ActivityTest {
     public void onActivityResult_GoogleSign성공시_Person_Profile정보조회후_signIn_API를_호출한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
-        when(googleSignInAPIHelper.getPerson(any())).thenReturn(Observable.just(new Person()));
-
-        GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
-        mockGoogleSignInResult(mockGoogleSignInAccount, true);
-
         when(userService.signIn(anyString(), any())).thenReturn(Observable.just("accessToken"));
 
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
@@ -124,7 +166,7 @@ public class LoginActivityTest extends ActivityTest {
     public void onActivityResult_GoogleSign결과실패시_오류메시지를_표시하고_액티비티를_종료한다() throws Exception {
         subject = getSubjectAfterSetupGoogleSignIn();
 
-        mockGoogleSignInResult(mock(GoogleSignInAccount.class), false);
+        mockGoogleSignInResult(false);
 
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
@@ -152,29 +194,74 @@ public class LoginActivityTest extends ActivityTest {
     }
 
     @Test
-    public void signInAPI_성공응답을_받으면_user정보를_sharedPreferences에_저장하고_OnboardingActivity를_시작한다() throws Exception {
-        when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
-        when(googleSignInAPIHelper.getProvider()).thenReturn("google");
+    public void onActivityResult에서_호출된_signInAPI_성공응답을_받으면_user정보를_sharedPreferences에_저장하고_OnboardingActivity로_이동한다() throws Exception {
+        subject = getSubjectAfterSetupGoogleSignIn();
 
-        Gender gender = new Gender().setValue("male");
-        Birthday birthday = new Birthday().setDate(new Date().setYear(1999).setMonth(11).setDay(31));
-        Person person = getPerson(gender, birthday);
+        subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail", person);
-
-        verify(localStorageHelper).setAccessToken("testAccessToken");
-        verify(localStorageHelper).setUserId("googletestGoogleId");
-
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains(OnboardingActivity.class.getSimpleName());
+        verifySharedPreferenceForPersonDataAndMoveTo(OnboardingActivity.class.getSimpleName());
     }
 
     @Test
     public void signInAPI_실패응답을_받으면_오류메세지를_표시한다() throws Exception {
+        mockGoogleSignInResult(true);
+        mockPerson();
         when(userService.signIn(anyString(), any())).thenReturn(Observable.error(new Throwable()));
 
-        subject.signInUser("testIdToken", "testGoogleId", "testEmail", null);
+        subject = Robolectric.setupActivity(LoginActivity.class);
+        subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         assertFinishActivityForFail("Fail to sign in");
+    }
+
+    /* SilentSignIn 관련 테스트 */
+    @Test
+    public void onPostCreate시_기존에_구글로그인하지_않아서_GoogleSignInResult가_null인_경우_로그인버튼을_표시한다() throws Exception {
+        when(googleSignInAPIHelper.requestSilentSignInResult(any())).thenReturn(null);
+        subject = getSubjectAfterSetupGoogleSignIn();
+
+        assertThat(subject.loginButtonLayout.getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void onPostCreate시_기존에_구글로그인했으나_GoogleSignInResult의_isSuccess가_false인_경우_로그인버튼을_표시한다() throws Exception {
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockGoogleSignInResult.isSuccess()).thenReturn(false);
+        when(googleSignInAPIHelper.requestSilentSignInResult(any())).thenReturn(mockGoogleSignInResult);
+
+        subject = getSubjectAfterSetupGoogleSignIn();
+
+        assertThat(subject.loginButtonLayout.getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void onPostCreate시_기존에_구글로그인한_경우_로그인버튼을_표시하지_않는다() throws Exception {
+        subject = getSubjectAfterSetupGoogleSilentSignedIn();
+
+        assertThat(subject.loginButtonLayout.getVisibility()).isEqualTo(View.INVISIBLE);
+    }
+
+    @Test
+    public void onPostCreate시_기존에_구글로그인한_경우_person데이터를_조회한다() throws Exception {
+        subject = getSubjectAfterSetupGoogleSilentSignedIn();
+
+        verify(googleSignInAPIHelper).getPerson(eq(mockGoogleSignInAccount));
+    }
+
+    @Test
+    public void SilentSignIn후_signInAPI_성공응답을_받으면_sharedPreferences에_저장하고_MainActivity로_이동한다() throws Exception {
+        subject = getSubjectAfterSetupGoogleSilentSignedIn();
+
+        verifySharedPreferenceForPersonDataAndMoveTo(MainActivity.class.getSimpleName());
+    }
+
+    private void verifySharedPreferenceForPersonDataAndMoveTo(String moveToActivitySimpleName) {
+        verify(localStorageHelper).setAccessToken("testAccessToken");
+        verify(localStorageHelper).setUserId("googletestId");
+        verify(localStorageHelper).setEmail("testEmail");
+
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains(moveToActivitySimpleName);
+        assertThat(subject.isFinishing()).isTrue();
     }
 
     private void assertFinishActivityForFail(String message) {
@@ -182,24 +269,6 @@ public class LoginActivityTest extends ActivityTest {
         assertThat(shadowOf(subject).getResultCode()).isEqualTo(Activity.RESULT_CANCELED);
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
-
-    private void mockGoogleSignInResult(GoogleSignInAccount mockAccount, boolean isSuccess) {
-        when(mockAccount.getIdToken()).thenReturn("testToken");
-        when(mockAccount.getId()).thenReturn("testId");
-        when(mockAccount.getDisplayName()).thenReturn("testName");
-
-        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
-        when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
-        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
-        when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockAccount);
-    }
-
-    private void mockGoogleSignInResultWithoutAccount(boolean isSuccess) {
-        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
-        when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
-        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
-    }
-
 
     private Person getPerson(Gender gender, Birthday birthday) {
         List<Birthday> birthdayList = new ArrayList<>();

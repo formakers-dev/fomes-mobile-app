@@ -6,7 +6,9 @@ import android.content.Intent;
 import com.appbee.appbeemobile.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -37,11 +39,33 @@ public class GoogleSignInAPIHelper {
         this.context = context;
     }
 
+    public GoogleApiClient createGoogleApiClient(String webClientId) {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(webClientId)
+                .requestEmail()
+                .build();
+
+        return new GoogleApiClient.Builder(context)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
     public Intent requestSignInIntent(GoogleApiClient googleApiClient) {
         return Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
     }
+
     public GoogleSignInResult requestSignInResult(Intent data) {
         return Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+    }
+
+    public GoogleSignInResult requestSilentSignInResult(GoogleApiClient googleApiClient) {
+        ConnectionResult result = googleApiClient.blockingConnect();
+
+        if (result.isSuccess()) {
+            return Auth.GoogleSignInApi.silentSignIn(googleApiClient).await();
+        } else {
+            return null;
+        }
     }
 
     public Observable<Person> getPerson(final GoogleSignInAccount account) {
