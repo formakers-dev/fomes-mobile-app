@@ -1,6 +1,7 @@
 package com.appbee.appbeemobile.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.util.ArraySet;
 import android.view.View;
 
@@ -8,6 +9,9 @@ import org.junit.After;
 import org.robolectric.util.ReflectionHelpers;
 
 import java.util.ArrayList;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.robolectric.Shadows.shadowOf;
 
 public class ActivityTest {
     @SuppressLint("NewApi")
@@ -29,5 +33,10 @@ public class ActivityTest {
 
         ArraySet<View> dyingViews = ReflectionHelpers.getField(instance, "mDyingViews");
         dyingViews.clear();
+    }
+
+    protected void verifyMoveToActivity(Activity subject, Class expectActivityClass) {
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(expectActivityClass.getName());
+        assertThat(subject.isFinishing()).isTrue();
     }
 }

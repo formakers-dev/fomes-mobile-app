@@ -43,6 +43,12 @@ public class UserService extends AbstractAppBeeService {
                 .toCompletable();
     }
 
+    public Completable verifyToken() {
+        return userAPI.verifyToken(localStorageHelper.getAccessToken())
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io()).toCompletable();
+    }
+
     @Override
     protected String getTag() {
         return TAG;

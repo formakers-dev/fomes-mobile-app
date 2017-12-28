@@ -3,6 +3,7 @@ package com.appbee.appbeemobile.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ConfigService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 import org.junit.Before;
@@ -24,8 +26,14 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowToast;
 
 import javax.inject.Inject;
+
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
+import rx.Completable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -43,6 +51,9 @@ public class PermissionGuideActivityTest extends ActivityTest {
     ConfigService mockConfigService;
 
     @Inject
+    UserService mockUserService;
+
+    @Inject
     LocalStorageHelper mockLocalStorageHelper;
     private ActivityController<PermissionGuideActivity> activityController;
 
@@ -54,6 +65,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockLocalStorageHelper.isLoggedIn()).thenReturn(true);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         when(mockConfigService.getAppVersion()).thenReturn(1L);
+        when(mockUserService.verifyToken()).thenReturn(Completable.complete());
         activityController = Robolectric.buildActivity(PermissionGuideActivity.class);
     }
 
@@ -110,8 +122,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockLocalStorageHelper.getInvitationCode()).thenReturn("");
         PermissionGuideActivity subject = activityController.create().postCreate(null).get();
 
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(CodeVerificationActivity.class.getName());
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
+        verifyMoveToActivity(subject, CodeVerificationActivity.class);
     }
 
     @Test
@@ -119,8 +130,46 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockLocalStorageHelper.isLoggedIn()).thenReturn(false);
         PermissionGuideActivity subject = activityController.create().postCreate(null).get();
 
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
+        verifyMoveToActivity(subject, LoginActivity.class);
+    }
+
+    @Test
+    public void onCreate호출시_토큰이_만료된_경우_LoginActivity로_이동한다() throws Exception {
+        when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(401));
+        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+
+        verifyMoveToActivity(subject, LoginActivity.class);
+    }
+
+    @Test
+    public void onCreate호출시_토큰이_유효하지_않은_경우_LoginActivity로_이동한다() throws Exception {
+        when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(403));
+        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+
+        verifyMoveToActivity(subject, LoginActivity.class);
+    }
+
+    @Test
+    public void onCreate호출시_토큰유효성검증요청의_서버응답오류가_발생한_경우_에러메시지표시후_종료한다() throws Exception {
+        when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(500));
+        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("예상치 못한 에러가 발생하였습니다.");
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @NonNull
+    private Completable createHttpErrorForCompletable(int httpErrorCode) {
+        return Completable.error(new HttpException(Response.error(httpErrorCode, ResponseBody.create(null, ""))));
+    }
+
+    @Test
+    public void onCreate호출시_토큰검증시_예기치못한_에러가_발생할_경우_에러메시지표시후_종료한다() throws Exception {
+        when(mockUserService.verifyToken()).thenReturn(Completable.error(new Exception()));
+        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("예상치 못한 에러가 발생하였습니다.");
+        assertThat(subject.isFinishing()).isTrue();
     }
 
     @Test
@@ -128,8 +177,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         PermissionGuideActivity subject = activityController.create().postCreate(null).get();
 
-        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
+        verifyMoveToActivity(subject, MainActivity.class);
     }
 
     @Test
@@ -143,10 +191,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
         PermissionGuideActivity subject = Robolectric.buildActivity(PermissionGuideActivity.class, intent).create().postCreate(null).get();
 
-        Intent nextStartedActivityIntent = shadowOf(subject).getNextStartedActivity();
-
-        assertThat(nextStartedActivityIntent.getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
-        assertThat(subject.isFinishing()).isTrue();
+        verifyMoveToActivity(subject, MainActivity.class);
     }
 
     @Test
@@ -160,10 +205,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
         PermissionGuideActivity subject = Robolectric.buildActivity(PermissionGuideActivity.class, intent).create().postCreate(null).get();
 
-        Intent nextStartedActivityIntent = shadowOf(subject).getNextStartedActivity();
-
-        assertThat(nextStartedActivityIntent.getComponent().getClassName()).isEqualTo(MyInterviewActivity.class.getName());
-        assertThat(subject.isFinishing()).isTrue();
+        verifyMoveToActivity(subject, MyInterviewActivity.class);
     }
 
     @Test
@@ -184,8 +226,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
 
-        assertThat(shadowOf(subject).getNextStartedActivityForResult().intent.getComponent().getClassName()).isEqualTo(LoadingActivity.class.getName());
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
+        verifyMoveToActivity(subject, LoadingActivity.class);
     }
 
     @Test

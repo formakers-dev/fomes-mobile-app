@@ -18,4 +18,7 @@ public interface UserAPI {
 
     @GET("/user/verifyInvitationCode/{code}")
     Observable<Void> verifyInvitationCode(@Path("code") String code);
+
+    @GET("/user/verifyToken")
+    Observable<Void> verifyToken(@Header("x-access-token") String accessToken);
 }
