@@ -7,6 +7,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.BuildConfig;
@@ -15,12 +16,15 @@ import com.appbee.appbeemobile.custom.AppBeeAlertDialog;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.network.ConfigService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.util.AppBeeConstants;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.adapter.rxjava.HttpException;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class PermissionGuideActivity extends BaseActivity {
 
@@ -35,6 +39,9 @@ public class PermissionGuideActivity extends BaseActivity {
 
     @Inject
     ConfigService configService;
+
+    @Inject
+    UserService userService;
 
     @BindView(R.id.permission_button)
     Button permissionButton;
@@ -62,14 +69,30 @@ public class PermissionGuideActivity extends BaseActivity {
             return;
         }
 
-        if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            String notification = getIntent().getStringExtra(AppBeeConstants.EXTRA.NOTIFICATION_TYPE);
-            if ("확정".equals(notification)) {
-                moveActivityTo(MyInterviewActivity.class);
-            } else {
-                moveActivityTo(MainActivity.class);
+        userService.verifyToken()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+            if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+
+                String notification = getIntent().getStringExtra(AppBeeConstants.EXTRA.NOTIFICATION_TYPE);
+                if ("확정".equals(notification)) {
+                    moveActivityTo(MyInterviewActivity.class);
+                } else {
+                    moveActivityTo(MainActivity.class);
+                }
             }
-        }
+        }, error -> {
+            if (error instanceof HttpException) {
+                int code = ((HttpException) error).code();
+                if (code == 401 || code == 403) {
+                    moveActivityTo(LoginActivity.class);
+                    return;
+                }
+            }
+
+            Toast.makeText(this, R.string.unexpected_error_message, Toast.LENGTH_LONG).show();
+            finish();
+        });
     }
 
     private void displayVersionUpdateDialog() {

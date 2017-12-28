@@ -85,4 +85,13 @@ public class UserServiceTest {
 
         verify(mockUserAPI).verifyInvitationCode(eq("REGISTRATION_CODE"));
     }
+
+    @Test
+    public void verifyToken호출시_토큰확인_요청을_한다() throws Exception {
+        when(mockUserAPI.verifyToken(anyString())).thenReturn(mock(Observable.class));
+
+        subject.verifyToken();
+
+        verify(mockUserAPI).verifyToken(eq("TEST_ACCESS_TOKEN"));
+    }
 }
