@@ -39,7 +39,8 @@ public class GoogleSignInAPIHelper {
         this.context = context;
     }
 
-    public GoogleApiClient createGoogleApiClient(String webClientId) {
+    private GoogleApiClient createGoogleApiClient() {
+        String webClientId = context.getString(R.string.default_web_client_id);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(webClientId)
                 .requestEmail()
@@ -50,15 +51,16 @@ public class GoogleSignInAPIHelper {
                 .build();
     }
 
-    public Intent requestSignInIntent(GoogleApiClient googleApiClient) {
-        return Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+    public Intent requestSignInIntent() {
+        return Auth.GoogleSignInApi.getSignInIntent(createGoogleApiClient());
     }
 
     public GoogleSignInResult requestSignInResult(Intent data) {
         return Auth.GoogleSignInApi.getSignInResultFromIntent(data);
     }
 
-    public GoogleSignInResult requestSilentSignInResult(GoogleApiClient googleApiClient) {
+    public GoogleSignInResult requestSilentSignInResult() {
+        GoogleApiClient googleApiClient = createGoogleApiClient();
         ConnectionResult result = googleApiClient.blockingConnect();
 
         if (result.isSuccess()) {

@@ -80,7 +80,7 @@ public class LoginActivityTest extends ActivityTest {
 
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
-        when(googleSignInAPIHelper.requestSignInIntent(any())).thenReturn(intent);
+        when(googleSignInAPIHelper.requestSignInIntent()).thenReturn(intent);
     }
 
     @After
@@ -101,7 +101,7 @@ public class LoginActivityTest extends ActivityTest {
         mockPerson();
         when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
 
-        when(googleSignInAPIHelper.requestSilentSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(mockGoogleSignInResult);
 
         return Robolectric.setupActivity(LoginActivity.class);
     }
@@ -190,7 +190,7 @@ public class LoginActivityTest extends ActivityTest {
 
         subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
 
-        verify(googleSignInAPIHelper, times(0)).requestSignInIntent(any());
+        verify(googleSignInAPIHelper, times(0)).requestSignInIntent();
     }
 
     @Test
@@ -217,7 +217,7 @@ public class LoginActivityTest extends ActivityTest {
     /* SilentSignIn 관련 테스트 */
     @Test
     public void onPostCreate시_기존에_구글로그인하지_않아서_GoogleSignInResult가_null인_경우_로그인버튼을_표시한다() throws Exception {
-        when(googleSignInAPIHelper.requestSilentSignInResult(any())).thenReturn(null);
+        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(null);
         subject = getSubjectAfterSetupGoogleSignIn();
 
         assertThat(subject.loginButtonLayout.getVisibility()).isEqualTo(View.VISIBLE);
@@ -227,7 +227,7 @@ public class LoginActivityTest extends ActivityTest {
     public void onPostCreate시_기존에_구글로그인했으나_GoogleSignInResult의_isSuccess가_false인_경우_로그인버튼을_표시한다() throws Exception {
         GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
         when(mockGoogleSignInResult.isSuccess()).thenReturn(false);
-        when(googleSignInAPIHelper.requestSilentSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(mockGoogleSignInResult);
 
         subject = getSubjectAfterSetupGoogleSignIn();
 

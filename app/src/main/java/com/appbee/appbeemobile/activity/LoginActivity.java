@@ -20,7 +20,6 @@ import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.UserService;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.api.services.people.v1.model.Person;
 
 import javax.inject.Inject;
@@ -35,7 +34,6 @@ public class LoginActivity extends BaseActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final String UNKNOWN_GENDER = "unknown";
     private static final int RC_SIGN_IN = 9001;
-    private static GoogleApiClient mGoogleApiClient;
 
     @Inject
     UserService userService;
@@ -70,12 +68,11 @@ public class LoginActivity extends BaseActivity {
         tncAgreeTextView.setText(Html.fromHtml(getString(R.string.tnc_agree_text)));
         tncAgreeTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        mGoogleApiClient = googleSignInAPIHelper.createGoogleApiClient(getString(R.string.default_web_client_id));
         silentSignIn();
     }
 
     private void silentSignIn() {
-        Observable.fromCallable(() -> googleSignInAPIHelper.requestSilentSignInResult(mGoogleApiClient))
+        Observable.fromCallable(() -> googleSignInAPIHelper.requestSilentSignInResult())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(googleSignInResult -> {
@@ -95,7 +92,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void signIn() {
-        Intent signInIntent = googleSignInAPIHelper.requestSignInIntent(mGoogleApiClient);
+        Intent signInIntent = googleSignInAPIHelper.requestSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
