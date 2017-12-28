@@ -69,30 +69,35 @@ public class PermissionGuideActivity extends BaseActivity {
             return;
         }
 
+        if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+            checkTokenAndMoveActivity();
+        }
+    }
+
+    private void checkTokenAndMoveActivity() {
         userService.verifyToken()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-            if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+                    String notification = getIntent().getStringExtra(AppBeeConstants.EXTRA.NOTIFICATION_TYPE);
+                    if ("확정".equals(notification)) {
+                        moveActivityTo(MyInterviewActivity.class);
+                    } else if (localStorageHelper.getLastUpdateAppUsageTimestamp() == 0L) {
+                        moveActivityTo(LoadingActivity.class);
+                    } else {
+                        moveActivityTo(MainActivity.class);
+                    }
+                }, error -> {
+                    if (error instanceof HttpException) {
+                        int code = ((HttpException) error).code();
+                        if (code == 401 || code == 403) {
+                            moveActivityTo(LoginActivity.class);
+                            return;
+                        }
+                    }
 
-                String notification = getIntent().getStringExtra(AppBeeConstants.EXTRA.NOTIFICATION_TYPE);
-                if ("확정".equals(notification)) {
-                    moveActivityTo(MyInterviewActivity.class);
-                } else {
-                    moveActivityTo(MainActivity.class);
-                }
-            }
-        }, error -> {
-            if (error instanceof HttpException) {
-                int code = ((HttpException) error).code();
-                if (code == 401 || code == 403) {
-                    moveActivityTo(LoginActivity.class);
-                    return;
-                }
-            }
-
-            Toast.makeText(this, R.string.unexpected_error_message, Toast.LENGTH_LONG).show();
-            finish();
-        });
+                    Toast.makeText(this, R.string.unexpected_error_message, Toast.LENGTH_LONG).show();
+                    finishAffinity();
+                });
     }
 
     private void displayVersionUpdateDialog() {
@@ -118,7 +123,7 @@ public class PermissionGuideActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION
                 && appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            moveActivityTo(LoadingActivity.class);
+            checkTokenAndMoveActivity();
         }
     }
 }
