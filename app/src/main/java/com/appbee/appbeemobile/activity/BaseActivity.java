@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    protected void moveActivityTo(Class activityClass) {
+    public void moveActivityTo(Class activityClass) {
         Intent intent = new Intent(this, activityClass);
         startActivity(intent);
         finish();
