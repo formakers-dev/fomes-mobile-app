@@ -8,11 +8,17 @@ import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.model.Project.ImageObject;
 import com.appbee.appbeemobile.model.Project.Person;
+import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.network.UserService;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,12 +35,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
+import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -50,6 +62,15 @@ public class ProjectDetailActivityTest extends ActivityTest {
 
     @Inject
     TimeHelper mockTimeHelper;
+
+    @Inject
+    GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
+
+    @Inject
+    UserService mockUserService;
+
+    @Inject
+    LocalStorageHelper mockLocalStorageHelper;
 
     private ActivityController<ProjectDetailActivity> activityController;
 
@@ -153,4 +174,38 @@ public class ProjectDetailActivityTest extends ActivityTest {
         subject.findViewById(R.id.back_button).performClick();
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
+
+    @Test
+    public void 프로젝트조회시_토큰이만료된경우_새로운_토큰을_발급받고_화면을_리프레시한다() throws Exception {
+        setupTokenException(401);
+
+        subject = activityController.create().postCreate(null).get();
+
+        verify(mockUserService).signIn(eq("idToken"), any(User.class));
+        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
+    }
+
+    @Test
+    public void 프로젝트조회시_토큰이유효하지_않은경우_새로운_토큰을_발급받고_화면을_리프레시한다() throws Exception {
+        setupTokenException(403);
+
+        subject = activityController.create().postCreate(null).get();
+
+        verify(mockUserService).signIn(eq("idToken"), any(User.class));
+        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
+    }
+
+
+    private void setupTokenException(int errorCode) {
+        when(mockProjectService.getProject(anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockGoogleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mockGoogleSignInResult));
+        when(mockGoogleSignInResult.isSuccess()).thenReturn(true);
+        GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
+        when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockGoogleSignInAccount);
+        when(mockGoogleSignInAccount.getIdToken()).thenReturn("idToken");
+        when(mockUserService.signIn(eq("idToken"), any(User.class))).thenReturn(Observable.just("appbeeToken"));
+    }
+
+
 }

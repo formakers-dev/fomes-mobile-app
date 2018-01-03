@@ -14,21 +14,29 @@ import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.adapter.DescriptionImageAdapter;
 import com.appbee.appbeemobile.fragment.ProjectYoutubePlayerFragment;
+import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
 import com.appbee.appbeemobile.helper.ImageLoader;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
+import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.util.FormatUtil;
 import com.bumptech.glide.request.RequestOptions;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.adapter.rxjava.HttpException;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
 import static com.appbee.appbeemobile.model.Project.Person;
-import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
+import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA.PROJECT_ID;
 
 public class ProjectDetailActivity extends BaseActivity {
     private static final String TAG = ProjectDetailActivity.class.getSimpleName();
@@ -41,6 +49,15 @@ public class ProjectDetailActivity extends BaseActivity {
 
     @Inject
     ImageLoader imageLoader;
+
+    @Inject
+    GoogleSignInAPIHelper googleSignInAPIHelper;
+
+    @Inject
+    UserService userService;
+
+    @Inject
+    LocalStorageHelper localStorageHelper;
 
     @BindView(R.id.representation_image)
     ImageView representationImageView;
@@ -82,12 +99,37 @@ public class ProjectDetailActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        projectId = getIntent().getStringExtra(EXTRA.PROJECT_ID);
+        projectId = getIntent().getStringExtra(PROJECT_ID);
 
         addToCompositeSubscription(
-                projectService.getProject(projectId)
+                Observable.defer(() ->
+                        projectService.getProject(projectId))
+                        .compose(refreshExpiredToken())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::displayProject)
+                        .subscribe(this::displayProject, this::logError)
+        );
+    }
+
+    <T> Observable.Transformer<T, T> refreshExpiredToken() {
+        return observable -> observable.retryWhen(errors -> {
+                    return errors.take(2)
+                            .filter(error -> error instanceof HttpException)
+                            .filter(error -> ((HttpException) error).code() == 401 || ((HttpException) error).code() == 403)
+                            .flatMap(error -> googleSignInAPIHelper.requestSilentSignInResult())
+                            .filter(googleSignInResult -> googleSignInResult != null && googleSignInResult.isSuccess() && googleSignInResult.getSignInAccount() != null)
+                            .flatMap(googleSignInResult -> Observable.just(googleSignInResult.getSignInAccount()))
+                            .filter(account -> account != null)
+                            .flatMap(account -> {
+                                User user = new User();
+                                user.setUserId(account.getId());
+                                return userService.signIn(account.getIdToken(), user);
+                            })
+                            .filter(accessToken -> !TextUtils.isEmpty(accessToken))
+                            .flatMap(accessToken -> {
+                                localStorageHelper.setAccessToken(accessToken);
+                                return Observable.timer(1, TimeUnit.SECONDS);
+                            });
+                }
         );
     }
 

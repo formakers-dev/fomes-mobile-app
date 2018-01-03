@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 @Singleton
 public class GoogleSignInAPIHelper {
@@ -59,15 +60,17 @@ public class GoogleSignInAPIHelper {
         return Auth.GoogleSignInApi.getSignInResultFromIntent(data);
     }
 
-    public GoogleSignInResult requestSilentSignInResult() {
-        GoogleApiClient googleApiClient = createGoogleApiClient();
-        ConnectionResult result = googleApiClient.blockingConnect();
+    public Observable<GoogleSignInResult> requestSilentSignInResult() {
+        return Observable.fromCallable(() -> {
+            GoogleApiClient googleApiClient = createGoogleApiClient();
+            ConnectionResult result = googleApiClient.blockingConnect();
 
-        if (result.isSuccess()) {
-            return Auth.GoogleSignInApi.silentSignIn(googleApiClient).await();
-        } else {
-            return null;
-        }
+            if (result.isSuccess()) {
+                return Auth.GoogleSignInApi.silentSignIn(googleApiClient).await();
+            } else {
+                return null;
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
     public Observable<Person> getPerson(final GoogleSignInAccount account) {
