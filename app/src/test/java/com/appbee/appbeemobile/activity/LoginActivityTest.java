@@ -80,6 +80,7 @@ public class LoginActivityTest extends ActivityTest {
 
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
+        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mock(GoogleSignInResult.class)));
         when(googleSignInAPIHelper.requestSignInIntent()).thenReturn(intent);
     }
 
@@ -101,7 +102,7 @@ public class LoginActivityTest extends ActivityTest {
         mockPerson();
         when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
 
-        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(mockGoogleSignInResult);
+        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mockGoogleSignInResult));
 
         return Robolectric.setupActivity(LoginActivity.class);
     }
@@ -217,7 +218,7 @@ public class LoginActivityTest extends ActivityTest {
     /* SilentSignIn 관련 테스트 */
     @Test
     public void onPostCreate시_기존에_구글로그인하지_않아서_GoogleSignInResult가_null인_경우_로그인버튼을_표시한다() throws Exception {
-        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(null);
+        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(null));
         subject = getSubjectAfterSetupGoogleSignIn();
 
         assertThat(subject.loginButtonLayout.getVisibility()).isEqualTo(View.VISIBLE);
@@ -227,7 +228,7 @@ public class LoginActivityTest extends ActivityTest {
     public void onPostCreate시_기존에_구글로그인했으나_GoogleSignInResult의_isSuccess가_false인_경우_로그인버튼을_표시한다() throws Exception {
         GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
         when(mockGoogleSignInResult.isSuccess()).thenReturn(false);
-        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(mockGoogleSignInResult);
+        when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mockGoogleSignInResult));
 
         subject = getSubjectAfterSetupGoogleSignIn();
 

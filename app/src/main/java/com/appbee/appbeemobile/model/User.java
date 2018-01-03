@@ -8,6 +8,9 @@ public class User {
     private String gender;
     private String registrationToken;
 
+    public User() {
+    }
+
     public User(String userId, String email, String registrationToken) {
         this.userId = userId;
         this.email = email;

@@ -26,7 +26,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -72,8 +71,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void silentSignIn() {
-        Observable.fromCallable(() -> googleSignInAPIHelper.requestSilentSignInResult())
-                .subscribeOn(Schedulers.io())
+        googleSignInAPIHelper.requestSilentSignInResult()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(googleSignInResult -> {
                     if (googleSignInResult != null && googleSignInResult.isSuccess()) {
