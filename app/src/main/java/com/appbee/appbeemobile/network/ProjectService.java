@@ -36,9 +36,10 @@ public class ProjectService extends AbstractAppBeeService {
     }
 
     public Observable<Project> getProject(String projectId) {
-        return projectAPI.getProject(localStorageHelper.getAccessToken(), projectId)
+        return Observable.defer(() -> projectAPI.getProject(localStorageHelper.getAccessToken(), projectId))
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .compose(refreshExpiredToken());
     }
 
     public Observable<List<Project>> getAllInterviews() {

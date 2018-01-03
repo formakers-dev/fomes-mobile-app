@@ -30,7 +30,6 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class GoogleSignInAPIHelper {
 
-    private static HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private Context context;
@@ -79,7 +78,7 @@ public class GoogleSignInAPIHelper {
                 GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context, Collections.singleton(""))
                         .setSelectedAccount(account.getAccount());
 
-                Person person = new PeopleService.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                Person person = new PeopleService.Builder(AndroidHttp.newCompatibleTransport(), JSON_FACTORY, credential)
                         .setApplicationName(context.getString(R.string.app_name))
                         .build()
                         .people()
