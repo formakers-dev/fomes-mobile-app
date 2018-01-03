@@ -102,34 +102,9 @@ public class ProjectDetailActivity extends BaseActivity {
         projectId = getIntent().getStringExtra(PROJECT_ID);
 
         addToCompositeSubscription(
-                Observable.defer(() ->
-                        projectService.getProject(projectId))
-                        .compose(refreshExpiredToken())
+                projectService.getProject(projectId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(this::displayProject, this::logError)
-        );
-    }
-
-    <T> Observable.Transformer<T, T> refreshExpiredToken() {
-        return observable -> observable.retryWhen(errors -> {
-                    return errors.take(2)
-                            .filter(error -> error instanceof HttpException)
-                            .filter(error -> ((HttpException) error).code() == 401 || ((HttpException) error).code() == 403)
-                            .flatMap(error -> googleSignInAPIHelper.requestSilentSignInResult())
-                            .filter(googleSignInResult -> googleSignInResult != null && googleSignInResult.isSuccess() && googleSignInResult.getSignInAccount() != null)
-                            .flatMap(googleSignInResult -> Observable.just(googleSignInResult.getSignInAccount()))
-                            .filter(account -> account != null)
-                            .flatMap(account -> {
-                                User user = new User();
-                                user.setUserId(account.getId());
-                                return userService.signIn(account.getIdToken(), user);
-                            })
-                            .filter(accessToken -> !TextUtils.isEmpty(accessToken))
-                            .flatMap(accessToken -> {
-                                localStorageHelper.setAccessToken(accessToken);
-                                return Observable.timer(1, TimeUnit.SECONDS);
-                            });
-                }
         );
     }
 

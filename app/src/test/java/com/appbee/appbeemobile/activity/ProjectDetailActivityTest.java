@@ -175,37 +175,6 @@ public class ProjectDetailActivityTest extends ActivityTest {
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 
-    @Test
-    public void 프로젝트조회시_토큰이만료된경우_새로운_토큰을_발급받고_화면을_리프레시한다() throws Exception {
-        setupTokenException(401);
-
-        subject = activityController.create().postCreate(null).get();
-
-        verify(mockUserService).signIn(eq("idToken"), any(User.class));
-        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
-    }
-
-    @Test
-    public void 프로젝트조회시_토큰이유효하지_않은경우_새로운_토큰을_발급받고_화면을_리프레시한다() throws Exception {
-        setupTokenException(403);
-
-        subject = activityController.create().postCreate(null).get();
-
-        verify(mockUserService).signIn(eq("idToken"), any(User.class));
-        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
-    }
-
-
-    private void setupTokenException(int errorCode) {
-        when(mockProjectService.getProject(anyString())).thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))));
-        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
-        when(mockGoogleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mockGoogleSignInResult));
-        when(mockGoogleSignInResult.isSuccess()).thenReturn(true);
-        GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
-        when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockGoogleSignInAccount);
-        when(mockGoogleSignInAccount.getIdToken()).thenReturn("idToken");
-        when(mockUserService.signIn(eq("idToken"), any(User.class))).thenReturn(Observable.just("appbeeToken"));
-    }
 
 
 }
