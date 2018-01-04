@@ -5,12 +5,10 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.Project;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -22,8 +20,6 @@ import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
-import rx.plugins.RxJavaHooks;
-import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -32,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class ProjectServiceTest {
+public class ProjectServiceTest extends AbstractServiceTest {
 
     private ProjectService subject;
 
@@ -44,17 +40,10 @@ public class ProjectServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        super.setUp();
 
-        MockitoAnnotations.initMocks(this);
-        subject = new ProjectService(mockProjectAPI, mockLocalStorageHelper);
+        subject = new ProjectService(mockProjectAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_TOKEN");
-    }
-
-    @After
-    public void tearDown() {
-        RxJavaHooks.reset();
     }
 
     @Test
@@ -111,6 +100,11 @@ public class ProjectServiceTest {
         assertThat(result.getName()).isEqualTo("릴루미노");
         assertThat(result.getIntroduce()).isEqualTo("저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)");
         assertThat(result.getStatus()).isEqualTo("registered");
+    }
+
+    @Test
+    public void getProject호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.getProject("projectId"));
     }
 
     @Test
