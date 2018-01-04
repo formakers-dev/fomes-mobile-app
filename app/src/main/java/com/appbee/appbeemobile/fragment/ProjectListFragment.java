@@ -68,7 +68,6 @@ public class ProjectListFragment extends BaseFragment {
         View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_header, projectListRecyclerView, false);
         ((TextView) headerView.findViewById(R.id.item_header_title)).setText(R.string.project_list_header_title);
         ((TextView) headerView.findViewById(R.id.item_header_subtitle)).setText(R.string.project_list_header_subtitle);
-        headerView.findViewById(R.id.item_header_badge).setVisibility(View.VISIBLE);
         mainListAdapter.setHeaderView(headerView);
 
         projectListRecyclerView.setAdapter(mainListAdapter);
