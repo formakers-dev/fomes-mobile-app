@@ -2,6 +2,7 @@ package com.appbee.appbeemobile.network;
 
 import android.support.annotation.NonNull;
 
+import com.appbee.appbeemobile.helper.AppBeeAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.User;
 
@@ -16,11 +17,13 @@ public class UserService extends AbstractAppBeeService {
     private static final String TAG = UserService.class.getSimpleName();
     private final UserAPI userAPI;
     private final LocalStorageHelper localStorageHelper;
+    private final AppBeeAPIHelper appBeeAPIHelper;
 
     @Inject
-    public UserService(UserAPI userAPI, LocalStorageHelper localStorageHelper) {
+    public UserService(UserAPI userAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
         this.userAPI = userAPI;
         this.localStorageHelper = localStorageHelper;
+        this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
     public Observable<String> signIn(@NonNull String googleIdToken, @NonNull User user) {
@@ -30,9 +33,11 @@ public class UserService extends AbstractAppBeeService {
     }
 
     public Completable updateRegistrationToken(String registrationToken) {
-        return userAPI.update(localStorageHelper.getAccessToken(), new User(registrationToken))
+        return Observable.defer(() -> userAPI.update(localStorageHelper.getAccessToken(), new User(registrationToken)))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 

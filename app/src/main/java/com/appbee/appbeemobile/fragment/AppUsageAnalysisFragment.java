@@ -71,7 +71,8 @@ public class AppUsageAnalysisFragment extends BaseFragment {
             analysisDescription.setText(descriptionStringResId);
         }
 
-        List<String> popularAppsList = configService.getExcludePackageNames();
+        //TODO : 멈추는 현생 해결 필요 - 로딩이미지와 함께.... 처리.... 하자... --;;;;
+        List<String> popularAppsList = configService.getExcludePackageNames().toBlocking().value();
 
         List<ShortTermStat> shortTermStatList = appUsageDataHelper.getWeeklyStatSummaryList();
 

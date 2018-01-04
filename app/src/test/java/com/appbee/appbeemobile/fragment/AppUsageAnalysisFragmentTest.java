@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import rx.Scheduler;
+import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
@@ -82,7 +83,7 @@ public class AppUsageAnalysisFragmentTest {
         mockShortTermStatList.add(new ShortTermStat("packageName5", 0L, 0L, 1000L));     //2017-11-18 12:00:00
 
         when(mockAppUsageDataHelper.getWeeklyStatSummaryList()).thenReturn(mockShortTermStatList);
-        when(mockConfigService.getExcludePackageNames()).thenReturn(Arrays.asList("packageName1", "packageName2"));
+        when(mockConfigService.getExcludePackageNames()).thenReturn(Single.just(Arrays.asList("packageName1", "packageName2")));
 
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName1")).thenReturn(new NativeAppInfo("packageName1", "appName1"));
         when(mockNativeAppInfoHelper.getNativeAppInfo("packageName2")).thenReturn(new NativeAppInfo("packageName2", "appName2"));

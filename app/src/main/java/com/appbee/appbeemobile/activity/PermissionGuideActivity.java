@@ -53,7 +53,7 @@ public class PermissionGuideActivity extends BaseActivity {
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
         setContentView(R.layout.activity_permission_guide);
 
-        if (BuildConfig.VERSION_CODE < configService.getAppVersion()) {
+        if (BuildConfig.VERSION_CODE < configService.getAppVersion().toBlocking().value()) {
             displayVersionUpdateDialog();
             return;
         }

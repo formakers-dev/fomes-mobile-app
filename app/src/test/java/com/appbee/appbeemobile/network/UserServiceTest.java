@@ -3,18 +3,15 @@ package com.appbee.appbeemobile.network;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.User;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import rx.Observable;
-import rx.plugins.RxJavaHooks;
-import rx.schedulers.Schedulers;
+import rx.observers.TestSubscriber;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-public class UserServiceTest {
+public class UserServiceTest extends AbstractServiceTest {
     private UserService subject;
 
     @Mock
@@ -36,17 +33,10 @@ public class UserServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        super.setUp();
 
-        MockitoAnnotations.initMocks(this);
-        subject = new UserService(mockUserAPI, mockLocalStorageHelper);
+        subject = new UserService(mockUserAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
-    }
-
-    @After
-    public void tearDown() {
-        RxJavaHooks.reset();
     }
 
     @Test
@@ -63,7 +53,7 @@ public class UserServiceTest {
     public void updateRegistrationToken호출시_푸시토큰정보를_서버에_전송한다() throws Exception {
         when(mockUserAPI.update(anyString(), any(User.class))).thenReturn(mock(Observable.class));
 
-        subject.updateRegistrationToken("REFRESHED_PUSH_TOKEN");
+        subject.updateRegistrationToken("REFRESHED_PUSH_TOKEN").subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserAPI).update(eq("TEST_ACCESS_TOKEN"), userCaptor.capture());
@@ -75,6 +65,11 @@ public class UserServiceTest {
         assertThat(userArgument.getEmail()).isNull();
         assertThat(userArgument.getGender()).isNull();
         assertThat(userArgument.getBirthday()).isNull();
+    }
+
+    @Test
+    public void updateRegistrationToken호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.updateRegistrationToken("REFRESHED_PUSH_TOKEN").toObservable());
     }
 
     @Test

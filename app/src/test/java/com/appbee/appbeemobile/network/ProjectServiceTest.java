@@ -80,6 +80,12 @@ public class ProjectServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void getAllProjects호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.getAllProjects());
+    }
+
+
+    @Test
     public void getProject호출시_요청한_프로젝트ID에_해당하는_프로젝트_정보를_리턴한다() throws Exception {
         Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
 
@@ -148,7 +154,11 @@ public class ProjectServiceTest extends AbstractServiceTest {
         assertThat(project.getInterview().getSeq()).isEqualTo(1L);
         assertThat(project.getInterview().getLocation()).isEqualTo("우면사업장");
         assertThat(project.getInterview().getTotalCount()).isEqualTo(5);
+    }
 
+    @Test
+    public void getAllInterviews호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.getAllInterviews());
     }
 
     @Test
@@ -197,6 +207,11 @@ public class ProjectServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void getInterview호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.getInterview("projectId", 999L));
+    }
+
+    @Test
     public void getRegisteredInterviews호출시_사용자가_신청한_인터뷰조회_API를_호출한다() throws Exception {
         Project.ImageObject imageObject = new Project.ImageObject("www.imageUrl.com", "urlName");
 
@@ -235,5 +250,20 @@ public class ProjectServiceTest extends AbstractServiceTest {
         assertThat(projectList.get(0).getInterview().getSelectedTimeSlot()).isEqualTo("time9");
         assertThat(projectList.get(0).getInterview().getEmergencyPhone()).isEqualTo("010-9999-8888");
         assertThat(projectList.get(0).getInterview().getIntroduce()).isEqualTo("인터뷰소개");
+    }
+
+    @Test
+    public void getRegisteredInterviews호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.getRegisteredInterviews());
+    }
+
+    @Test
+    public void postParticipate호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.postParticipate("projectId", 999L, "time9").toObservable());
+    }
+
+    @Test
+    public void postCancelParticipate호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.postCancelParticipate("projectId", 999L, "time9").toObservable());
     }
 }
