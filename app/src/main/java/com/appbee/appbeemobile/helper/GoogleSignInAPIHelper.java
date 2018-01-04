@@ -2,17 +2,18 @@ package com.appbee.appbeemobile.helper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.appbee.appbeemobile.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.people.v1.PeopleService;
@@ -29,6 +30,7 @@ import rx.schedulers.Schedulers;
 
 @Singleton
 public class GoogleSignInAPIHelper {
+    public static final String TAG = GoogleSignInAPIHelper.class.getSimpleName();
 
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
@@ -60,16 +62,38 @@ public class GoogleSignInAPIHelper {
     }
 
     public Observable<GoogleSignInResult> requestSilentSignInResult() {
-        return Observable.fromCallable(() -> {
+        Observable<GoogleSignInResult> observable = Observable.create(emitter -> {
             GoogleApiClient googleApiClient = createGoogleApiClient();
-            ConnectionResult result = googleApiClient.blockingConnect();
+            googleApiClient.registerConnectionFailedListener(connectionResult -> {
+                Log.e(TAG, "googleApiClientConnect - onError");
+                emitter.onError(new Exception(connectionResult.toString()));
+            });
 
-            if (result.isSuccess()) {
-                return Auth.GoogleSignInApi.silentSignIn(googleApiClient).await();
-            } else {
-                return null;
-            }
-        }).subscribeOn(Schedulers.io());
+            googleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(@Nullable Bundle bundle) {
+                    Log.d(TAG, "googleApiClientConnect - onConnected");
+                    if (googleApiClient.hasConnectedApi(Auth.GOOGLE_SIGN_IN_API)) {
+                        emitter.onNext(googleApiClient);
+                        emitter.onCompleted();
+                    } else {
+                        Log.e(TAG, "googleApiClientConnect - onConnected But don't connected SignIn api");
+                        emitter.onCompleted();
+                    }
+                }
+
+                @Override
+                public void onConnectionSuspended(int i) {
+                    Log.d(TAG, "googleApiClientConnect - onConnectionSuspended");
+                }
+            });
+            googleApiClient.connect();
+        }).observeOn(Schedulers.io())
+          .filter(object -> object instanceof GoogleApiClient)
+          .cast(GoogleApiClient.class)
+          .map(googleApiClient -> Auth.GoogleSignInApi.silentSignIn(googleApiClient).await());
+
+        return observable.subscribeOn(Schedulers.io());
     }
 
     public Observable<Person> getPerson(final GoogleSignInAccount account) {
