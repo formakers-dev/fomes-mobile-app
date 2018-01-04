@@ -20,10 +20,12 @@ import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
+import rx.observers.TestSubscriber;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -258,8 +260,22 @@ public class ProjectServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void postParticipate호출시_인터뷰참가신청_API를_호출한다() throws Exception {
+        subject.postParticipate("projectId", 99L, "time9").subscribe(new TestSubscriber<>());
+
+        verify(mockProjectAPI).postParticipate(eq("TEST_TOKEN"), eq("projectId"), eq(99L), eq("time9"));
+    }
+
+    @Test
     public void postParticipate호출시_토큰_만료_여부를_확인한다() throws Exception {
         verifyToCheckExpiredToken(subject.postParticipate("projectId", 999L, "time9").toObservable());
+    }
+
+    @Test
+    public void postCancelParticipate호출시_인터뷰참가취소_API를_호출한다() throws Exception {
+        subject.postCancelParticipate("projectId", 99L, "time9").subscribe(new TestSubscriber<>());
+
+        verify(mockProjectAPI).postCancelParticipate(eq("TEST_TOKEN"), eq("projectId"), eq(99L), eq("time9"));
     }
 
     @Test
