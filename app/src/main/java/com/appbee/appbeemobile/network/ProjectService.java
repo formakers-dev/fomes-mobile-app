@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.helper.AppBeeAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.Project;
 
@@ -17,11 +18,13 @@ public class ProjectService extends AbstractAppBeeService {
     private static final String TAG = ProjectService.class.getSimpleName();
     private final ProjectAPI projectAPI;
     private final LocalStorageHelper localStorageHelper;
+    private final AppBeeAPIHelper appBeeAPIHelper;
 
     @Inject
-    public ProjectService(ProjectAPI projectAPI, LocalStorageHelper localStorageHelper) {
+    public ProjectService(ProjectAPI projectAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
         this.projectAPI = projectAPI;
         this.localStorageHelper = localStorageHelper;
+        this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class ProjectService extends AbstractAppBeeService {
         return Observable.defer(() -> projectAPI.getProject(localStorageHelper.getAccessToken(), projectId))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
-                .compose(refreshExpiredToken());
+                .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
     public Observable<List<Project>> getAllInterviews() {

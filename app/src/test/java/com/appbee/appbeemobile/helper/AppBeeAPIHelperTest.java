@@ -1,8 +1,8 @@
-package com.appbee.appbeemobile.network;
+package com.appbee.appbeemobile.helper;
 
-import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
-import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import com.appbee.appbeemobile.model.User;
+import com.appbee.appbeemobile.network.ProjectAPI;
+import com.appbee.appbeemobile.network.UserAPI;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -30,33 +30,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class AbstractAppBeeServiceTest {
-    class AppBeeService extends AbstractAppBeeService {
-        AppBeeService(GoogleSignInAPIHelper googleSignInAPIHelper, UserAPI userAPI, LocalStorageHelper localStorageHelper) {
-            this.googleSignInAPIHelper = googleSignInAPIHelper;
-            this.userAPI = userAPI;
-            this.localStorageHelper = localStorageHelper;
-        }
-
-        @Override
-        protected String getTag() {
-            return AppBeeService.class.getSimpleName();
-        }
-    }
+public class AppBeeAPIHelperTest {
+    @Mock
+    private GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
 
     @Mock
-    GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
+    private UserAPI mockUserAPI;
 
     @Mock
-    UserAPI mockUserAPI;
+    private LocalStorageHelper mockLocalStorageHelper;
 
     @Mock
-    LocalStorageHelper mockLocalStorageHelper;
+    private ProjectAPI mockProjectAPI;  // for test
 
-    @Mock
-    ProjectAPI mockProjectAPI;  // for test
-
-    AppBeeService subject;
+    private AppBeeAPIHelper subject;
 
     @Before
     public void setUp() throws Exception {
@@ -66,7 +53,7 @@ public class AbstractAppBeeServiceTest {
         RxJavaHooks.onNewThreadScheduler(Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
-        subject = new AppBeeService(mockGoogleSignInAPIHelper, mockUserAPI, mockLocalStorageHelper);
+        subject = new AppBeeAPIHelper(mockLocalStorageHelper, mockGoogleSignInAPIHelper, mockUserAPI);
 
         GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
         when(mockGoogleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mockGoogleSignInResult));
@@ -92,8 +79,7 @@ public class AbstractAppBeeServiceTest {
                 .toList().toBlocking().single();
 
         verify(mockProjectAPI, times(2)).getProject(any(), any());
-        verify(mockUserAPI).signIn(eq("idToken"), any(User.class));
-        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
+        verifyRefreshToken();
     }
 
     @Test
@@ -105,13 +91,17 @@ public class AbstractAppBeeServiceTest {
                 .toList().toBlocking().single();
 
         verify(mockProjectAPI, times(2)).getProject(any(), any());
-        verify(mockUserAPI).signIn(eq("idToken"), any(User.class));
-        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
+        verifyRefreshToken();
     }
 
     private void setupTokenException(int errorCode) {
         when(mockProjectAPI.getProject(any(), any()))
                 .thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))))
                 .thenReturn(Completable.complete().toObservable());
+    }
+
+    private void verifyRefreshToken() {
+        verify(mockUserAPI).signIn(eq("idToken"), any(User.class));
+        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
     }
 }
