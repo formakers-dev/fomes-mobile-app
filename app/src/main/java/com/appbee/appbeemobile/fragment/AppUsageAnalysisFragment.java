@@ -24,6 +24,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class AppUsageAnalysisFragment extends BaseFragment {
     public static final String TAG = AppUsageAnalysisFragment.class.getSimpleName();
@@ -71,16 +72,16 @@ public class AppUsageAnalysisFragment extends BaseFragment {
             analysisDescription.setText(descriptionStringResId);
         }
 
-        //TODO : 멈추는 현생 해결 필요 - 로딩이미지와 함께.... 처리.... 하자... --;;;;
-        List<String> popularAppsList = configService.getExcludePackageNames().toBlocking().value();
+        //TODO : 로딩이미지.... 추가.... 하자... --;;;;
+        configService.getExcludePackageNames()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(popularAppsList -> {
+                    List<ShortTermStat> shortTermStatList = appUsageDataHelper.getWeeklyStatSummaryList();
+                    List<ShortTermStat> personalityAppList = Lists.newArrayList(Iterables.filter(shortTermStatList, input -> input !=null && !popularAppsList.contains(input.getPackageName())));
 
-        List<ShortTermStat> shortTermStatList = appUsageDataHelper.getWeeklyStatSummaryList();
-
-        List<ShortTermStat> personalityAppList = Lists.newArrayList(Iterables.filter(shortTermStatList, input -> input !=null && !popularAppsList.contains(input.getPackageName())));
-
-
-        extractAnalysisDataAndBindTo(mostPersonalityAppViewGroup, personalityAppList);
-        extractAnalysisDataAndBindTo(mostUsedAppViewGroup, shortTermStatList);
+                    extractAnalysisDataAndBindTo(mostPersonalityAppViewGroup, personalityAppList);
+                    extractAnalysisDataAndBindTo(mostUsedAppViewGroup, shortTermStatList);
+                });
     }
 
     private void extractAnalysisDataAndBindTo(ViewGroup viewGroup, List<ShortTermStat> shortTermStatList) {
