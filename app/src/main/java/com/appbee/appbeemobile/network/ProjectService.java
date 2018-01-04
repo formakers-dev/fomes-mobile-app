@@ -82,7 +82,7 @@ public class ProjectService extends AbstractAppBeeService {
     }
 
     public Completable postCancelParticipate(String projectId, long seq, String slotId) {
-        return Observable.defer(() -> projectAPI.postCancleParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId))
+        return Observable.defer(() -> projectAPI.postCancelParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
