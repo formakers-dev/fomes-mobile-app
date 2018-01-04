@@ -33,47 +33,60 @@ public class ProjectService extends AbstractAppBeeService {
     }
 
     public Observable<List<Project>> getAllProjects() {
-        return projectAPI.getAllProjects(localStorageHelper.getAccessToken())
+        return Observable.defer(() -> projectAPI.getAllProjects(localStorageHelper.getAccessToken()))
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
     public Observable<Project> getProject(String projectId) {
         return Observable.defer(() -> projectAPI.getProject(localStorageHelper.getAccessToken(), projectId))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
     public Observable<List<Project>> getAllInterviews() {
-        return projectAPI.getAllInterviews(localStorageHelper.getAccessToken())
+        return Observable.defer(() -> projectAPI.getAllInterviews(localStorageHelper.getAccessToken()))
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
     public Observable<List<Project>> getRegisteredInterviews() {
-        return projectAPI.getRegisteredInterviews(localStorageHelper.getAccessToken())
+        return Observable.defer(() -> projectAPI.getRegisteredInterviews(localStorageHelper.getAccessToken()))
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
     public Observable<Project> getInterview(String projectId, long seq) {
-        return projectAPI.getInterview(localStorageHelper.getAccessToken(), projectId, seq)
+        return Observable.defer(() -> projectAPI.getInterview(localStorageHelper.getAccessToken(), projectId, seq))
                 .doOnError(this::logError)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
     public Completable postParticipate(String projectId, long seq, String slotId) {
-        return projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId)
+        return Observable.defer(() -> projectAPI.postParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
-    public Completable postCancelParticipate(String project, long seq, String slotId) {
-        return projectAPI.postCancleParticipate(localStorageHelper.getAccessToken(), project, seq, slotId)
+    public Completable postCancelParticipate(String projectId, long seq, String slotId) {
+        return Observable.defer(() -> projectAPI.postCancleParticipate(localStorageHelper.getAccessToken(), projectId, seq, slotId))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 }

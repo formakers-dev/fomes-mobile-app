@@ -1,5 +1,6 @@
 package com.appbee.appbeemobile.network;
 
+import com.appbee.appbeemobile.helper.AppBeeAPIHelper;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
 import java.util.List;
@@ -7,24 +8,34 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import rx.Observable;
+import rx.Single;
 import rx.schedulers.Schedulers;
 
 @Singleton
 public class ConfigService {
     private ConfigAPI configAPI;
     private final LocalStorageHelper localStorageHelper;
+    private final AppBeeAPIHelper appBeeAPIHelper;
 
     @Inject
-    public ConfigService(ConfigAPI configAPI, LocalStorageHelper localStorageHelper) {
+    public ConfigService(ConfigAPI configAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
         this.configAPI = configAPI;
         this.localStorageHelper = localStorageHelper;
+        this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
-    public long getAppVersion() {
-        return configAPI.getAppVersion().subscribeOn(Schedulers.io()).toBlocking().value();
+    public Single<Long> getAppVersion() {
+        return configAPI.getAppVersion()
+                .subscribeOn(Schedulers.io())
+                .toSingle();
     }
 
-    public List<String> getExcludePackageNames() {
-        return configAPI.getExcludePackageNames(localStorageHelper.getAccessToken()).subscribeOn(Schedulers.io()).toBlocking().value();
+    public Single<List<String>> getExcludePackageNames() {
+        return Observable.defer(() -> configAPI.getExcludePackageNames(localStorageHelper.getAccessToken()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .toSingle();
     }
 }

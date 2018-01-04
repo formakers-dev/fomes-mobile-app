@@ -10,12 +10,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.observers.TestSubscriber;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,12 +28,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class AppStatServiceTest {
+public class AppStatServiceTest extends AbstractServiceTest {
 
     private AppStatService subject;
 
     @Mock
     private LocalStorageHelper mockLocalStorageHelper;
+
     @Mock
     private AppAPI mockAppAPI;
 
@@ -41,8 +43,9 @@ public class AppStatServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        subject = new AppStatService(mockAppAPI, mockStatAPI, mockLocalStorageHelper);
+        super.setUp();
+
+        subject = new AppStatService(mockAppAPI, mockStatAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
@@ -52,7 +55,7 @@ public class AppStatServiceTest {
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendShortTermStats(mockShortTermStats);
+        subject.sendShortTermStats(mockShortTermStats).subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<List<ShortTermStat>> shortTermStatsCaptor = ArgumentCaptor.forClass(List.class);
 
@@ -72,13 +75,24 @@ public class AppStatServiceTest {
     }
 
     @Test
+    public void sendShortTermStats호출시_토큰_만료_여부를_확인한다() throws Exception {
+        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
+        verifyToCheckExpiredToken(subject.sendShortTermStats(shortTermStatList).toObservable());
+    }
+
+    @Test
     public void postAppUsages호출시_앱별_사용정보통계를_서버로_전송한다() throws Exception {
         List<AppUsage> mockAppUsageList = new ArrayList<>();
         mockAppUsageList.add(new AppUsage("packageA", 1000L));
         mockAppUsageList.add(new AppUsage("packageB", 2000L));
         when(mockAppAPI.postUsages(anyString(), any(List.class))).thenReturn(mock(Observable.class));
-        subject.sendAppUsages(mockAppUsageList);
+        subject.sendAppUsages(mockAppUsageList).subscribe(new TestSubscriber<>());
 
         verify(mockAppAPI).postUsages(anyString(), eq(mockAppUsageList));
+    }
+
+    @Test
+    public void sendAppUsages호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.sendAppUsages(new ArrayList<>()).toObservable());
     }
 }

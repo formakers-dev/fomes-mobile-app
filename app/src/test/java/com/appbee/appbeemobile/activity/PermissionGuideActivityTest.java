@@ -34,6 +34,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
+import rx.Single;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.never;
@@ -66,7 +67,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockLocalStorageHelper.isLoggedIn()).thenReturn(true);
         when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(99999L);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        when(mockConfigService.getAppVersion()).thenReturn(1L);
+        when(mockConfigService.getAppVersion()).thenReturn(Single.just(1L));
         when(mockUserService.verifyToken()).thenReturn(Completable.complete());
         activityController = Robolectric.buildActivity(PermissionGuideActivity.class);
     }
@@ -80,7 +81,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void 최소앱버전코드확인API호출결과_최소앱버전보다_현재버전코드가_작은경우_업데이트_안내_팝업이_나타난다() throws Exception {
-        when(mockConfigService.getAppVersion()).thenReturn(Long.MAX_VALUE);
+        when(mockConfigService.getAppVersion()).thenReturn(Single.just(Long.MAX_VALUE));
 
         activityController.create().get();
 
@@ -95,7 +96,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void 업데이트_안내_팝업의_확인버튼_선택시_마켓으로_이동후_앱을_종료한다() throws Exception {
-        when(mockConfigService.getAppVersion()).thenReturn(Long.MAX_VALUE);
+        when(mockConfigService.getAppVersion()).thenReturn(Single.just(Long.MAX_VALUE));
 
         PermissionGuideActivity subject = activityController.create().get();
 
@@ -109,7 +110,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void 업데이트_안내_팝업을_취소하면_앱을_종료한다() throws Exception {
-        when(mockConfigService.getAppVersion()).thenReturn(Long.MAX_VALUE);
+        when(mockConfigService.getAppVersion()).thenReturn(Single.just(Long.MAX_VALUE));
 
         PermissionGuideActivity subject = activityController.create().get();
 
