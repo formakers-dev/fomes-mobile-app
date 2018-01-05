@@ -14,7 +14,7 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 public class AppStatService extends AbstractAppBeeService {
-    private static final String TAG = AppStatService.class.getSimpleName();
+    private static final String TAG = "AppStatService";
     private final AppAPI appAPI;
     private final StatAPI statAPI;
     private final LocalStorageHelper localStorageHelper;

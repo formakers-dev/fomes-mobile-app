@@ -30,7 +30,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity {
-    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = "LoginActivity";
     private static final String UNKNOWN_GENDER = "unknown";
     private static final int RC_SIGN_IN = 9001;
 

@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MessagingTokenService extends FirebaseInstanceIdService {
-    private static final String TAG = MessagingTokenService.class.getSimpleName();
+    private static final String TAG = "MessagingTokenService";
 
     @Inject
     LocalStorageHelper localStorageHelper;

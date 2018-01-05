@@ -15,7 +15,7 @@ import rx.schedulers.Schedulers;
 
 @Singleton
 public class ProjectService extends AbstractAppBeeService {
-    private static final String TAG = ProjectService.class.getSimpleName();
+    private static final String TAG = "ProjectService";
     private final ProjectAPI projectAPI;
     private final LocalStorageHelper localStorageHelper;
     private final AppBeeAPIHelper appBeeAPIHelper;

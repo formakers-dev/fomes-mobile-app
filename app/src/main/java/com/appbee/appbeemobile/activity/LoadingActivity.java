@@ -34,7 +34,7 @@ public class LoadingActivity extends BaseActivity {
     @BindView(R.id.loading_imageview)
     ImageView loadingImageView;
 
-    private static final String TAG = LoadingActivity.class.getSimpleName();
+    private static final String TAG = "LoadingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

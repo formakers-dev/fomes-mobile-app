@@ -48,7 +48,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
 public class InterviewDetailActivity extends BaseActivity {
-    private static final String TAG = InterviewDetailActivity.class.getSimpleName();
+    private static final String TAG = "InterviewDetailActivity";
     private static final String RADIO_BUTTON_CHECKING = "checking";
     private static final String RADIO_BUTTON_CHECKED = "checked";
     private static final String RADIO_BUTTON_UNCHECKED = "";
