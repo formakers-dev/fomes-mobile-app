@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
 
 public class UserService extends AbstractAppBeeService {
 
-    private static final String TAG = UserService.class.getSimpleName();
+    private static final String TAG = "UserService";
     private final UserAPI userAPI;
     private final LocalStorageHelper localStorageHelper;
     private final AppBeeAPIHelper appBeeAPIHelper;

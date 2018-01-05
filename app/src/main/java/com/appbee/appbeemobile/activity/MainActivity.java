@@ -32,7 +32,7 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = "MainActivity";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

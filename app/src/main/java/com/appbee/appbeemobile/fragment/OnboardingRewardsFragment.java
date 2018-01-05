@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.appbee.appbeemobile.R;
 
 public class OnboardingRewardsFragment extends BaseFragment {
-    public static final String TAG = OnboardingRewardsFragment.class.getSimpleName();
+    public static final String TAG = "OnboardingRewardsFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

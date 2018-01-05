@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class PowerConnectedReceiver extends BroadcastReceiver {
-    private static final String TAG = PowerConnectedReceiver.class.getSimpleName();
+    private static final String TAG = "PowerConnectedReceiver";
 
     @Inject
     AppUsageDataHelper appUsageDataHelper;

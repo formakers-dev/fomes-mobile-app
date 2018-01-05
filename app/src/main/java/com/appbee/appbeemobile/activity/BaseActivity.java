@@ -19,7 +19,7 @@ import rx.subscriptions.CompositeSubscription;
 public class BaseActivity extends AppCompatActivity {
     private Unbinder binder;
 
-    final String TAG = BaseActivity.class.getSimpleName();
+    final String TAG = "BaseActivity";
 
     final CompositeSubscription compositeSubscription = new CompositeSubscription();
 

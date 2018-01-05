@@ -28,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class PermissionGuideActivity extends BaseActivity {
 
-    private static final String TAG = PermissionGuideActivity.class.getSimpleName();
+    private static final String TAG = "PermissionGuideActivity";
     static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
 
     @Inject

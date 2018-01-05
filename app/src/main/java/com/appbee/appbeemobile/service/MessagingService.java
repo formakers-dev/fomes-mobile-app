@@ -6,7 +6,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MessagingService extends FirebaseMessagingService {
-    private final static String TAG = MessagingService.class.getSimpleName();
+    private final static String TAG = "MessagingService";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

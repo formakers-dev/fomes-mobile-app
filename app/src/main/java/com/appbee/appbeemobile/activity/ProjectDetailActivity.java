@@ -39,7 +39,7 @@ import static com.appbee.appbeemobile.model.Project.Person;
 import static com.appbee.appbeemobile.util.AppBeeConstants.EXTRA.PROJECT_ID;
 
 public class ProjectDetailActivity extends BaseActivity {
-    private static final String TAG = ProjectDetailActivity.class.getSimpleName();
+    private static final String TAG = "ProjectDetailActivity";
 
     @Inject
     ProjectService projectService;

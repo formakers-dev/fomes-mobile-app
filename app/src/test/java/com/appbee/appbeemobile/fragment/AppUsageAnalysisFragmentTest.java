@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import rx.Scheduler;
 import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
@@ -56,12 +54,13 @@ public class AppUsageAnalysisFragmentTest {
 
     private AppUsageAnalysisFragment subject;
     private SupportFragmentController<AppUsageAnalysisFragment> controller;
-    private Unbinder unbinder;
 
     @Before
     public void setUp() throws Exception {
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
 
         RxAndroidPlugins.getInstance().reset();
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
@@ -95,7 +94,6 @@ public class AppUsageAnalysisFragmentTest {
     private void setupWithoutDescription() {
         subject = new AppUsageAnalysisFragment();
         controller = SupportFragmentController.of(subject);
-        unbinder = ButterKnife.bind(this, subject.getView());
 
         controller.create().start().resume();
     }
@@ -107,7 +105,6 @@ public class AppUsageAnalysisFragmentTest {
         subject.setArguments(bundle);
 
         controller = SupportFragmentController.of(subject);
-        unbinder = ButterKnife.bind(this, subject.getView());
 
         controller.create().start().resume();
     }
@@ -116,7 +113,6 @@ public class AppUsageAnalysisFragmentTest {
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
         RxAndroidPlugins.getInstance().reset();
-        unbinder.unbind();
     }
 
     @Test

@@ -30,7 +30,7 @@ import rx.schedulers.Schedulers;
 
 @Singleton
 public class GoogleSignInAPIHelper {
-    public static final String TAG = GoogleSignInAPIHelper.class.getSimpleName();
+    public static final String TAG = "GoogleSignInAPIHelper";
 
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
