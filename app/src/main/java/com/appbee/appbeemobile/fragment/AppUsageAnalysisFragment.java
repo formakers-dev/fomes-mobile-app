@@ -13,17 +13,18 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.helper.AppUsageDataHelper;
 import com.appbee.appbeemobile.helper.NativeAppInfoHelper;
 import com.appbee.appbeemobile.helper.TimeHelper;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 import com.appbee.appbeemobile.model.ShortTermStat;
 import com.appbee.appbeemobile.network.ConfigService;
+import com.google.api.client.util.Lists;
+import com.google.common.collect.Iterables;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class AppUsageAnalysisFragment extends BaseFragment {
     public static final String TAG = "AnalysisFragment";
@@ -72,42 +73,32 @@ public class AppUsageAnalysisFragment extends BaseFragment {
         }
 
         //TODO : 로딩이미지.... 추가.... 하자... --;;;;
-        Observable<ShortTermStat> shortTermStatObs = Observable.from(appUsageDataHelper.getWeeklyStatSummaryList());
-        Observable<List<String>> blackListObs = configService.getExcludePackageNames().toObservable();
+        configService.getExcludePackageNames()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(popularAppsList -> {
+                    List<ShortTermStat> shortTermStatList = appUsageDataHelper.getWeeklyStatSummaryList();
+                    List<ShortTermStat> personalityAppList = Lists.newArrayList(Iterables.filter(shortTermStatList, input -> input != null && !popularAppsList.contains(input.getPackageName())));
 
-        Observable<ShortTermStat> filteredShortTermStatObs = blackListObs.join(shortTermStatObs,
-                item -> Observable.never(),
-                item -> Observable.never(),
-                (blackList, shortTermStat) -> {
-                    if (!blackList.contains(shortTermStat.getPackageName())) {
-                        return shortTermStat;
-                    } else {
-                        return null;
-                    }
-                }).filter(result -> result != null);
-
-        extractAnalysisDataAndBindTo(mostUsedAppViewGroup, shortTermStatObs);
-        extractAnalysisDataAndBindTo(mostPersonalityAppViewGroup, filteredShortTermStatObs);
+                    extractAnalysisDataAndBindTo(mostPersonalityAppViewGroup, personalityAppList);
+                    extractAnalysisDataAndBindTo(mostUsedAppViewGroup, shortTermStatList);
+                });
     }
 
-    private void extractAnalysisDataAndBindTo(ViewGroup viewGroup, Observable<ShortTermStat> shortTermStats) {
-        addCompositeSubscription(
-                shortTermStats.take(3)
-                        .map(shortTermStat -> nativeAppInfoHelper.getNativeAppInfo(shortTermStat.getPackageName()))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(nativeAppInfo -> {
-                            View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_app, null);
-                            ImageView iconImageView = ((ImageView) itemView.findViewById(R.id.app_imageview));
-                            iconImageView.setTag(R.string.tag_key_image_url, nativeAppInfo.getPackageName());
+    private void extractAnalysisDataAndBindTo(ViewGroup viewGroup, List<ShortTermStat> shortTermStatList) {
+        for (ShortTermStat shortTermStat : Iterables.limit(shortTermStatList, 3)) {
+            NativeAppInfo nativeAppInfo = nativeAppInfoHelper.getNativeAppInfo(shortTermStat.getPackageName());
 
-                            if (nativeAppInfo.getIcon() != null) {
-                                iconImageView.setImageDrawable(nativeAppInfo.getIcon());
-                            } else {
-                                iconImageView.setImageResource(R.mipmap.ic_launcher_app);
-                            }
-                            ((TextView) itemView.findViewById(R.id.app_name_textview)).setText(nativeAppInfo.getAppName());
-                            viewGroup.addView(itemView);
-                        }, Throwable::printStackTrace));
+            View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_app, null);
+            ImageView iconImageView = ((ImageView) itemView.findViewById(R.id.app_imageview));
+            iconImageView.setTag(R.string.tag_key_image_url, nativeAppInfo.getPackageName());
+
+            if (nativeAppInfo.getIcon() != null) {
+                iconImageView.setImageDrawable(nativeAppInfo.getIcon());
+            } else {
+                iconImageView.setImageResource(R.mipmap.ic_launcher_app);
+            }
+            ((TextView) itemView.findViewById(R.id.app_name_textview)).setText(nativeAppInfo.getAppName());
+            viewGroup.addView(itemView);
+        }
     }
 }
