@@ -3,7 +3,7 @@ apply from: "build-jacoco.gradle"
 
 android {
     Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//    properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
