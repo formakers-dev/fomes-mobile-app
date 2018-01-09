@@ -2,9 +2,6 @@ apply plugin: 'com.android.application'
 apply from: "build-jacoco.gradle"
 
 android {
-    Properties properties = new Properties()
-//    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
@@ -29,20 +26,20 @@ android {
             debuggable true
             testCoverageEnabled true
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://' + InetAddress.getLocalHost().getHostAddress() + ':8080/"';
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "${System.getenv("YOUTUBE_API_KEY")}";
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\"";
         }
         development {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbeesvr.herokuapp.com/"';
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "${System.getenv("YOUTUBE_API_KEY")}";
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\"";
             signingConfig signingConfigs.release
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbee-server.azurewebsites.net"';
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "${System.getenv("YOUTUBE_API_KEY")}";
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\"";
             signingConfig signingConfigs.release
         }
     }
