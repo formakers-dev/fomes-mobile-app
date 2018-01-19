@@ -83,6 +83,9 @@ public class InterviewDetailActivity extends BaseActivity {
     @BindView(R.id.interview_location)
     TextView locationTextView;
 
+    @BindView(R.id.rewards_text_view)
+    TextView rewardsTextView;
+
     @BindView(R.id.interview_date)
     TextView dateTextView;
 
@@ -217,6 +220,7 @@ public class InterviewDetailActivity extends BaseActivity {
     private void bindInterviewOverview(Project.Interview interview) {
         typeTextView.setText(interview.getType());
         locationTextView.setText(interview.getLocation());
+        rewardsTextView.setText(interview.getRewards());
         String interviewDate = FormatUtil.convertInputDateFormat(interview.getInterviewDate(), "MM/dd");
         String dayOfDay = DateUtil.getDayOfWeek(interview.getInterviewDate());
         dateTextView.setText(String.format(getString(R.string.interview_date_text), interviewDate, dayOfDay));

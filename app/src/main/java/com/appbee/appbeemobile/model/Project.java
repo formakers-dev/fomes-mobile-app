@@ -224,8 +224,9 @@ public class Project {
         private String selectedTimeSlot;
         private String emergencyPhone;
         private String type;
+        private String rewards;
 
-        public Interview(long seq, List<AppInfo> apps, String introduce, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type) {
+        public Interview(long seq, List<AppInfo> apps, String introduce, Date interviewDate, Date openDate, Date closeDate, String location, String locationDescription, int totalCount, List<String> timeSlots, String selectedTimeSlot, String emergencyPhone, String type, String rewards) {
             this.seq = seq;
             this.apps = apps;
             this.introduce = introduce;
@@ -239,6 +240,15 @@ public class Project {
             this.selectedTimeSlot = selectedTimeSlot;
             this.emergencyPhone = emergencyPhone;
             this.type = type;
+            this.rewards = rewards;
+        }
+
+        public String getRewards() {
+            return rewards;
+        }
+
+        public void setRewards(String rewards) {
+            this.rewards = rewards;
         }
 
         public String getIntroduce() {
@@ -361,6 +371,7 @@ public class Project {
                     ", selectedTimeSlot='" + selectedTimeSlot + '\'' +
                     ", emergencyPhone='" + emergencyPhone + '\'' +
                     ", type='" + type + '\'' +
+                    ", rewards='" + rewards + '\'' +
                     '}';
         }
     }
