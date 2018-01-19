@@ -123,7 +123,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
         calendar.set(2018, MARCH, 3);
         Date closeDate = calendar.getTime();
 
-        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰");
+        Interview interview = new Interview(1L, Collections.singletonList(new AppInfo("com.naver.webtoon", "네이버웹툰")), "인터뷰소개", interviewDate, openDate, closeDate, "우면사업장", "오시는길입니다", 5, Arrays.asList("time8", "time9", "time10"), "", "", "오프라인 인터뷰", "스벅쿠폰 3만원");
         mockProject = new Project("projectId", "[앱] 릴루미노", "저시력 장애인들의 눈이 되어주고 싶은 착하고 똑똑한 안경-)", imageObject, "안녕하세요 릴루미노팀입니다.", "https://www.youtube.com/watch?v=o-rnYD47wmo&feature=youtu.be", imageObjectList, owner, "registered");
         mockProject.setInterview(interview);
 
@@ -145,6 +145,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
         // 인터뷰요약 정보
         assertThat(subject.locationTextView.getText()).isEqualTo("우면사업장");
+        assertThat(subject.rewardsTextView.getText()).isEqualTo("스벅쿠폰 3만원");
         assertThat(subject.dateTextView.getText()).isEqualTo("03/04 (일)");
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-120");
 

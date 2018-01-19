@@ -60,7 +60,7 @@ public class InterviewListItemViewHolder extends RecyclerView.ViewHolder {
         interviewSimilarAppTextView.setText(String.format(interviewSimilarAppTextView.getContext().getString(R.string.recommand_to_user_of_similar_app), project.getInterview().getApps().get(0).getAppName()));
         interviewLocationTextView.setText(project.getInterview().getLocation());
         interviewTypeTextView.setText(project.getInterview().getType());
-        interviewRewardTextView.setText(R.string.rewards_coffee_coupon);
+        interviewRewardTextView.setText(project.getInterview().getRewards());
 
         projectId = project.getProjectId();
         seq = project.getInterview().getSeq();
