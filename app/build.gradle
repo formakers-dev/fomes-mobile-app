@@ -25,21 +25,23 @@ android {
         debug {
             debuggable true
             testCoverageEnabled true
-            buildConfigField 'String', 'SERVER_BASE_URL', '"http://' + InetAddress.getLocalHost().getHostAddress() + ':8080/"';
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\"";
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://' + InetAddress.getLocalHost().getHostAddress() + ':8080/"'
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
         }
+        // DEV
         development {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbeesvr.herokuapp.com/"';
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\"";
+            buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-dev.herokuapp.com/"'
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
         }
+        // PRD
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbee-server.azurewebsites.net"';
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\"";
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbee-server.azurewebsites.net"'
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
         }
     }
