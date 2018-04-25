@@ -38,11 +38,19 @@ android {
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
         }
+        // STG
+        staging {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-stg.herokuapp.com/"'
+            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
+            signingConfig signingConfigs.release
+        }
         // PRD
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbee-server.azurewebsites.net"'
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://appbeeserver-env.ap-northeast-2.elasticbeanstalk.com/"'
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
         }
