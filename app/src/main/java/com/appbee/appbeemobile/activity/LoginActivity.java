@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -138,6 +139,11 @@ public class LoginActivity extends BaseActivity {
         } else {
             user.setBirthday(0);
             user.setGender(UNKNOWN_GENDER);
+        }
+
+        String signUpCode = localStorageHelper.getInvitationCode();
+        if (!TextUtils.isEmpty(signUpCode)) {
+            user.setSignUpCode(new User.SignUpCode(User.SignUpCode.BETA, signUpCode));
         }
 
         addToCompositeSubscription(
