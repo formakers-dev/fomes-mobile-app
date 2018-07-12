@@ -3,6 +3,10 @@ apply from: "build-jacoco.gradle"
 
 project.ext.set("packageID", "AppBee")
 
+def majorVersion = 1
+def minorVersion = 0
+def patchVersion = 5
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
@@ -12,7 +16,7 @@ android {
         targetSdkVersion 25
         multiDexEnabled true
         versionCode 6
-        versionName "1.0.5"
+        versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -162,6 +166,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
+
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
+
+task getAppVersion() {
+    def appVersion = "${majorVersion}.${minorVersion}.${patchVersion}"
+    print appVersion
+    return appVersion
+}

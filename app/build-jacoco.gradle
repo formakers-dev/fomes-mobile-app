@@ -1,6 +1,12 @@
 apply plugin: 'jacoco'
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+jacoco {
+    reportsDir = file("${buildDir}/reports")
+}
+
+task coverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports"
 
     reports {
         xml.enabled = true
@@ -18,11 +24,17 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
                       '**/*ModuleAdapter*.*',
                       '**/*_*.*',
                       '**/dagger/*.*']
-    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug/com/appbee/appbeemobile", excludes: fileFilter)
-    def mainSrc = "$project.projectDir/src/main/java"
 
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
+    def debugTree = fileTree(
+            dir: "$project.buildDir/intermediates/classes/debug/com/appbee/appbeemobile",
+            excludes: fileFilter
+    )
+
+    def mainSrc = ["$project.projectDir/src/main/java"]
+
+    sourceDirectories = files(mainSrc)
+    classDirectories = files(debugTree)
+
     executionData = fileTree(dir: project.buildDir, includes: [
             'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
     ])
