@@ -81,8 +81,8 @@ jobs:
       - checkout
       - attach_workspace: *attach-workspace
       - run:
-          name: Deploy to Slack for Dev
-          command: bash .circleci/deploy-to-slack.sh release $SLACK_DELIVERY_DEV_CHANNEL $CIRCLE_BRANCH
+          name: Delivery to Slack for Dev
+          command: bash .circleci/delivery-to-slack.sh release $SLACK_DELIVERY_DEV_CHANNEL $CIRCLE_BRANCH
       - store_artifacts:
           path: app/build/outputs
 
@@ -92,8 +92,8 @@ jobs:
         - checkout
         - attach_workspace: *attach-workspace
         - run:
-            name: Deploy to Slack for Release
-            command: bash .circleci/deploy-to-slack.sh release $SLACK_DELIVERY_RELEASE_CHANNEL $CIRCLE_BRANCH
+            name: Delivery to Slack for Release
+            command: bash .circleci/delivery-to-slack.sh release $SLACK_DELIVERY_RELEASE_CHANNEL $CIRCLE_BRANCH
         - store_artifacts:
             path: app/build/outputs
 
