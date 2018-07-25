@@ -3,32 +3,38 @@ package com.appbee.appbeemobile.activity;
 
 import android.support.v4.app.Fragment;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
 import com.appbee.appbeemobile.fragment.OnboardingRewardsFragment;
 import com.appbee.appbeemobile.shadow.ShadowAppUsageAnalysisFragment;
 import com.appbee.appbeemobile.shadow.ShadowOnboardingRewardFragment;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, shadows = {ShadowAppUsageAnalysisFragment.class, ShadowOnboardingRewardFragment.class})
-public class OnboardingAnalysisActivityTest {
+@Config(shadows = {ShadowAppUsageAnalysisFragment.class, ShadowOnboardingRewardFragment.class})
+public class OnboardingAnalysisActivityTest extends BaseActivityTest<OnboardingAnalysisActivity> {
 
     private OnboardingAnalysisActivity subject;
 
+    public OnboardingAnalysisActivityTest() {
+        super(OnboardingAnalysisActivity.class);
+    }
+
     @Before
     public void setUp() throws Exception {
-        subject = Robolectric.setupActivity(OnboardingAnalysisActivity.class);
+        subject = getActivity();
+    }
+
+    @Override
+    @After
+    public void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Test

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.model.Project;
@@ -15,11 +14,7 @@ import com.appbee.appbeemobile.util.AppBeeConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
 import java.util.ArrayList;
@@ -39,14 +34,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class MyInterviewActivityTest extends ActivityTest {
+public class MyInterviewActivityTest extends BaseActivityTest<MyInterviewActivity> {
 
     @Inject
     ProjectService projectService;
 
     private MyInterviewActivity subject;
+
+    public MyInterviewActivityTest() {
+        super(MyInterviewActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -55,7 +52,7 @@ public class MyInterviewActivityTest extends ActivityTest {
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        subject = Robolectric.buildActivity(MyInterviewActivity.class).create().get();
+        subject = getActivity(LIFECYCLE_TYPE_CREATE);
 
         List<Project> mockProjectList = new ArrayList<>();
         mockProjectList.add(mock(Project.class));
@@ -67,6 +64,7 @@ public class MyInterviewActivityTest extends ActivityTest {
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        super.tearDown();
     }
 
     @Test

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
@@ -13,9 +12,6 @@ import com.appbee.appbeemobile.network.UserService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
@@ -36,9 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class CodeVerificationActivityTest extends ActivityTest {
+public class CodeVerificationActivityTest extends BaseActivityTest<CodeVerificationActivity> {
 
     @Inject
     UserService mockUserService;
@@ -48,6 +42,9 @@ public class CodeVerificationActivityTest extends ActivityTest {
 
     private CodeVerificationActivity subject;
 
+    public CodeVerificationActivityTest() {
+        super(CodeVerificationActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -56,12 +53,13 @@ public class CodeVerificationActivityTest extends ActivityTest {
 
         ((TestAppBeeApplication) (RuntimeEnvironment.application)).getComponent().inject(this);
 
-        subject = Robolectric.setupActivity(CodeVerificationActivity.class);
+        subject = getActivity();
     }
 
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        super.tearDown();
     }
 
     @Test

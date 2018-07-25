@@ -1,26 +1,30 @@
 package com.appbee.appbeemobile.activity;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class OnboardingActivityTest extends ActivityTest {
+public class OnboardingActivityTest extends BaseActivityTest<OnboardingActivity> {
     private OnboardingActivity subject;
+
+    public OnboardingActivityTest() {
+        super(OnboardingActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
-        subject = Robolectric.setupActivity(OnboardingActivity.class);
+        subject = getActivity();
+    }
+
+    @Override
+    @After
+    public void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Test

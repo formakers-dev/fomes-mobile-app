@@ -14,11 +14,8 @@ import com.appbee.appbeemobile.helper.TimeHelper;
 import com.appbee.appbeemobile.model.Project;
 import com.appbee.appbeemobile.model.Project.ImageObject;
 import com.appbee.appbeemobile.model.Project.Person;
-import com.appbee.appbeemobile.model.User;
 import com.appbee.appbeemobile.network.ProjectService;
 import com.appbee.appbeemobile.network.UserService;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,10 +32,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -54,7 +47,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class ProjectDetailActivityTest extends ActivityTest {
+public class ProjectDetailActivityTest extends BaseActivityTest<ProjectDetailActivity> {
     private ProjectDetailActivity subject;
 
     @Inject
@@ -77,6 +70,10 @@ public class ProjectDetailActivityTest extends ActivityTest {
     private Intent intent = new Intent();
 
     private Project mockProject;
+
+    public ProjectDetailActivityTest() {
+        super(ProjectDetailActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -104,12 +101,13 @@ public class ProjectDetailActivityTest extends ActivityTest {
         when(mockProjectService.getProject(anyString())).thenReturn(rx.Observable.just(mockProject));
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
 
-        activityController = Robolectric.buildActivity(ProjectDetailActivity.class, intent);
+        activityController = getActivityController(intent);
     }
 
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        super.tearDown();
     }
 
     @Test
