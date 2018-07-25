@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.LocalStorageHelper;
@@ -12,11 +11,7 @@ import com.appbee.appbeemobile.helper.LocalStorageHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import javax.inject.Inject;
 
@@ -28,14 +23,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class MainActivityTest extends ActivityTest {
+public class MainActivityTest extends BaseActivityTest<MainActivity> {
 
     private MainActivity subject;
 
     @Inject
     LocalStorageHelper mockLocalStorageHelper;
+
+    public MainActivityTest() {
+        super(MainActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -46,12 +43,13 @@ public class MainActivityTest extends ActivityTest {
 
         when(mockLocalStorageHelper.getEmail()).thenReturn("anyEmail@gmail.com");
 
-        subject = Robolectric.buildActivity(MainActivity.class).create().postCreate(null).get();
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
     }
 
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        super.tearDown();
     }
 
     @Test

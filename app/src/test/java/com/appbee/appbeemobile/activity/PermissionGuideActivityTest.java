@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
@@ -16,14 +15,10 @@ import com.appbee.appbeemobile.network.ConfigService;
 import com.appbee.appbeemobile.network.UserService;
 import com.appbee.appbeemobile.util.AppBeeConstants.EXTRA;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowToast;
@@ -42,9 +37,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class PermissionGuideActivityTest extends ActivityTest {
+public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuideActivity> {
 
     @Inject
     AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
@@ -57,7 +50,10 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Inject
     LocalStorageHelper mockLocalStorageHelper;
-    private ActivityController<PermissionGuideActivity> activityController;
+
+    public PermissionGuideActivityTest() {
+        super(PermissionGuideActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -69,12 +65,17 @@ public class PermissionGuideActivityTest extends ActivityTest {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         when(mockConfigService.getAppVersion()).thenReturn(Single.just(1L));
         when(mockUserService.verifyToken()).thenReturn(Completable.complete());
-        activityController = Robolectric.buildActivity(PermissionGuideActivity.class);
+    }
+
+    @Override
+    @After
+    public void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Test
     public void onCreate호출시_최소앱버전코드확인API를_호출한다() throws Exception {
-        activityController.create().get();
+        getActivity(LIFECYCLE_TYPE_CREATE);
 
         verify(mockConfigService).getAppVersion();
     }
@@ -83,7 +84,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void 최소앱버전코드확인API호출결과_최소앱버전보다_현재버전코드가_작은경우_업데이트_안내_팝업이_나타난다() throws Exception {
         when(mockConfigService.getAppVersion()).thenReturn(Single.just(Long.MAX_VALUE));
 
-        activityController.create().get();
+        getActivity(LIFECYCLE_TYPE_CREATE);
 
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         assertThat(dialog).isNotNull();
@@ -98,7 +99,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void 업데이트_안내_팝업의_확인버튼_선택시_마켓으로_이동후_앱을_종료한다() throws Exception {
         when(mockConfigService.getAppVersion()).thenReturn(Single.just(Long.MAX_VALUE));
 
-        PermissionGuideActivity subject = activityController.create().get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_CREATE);
 
         ShadowAlertDialog.getLatestAlertDialog().getButton(AlertDialog.BUTTON_POSITIVE).performClick();
 
@@ -112,7 +113,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void 업데이트_안내_팝업을_취소하면_앱을_종료한다() throws Exception {
         when(mockConfigService.getAppVersion()).thenReturn(Single.just(Long.MAX_VALUE));
 
-        PermissionGuideActivity subject = activityController.create().get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_CREATE);;
 
         ShadowAlertDialog.getLatestAlertDialog().cancel();
 
@@ -123,7 +124,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void onCreate호출시_초대장인증미완료시_초대장코드인증화면으로_이동한다() throws Exception {
         when(mockLocalStorageHelper.getInvitationCode()).thenReturn("");
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, CodeVerificationActivity.class);
     }
@@ -131,14 +132,14 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void onCreate호출시_초대장인증완료_및_SignIn미완료_시_로그인화면으로_이동한다() throws Exception {
         when(mockLocalStorageHelper.isLoggedIn()).thenReturn(false);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, LoginActivity.class);
     }
 
     @Test
     public void onCreate호출시_초대장인증완료_및_SignIn완료되었지만_권한이_없으면_토큰검증을_수행하지_않는다() throws Exception {
-        activityController.create().postCreate(null).get();
+        getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verify(mockUserService, never()).verifyToken();
     }
@@ -147,7 +148,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void onCreate호출시_토큰이_만료된_경우_LoginActivity로_이동한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(401));
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, LoginActivity.class);
     }
@@ -156,7 +157,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void onCreate호출시_토큰이_유효하지_않은_경우_LoginActivity로_이동한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(403));
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, LoginActivity.class);
     }
@@ -165,7 +166,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void onCreate호출시_토큰유효성검증요청의_서버응답오류가_발생한_경우_에러메시지표시후_종료한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(500));
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("예상치 못한 에러가 발생하였습니다.");
         assertThat(subject.isFinishing()).isTrue();
@@ -180,7 +181,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void onCreate호출시_토큰검증시_예기치못한_에러가_발생할_경우_에러메시지표시후_종료한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(Completable.error(new Exception()));
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("예상치 못한 에러가 발생하였습니다.");
         assertThat(subject.isFinishing()).isTrue();
@@ -189,7 +190,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void onCreate호출시_권한이_있고_토큰유효성이_검증된_경우_MainActivity로_이동한다() throws Exception {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, MainActivity.class);
     }
@@ -198,7 +199,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     public void onCreate호출시_권한이_있고_토큰유효성이_검증됐으나_앱사용정보전송이력이_없는경우_LoadingActivity로_이동한다() throws Exception {
         when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, LoadingActivity.class);
     }
@@ -225,13 +226,13 @@ public class PermissionGuideActivityTest extends ActivityTest {
         intent.putExtra(EXTRA.INTERVIEW_SEQ, "1");
         intent.putExtra(EXTRA.NOTIFICATION_TYPE, notificationType);
 
-        return Robolectric.buildActivity(PermissionGuideActivity.class, intent).create().postCreate(null).get();
+        return getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
     }
 
     @Test
     public void permissionButton클릭시_권한설정페이지를_표시한다() throws Exception {
 
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         subject.permissionButton.performClick();
 
@@ -241,7 +242,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void 권한설정_수행후_권한이_없을때_현재화면에_머무른다() throws Exception {
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         subject.onActivityResult(1001, 0, null);
 
@@ -251,7 +252,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void 권한설정_수행후_앱사용데이터_전송기록이_없는경우_LoadingActivity로_이동한다() throws Exception {
         when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         subject.onActivityResult(1001, 0, null);
@@ -282,7 +283,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void 권한설정_수행후_토큰이_만료된_경우_LoginActivity로_이동한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(401));
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         subject.onActivityResult(1001, 0, null);
@@ -293,7 +294,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void 권한설정_수행후_토큰이_유효하지_않은_경우_LoginActivity로_이동한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(403));
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         subject.onActivityResult(1001, 0, null);
@@ -304,7 +305,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void 권한설정_수행후_토큰유효성검증요청의_서버응답오류가_발생한_경우_에러메시지표시후_종료한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(createHttpErrorForCompletable(500));
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         subject.onActivityResult(1001, 0, null);
@@ -316,7 +317,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
     @Test
     public void 권한설정_수행후_토큰검증시_예기치못한_에러가_발생할_경우_에러메시지표시후_종료한다() throws Exception {
         when(mockUserService.verifyToken()).thenReturn(Completable.error(new Exception()));
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         subject.onActivityResult(1001, 0, null);
@@ -327,7 +328,7 @@ public class PermissionGuideActivityTest extends ActivityTest {
 
     @Test
     public void onCreate에서_권한설정이_완료되지않은경우_현재화면에_머무른다() throws Exception {
-        PermissionGuideActivity subject = activityController.create().postCreate(null).get();
+        PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyStayingCurrentActivity(subject);
     }

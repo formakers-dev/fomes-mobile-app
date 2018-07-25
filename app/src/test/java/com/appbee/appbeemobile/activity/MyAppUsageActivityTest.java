@@ -5,24 +5,32 @@ import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.fragment.AppUsageAnalysisFragment;
 import com.appbee.appbeemobile.shadow.ShadowAppUsageAnalysisFragment;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
-@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, shadows = {ShadowAppUsageAnalysisFragment.class})
-public class MyAppUsageActivityTest {
+public class MyAppUsageActivityTest extends BaseActivityTest<MyAppUsageActivity> {
 
     MyAppUsageActivity subject;
+
+    public MyAppUsageActivityTest() {
+        super(MyAppUsageActivity.class);
+    }
+
     @Before
     public void setUp() throws Exception {
-        subject = Robolectric.setupActivity(MyAppUsageActivity.class);
+        subject = getActivity();
+    }
+
+    @Override
+    @After
+    public void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Test

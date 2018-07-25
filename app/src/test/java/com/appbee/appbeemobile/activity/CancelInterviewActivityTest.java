@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.network.ProjectService;
@@ -18,11 +17,8 @@ import com.appbee.appbeemobile.util.AppBeeConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import java.util.Calendar;
@@ -45,9 +41,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class CancelInterviewActivityTest extends ActivityTest {
+public class CancelInterviewActivityTest extends BaseActivityTest<CancelInterviewActivity> {
 
     @Inject
     ProjectService mockProjectService;
@@ -55,6 +49,10 @@ public class CancelInterviewActivityTest extends ActivityTest {
     private CancelInterviewActivity subject;
     private Intent intent = new Intent();
     private MenuItem homeMenuItem = mock(MenuItem.class);
+
+    public CancelInterviewActivityTest() {
+        super(CancelInterviewActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -80,12 +78,13 @@ public class CancelInterviewActivityTest extends ActivityTest {
 
         when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.complete());
 
-        subject = Robolectric.buildActivity(CancelInterviewActivity.class, intent).create().postCreate(null).resume().get();
+        subject = getActivity(intent);
     }
 
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        super.tearDown();
     }
 
     @Test

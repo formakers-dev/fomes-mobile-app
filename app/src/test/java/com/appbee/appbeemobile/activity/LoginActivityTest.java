@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.helper.GoogleSignInAPIHelper;
@@ -23,13 +22,9 @@ import com.google.api.services.people.v1.model.Person;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowToast;
 
@@ -52,9 +47,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class LoginActivityTest extends ActivityTest {
+public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     private LoginActivity subject;
 
     @Inject
@@ -68,6 +61,10 @@ public class LoginActivityTest extends ActivityTest {
 
     @Mock
     GoogleSignInAccount mockGoogleSignInAccount;
+
+    public LoginActivityTest() {
+        super(LoginActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -87,6 +84,7 @@ public class LoginActivityTest extends ActivityTest {
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        super.tearDown();
     }
 
     private LoginActivity getSubjectAfterSetupGoogleSignIn() {
@@ -94,7 +92,7 @@ public class LoginActivityTest extends ActivityTest {
         mockPerson();
         when(userService.signIn(anyString(), any())).thenReturn(Observable.just("testAccessToken"));
 
-        return Robolectric.setupActivity(LoginActivity.class);
+        return getActivity();
     }
 
     private LoginActivity getSubjectAfterSetupGoogleSilentSignedIn() {
@@ -104,7 +102,7 @@ public class LoginActivityTest extends ActivityTest {
 
         when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mockGoogleSignInResult));
 
-        return Robolectric.setupActivity(LoginActivity.class);
+        return getActivity();
     }
 
     private void mockPerson() {
@@ -209,7 +207,7 @@ public class LoginActivityTest extends ActivityTest {
         mockPerson();
         when(userService.signIn(anyString(), any())).thenReturn(Observable.error(new Throwable()));
 
-        subject = Robolectric.setupActivity(LoginActivity.class);
+        subject = getActivity();
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         assertFinishActivityForFail("Fail to sign in");

@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.appbee.appbeemobile.BuildConfig;
 import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
 import com.appbee.appbeemobile.adapter.DescriptionImageAdapter;
@@ -30,11 +29,9 @@ import com.appbee.appbeemobile.util.AppBeeConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 
@@ -62,10 +59,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-public class InterviewDetailActivityTest extends ActivityTest {
+public class InterviewDetailActivityTest extends BaseActivityTest<InterviewDetailActivity> {
+    private final int DIM_GRAY_COLOR = 1;
+    private final int YELLOW_COLOR = 2;
+    private final int WARM_GRAY_COLOR = 3;
+    private final int GRAY_COLOR = 4;
+    private final int DIM_FOREGROUND_COLOR = 5;
+    private final int TRANSPARENT_COLOR = 6;
+
     private InterviewDetailActivity subject;
 
     @Inject
@@ -78,13 +80,12 @@ public class InterviewDetailActivityTest extends ActivityTest {
     ResourceHelper mockResourceHelper;
 
     private Intent intent = new Intent();
-    private final int DIM_GRAY_COLOR = 1;
-    private final int YELLOW_COLOR = 2;
-    private final int WARM_GRAY_COLOR = 3;
-    private final int GRAY_COLOR = 4;
-    private final int DIM_FOREGROUND_COLOR = 5;
-    private final int TRANSPARENT_COLOR = 6;
     private Project mockProject;
+    private ActivityController<InterviewDetailActivity> activityController;
+
+    public InterviewDetailActivityTest() {
+        super(InterviewDetailActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -100,8 +101,6 @@ public class InterviewDetailActivityTest extends ActivityTest {
         setupMockProject();
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         mockColorValue();
-
-        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
     }
 
     private void setupMockProject() {
@@ -133,10 +132,13 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @After
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
+        super.tearDown();
     }
 
     @Test
     public void onPostCreate시_조회된_인터뷰_상세_정보를_화면에_보여준다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         // 프로젝트 요약 내용
         assertThat(subject.representationImageView.getTag(R.string.tag_key_image_url)).isEqualTo("www.imageUrl.com");
         assertThat(subject.appsDescriptionTextView.getText()).isEqualTo("'네이버웹툰' 앱 유저에게 추천");
@@ -172,7 +174,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void onPostCreate시_비디오정보가_없는경우_비디오레이아웃을_숨긴다() throws Exception {
         mockProject.setVideoUrl("");
 
-        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
 
         assertHideVideoLayout();
     }
@@ -181,7 +183,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void onPostCreate시_비디오정보가_유투브URL이_아닌_경우_비디오레이아웃을_숨긴다() throws Exception {
         mockProject.setVideoUrl("http://www.naver.com/4.mp4");
 
-        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
 
         assertHideVideoLayout();
     }
@@ -195,13 +197,15 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void onPostCreate시_오늘날짜가_마감일이후인경우_D_Day는_0이_표시된다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1520035200000L);   //2017-12-01 03:03:03
 
-        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
 
         assertThat(subject.dDayTextView.getText()).isEqualTo("D-0");
     }
 
     @Test
     public void onPostCreate시_조회된_project_설명정보를_화면에_보여준다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         assertThat(subject.projectDescriptionTextView.getText()).contains("안녕하세요 릴루미노팀입니다.");
         assertThat(subject.descriptionImageRecyclerView.getAdapter().getClass().getSimpleName()).contains(DescriptionImageAdapter.class.getSimpleName());
     }
@@ -209,6 +213,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     @Config(minSdk = 22)
     public void onPostCreate시_신청하지않은인터뷰가조회되면_인터뷰신청하기형태의_submit버튼이나타난다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         assertThat(subject.submitArrowButton.getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(shadowOf(subject.submitArrowButton.getBackground()).getCreatedFromResId()).isEqualTo(R.drawable.submit_open);
         assertThat(subject.submitArrowButton.isClickable()).isTrue();
@@ -221,7 +227,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void onPostCreate시_이미신청된인터뷰가조회되면_이미신청한인터뷰안내형태의_submit버튼이나타난다다() throws Exception {
         mockProject.getInterview().setSelectedTimeSlot("time8");
 
-        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
 
         assertThat(subject.submitArrowButton.getVisibility()).isEqualTo(View.GONE);
         assertThat(subject.submitButton.getText()).isEqualTo("이미 신청한 인터뷰입니다.");
@@ -234,7 +240,7 @@ public class InterviewDetailActivityTest extends ActivityTest {
     public void onPostCreate시_신청이_마감된인터뷰가조회되면_신청이_마감된_인터뷰안내형태의_submit버튼이나타난다() throws Exception {
         mockProject.getInterview().setTimeSlots(new ArrayList<>());
 
-        subject = Robolectric.buildActivity(InterviewDetailActivity.class, intent).create().postCreate(null).get();
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
 
         assertThat(subject.submitArrowButton.getVisibility()).isEqualTo(View.GONE);
         assertThat(subject.submitButton.getText()).isEqualTo("신청이 마감된 인터뷰입니다.");
@@ -245,11 +251,15 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void onPostCreate시_세부일정선택영역이_나타나지않는다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test
     public void BackButton클릭시_이전화면으로_복귀한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.findViewById(R.id.back_button).performClick();
         assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
@@ -257,6 +267,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     @Config(minSdk = 22)
     public void 세부일정선택영역이_나타나지_않은_상태에서_submit클릭시_세부일정선택영역을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitButton.performClick();
 
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.VISIBLE);
@@ -276,6 +288,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정선택영역이_나타나지_않은_상태에서_submitArrow버튼클릭시_세부일정선택영역을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitArrowButton.performClick();
 
         assertThat(subject.detailPlansLayout.getVisibility()).isEqualTo(View.VISIBLE);
@@ -292,6 +306,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하고_submitButton클릭시_인터뷰참여신청API를_호출한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitButton.performClick();
 
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.complete());
@@ -306,6 +322,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정선택영역이_나타난_상태에서_submitArrowButton클릭시_세부일정선택영역이_사라진다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitArrowButton.performClick();
 
         subject.submitArrowButton.performClick();
@@ -316,6 +334,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정선택영역이_나타난_상태에서_scrollView터치시_세부일정선택영역이_사라진다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitArrowButton.performClick();
 
         subject.scrollView.dispatchTouchEvent(MotionEvent.obtain(100L, 100L, MotionEvent.ACTION_DOWN, 100, 100, 0));
@@ -326,6 +346,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정선택영역이_나타난_상태에서_세부일정영역클릭시_세부일정선택영역이_사라지지않는다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitButton.performClick();
 
         subject.detailPlansLayout.performClick();
@@ -336,6 +358,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
     @Test
     @Config(minSdk = 22)
     public void 세부일정선택영역이_나타나면_scrollView영역이Dim처리된다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitArrowButton.performClick();
 
         assertThat(((ColorDrawable) subject.scrollViewLayout.getForeground()).getColor()).isEqualTo(DIM_FOREGROUND_COLOR);
@@ -347,6 +371,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupForPreparationOfParticipation();
 
         subject.submitButton.performClick();
@@ -362,6 +388,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 인터뷰참여신청성공시_인터뷰참여완료팝업을_표시후_팝업이닫히면_다가오는_인터뷰페이지로이동한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupForPreparationOfParticipation();
 
         subject.submitButton.performClick();
@@ -376,6 +404,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 인터뷰_참여완료_팝업의_확인버튼을클릭시_팝업을_닫고_다가오는_유저인터뷰_페이지로_이동한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupForPreparationOfParticipation();
 
         subject.submitButton.performClick();
@@ -389,6 +419,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정중_특정시간을_선택하면_RadioGroup의_체크값이_해당시간으로_설정된다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupForPreparationOfParticipation();
 
         RadioButton checkedRadioButton = ((RadioButton) subject.timeSlotRadioGroup.getChildAt(0));
@@ -397,6 +429,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정중_특정시간이_선택된상태에서_다른_시간을_클릭하면_선택한_시간으로_라디오그룹의_체크된_버튼이_변경된다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupForPreparationOfParticipation();
         subject.timeSlotRadioGroup.getChildAt(1).performClick();
 
@@ -406,6 +440,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정중_특정시간이_선택된상태에서_해당_시간을_다시_클릭하면_RadioGroup의_체크상태를_해제한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupForPreparationOfParticipation();
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
 
@@ -426,6 +462,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 이미_신청한인터뷰인_경우_인터뷰참여실패팝업을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupParticipateError(405);
 
         subject.submitButton.performClick();
@@ -435,6 +473,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupParticipateError(406);
 
         subject.submitButton.performClick();
@@ -444,6 +484,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 신청한슬롯을_이미다른사람이_신청하여_인터뷰참여신청실패시_인터뷰참여실패팝업을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupParticipateError(409);
 
         subject.submitButton.performClick();
@@ -453,6 +495,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 이미마감되거나_신청기한이_아닌_인터뷰신청에_대해_인터뷰참여실패팝업을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupParticipateError(412);
 
         subject.submitButton.performClick();
@@ -462,6 +506,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void HTTP오류가_아닌이유로_인터뷰신청에_실패한경우_인터뷰신청실패팝업을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitButton.performClick();
         subject.timeSlotRadioGroup.getChildAt(0).performClick();
         when(mockProjectService.postParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.error(new Exception("Unknown")));
@@ -486,6 +532,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 신청한슬롯의인터뷰가마감되어_인터뷰참여실패팝업이_표시된경우_확인버튼을클릭했을때_인터뷰상세조회화면을_리프레시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         setupParticipateError(409);
 
         subject.submitButton.performClick();
@@ -505,6 +553,8 @@ public class InterviewDetailActivityTest extends ActivityTest {
 
     @Test
     public void 세부일정선택영역이_나타난_상태에서_세부일정을_선택하지않은상태에서_submitButton클릭시_경고팝업을_표시한다() throws Exception {
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE, intent);
+
         subject.submitButton.performClick();
 
         subject.submitButton.performClick();
