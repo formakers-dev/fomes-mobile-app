@@ -6,10 +6,13 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 
 import com.appbee.appbeemobile.BuildConfig;
-import com.appbee.appbeemobile.model.AppInfo;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,9 +64,10 @@ public class AppBeeAndroidNativeHelperTest {
 
         when(usageEvents.hasNextEvent()).thenAnswer(new Answer<Boolean>() {
             private int callCount = 0;
+
             @Override
             public Boolean answer(InvocationOnMock invocation) throws Throwable {
-                if(callCount < 2) {
+                if (callCount < 2) {
                     callCount++;
                     return true;
                 } else {
@@ -84,7 +88,7 @@ public class AppBeeAndroidNativeHelperTest {
         ResolveInfo resolveInfo = new ResolveInfo();
         resolveInfo.isDefault = true;
         resolveInfo.activityInfo = new ActivityInfo();
-        resolveInfo.activityInfo.packageName =  "package";
+        resolveInfo.activityInfo.packageName = "package";
         shadowOf(resolveInfo).setLabel("app_name");
         mockReturnList.add(resolveInfo);
 
@@ -93,17 +97,17 @@ public class AppBeeAndroidNativeHelperTest {
         ShadowPackageManager shadowPackageManager = shadowOf(RuntimeEnvironment.application.getPackageManager());
         shadowPackageManager.addResolveInfoForIntent(intent, mockReturnList);
 
-        List<AppInfo> appList = subject.getInstalledLaunchableApps();
+        List<NativeAppInfo> appList = subject.getInstalledLaunchableApps().toList().toBlocking().single();
         assertThat(appList.size()).isEqualTo(1);
         assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
         assertThat(appList.get(0).getPackageName()).isEqualTo("package");
     }
 
     @Test
-    public void getUsageStats호출시_일별통계정보를_조회한다() throws Exception {
-        subject.getUsageStats(1000L, 1100L);
+    public void getUsageStats호출시_앱사용정보를_조회한다() throws Exception {
+        subject.getUsageStats(UsageStatsManager.INTERVAL_MONTHLY, 1000L, 1100L);
 
-        verify(mockUsageStatsManager).queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, 1000L, 1100L);
+        verify(mockUsageStatsManager).queryUsageStats(UsageStatsManager.INTERVAL_MONTHLY, 1000L, 1100L);
     }
 
     @Test
@@ -123,5 +127,25 @@ public class AppBeeAndroidNativeHelperTest {
         when(mockAppOpsManager.checkOpNoThrow(eq(AppOpsManager.OPSTR_GET_USAGE_STATS), anyInt(), anyString())).thenReturn(AppOpsManager.MODE_ALLOWED);
 
         assertThat(subject.hasUsageStatsPermission()).isTrue();
+    }
+
+    @Test
+    public void getNativeAppInfo호출시_파라미터로받은_PackageName에대한_앱정보를_리턴한다() throws Exception {
+        PackageInfo packageInfo = new PackageInfo();
+        packageInfo.packageName = "com.package.name1";
+        packageInfo.versionName = "1.0";
+        packageInfo.applicationInfo = new ApplicationInfo();
+        packageInfo.applicationInfo.packageName = "com.package.name1";
+        packageInfo.applicationInfo.name = "앱이름1";
+        Drawable mockDrawable = mock(Drawable.class);
+        shadowOf(RuntimeEnvironment.application.getPackageManager()).setApplicationIcon("com.package.name1", mockDrawable);
+
+        shadowOf(RuntimeEnvironment.application.getPackageManager()).addPackage(packageInfo);
+
+        NativeAppInfo nativeAppInfo = subject.getNativeAppInfo("com.package.name1");
+
+        assertThat(nativeAppInfo.getPackageName()).isEqualTo("com.package.name1");
+        assertThat(nativeAppInfo.getAppName()).isEqualTo("앱이름1");
+        assertThat(nativeAppInfo.getIcon()).isEqualTo(mockDrawable);
     }
 }

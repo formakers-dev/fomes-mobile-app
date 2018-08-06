@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_above="@id/next_button"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/reward_bee" />
+
+    <TextView
+        android:id="@+id/reward_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/onboarding_rewards_title"
+        android:textColor="@color/appbee_gray"
+        android:textSize="26dp"
+        app:font="BMJUA"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:gravity="center"
+        android:text="@string/onboarding_rewards_description"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="16dp" />
+
+</LinearLayout>

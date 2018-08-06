@@ -1,11 +1,46 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- Application theme. -->
+    <style name="AppBeeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
+    <style name="AppBeeNoActionBarTheme" parent="AppBeeTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <!-- End of Application theme. -->
+
+    <!-- Android View Widget theme -->
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MainTabTheme" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/appbee_yellow</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabTextAppearance">@style/MainTabTheme.TextAppearance</item>
+    </style>
+
+    <style name="MainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/appbee_gray</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="NavigationViewTextAppearance" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@color/appbee_gray</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="EmptyContentView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">102dp</item>
+        <item name="android:layout_marginEnd">14dp</item>
+        <item name="android:layout_marginStart">14dp</item>
+        <item name="android:background">@drawable/empty_contents_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/appbee_warm_gray</item>
+        <item name="android:textSize">13dp</item>
+    </style>
 </resources>
