@@ -2,78 +2,161 @@ package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.appbee.appbeemobile.AppBeeApplication;
 import com.appbee.appbeemobile.R;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
-import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.network.AppStatServiceCallback;
-import com.appbee.appbeemobile.util.AppBeeConstants;
+import com.appbee.appbeemobile.adapter.ContentsPagerAdapter;
+import com.appbee.appbeemobile.fragment.InterviewListFragment;
+import com.appbee.appbeemobile.fragment.ProjectListFragment;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
+import com.appbee.appbeemobile.network.ProjectService;
+import com.appbee.appbeemobile.util.FormatUtil;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class MainActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
-    private static final int REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION = 1001;
+    private static final String TAG = "MainActivity";
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
+    @BindView(R.id.main_nested_scrollview)
+    NestedScrollView mainNestedScrollView;
+
+    @BindView(R.id.contents_view_pager)
+    ViewPager contentsViewPager;
+
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+
+    TextView userIdTextView;
 
     @Inject
-    AppStatService appStatService;
+    LocalStorageHelper localStorageHelper;
 
     @Inject
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    ProjectService projectService;
+    private Runnable pendingRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((AppBeeApplication) getApplication()).getComponent().inject(this);
+
         setContentView(R.layout.activity_main);
+    }
 
-        ((AppBeeApplication)getApplication()).getComponent().inject(this);
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
-        if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-            sendData();
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        toggle.setDrawerSlideAnimationEnabled(true);
+        toggle.syncState();
+
+        drawer.addDrawerListener(toggle);
+        drawer.addDrawerListener(this);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        userIdTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_id);
+        userIdTextView.setText(FormatUtil.parseEmailName(localStorageHelper.getEmail()));
+
+        mainNestedScrollView.setFillViewport(true);
+
+        ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
+        contentsPagerAdapter.addFragment(new InterviewListFragment(), getString(R.string.contents_title_interview));
+        contentsPagerAdapter.addFragment(new ProjectListFragment(), getString(R.string.contents_title_project));
+        contentsViewPager.setAdapter(contentsPagerAdapter);
+
+        tabLayout.setupWithViewPager(contentsViewPager);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            startActivityForResult(intent, REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION);
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        pendingRunnable = () -> {
+            int id = item.getItemId();
+            if (id == R.id.my_interview) {
+                Intent intent = new Intent(MainActivity.this, MyInterviewActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.my_app_usage_pattern) {
+                Intent intent = new Intent(MainActivity.this, MyAppUsageActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.appbee_question) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"admin@appbee.info"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]");
+                intent.putExtra(Intent.EXTRA_TEXT, "앱비에게 문의해주세요");
+                startActivity(intent);
+            }
+        };
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        if (pendingRunnable != null) {
+            runOnUiThread(pendingRunnable);
+            pendingRunnable = null;
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION) {
-            if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
-                sendData();
-            } else {
-                finish();
-            }
-        }
+    public void onDrawerStateChanged(int newState) {
+
     }
-
-    public void sendData() {
-        appStatService.sendShortTermStats(appStatServiceCallback);
-        appStatService.sendAppList(appStatServiceCallback);
-        appStatService.sendLongTermStats(appStatServiceCallback);
-//        appStatService.sendEventStats(appStatServiceCallback);
-    }
-
-    AppStatServiceCallback appStatServiceCallback = new AppStatServiceCallback() {
-        @Override
-        public void onSuccess() {
-            Log.d(TAG, "api call success");
-        }
-
-        @Override
-        public void onFail(String resultCode) {
-            if(AppBeeConstants.API_RESPONSE_CODE.UNAUTHORIZED.equals(resultCode)) {
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-        }
-    };
 }

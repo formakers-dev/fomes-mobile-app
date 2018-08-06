@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingEnd="25dp"
+    android:paddingStart="25dp"
+    android:paddingTop="20dp"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/interview_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/appbee_warm_gray"
+            android:textSize="14dp"
+            app:font="medium"
+            tools:text="툰스토리 유저 인터뷰" />
+
+        <TextView
+            android:id="@+id/interview_d_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/appbee_sky_blue"
+            android:textSize="14dp"
+            app:font="medium"
+            tools:text="D-1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/interview_date_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/appbee_gray"
+            android:textSize="18dp"
+            app:font="medium"
+            tools:text="12월 11일 (월) 우면사업장 15:00" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+        <include layout="@layout/interview_progress_layout" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/cancel_penalty"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/interview_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp"
+        tools:text="* 인터뷰 위치 : 우면사업장 C동 1층 107호 회의실\n" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp"
+        android:text="@string/registered_interview_emergency_phone_title" />
+    <TextView
+        android:id="@+id/emergency_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="12dp"
+        tools:text="010-1234-5678" />
+
+    <Button
+        android:id="@+id/show_interview_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/yellow_button"
+        android:text="@string/show_project_information_button"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="16dp" />
+    <TextView
+        android:id="@+id/interview_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="@string/my_interview_cancel_warning"
+        android:textSize="12dp"
+        android:textColor="@color/appbee_warm_gray"
+        />
+
+</LinearLayout>

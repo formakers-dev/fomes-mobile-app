@@ -6,18 +6,20 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Process;
 
-import com.appbee.appbeemobile.model.AppInfo;
 import com.appbee.appbeemobile.model.EventStat;
+import com.appbee.appbeemobile.model.NativeAppInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import rx.Observable;
 
 import static android.content.Context.APP_OPS_SERVICE;
 import static android.content.Context.USAGE_STATS_SERVICE;
@@ -50,26 +52,34 @@ public class AppBeeAndroidNativeHelper {
         return eventStats;
     }
 
-    public List<AppInfo> getInstalledLaunchableApps() {
+    public Observable<NativeAppInfo> getInstalledLaunchableApps() {
         final PackageManager packageManager = context.getPackageManager();
 
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(intent, PackageManager.GET_META_DATA);
-
-        List<AppInfo> appInfoList = new ArrayList<>();
-        for(ResolveInfo resolveInfo : resolveInfoList) {
-            appInfoList.add(new AppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
-        }
-
-        return appInfoList;
+        return Observable.from(packageManager.queryIntentActivities(intent, PackageManager.GET_META_DATA))
+                .map(resolveInfo -> new NativeAppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
     }
 
-    public List<UsageStats> getUsageStats(long startTime, long endTime) {
+    public NativeAppInfo getNativeAppInfo(String packageName) {
+        NativeAppInfo nativeAppInfo = new NativeAppInfo(packageName, "");
+        try {
+            final PackageManager pm = context.getPackageManager();
+            ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
+            nativeAppInfo.setAppName(pm.getApplicationLabel(ai).toString());
+            nativeAppInfo.setIcon(pm.getApplicationIcon(packageName));
+        } catch (final PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return nativeAppInfo;
+    }
+
+    public List<UsageStats> getUsageStats(int intervalType, long startTime, long endTime) {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
-        return usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
+        return usageStatsManager.queryUsageStats(intervalType, startTime, endTime);
     }
 
     public boolean hasUsageStatsPermission() {

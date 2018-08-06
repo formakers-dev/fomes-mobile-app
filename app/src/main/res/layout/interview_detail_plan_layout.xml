@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/interview_detail_plan_title"
+        android:textColor="@color/appbee_warm_gray"
+        android:textSize="14dp"
+        app:font="medium" />
+
+    <TextView
+        android:id="@+id/detail_plans_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/appbee_gray"
+        android:textSize="18dp"
+        tools:text="[앱] 툰스토리 유저 인터뷰 - 40분" />
+
+    <TextView
+        android:id="@+id/detail_plans_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/appbee_gray"
+        android:textSize="18dp"
+        tools:text="12월 11일 (월) 우면사업장" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="27dp"
+        android:layout_marginTop="29dp"
+        android:scrollbars="none">
+
+        <RadioGroup
+            android:id="@+id/time_slot_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/time_slot_divider"
+            android:orientation="horizontal"
+            android:showDividers="middle" />
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/interview_detail_plan_description" />
+</LinearLayout>

@@ -28,6 +28,14 @@ public class LocalStorageHelperTest {
         sf.edit()
                 .putString("ACCESS_TOKEN", "TEST_STRING_VALUE")
                 .putLong("LAST_USAGE_TIME", 1234567890L)
+                .putString("USER_ID", "user_id")
+                .putString("REGISTRATION_TOKEN", "TEST_REGISTRATION_TOKEN")
+                .putString("EMAIL", "appbee0627@gmail.com")
+                .putInt("BIRTHDAY", 19991231)
+                .putString("GENDER", "female")
+                .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
+                .putLong("LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP", 1000L)
+                .putString("INVITATION_CODE", "CODE")
                 .apply();
     }
 
@@ -43,13 +51,68 @@ public class LocalStorageHelperTest {
     }
 
     @Test
-    public void setLastUsageTime호출시_SharedPreference에_값을_저장한다() throws Exception {
-        subject.setLastUsageTime(987654321L);
-        assertThat(sf.getLong("LAST_USAGE_TIME", 0L)).isEqualTo(987654321L);
+    public void setUserId호출시_SharedPreference에_값을_저장한다() throws Exception {
+        subject.setUserId("test_user_id");
+        assertThat(sf.getString("USER_ID", "")).isEqualTo("test_user_id");
     }
 
     @Test
-    public void getLastUsageTime호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
-        assertThat(subject.getLastUsageTime()).isEqualTo(1234567890L);
+    public void getUserId호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
+        assertThat(subject.getUserId()).isEqualTo("user_id");
+    }
+
+    @Test
+    public void setRegistrationToken호출시_SharedPreference에_fcm_등록토큰값을_저장한다() throws Exception {
+        subject.setRegistrationToken("test_registration_token");
+        assertThat(sf.getString("REGISTRATION_TOKEN", "")).isEqualTo("test_registration_token");
+    }
+
+    @Test
+    public void getRegistrationToken호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
+        assertThat(subject.getRegistrationToken()).isEqualTo("TEST_REGISTRATION_TOKEN");
+    }
+
+    @Test
+    public void getEmail호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
+        assertThat(subject.getEmail()).isEqualTo("appbee0627@gmail.com");
+    }
+
+    @Test
+    public void setEmail호출시_SharedPreference에_이메일주소를_저장한다() throws Exception {
+        subject.setEmail("appbee0627@gmail.com");
+        assertThat(sf.getString("EMAIL", "")).isEqualTo("appbee0627@gmail.com");
+    }
+
+    @Test
+    public void setLastUpdateAppUsageTimestamp호출시_SharedPreference에_최종업데이트시간을_저장한다() throws Exception {
+        subject.setLastUpdateAppUsageTimestamp(1000L);
+        assertThat(sf.getLong("LAST_UPDATE_STAT_TIMESTAMP", 0)).isEqualTo(1000L);
+    }
+
+    @Test
+    public void getLastUpdateAppUsageTimestamp호출시_SharedPreference에_저장된_최종업데이트시간을_리턴한다() throws Exception {
+        assertThat(subject.getLastUpdateAppUsageTimestamp()).isEqualTo(1000L);
+    }
+
+    @Test
+    public void setLastUpdateShortTermStatTimestamp호출시_SharedPreference에_최종업데이트시간을_저장한다() throws Exception {
+        subject.setLastUpdateShortTermStatTimestamp(1000L);
+        assertThat(sf.getLong("LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP", 0)).isEqualTo(1000L);
+    }
+
+    @Test
+    public void getLastUpdateShortTermStatTimestamp호출시_SharedPreference에_저장된_최종업데이트시간을_리턴한다() throws Exception {
+        assertThat(subject.getLastUpdateShortTermStatTimestamp()).isEqualTo(1000L);
+    }
+
+    @Test
+    public void setInvitationCode호출시_SharedPreference에_인증코드를_저장한다() throws Exception {
+        subject.setInvitationCode("CODE");
+        assertThat(sf.getString("INVITATION_CODE", "")).isEqualTo("CODE");
+    }
+
+    @Test
+    public void getInvitationCode호출시_SharedPreference에_저장된_인증코드를_리턴한다() throws Exception {
+        assertThat(subject.getInvitationCode()).isEqualTo("CODE");
     }
 }

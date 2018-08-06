@@ -16,6 +16,16 @@ public class TestAppBeeApplication extends AppBeeApplication {
                 .build();
     }
 
+    @Override
+    protected void initRealm() {
+
+    }
+
+    @Override
+    protected void initFont() {
+
+    }
+
     public TestApplicationComponent getComponent() {
         return testApplicationComponent;
     }

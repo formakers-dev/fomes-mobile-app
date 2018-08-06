@@ -3,12 +3,12 @@ package com.appbee.appbeemobile.model;
 public class EventStat {
     private String packageName;
     private int eventType;
-    private long timeStamp;
+    private long eventTime;
 
-    public EventStat(String packageName, int eventType, long timeStamp) {
+    public EventStat(String packageName, int eventType, long eventTime) {
         this.packageName = packageName;
         this.eventType = eventType;
-        this.timeStamp = timeStamp;
+        this.eventTime = eventTime;
     }
 
     public String getPackageName() {
@@ -27,11 +27,11 @@ public class EventStat {
         this.eventType = eventType;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public long getEventTime() {
+        return eventTime;
     }
 
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setEventTime(long eventTime) {
+        this.eventTime = eventTime;
     }
 }

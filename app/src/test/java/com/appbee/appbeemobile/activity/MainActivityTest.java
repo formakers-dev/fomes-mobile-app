@@ -1,150 +1,133 @@
 package com.appbee.appbeemobile.activity;
 
 import android.content.Intent;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.view.MenuItem;
 
-import com.appbee.appbeemobile.BuildConfig;
+import com.appbee.appbeemobile.R;
 import com.appbee.appbeemobile.TestAppBeeApplication;
-import com.appbee.appbeemobile.helper.AppBeeAndroidNativeHelper;
-import com.appbee.appbeemobile.network.AppStatService;
-import com.appbee.appbeemobile.network.AppStatServiceCallback;
-import com.appbee.appbeemobile.util.AppBeeConstants;
+import com.appbee.appbeemobile.helper.LocalStorageHelper;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.stubbing.Answer;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
 
 import javax.inject.Inject;
 
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class MainActivityTest extends ActivityTest {
+public class MainActivityTest extends BaseActivityTest<MainActivity> {
 
-    private ActivityController<MainActivity> activityController;
+    private MainActivity subject;
 
     @Inject
-    AppStatService appStatService;
+    LocalStorageHelper mockLocalStorageHelper;
 
-    @Inject
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    public MainActivityTest() {
+        super(MainActivity.class);
+    }
 
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication)RuntimeEnvironment.application).getComponent().inject(this);
-        activityController = Robolectric.buildActivity(MainActivity.class);
+        RxJavaHooks.reset();
+        RxJavaHooks.onIOScheduler(Schedulers.immediate());
 
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+
+        when(mockLocalStorageHelper.getEmail()).thenReturn("anyEmail@gmail.com");
+
+        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
+        super.tearDown();
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_없는_경우_권한요청_Activity를_호출한다() throws Exception {
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-
-        MainActivity subject = activityController.create().get();
-
-        ShadowActivity.IntentForResult nextStartedActivityForResult = shadowOf(subject).getNextStartedActivityForResult();
-        assertThat(nextStartedActivityForResult.intent.getAction()).isEqualTo(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-        assertThat(nextStartedActivityForResult.requestCode).isEqualTo(1001);
+    public void onPostCreate시_메뉴에_사용자의_아이디가_포맷에_맞게_보여진다() throws Exception {
+        assertThat(subject.userIdTextView.getText()).isEqualTo("anyEmail");
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_권한요청_Activity를_호출하지_않는다() throws Exception {
-        MainActivity subject = activityController.create().get();
-
-        assertThat(shadowOf(subject).getNextStartedActivityForResult()).isNull();
+    public void onPostCreate시_2개의_탭과_페이저가_나타난다() throws Exception {
+        assertThat(subject.contentsViewPager.getAdapter().getCount()).isEqualTo(2);
+        assertThat(subject.tabLayout.getTabCount()).isEqualTo(2);
+        assertThat(subject.tabLayout.getTabAt(0).getText()).isEqualTo("체험하기");
+        assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("둘러보기");
     }
 
     @Test
-    public void onCreate호출시_Stat접근권한이_있는_경우_앱목록_및_통계데이터를_전송요청한다() throws Exception {
-        activityController.create();
+    public void onPostCreate시_toolbar의_메뉴버튼클릭시_drawer가_열린다() throws Exception {
+        subject.toolbar.getChildAt(0).performClick();
 
-        assertSendAppListAndStatData();
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isTrue();
     }
 
     @Test
-    public void 앱테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
-        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendAppList(any(AppStatServiceCallback.class));
+    public void onNavigationItemSelected시_다가오는_인터뷰_버튼이_클릭되었을_경우_열려있는메뉴를_닫고_신청한_인터뷰리스트_페이지로_이동한다() throws Exception {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.my_interview);
 
-        MainActivity subject = activityController.create().get();
+        subject.onNavigationItemSelected(item);
 
-        verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
-        assertRestartApp(subject);
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isFalse();
+
+        subject.onDrawerClosed(subject.drawer);
+
+        assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains("MyInterviewActivity");
     }
 
     @Test
-    public void 단기통계테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
-        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
+    public void onNavigationItemSelected시_앱비에게문의하기_메뉴을_클릭하면_열려있는메뉴를_닫고_메일을_보내는앱을_호출한다() throws Exception {
+        MenuItem menuItem = mock(MenuItem.class);
+        when(menuItem.getItemId()).thenReturn(R.id.appbee_question);
 
-        MainActivity subject = activityController.create().get();
+        subject.onNavigationItemSelected(menuItem);
 
-        verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
-        assertRestartApp(subject);
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isFalse();
+
+        subject.onDrawerClosed(subject.drawer);
+
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedIntent.getType()).isEqualTo("message/rfc822");
+        assertThat(nextStartedIntent.getStringArrayExtra(Intent.EXTRA_EMAIL)).isEqualTo(new String[]{"admin@appbee.info"});
+        assertThat(nextStartedIntent.getStringExtra(Intent.EXTRA_SUBJECT)).isEqualTo("[문의]");
+        assertThat(nextStartedIntent.getStringExtra(Intent.EXTRA_TEXT)).isEqualTo("앱비에게 문의해주세요");
     }
 
     @Test
-    public void 장기통계테이터를_전송하였지만토큰만료로실패한경우_앱을재시작한다() throws Exception {
-        doAnswer(setApiResultToUnauthorized()).when(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
+    public void onNavigationItemSelected시_앱사용패턴다시분석하기_메뉴을_클릭하면_열려있는메뉴를_닫고_성향분석페이지로이동한다() throws Exception {
+        MenuItem menuItem = mock(MenuItem.class);
+        when(menuItem.getItemId()).thenReturn(R.id.my_app_usage_pattern);
 
-        MainActivity subject = activityController.create().get();
+        subject.onNavigationItemSelected(menuItem);
 
-        verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
-        assertRestartApp(subject);
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isFalse();
+
+        subject.onDrawerClosed(subject.drawer);
+
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo(MyAppUsageActivity.class.getCanonicalName());
     }
 
     @Test
-    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여된_경우_데이터를_전송한다() throws Exception {
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        MainActivity subject = activityController.create().get();
+    public void onNavigationItem선택하지않고_drawer를_닫으면_다음화면으로_이동하지않는다() throws Exception {
+        subject.toolbar.getChildAt(0).performClick();
 
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        subject.onActivityResult(1001, 0, null);
+        assertThat(subject.drawer.isDrawerOpen(GravityCompat.START)).isTrue();
 
-        assertSendAppListAndStatData();
-    }
+        subject.onDrawerClosed(subject.drawer);
 
-    @Test
-    public void 권한요청에대한_onActivityResult호출시_접근권한이_부여되지_않은_경우_앱을_종료한다() throws Exception {
-        when(appBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
-        MainActivity subject = activityController.create().get();
-
-        subject.onActivityResult(1001, 0, null);
-
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
-    }
-
-    @NonNull
-    private Answer setApiResultToUnauthorized() {
-        return (invocation) -> {
-            ((AppStatServiceCallback) invocation.getArguments()[0]).onFail(AppBeeConstants.API_RESPONSE_CODE.UNAUTHORIZED);
-            return null;
-        };
-    }
-
-    private void assertSendAppListAndStatData() {
-        verify(appStatService).sendAppList(any(AppStatServiceCallback.class));
-        verify(appStatService).sendLongTermStats(any(AppStatServiceCallback.class));
-        verify(appStatService).sendShortTermStats(any(AppStatServiceCallback.class));
-    }
-
-    private void assertRestartApp(MainActivity subject) {
-        ShadowActivity shadowActivity = shadowOf(subject);
-        Intent nextStartedActivity = shadowActivity.getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName()).contains(LoginActivity.class.getSimpleName());
-        assertThat(shadowOf(subject).isFinishing()).isTrue();
+        Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedIntent).isNull();
     }
 }
