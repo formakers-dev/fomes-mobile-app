@@ -5,7 +5,7 @@ aliases:
 defaults: &defaults
     working_directory: ~/girlapp
     docker:
-      - image: circleci/android:api-25-alpha    # https://circleci.com/docs/2.0/circleci-images/#android
+      - image: circleci/android:api-25-alpha@sha256:ac1ff9548183b567fdc886e9d44a62cb73577a6c8857eabdf24a0b593960a1ce    # https://circleci.com/docs/2.0/circleci-images/#android
 
 version: 2
 jobs:
