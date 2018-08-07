@@ -27,14 +27,6 @@ android {
             storePassword System.getenv("KEYSTORE_PASSWORD")
         }
     }
-    signingConfigs {
-        release {
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
-            storeFile file(String.valueOf(System.getenv("KEYSTORE")))
-            storePassword System.getenv("KEYSTORE_PASSWORD")
-        }
-    }
     buildTypes {
         debug {
             debuggable true
