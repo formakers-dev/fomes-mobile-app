@@ -52,6 +52,14 @@ public class AppStatService extends AbstractAppBeeService {
                 .toCompletable();
     }
 
+    public Observable<List<AppUsage>> requestAppUsageByCategory(String categoryId) {
+        return  Observable.defer(() -> appAPI.getAppUsageByCategory(localStorageHelper.getAccessToken(), categoryId))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
+    }
+
     @Override
     protected String getTag() {
         return TAG;

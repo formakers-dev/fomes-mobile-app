@@ -7,6 +7,7 @@ public class AppInfo {
     private String categoryName1;
     private String categoryId2;
     private String categoryName2;
+    private String developer;
     private String iconUrl;
 
     public AppInfo(String packageName, String appName) {
@@ -80,6 +81,14 @@ public class AppInfo {
         this.iconUrl = iconUrl;
     }
 
+    public String getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(String developer) {
+        this.developer = developer;
+    }
+
     @Override
     public String toString() {
         return "AppInfo{" +
@@ -89,6 +98,7 @@ public class AppInfo {
                 ", categoryName1='" + categoryName1 + '\'' +
                 ", categoryId2='" + categoryId2 + '\'' +
                 ", categoryName2='" + categoryName2 + '\'' +
+                ", developer='" + developer + '\'' +
                 ", iconUrl='" + iconUrl + '\'' +
                 '}';
     }

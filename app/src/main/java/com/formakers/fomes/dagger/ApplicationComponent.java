@@ -12,6 +12,7 @@ import com.formakers.fomes.activity.ProjectDetailActivity;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
 import com.formakers.fomes.fragment.InterviewListFragment;
 import com.formakers.fomes.fragment.ProjectListFragment;
+import com.formakers.fomes.fragment.ReportMostUsedFragment;
 import com.formakers.fomes.receiver.PowerConnectedReceiver;
 import com.formakers.fomes.service.MessagingTokenService;
 
@@ -32,6 +33,7 @@ public interface ApplicationComponent {
     void inject(InterviewListFragment interviewListFragment);
     void inject(ProjectListFragment projectListFragment);
     void inject(AppUsageAnalysisFragment appUsageAnalysisFragment);
+    void inject(ReportMostUsedFragment categoryAnalysisFragment);
     void inject(MyInterviewActivity myInterviewActivity);
     void inject(CodeVerificationActivity CodeVerificationActivity);
     void inject(CancelInterviewActivity cancelInterviewActivity);

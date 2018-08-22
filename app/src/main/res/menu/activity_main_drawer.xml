@@ -10,6 +10,10 @@
         <item
             android:id="@+id/my_app_usage_pattern"
             android:title="@string/my_app_usage_pattern_text" />
+
+        <item
+            android:id="@+id/my_report"
+            android:title="[임시] 리포트" />
     </group>
     <group android:id="@+id/menu_group3" android:checkableBehavior="none">
         <item

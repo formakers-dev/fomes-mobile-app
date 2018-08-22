@@ -121,6 +121,9 @@ public class MainActivity extends BaseActivity
             } else if (id == R.id.my_app_usage_pattern) {
                 Intent intent = new Intent(MainActivity.this, MyAppUsageActivity.class);
                 startActivity(intent);
+            } else if (id == R.id.my_report) {
+                Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+                startActivity(intent);
             } else if (id == R.id.appbee_question) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("message/rfc822");
