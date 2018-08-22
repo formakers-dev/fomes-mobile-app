@@ -1,30 +1,30 @@
 apply plugin: 'com.android.application'
 apply from: "build-jacoco.gradle"
 
-project.ext.set("packageID", "AppBee")
+project.ext.set("packageID", "Fomes")
 
-def majorVersion = 1
+def majorVersion = 0
 def minorVersion = 0
-def patchVersion = 5
+def patchVersion = 1
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.appbee.appbeemobile"
+        applicationId "com.formakers.fomes"
         minSdkVersion 22
         targetSdkVersion 25
         multiDexEnabled true
-        versionCode 6
+        versionCode 1
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
-            storeFile file(String.valueOf(System.getenv("KEYSTORE")))
-            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("FOMES_KEY_ALIAS")
+            keyPassword System.getenv("FOMES_KEY_PASSWORD")
+            storeFile file(String.valueOf(System.getenv("FOMES_KEYSTORE")))
+            storePassword System.getenv("FOMES_KEYSTORE_PASSWORD")
         }
     }
     buildTypes {

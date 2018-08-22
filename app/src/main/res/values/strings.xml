@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppBee</string>
+    <string name="app_name">포메스</string>
     <string name="empty" />
 
     <string name="login_button_text">Google로 쉬운 시작</string>

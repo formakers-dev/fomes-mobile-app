@@ -38,13 +38,13 @@ jobs:
           command: sudo pip install awscli
       - run:
           name: Prepare for Dev Flavor
-          command: echo $GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/google-services.json
+          command: echo $FOMES_GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/google-services.json
       - run:
           name: Prepare for Release Flavor
           command: |
             mkdir app/src/release
-            echo $RELEASE_GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/src/release/google-services.json
-            aws s3 cp s3://girlapp/appbee.jks app/appbee.jks
+            echo $FOMES_RELEASE_GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/src/release/google-services.json
+            aws s3 cp s3://girlapp/fomes.jks app/fomes.jks
 
       ### Test
       - run:

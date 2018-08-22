@@ -125,5 +125,5 @@
 -dontwarn com.google.api.services.people.v1.model.**
 
 # AppBee Model
--keep class com.appbee.appbeemobile.model.** { *; }
--dontwarn com.appbee.appbeemobile.model.**
+-keep class com.formakers.fomes.model.** { *; }
+-dontwarn com.formakers.fomes.model.**
