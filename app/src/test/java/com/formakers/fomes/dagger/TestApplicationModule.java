@@ -11,7 +11,6 @@ import com.formakers.fomes.helper.LocalStorageHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
-import com.formakers.fomes.network.AppAPI;
 import com.formakers.fomes.network.AppStatService;
 import com.formakers.fomes.network.ConfigAPI;
 import com.formakers.fomes.network.ConfigService;
@@ -58,13 +57,6 @@ public class TestApplicationModule {
     UserAPI userAPI() {
         return mock(UserAPI.class);
     }
-
-    @Singleton
-    @Provides
-    AppAPI appAPI() {
-        return mock(AppAPI.class);
-    }
-
 
     @Singleton
     @Provides

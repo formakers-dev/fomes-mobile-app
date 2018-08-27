@@ -36,16 +36,13 @@ public class AppStatServiceTest extends AbstractServiceTest {
     private LocalStorageHelper mockLocalStorageHelper;
 
     @Mock
-    private AppAPI mockAppAPI;
-
-    @Mock
     private StatAPI mockStatAPI;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new AppStatService(mockAppAPI, mockStatAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
+        subject = new AppStatService(mockStatAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
         when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
@@ -85,10 +82,10 @@ public class AppStatServiceTest extends AbstractServiceTest {
         List<AppUsage> mockAppUsageList = new ArrayList<>();
         mockAppUsageList.add(new AppUsage("packageA", 1000L));
         mockAppUsageList.add(new AppUsage("packageB", 2000L));
-        when(mockAppAPI.postUsages(anyString(), any(List.class))).thenReturn(mock(Observable.class));
+        when(mockStatAPI.postUsages(anyString(), any(List.class))).thenReturn(mock(Observable.class));
         subject.sendAppUsages(mockAppUsageList).subscribe(new TestSubscriber<>());
 
-        verify(mockAppAPI).postUsages(anyString(), eq(mockAppUsageList));
+        verify(mockStatAPI).postUsages(anyString(), eq(mockAppUsageList));
     }
 
     @Test

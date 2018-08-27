@@ -16,14 +16,12 @@ import rx.schedulers.Schedulers;
 
 public class AppStatService extends AbstractAppBeeService {
     private static final String TAG = "AppStatService";
-    private final AppAPI appAPI;
     private final StatAPI statAPI;
     private final LocalStorageHelper localStorageHelper;
     private final AppBeeAPIHelper appBeeAPIHelper;
 
     @Inject
-    public AppStatService(AppAPI appAPI, StatAPI statAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
-        this.appAPI = appAPI;
+    public AppStatService(StatAPI statAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
         this.statAPI = statAPI;
         this.localStorageHelper = localStorageHelper;
         this.appBeeAPIHelper = appBeeAPIHelper;
@@ -45,7 +43,7 @@ public class AppStatService extends AbstractAppBeeService {
     }
 
     public Completable sendAppUsages(List<AppUsage> appUsageList) {
-        return Observable.defer(() -> appAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList))
+        return Observable.defer(() -> statAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -54,7 +52,7 @@ public class AppStatService extends AbstractAppBeeService {
     }
 
     public Observable<List<AppUsage>> requestAppUsageByCategory(String categoryId) {
-        return  Observable.defer(() -> appAPI.getAppUsageByCategory(localStorageHelper.getAccessToken(), categoryId))
+        return  Observable.defer(() -> statAPI.getAppUsageByCategory(localStorageHelper.getAccessToken(), categoryId))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -62,7 +60,7 @@ public class AppStatService extends AbstractAppBeeService {
     }
 
     public Observable<List<CategoryUsage>> requestCategoryUsage() {
-        return  Observable.defer(() -> appAPI.getCategoryUsage(localStorageHelper.getAccessToken()))
+        return  Observable.defer(() -> statAPI.getCategoryUsage(localStorageHelper.getAccessToken()))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

@@ -1,7 +1,6 @@
 package com.formakers.fomes.dagger;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.network.AppAPI;
 import com.formakers.fomes.network.ConfigAPI;
 import com.formakers.fomes.network.ProjectAPI;
 import com.formakers.fomes.network.StatAPI;
@@ -57,12 +56,6 @@ public class NetworkModule {
     @Provides
     UserAPI userAPI(Retrofit retrofit) {
         return retrofit.create(UserAPI.class);
-    }
-
-    @Singleton
-    @Provides
-    AppAPI appAPI(Retrofit retrofit) {
-        return retrofit.create(AppAPI.class);
     }
 
     @Singleton
