@@ -16,6 +16,7 @@ import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.model.AppUsage;
+import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.network.AppStatService;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -27,9 +28,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 
-/**
- * Created by yenar on 2018-08-22.
- */
 
 public class ReportMostUsedFragment extends BaseFragment {
 
@@ -38,11 +36,15 @@ public class ReportMostUsedFragment extends BaseFragment {
     @Inject AppStatService appStatService;
     @Inject ImageLoader imageLoader;
 
-    @BindView(R.id.app_recycler_view) RecyclerView mostUsedAppRecyclerView;
+    @BindView(R.id.app_recycler_view)       RecyclerView mostUsedAppRecyclerView;
+    @BindView(R.id.category_recycler_view)  RecyclerView categoryRecyclerView;
 
     private Context context;
     private List<AppUsage> appUsageInfos = new ArrayList<>();
     private UsedAppAdapter mostUsedAppAdapter;
+
+    private List<CategoryUsage> categoryUsages = new ArrayList<>();
+    private CategoryUsageAdapter categoryUsageAdapter;
 
     @Nullable
     @Override
@@ -67,7 +69,7 @@ public class ReportMostUsedFragment extends BaseFragment {
         mostUsedAppAdapter = new UsedAppAdapter(appUsageInfos, imageLoader);
         mostUsedAppRecyclerView.setAdapter(mostUsedAppAdapter);
 
-        appStatService.requestAppUsageByCategory("GAME")
+        appStatService.requestAppUsageByCategory("COMMUNICATION")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(appUsages -> {
                     Log.d(TAG, appUsages.toString());
@@ -75,6 +77,62 @@ public class ReportMostUsedFragment extends BaseFragment {
                     appUsageInfos.addAll(appUsages);
                     mostUsedAppAdapter.notifyDataSetChanged();
                 });
+
+        //////////////////////////////////////////////////////////////////////////////////
+
+        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        categoryUsageAdapter = new CategoryUsageAdapter(categoryUsages);
+        categoryRecyclerView.setAdapter(categoryUsageAdapter);
+
+        appStatService.requestCategoryUsage()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    categoryUsages.clear();
+                    categoryUsages.addAll(result);
+                    categoryUsageAdapter.notifyDataSetChanged();
+                });
+    }
+
+    class CategoryUsageAdapter extends RecyclerView.Adapter<CategoryUsageAdapter.CategoryItemImageHolder> {
+
+        private List<CategoryUsage> categoryUsages;
+
+        public CategoryUsageAdapter(List<CategoryUsage> categoryUsages) {
+            this.categoryUsages = categoryUsages;
+        }
+
+        @Override
+        public CategoryItemImageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_report_app, parent, false);
+            return new CategoryItemImageHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(CategoryItemImageHolder holder, int position) {
+            CategoryUsage categoryUsage = categoryUsages.get(position);
+
+            TextView categoryNameTextView = holder.categoryNameTextView;
+            TextView totalUsedTimeTextView = holder.totalUsedTimeTextView;
+
+            categoryNameTextView.setText(categoryUsage.getCategoryName());
+            totalUsedTimeTextView.setText(String.valueOf(categoryUsage.getTotalUsedTime()));
+        }
+
+        @Override
+        public int getItemCount() {
+            return categoryUsages.size();
+        }
+
+        class CategoryItemImageHolder extends RecyclerView.ViewHolder {
+            TextView categoryNameTextView;
+            TextView totalUsedTimeTextView;
+
+            CategoryItemImageHolder(View itemView) {
+                super(itemView);
+                this.categoryNameTextView = ((TextView) itemView.findViewById(R.id.report_app_name_textview));
+                this.totalUsedTimeTextView = ((TextView) itemView.findViewById(R.id.report_totalusedtime_textview));
+            }
+        }
     }
 
     class UsedAppAdapter extends RecyclerView.Adapter<UsedAppAdapter.AppItemImageHolder> {

@@ -1,6 +1,7 @@
 package com.formakers.fomes.network;
 
 import com.formakers.fomes.model.AppUsage;
+import com.formakers.fomes.model.CategoryUsage;
 
 import java.util.List;
 
@@ -17,4 +18,7 @@ public interface AppAPI {
 
     @GET("/apps/usages/category/{categoryId}")
     Observable<List<AppUsage>> getAppUsageByCategory(@Header("x-access-token") String accessToken, @Path("categoryId") String categoryId);
+
+    @GET("/apps/usages/rank/category")
+    Observable<List<CategoryUsage>> getCategoryUsage(@Header("x-access-token") String accessToken);
 }

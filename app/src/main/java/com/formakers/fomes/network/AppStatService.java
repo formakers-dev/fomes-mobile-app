@@ -3,6 +3,7 @@ package com.formakers.fomes.network;
 import com.formakers.fomes.helper.AppBeeAPIHelper;
 import com.formakers.fomes.helper.LocalStorageHelper;
 import com.formakers.fomes.model.AppUsage;
+import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.model.ShortTermStat;
 
 import java.util.List;
@@ -54,6 +55,14 @@ public class AppStatService extends AbstractAppBeeService {
 
     public Observable<List<AppUsage>> requestAppUsageByCategory(String categoryId) {
         return  Observable.defer(() -> appAPI.getAppUsageByCategory(localStorageHelper.getAccessToken(), categoryId))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
+    }
+
+    public Observable<List<CategoryUsage>> requestCategoryUsage() {
+        return  Observable.defer(() -> appAPI.getCategoryUsage(localStorageHelper.getAccessToken()))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
