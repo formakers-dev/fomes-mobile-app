@@ -92,4 +92,28 @@ public class AppStatServiceTest extends AbstractServiceTest {
     public void sendAppUsages호출시_토큰_만료_여부를_확인한다() throws Exception {
         verifyToCheckExpiredToken(subject.sendAppUsages(new ArrayList<>()).toObservable());
     }
+
+    @Test
+    public void requestAppUsageByCategory호출시_특정_카테고리의_앱사용정보를_요청한다() throws Exception {
+        subject.requestAppUsageByCategory("COMMUNICATE").subscribe(new TestSubscriber<>());
+
+        verify(mockStatAPI).getAppUsageByCategory(anyString(), anyString());
+    }
+
+    @Test
+    public void requestAppUsageByCategory호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.requestAppUsageByCategory("TOOLS"));
+    }
+
+    @Test
+    public void requestCategoryUsage호출시_카테고리별_사용량을_요청한다() throws Exception {
+        subject.requestCategoryUsage().subscribe(new TestSubscriber<>());
+
+        verify(mockStatAPI).getCategoryUsage(anyString());
+    }
+
+    @Test
+    public void requestCategoryUsage호출시_토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.requestCategoryUsage());
+    }
 }
