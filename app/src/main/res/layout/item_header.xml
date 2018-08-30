@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/appbee_gray"
             android:textSize="28dp"
-            app:font="BMJUA"
+            app:fontName="@string/font_bmjua"
             tools:ignore="MissingPrefix" />
 
     </LinearLayout>

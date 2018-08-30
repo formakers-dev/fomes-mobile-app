@@ -43,7 +43,7 @@
                 android:layout_marginTop="7dp"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="12dp"
-                app:font="medium" />
+                app:fontName="@string/font_medium" />
 
             <TextView
                 android:id="@+id/interview_similar_app"
@@ -80,7 +80,7 @@
                 android:gravity="center"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="11dp"
-                app:font="medium" />
+                app:fontName="@string/font_medium" />
 
             <TextView
                 android:id="@+id/type_textview"
@@ -91,7 +91,7 @@
                 android:gravity="center"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="11dp"
-                app:font="medium" />
+                app:fontName="@string/font_medium" />
 
             <TextView
                 android:id="@+id/rewards_textview"
@@ -102,7 +102,7 @@
                 android:background="@android:color/transparent"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="11dp"
-                app:font="medium" />
+                app:fontName="@string/font_medium" />
 
         </LinearLayout>
     </LinearLayout>

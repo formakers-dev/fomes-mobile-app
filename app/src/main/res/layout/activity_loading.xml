@@ -24,6 +24,6 @@
         android:text="@string/loading_description"
         android:textColor="@android:color/white"
         android:textSize="18dp"
-        app:font="BMJUA" />
+        app:fontName="@string/font_bmjua" />
 
 </LinearLayout>

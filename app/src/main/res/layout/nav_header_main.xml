@@ -18,7 +18,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/appbee_gray"
         android:textSize="20dp"
-        app:font="medium"
+        app:fontName="@string/font_medium"
         tools:ignore="MissingPrefix"
         tools:text="abcde"/>
 

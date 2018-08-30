@@ -21,7 +21,7 @@
             android:src="@drawable/dialog_success_image" />
 
         <TextView
-            app:font="medium"
+            app:fontName="@string/font_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10.8dp"
@@ -62,7 +62,7 @@
             android:src="@drawable/dialog_success_image" />
 
         <TextView
-            app:font="medium"
+            app:fontName="@string/font_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10.8dp"
@@ -103,7 +103,7 @@
             android:src="@drawable/dialog_success_image" />
 
         <TextView
-            app:font="medium"
+            app:fontName="@string/font_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10.8dp"

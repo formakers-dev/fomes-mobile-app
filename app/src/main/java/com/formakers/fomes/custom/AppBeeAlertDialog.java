@@ -58,7 +58,7 @@ public class AppBeeAlertDialog {
         ImageView imageView = ((ImageView) view.findViewById(R.id.dialog_image));
         TextView titleTextView = ((TextView) view.findViewById(R.id.dialog_title));
         TextView messageTextView = ((TextView) view.findViewById(R.id.dialog_message));
-        titleTextView.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.type_face_bmjua)));
+        titleTextView.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_bmjua_path)));
         titleTextView.setText(title);
 
         messageTextView.setText(message);
@@ -98,7 +98,7 @@ public class AppBeeAlertDialog {
         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        positiveButton.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.type_face_medium)));
+        positiveButton.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_medium_path)));
         positiveButton.setTextSize(20);
         positiveButton.setTextColor(new ResourceHelper(context).getColorValue(R.color.appbee_warm_gray));
         positiveButton.setLayoutParams(lp);

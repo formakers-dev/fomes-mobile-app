@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/appbee_warm_gray"
             android:textSize="14dp"
-            app:font="medium"
+            app:fontName="@string/font_medium"
             tools:text="툰스토리 유저 인터뷰" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:layout_marginStart="10dp"
             android:textColor="@color/appbee_sky_blue"
             android:textSize="14dp"
-            app:font="medium"
+            app:fontName="@string/font_medium"
             tools:text="D-1" />
     </LinearLayout>
 
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/appbee_gray"
             android:textSize="18dp"
-            app:font="medium"
+            app:fontName="@string/font_medium"
             tools:text="12월 11일 (월) 우면사업장 15:00" />
     </LinearLayout>
 

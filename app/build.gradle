@@ -129,7 +129,7 @@ dependencies {
     compile 'com.google.guava:guava:23.0-android'
     compile 'com.google.guava:guava:21.0'
     // typekit
-    compile 'com.tsengvn:typekit:1.0.1'
+    compile 'com.github.katoro:typekit:1.0.1'
     // Glide
     compile 'com.github.bumptech.glide:glide:4.0.0'
     // google auth

@@ -72,7 +72,7 @@
                         android:gravity="center"
                         android:textColor="@color/appbee_gray"
                         android:textSize="24dp"
-                        app:font="BMJUA" />
+                        app:fontName="@string/font_bmjua" />
 
                     <TextView
                         android:id="@+id/project_introduce"
@@ -120,7 +120,7 @@
                             android:gravity="center"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
-                            app:font="medium" />
+                            app:fontName="@string/font_medium" />
                     </LinearLayout>
 
                     <View
@@ -155,7 +155,7 @@
                             android:gravity="center"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
-                            app:font="medium" />
+                            app:fontName="@string/font_medium" />
                     </LinearLayout>
 
                     <View
@@ -190,7 +190,7 @@
                             android:gravity="center"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
-                            app:font="medium" />
+                            app:fontName="@string/font_medium" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -229,7 +229,7 @@
                             android:gravity="center"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
-                            app:font="medium" />
+                            app:fontName="@string/font_medium" />
                     </LinearLayout>
 
                     <View
@@ -264,7 +264,7 @@
                             android:text="@string/interview_duration_40_mins"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
-                            app:font="medium" />
+                            app:fontName="@string/font_medium" />
                     </LinearLayout>
 
                     <View
@@ -299,7 +299,7 @@
                             android:gravity="center"
                             android:textColor="@color/appbee_gray"
                             android:textSize="13dp"
-                            app:font="medium" />
+                            app:fontName="@string/font_medium" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -324,7 +324,7 @@
                         android:text="@string/introduce_my_project"
                         android:textColor="@color/appbee_gray"
                         android:textSize="14dp"
-                        app:font="medium" />
+                        app:fontName="@string/font_medium" />
 
                     <View
                         android:layout_width="match_parent"
@@ -439,7 +439,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/appbee_gray"
                                 android:textSize="16dp"
-                                app:font="medium" />
+                                app:fontName="@string/font_medium" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -475,7 +475,7 @@
                         android:text="@string/notice_interview_process_title"
                         android:textColor="@color/appbee_gray"
                         android:textSize="14dp"
-                        app:font="medium" />
+                        app:fontName="@string/font_medium" />
 
                     <View
                         android:layout_width="match_parent"
@@ -540,7 +540,7 @@
             android:text="@string/interview_submit_button"
             android:textColor="@color/appbee_gray"
             android:textSize="26dp"
-            app:font="BMJUA" />
+            app:fontName="@string/font_bmjua" />
     </LinearLayout>
 
 </FrameLayout>

@@ -24,7 +24,7 @@
         android:text="@string/onboarding_rewards_title"
         android:textColor="@color/appbee_gray"
         android:textSize="26dp"
-        app:font="BMJUA"/>
+        app:fontName="@string/font_bmjua"/>
 
     <TextView
         android:layout_width="match_parent"

@@ -44,7 +44,7 @@
                 android:layout_marginTop="7dp"
                 android:textColor="@color/appbee_warm_gray"
                 android:textSize="11dp"
-                app:font="medium" />
+                app:fontName="@string/font_medium" />
 
         </LinearLayout>
     </LinearLayout>

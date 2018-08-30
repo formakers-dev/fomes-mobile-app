@@ -19,7 +19,7 @@
             android:text="@string/analysis_title"
             android:textColor="@color/appbee_gray"
             android:textSize="26dp"
-            app:font="BMJUA" />
+            app:fontName="@string/font_bmjua" />
 
         <TextView
             android:id="@+id/analysis_description"
@@ -46,7 +46,7 @@
             android:text="@string/personality_apps_text"
             android:textColor="@color/appbee_gray"
             android:textSize="14dp"
-            app:font="medium" />
+            app:fontName="@string/font_medium" />
 
         <LinearLayout
             android:id="@+id/most_personality_app_layout"
@@ -72,7 +72,7 @@
             android:text="@string/most_used_apps_text"
             android:textColor="@color/appbee_gray"
             android:textSize="14dp"
-            app:font="medium" />
+            app:fontName="@string/font_medium" />
 
         <LinearLayout
             android:id="@+id/most_used_app_layout"

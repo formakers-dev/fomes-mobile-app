@@ -106,8 +106,6 @@
     <string name="empty_interview">도착한 유저 인터뷰가 없습니다.</string>
     <string name="empty_project">도착한 둘러보기 프로젝트가 없습니다.</string>
 
-    <string name="type_face_bmjua">BMJUA.otf</string>
-    <string name="type_face_medium">NotoSans-Medium.otf</string>
     <string name="my_app_usage_title">앱 사용패턴 다시 분석하기</string>
     <string name="my_analysis_description">지금으로부터 최근 일주일동안\n앱 사용패턴을 분석해 보았어요.</string>
 
@@ -127,4 +125,9 @@
     <string name="participate_cancel_http_fail_message">인터뷰 취소에 실패하였습니다.</string>
     <string name="unexpected_error_message">예상치 못한 에러가 발생하였습니다.</string>
 
+    <!-- Fonts -->
+    <string name="font_bmjua">BMJUA</string>
+    <string name="font_bmjua_path">BMJUA.otf</string>
+    <string name="font_medium">medium</string>
+    <string name="font_medium_path">NotoSans-Medium.otf</string>
 </resources>
