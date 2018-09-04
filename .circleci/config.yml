@@ -139,7 +139,7 @@ workflows:
           filters:
             branches:
               only:
-                - development
+                - master
       - release-deploy:
           requires:
             - build
