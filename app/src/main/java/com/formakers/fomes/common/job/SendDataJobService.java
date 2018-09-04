@@ -43,7 +43,6 @@ public class SendDataJobService extends JobService {
             Log.d(TAG, "[" + params.getJobId() + "] isOverrideDeadlineExpired!");
         }
 
-
         if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
             Log.d(TAG, "Start to update data!");
 

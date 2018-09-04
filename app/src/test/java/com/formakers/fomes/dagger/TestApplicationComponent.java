@@ -11,11 +11,11 @@ import com.formakers.fomes.activity.PermissionGuideActivityTest;
 import com.formakers.fomes.activity.ProjectDetailActivityTest;
 import com.formakers.fomes.adapter.DescriptionImageAdapterTest;
 import com.formakers.fomes.adapter.RegisteredInterviewListAdapterTest;
+import com.formakers.fomes.common.job.SendDataJobServiceTest;
 import com.formakers.fomes.custom.AppBeeAlertDialogTest;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragmentTest;
 import com.formakers.fomes.fragment.InterviewListFragmentTest;
 import com.formakers.fomes.fragment.ProjectListFragmentTest;
-import com.formakers.fomes.receiver.PowerConnectedReceiverTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
 
 import javax.inject.Singleton;
@@ -39,7 +39,7 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(CodeVerificationActivityTest codeVerificationActivityTest);
     void inject(RegisteredInterviewListAdapterTest registeredInterviewListAdapterTest);
     void inject(AppBeeAlertDialogTest appBeeAlertDialogTest);
-    void inject(PowerConnectedReceiverTest powerConnectedReceiverTest);
+    void inject(SendDataJobServiceTest sendDataJobServiceTest);
     void inject(DescriptionImageAdapterTest descriptionImageAdapterTest);
     void inject(MessagingTokenServiceTest instanceIDServiceTest);
 }

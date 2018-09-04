@@ -21,6 +21,7 @@ import rx.Completable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.observers.TestSubscriber;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -190,12 +191,12 @@ public class AppUsageDataHelperTest {
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendShortTermStats(any(List.class))).thenReturn(Completable.complete());
 
-        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
-        subject.sendShortTermStats(mockSendDataCallback);
+        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        subject.sendShortTermStats().subscribe(testSubscriber);
 
         verify(mockAppStatService).sendShortTermStats(any(List.class));
         verify(mockLocalStorageHelper).setLastUpdateShortTermStatTimestamp(eq(10L));
-        verify(mockSendDataCallback).onSuccess();
+        testSubscriber.assertCompleted();
     }
 
     @Test
@@ -206,10 +207,10 @@ public class AppUsageDataHelperTest {
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendShortTermStats(any(List.class))).thenReturn(Completable.error(new Throwable()));
 
-        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
-        subject.sendShortTermStats(mockSendDataCallback);
+        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        subject.sendShortTermStats().subscribe(testSubscriber);
 
-        verify(mockSendDataCallback).onFail();
+        testSubscriber.assertError(Throwable.class);
     }
 
     @Test
@@ -219,14 +220,15 @@ public class AppUsageDataHelperTest {
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.complete());
-        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
-        subject.sendAppUsages(mockSendDataCallback);
+
+        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        subject.sendAppUsages().subscribe(testSubscriber);
 
         verify(mockAppRepositoryHelper).deleteAppUsages(anyInt());
         verify(mockAppRepositoryHelper).updateTotalUsedTime(any(List.class));
         verify(mockAppStatService).sendAppUsages(any(List.class));
         verify(mockLocalStorageHelper).setLastUpdateAppUsageTimestamp(eq(10L));
-        verify(mockSendDataCallback).onSuccess();
+        testSubscriber.assertCompleted();
     }
 
     @Test
@@ -237,10 +239,10 @@ public class AppUsageDataHelperTest {
         when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.error(new Throwable()));
 
-        AppUsageDataHelper.SendDataCallback mockSendDataCallback = mock(AppUsageDataHelper.SendDataCallback.class);
-        subject.sendAppUsages(mockSendDataCallback);
+        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        subject.sendAppUsages().subscribe(testSubscriber);
 
-        verify(mockSendDataCallback).onFail();
+        testSubscriber.assertError(Throwable.class);
     }
 
     @Test
