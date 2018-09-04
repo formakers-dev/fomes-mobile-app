@@ -4,6 +4,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.helper.LocalStorageHelper;
 import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.Project;
+import com.formakers.fomes.network.api.ProjectAPI;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -5,6 +5,7 @@ import com.formakers.fomes.helper.LocalStorageHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.model.ShortTermStat;
+import com.formakers.fomes.network.api.StatAPI;
 
 import java.util.List;
 

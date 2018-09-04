@@ -1,8 +1,8 @@
 package com.formakers.fomes.helper;
 
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.network.ProjectAPI;
-import com.formakers.fomes.network.UserAPI;
+import com.formakers.fomes.network.api.ProjectAPI;
+import com.formakers.fomes.network.api.UserAPI;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 

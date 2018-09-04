@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.formakers.fomes.helper.AppBeeAPIHelper;
 import com.formakers.fomes.helper.LocalStorageHelper;
 import com.formakers.fomes.model.User;
+import com.formakers.fomes.network.api.UserAPI;
 
 import javax.inject.Inject;
 

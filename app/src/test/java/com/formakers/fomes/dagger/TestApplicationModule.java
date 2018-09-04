@@ -12,12 +12,12 @@ import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.network.AppStatService;
-import com.formakers.fomes.network.ConfigAPI;
+import com.formakers.fomes.network.api.ConfigAPI;
 import com.formakers.fomes.network.ConfigService;
-import com.formakers.fomes.network.ProjectAPI;
+import com.formakers.fomes.network.api.ProjectAPI;
 import com.formakers.fomes.network.ProjectService;
-import com.formakers.fomes.network.StatAPI;
-import com.formakers.fomes.network.UserAPI;
+import com.formakers.fomes.network.api.StatAPI;
+import com.formakers.fomes.network.api.UserAPI;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.repository.helper.AppRepositoryHelper;
 

@@ -1,4 +1,4 @@
-package com.formakers.fomes.network;
+package com.formakers.fomes.network.api;
 
 import java.util.List;
 

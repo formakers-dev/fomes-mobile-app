@@ -1,6 +1,7 @@
 package com.formakers.fomes.network;
 
 import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.network.api.ConfigAPI;
 
 import org.junit.Before;
 import org.junit.Test;
