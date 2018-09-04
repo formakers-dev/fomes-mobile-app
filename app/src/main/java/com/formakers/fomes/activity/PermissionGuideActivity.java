@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.custom.AppBeeAlertDialog;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.LocalStorageHelper;
@@ -42,6 +43,9 @@ public class PermissionGuideActivity extends BaseActivity {
 
     @Inject
     UserService userService;
+
+    @Inject
+    JobManager jobManager;
 
     @BindView(R.id.permission_button)
     Button permissionButton;
@@ -124,6 +128,7 @@ public class PermissionGuideActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_PACKAGE_USAGE_STATS_PERMISSION
                 && appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
             checkTokenAndMoveActivity();
+            jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
         }
     }
 }

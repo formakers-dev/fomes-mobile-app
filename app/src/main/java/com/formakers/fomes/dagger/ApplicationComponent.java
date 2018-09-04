@@ -9,11 +9,11 @@ import com.formakers.fomes.activity.MainActivity;
 import com.formakers.fomes.activity.MyInterviewActivity;
 import com.formakers.fomes.activity.PermissionGuideActivity;
 import com.formakers.fomes.activity.ProjectDetailActivity;
+import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
 import com.formakers.fomes.fragment.InterviewListFragment;
 import com.formakers.fomes.fragment.ProjectListFragment;
 import com.formakers.fomes.fragment.ReportMostUsedFragment;
-import com.formakers.fomes.receiver.PowerConnectedReceiver;
 import com.formakers.fomes.service.MessagingTokenService;
 
 import javax.inject.Singleton;
@@ -24,7 +24,6 @@ import dagger.Component;
 @Component(modules = { ApplicationModule.class, NetworkModule.class })
 public interface ApplicationComponent {
     void inject(LoadingActivity loadingActivity);
-    void inject(PowerConnectedReceiver powerConnectedReceiver);
     void inject(PermissionGuideActivity permissionGuideActivity);
     void inject(LoginActivity loginActivity);
     void inject(MainActivity mainActivity);
@@ -38,4 +37,5 @@ public interface ApplicationComponent {
     void inject(CodeVerificationActivity CodeVerificationActivity);
     void inject(CancelInterviewActivity cancelInterviewActivity);
     void inject(MessagingTokenService messagingTokenService);
+    void inject(SendDataJobService sendDataJobService);
 }

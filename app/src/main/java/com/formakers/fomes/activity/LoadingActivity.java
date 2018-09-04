@@ -16,6 +16,7 @@ import com.formakers.fomes.network.UserService;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class LoadingActivity extends BaseActivity {
 
@@ -50,20 +51,11 @@ public class LoadingActivity extends BaseActivity {
 
         imageLoader.loadGifImage(loadingImageView, R.drawable.loading_bowl);
 
-        appUsageDataHelper.sendAppUsages(appUsageDataHelperSendDataCallback);
+        appUsageDataHelper.sendAppUsages()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::moveToAnalysisResultActivity,
+                        e -> Toast.makeText(LoadingActivity.this, R.string.app_usage_data_http_fail_message, Toast.LENGTH_SHORT).show());
     }
-
-    AppUsageDataHelper.SendDataCallback appUsageDataHelperSendDataCallback = new AppUsageDataHelper.SendDataCallback() {
-        @Override
-        public void onSuccess() {
-            moveToAnalysisResultActivity();
-        }
-
-        @Override
-        public void onFail() {
-            Toast.makeText(LoadingActivity.this, R.string.app_usage_data_http_fail_message, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     private void moveToAnalysisResultActivity() {
         startActivity(new Intent(LoadingActivity.this, OnboardingAnalysisActivity.class));

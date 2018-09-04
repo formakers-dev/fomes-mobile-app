@@ -19,7 +19,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Completable;
 import rx.schedulers.Schedulers;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
@@ -75,38 +75,28 @@ public class AppUsageDataHelper {
         return new ShortTermStat(packageName, startTimestamp, endTimestamp, endTimestamp - startTimestamp);
     }
 
-    public void sendShortTermStats(SendDataCallback callback) {
+    public Completable sendShortTermStats() {
         final long from = localStorageHelper.getLastUpdateShortTermStatTimestamp();
         final long to = timeHelper.getStatBasedCurrentTime();
         final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
 
-        appStatService.sendShortTermStats(shortTermStatList)
+        return appStatService.sendShortTermStats(shortTermStatList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(() -> {
-                    localStorageHelper.setLastUpdateShortTermStatTimestamp(to);
-                    callback.onSuccess();
-                }, error -> {
-                    appStatService.logError(error);
-                    callback.onFail();
-                });
+                .doOnCompleted(() -> localStorageHelper.setLastUpdateShortTermStatTimestamp(to))
+                .doOnError(appStatService::logError);
     }
 
-    public void sendAppUsages(SendDataCallback callback) {
+    public Completable sendAppUsages() {
         final long to = timeHelper.getStatBasedCurrentTime();
         deleteOldAppUsage();
         updateAppUsage(localStorageHelper.getLastUpdateAppUsageTimestamp(), to);
 
-        appStatService.sendAppUsages(appRepositoryHelper.getAppUsages())
+        return appStatService.sendAppUsages(appRepositoryHelper.getAppUsages())
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    localStorageHelper.setLastUpdateAppUsageTimestamp(to);
-                    callback.onSuccess();
-                }, error -> {
-                    appStatService.logError(error);
-                    callback.onFail();
-                });
+                .observeOn(Schedulers.io())
+                .doOnCompleted(() -> localStorageHelper.setLastUpdateAppUsageTimestamp(to))
+                .doOnError(appStatService::logError);
     }
 
     private void updateAppUsage(long from, long to) {
