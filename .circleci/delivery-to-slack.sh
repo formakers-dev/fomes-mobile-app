@@ -3,7 +3,7 @@
 # $2 : Slack Channel
 # $3 : Branch
 VERSION="$(./gradlew -q getAppVersion)"
-APK_NAME="AppBee-$VERSION-$1.apk"
+APK_NAME="Fomes-$VERSION-$1.apk"
 echo APK_NAME
 curl -F file=@app/build/outputs/apk/$APK_NAME \
     -F channels=$2 \
