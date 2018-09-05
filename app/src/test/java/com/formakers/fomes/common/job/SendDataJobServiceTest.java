@@ -6,7 +6,6 @@ import android.os.Parcel;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.LocalStorageHelper;
@@ -17,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -25,7 +24,6 @@ import org.robolectric.annotation.Config;
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.observers.TestSubscriber;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -61,7 +59,7 @@ public class SendDataJobServiceTest {
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
         when(mockMessagingHelper.getMessagingToken()).thenReturn("myRegistrationToken");
 
-        subject = new SendDataJobService();
+        subject = Robolectric.setupService(SendDataJobService.class);
     }
 
     @After
