@@ -10,6 +10,7 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 public interface UserAPI {
+    // Return : FomesToken
     @POST("/user/auth")
     Observable<String> signIn(@Header("x-id-token") String googleIdToken, @Body User user);
 

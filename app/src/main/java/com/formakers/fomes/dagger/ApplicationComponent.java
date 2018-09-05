@@ -4,7 +4,6 @@ import com.formakers.fomes.activity.CancelInterviewActivity;
 import com.formakers.fomes.activity.CodeVerificationActivity;
 import com.formakers.fomes.activity.InterviewDetailActivity;
 import com.formakers.fomes.activity.LoadingActivity;
-import com.formakers.fomes.activity.LoginActivity;
 import com.formakers.fomes.activity.MainActivity;
 import com.formakers.fomes.activity.MyInterviewActivity;
 import com.formakers.fomes.activity.PermissionGuideActivity;
@@ -14,6 +13,7 @@ import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
 import com.formakers.fomes.fragment.InterviewListFragment;
 import com.formakers.fomes.fragment.ProjectListFragment;
 import com.formakers.fomes.fragment.ReportMostUsedFragment;
+import com.formakers.fomes.provisioning.LoginActivity;
 import com.formakers.fomes.service.MessagingTokenService;
 
 import javax.inject.Singleton;
@@ -25,7 +25,7 @@ import dagger.Component;
 public interface ApplicationComponent {
     void inject(LoadingActivity loadingActivity);
     void inject(PermissionGuideActivity permissionGuideActivity);
-    void inject(LoginActivity loginActivity);
+    void inject(com.formakers.fomes.activity.LoginActivity loginActivity);
     void inject(MainActivity mainActivity);
     void inject(ProjectDetailActivity projectDetailActivity);
     void inject(InterviewDetailActivity interviewDetailActivity);
@@ -38,4 +38,7 @@ public interface ApplicationComponent {
     void inject(CancelInterviewActivity cancelInterviewActivity);
     void inject(MessagingTokenService messagingTokenService);
     void inject(SendDataJobService sendDataJobService);
+
+    // fomes
+    void inject(LoginActivity loginActivity);
 }

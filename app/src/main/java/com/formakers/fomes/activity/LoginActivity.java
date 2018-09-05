@@ -58,7 +58,7 @@ public class LoginActivity extends BaseActivity {
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.appbee_activity_login);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void signIn() {
-        Intent signInIntent = googleSignInAPIHelper.requestSignInIntent();
+        Intent signInIntent = googleSignInAPIHelper.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -105,7 +105,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             if (resultCode == Activity.RESULT_OK) {
-                GoogleSignInResult result = googleSignInAPIHelper.requestSignInResult(data);
+                GoogleSignInResult result = googleSignInAPIHelper.getSignInResult(data);
                 verifyGoogleSignInResult(result);
             } else {
                 finishActivityForFail(R.string.fail_to_connect_google_play);

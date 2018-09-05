@@ -53,11 +53,11 @@ public class GoogleSignInAPIHelper {
                 .build();
     }
 
-    public Intent requestSignInIntent() {
+    public Intent getSignInIntent() {
         return Auth.GoogleSignInApi.getSignInIntent(createGoogleApiClient());
     }
 
-    public GoogleSignInResult requestSignInResult(Intent data) {
+    public GoogleSignInResult getSignInResult(Intent data) {
         return Auth.GoogleSignInApi.getSignInResultFromIntent(data);
     }
 

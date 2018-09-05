@@ -78,7 +78,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
         when(googleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mock(GoogleSignInResult.class)));
-        when(googleSignInAPIHelper.requestSignInIntent()).thenReturn(intent);
+        when(googleSignInAPIHelper.getSignInIntent()).thenReturn(intent);
     }
 
     @After
@@ -120,7 +120,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
         GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
         when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
-        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(googleSignInAPIHelper.getSignInResult(any())).thenReturn(mockGoogleSignInResult);
         when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockGoogleSignInAccount);
 
         return mockGoogleSignInResult;
@@ -129,7 +129,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     private void mockGoogleSignInResultWithoutAccount(boolean isSuccess) {
         GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
         when(mockGoogleSignInResult.isSuccess()).thenReturn(isSuccess);
-        when(googleSignInAPIHelper.requestSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(googleSignInAPIHelper.getSignInResult(any())).thenReturn(mockGoogleSignInResult);
     }
 
     @Test
@@ -189,7 +189,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
         subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
 
-        verify(googleSignInAPIHelper, times(0)).requestSignInIntent();
+        verify(googleSignInAPIHelper, times(0)).getSignInIntent();
     }
 
     @Test

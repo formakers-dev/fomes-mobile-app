@@ -4,7 +4,6 @@ import com.formakers.fomes.activity.CancelInterviewActivityTest;
 import com.formakers.fomes.activity.CodeVerificationActivityTest;
 import com.formakers.fomes.activity.InterviewDetailActivityTest;
 import com.formakers.fomes.activity.LoadingActivityTest;
-import com.formakers.fomes.activity.LoginActivityTest;
 import com.formakers.fomes.activity.MainActivityTest;
 import com.formakers.fomes.activity.MyInterviewActivityTest;
 import com.formakers.fomes.activity.PermissionGuideActivityTest;
@@ -16,6 +15,7 @@ import com.formakers.fomes.custom.AppBeeAlertDialogTest;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragmentTest;
 import com.formakers.fomes.fragment.InterviewListFragmentTest;
 import com.formakers.fomes.fragment.ProjectListFragmentTest;
+import com.formakers.fomes.provisioning.LoginActivityTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
 
 import javax.inject.Singleton;
@@ -28,7 +28,7 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(LoadingActivityTest mainActivity);
     void inject(PermissionGuideActivityTest startActivityTest);
     void inject(ProjectDetailActivityTest projectDetailActivityTest);
-    void inject(LoginActivityTest loginActivityTest);
+    void inject(com.formakers.fomes.activity.LoginActivityTest loginActivityTest);
     void inject(MainActivityTest mainActivityTest);
     void inject(InterviewDetailActivityTest interviewDetailActivityTest);
     void inject(MyInterviewActivityTest myInterviewActivityTest);
@@ -42,4 +42,7 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(SendDataJobServiceTest sendDataJobServiceTest);
     void inject(DescriptionImageAdapterTest descriptionImageAdapterTest);
     void inject(MessagingTokenServiceTest instanceIDServiceTest);
+
+    // Fomes
+    void inject(LoginActivityTest loginActivityTest);
 }

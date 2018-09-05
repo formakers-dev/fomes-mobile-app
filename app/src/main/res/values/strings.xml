@@ -2,6 +2,11 @@
     <string name="app_name">포메스</string>
     <string name="empty" />
 
+    <!-- Fomes -->
+    <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
+    <string name="login_tnc">버튼을 누르시면 사용약관 및 개인정보 취급방침에 동의됩니다.</string>
+
+    <!-- appbee -->
     <string name="login_button_text">Google로 쉬운 시작</string>
 
     <string name="permission_guide_title">앱 사용패턴 분석을 위해\n아래 권한이 필요합니다.</string>
