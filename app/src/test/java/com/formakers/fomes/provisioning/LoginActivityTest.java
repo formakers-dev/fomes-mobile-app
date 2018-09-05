@@ -2,7 +2,9 @@ package com.formakers.fomes.provisioning;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.TextView;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
@@ -69,6 +71,14 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
         assertThat(subject.findViewById(R.id.login_subtitle).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_google_button).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_tnc).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void 약관링크_클릭시_해당_링크를_브라우저로_띄운다() {
+        subject = getActivity();
+
+        assertThat(((TextView) subject.findViewById(R.id.login_tnc)).getMovementMethod().getClass().getSimpleName())
+                .isEqualTo(LinkMovementMethod.class.getSimpleName());
     }
 
     @Test
@@ -180,10 +190,5 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
         subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("구글 로그인에 실패하였습니다.");
-    }
-
-    @Test
-    public void 약관링크_클릭시_해당_링크를_브라우저로_띄운다() {
-
     }
 }

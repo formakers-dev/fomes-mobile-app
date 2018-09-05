@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.formakers.fomes.AppBeeApplication;
@@ -19,12 +22,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class LoginActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_SIGN_IN = 9001;
+
+    @BindView(R.id.login_tnc) TextView loginTncTextView;
 
     @Inject GoogleSignInAPIHelper googleSignInAPIHelper;
     @Inject UserService userService;
@@ -37,6 +43,14 @@ public class LoginActivity extends BaseActivity {
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
         this.setContentView(R.layout.activity_login);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        loginTncTextView.setText(Html.fromHtml(getString(R.string.login_tnc)));
+        loginTncTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

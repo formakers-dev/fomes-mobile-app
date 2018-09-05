@@ -4,7 +4,7 @@
 
     <!-- Fomes -->
     <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
-    <string name="login_tnc">버튼을 누르시면 사용약관 및 개인정보 취급방침에 동의됩니다.</string>
+    <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="https://www.naver.com">개인정보 취급방침</a>]]>에 동의됩니다.</string>
 
     <!-- appbee -->
     <string name="login_button_text">Google로 쉬운 시작</string>
