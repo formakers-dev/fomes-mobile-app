@@ -14,9 +14,33 @@ local.properties
 # Signing files
 .signing/
 
-# User-specific configurations
-.idea/
+### IntelliJ ###
+# User-specific stuff
 *.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/caches
+#.idea/misc.xml  # misc.xml should be version controlled : https://intellij-support.jetbrains.com/hc/en-us/community/posts/206933675--idea-misc-xml-question
+
+# Sensitive or high-churn files
+.idea/assetWizardSettings.xml
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+
+# Gradle
+.idea/gradle.xml
+.idea/libraries
+
+# Mongo Explorer plugin:
+.idea/mongoSettings.xml
+
 
 # OS-specific files
 .DS_Store
@@ -27,10 +51,11 @@ local.properties
 ehthumbs.db
 Thumbs.db
 
-# Others
+# External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
-/captures
+
+# Android Studio captures folder
+captures/
 
 google-services.json
-app/google-services.json
 app/*.apk
