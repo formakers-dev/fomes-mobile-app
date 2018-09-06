@@ -10,6 +10,7 @@ import com.formakers.fomes.helper.LocalStorageHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
+import com.formakers.fomes.provisioning.view.ProvisioningActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -31,6 +32,7 @@ import rx.Observable;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -103,7 +105,7 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void requestSignUpBy__Fomes_가입요청_성공시_FomesToken_및_유저정보를_저장한다() {
+    public void requestSignUpBy__Fomes_가입요청_성공시_FomesToken_및_유저정보를_저장하고_화면을_이동한다() {
         GoogleSignInResult mockResult = mock(GoogleSignInResult.class);
         when(mockResult.isSuccess()).thenReturn(true);
 
@@ -124,6 +126,7 @@ public class LoginPresenterTest {
         verify(mockLocalStorageHelper).setAccessToken(eq("testFomesToken"));
         verify(mockLocalStorageHelper).setUserId(eq("testId"));
         verify(mockLocalStorageHelper).setEmail(eq("testEmail"));
+        verify(mockView).startActivityAndFinish(eq(ProvisioningActivity.class));
     }
 
     @Test
@@ -141,14 +144,13 @@ public class LoginPresenterTest {
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
 
         // Fomes 가입 요청 실패시
-        when(mockUserService.signUp(anyString(), any(User.class)))
-                .thenReturn(Observable.error(new Throwable()));
+        when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Observable.error(new Throwable()));
 
         doNothing().when(mockView).showToast(anyString());
 
         subject.requestSignUpBy(mock(Intent.class));
 
-        verify(subject.getView()).showToast(eq("가입에 실패하였습니다. 재시도 고고"));
+        verify(mockView).showToast(contains("실패"));
     }
 
     @Test

@@ -14,5 +14,6 @@ public interface LoginContract {
     interface View extends BaseView<Presenter> {
         ApplicationComponent getApplicationComponent();
         void showToast(String toastMessage);
+        void startActivityAndFinish(Class<?> destActivity);
     }
 }

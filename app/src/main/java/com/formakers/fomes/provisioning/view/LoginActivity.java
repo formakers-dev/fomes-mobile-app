@@ -81,4 +81,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void showToast(String toastMessage) {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void startActivityAndFinish(Class<?> destActivity) {
+        Intent intent = new Intent(this, destActivity);
+        this.startActivity(intent);
+        this.finish();
+    }
 }
