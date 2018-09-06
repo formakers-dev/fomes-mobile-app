@@ -13,7 +13,7 @@ import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
 import com.formakers.fomes.fragment.InterviewListFragment;
 import com.formakers.fomes.fragment.ProjectListFragment;
 import com.formakers.fomes.fragment.ReportMostUsedFragment;
-import com.formakers.fomes.provisioning.LoginActivity;
+import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.formakers.fomes.service.MessagingTokenService;
 
 import javax.inject.Singleton;
@@ -40,5 +40,5 @@ public interface ApplicationComponent {
     void inject(SendDataJobService sendDataJobService);
 
     // fomes
-    void inject(LoginActivity loginActivity);
+    void inject(LoginPresenter loginPresenter);
 }

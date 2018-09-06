@@ -63,7 +63,7 @@
         <activity android:name=".activity.ReportActivity" />
 
         <!-- Fomes -->
-        <activity android:name=".provisioning.LoginActivity">
+        <activity android:name=".provisioning.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />

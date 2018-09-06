@@ -15,7 +15,7 @@ import com.formakers.fomes.custom.AppBeeAlertDialogTest;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragmentTest;
 import com.formakers.fomes.fragment.InterviewListFragmentTest;
 import com.formakers.fomes.fragment.ProjectListFragmentTest;
-import com.formakers.fomes.provisioning.LoginActivityTest;
+import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
 
 import javax.inject.Singleton;
@@ -44,5 +44,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(MessagingTokenServiceTest instanceIDServiceTest);
 
     // Fomes
-    void inject(LoginActivityTest loginActivityTest);
+    void inject(LoginPresenterTest loginPresenterTest);
 }
