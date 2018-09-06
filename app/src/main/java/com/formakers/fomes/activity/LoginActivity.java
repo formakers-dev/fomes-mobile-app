@@ -30,6 +30,7 @@ import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+@Deprecated
 public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     private static final String UNKNOWN_GENDER = "unknown";
@@ -141,10 +142,10 @@ public class LoginActivity extends BaseActivity {
             user.setGender(UNKNOWN_GENDER);
         }
 
-        String signUpCode = localStorageHelper.getInvitationCode();
-        if (!TextUtils.isEmpty(signUpCode)) {
-            user.setSignUpCode(new User.SignUpCode(User.SignUpCode.BETA, signUpCode));
-        }
+//        String signUpCode = localStorageHelper.getInvitationCode();
+//        if (!TextUtils.isEmpty(signUpCode)) {
+//            user.setSignUpCode(new User.SignUpCode(User.SignUpCode.BETA, signUpCode));
+//        }
 
         addToCompositeSubscription(
                 userService.signIn(googleIdToken, user)
