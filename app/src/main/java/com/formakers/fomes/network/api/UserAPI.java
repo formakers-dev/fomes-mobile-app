@@ -11,6 +11,10 @@ import rx.Observable;
 
 public interface UserAPI {
     // Return : FomesToken
+    @POST("/user/signup")
+    Observable<String> signUp(@Header("x-id-token") String googleIdToken, @Body User user);
+
+    // Return : FomesToken
     @POST("/user/auth")
     Observable<String> signIn(@Header("x-id-token") String googleIdToken, @Body User user);
 

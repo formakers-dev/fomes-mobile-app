@@ -27,6 +27,12 @@ public class UserService extends AbstractAppBeeService {
         this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
+    public Observable<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
+        return userAPI.signUp(googleIdToken, user)
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io());
+    }
+
     public Observable<String> signIn(@NonNull String googleIdToken, @NonNull User user) {
         return userAPI.signIn(googleIdToken, user)
                 .doOnError(this::logError)

@@ -109,13 +109,13 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
         when(mockGoogleSignInAPIHelper.getSignInResult(any(Intent.class))).thenReturn(mockResult);
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
-        when(mockUserService.signIn(anyString(), any(User.class))).thenReturn(Observable.just(""));
+        when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Observable.just(""));
 
         subject = getActivity();
         subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(mockUserService).signIn(eq("testIdToken"), userCaptor.capture());
+        verify(mockUserService).signUp(eq("testIdToken"), userCaptor.capture());
         assertThat(userCaptor.getValue().getUserId()).isEqualTo("testId");
         assertThat(userCaptor.getValue().getEmail()).isEqualTo("testEmail");
         assertThat(userCaptor.getValue().getRegistrationToken()).isEqualTo("testRegistrationToken");
@@ -134,7 +134,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
         when(mockGoogleSignInAPIHelper.getSignInResult(any(Intent.class))).thenReturn(mockResult);
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
-        when(mockUserService.signIn(anyString(), any(User.class))).thenReturn(Observable.just("testFomesToken"));
+        when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Observable.just("testFomesToken"));
 
         subject = getActivity();
         subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
@@ -157,7 +157,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
         when(mockGoogleSignInAPIHelper.getSignInResult(any(Intent.class))).thenReturn(mockResult);
         when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
-        when(mockUserService.signIn(anyString(), any(User.class))).thenReturn(Observable.error(new Throwable()));
+        when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Observable.error(new Throwable()));
 
         subject = getActivity();
         subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());

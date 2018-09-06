@@ -7,7 +7,6 @@ public class User {
     private Integer birthday;
     private String gender;
     private String registrationToken;
-    private SignUpCode signUpCode;
 
     public User() {
     }
@@ -68,25 +67,5 @@ public class User {
 
     public void setRegistrationToken(String registrationToken) {
         this.registrationToken = registrationToken;
-    }
-
-    public SignUpCode getSignUpCode() {
-        return signUpCode;
-    }
-
-    public void setSignUpCode(SignUpCode signUpCode) {
-        this.signUpCode = signUpCode;
-    }
-
-    public static class SignUpCode {
-        public static final String BETA = "beta";
-
-        String type;
-        String value;
-
-        public SignUpCode(String type, String value) {
-            this.type = type;
-            this.value = value;
-        }
     }
 }

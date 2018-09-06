@@ -70,7 +70,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             GoogleSignInAccount account = result.getSignInAccount();
-            userService.signIn(account.getIdToken(), new User(account.getId(), account.getEmail(), localStorageHelper.getRegistrationToken()))
+            userService.signUp(account.getIdToken(), new User(account.getId(), account.getEmail(), localStorageHelper.getRegistrationToken()))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(fomesToken -> {
                         // TODO : 리팩토링 고려 필요
