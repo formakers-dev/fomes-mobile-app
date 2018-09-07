@@ -7,6 +7,7 @@ public interface ProvisioningContract {
         void onNextPageEvent();
         void updateDemographicsToUser(Integer birth, String job, String gender);
         void updateLifeGameToUser(String game);
+        void updateNickNameToUser(String nickName);
     }
 
     interface View extends BaseView<Presenter> {

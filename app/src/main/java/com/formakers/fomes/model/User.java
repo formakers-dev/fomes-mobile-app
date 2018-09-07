@@ -5,6 +5,7 @@ import java.util.List;
 public class User {
     private String userId;
     private String name;
+    private String nickName;
     private String email;
     private Integer birthday;
     private String job;
@@ -31,6 +32,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getEmail() {
@@ -94,6 +103,7 @@ public class User {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
+                ", nickName='" + nickName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthday=" + birthday +
                 ", job='" + job + '\'' +

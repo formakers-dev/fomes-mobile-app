@@ -14,26 +14,26 @@ import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ProvisioningLifeGameFragment extends BaseFragment {
+public class ProvisioningNickNameFragment extends BaseFragment {
 
-    @BindView(R.id.provision_life_game_content_edittext) EditText lifeGameEditText;
+    @BindView(R.id.provision_nickname_content_edittext) EditText nickNameEditText;
 
     ProvisioningContract.Presenter presenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_provision_life_game, container, false);
+        return inflater.inflate(R.layout.fragment_provision_nickname, container, false);
     }
 
-    public ProvisioningLifeGameFragment setPresenter(ProvisioningContract.Presenter presenter) {
+    public ProvisioningNickNameFragment setPresenter(ProvisioningContract.Presenter presenter) {
         this.presenter = presenter;
         return this;
     }
 
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
-        this.presenter.updateLifeGameToUser(lifeGameEditText.getText().toString());
+        this.presenter.updateNickNameToUser(nickNameEditText.getText().toString());
         this.presenter.onNextPageEvent();
     }
 }

@@ -145,4 +145,8 @@
     <string name="provision_user_info_job_title">직업</string>
     <string name="provision_user_info_gender_title">성별</string>
     <string name="provision_life_game_edittext_hint">예) 마비노기, 삼국지, 파이널판타지…</string>
+    <string name="provision_nickname_title">포메스 앱에서 사용할 닉네임을 입력해 주세요.</string>
+    <string name="provision_nickname_subtitle">닉네임은 10글자 이내로 작성해주세요.</string>
+    <string name="provision_nickname_content_title">닉네임</string>
+    <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
 </resources>

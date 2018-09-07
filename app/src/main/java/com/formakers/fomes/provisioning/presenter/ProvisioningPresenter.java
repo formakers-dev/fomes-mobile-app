@@ -44,4 +44,10 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
         this.user.setLifeApps(lifeGames);
         Log.d(TAG, user.toString());
     }
+
+    @Override
+    public void updateNickNameToUser(String nickName) {
+        this.user.setNickName(nickName);
+        Log.d(TAG, user.toString());
+    }
 }

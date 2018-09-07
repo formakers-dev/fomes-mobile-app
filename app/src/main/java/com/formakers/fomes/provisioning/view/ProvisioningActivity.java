@@ -39,6 +39,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         ProvisioningPagerAdapter provisioningPagerAdapter = new ProvisioningPagerAdapter(getSupportFragmentManager());
         provisioningPagerAdapter.addFragment(new ProvisioningUserInfoFragment().setPresenter(this.presenter));
         provisioningPagerAdapter.addFragment(new ProvisioningLifeGameFragment().setPresenter(this.presenter));
+        provisioningPagerAdapter.addFragment(new ProvisioningNickNameFragment().setPresenter(this.presenter));
         viewPager.setAdapter(provisioningPagerAdapter);
     }
 
