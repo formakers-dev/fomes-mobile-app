@@ -12,7 +12,7 @@
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:background="@color/appbee_yellow"
-        android:text="@string/next_button"
+        android:text="@string/common_next_button"
         android:textColor="@color/appbee_gray"
         android:textSize="26dp"
         app:fontName="@string/font_bmjua" />

@@ -37,7 +37,6 @@
     <string name="onboarding_rewards_description">인사이트 얻고, 인터뷰 하고, 리워드 받고!</string>
 
     <!-- Bottom Button -->
-    <string name="next_button">다음으로</string>
     <string name="start_button">시작하기</string>
     <string name="contents_title_interview">체험하기</string>
     <string name="contents_title_project">둘러보기</string>
@@ -134,7 +133,8 @@
 
     <!-- Fomes -->
     <!-- common -->
-    <string name="spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
+    <string name="common_next_button">다음으로</string>
+    <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
 
     <!-- others -->
     <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
