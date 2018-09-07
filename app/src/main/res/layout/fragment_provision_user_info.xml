@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/provision_user_info_title_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/provision_user_info_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/provision_user_info_subtitle_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/provision_user_info_subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_title_textview" />
+
+    <TextView
+        android:id="@+id/provision_user_info_birth_title_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/provision_user_info_birth_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_subtitle_textview" />
+
+    <Spinner
+        android:id="@+id/provision_user_info_birth_spinner"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_birth_title_textview" />
+
+    <TextView
+        android:id="@+id/provision_user_info_job_title_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/provision_user_info_job_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_birth_spinner" />
+
+    <Spinner
+        android:id="@+id/provision_user_info_job_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_title_textview" />
+
+    <TextView
+        android:id="@+id/provision_user_info_gender_title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/provision_user_info_gender_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_spinner" />
+
+    <RadioGroup
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/provision_user_info_gender_title_textview"
+        app:layout_constraintTop_toTopOf="@+id/provision_user_info_gender_title_textview">
+
+        <RadioButton
+            android:id="@+id/provision_user_info_male_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="남" />
+
+        <RadioButton
+            android:id="@+id/provision_user_info_female_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="여" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/next_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteY="519dp"
+        tools:ignore="MissingConstraints" />
+</android.support.constraint.ConstraintLayout>

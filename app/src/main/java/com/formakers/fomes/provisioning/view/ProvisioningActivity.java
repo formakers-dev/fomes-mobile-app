@@ -10,20 +10,25 @@ import android.support.v4.view.ViewPager;
 import com.formakers.fomes.R;
 import com.formakers.fomes.activity.BaseActivity;
 import com.formakers.fomes.fragment.BaseFragment;
+import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class ProvisioningActivity extends BaseActivity {
+public class ProvisioningActivity extends BaseActivity implements ProvisioningContract.View {
 
     @BindView(R.id.provision_viewpager) ViewPager viewPager;
+
+    private ProvisioningContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setPresenter(new ProvisioningPresenter(this));
         this.setContentView(R.layout.activity_provisioning);
     }
 
@@ -32,8 +37,19 @@ public class ProvisioningActivity extends BaseActivity {
         super.onPostCreate(savedInstanceState);
 
         ProvisioningPagerAdapter provisioningPagerAdapter = new ProvisioningPagerAdapter(getSupportFragmentManager());
-//        provisioningPagerAdapter.addFragment();
+        provisioningPagerAdapter.addFragment(new ProvisioningUserInfoFragment().setPresenter(this.presenter));
+        provisioningPagerAdapter.addFragment(new ProvisioningLifeGameFragment().setPresenter(this.presenter));
         viewPager.setAdapter(provisioningPagerAdapter);
+    }
+
+    @Override
+    public void setPresenter(ProvisioningContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void nextPage() {
+        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 
     public class ProvisioningPagerAdapter extends FragmentPagerAdapter {
@@ -56,6 +72,10 @@ public class ProvisioningActivity extends BaseActivity {
         @Override
         public int getCount() {
             return fragmentList.size();
+        }
+
+        public List<Fragment> getFragmentList() {
+            return fragmentList;
         }
     }
 }

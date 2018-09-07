@@ -2,9 +2,11 @@
     <string name="app_name">포메스</string>
     <string name="empty" />
 
-    <!-- Fomes -->
-    <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
-    <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="https://www.naver.com">개인정보 취급방침</a>]]>에 동의됩니다.</string>
+    <!-- Fonts -->
+    <string name="font_bmjua">BMJUA</string>
+    <string name="font_bmjua_path">BMJUA.otf</string>
+    <string name="font_medium">medium</string>
+    <string name="font_medium_path">NotoSans-Medium.otf</string>
 
     <!-- appbee -->
     <string name="login_button_text">Google로 쉬운 시작</string>
@@ -130,9 +132,16 @@
     <string name="participate_cancel_http_fail_message">인터뷰 취소에 실패하였습니다.</string>
     <string name="unexpected_error_message">예상치 못한 에러가 발생하였습니다.</string>
 
-    <!-- Fonts -->
-    <string name="font_bmjua">BMJUA</string>
-    <string name="font_bmjua_path">BMJUA.otf</string>
-    <string name="font_medium">medium</string>
-    <string name="font_medium_path">NotoSans-Medium.otf</string>
+    <!-- Fomes -->
+    <!-- common -->
+    <string name="spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
+
+    <!-- others -->
+    <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
+    <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="https://www.naver.com">개인정보 취급방침</a>]]>에 동의됩니다.</string>
+    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다. 몇가지 궁금한 점이 있습니다.</string>
+    <string name="provision_user_info_subtitle">알려주신 정보는 분석으로만 사용됩니다.</string>
+    <string name="provision_user_info_birth_title">출생연도</string>
+    <string name="provision_user_info_job_title">직업</string>
+    <string name="provision_user_info_gender_title">성별</string>
 </resources>

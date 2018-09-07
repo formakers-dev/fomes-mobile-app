@@ -3,4 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="nav_header_height">80dp</dimen>
     <dimen name="design_navigation_separator_vertical_padding">0dp</dimen>
+
+    <dimen name="match_constraint">0dp</dimen>
 </resources>
