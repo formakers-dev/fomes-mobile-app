@@ -5,6 +5,7 @@ public class User {
     private String name;
     private String email;
     private Integer birthday;
+    private String job;
     private String gender;
     private String registrationToken;
 
@@ -41,8 +42,16 @@ public class User {
         return birthday;
     }
 
-    public void setBirthday(int birthday) {
+    public void setBirthday(Integer birthday) {
         this.birthday = birthday;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public String getGender() {
@@ -67,5 +76,18 @@ public class User {
 
     public void setRegistrationToken(String registrationToken) {
         this.registrationToken = registrationToken;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday=" + birthday +
+                ", job='" + job + '\'' +
+                ", gender='" + gender + '\'' +
+                ", registrationToken='" + registrationToken + '\'' +
+                '}';
     }
 }

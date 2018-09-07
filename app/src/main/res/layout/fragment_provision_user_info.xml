@@ -38,6 +38,7 @@
         android:id="@+id/provision_user_info_birth_spinner"
         android:layout_width="0dp"
         android:layout_height="25dp"
+        android:entries="@array/birth_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/provision_user_info_birth_title_textview" />
@@ -56,6 +57,7 @@
         android:id="@+id/provision_user_info_job_spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:entries="@array/job_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_title_textview" />
@@ -69,6 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_spinner" />
 
     <RadioGroup
+        android:id="@+id/provision_user_info_gender_radiogroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
