@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/provision_user_info_title_textview"
+        android:id="@+id/provision_life_game_title_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/provision_user_info_title"
@@ -16,23 +16,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/provision_user_info_subtitle_textview"
+        android:id="@+id/provision_life_game_subtitle_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/provision_user_info_subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_title_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/provision_life_game_title_textview" />
 
     <TextView
-        android:id="@+id/provision_user_info_birth_title_textview"
+        android:id="@+id/provision_life_game_content_title_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/provision_user_info_birth_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_subtitle_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/provision_life_game_subtitle_textview" />
 
     <Spinner
         android:id="@+id/provision_user_info_birth_spinner"
@@ -41,7 +41,7 @@
         android:entries="@array/birth_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_birth_title_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/provision_life_game_content_title_textview" />
 
     <TextView
         android:id="@+id/provision_user_info_job_title_textview"
