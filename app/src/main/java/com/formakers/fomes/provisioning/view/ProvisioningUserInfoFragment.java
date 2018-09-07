@@ -37,11 +37,16 @@ public class ProvisioningUserInfoFragment extends BaseFragment {
 
     @OnClick(R.id.next_button)
     public void onNextButton() {
+        View view = this.getView();
+        if (view == null) {
+            return;
+        }
+
         int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
         String job = jobSpinner.getSelectedItem().toString();
-        String gender = ((RadioButton) this.getView().findViewById(genderRadioGroup.getCheckedRadioButtonId())).getText().toString();
+        String gender = ((RadioButton) view.findViewById(genderRadioGroup.getCheckedRadioButtonId())).getText().toString();
 
-        this.presenter.setUserInfo(birth, job, "남".equals(gender) ? "male" : "female");
+        this.presenter.updateDemographicsToUser(birth, job, "남".equals(gender) ? "male" : "female");
         this.presenter.onNextPageEvent();
     }
 }

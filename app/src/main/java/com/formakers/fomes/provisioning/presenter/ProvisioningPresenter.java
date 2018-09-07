@@ -5,6 +5,8 @@ import android.util.Log;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
+import java.util.ArrayList;
+
 public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
 
@@ -27,10 +29,19 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void setUserInfo(Integer birth, String job, String gender) {
+    public void updateDemographicsToUser(Integer birth, String job, String gender) {
         this.user.setBirthday(birth);
         this.user.setJob(job);
         this.user.setGender(gender);
+        Log.d(TAG, user.toString());
+    }
+
+    @Override
+    public void updateLifeGameToUser(String game) {
+        ArrayList<String> lifeGames = new ArrayList<>();
+        lifeGames.add(game);
+        
+        this.user.setLifeApps(lifeGames);
         Log.d(TAG, user.toString());
     }
 }

@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -37,11 +39,21 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void setUserInfo__호출시__유저정보를_셋한다() {
-        subject.setUserInfo(1989, "developer", "male");
+    public void updateDemographicsToUser__호출시__유저정보를_업데이트한다() {
+        subject.updateDemographicsToUser(1989, "developer", "male");
 
         verify(mockUser).setBirthday(eq(1989));
         verify(mockUser).setJob(eq("developer"));
         verify(mockUser).setGender(eq("male"));
+    }
+
+    @Test
+    public void updateLifeGameToUser__호출시__유저의_인생게임정보를_업데이트한다() {
+        subject.updateLifeGameToUser("미러스엣지");
+
+        ArrayList<String> lifeGames = new ArrayList<>();
+        lifeGames.add("미러스엣지");
+
+        verify(mockUser).setLifeApps(eq(lifeGames));
     }
 }

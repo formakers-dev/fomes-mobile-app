@@ -5,7 +5,8 @@ import com.formakers.fomes.common.mvp.BaseView;
 public interface ProvisioningContract {
     interface Presenter {
         void onNextPageEvent();
-        void setUserInfo(Integer birth, String job, String gender);
+        void updateDemographicsToUser(Integer birth, String job, String gender);
+        void updateLifeGameToUser(String game);
     }
 
     interface View extends BaseView<Presenter> {

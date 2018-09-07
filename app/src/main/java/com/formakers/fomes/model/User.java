@@ -1,5 +1,7 @@
 package com.formakers.fomes.model;
 
+import java.util.List;
+
 public class User {
     private String userId;
     private String name;
@@ -8,6 +10,7 @@ public class User {
     private String job;
     private String gender;
     private String registrationToken;
+    private List<String> lifeApps;
 
     public User() {
     }
@@ -78,6 +81,14 @@ public class User {
         this.registrationToken = registrationToken;
     }
 
+    public List<String> getLifeApps() {
+        return lifeApps;
+    }
+
+    public void setLifeApps(List<String> lifeApps) {
+        this.lifeApps = lifeApps;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -88,6 +99,7 @@ public class User {
                 ", job='" + job + '\'' +
                 ", gender='" + gender + '\'' +
                 ", registrationToken='" + registrationToken + '\'' +
+                ", lifeApps=" + lifeApps +
                 '}';
     }
 }

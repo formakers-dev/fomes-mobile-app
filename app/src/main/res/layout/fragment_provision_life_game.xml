@@ -39,7 +39,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:hint="@string/provision_life_game_edittext_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
