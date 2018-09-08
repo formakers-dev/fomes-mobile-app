@@ -16,7 +16,7 @@
         android:icon="@mipmap/ic_launcher_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppBeeNoActionBarTheme">
+        android:theme="@style/FomesTheme.NoActionBar">
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -71,7 +71,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".provisioning.view.ProvisioningActivity"/>
+        <activity android:name=".provisioning.view.ProvisioningActivity"
+            android:theme="@style/ProvisioningTheme" />
     </application>
 
 </manifest>

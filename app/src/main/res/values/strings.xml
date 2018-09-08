@@ -8,7 +8,7 @@
     <string name="font_medium">medium</string>
     <string name="font_medium_path">NotoSans-Medium.otf</string>
 
-    <!-- appbee -->
+    <!-- start of AppBee's strings -->
     <string name="login_button_text">Google로 쉬운 시작</string>
 
     <string name="permission_guide_title">앱 사용패턴 분석을 위해\n아래 권한이 필요합니다.</string>
@@ -130,22 +130,28 @@
     <string name="participate_http_fail_message">인터뷰 신청에 실패하였습니다.</string>
     <string name="participate_cancel_http_fail_message">인터뷰 취소에 실패하였습니다.</string>
     <string name="unexpected_error_message">예상치 못한 에러가 발생하였습니다.</string>
+    <!-- end of AppBee's strings -->
 
-    <!-- Fomes -->
-    <!-- common -->
+    <!-- Fomes - common strings -->
     <string name="common_next_button">다음으로</string>
     <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
 
-    <!-- others -->
+    <!-- Fomes - locality strings -->
+    <!-- Login -->
     <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
     <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="https://www.naver.com">개인정보 취급방침</a>]]>에 동의됩니다.</string>
-    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다. 몇가지 궁금한 점이 있습니다.</string>
+s
+    <!-- Provisioning -->
+    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다.\n몇가지 궁금한 점이 있습니다.</string>
     <string name="provision_user_info_subtitle">알려주신 정보는 분석으로만 사용됩니다.</string>
     <string name="provision_user_info_birth_title">출생연도</string>
     <string name="provision_user_info_job_title">직업</string>
     <string name="provision_user_info_gender_title">성별</string>
-    <string name="provision_life_game_edittext_hint">예) 마비노기, 삼국지, 파이널판타지…</string>
-    <string name="provision_nickname_title">포메스 앱에서 사용할 닉네임을 입력해 주세요.</string>
+    <string name="provision_life_game_title">분석과 추천을 위해\n인생게임 1개를 입력해주세요.</string>
+    <string name="provision_life_game_subtitle">콘솔/PC/모바일/오래전 게임도 상관없어요.</string>
+    <string name="provision_life_game_content_title">인생게임</string>
+    <string name="provision_life_game_content_hint">예) 마비노기, 삼국지, 파이널판타지…</string>
+    <string name="provision_nickname_title">포메스 앱에서 사용할\n닉네임을 입력해 주세요.</string>
     <string name="provision_nickname_subtitle">닉네임은 10글자 이내로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>

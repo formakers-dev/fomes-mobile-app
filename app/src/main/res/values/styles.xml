@@ -1,16 +1,20 @@
 <resources>
 
     <!-- Application theme. -->
-    <style name="AppBeeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="FomesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <item name="android:textColorHint">@color/textColorHint</item>
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
-    <style name="AppBeeNoActionBarTheme" parent="AppBeeTheme">
+    <style name="FomesTheme.NoActionBar" parent="FomesTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
     <!-- End of Application theme. -->
-
+햣
     <!-- Android View Widget theme -->
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -42,5 +46,15 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/appbee_warm_gray</item>
         <item name="android:textSize">13dp</item>
+    </style>
+
+    <!-- Fomes -->
+    <style name="ProvisioningTheme" parent="FomesTheme.NoActionBar">
+    </style>
+
+    <style name="ProvisioningTheme.RadioGroup">
+        <item name="divider_width">52dp</item>
+        <item name="divider_height">0dp</item>
+        <item name="divider_color">@android:color/transparent</item>
     </style>
 </resources>

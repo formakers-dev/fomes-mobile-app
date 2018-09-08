@@ -31,7 +31,7 @@ android {
         debug {
             debuggable true
             testCoverageEnabled true
-            buildConfigField 'String', 'SERVER_BASE_URL', '"http://' + InetAddress.getLocalHost().getHostAddress() + ':8080/"'
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://192.168.0.7:8080/"'
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
         }
         // DEV
