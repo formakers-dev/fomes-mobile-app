@@ -110,7 +110,7 @@ jobs:
       - attach_workspace: *attach-workspace
       - run:
           name: Delivery to Slack for Dev
-          command: bash .circleci/delivery-to-slack.sh release $SLACK_DELIVERY_DEV_CHANNEL $CIRCLE_BRANCH
+          command: bash .circleci/delivery-to-slack.sh $DEV_APK_BUILDTYPE $DEV_SLACK_DELIVERY_CHANNEL $CIRCLE_BRANCH
       - store_artifacts:
           path: app/build/outputs
 
@@ -121,7 +121,7 @@ jobs:
         - attach_workspace: *attach-workspace
         - run:
             name: Delivery to Slack for Release
-            command: bash .circleci/delivery-to-slack.sh release $SLACK_DELIVERY_RELEASE_CHANNEL $CIRCLE_BRANCH
+            command: bash .circleci/delivery-to-slack.sh $RELEASE_APK_BUILDTYPE $RELEASE_SLACK_DELIVERY_CHANNEL $CIRCLE_BRANCH
         - store_artifacts:
             path: app/build/outputs
 
