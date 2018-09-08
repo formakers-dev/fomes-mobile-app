@@ -36,6 +36,7 @@ android {
         }
         // DEV
         development {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-dev.herokuapp.com/"'
@@ -146,13 +147,10 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
         exclude group: 'com.google.guava', module: 'guava-jdk5'
     }
-
     // firebase
     compile 'com.google.firebase:firebase-messaging:11.0.4'
-
     // youtube player api
     compile files('libs/YouTubeAndroidPlayerApi.jar')
-
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.22'
     testCompile 'org.robolectric:robolectric:3.5.1'
@@ -160,7 +158,6 @@ dependencies {
     testCompile 'org.assertj:assertj-core:3.8.0'
     testCompile 'com.squareup.okhttp:mockwebserver:1.2.1'
     testCompile 'com.google.guava:guava:23.0-android'
-
     // android test
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
