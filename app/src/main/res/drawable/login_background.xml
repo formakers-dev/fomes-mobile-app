@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <gradient
-                android:angle="45"
-                android:startColor="#47c4e9"
-                android:centerColor="#00bea9"
-                android:endColor="#98b793"
-                android:type="linear" />
+            <solid android:color="@color/colorPrimary" />
         </shape>
     </item>
-</selector>
+    <item android:drawable="@drawable/login_background_pattern"/>
+</layer-list>
