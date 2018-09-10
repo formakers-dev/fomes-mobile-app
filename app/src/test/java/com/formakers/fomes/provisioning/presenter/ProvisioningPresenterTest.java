@@ -56,4 +56,10 @@ public class ProvisioningPresenterTest {
 
         verify(mockUser).setLifeApps(eq(lifeGames));
     }
+
+    @Test
+    public void emitFilledUpEvent__항목들을_다_채웠다는_이벤트_발생시__뷰에_다음버튼을_보여주도록_요청한다() {
+        subject.emitFilledUpEvent(true);
+        verify(mockView).setNextButtonVisibility(eq(true));
+    }
 }

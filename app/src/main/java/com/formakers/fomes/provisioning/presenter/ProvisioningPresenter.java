@@ -50,4 +50,10 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
         this.user.setNickName(nickName);
         Log.d(TAG, user.toString());
     }
+
+    @Override
+    public void emitFilledUpEvent(boolean isFilledUp) {
+        this.view.setNextButtonVisibility(isFilledUp);
+    }
+
 }

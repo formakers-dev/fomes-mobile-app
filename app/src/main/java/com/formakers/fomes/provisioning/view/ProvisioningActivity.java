@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.activity.BaseActivity;
@@ -18,10 +20,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnPageChange;
 
 public class ProvisioningActivity extends BaseActivity implements ProvisioningContract.View {
 
     @BindView(R.id.provision_viewpager) ViewPager viewPager;
+    @BindView(R.id.next_button) Button nextButton;
 
     private ProvisioningContract.Presenter presenter;
 
@@ -42,6 +46,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         provisioningPagerAdapter.addFragment(new ProvisioningLifeGameFragment().setPresenter(this.presenter));
         provisioningPagerAdapter.addFragment(new ProvisioningNickNameFragment().setPresenter(this.presenter));
         viewPager.setAdapter(provisioningPagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
     }
 
     @Override
@@ -59,13 +64,26 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 
+    @Override
+    public void setNextButtonVisibility(boolean isVisible) {
+        int visibility = isVisible ? View.VISIBLE : View.GONE;
+        if (nextButton.getVisibility() == visibility) return;
+
+        nextButton.setVisibility(visibility);
+    }
+
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
         getCurrentFragmentCommunicator().onNextButtonClick();
     }
 
-    private FragmentCommunicator getCurrentFragmentCommunicator() {
-        Fragment currentFragment = ((ProvisioningPagerAdapter) viewPager.getAdapter()).getItem(viewPager.getCurrentItem());
+    @OnPageChange(value = R.id.provision_viewpager, callback = OnPageChange.Callback.PAGE_SELECTED)
+    public void onSelectedPage(int position) {
+        getFragmentCommunicator(position).onSelectedPage();
+    }
+
+    private FragmentCommunicator getFragmentCommunicator(int position) {
+        Fragment currentFragment = ((ProvisioningPagerAdapter) viewPager.getAdapter()).getItem(position);
         if (currentFragment instanceof FragmentCommunicator) {
             return (FragmentCommunicator) currentFragment;
         } else {
@@ -73,8 +91,13 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         }
     }
 
+    private FragmentCommunicator getCurrentFragmentCommunicator() {
+        return getFragmentCommunicator(viewPager.getCurrentItem());
+    }
+
     public interface FragmentCommunicator {
         void onNextButtonClick();
+        void onSelectedPage();
     }
 
     public class ProvisioningPagerAdapter extends FragmentPagerAdapter {

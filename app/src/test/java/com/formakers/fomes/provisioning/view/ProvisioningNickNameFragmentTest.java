@@ -18,6 +18,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -55,6 +56,12 @@ public class ProvisioningNickNameFragmentTest {
     }
 
     @Test
+    public void ProvisioningNickNameFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
+        subject.onSelectedPage();
+        verify(this.mockPresenter).emitFilledUpEvent(anyBoolean());
+    }
+
+    @Test
     public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
         EditText nickNameEditText = subject.getView().findViewById(R.id.provision_nickname_content_edittext);
         nickNameEditText.setText("새로운닉네임");
@@ -63,5 +70,19 @@ public class ProvisioningNickNameFragmentTest {
 
         verify(mockPresenter).updateNickNameToUser(eq("새로운닉네임"));
         verify(mockPresenter).emitNextPageEvent();
+    }
+
+    @Test
+    public void 닉네임_입력시__입력완료_이벤트를_보낸다() {
+        ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("예나르");
+
+        verify(mockPresenter).emitFilledUpEvent(true);
+    }
+
+    @Test
+    public void 닉네임_미입력시__입력미완료_이벤트를_보낸다() {
+        ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("");
+
+        verify(mockPresenter).emitFilledUpEvent(false);
     }
 }

@@ -34,6 +34,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        subject = getActivity();
     }
 
     @Override
@@ -44,10 +45,9 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Test
     public void ProvisioningActivity_시작시__프로비저닝화면이_나타난다() {
-        subject = getActivity();
-
         assertThat(subject.findViewById(R.id.provision_icon_imageview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.provision_viewpager).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
 
         List<Fragment> fragmentList = ((ProvisioningActivity.ProvisioningPagerAdapter) ((ViewPager) subject.findViewById(R.id.provision_viewpager)).getAdapter()).getFragmentList();
         assertThat(fragmentList.size()).isEqualTo(3);
@@ -60,7 +60,6 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     @Ignore
     @Test
     public void nextPage_호출시__프래그먼트를_다음으로_이동시킨다() {
-        subject = getActivity();
         int currentPageIndex = subject.viewPager.getCurrentItem();
 
         subject.nextPage();
@@ -77,7 +76,6 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Test
     public void 백버튼_클릭시__프래그먼트를_이전으로_이동시킨다() {
-        subject = getActivity();
         int currentPageIndex = subject.viewPager.getCurrentItem();
 
         subject.onBackPressed();
@@ -96,15 +94,47 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
         when(mockViewPager.getCurrentItem()).thenReturn(0);
 
-        subject = getActivity();
         subject.viewPager = mockViewPager;
         subject.onNextButtonClick();
 
         verify(mockFragment).onNextButtonClick();
     }
 
+    @Test
+    public void setNextButtonVisibility_true_호출시__다음버튼을_보여준다() {
+        subject.setNextButtonVisibility(true);
+
+        assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void setNextButtonVisibility_false_호출시__다음버튼을_없앤다() {
+        subject.setNextButtonVisibility(false);
+
+        assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    public void 페이지_변경시__바뀔페이지에_동작을_위임한다() {
+        ProvisioingTestFragment mockFragment = mock(ProvisioingTestFragment.class);
+        ProvisioningActivity.ProvisioningPagerAdapter mockPagerAdapter = mock(ProvisioningActivity.ProvisioningPagerAdapter.class);
+        when(mockPagerAdapter.getItem(2)).thenReturn(mockFragment);
+
+        ViewPager mockViewPager = mock(ViewPager.class);
+        when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
+        when(mockViewPager.getCurrentItem()).thenReturn(0);
+
+        subject.viewPager = mockViewPager;
+        subject.onSelectedPage(2);
+
+        verify(mockFragment).onSelectedPage();
+    }
+
     class ProvisioingTestFragment extends Fragment implements ProvisioningActivity.FragmentCommunicator {
         @Override
         public void onNextButtonClick() { }
+
+        @Override
+        public void onSelectedPage() { }
     }
 }

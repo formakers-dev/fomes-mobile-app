@@ -19,6 +19,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -47,12 +48,18 @@ public class ProvisioningLifeGameFragmentTest {
     }
 
     @Test
-    public void ProvisioningLifeGameFragmentTest_시작시__프로비저닝_인생게임_화면이_나타난다() {
+    public void ProvisioningLifeGameFragment_시작시__프로비저닝_인생게임_화면이_나타난다() {
         assertThat(subject.getView()).isNotNull();
         assertThat(subject.getView().findViewById(R.id.provision_life_game_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void ProvisioningLifeGameFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
+        subject.onSelectedPage();
+        verify(this.mockPresenter).emitFilledUpEvent(anyBoolean());
     }
 
     @Test
@@ -64,5 +71,20 @@ public class ProvisioningLifeGameFragmentTest {
 
         verify(mockPresenter).updateLifeGameToUser(eq("마비노기"));
         verify(mockPresenter).emitNextPageEvent();
+    }
+
+    @Test
+    public void 인생게임_입력시__입력완료_이벤트를_보낸다() {
+        ((EditText) subject.getView().findViewById(R.id.provision_life_game_content_edittext)).setText("마비노기");
+
+        verify(mockPresenter).emitFilledUpEvent(true);
+    }
+
+
+    @Test
+    public void 인생게임_미입력시__입력미완료_이벤트를_보낸다() {
+        ((EditText) subject.getView().findViewById(R.id.provision_life_game_content_edittext)).setText("");
+
+        verify(mockPresenter).emitFilledUpEvent(false);
     }
 }

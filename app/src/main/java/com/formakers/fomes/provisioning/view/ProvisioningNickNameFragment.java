@@ -2,6 +2,7 @@ package com.formakers.fomes.provisioning.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,11 @@ import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import butterknife.BindView;
+import butterknife.OnTextChanged;
 
 public class ProvisioningNickNameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
+    private static final String TAG = ProvisioningNickNameFragment.class.getSimpleName();
     @BindView(R.id.provision_nickname_content_edittext) EditText nickNameEditText;
 
     ProvisioningContract.Presenter presenter;
@@ -31,8 +34,23 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     }
 
     @Override
+    public void onSelectedPage() {
+        Log.v(TAG, "onSelectedPage");
+        if (getView() != null && this.isVisible()) {
+            CharSequence nickName = nickNameEditText.getText();
+            onLifeGameTextChanged(nickName, 0, 0, nickName.length());
+        }
+    }
+
+    @Override
     public void onNextButtonClick() {
         this.presenter.updateNickNameToUser(nickNameEditText.getText().toString());
         this.presenter.emitNextPageEvent();
+    }
+
+    @OnTextChanged(value = R.id.provision_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onLifeGameTextChanged(CharSequence text, int start, int before, int count) {
+        Log.v(TAG, text + " start=" + start + ", before=" + before + ", count=" + count);
+        this.presenter.emitFilledUpEvent(count > 0);
     }
 }

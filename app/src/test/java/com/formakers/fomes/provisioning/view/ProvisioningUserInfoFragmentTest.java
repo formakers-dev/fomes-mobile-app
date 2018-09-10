@@ -20,7 +20,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -63,6 +65,12 @@ public class ProvisioningUserInfoFragmentTest {
     }
 
     @Test
+    public void ProvisioningUserInfoFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
+        subject.onSelectedPage();
+        verify(this.mockPresenter).emitFilledUpEvent(anyBoolean());
+    }
+
+    @Test
     public void 다음버튼_클릭시__입력된_데모그래픽_정보를_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
         Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
         Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
@@ -76,5 +84,51 @@ public class ProvisioningUserInfoFragmentTest {
 
         verify(mockPresenter).updateDemographicsToUser(eq(1900), eq("중고등학생"), eq("female"));
         verify(mockPresenter).emitNextPageEvent();
+    }
+
+    @Test
+    public void 항목_전체_입력시__입력완료_이벤트를_보낸다() {
+        Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
+        Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
+        RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
+
+        birthSpinner.setSelection(1);
+        jobSpinner.setSelection(1);
+        genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
+
+        verify(mockPresenter).emitFilledUpEvent(true);
+    }
+
+    @Test
+    public void 항목_미입력시__입력미완료_이벤트를_보낸다() {
+        Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
+        Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
+        RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
+
+        // 전체 미임력시
+        birthSpinner.setSelection(0);
+        jobSpinner.setSelection(0);
+        genderRadioGroup.clearCheck();
+
+        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(false);
+
+        // 일부 미임력시
+        birthSpinner.setSelection(1);
+        jobSpinner.setSelection(0);
+        genderRadioGroup.clearCheck();
+
+        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(false);
+
+        birthSpinner.setSelection(0);
+        jobSpinner.setSelection(1);
+        genderRadioGroup.clearCheck();
+
+        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(false);
+
+        birthSpinner.setSelection(0);
+        jobSpinner.setSelection(0);
+        genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
+
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(false);
     }
 }
