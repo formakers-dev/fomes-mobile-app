@@ -2,6 +2,7 @@ package com.formakers.fomes.provisioning.view;
 
 
 import android.view.View;
+import android.widget.EditText;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
@@ -18,6 +19,8 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -45,10 +48,21 @@ public class ProvisioningLifeGameFragmentTest {
 
     @Test
     public void ProvisioningLifeGameFragmentTest_시작시__프로비저닝_인생게임_화면이_나타난다() {
+        assertThat(subject.getView()).isNotNull();
         assertThat(subject.getView().findViewById(R.id.provision_life_game_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.next_button).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트한다() {
+        EditText lifegameEditText = subject.getView().findViewById(R.id.provision_life_game_content_edittext);
+        lifegameEditText.setText("마비노기");
+
+        subject.getView().findViewById(R.id.next_button).performClick();
+
+        verify(mockPresenter).updateLifeGameToUser(eq("마비노기"));
     }
 }
