@@ -47,6 +47,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         provisioningPagerAdapter.addFragment(new ProvisioningNickNameFragment().setPresenter(this.presenter));
         viewPager.setAdapter(provisioningPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
+        viewPager.beginFakeDrag();
     }
 
     @Override
