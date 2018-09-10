@@ -12,9 +12,8 @@ import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
-public class ProvisioningNickNameFragment extends BaseFragment {
+public class ProvisioningNickNameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
     @BindView(R.id.provision_nickname_content_edittext) EditText nickNameEditText;
 
@@ -31,9 +30,9 @@ public class ProvisioningNickNameFragment extends BaseFragment {
         return this;
     }
 
-    @OnClick(R.id.next_button)
+    @Override
     public void onNextButtonClick() {
         this.presenter.updateNickNameToUser(nickNameEditText.getText().toString());
-        this.presenter.onNextPageEvent();
+        this.presenter.emitNextPageEvent();
     }
 }

@@ -131,21 +131,4 @@
             android:layout_weight="1"
             android:button="@drawable/gender_female_radiobutton" />
     </RadioGroup>
-
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="0dp"
-        android:layout_height="68dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/common_next_button"
-        android:textColor="@color/fomes_white"
-        android:textSize="@dimen/provision_bottom_button_text_size"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/provision_user_info_gender_radiogroup"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints" />
 </android.support.constraint.ConstraintLayout>

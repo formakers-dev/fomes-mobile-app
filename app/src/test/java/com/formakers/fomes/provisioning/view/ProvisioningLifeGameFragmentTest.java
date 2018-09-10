@@ -53,16 +53,16 @@ public class ProvisioningLifeGameFragmentTest {
         assertThat(subject.getView().findViewById(R.id.provision_life_game_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_life_game_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.getView().findViewById(R.id.next_button).getVisibility()).isEqualTo(View.VISIBLE);
     }
 
     @Test
-    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트한다() {
+    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
         EditText lifegameEditText = subject.getView().findViewById(R.id.provision_life_game_content_edittext);
         lifegameEditText.setText("마비노기");
 
-        subject.getView().findViewById(R.id.next_button).performClick();
+        subject.onNextButtonClick();
 
         verify(mockPresenter).updateLifeGameToUser(eq("마비노기"));
+        verify(mockPresenter).emitNextPageEvent();
     }
 }

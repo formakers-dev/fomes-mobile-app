@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class ProvisioningActivity extends BaseActivity implements ProvisioningContract.View {
 
@@ -51,6 +52,20 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @Override
     public void nextPage() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+    }
+
+    @OnClick(R.id.next_button)
+    public void onNextButtonClick() {
+        Fragment currentFragment = ((ProvisioningPagerAdapter) viewPager.getAdapter()).getItem(viewPager.getCurrentItem());
+        if (currentFragment instanceof FragmentCommunicator) {
+            ((FragmentCommunicator) currentFragment).onNextButtonClick();
+        } else {
+            throw new IllegalArgumentException("Current Fragment didn't implement FragmentCommunicator!");
+        }
+    }
+
+    public interface FragmentCommunicator {
+        void onNextButtonClick();
     }
 
     public class ProvisioningPagerAdapter extends FragmentPagerAdapter {

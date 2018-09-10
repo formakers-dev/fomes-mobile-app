@@ -52,16 +52,16 @@ public class ProvisioningNickNameFragmentTest {
         assertThat(subject.getView().findViewById(R.id.provision_nickname_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.getView().findViewById(R.id.next_button).getVisibility()).isEqualTo(View.VISIBLE);
     }
 
     @Test
-    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트한다() {
+    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
         EditText nickNameEditText = subject.getView().findViewById(R.id.provision_nickname_content_edittext);
         nickNameEditText.setText("새로운닉네임");
 
-        subject.getView().findViewById(R.id.next_button).performClick();
+        subject.onNextButtonClick();
 
         verify(mockPresenter).updateNickNameToUser(eq("새로운닉네임"));
+        verify(mockPresenter).emitNextPageEvent();
     }
 }

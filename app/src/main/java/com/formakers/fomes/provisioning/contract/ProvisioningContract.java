@@ -4,7 +4,7 @@ import com.formakers.fomes.common.mvp.BaseView;
 
 public interface ProvisioningContract {
     interface Presenter {
-        void onNextPageEvent();
+        void emitNextPageEvent();
         void updateDemographicsToUser(Integer birth, String job, String gender);
         void updateLifeGameToUser(String game);
         void updateNickNameToUser(String nickName);

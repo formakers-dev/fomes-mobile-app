@@ -24,7 +24,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void onNextPageEvent() {
+    public void emitNextPageEvent() {
         this.view.nextPage();
     }
 

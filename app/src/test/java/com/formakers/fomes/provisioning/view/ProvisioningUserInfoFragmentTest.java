@@ -60,11 +60,10 @@ public class ProvisioningUserInfoFragmentTest {
         assertThat(subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_male_radiobutton).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_female_radiobutton).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.getView().findViewById(R.id.next_button).getVisibility()).isEqualTo(View.VISIBLE);
     }
 
     @Test
-    public void 다음버튼_클릭시__입력된_데모그래픽_정보를_유저정보에_업데이트한다() {
+    public void 다음버튼_클릭시__입력된_데모그래픽_정보를_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
         Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
         Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
         RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
@@ -73,8 +72,9 @@ public class ProvisioningUserInfoFragmentTest {
         jobSpinner.setSelection(1);
         genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
 
-        subject.getView().findViewById(R.id.next_button).performClick();
+        subject.onNextButtonClick();
 
         verify(mockPresenter).updateDemographicsToUser(eq(1900), eq("중고등학생"), eq("female"));
+        verify(mockPresenter).emitNextPageEvent();
     }
 }
