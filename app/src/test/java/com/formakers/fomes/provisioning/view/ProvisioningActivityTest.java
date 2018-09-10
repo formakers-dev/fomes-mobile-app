@@ -70,7 +70,20 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         ShadowLooper.runUiThreadTasks();
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
-        assertThat(subject.viewPager.getCurrentItem()).isEqualTo(currentPageIndex + 1);
+        int expectedPageIndex = currentPageIndex + 1;
+        int size = subject.viewPager.getAdapter().getCount();
+        assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex < size ? expectedPageIndex : size);
+    }
+
+    @Test
+    public void 백버튼_클릭시__프래그먼트를_이전으로_이동시킨다() {
+        subject = getActivity();
+        int currentPageIndex = subject.viewPager.getCurrentItem();
+
+        subject.onBackPressed();
+
+        int expectedPageIndex = currentPageIndex - 1;
+        assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex >= 0 ? currentPageIndex - 1 : 0);
     }
 
     @Test

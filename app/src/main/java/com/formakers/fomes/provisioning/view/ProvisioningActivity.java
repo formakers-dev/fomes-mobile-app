@@ -45,6 +45,11 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     }
 
     @Override
+    public void onBackPressed() {
+        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+    }
+
+    @Override
     public void setPresenter(ProvisioningContract.Presenter presenter) {
         this.presenter = presenter;
     }
@@ -56,9 +61,13 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
 
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
+        getCurrentFragmentCommunicator().onNextButtonClick();
+    }
+
+    private FragmentCommunicator getCurrentFragmentCommunicator() {
         Fragment currentFragment = ((ProvisioningPagerAdapter) viewPager.getAdapter()).getItem(viewPager.getCurrentItem());
         if (currentFragment instanceof FragmentCommunicator) {
-            ((FragmentCommunicator) currentFragment).onNextButtonClick();
+            return (FragmentCommunicator) currentFragment;
         } else {
             throw new IllegalArgumentException("Current Fragment didn't implement FragmentCommunicator!");
         }
