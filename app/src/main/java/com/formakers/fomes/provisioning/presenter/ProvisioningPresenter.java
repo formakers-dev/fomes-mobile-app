@@ -24,11 +24,6 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void emitNextPageEvent() {
-        this.view.nextPage();
-    }
-
-    @Override
     public void updateDemographicsToUser(Integer birth, String job, String gender) {
         this.user.setBirthday(birth);
         this.user.setJob(job);
@@ -49,6 +44,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public void updateNickNameToUser(String nickName) {
         this.user.setNickName(nickName);
         Log.d(TAG, user.toString());
+    }
+
+    @Override
+    public void emitNextPageEvent() {
+        this.view.nextPage();
     }
 
     @Override

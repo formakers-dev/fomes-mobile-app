@@ -42,7 +42,7 @@ public class ProvisioningUserInfoFragmentTest {
         subject.setPresenter(mockPresenter);
         controller = SupportFragmentController.of(subject);
 
-        controller.create().start().resume();
+        controller.create().start().resume().visible();
     }
 
     @After
@@ -67,7 +67,7 @@ public class ProvisioningUserInfoFragmentTest {
     @Test
     public void ProvisioningUserInfoFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
         subject.onSelectedPage();
-        verify(this.mockPresenter).emitFilledUpEvent(anyBoolean());
+        verify(this.mockPresenter, atLeast(1)).emitFilledUpEvent(anyBoolean());
     }
 
     @Test

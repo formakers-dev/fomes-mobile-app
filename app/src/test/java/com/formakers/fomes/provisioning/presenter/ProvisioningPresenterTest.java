@@ -33,12 +33,6 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void emitNextPageEvent__다음_화면으로_넘어가는_이벤트_발생시__뷰에_다음페이지를_요청한다() {
-        subject.emitNextPageEvent();
-        verify(mockView).nextPage();
-    }
-
-    @Test
     public void updateDemographicsToUser__호출시__유저정보를_업데이트한다() {
         subject.updateDemographicsToUser(1989, "developer", "male");
 
@@ -55,6 +49,12 @@ public class ProvisioningPresenterTest {
         lifeGames.add("미러스엣지");
 
         verify(mockUser).setLifeApps(eq(lifeGames));
+    }
+
+    @Test
+    public void emitNextPageEvent__다음_화면으로_넘어가는_이벤트_발생시__뷰에_다음페이지를_요청한다() {
+        subject.emitNextPageEvent();
+        verify(mockView).nextPage();
     }
 
     @Test

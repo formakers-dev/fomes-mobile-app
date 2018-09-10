@@ -40,7 +40,7 @@ public class ProvisioningLifeGameFragmentTest {
         subject.setPresenter(mockPresenter);
         controller = SupportFragmentController.of(subject);
 
-        controller.create().start().resume();
+        controller.create().start().resume().visible();
     }
 
     @After
@@ -79,7 +79,6 @@ public class ProvisioningLifeGameFragmentTest {
 
         verify(mockPresenter).emitFilledUpEvent(true);
     }
-
 
     @Test
     public void 인생게임_미입력시__입력미완료_이벤트를_보낸다() {

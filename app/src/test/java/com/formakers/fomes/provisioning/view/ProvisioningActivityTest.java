@@ -56,24 +56,6 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         assertThat(fragmentList.get(2).getClass()).isEqualTo(ProvisioningNickNameFragment.class);
     }
 
-    // TODO : 수정 필요. Tick 문제로 보임. Roboletrics에서 nextTick 처리 필요.
-    @Ignore
-    @Test
-    public void nextPage_호출시__프래그먼트를_다음으로_이동시킨다() {
-        int currentPageIndex = subject.viewPager.getCurrentItem();
-
-        subject.nextPage();
-
-        Robolectric.flushForegroundThreadScheduler();
-        Robolectric.flushBackgroundThreadScheduler();
-        ShadowLooper.runUiThreadTasks();
-        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-
-        int expectedPageIndex = currentPageIndex + 1;
-        int size = subject.viewPager.getAdapter().getCount();
-        assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex < size ? expectedPageIndex : size);
-    }
-
     @Test
     public void 백버튼_클릭시__프래그먼트를_이전으로_이동시킨다() {
         int currentPageIndex = subject.viewPager.getCurrentItem();
@@ -98,6 +80,24 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         subject.onNextButtonClick();
 
         verify(mockFragment).onNextButtonClick();
+    }
+
+    // TODO : 수정 필요. Tick 문제로 보임. Roboletrics에서 nextTick 처리 필요.
+    @Ignore
+    @Test
+    public void nextPage_호출시__프래그먼트를_다음으로_이동시킨다() {
+        int currentPageIndex = subject.viewPager.getCurrentItem();
+
+        subject.nextPage();
+
+        Robolectric.flushForegroundThreadScheduler();
+        Robolectric.flushBackgroundThreadScheduler();
+        ShadowLooper.runUiThreadTasks();
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        int expectedPageIndex = currentPageIndex + 1;
+        int size = subject.viewPager.getAdapter().getCount();
+        assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex < size ? expectedPageIndex : size);
     }
 
     @Test

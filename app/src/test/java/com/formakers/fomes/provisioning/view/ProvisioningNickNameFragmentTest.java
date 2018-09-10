@@ -39,7 +39,7 @@ public class ProvisioningNickNameFragmentTest {
         subject.setPresenter(mockPresenter);
         controller = SupportFragmentController.of(subject);
 
-        controller.create().start().resume();
+        controller.create().start().resume().visible();
     }
 
     @After
