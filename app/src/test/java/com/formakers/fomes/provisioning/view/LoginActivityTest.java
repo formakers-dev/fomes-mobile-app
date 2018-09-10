@@ -98,7 +98,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     public void Google_인증_실패시_실패문구를_띄운다() {
         subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
 
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("구글 로그인에 실패하였습니다.");
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("구글 로그인이 취소되었습니다.");
     }
 
     @Test

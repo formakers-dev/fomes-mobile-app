@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
+
+    public static final String TAG = LoginActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE_SIGN_IN = 9001;
 
@@ -58,10 +61,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d(TAG, "requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             if (resultCode != Activity.RESULT_OK) {
-                Toast.makeText(this, "구글 로그인에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "구글 로그인이 취소되었습니다.", Toast.LENGTH_LONG).show();
                 return;
             }
 
