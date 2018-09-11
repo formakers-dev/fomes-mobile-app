@@ -1,8 +1,10 @@
 package com.formakers.fomes.provisioning.presenter;
 
+import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,6 +26,7 @@ public class ProvisioningPresenterTest {
     @Mock ProvisioningContract.View mockView;
     @Mock User mockUser;
     @Mock UserService mockUserService;
+    @Mock AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
 
     ProvisioningPresenter subject;
 
@@ -31,7 +34,7 @@ public class ProvisioningPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService);
+        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAppBeeAndroidNativeHelper);
     }
 
     @After
@@ -70,11 +73,32 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void requestUpdateUser__호출시_유저정보_업데이트_API를_호출한다() {
+    public void emitGrantedEvent__권한_허용_이벤트_발생시__뷰에_화면을_이동도록_요청한다() {
+        subject.emitGrantedEvent(true);
+
+        verify(mockView).startActivityAndFinish(eq(CurrentAnalysisReportActivity.class));
+    }
+
+    @Test
+    public void emitGrantedEvent__권한_미허용_이벤트_발생시__뷰에_다음버튼을_보여주도록_요청한다() {
+        subject.emitGrantedEvent(false);
+
+        verify(mockView).setNextButtonVisibility(eq(true));
+    }
+
+    @Test
+    public void requestUpdateUser__호출시__유저정보_업데이트_API를_호출한다() {
         when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
 
         subject.requestUpdateUser();
 
         verify(mockUserService).updateUser(eq(mockUser));
+    }
+
+    @Test
+    public void hasUsageStatsPermission__호출시__사용정보_접근_권한을_체크한다() {
+        subject.hasUsageStatsPermission();
+
+        verify(mockAppBeeAndroidNativeHelper).hasUsageStatsPermission();
     }
 }

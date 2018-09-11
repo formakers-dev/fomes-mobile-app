@@ -1,5 +1,6 @@
 package com.formakers.fomes.provisioning.view;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActivity> {
 
@@ -50,10 +52,11 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
 
         List<Fragment> fragmentList = ((ProvisioningActivity.ProvisioningPagerAdapter) ((ViewPager) subject.findViewById(R.id.provision_viewpager)).getAdapter()).getFragmentList();
-        assertThat(fragmentList.size()).isEqualTo(3);
+        assertThat(fragmentList.size()).isEqualTo(4);
         assertThat(fragmentList.get(0).getClass()).isEqualTo(ProvisioningUserInfoFragment.class);
         assertThat(fragmentList.get(1).getClass()).isEqualTo(ProvisioningLifeGameFragment.class);
         assertThat(fragmentList.get(2).getClass()).isEqualTo(ProvisioningNickNameFragment.class);
+        assertThat(fragmentList.get(3).getClass()).isEqualTo(ProvisioningPermissionFragment.class);
     }
 
     @Test
@@ -112,6 +115,17 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         subject.setNextButtonVisibility(false);
 
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    public void startActivityAndFinish_호출시__지정한_액티비티로_전환하고_현재_액티비티를_종료한다() {
+        class DestinationActivity {  }
+
+        subject.startActivityAndFinish(DestinationActivity.class);
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(DestinationActivity.class.getSimpleName());
+        assertThat(shadowOf(subject).isFinishing()).isTrue();
     }
 
     @Test

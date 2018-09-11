@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/provision_permission_title_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/provision_margin_start_end"
+        android:layout_marginEnd="@dimen/provision_margin_start_end"
+        android:text="@string/provision_permission_title"
+        android:textSize="@dimen/provision_title_text_size"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/provision_permission_subtitle_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="@dimen/provision_margin_start_end"
+        android:layout_marginEnd="@dimen/provision_margin_start_end"
+        android:text="@string/provision_permission_subtitle"
+        android:textSize="@dimen/provision_subtitle_text_size"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_permission_title_textview" />
+
+    <ImageView android:id="@+id/provision_permission_imageview"
+        android:layout_width="360dp"
+        android:layout_height="313dp"
+        android:layout_marginTop="72dp"
+        android:src="@drawable/provision_permission_guide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_permission_subtitle_textview"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -2,9 +2,11 @@ package com.formakers.fomes.provisioning.presenter;
 
 import android.util.Log;
 
+import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
 
 import java.util.ArrayList;
 
@@ -18,6 +20,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     private ProvisioningContract.View view;
     private User user = new User();
     @Inject UserService userService;
+    @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     public ProvisioningPresenter(ProvisioningContract.View view) {
         this.view = view;
@@ -25,10 +28,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     // temporary code for test
-    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService) {
+    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
         this.view = view;
         this.user = user;
         this.userService = userService;
+        this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
     }
 
     @Override
@@ -65,8 +69,22 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
+    public void emitGrantedEvent(boolean isGranted) {
+        if (isGranted) {
+            this.view.startActivityAndFinish(CurrentAnalysisReportActivity.class);
+        } else {
+            this.view.setNextButtonVisibility(true);
+        }
+    }
+
+    @Override
     public Completable requestUpdateUser() {
         return this.userService.updateUser(this.user);
+    }
+
+    @Override
+    public boolean hasUsageStatsPermission() {
+        return this.appBeeAndroidNativeHelper.hasUsageStatsPermission();
     }
 
 }

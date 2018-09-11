@@ -12,12 +12,15 @@ public interface ProvisioningContract {
         void updateNickNameToUser(String nickName);
         void emitNextPageEvent();
         void emitFilledUpEvent(boolean isEnable);
+        void emitGrantedEvent(boolean isGranted);
         Completable requestUpdateUser();
+        boolean hasUsageStatsPermission();
     }
 
     interface View extends BaseView<Presenter> {
         void nextPage();
         void setNextButtonVisibility(boolean isVisible);
         ApplicationComponent getApplicationComponent();
+        void startActivityAndFinish(Class<?> destActivity);
     }
 }

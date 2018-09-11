@@ -1,5 +1,6 @@
 package com.formakers.fomes.provisioning.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         provisioningPagerAdapter.addFragment(new ProvisioningUserInfoFragment().setPresenter(this.presenter));
         provisioningPagerAdapter.addFragment(new ProvisioningLifeGameFragment().setPresenter(this.presenter));
         provisioningPagerAdapter.addFragment(new ProvisioningNickNameFragment().setPresenter(this.presenter));
+        provisioningPagerAdapter.addFragment(new ProvisioningPermissionFragment().setPresenter(this.presenter));
         viewPager.setAdapter(provisioningPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.beginFakeDrag();
@@ -78,6 +80,13 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @Override
     public ApplicationComponent getApplicationComponent() {
         return ((AppBeeApplication) this.getApplication()).getComponent();
+    }
+
+    @Override
+    public void startActivityAndFinish(Class<?> destActivity) {
+        Intent intent = new Intent(this, destActivity);
+        this.startActivity(intent);
+        this.finish();
     }
 
     @OnClick(R.id.next_button)
