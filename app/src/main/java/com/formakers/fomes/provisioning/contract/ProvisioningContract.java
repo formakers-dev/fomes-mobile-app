@@ -1,6 +1,9 @@
 package com.formakers.fomes.provisioning.contract;
 
 import com.formakers.fomes.common.mvp.BaseView;
+import com.formakers.fomes.dagger.ApplicationComponent;
+
+import rx.Completable;
 
 public interface ProvisioningContract {
     interface Presenter {
@@ -9,10 +12,12 @@ public interface ProvisioningContract {
         void updateNickNameToUser(String nickName);
         void emitNextPageEvent();
         void emitFilledUpEvent(boolean isEnable);
+        Completable requestUpdateUser();
     }
 
     interface View extends BaseView<Presenter> {
         void nextPage();
         void setNextButtonVisibility(boolean isVisible);
+        ApplicationComponent getApplicationComponent();
     }
 }

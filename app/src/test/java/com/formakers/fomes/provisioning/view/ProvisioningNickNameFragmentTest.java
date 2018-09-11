@@ -15,12 +15,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
+
+import rx.Completable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -62,15 +66,29 @@ public class ProvisioningNickNameFragmentTest {
     }
 
     @Test
-    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
+    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_서버에_업데이트_요청을_하고_완료시_다음페이지로_넘어가는_이벤트를_보낸다() {
         EditText nickNameEditText = subject.getView().findViewById(R.id.provision_nickname_content_edittext);
         nickNameEditText.setText("새로운닉네임");
+
+        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
 
         subject.onNextButtonClick();
 
         verify(mockPresenter).updateNickNameToUser(eq("새로운닉네임"));
+        verify(mockPresenter).requestUpdateUser();
         verify(mockPresenter).emitNextPageEvent();
     }
+
+    @Test
+    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_실패시_실패문구를_띄운다() {
+        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.error(new Throwable()));
+
+        subject.onNextButtonClick();
+
+        verify(mockPresenter).requestUpdateUser();
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("유저 정보 업데이트를 실패하였습니다.");
+    }
+
 
     @Test
     public void 닉네임_입력시__입력완료_이벤트를_보낸다() {

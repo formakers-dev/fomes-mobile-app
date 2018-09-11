@@ -1,6 +1,7 @@
 package com.formakers.fomes.provisioning.presenter;
 
 import com.formakers.fomes.model.User;
+import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import org.junit.After;
@@ -11,13 +12,18 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
+import rx.Completable;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ProvisioningPresenterTest {
 
     @Mock ProvisioningContract.View mockView;
     @Mock User mockUser;
+    @Mock UserService mockUserService;
 
     ProvisioningPresenter subject;
 
@@ -25,7 +31,7 @@ public class ProvisioningPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        subject = new ProvisioningPresenter(mockView, mockUser);
+        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService);
     }
 
     @After
@@ -61,5 +67,14 @@ public class ProvisioningPresenterTest {
     public void emitFilledUpEvent__항목들을_다_채웠다는_이벤트_발생시__뷰에_다음버튼을_보여주도록_요청한다() {
         subject.emitFilledUpEvent(true);
         verify(mockView).setNextButtonVisibility(eq(true));
+    }
+
+    @Test
+    public void requestUpdateUser__호출시_유저정보_업데이트_API를_호출한다() {
+        when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
+
+        subject.requestUpdateUser();
+
+        verify(mockUserService).updateUser(eq(mockUser));
     }
 }

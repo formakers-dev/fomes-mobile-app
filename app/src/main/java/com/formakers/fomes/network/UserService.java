@@ -1,6 +1,7 @@
 package com.formakers.fomes.network;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.formakers.fomes.helper.AppBeeAPIHelper;
 import com.formakers.fomes.helper.LocalStorageHelper;
@@ -37,6 +38,16 @@ public class UserService extends AbstractAppBeeService {
         return userAPI.signIn(googleIdToken, user)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
+    }
+
+    public Completable updateUser(User user) {
+        return Observable.defer(() -> userAPI.update(localStorageHelper.getAccessToken(), user))
+                .doOnCompleted(() -> Log.d(TAG, "updateUser) Completed!"))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .toCompletable();
     }
 
     public Completable updateRegistrationToken(String registrationToken) {

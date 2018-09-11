@@ -1,6 +1,7 @@
 package com.formakers.fomes.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class User {
     private String userId;
@@ -96,6 +97,27 @@ public class User {
 
     public void setLifeApps(List<String> lifeApps) {
         this.lifeApps = lifeApps;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getUserId(), user.getUserId()) &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getNickName(), user.getNickName()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getBirthday(), user.getBirthday()) &&
+                Objects.equals(getJob(), user.getJob()) &&
+                Objects.equals(getGender(), user.getGender()) &&
+                Objects.equals(getRegistrationToken(), user.getRegistrationToken()) &&
+                Objects.equals(getLifeApps(), user.getLifeApps());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId(), getName(), getNickName(), getEmail(), getBirthday(), getJob(), getGender(), getRegistrationToken(), getLifeApps());
     }
 
     @Override

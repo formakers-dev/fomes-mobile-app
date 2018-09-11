@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.fragment.BaseFragment;
@@ -14,6 +15,7 @@ import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import butterknife.BindView;
 import butterknife.OnTextChanged;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class ProvisioningNickNameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
@@ -45,7 +47,10 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     @Override
     public void onNextButtonClick() {
         this.presenter.updateNickNameToUser(nickNameEditText.getText().toString());
-        this.presenter.emitNextPageEvent();
+        this.presenter.requestUpdateUser()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> this.presenter.emitNextPageEvent(),
+                        e -> Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show());
     }
 
     @OnTextChanged(value = R.id.provision_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)

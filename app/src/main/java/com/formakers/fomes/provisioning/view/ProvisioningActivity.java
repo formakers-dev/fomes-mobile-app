@@ -9,8 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 
+import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.activity.BaseActivity;
+import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
@@ -71,6 +73,11 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         if (nextButton.getVisibility() == visibility) return;
 
         nextButton.setVisibility(visibility);
+    }
+
+    @Override
+    public ApplicationComponent getApplicationComponent() {
+        return ((AppBeeApplication) this.getApplication()).getComponent();
     }
 
     @OnClick(R.id.next_button)
