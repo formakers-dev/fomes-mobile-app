@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
@@ -87,6 +88,11 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         Intent intent = new Intent(this, destActivity);
         this.startActivity(intent);
         this.finish();
+    }
+
+    @Override
+    public void showToast(String toastMessage) {
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
     @OnClick(R.id.next_button)

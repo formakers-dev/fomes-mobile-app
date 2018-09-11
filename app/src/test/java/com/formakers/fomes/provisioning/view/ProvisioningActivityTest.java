@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowLooper;
+import org.robolectric.shadows.ShadowToast;
 
 import java.util.List;
 
@@ -126,6 +127,13 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(DestinationActivity.class.getSimpleName());
         assertThat(shadowOf(subject).isFinishing()).isTrue();
+    }
+
+    @Test
+    public void showToast_호출시__지정한_텍스트로_토스트를_띄운다() {
+        subject.showToast("토스트텍스트다");
+
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("토스트텍스트다");
     }
 
     @Test

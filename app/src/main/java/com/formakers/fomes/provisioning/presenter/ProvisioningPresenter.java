@@ -7,12 +7,15 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
+import com.formakers.fomes.provisioning.view.LoginActivity;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
@@ -71,7 +74,20 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public void emitGrantedEvent(boolean isGranted) {
         if (isGranted) {
-            this.view.startActivityAndFinish(CurrentAnalysisReportActivity.class);
+            this.userService.verifyToken()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> this.view.startActivityAndFinish(CurrentAnalysisReportActivity.class), e -> {
+                        if (e instanceof HttpException) {
+                            int code = ((HttpException) e).code();
+                            if (code == 401 || code == 403) {
+                                this.view.showToast("인증 오류가 발생하였습니다. 재로그인이 필요합니다.");
+                                this.view.startActivityAndFinish(LoginActivity.class);
+                                return;
+                            }
+                        }
+
+                        this.view.showToast("예상치 못한 에러가 발생하였습니다.");
+                    });
         } else {
             this.view.setNextButtonVisibility(true);
         }

@@ -22,5 +22,6 @@ public interface ProvisioningContract {
         void setNextButtonVisibility(boolean isVisible);
         ApplicationComponent getApplicationComponent();
         void startActivityAndFinish(Class<?> destActivity);
+        void showToast(String toastMessage);
     }
 }

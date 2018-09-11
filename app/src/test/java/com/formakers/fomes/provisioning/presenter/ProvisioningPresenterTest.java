@@ -5,6 +5,7 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
+import com.formakers.fomes.provisioning.view.LoginActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +15,15 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -32,6 +41,19 @@ public class ProvisioningPresenterTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.onIOScheduler(Schedulers.trampoline());
+        RxJavaHooks.onComputationScheduler(Schedulers.trampoline());
+        RxJavaHooks.onNewThreadScheduler(Schedulers.trampoline());
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+
         MockitoAnnotations.initMocks(this);
 
         subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAppBeeAndroidNativeHelper);
@@ -39,6 +61,8 @@ public class ProvisioningPresenterTest {
 
     @After
     public void tearDown() throws Exception {
+        RxJavaHooks.reset();
+        RxAndroidPlugins.getInstance().reset();
     }
 
     @Test
@@ -73,10 +97,34 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void emitGrantedEvent__권한_허용_이벤트_발생시__뷰에_화면을_이동도록_요청한다() {
+    public void emitGrantedEvent__권한_허용_이벤트_발생시__토큰검증을_하고_성공시__뷰에_화면을_이동하도록_요청한다() {
+        when(mockUserService.verifyToken()).thenReturn(Completable.complete());
+
         subject.emitGrantedEvent(true);
 
+        verify(mockUserService).verifyToken();
         verify(mockView).startActivityAndFinish(eq(CurrentAnalysisReportActivity.class));
+    }
+
+    @Test
+    public void emitGrantedEvent__권한_허용_이벤트_발생시__토큰검증을_하고_실패시__뷰에_토스트를_요청한다() {
+        when(mockUserService.verifyToken()).thenReturn(Completable.error(new Throwable()));
+
+        subject.emitGrantedEvent(true);
+
+        verify(mockUserService).verifyToken();
+        verify(mockView).showToast(eq("예상치 못한 에러가 발생하였습니다."));
+    }
+
+    @Test
+    public void emitGrantedEvent__권한_허용_이벤트_발생시__토큰검증을_하고_인증오류시__뷰에_로그인화면_이동을_요청한다() {
+        when(mockUserService.verifyToken()).thenReturn(Completable.error(new HttpException(Response.error(401, ResponseBody.create(null, "")))));
+
+        subject.emitGrantedEvent(true);
+
+        verify(mockUserService).verifyToken();
+        verify(mockView).startActivityAndFinish(eq(LoginActivity.class));
+        verify(mockView).showToast(eq("인증 오류가 발생하였습니다. 재로그인이 필요합니다."));
     }
 
     @Test
