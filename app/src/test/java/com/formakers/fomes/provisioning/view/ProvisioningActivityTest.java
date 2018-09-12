@@ -28,8 +28,6 @@ import static org.robolectric.Shadows.shadowOf;
 
 public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActivity> {
 
-    private ProvisioningActivity subject;
-
     public ProvisioningActivityTest() {
         super(ProvisioningActivity.class);
     }
@@ -37,7 +35,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        subject = getActivity();
+        launchActivity();
     }
 
     @Override

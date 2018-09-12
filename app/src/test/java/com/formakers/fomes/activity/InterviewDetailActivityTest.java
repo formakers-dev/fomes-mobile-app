@@ -68,8 +68,6 @@ public class InterviewDetailActivityTest extends BaseActivityTest<InterviewDetai
     private final int DIM_FOREGROUND_COLOR = 5;
     private final int TRANSPARENT_COLOR = 6;
 
-    private InterviewDetailActivity subject;
-
     @Inject
     ProjectService mockProjectService;
 

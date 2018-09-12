@@ -16,7 +16,7 @@ import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder binder;
 
     final String TAG = "BaseActivity";

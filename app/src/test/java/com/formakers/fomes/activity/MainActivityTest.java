@@ -25,8 +25,6 @@ import static org.robolectric.Shadows.shadowOf;
 
 public class MainActivityTest extends BaseActivityTest<MainActivity> {
 
-    private MainActivity subject;
-
     @Inject
     SharedPreferencesHelper mockSharedPreferencesHelper;
 

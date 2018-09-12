@@ -31,6 +31,11 @@ public abstract class BaseActivityTest<T extends Activity> {
 
     private Class activityClass;
     private ActivityController<T> activityController;
+    protected T subject;
+
+    public void launchActivity() {
+        subject = getActivity();
+    }
 
     public BaseActivityTest(Class<T> clazz) {
         this.activityClass = clazz;

@@ -20,15 +20,13 @@ import static org.robolectric.Shadows.shadowOf;
 @Config(shadows = {ShadowAppUsageAnalysisFragment.class, ShadowOnboardingRewardFragment.class})
 public class OnboardingAnalysisActivityTest extends BaseActivityTest<OnboardingAnalysisActivity> {
 
-    private OnboardingAnalysisActivity subject;
-
     public OnboardingAnalysisActivityTest() {
         super(OnboardingAnalysisActivity.class);
     }
 
     @Before
     public void setUp() throws Exception {
-        subject = getActivity();
+        launchActivity();
     }
 
     @Override

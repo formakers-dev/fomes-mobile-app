@@ -52,7 +52,6 @@ public class LoadingActivityTest extends BaseActivityTest<LoadingActivity> {
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-
     }
 
     @After

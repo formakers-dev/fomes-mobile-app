@@ -15,6 +15,7 @@ import com.formakers.fomes.fragment.ProjectListFragment;
 import com.formakers.fomes.fragment.ReportMostUsedFragment;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
+import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
 import com.formakers.fomes.service.MessagingTokenService;
 
 import javax.inject.Singleton;
@@ -43,4 +44,6 @@ public interface ApplicationComponent {
     // fomes
     void inject(LoginPresenter loginPresenter);
     void inject(ProvisioningPresenter provisioningPresenter);
+
+    void inject(CurrentAnalysisReportActivity activity);
 }

@@ -12,7 +12,6 @@ import com.formakers.fomes.activity.BaseActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,28 +35,25 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
     @Mock LoginPresenter mockPresenter;
 
-    private LoginActivity subject;
-
     public LoginActivityTest() {
         super(LoginActivity.class);
+    }
+
+    @Override
+    public void launchActivity() {
+        subject = getActivity();
+        subject.setPresenter(mockPresenter);
     }
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-
-        subject = getActivity();
-        subject.setPresenter(mockPresenter);
-    }
-
-    @Override
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
     }
 
     @Test
     public void LoginActivity_시작시_로그인화면이_나타난다() {
+        launchActivity();
+
         assertThat(subject.findViewById(R.id.login_logo).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_title).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_subtitle).getVisibility()).isEqualTo(View.VISIBLE);
@@ -67,12 +63,16 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
     @Test
     public void 약관링크_클릭시_해당_링크를_브라우저로_띄운다() {
+        launchActivity();
+
         assertThat(((TextView) subject.findViewById(R.id.login_tnc)).getMovementMethod().getClass().getSimpleName())
                 .isEqualTo(LinkMovementMethod.class.getSimpleName());
     }
 
     @Test
     public void 로그인버튼_클릭시_Google_인증_로직을_실행한다() {
+        launchActivity();
+
         Intent intent = new Intent(RuntimeEnvironment.application, SignInHubActivity.class);
         intent.setAction("com.google.android.gms.auth.GOOGLE_SIGN_IN");
         when(mockPresenter.getGoogleSignInIntent()).thenReturn(intent);
@@ -81,12 +81,15 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
         
         verify(mockPresenter).getGoogleSignInIntent();
         ShadowActivity.IntentForResult nextStartedActivityForResult = shadowOf(subject).getNextStartedActivityForResult();
+        System.out.println(nextStartedActivityForResult);
         assertThat(nextStartedActivityForResult.intent.getAction()).contains("GOOGLE_SIGN_IN");
         assertThat(nextStartedActivityForResult.intent.getComponent().getClassName()).isEqualTo(SignInHubActivity.class.getName());
     }
 
     @Test
     public void Google_인증_성공시_Fomes에_가입을_요청한다() {
+        launchActivity();
+
         when(mockPresenter.requestSignUpBy(any())).thenReturn(true);
 
         subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
@@ -96,6 +99,8 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
     @Test
     public void Google_인증_실패시_실패문구를_띄운다() {
+        launchActivity();
+
         subject.onActivityResult(9001, Activity.RESULT_CANCELED, null);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("구글 로그인이 취소되었습니다.");
@@ -103,6 +108,8 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
     @Test
     public void Google_인증_성공후_Fomes에_가입_요청이_실패한_경우_실패문구를_띄운다() {
+        launchActivity();
+
         when(mockPresenter.requestSignUpBy(any())).thenReturn(false);
 
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
