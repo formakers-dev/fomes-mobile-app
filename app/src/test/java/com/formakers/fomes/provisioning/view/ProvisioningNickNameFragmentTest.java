@@ -6,6 +6,7 @@ import android.widget.EditText;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -66,7 +67,7 @@ public class ProvisioningNickNameFragmentTest {
     }
 
     @Test
-    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_서버에_업데이트_요청을_하고_완료시_다음페이지로_넘어가는_이벤트를_보낸다() {
+    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_서버에_업데이트_요청을_한다() {
         EditText nickNameEditText = subject.getView().findViewById(R.id.provision_nickname_content_edittext);
         nickNameEditText.setText("새로운닉네임");
 
@@ -76,6 +77,16 @@ public class ProvisioningNickNameFragmentTest {
 
         verify(mockPresenter).updateNickNameToUser(eq("새로운닉네임"));
         verify(mockPresenter).requestUpdateUser();
+    }
+
+    @Test
+    public void 서버에_업데이트_요청_성공시__프로비저닝_플로우를_업데이트한_후_다음페이지로_넘어가는_이벤트를_보낸다() {
+        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
+
+        subject.onNextButtonClick();
+
+        verify(mockPresenter).requestUpdateUser();
+        verify(mockPresenter).setProvisioningProgressStatus(eq(FomesConstants.PROVISIONING.PROGRESS_STATUS.NO_PERMISSION));
         verify(mockPresenter).emitNextPageEvent();
     }
 

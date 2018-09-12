@@ -22,7 +22,8 @@ import butterknife.OnItemSelected;
 
 public class ProvisioningUserInfoFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
-    private static final String TAG = ProvisioningUserInfoFragment.class.getSimpleName();
+    public static final String TAG = ProvisioningUserInfoFragment.class.getSimpleName();
+
     @BindView(R.id.provision_user_info_birth_spinner)       Spinner birthSpinner;
     @BindView(R.id.provision_user_info_job_spinner)         Spinner jobSpinner;
     @BindView(R.id.provision_user_info_gender_radiogroup)   RadioGroup genderRadioGroup;

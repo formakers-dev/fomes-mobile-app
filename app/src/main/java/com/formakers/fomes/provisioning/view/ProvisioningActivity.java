@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,8 +20,10 @@ import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
+import com.formakers.fomes.util.FomesConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,10 +32,13 @@ import butterknife.OnPageChange;
 
 public class ProvisioningActivity extends BaseActivity implements ProvisioningContract.View {
 
+    private static final String TAG = ProvisioningActivity.class.getSimpleName();
+
     @BindView(R.id.provision_viewpager) ViewPager viewPager;
     @BindView(R.id.next_button) Button nextButton;
 
     private ProvisioningContract.Presenter presenter;
+    private HashMap<String, BaseFragment> fragmentMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,14 +52,30 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        fragmentMap.put(ProvisioningUserInfoFragment.TAG, new ProvisioningUserInfoFragment().setPresenter(this.presenter));
+        fragmentMap.put(ProvisioningLifeGameFragment.TAG, new ProvisioningLifeGameFragment().setPresenter(this.presenter));
+        fragmentMap.put(ProvisioningNickNameFragment.TAG, new ProvisioningNickNameFragment().setPresenter(this.presenter));
+        fragmentMap.put(ProvisioningPermissionFragment.TAG, new ProvisioningPermissionFragment().setPresenter(this.presenter));
+
         ProvisioningPagerAdapter provisioningPagerAdapter = new ProvisioningPagerAdapter(getSupportFragmentManager());
-        provisioningPagerAdapter.addFragment(new ProvisioningUserInfoFragment().setPresenter(this.presenter));
-        provisioningPagerAdapter.addFragment(new ProvisioningLifeGameFragment().setPresenter(this.presenter));
-        provisioningPagerAdapter.addFragment(new ProvisioningNickNameFragment().setPresenter(this.presenter));
-        provisioningPagerAdapter.addFragment(new ProvisioningPermissionFragment().setPresenter(this.presenter));
+        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningUserInfoFragment.TAG));
+        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningLifeGameFragment.TAG));
+        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningNickNameFragment.TAG));
+        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningPermissionFragment.TAG));
+
         viewPager.setAdapter(provisioningPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.beginFakeDrag();
+
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            String selectedFragment = bundle.getString(FomesConstants.EXTRA.START_FRAGMENT_NAME);
+
+            if (!TextUtils.isEmpty(selectedFragment)) {
+                viewPager.setCurrentItem(provisioningPagerAdapter.getItemPosition(fragmentMap.get(selectedFragment)));
+                Log.d(TAG, "viewPager current item = " + viewPager.getCurrentItem());
+            }
+        }
     }
 
     @Override
@@ -143,6 +166,15 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         @Override
         public int getCount() {
             return fragmentList.size();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            if (object instanceof Fragment) {
+                return fragmentList.indexOf(object);
+            } else {
+                throw new IllegalArgumentException("it is not a Fragment!");
+            }
         }
 
         public List<Fragment> getFragmentList() {

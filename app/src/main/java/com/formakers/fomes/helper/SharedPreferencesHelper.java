@@ -5,12 +5,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.formakers.fomes.util.FomesConstants;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class SharedPreferencesHelper {
+
+    public static final String TAG = SharedPreferencesHelper.class.getSimpleName();
 
     private static final String EMPTY_STRING = "";
     private static final long DEFAULT_LONG = 0L;
@@ -50,18 +55,21 @@ public class SharedPreferencesHelper {
     }
 
     private void putString(String key, String value) {
+        Log.v(TAG, "putString) key=" + key + ", value=" + value);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key, value);
         edit.apply();
     }
 
     private void putLong(String key, long value) {
+        Log.v(TAG, "putLong) key=" + key + ", value=" + value);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putLong(key, value);
         edit.apply();
     }
 
     private void putInt(String key, int value) {
+        Log.v(TAG, "putInt) key=" + key + ", value=" + value);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(key, value);
         edit.apply();
@@ -135,7 +143,7 @@ public class SharedPreferencesHelper {
     }
 
     public int getProvisioningProgressStatus() {
-        return getInt(KEY_PROVISIONING_PROGRESS_STATUS, DEFAULT_INT);
+        return getInt(KEY_PROVISIONING_PROGRESS_STATUS, FomesConstants.PROVISIONING.PROGRESS_STATUS.NOT_LOGIN);
     }
 
     public void setProvisioningProgressStatus(int status) {

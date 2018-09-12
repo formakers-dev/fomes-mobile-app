@@ -17,7 +17,7 @@ import butterknife.OnTextChanged;
 
 public class ProvisioningLifeGameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
-    private static final String TAG = ProvisioningLifeGameFragment.class.getSimpleName();
+    public static final String TAG = ProvisioningLifeGameFragment.class.getSimpleName();
 
     @BindView(R.id.provision_life_game_content_edittext) EditText lifeGameEditText;
 

@@ -11,6 +11,7 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
+import com.formakers.fomes.util.FomesConstants;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -105,7 +106,7 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void requestSignUpBy__Fomes_가입요청_성공시_FomesToken_및_유저정보를_저장하고_화면을_이동한다() {
+    public void requestSignUpBy__Fomes_가입요청_성공시_FomesToken_및_유저정보와_프로비저닝_플로우_상태를_저장하고_화면을_이동한다() {
         GoogleSignInResult mockResult = mock(GoogleSignInResult.class);
         when(mockResult.isSuccess()).thenReturn(true);
 
@@ -126,6 +127,8 @@ public class LoginPresenterTest {
         verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
         verify(mockSharedPreferencesHelper).setUserId(eq("testId"));
         verify(mockSharedPreferencesHelper).setEmail(eq("testEmail"));
+        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(eq(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO));
+
         verify(mockView).startActivityAndFinish(eq(ProvisioningActivity.class));
     }
 

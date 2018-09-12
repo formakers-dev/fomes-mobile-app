@@ -2,6 +2,8 @@ package com.formakers.fomes.util;
 
 public interface FomesConstants {
     interface EXTRA {
+        String START_FRAGMENT_NAME = "EXTRA_FRAGEMENT_NAME";
+
         String PROJECT_ID = "EXTRA_PROJECT_ID";
         String INTERVIEW_SEQ = "EXTRA_INTERVIEW_SEQ";
         String TIME_SLOT = "EXTRA_TIME_SLOT";

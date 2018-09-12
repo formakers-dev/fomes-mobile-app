@@ -14,6 +14,7 @@ import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 public class ProvisioningPermissionFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
+    public static final String TAG = ProvisioningPermissionFragment.class.getSimpleName();
     static final int REQUEST_CODE_USAGE_STATS_PERMISSION = 1001;
 
     private ProvisioningContract.Presenter presenter;

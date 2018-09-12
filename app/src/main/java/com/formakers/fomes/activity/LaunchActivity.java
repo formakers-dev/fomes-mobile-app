@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.provisioning.view.LoginActivity;
+import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
 
 import butterknife.OnClick;
 
@@ -26,7 +26,7 @@ public class LaunchActivity extends BaseActivity {
 
     @OnClick(R.id.launch_fomes_button)
     public void onFomesClick() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, CurrentAnalysisReportActivity.class);
         startActivity(intent);
     }
 }

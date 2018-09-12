@@ -6,6 +6,8 @@ import com.formakers.fomes.activity.BaseActivityTest;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
+import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
+import com.formakers.fomes.provisioning.view.ProvisioningUserInfoFragment;
 import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.Before;
@@ -53,24 +55,28 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
     }
 
     @Test
-    public void 액티비티_진입시__프로비저닝_상태가_인트로_상태면__프로비저닝_화면으로_진입한다() {
+    public void 액티비티_진입시__프로비저닝_상태가_인트로_상태면__프로비저닝_시작화면으로_진입한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
 
         subject = getActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedActivity.getStringExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME))
+                .isEqualTo(ProvisioningUserInfoFragment.TAG);
         assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(ProvisioningActivity.class.getName());
     }
 
     @Test
-    public void 액티비티_진입시__프로비저닝_상태가_권한미허용_상태면__프로비저닝_화면으로_진입한다() {
+    public void 액티비티_진입시__프로비저닝_상태가_권한미허용_상태면__프로비저닝_권한화면으로_진입한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.NO_PERMISSION);
 
         subject = getActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedActivity.getStringExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME))
+                .isEqualTo(ProvisioningPermissionFragment.TAG);
         assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(ProvisioningActivity.class.getName());
 
     }

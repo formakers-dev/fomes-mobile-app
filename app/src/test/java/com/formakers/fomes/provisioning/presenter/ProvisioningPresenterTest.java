@@ -1,11 +1,13 @@
 package com.formakers.fomes.provisioning.presenter;
 
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
 import com.formakers.fomes.provisioning.view.LoginActivity;
+import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +38,7 @@ public class ProvisioningPresenterTest {
     @Mock User mockUser;
     @Mock UserService mockUserService;
     @Mock AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
 
     ProvisioningPresenter subject;
 
@@ -56,7 +59,7 @@ public class ProvisioningPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAppBeeAndroidNativeHelper);
+        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAppBeeAndroidNativeHelper, mockSharedPreferencesHelper);
     }
 
     @After
@@ -103,6 +106,7 @@ public class ProvisioningPresenterTest {
         subject.emitGrantedEvent(true);
 
         verify(mockUserService).verifyToken();
+        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(eq(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED));
         verify(mockView).startActivityAndFinish(eq(CurrentAnalysisReportActivity.class));
     }
 
@@ -148,5 +152,12 @@ public class ProvisioningPresenterTest {
         subject.hasUsageStatsPermission();
 
         verify(mockAppBeeAndroidNativeHelper).hasUsageStatsPermission();
+    }
+
+    @Test
+    public void setProvisioningProgressStatus__호출시__프로비저닝_플로우_상태를_저장한다() {
+        subject.setProvisioningProgressStatus(1);
+
+        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(eq(1));
     }
 }

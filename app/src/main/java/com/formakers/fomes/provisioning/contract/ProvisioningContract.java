@@ -10,10 +10,14 @@ public interface ProvisioningContract {
         void updateDemographicsToUser(Integer birth, String job, String gender);
         void updateLifeGameToUser(String game);
         void updateNickNameToUser(String nickName);
+        void setProvisioningProgressStatus(int status);
+
         void emitNextPageEvent();
         void emitFilledUpEvent(boolean isEnable);
         void emitGrantedEvent(boolean isGranted);
+
         Completable requestUpdateUser();
+
         boolean hasUsageStatsPermission();
     }
 

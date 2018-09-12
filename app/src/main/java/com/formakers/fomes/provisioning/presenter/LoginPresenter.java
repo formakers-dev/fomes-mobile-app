@@ -8,6 +8,7 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
+import com.formakers.fomes.util.FomesConstants;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -53,6 +54,8 @@ public class LoginPresenter implements LoginContract.Presenter {
                     SharedPreferencesHelper.setAccessToken(fomesToken);
                     SharedPreferencesHelper.setUserId(account.getId());
                     SharedPreferencesHelper.setEmail(account.getEmail());
+                    // TODO : 로그인 완료 상태로 체크되어야 하는게 맞지않을까?????
+                    SharedPreferencesHelper.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
 
                     this.view.startActivityAndFinish(ProvisioningActivity.class);
                 }, e -> this.view.showToast("가입에 실패하였습니다. 재시도 고고"));

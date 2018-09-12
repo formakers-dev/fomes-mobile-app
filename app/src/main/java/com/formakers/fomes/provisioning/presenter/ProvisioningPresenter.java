@@ -3,11 +3,13 @@ package com.formakers.fomes.provisioning.presenter;
 import android.util.Log;
 
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
 import com.formakers.fomes.provisioning.view.LoginActivity;
+import com.formakers.fomes.util.FomesConstants;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     private User user = new User();
     @Inject UserService userService;
     @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    @Inject SharedPreferencesHelper sharedPreferencesHelper;
 
     public ProvisioningPresenter(ProvisioningContract.View view) {
         this.view = view;
@@ -31,11 +34,12 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     // temporary code for test
-    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
+    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper) {
         this.view = view;
         this.user = user;
         this.userService = userService;
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
+        this.sharedPreferencesHelper = sharedPreferencesHelper;
     }
 
     @Override
@@ -62,6 +66,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
+    public void setProvisioningProgressStatus(int status) {
+        this.sharedPreferencesHelper.setProvisioningProgressStatus(status);
+    }
+
+    @Override
     public void emitNextPageEvent() {
         this.view.nextPage();
     }
@@ -76,7 +85,10 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
         if (isGranted) {
             this.userService.verifyToken()
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> this.view.startActivityAndFinish(CurrentAnalysisReportActivity.class), e -> {
+                    .subscribe(() -> {
+                        this.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+                        this.view.startActivityAndFinish(CurrentAnalysisReportActivity.class);
+                    }, e -> {
                         if (e instanceof HttpException) {
                             int code = ((HttpException) e).code();
                             if (code == 401 || code == 403) {

@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.activity.BaseActivityTest;
+import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.provisioning.view.ProvisioningActivity.ProvisioningPagerAdapter;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,7 +37,6 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        launchActivity();
     }
 
     @Override
@@ -46,6 +47,8 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Test
     public void ProvisioningActivity_시작시__프로비저닝화면이_나타난다() {
+        launchActivity();
+
         assertThat(subject.findViewById(R.id.provision_icon_imageview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.provision_viewpager).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
@@ -59,7 +62,20 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     }
 
     @Test
+    public void ProvisioningActivity_시작시__미리_선택된_프래그먼트가_존재한다면__그_프래그먼트를_보여준다() {
+        Intent intent = new Intent();
+        intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningLifeGameFragment.TAG);
+        subject = getActivity(intent);
+
+        ViewPager viewPager = subject.findViewById(R.id.provision_viewpager);
+        ProvisioningPagerAdapter adapter = (ProvisioningPagerAdapter) viewPager.getAdapter();
+        assertThat(adapter.getFragmentList().get(viewPager.getCurrentItem())).isInstanceOf(ProvisioningLifeGameFragment.class);
+    }
+
+    @Test
     public void 백버튼_클릭시__프래그먼트를_이전으로_이동시킨다() {
+        launchActivity();
+
         int currentPageIndex = subject.viewPager.getCurrentItem();
 
         subject.onBackPressed();
@@ -78,6 +94,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
         when(mockViewPager.getCurrentItem()).thenReturn(0);
 
+        launchActivity();
         subject.viewPager = mockViewPager;
         subject.onNextButtonClick();
 
@@ -88,6 +105,8 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     @Ignore
     @Test
     public void nextPage_호출시__프래그먼트를_다음으로_이동시킨다() {
+        launchActivity();
+
         int currentPageIndex = subject.viewPager.getCurrentItem();
 
         subject.nextPage();
@@ -104,6 +123,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Test
     public void setNextButtonVisibility_true_호출시__다음버튼을_보여준다() {
+        launchActivity();
         subject.setNextButtonVisibility(true);
 
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.VISIBLE);
@@ -111,6 +131,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Test
     public void setNextButtonVisibility_false_호출시__다음버튼을_없앤다() {
+        launchActivity();
         subject.setNextButtonVisibility(false);
 
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
@@ -120,6 +141,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     public void startActivityAndFinish_호출시__지정한_액티비티로_전환하고_현재_액티비티를_종료한다() {
         class DestinationActivity {  }
 
+        launchActivity();
         subject.startActivityAndFinish(DestinationActivity.class);
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
@@ -129,6 +151,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Test
     public void showToast_호출시__지정한_텍스트로_토스트를_띄운다() {
+        launchActivity();
         subject.showToast("토스트텍스트다");
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("토스트텍스트다");
@@ -144,6 +167,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
         when(mockViewPager.getCurrentItem()).thenReturn(0);
 
+        launchActivity();
         subject.viewPager = mockViewPager;
         subject.onSelectedPage(2);
 

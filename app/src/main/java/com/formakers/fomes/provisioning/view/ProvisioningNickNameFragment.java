@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.formakers.fomes.R;
 import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.util.FomesConstants;
 
 import butterknife.BindView;
 import butterknife.OnTextChanged;
@@ -19,7 +20,8 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class ProvisioningNickNameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
-    private static final String TAG = ProvisioningNickNameFragment.class.getSimpleName();
+    public static final String TAG = ProvisioningNickNameFragment.class.getSimpleName();
+
     @BindView(R.id.provision_nickname_content_edittext) EditText nickNameEditText;
 
     ProvisioningContract.Presenter presenter;
@@ -49,7 +51,10 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
         this.presenter.updateNickNameToUser(nickNameEditText.getText().toString());
         this.presenter.requestUpdateUser()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> this.presenter.emitNextPageEvent(),
+                .subscribe(() -> {
+                            this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.NO_PERMISSION);
+                            this.presenter.emitNextPageEvent();
+                        },
                         e -> Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show());
     }
 
