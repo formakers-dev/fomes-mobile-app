@@ -9,7 +9,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.network.ProjectService;
-import com.formakers.fomes.util.AppBeeConstants;
+import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -99,8 +99,8 @@ public class MyInterviewActivityTest extends BaseActivityTest<MyInterviewActivit
 
         Intent nextStartedIntent = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedIntent.getComponent().getClassName()).isEqualTo(InterviewDetailActivity.class.getName());
-        assertThat(nextStartedIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
-        assertThat(nextStartedIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(1L);
+        assertThat(nextStartedIntent.getStringExtra(FomesConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
+        assertThat(nextStartedIntent.getLongExtra(FomesConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(1L);
     }
 
     @Test
@@ -114,12 +114,12 @@ public class MyInterviewActivityTest extends BaseActivityTest<MyInterviewActivit
         ShadowActivity.IntentForResult nextStartedIntentForResult = shadowOf(subject).getNextStartedActivityForResult();
         assertThat(nextStartedIntentForResult.requestCode).isEqualTo(1001);
         assertThat(nextStartedIntentForResult.intent.getComponent().getClassName()).isEqualTo(CancelInterviewActivity.class.getName());
-        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
-        assertThat(nextStartedIntentForResult.intent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(11L);
-        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_NAME)).isEqualTo("WHOn");
-        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS)).isEqualTo("확정");
-        assertThat(nextStartedIntentForResult.intent.getSerializableExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE)).isEqualTo(interviewDate);
-        assertThat(nextStartedIntentForResult.intent.getStringExtra(AppBeeConstants.EXTRA.LOCATION)).isEqualTo("우면사업장");
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(FomesConstants.EXTRA.PROJECT_ID)).isEqualTo("12345");
+        assertThat(nextStartedIntentForResult.intent.getLongExtra(FomesConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(11L);
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(FomesConstants.EXTRA.PROJECT_NAME)).isEqualTo("WHOn");
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(FomesConstants.EXTRA.INTERVIEW_STATUS)).isEqualTo("확정");
+        assertThat(nextStartedIntentForResult.intent.getSerializableExtra(FomesConstants.EXTRA.INTERVIEW_DATE)).isEqualTo(interviewDate);
+        assertThat(nextStartedIntentForResult.intent.getStringExtra(FomesConstants.EXTRA.LOCATION)).isEqualTo("우면사업장");
     }
 
     @Test

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.formakers.fomes.R;
 import com.formakers.fomes.activity.ProjectDetailActivity;
 import com.formakers.fomes.model.Project;
-import com.formakers.fomes.util.AppBeeConstants.EXTRA;
+import com.formakers.fomes.util.FomesConstants.EXTRA;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 

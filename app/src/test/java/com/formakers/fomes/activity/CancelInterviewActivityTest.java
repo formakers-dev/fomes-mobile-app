@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.network.ProjectService;
-import com.formakers.fomes.util.AppBeeConstants;
+import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -68,13 +68,13 @@ public class CancelInterviewActivityTest extends BaseActivityTest<CancelIntervie
         calendar.set(2017, DECEMBER, 4);
         Date interviewDate = calendar.getTime();
 
-        intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, "projectId");
-        intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 1L);
-        intent.putExtra(AppBeeConstants.EXTRA.TIME_SLOT, "time15");
-        intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE, interviewDate);
-        intent.putExtra(AppBeeConstants.EXTRA.LOCATION, "우면사업장");
-        intent.putExtra(AppBeeConstants.EXTRA.PROJECT_NAME, "WHOn");
-        intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS, "확정");
+        intent.putExtra(FomesConstants.EXTRA.PROJECT_ID, "projectId");
+        intent.putExtra(FomesConstants.EXTRA.INTERVIEW_SEQ, 1L);
+        intent.putExtra(FomesConstants.EXTRA.TIME_SLOT, "time15");
+        intent.putExtra(FomesConstants.EXTRA.INTERVIEW_DATE, interviewDate);
+        intent.putExtra(FomesConstants.EXTRA.LOCATION, "우면사업장");
+        intent.putExtra(FomesConstants.EXTRA.PROJECT_NAME, "WHOn");
+        intent.putExtra(FomesConstants.EXTRA.INTERVIEW_STATUS, "확정");
 
         when(mockProjectService.postCancelParticipate(anyString(), anyLong(), anyString())).thenReturn(Completable.complete());
 

@@ -18,7 +18,7 @@ import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.ConfigService;
 import com.formakers.fomes.network.UserService;
-import com.formakers.fomes.util.AppBeeConstants;
+import com.formakers.fomes.util.FomesConstants;
 
 import javax.inject.Inject;
 
@@ -82,7 +82,7 @@ public class PermissionGuideActivity extends BaseActivity {
         userService.verifyToken()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    String notification = getIntent().getStringExtra(AppBeeConstants.EXTRA.NOTIFICATION_TYPE);
+                    String notification = getIntent().getStringExtra(FomesConstants.EXTRA.NOTIFICATION_TYPE);
                     if ("확정".equals(notification)) {
                         moveActivityTo(MyInterviewActivity.class);
                     } else if (SharedPreferencesHelper.getLastUpdateAppUsageTimestamp() == 0L) {

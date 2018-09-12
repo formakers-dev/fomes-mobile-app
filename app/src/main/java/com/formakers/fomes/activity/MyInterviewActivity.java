@@ -18,7 +18,7 @@ import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.network.ProjectService;
-import com.formakers.fomes.util.AppBeeConstants;
+import com.formakers.fomes.util.FomesConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,21 +129,21 @@ public class MyInterviewActivity extends BaseActivity {
         @Override
         public void onClickInterviewDetail(String projectId, long interviewSeq) {
             Intent intent = new Intent(MyInterviewActivity.this, InterviewDetailActivity.class);
-            intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
-            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
+            intent.putExtra(FomesConstants.EXTRA.PROJECT_ID, projectId);
+            intent.putExtra(FomesConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
             startActivity(intent);
         }
 
         @Override
         public void onClickCancelInterview(String projectId, long interviewSeq, String timeSlot, String projectName, String interviewStatus, Date interviewDate, String location) {
             Intent intent = new Intent(MyInterviewActivity.this, CancelInterviewActivity.class);
-            intent.putExtra(AppBeeConstants.EXTRA.PROJECT_ID, projectId);
-            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
-            intent.putExtra(AppBeeConstants.EXTRA.TIME_SLOT, timeSlot);
-            intent.putExtra(AppBeeConstants.EXTRA.PROJECT_NAME, projectName);
-            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_STATUS, interviewStatus);
-            intent.putExtra(AppBeeConstants.EXTRA.INTERVIEW_DATE, interviewDate);
-            intent.putExtra(AppBeeConstants.EXTRA.LOCATION, location);
+            intent.putExtra(FomesConstants.EXTRA.PROJECT_ID, projectId);
+            intent.putExtra(FomesConstants.EXTRA.INTERVIEW_SEQ, interviewSeq);
+            intent.putExtra(FomesConstants.EXTRA.TIME_SLOT, timeSlot);
+            intent.putExtra(FomesConstants.EXTRA.PROJECT_NAME, projectName);
+            intent.putExtra(FomesConstants.EXTRA.INTERVIEW_STATUS, interviewStatus);
+            intent.putExtra(FomesConstants.EXTRA.INTERVIEW_DATE, interviewDate);
+            intent.putExtra(FomesConstants.EXTRA.LOCATION, location);
             startActivityForResult(intent, CANCEL_INTERVIEW_REQUEST_CODE);
         }
     };

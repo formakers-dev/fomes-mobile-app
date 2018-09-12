@@ -26,7 +26,7 @@ import butterknife.OnClick;
 import retrofit2.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 
-import static com.formakers.fomes.util.AppBeeConstants.EXTRA;
+import static com.formakers.fomes.util.FomesConstants.EXTRA;
 
 public class CancelInterviewActivity extends BaseActivity {
     @Inject

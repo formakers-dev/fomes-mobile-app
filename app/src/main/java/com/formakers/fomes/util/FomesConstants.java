@@ -1,6 +1,6 @@
 package com.formakers.fomes.util;
 
-public interface AppBeeConstants {
+public interface FomesConstants {
     interface EXTRA {
         String PROJECT_ID = "EXTRA_PROJECT_ID";
         String INTERVIEW_SEQ = "EXTRA_INTERVIEW_SEQ";

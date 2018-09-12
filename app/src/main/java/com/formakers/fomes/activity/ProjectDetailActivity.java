@@ -19,24 +19,19 @@ import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
-import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.ProjectService;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.util.FormatUtil;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
 import static com.formakers.fomes.model.Project.Person;
-import static com.formakers.fomes.util.AppBeeConstants.EXTRA.PROJECT_ID;
+import static com.formakers.fomes.util.FomesConstants.EXTRA.PROJECT_ID;
 
 public class ProjectDetailActivity extends BaseActivity {
     private static final String TAG = "ProjectDetailActivity";

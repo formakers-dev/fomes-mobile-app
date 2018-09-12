@@ -24,7 +24,7 @@ import com.formakers.fomes.model.Project;
 import com.formakers.fomes.model.Project.Interview;
 import com.formakers.fomes.model.Project.Person;
 import com.formakers.fomes.network.ProjectService;
-import com.formakers.fomes.util.AppBeeConstants;
+import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -547,8 +547,8 @@ public class InterviewDetailActivityTest extends BaseActivityTest<InterviewDetai
 
         Intent nextIntent = shadowOf(subject).getNextStartedActivity();
         assertThat(nextIntent.getComponent().getClassName()).isEqualTo(InterviewDetailActivity.class.getName());
-        assertThat(nextIntent.getStringExtra(AppBeeConstants.EXTRA.PROJECT_ID)).isEqualTo("projectId");
-        assertThat(nextIntent.getLongExtra(AppBeeConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(1L);
+        assertThat(nextIntent.getStringExtra(FomesConstants.EXTRA.PROJECT_ID)).isEqualTo("projectId");
+        assertThat(nextIntent.getLongExtra(FomesConstants.EXTRA.INTERVIEW_SEQ, 0L)).isEqualTo(1L);
     }
 
     @Test

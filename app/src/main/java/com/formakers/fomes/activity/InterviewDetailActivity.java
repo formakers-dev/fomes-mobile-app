@@ -31,7 +31,7 @@ import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.network.ProjectService;
-import com.formakers.fomes.util.AppBeeConstants;
+import com.formakers.fomes.util.FomesConstants;
 import com.formakers.fomes.util.DateUtil;
 import com.formakers.fomes.util.FormatUtil;
 import com.bumptech.glide.request.RequestOptions;
@@ -45,7 +45,7 @@ import butterknife.OnClick;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 
-import static com.formakers.fomes.util.AppBeeConstants.EXTRA;
+import static com.formakers.fomes.util.FomesConstants.EXTRA;
 
 public class InterviewDetailActivity extends BaseActivity {
     private static final String TAG = "InterviewDetailActivity";
@@ -344,11 +344,11 @@ public class InterviewDetailActivity extends BaseActivity {
 
     private void showPostParticipateHttpErrorMessage(HttpException err) {
         switch (err.code()) {
-            case AppBeeConstants.HTTP_STATUS.CODE_409_CONFLICT:
-            case AppBeeConstants.HTTP_STATUS.CODE_412_PRECONDITION_FAILED:
+            case FomesConstants.HTTP_STATUS.CODE_409_CONFLICT:
+            case FomesConstants.HTTP_STATUS.CODE_412_PRECONDITION_FAILED:
                 showErrorAlertDialog(R.string.dialog_interview_register_fail_message);
                 break;
-            case AppBeeConstants.HTTP_STATUS.CODE_405_METHOD_NOT_ALLOWED:
+            case FomesConstants.HTTP_STATUS.CODE_405_METHOD_NOT_ALLOWED:
                 showErrorAlertDialog(R.string.dialog_interview_already_registered_fail_message);
                 break;
             default:
