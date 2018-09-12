@@ -14,7 +14,7 @@
         <item name="windowNoTitle">true</item>
     </style>
     <!-- End of Application theme. -->
-햣
+
     <!-- Android View Widget theme -->
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
