@@ -3,7 +3,7 @@ package com.formakers.fomes.provisioning.presenter;
 import android.content.Intent;
 
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
@@ -19,7 +19,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Inject GoogleSignInAPIHelper googleSignInAPIHelper;
     @Inject UserService userService;
-    @Inject LocalStorageHelper localStorageHelper;
+    @Inject SharedPreferencesHelper SharedPreferencesHelper;
 
     private LoginContract.View view;
 
@@ -30,11 +30,11 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     // TODO : ActivityComponent로 변환후 변경 필요
     // temporary code for test
-    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, LocalStorageHelper localStorageHelper) {
+    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper) {
         this.view = view;
         this.googleSignInAPIHelper = googleSignInAPIHelper;
         this.userService = userService;
-        this.localStorageHelper = localStorageHelper;
+        this.SharedPreferencesHelper = SharedPreferencesHelper;
     }
 
     @Override
@@ -46,13 +46,13 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         GoogleSignInAccount account = result.getSignInAccount();
-        userService.signUp(account.getIdToken(), new User(account.getId(), account.getEmail(), localStorageHelper.getRegistrationToken()))
+        userService.signUp(account.getIdToken(), new User(account.getId(), account.getEmail(), SharedPreferencesHelper.getRegistrationToken()))
                 .observeOn(Schedulers.io())
                 .subscribe(fomesToken -> {
                     // TODO : 리팩토링 고려 필요
-                    localStorageHelper.setAccessToken(fomesToken);
-                    localStorageHelper.setUserId(account.getId());
-                    localStorageHelper.setEmail(account.getEmail());
+                    SharedPreferencesHelper.setAccessToken(fomesToken);
+                    SharedPreferencesHelper.setUserId(account.getId());
+                    SharedPreferencesHelper.setEmail(account.getEmail());
 
                     this.view.startActivityAndFinish(ProvisioningActivity.class);
                 }, e -> this.view.showToast("가입에 실패하였습니다. 재시도 고고"));

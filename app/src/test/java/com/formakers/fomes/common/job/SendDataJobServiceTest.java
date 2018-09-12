@@ -8,7 +8,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.network.UserService;
 
@@ -40,7 +40,7 @@ public class SendDataJobServiceTest {
 
     private SendDataJobService subject;
 
-    @Inject LocalStorageHelper mockLocalStorageHelper;
+    @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
     @Inject AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
     @Inject MessagingHelper mockMessagingHelper;
@@ -54,9 +54,9 @@ public class SendDataJobServiceTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        when(mockLocalStorageHelper.isLoggedIn()).thenReturn(true);
-        when(mockLocalStorageHelper.getAccessToken()).thenReturn("myToken");
-        when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
+        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(true);
+        when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
         when(mockMessagingHelper.getMessagingToken()).thenReturn("myRegistrationToken");
 
         subject = Robolectric.setupService(SendDataJobService.class);
@@ -109,7 +109,7 @@ public class SendDataJobServiceTest {
 
 //    @Test
 //    public void onStartJob_실행시_로그인상태가_아니면_아무것도하지않는다() throws Exception {
-//        when(mockLocalStorageHelper.isLoggedIn()).thenReturn(false);
+//        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(false);
 //
 //        JobParameters jobParameters = mock(JobParameters.class);
 //        when(jobParameters.getJobId()).thenReturn(1);

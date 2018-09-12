@@ -1,6 +1,6 @@
 package com.formakers.fomes.network;
 
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.api.UserAPI;
 
@@ -30,14 +30,14 @@ public class UserServiceTest extends AbstractServiceTest {
     private UserAPI mockUserAPI;
 
     @Mock
-    private LocalStorageHelper mockLocalStorageHelper;
+    private SharedPreferencesHelper mockSharedPreferencesHelper;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new UserService(mockUserAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
-        when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
+        subject = new UserService(mockUserAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
     @Test

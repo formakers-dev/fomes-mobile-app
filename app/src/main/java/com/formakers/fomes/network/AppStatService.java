@@ -1,7 +1,7 @@
 package com.formakers.fomes.network;
 
 import com.formakers.fomes.helper.AppBeeAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.model.ShortTermStat;
@@ -18,18 +18,18 @@ import rx.schedulers.Schedulers;
 public class AppStatService extends AbstractAppBeeService {
     private static final String TAG = "AppStatService";
     private final StatAPI statAPI;
-    private final LocalStorageHelper localStorageHelper;
+    private final SharedPreferencesHelper SharedPreferencesHelper;
     private final AppBeeAPIHelper appBeeAPIHelper;
 
     @Inject
-    public AppStatService(StatAPI statAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public AppStatService(StatAPI statAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
         this.statAPI = statAPI;
-        this.localStorageHelper = localStorageHelper;
+        this.SharedPreferencesHelper = SharedPreferencesHelper;
         this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
     public Completable sendShortTermStats(List<ShortTermStat> shortTermStatList) {
-        final String accessToken = localStorageHelper.getAccessToken();
+        final String accessToken = SharedPreferencesHelper.getAccessToken();
 
         if (!shortTermStatList.isEmpty()) {
             return Observable.defer(() -> statAPI.sendShortTermStats(accessToken, shortTermStatList))
@@ -44,7 +44,7 @@ public class AppStatService extends AbstractAppBeeService {
     }
 
     public Completable sendAppUsages(List<AppUsage> appUsageList) {
-        return Observable.defer(() -> statAPI.postUsages(localStorageHelper.getAccessToken(), appUsageList))
+        return Observable.defer(() -> statAPI.postUsages(SharedPreferencesHelper.getAccessToken(), appUsageList))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -53,7 +53,7 @@ public class AppStatService extends AbstractAppBeeService {
     }
 
     public Observable<List<AppUsage>> requestAppUsageByCategory(String categoryId) {
-        return  Observable.defer(() -> statAPI.getAppUsageByCategory(localStorageHelper.getAccessToken(), categoryId))
+        return  Observable.defer(() -> statAPI.getAppUsageByCategory(SharedPreferencesHelper.getAccessToken(), categoryId))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -61,7 +61,7 @@ public class AppStatService extends AbstractAppBeeService {
     }
 
     public Observable<List<CategoryUsage>> requestCategoryUsage() {
-        return  Observable.defer(() -> statAPI.getCategoryUsage(localStorageHelper.getAccessToken()))
+        return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken()))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

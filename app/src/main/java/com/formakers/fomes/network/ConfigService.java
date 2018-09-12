@@ -1,7 +1,7 @@
 package com.formakers.fomes.network;
 
 import com.formakers.fomes.helper.AppBeeAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.api.ConfigAPI;
 
 import java.util.List;
@@ -16,13 +16,13 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class ConfigService {
     private ConfigAPI configAPI;
-    private final LocalStorageHelper localStorageHelper;
+    private final SharedPreferencesHelper SharedPreferencesHelper;
     private final AppBeeAPIHelper appBeeAPIHelper;
 
     @Inject
-    public ConfigService(ConfigAPI configAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public ConfigService(ConfigAPI configAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
         this.configAPI = configAPI;
-        this.localStorageHelper = localStorageHelper;
+        this.SharedPreferencesHelper = SharedPreferencesHelper;
         this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
@@ -33,7 +33,7 @@ public class ConfigService {
     }
 
     public Single<List<String>> getExcludePackageNames() {
-        return Observable.defer(() -> configAPI.getExcludePackageNames(localStorageHelper.getAccessToken()))
+        return Observable.defer(() -> configAPI.getExcludePackageNames(SharedPreferencesHelper.getAccessToken()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .compose(appBeeAPIHelper.refreshExpiredToken())

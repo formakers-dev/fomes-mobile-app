@@ -31,18 +31,18 @@ public class AppUsageDataHelper {
     private final AppStatService appStatService;
     private final AppRepositoryHelper appRepositoryHelper;
     private final TimeHelper timeHelper;
-    private final LocalStorageHelper localStorageHelper;
+    private final SharedPreferencesHelper SharedPreferencesHelper;
 
     @Inject
     public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper,
                               AppStatService appStatService,
                               AppRepositoryHelper appRepositoryHelper,
-                              LocalStorageHelper localStorageHelper,
+                              SharedPreferencesHelper SharedPreferencesHelper,
                               TimeHelper timeHelper) {
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
         this.appStatService = appStatService;
         this.appRepositoryHelper = appRepositoryHelper;
-        this.localStorageHelper = localStorageHelper;
+        this.SharedPreferencesHelper = SharedPreferencesHelper;
         this.timeHelper = timeHelper;
     }
 
@@ -76,26 +76,26 @@ public class AppUsageDataHelper {
     }
 
     public Completable sendShortTermStats() {
-        final long from = localStorageHelper.getLastUpdateShortTermStatTimestamp();
+        final long from = SharedPreferencesHelper.getLastUpdateShortTermStatTimestamp();
         final long to = timeHelper.getStatBasedCurrentTime();
         final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
 
         return appStatService.sendShortTermStats(shortTermStatList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .doOnCompleted(() -> localStorageHelper.setLastUpdateShortTermStatTimestamp(to))
+                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(to))
                 .doOnError(appStatService::logError);
     }
 
     public Completable sendAppUsages() {
         final long to = timeHelper.getStatBasedCurrentTime();
         deleteOldAppUsage();
-        updateAppUsage(localStorageHelper.getLastUpdateAppUsageTimestamp(), to);
+        updateAppUsage(SharedPreferencesHelper.getLastUpdateAppUsageTimestamp(), to);
 
         return appStatService.sendAppUsages(appRepositoryHelper.getAppUsages())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .doOnCompleted(() -> localStorageHelper.setLastUpdateAppUsageTimestamp(to))
+                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateAppUsageTimestamp(to))
                 .doOnError(appStatService::logError);
     }
 

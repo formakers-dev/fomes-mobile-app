@@ -21,7 +21,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.fragment.InterviewListFragment;
 import com.formakers.fomes.fragment.ProjectListFragment;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.ProjectService;
 import com.formakers.fomes.util.FormatUtil;
 
@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity
     TextView userIdTextView;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @Inject
     ProjectService projectService;
@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         userIdTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_id);
-        userIdTextView.setText(FormatUtil.parseEmailName(localStorageHelper.getEmail()));
+        userIdTextView.setText(FormatUtil.parseEmailName(SharedPreferencesHelper.getEmail()));
 
         mainNestedScrollView.setFillViewport(true);
 

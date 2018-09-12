@@ -10,22 +10,30 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class LocalStorageHelper {
+public class SharedPreferencesHelper {
 
     private static final String EMPTY_STRING = "";
-    private static final String NAME = "APP_BEE_SHARED_PREFERENCES";
+    private static final long DEFAULT_LONG = 0L;
+    private static final int DEFAULT_INT = 0;
+
+    private static final String NAME = "FOMES_SHARED_PREFERENCES";
+
     private static final String KEY_ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String KEY_EMAIL = "EMAIL";
     private static final String KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
     private static final String KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP = "LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP";
+
+    private static final String KEY_PROVISIONING_PROGRESS_STATUS = "PROVISIONING_PROGRESS_STATUS";
+
+    @Deprecated
     private static final String KEY_INVITATION_CODE = "INVITATION_CODE";
 
     private SharedPreferences sharedPreferences;
 
     @Inject
-    public LocalStorageHelper(Context context) {
+    public SharedPreferencesHelper(Context context) {
         this.sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
 
@@ -37,6 +45,10 @@ public class LocalStorageHelper {
         return sharedPreferences.getLong(key, defaultValue);
     }
 
+    private int getInt(String key, int defaultValue) {
+        return sharedPreferences.getInt(key, defaultValue);
+    }
+
     private void putString(String key, String value) {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(key, value);
@@ -46,6 +58,12 @@ public class LocalStorageHelper {
     private void putLong(String key, long value) {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putLong(key, value);
+        edit.apply();
+    }
+
+    private void putInt(String key, int value) {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putInt(key, value);
         edit.apply();
     }
 
@@ -86,7 +104,7 @@ public class LocalStorageHelper {
     }
 
     public long getLastUpdateAppUsageTimestamp() {
-        return getLong(KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP, 0L);
+        return getLong(KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP, DEFAULT_LONG);
     }
 
     public void setLastUpdateAppUsageTimestamp(long timestamp) {
@@ -94,23 +112,33 @@ public class LocalStorageHelper {
     }
 
     public long getLastUpdateShortTermStatTimestamp() {
-        return getLong(KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP, 0L);
+        return getLong(KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP, DEFAULT_LONG);
     }
 
     public void setLastUpdateShortTermStatTimestamp(long timestamp) {
         putLong(KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP, timestamp);
     }
 
+    @Deprecated
     @NonNull
     public String getInvitationCode() {
         return getString(KEY_INVITATION_CODE, EMPTY_STRING);
     }
 
+    @Deprecated
     public void setInvitationCode(String code) {
         putString(KEY_INVITATION_CODE, code);
     }
 
     public boolean isLoggedIn() {
         return !TextUtils.isEmpty(getAccessToken());
+    }
+
+    public int getProvisioningProgressStatus() {
+        return getInt(KEY_PROVISIONING_PROGRESS_STATUS, DEFAULT_INT);
+    }
+
+    public void setProvisioningProgressStatus(int status) {
+        putInt(KEY_PROVISIONING_PROGRESS_STATUS, status);
     }
 }

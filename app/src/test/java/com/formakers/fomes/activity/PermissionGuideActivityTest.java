@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.ConfigService;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.util.AppBeeConstants.EXTRA;
@@ -49,7 +49,7 @@ public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuid
     UserService mockUserService;
 
     @Inject
-    LocalStorageHelper mockLocalStorageHelper;
+    SharedPreferencesHelper mockSharedPreferencesHelper;
 
     public PermissionGuideActivityTest() {
         super(PermissionGuideActivity.class);
@@ -59,9 +59,9 @@ public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuid
     public void setUp() throws Exception {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        when(mockLocalStorageHelper.getInvitationCode()).thenReturn("CODE");
-        when(mockLocalStorageHelper.isLoggedIn()).thenReturn(true);
-        when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(99999L);
+        when(mockSharedPreferencesHelper.getInvitationCode()).thenReturn("CODE");
+        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(true);
+        when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(99999L);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
         when(mockConfigService.getAppVersion()).thenReturn(Single.just(1L));
         when(mockUserService.verifyToken()).thenReturn(Completable.complete());
@@ -123,7 +123,7 @@ public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuid
 
     @Test
     public void onCreate호출시_초대장인증미완료시_초대장코드인증화면으로_이동한다() throws Exception {
-        when(mockLocalStorageHelper.getInvitationCode()).thenReturn("");
+        when(mockSharedPreferencesHelper.getInvitationCode()).thenReturn("");
         PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, CodeVerificationActivity.class);
@@ -131,7 +131,7 @@ public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuid
 
     @Test
     public void onCreate호출시_초대장인증완료_및_SignIn미완료_시_로그인화면으로_이동한다() throws Exception {
-        when(mockLocalStorageHelper.isLoggedIn()).thenReturn(false);
+        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(false);
         PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         verifyMoveToActivity(subject, LoginActivity.class);
@@ -197,7 +197,7 @@ public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuid
 
     @Test
     public void onCreate호출시_권한이_있고_토큰유효성이_검증됐으나_앱사용정보전송이력이_없는경우_LoadingActivity로_이동한다() throws Exception {
-        when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
+        when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
@@ -251,7 +251,7 @@ public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuid
 
     @Test
     public void 권한설정_수행후_앱사용데이터_전송기록이_없는경우_LoadingActivity로_이동한다() throws Exception {
-        when(mockLocalStorageHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
+        when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
         PermissionGuideActivity subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);

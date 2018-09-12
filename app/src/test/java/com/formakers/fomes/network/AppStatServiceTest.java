@@ -1,6 +1,6 @@
 package com.formakers.fomes.network;
 
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.network.api.StatAPI;
@@ -34,7 +34,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
     private AppStatService subject;
 
     @Mock
-    private LocalStorageHelper mockLocalStorageHelper;
+    private SharedPreferencesHelper mockSharedPreferencesHelper;
 
     @Mock
     private StatAPI mockStatAPI;
@@ -43,8 +43,8 @@ public class AppStatServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new AppStatService(mockStatAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
-        when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
+        subject = new AppStatService(mockStatAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.formakers.fomes.network;
 
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.api.ConfigAPI;
 
 import org.junit.Before;
@@ -28,15 +28,15 @@ public class ConfigServiceTest extends AbstractServiceTest {
     private ConfigAPI mockConfigAPI;
 
     @Mock
-    private LocalStorageHelper mockLocalStorageHelper;
+    private SharedPreferencesHelper mockSharedPreferencesHelper;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new ConfigService(mockConfigAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
+        subject = new ConfigService(mockConfigAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
 
-        when(mockLocalStorageHelper.getAccessToken()).thenReturn("myToken");
+        when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
         when(mockConfigAPI.getAppVersion()).thenReturn(Observable.just(123L));
         when(mockConfigAPI.getExcludePackageNames(eq("myToken"))).thenReturn(Observable.just(Arrays.asList("com.kakao.talk", "com.naver.search")));
     }

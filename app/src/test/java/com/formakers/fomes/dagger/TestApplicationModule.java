@@ -7,7 +7,7 @@ import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.ImageLoader;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
@@ -103,8 +103,8 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    LocalStorageHelper localStorageHelper() {
-        return mock(LocalStorageHelper.class);
+    SharedPreferencesHelper SharedPreferencesHelper() {
+        return mock(SharedPreferencesHelper.class);
     }
 
     @Singleton

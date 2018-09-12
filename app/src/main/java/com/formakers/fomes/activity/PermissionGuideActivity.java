@@ -15,7 +15,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.custom.AppBeeAlertDialog;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.ConfigService;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.util.AppBeeConstants;
@@ -36,7 +36,7 @@ public class PermissionGuideActivity extends BaseActivity {
     AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @Inject
     ConfigService configService;
@@ -63,12 +63,12 @@ public class PermissionGuideActivity extends BaseActivity {
         }
 
         // TODO : 초기상태 - 인증완료 상태 패턴 적용하여 관리하는 방안 고려
-        if (TextUtils.isEmpty(localStorageHelper.getInvitationCode())) {
+        if (TextUtils.isEmpty(SharedPreferencesHelper.getInvitationCode())) {
             moveActivityTo(CodeVerificationActivity.class);
             return;
         }
 
-        if (!localStorageHelper.isLoggedIn()) {
+        if (!SharedPreferencesHelper.isLoggedIn()) {
             moveActivityTo(LoginActivity.class);
             return;
         }
@@ -85,7 +85,7 @@ public class PermissionGuideActivity extends BaseActivity {
                     String notification = getIntent().getStringExtra(AppBeeConstants.EXTRA.NOTIFICATION_TYPE);
                     if ("확정".equals(notification)) {
                         moveActivityTo(MyInterviewActivity.class);
-                    } else if (localStorageHelper.getLastUpdateAppUsageTimestamp() == 0L) {
+                    } else if (SharedPreferencesHelper.getLastUpdateAppUsageTimestamp() == 0L) {
                         moveActivityTo(LoadingActivity.class);
                     } else {
                         moveActivityTo(MainActivity.class);

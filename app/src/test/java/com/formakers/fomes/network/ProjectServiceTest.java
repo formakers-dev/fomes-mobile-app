@@ -1,7 +1,7 @@
 package com.formakers.fomes.network;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.network.api.ProjectAPI;
@@ -39,14 +39,14 @@ public class ProjectServiceTest extends AbstractServiceTest {
     private ProjectAPI mockProjectAPI;
 
     @Mock
-    private LocalStorageHelper mockLocalStorageHelper;
+    private SharedPreferencesHelper mockSharedPreferencesHelper;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new ProjectService(mockProjectAPI, mockLocalStorageHelper, getMockAppBeeAPIHelper());
-        when(mockLocalStorageHelper.getAccessToken()).thenReturn("TEST_TOKEN");
+        subject = new ProjectService(mockProjectAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_TOKEN");
     }
 
     @Test

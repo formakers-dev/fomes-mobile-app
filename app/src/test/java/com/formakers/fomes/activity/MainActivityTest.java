@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
     private MainActivity subject;
 
     @Inject
-    LocalStorageHelper mockLocalStorageHelper;
+    SharedPreferencesHelper mockSharedPreferencesHelper;
 
     public MainActivityTest() {
         super(MainActivity.class);
@@ -41,7 +41,7 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        when(mockLocalStorageHelper.getEmail()).thenReturn("anyEmail@gmail.com");
+        when(mockSharedPreferencesHelper.getEmail()).thenReturn("anyEmail@gmail.com");
 
         subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
     }

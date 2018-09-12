@@ -7,7 +7,7 @@ import android.util.Log;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.network.UserService;
 
@@ -21,7 +21,7 @@ public class SendDataJobService extends JobService {
 
     private static String TAG = SendDataJobService.class.getSimpleName();
 
-    @Inject LocalStorageHelper localStorageHelper;
+    @Inject SharedPreferencesHelper SharedPreferencesHelper;
     @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     @Inject AppUsageDataHelper appUsageDataHelper;
     @Inject MessagingHelper messagingHelper;
@@ -48,12 +48,12 @@ public class SendDataJobService extends JobService {
 
             // 노티 토큰 업데이트 로직 추가 - onRefreshToken 에서 에러난 경우에 대한 대비책
             final String refreshedToken = messagingHelper.getMessagingToken();
-            if (!localStorageHelper.getRegistrationToken().equals(refreshedToken)) {
+            if (!SharedPreferencesHelper.getRegistrationToken().equals(refreshedToken)) {
                 userService.updateRegistrationToken(refreshedToken)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                             Log.d(TAG, "Token Refresh is Completed!");
-                            localStorageHelper.setRegistrationToken(refreshedToken);
+                            SharedPreferencesHelper.setRegistrationToken(refreshedToken);
                         }, (throwable) -> Log.e(TAG, throwable.toString()));
             }
 

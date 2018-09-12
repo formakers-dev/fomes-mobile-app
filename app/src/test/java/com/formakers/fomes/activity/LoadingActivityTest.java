@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.UserService;
 
 import org.junit.After;
@@ -39,7 +39,7 @@ public class LoadingActivityTest extends BaseActivityTest<LoadingActivity> {
     UserService mockUserService;
 
     @Inject
-    LocalStorageHelper mockLocalStorageHelper;
+    SharedPreferencesHelper mockSharedPreferencesHelper;
 
 
     public LoadingActivityTest() {

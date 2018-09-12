@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -43,7 +43,7 @@ public class LoginActivity extends BaseActivity {
     GoogleSignInAPIHelper googleSignInAPIHelper;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @BindView(R.id.tnc_title_text)
     TextView tncAgreeTextView;
@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity {
     private void signInUser(final String googleIdToken, final String googleUserId, final String email, final Person person) {
         final String userId = googleSignInAPIHelper.getProvider() + googleUserId;
 
-        final User user = new User(userId, email, localStorageHelper.getRegistrationToken());
+        final User user = new User(userId, email, SharedPreferencesHelper.getRegistrationToken());
 
         if (person != null) {
             user.setBirthday(person.getBirthdays() != null ? person.getBirthdays().get(0).getDate().getYear() : 0);
@@ -142,7 +142,7 @@ public class LoginActivity extends BaseActivity {
             user.setGender(UNKNOWN_GENDER);
         }
 
-//        String signUpCode = localStorageHelper.getInvitationCode();
+//        String signUpCode = SharedPreferencesHelper.getInvitationCode();
 //        if (!TextUtils.isEmpty(signUpCode)) {
 //            user.setSignUpCode(new User.SignUpCode(User.SignUpCode.BETA, signUpCode));
 //        }
@@ -151,9 +151,9 @@ public class LoginActivity extends BaseActivity {
                 userService.signIn(googleIdToken, user)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(accessToken -> {
-                            localStorageHelper.setAccessToken(accessToken);
-                            localStorageHelper.setUserId(userId);
-                            localStorageHelper.setEmail(email);
+                            SharedPreferencesHelper.setAccessToken(accessToken);
+                            SharedPreferencesHelper.setUserId(userId);
+                            SharedPreferencesHelper.setEmail(email);
 
                             moveToNextActivity();
                         }, e -> {

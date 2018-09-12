@@ -38,7 +38,7 @@ public class AppBeeAPIHelperTest {
     private UserAPI mockUserAPI;
 
     @Mock
-    private LocalStorageHelper mockLocalStorageHelper;
+    private SharedPreferencesHelper mockSharedPreferencesHelper;
 
     @Mock
     private ProjectAPI mockProjectAPI;  // for test
@@ -53,7 +53,7 @@ public class AppBeeAPIHelperTest {
         RxJavaHooks.onNewThreadScheduler(Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
-        subject = new AppBeeAPIHelper(mockLocalStorageHelper, mockGoogleSignInAPIHelper, mockUserAPI);
+        subject = new AppBeeAPIHelper(mockSharedPreferencesHelper, mockGoogleSignInAPIHelper, mockUserAPI);
 
         GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
         when(mockGoogleSignInAPIHelper.requestSilentSignInResult()).thenReturn(Observable.just(mockGoogleSignInResult));
@@ -102,6 +102,6 @@ public class AppBeeAPIHelperTest {
 
     private void verifyRefreshToken() {
         verify(mockUserAPI).signIn(eq("idToken"), any(User.class));
-        verify(mockLocalStorageHelper).setAccessToken(eq("appbeeToken"));
+        verify(mockSharedPreferencesHelper).setAccessToken(eq("appbeeToken"));
     }
 }

@@ -10,7 +10,7 @@ import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.ImageLoader;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.UserService;
 
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ public class LoadingActivity extends BaseActivity {
     AppUsageDataHelper appUsageDataHelper;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @Inject
     UserService userService;

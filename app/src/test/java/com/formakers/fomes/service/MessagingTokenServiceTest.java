@@ -2,7 +2,7 @@ package com.formakers.fomes.service;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
@@ -36,7 +36,7 @@ public class MessagingTokenServiceTest {
     MessagingHelper messagingHelper;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @Inject
     UserService mockUserService;
@@ -46,26 +46,26 @@ public class MessagingTokenServiceTest {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         when(messagingHelper.getMessagingToken()).thenReturn("NEW_TOKEN");
-        when(localStorageHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");
-        when(localStorageHelper.isLoggedIn()).thenReturn(true);
+        when(SharedPreferencesHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");
+        when(SharedPreferencesHelper.isLoggedIn()).thenReturn(true);
         when(mockUserService.updateRegistrationToken(anyString())).thenReturn(Completable.complete());
         subject = Robolectric.setupService(MessagingTokenService.class);
     }
 
     @Test
     public void 가입한_유저가_아닌_경우_갱신된_토큰정보를_로컬에_저장한다() throws Exception {
-        when(localStorageHelper.isLoggedIn()).thenReturn(false);
+        when(SharedPreferencesHelper.isLoggedIn()).thenReturn(false);
 
         subject.onTokenRefresh();
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(localStorageHelper).setRegistrationToken(captor.capture());
+        verify(SharedPreferencesHelper).setRegistrationToken(captor.capture());
         assertThat(captor.getValue()).isEqualTo("NEW_TOKEN");
     }
 
     @Test
     public void 가입한_유저가_아닌_경우_사용자푸시토큰_업데이트API를_호출하지_않는다() throws Exception {
-        when(localStorageHelper.isLoggedIn()).thenReturn(false);
+        when(SharedPreferencesHelper.isLoggedIn()).thenReturn(false);
         subject.onTokenRefresh();
         verify(mockUserService, never()).updateRegistrationToken(anyString());
     }

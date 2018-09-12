@@ -9,7 +9,7 @@ import android.widget.EditText;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.custom.AppBeeAlertDialog;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.UserService;
 
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ public class CodeVerificationActivity extends BaseActivity {
     UserService userService;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @BindView(R.id.code_verification_edittext)
     EditText codeVerificationEdittext;
@@ -40,7 +40,7 @@ public class CodeVerificationActivity extends BaseActivity {
                 userService.verifyInvitationCode(code)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
-                            localStorageHelper.setInvitationCode(code);
+                            SharedPreferencesHelper.setInvitationCode(code);
                             Intent intent = new Intent(this, LoginActivity.class);
                             startActivity(intent);
                             finish();

@@ -9,7 +9,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.fragment.ProjectYoutubePlayerFragment;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.model.Project.ImageObject;
@@ -63,7 +63,7 @@ public class ProjectDetailActivityTest extends BaseActivityTest<ProjectDetailAct
     UserService mockUserService;
 
     @Inject
-    LocalStorageHelper mockLocalStorageHelper;
+    SharedPreferencesHelper mockSharedPreferencesHelper;
 
     private ActivityController<ProjectDetailActivity> activityController;
 

@@ -15,13 +15,13 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class AppBeeAPIHelper {
 
-    private final LocalStorageHelper localStorageHelper;
+    private final SharedPreferencesHelper SharedPreferencesHelper;
     private final GoogleSignInAPIHelper googleSignInAPIHelper;
     private final UserAPI userAPI;
 
     @Inject
-    public AppBeeAPIHelper(LocalStorageHelper localStorageHelper, GoogleSignInAPIHelper googleSignInAPIHelper, UserAPI userAPI) {
-        this.localStorageHelper = localStorageHelper;
+    public AppBeeAPIHelper(SharedPreferencesHelper SharedPreferencesHelper, GoogleSignInAPIHelper googleSignInAPIHelper, UserAPI userAPI) {
+        this.SharedPreferencesHelper = SharedPreferencesHelper;
         this.googleSignInAPIHelper = googleSignInAPIHelper;
         this.userAPI = userAPI;
     }
@@ -44,7 +44,7 @@ public class AppBeeAPIHelper {
                             })
                             .filter(accessToken -> accessToken != null && !accessToken.isEmpty())
                             .flatMap(accessToken -> {
-                                localStorageHelper.setAccessToken(accessToken);
+                                SharedPreferencesHelper.setAccessToken(accessToken);
                                 return Observable.timer(1, TimeUnit.SECONDS);
                             });
                 }

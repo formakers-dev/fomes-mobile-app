@@ -3,7 +3,7 @@ package com.formakers.fomes.service;
 import android.util.Log;
 
 import com.formakers.fomes.AppBeeApplication;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.network.UserService;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -16,7 +16,7 @@ public class MessagingTokenService extends FirebaseInstanceIdService {
     private static final String TAG = "MessagingTokenService";
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @Inject
     MessagingHelper messagingHelper;
@@ -34,18 +34,18 @@ public class MessagingTokenService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         Log.d(TAG, "onTokenRefresh");
         final String refreshedToken = messagingHelper.getMessagingToken();
-        final String oldToken = localStorageHelper.getRegistrationToken();
+        final String oldToken = SharedPreferencesHelper.getRegistrationToken();
 
-        if (!localStorageHelper.isLoggedIn()) {
+        if (!SharedPreferencesHelper.isLoggedIn()) {
             Log.e(TAG, "Not Signed User");
-            localStorageHelper.setRegistrationToken(refreshedToken);
+            SharedPreferencesHelper.setRegistrationToken(refreshedToken);
 
         } else if (!oldToken.equals(refreshedToken)) {
             userService.updateRegistrationToken(refreshedToken)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         Log.d(TAG, "Token Refresh is Completed!");
-                        localStorageHelper.setRegistrationToken(refreshedToken);
+                        SharedPreferencesHelper.setRegistrationToken(refreshedToken);
                     }, (throwable) -> Log.e(TAG, throwable.toString()));
         }
     }

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.formakers.fomes.helper.AppBeeAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.api.UserAPI;
 
@@ -18,13 +18,13 @@ public class UserService extends AbstractAppBeeService {
 
     private static final String TAG = "UserService";
     private final UserAPI userAPI;
-    private final LocalStorageHelper localStorageHelper;
+    private final SharedPreferencesHelper SharedPreferencesHelper;
     private final AppBeeAPIHelper appBeeAPIHelper;
 
     @Inject
-    public UserService(UserAPI userAPI, LocalStorageHelper localStorageHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public UserService(UserAPI userAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
         this.userAPI = userAPI;
-        this.localStorageHelper = localStorageHelper;
+        this.SharedPreferencesHelper = SharedPreferencesHelper;
         this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
@@ -41,7 +41,7 @@ public class UserService extends AbstractAppBeeService {
     }
 
     public Completable updateUser(User user) {
-        return Observable.defer(() -> userAPI.update(localStorageHelper.getAccessToken(), user))
+        return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), user))
                 .doOnCompleted(() -> Log.d(TAG, "updateUser) Completed!"))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
@@ -51,7 +51,7 @@ public class UserService extends AbstractAppBeeService {
     }
 
     public Completable updateRegistrationToken(String registrationToken) {
-        return Observable.defer(() -> userAPI.update(localStorageHelper.getAccessToken(), new User(registrationToken)))
+        return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), new User(registrationToken)))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -67,7 +67,7 @@ public class UserService extends AbstractAppBeeService {
     }
 
     public Completable verifyToken() {
-        return userAPI.verifyToken(localStorageHelper.getAccessToken())
+        return userAPI.verifyToken(SharedPreferencesHelper.getAccessToken())
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io()).toCompletable();
     }

@@ -16,7 +16,7 @@ import com.formakers.fomes.adapter.DescriptionImageAdapter;
 import com.formakers.fomes.fragment.ProjectYoutubePlayerFragment;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.ImageLoader;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.model.User;
@@ -57,7 +57,7 @@ public class ProjectDetailActivity extends BaseActivity {
     UserService userService;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @BindView(R.id.representation_image)
     ImageView representationImageView;

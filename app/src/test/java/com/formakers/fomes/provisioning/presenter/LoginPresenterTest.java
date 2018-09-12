@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
@@ -45,7 +45,7 @@ public class LoginPresenterTest {
 
     @Inject UserService mockUserService;
     @Inject GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
-    @Inject LocalStorageHelper mockLocalStorageHelper;
+    @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
 
     @Mock LoginContract.View mockView;
 
@@ -56,7 +56,7 @@ public class LoginPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockLocalStorageHelper);
+        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper);
     }
 
     @After
@@ -75,7 +75,7 @@ public class LoginPresenterTest {
         when(mockResult.getSignInAccount()).thenReturn(mockAccount);
 
         when(mockGoogleSignInAPIHelper.getSignInResult(any(Intent.class))).thenReturn(mockResult);
-        when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Observable.empty());
 
         subject.requestSignUpBy(mock(Intent.class));
@@ -116,16 +116,16 @@ public class LoginPresenterTest {
         when(mockResult.getSignInAccount()).thenReturn(mockAccount);
 
         when(mockGoogleSignInAPIHelper.getSignInResult(any(Intent.class))).thenReturn(mockResult);
-        when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
 
         // Fomes 가입 요청 성공시
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Observable.just("testFomesToken"));
 
         subject.requestSignUpBy(mock(Intent.class));
 
-        verify(mockLocalStorageHelper).setAccessToken(eq("testFomesToken"));
-        verify(mockLocalStorageHelper).setUserId(eq("testId"));
-        verify(mockLocalStorageHelper).setEmail(eq("testEmail"));
+        verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
+        verify(mockSharedPreferencesHelper).setUserId(eq("testId"));
+        verify(mockSharedPreferencesHelper).setEmail(eq("testEmail"));
         verify(mockView).startActivityAndFinish(eq(ProvisioningActivity.class));
     }
 
@@ -141,7 +141,7 @@ public class LoginPresenterTest {
         when(mockResult.getSignInAccount()).thenReturn(mockAccount);
 
         when(mockGoogleSignInAPIHelper.getSignInResult(any(Intent.class))).thenReturn(mockResult);
-        when(mockLocalStorageHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
 
         // Fomes 가입 요청 실패시
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Observable.error(new Throwable()));

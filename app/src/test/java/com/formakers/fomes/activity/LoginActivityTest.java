@@ -8,7 +8,7 @@ import android.view.View;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -59,7 +59,7 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     UserService userService;
 
     @Inject
-    LocalStorageHelper localStorageHelper;
+    SharedPreferencesHelper SharedPreferencesHelper;
 
     @Mock
     GoogleSignInAccount mockGoogleSignInAccount;
@@ -257,9 +257,9 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     }
 
     private void verifySharedPreferenceForPersonDataAndMoveTo(String moveToActivitySimpleName) {
-        verify(localStorageHelper).setAccessToken("testAccessToken");
-        verify(localStorageHelper).setUserId("googletestId");
-        verify(localStorageHelper).setEmail("testEmail");
+        verify(SharedPreferencesHelper).setAccessToken("testAccessToken");
+        verify(SharedPreferencesHelper).setUserId("googletestId");
+        verify(SharedPreferencesHelper).setEmail("testEmail");
 
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).contains(moveToActivitySimpleName);
         assertThat(subject.isFinishing()).isTrue();

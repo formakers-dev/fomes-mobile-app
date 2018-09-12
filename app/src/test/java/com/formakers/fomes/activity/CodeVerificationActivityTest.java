@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.helper.LocalStorageHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.network.UserService;
 
 import org.junit.After;
@@ -38,7 +38,7 @@ public class CodeVerificationActivityTest extends BaseActivityTest<CodeVerificat
     UserService mockUserService;
 
     @Inject
-    LocalStorageHelper mockLocalStorageHelper;
+    SharedPreferencesHelper mockSharedPreferencesHelper;
 
     private CodeVerificationActivity subject;
 
@@ -96,7 +96,7 @@ public class CodeVerificationActivityTest extends BaseActivityTest<CodeVerificat
 
         subject.codeVerificationButton.performClick();
 
-        verify(mockLocalStorageHelper).setInvitationCode(eq("VALID_CODE"));
+        verify(mockSharedPreferencesHelper).setInvitationCode(eq("VALID_CODE"));
         assertThat(shadowOf(subject).getNextStartedActivity().getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
         assertThat(subject.isFinishing()).isTrue();
     }

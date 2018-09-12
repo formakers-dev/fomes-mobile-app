@@ -16,15 +16,15 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class LocalStorageHelperTest {
-    private LocalStorageHelper subject;
+public class SharedPreferencesHelperTest {
+    private SharedPreferencesHelper subject;
     private SharedPreferences sf;
 
     @Before
     public void setUp() throws Exception {
-        subject = new LocalStorageHelper(RuntimeEnvironment.application);
+        subject = new SharedPreferencesHelper(RuntimeEnvironment.application);
 
-        sf = RuntimeEnvironment.application.getSharedPreferences("APP_BEE_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+        sf = RuntimeEnvironment.application.getSharedPreferences("FOMES_SHARED_PREFERENCES", Context.MODE_PRIVATE);
         sf.edit()
                 .putString("ACCESS_TOKEN", "TEST_STRING_VALUE")
                 .putLong("LAST_USAGE_TIME", 1234567890L)
@@ -36,6 +36,7 @@ public class LocalStorageHelperTest {
                 .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
                 .putLong("LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP", 1000L)
                 .putString("INVITATION_CODE", "CODE")
+                .putInt("PROVISIONING_PROGRESS_STATUS", 9999)
                 .apply();
     }
 
@@ -114,5 +115,16 @@ public class LocalStorageHelperTest {
     @Test
     public void getInvitationCode호출시_SharedPreference에_저장된_인증코드를_리턴한다() throws Exception {
         assertThat(subject.getInvitationCode()).isEqualTo("CODE");
+    }
+
+    @Test
+    public void getProvisioningProgressStatus호출시_SharedPreference에_저장된_인증코드를_리턴한다() throws Exception {
+        assertThat(subject.getProvisioningProgressStatus()).isEqualTo(9999);
+    }
+
+    @Test
+    public void setProvisioningProgressStatus호출시_SharedPreference에_인증코드를_저장한다() throws Exception {
+        subject.setProvisioningProgressStatus(1);
+        assertThat(sf.getInt("PROVISIONING_PROGRESS_STATUS", 0)).isEqualTo(1);
     }
 }
