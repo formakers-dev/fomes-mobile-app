@@ -160,4 +160,6 @@ s
     <string name="current_analysis_title">당신의 게임 성향 분석 완료!\n분석은 할 때마다 업데이트됩니다.</string>
     <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 성향을 분석했습니다.</string>
     <string name="analysis_loading">당신을 분석 중 입니다…</string>
+    <string name="main_tab_recommend">게임 추천</string>
+    <string name="main_tab_betatest">베타테스트</string>
 </resources>
