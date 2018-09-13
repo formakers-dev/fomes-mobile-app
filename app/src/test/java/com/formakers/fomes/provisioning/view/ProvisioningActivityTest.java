@@ -121,6 +121,15 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex < size ? expectedPageIndex : size);
     }
 
+    @Ignore
+    @Test
+    public void setIconImage_호출시__상단_아이콘_이미지를_변경한다() {
+         launchActivity();
+
+         int newImageRedId = 1234;
+         subject.setIconImage(newImageRedId);
+    }
+
     @Test
     public void setNextButtonVisibility_true_호출시__다음버튼을_보여준다() {
         launchActivity();

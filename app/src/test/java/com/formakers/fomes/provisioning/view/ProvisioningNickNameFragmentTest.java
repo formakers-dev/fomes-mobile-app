@@ -24,6 +24,7 @@ import rx.Completable;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -58,6 +59,12 @@ public class ProvisioningNickNameFragmentTest {
         assertThat(subject.getView().findViewById(R.id.provision_nickname_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void ProvisioningNickNameFragment_가_보여질시__프로비저닝_플로우가_완료되지_않았음을_뜻하는_이벤트를_보낸다() {
+        subject.onSelectedPage();
+        verify(this.mockPresenter, atLeast(1)).emitAlmostCompletedEvent(eq(false));
     }
 
     @Test

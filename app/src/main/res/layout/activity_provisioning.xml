@@ -12,7 +12,6 @@
         android:layout_height="73dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="37dp"
-        android:background="@drawable/provisioning_fomes_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

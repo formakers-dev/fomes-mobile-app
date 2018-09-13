@@ -2,6 +2,7 @@ package com.formakers.fomes.provisioning.presenter;
 
 import android.util.Log;
 
+import com.formakers.fomes.R;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
@@ -102,6 +103,15 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
                     });
         } else {
             this.view.setNextButtonVisibility(true);
+        }
+    }
+
+    @Override
+    public void emitAlmostCompletedEvent(boolean isAlmostCompleted) {
+        if (isAlmostCompleted) {
+            this.view.setIconImage(R.drawable.fomes_face_smile);
+        } else {
+            this.view.setIconImage(R.drawable.fomes_face);
         }
     }
 

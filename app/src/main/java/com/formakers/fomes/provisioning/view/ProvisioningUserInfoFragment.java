@@ -47,6 +47,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
+            this.presenter.emitAlmostCompletedEvent(false);
             emitFilledUpEvent();
         }
     }

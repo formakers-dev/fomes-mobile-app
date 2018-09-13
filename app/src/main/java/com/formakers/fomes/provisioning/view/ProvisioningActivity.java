@@ -2,6 +2,7 @@ package com.formakers.fomes.provisioning.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.formakers.fomes.AppBeeApplication;
@@ -34,6 +36,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
 
     private static final String TAG = ProvisioningActivity.class.getSimpleName();
 
+    @BindView(R.id.provision_icon_imageview) ImageView iconImageView;
     @BindView(R.id.provision_viewpager) ViewPager viewPager;
     @BindView(R.id.next_button) Button nextButton;
 
@@ -91,6 +94,11 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @Override
     public void nextPage() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+    }
+
+    @Override
+    public void setIconImage(@DrawableRes int drawableResId) {
+        iconImageView.setImageResource(drawableResId);
     }
 
     @Override

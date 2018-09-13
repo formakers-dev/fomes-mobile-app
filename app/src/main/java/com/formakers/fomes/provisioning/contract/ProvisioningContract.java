@@ -1,5 +1,7 @@
 package com.formakers.fomes.provisioning.contract;
 
+import android.support.annotation.DrawableRes;
+
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.dagger.ApplicationComponent;
 
@@ -15,6 +17,7 @@ public interface ProvisioningContract {
         void emitNextPageEvent();
         void emitFilledUpEvent(boolean isEnable);
         void emitGrantedEvent(boolean isGranted);
+        void emitAlmostCompletedEvent(boolean isAlmostCompleted);
 
         Completable requestUpdateUser();
 
@@ -23,6 +26,7 @@ public interface ProvisioningContract {
 
     interface View extends BaseView<Presenter> {
         void nextPage();
+        void setIconImage(@DrawableRes int drawableResId);
         void setNextButtonVisibility(boolean isVisible);
         ApplicationComponent getApplicationComponent();
         void startActivityAndFinish(Class<?> destActivity);

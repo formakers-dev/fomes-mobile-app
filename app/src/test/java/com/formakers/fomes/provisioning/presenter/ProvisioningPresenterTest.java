@@ -28,6 +28,7 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -136,6 +137,13 @@ public class ProvisioningPresenterTest {
         subject.emitGrantedEvent(false);
 
         verify(mockView).setNextButtonVisibility(eq(true));
+    }
+
+    @Test
+    public void emitAlmostCompletedEvent__프로비저닝이_거의_완료되었다는_이벤트_발생시__뷰에_이미지를_변경하도록_요청한다() {
+        subject.emitAlmostCompletedEvent(true);
+
+        verify(mockView).setIconImage(anyInt());
     }
 
     @Test

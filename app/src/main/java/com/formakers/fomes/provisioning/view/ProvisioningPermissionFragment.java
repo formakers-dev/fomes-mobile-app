@@ -53,6 +53,7 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
 
     @Override
     public void onSelectedPage() {
+        this.presenter.emitAlmostCompletedEvent(true);
         this.presenter.emitGrantedEvent(this.presenter.hasUsageStatsPermission());
     }
 }
