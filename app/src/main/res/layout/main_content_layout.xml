@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="com.formakers.fomes.activity.MainActivity">
+    tools:context="com.formakers.fomes.main.view.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,21 +17,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@android:color/white"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="?attr/actionBarSize"
-                android:scaleType="centerCrop"
-                android:src="@drawable/main_title"
-                app:layout_collapseMode="parallax" />
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="?attr/actionBarSize"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:src="@drawable/main_title"-->
+                <!--app:layout_collapseMode="parallax" />-->
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@drawable/old_actionbar_background"
+                android:background="@drawable/actionbar_background"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/PopupOverlay" />
 

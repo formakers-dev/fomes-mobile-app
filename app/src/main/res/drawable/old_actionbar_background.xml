@@ -2,10 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorPrimary"/>
+            <solid android:color="@color/appbee_yellow"/>
         </shape>
     </item>
     <item>
-        <bitmap android:src="@drawable/fomes_actionbar" android:gravity="center" />
+        <bitmap android:src="@drawable/appbee_logo" android:gravity="center" />
     </item>
 </layer-list>
