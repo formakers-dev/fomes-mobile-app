@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/login_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView android:id="@+id/fragment_loading_imageview"
+        android:layout_width="139dp"
+        android:layout_height="145dp"
+        android:src="@drawable/loading_progress_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_loading_textview"
+        app:layout_constraintVertical_chainStyle="packed"/>
+
+    <TextView android:id="@+id/fragment_loading_textview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/analysis_loading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_loading_imageview"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    
+
+</android.support.constraint.ConstraintLayout>

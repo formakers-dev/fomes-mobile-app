@@ -14,4 +14,7 @@
     <dimen name="provision_bottom_button_text_size">24dp</dimen>
     <dimen name="provision_margin_start_end">32dp</dimen>
     <dimen name="provision_content_margin_top">21dp</dimen>
+
+    <dimen name="current_analysis_content_title_size">16dp</dimen>
+
 </resources>

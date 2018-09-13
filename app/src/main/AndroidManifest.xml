@@ -75,7 +75,7 @@
         <activity android:name=".provisioning.view.LoginActivity"/>
         <activity android:name=".provisioning.view.ProvisioningActivity"
             android:theme="@style/ProvisioningTheme" />
-        <activity android:name=".provisioning.view.CurrentAnalysisReportActivity"/>
+        <activity android:name=".analysis.view.CurrentAnalysisReportActivity"/>
     </application>
 
 </manifest>

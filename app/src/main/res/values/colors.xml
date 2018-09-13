@@ -22,5 +22,6 @@
     <color name="fomes_gray">#4a4a4a</color>
     <color name="fomes_warm_gray">#808080</color>
     <color name="fomes_light_gray">#d4d4d4</color>
+    <color name="fomes_pale_gray">#f0f0f1</color>
     <color name="fomes_white">#ffffff</color>
 </resources>

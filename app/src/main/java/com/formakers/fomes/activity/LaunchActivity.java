@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
+import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
 
 import butterknife.OnClick;
 

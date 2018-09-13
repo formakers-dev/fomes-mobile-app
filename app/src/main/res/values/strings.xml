@@ -142,7 +142,7 @@
     <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="https://www.naver.com">개인정보 취급방침</a>]]>에 동의됩니다.</string>
 s
     <!-- Provisioning -->
-    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다.\n몇가지 궁금한 점이 있습니다.</string>
+    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다.\n몇 가지 궁금한 점이 있습니다.</string>
     <string name="provision_user_info_subtitle">알려주신 정보는 분석으로만 사용됩니다.</string>
     <string name="provision_user_info_birth_title">출생연도</string>
     <string name="provision_user_info_job_title">직업</string>
@@ -151,10 +151,13 @@ s
     <string name="provision_life_game_subtitle">콘솔/PC/모바일/오래전 게임도 상관없어요.</string>
     <string name="provision_life_game_content_title">인생게임</string>
     <string name="provision_life_game_content_hint">예) 마비노기, 삼국지, 파이널판타지…</string>
-    <string name="provision_nickname_title">포메스 앱에서 사용할\n닉네임을 입력해 주세요.</string>
+    <string name="provision_nickname_title">포메스 앱에서 사용할\n닉네임을 입력해주세요.</string>
     <string name="provision_nickname_subtitle">닉네임은 10글자 이내로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
     <string name="provision_permission_title">마지막 단계입니다!\n아래의 권한 허용이 필요합니다.</string>
     <string name="provision_permission_subtitle">게임 앱 사용시간 데이터를 기반으로 분석합니다.</string>
+    <string name="current_analysis_title">당신의 게임 성향 분석 완료!\n분석은 할 때마다 업데이트됩니다.</string>
+    <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 성향을 분석했습니다.</string>
+    <string name="analysis_loading">당신을 분석 중 입니다…</string>
 </resources>

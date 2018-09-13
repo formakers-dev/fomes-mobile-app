@@ -5,7 +5,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivity;
+import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.util.FomesConstants;
 
