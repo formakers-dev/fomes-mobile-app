@@ -20,13 +20,13 @@
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MainTabTheme" parent="Widget.Design.TabLayout">
+    <style name="AppBeeMainTabTheme" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@color/appbee_yellow</item>
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabTextAppearance">@style/MainTabTheme.TextAppearance</item>
+        <item name="tabTextAppearance">@style/AppBeeMainTabTheme.TextAppearance</item>
     </style>
 
-    <style name="MainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
+    <style name="AppBeeMainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/appbee_gray</item>
         <item name="textAllCaps">true</item>
@@ -56,5 +56,17 @@
         <item name="divider_width">52dp</item>
         <item name="divider_height">0dp</item>
         <item name="divider_color">@android:color/transparent</item>
+    </style>
+
+    <style name="FomesMainTabTheme" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabTextAppearance">@style/AppBeeMainTabTheme.TextAppearance</item>
+    </style>
+
+    <style name="FomesMainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="textAllCaps">true</item>
     </style>
 </resources>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
@@ -14,6 +15,7 @@ import butterknife.BindView;
 
 public class MainActivity extends FomesBaseActivity {
 
+    @BindView(R.id.main_toolbar)                Toolbar toolbar;
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
 
@@ -27,6 +29,8 @@ public class MainActivity extends FomesBaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        setSupportActionBar(toolbar);
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
         contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));

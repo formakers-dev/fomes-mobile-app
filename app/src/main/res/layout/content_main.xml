@@ -52,7 +52,7 @@
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
-                style="@style/MainTabTheme"
+                style="@style/AppBeeMainTabTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

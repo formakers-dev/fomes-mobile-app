@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/fomes_main_tab_content_background">
+
+    <TextView android:id="@+id/betatest_title_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/betatest_title"/>
+
+    <TextView android:id="@+id/betatest_comming_soon_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/coming_soon"/>
+
+    <TextView android:id="@+id/betatest_subtitle_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/betatest_subtitle"/>
+    
+    <ImageView android:id="@+id/betatest_imageview"
+        android:layout_width="67dp"
+        android:layout_height="73dp"
+        android:background="@drawable/loading_progress_back"
+        android:backgroundTint="@color/fomes_light_gray"/>
+    
+</LinearLayout>

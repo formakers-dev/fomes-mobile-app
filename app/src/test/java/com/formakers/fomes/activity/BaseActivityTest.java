@@ -28,6 +28,7 @@ public abstract class BaseActivityTest<T extends Activity> {
     static final int LIFECYCLE_TYPE_CREATE = 1;
     static final int LIFECYCLE_TYPE_POST_CREATE = 2;
     static final int LIFECYCLE_TYPE_RESUME = 3;
+    static final int LIFECYCLE_TYPE_VISIBLE = 4;
 
     private Class activityClass;
     private ActivityController<T> activityController;
@@ -62,6 +63,9 @@ public abstract class BaseActivityTest<T extends Activity> {
                 this.activityController = getActivityController(intent).create().start().postCreate(null);
                 break;
             case LIFECYCLE_TYPE_RESUME:
+                this.activityController = getActivityController(intent).create().start().postCreate(null).resume();    // = Roboletric.setupActivity()
+                break;
+            case LIFECYCLE_TYPE_VISIBLE:
                 this.activityController = getActivityController(intent).create().start().postCreate(null).resume().visible();    // = Roboletric.setupActivity()
                 break;
             default:

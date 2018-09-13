@@ -160,6 +160,13 @@ s
     <string name="current_analysis_title">당신의 게임 성향 분석 완료!\n분석은 할 때마다 업데이트됩니다.</string>
     <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 성향을 분석했습니다.</string>
     <string name="analysis_loading">당신을 분석 중 입니다…</string>
+
+    <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>
     <string name="main_tab_betatest">베타테스트</string>
+
+    <!-- Beta Test -->
+    <string name="betatest_title">베타테스트하고 리워드 받자!</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="betatest_subtitle">게임에 피드백을 주는 당신이 곧 후원자!!!!\n나의 취향에 맞는 베타테스트만 보여드릴게요.\n재미있게 참여하고 피드백을 전달하세요.\n( 각종 아이템 &amp; 리워드는 덤! )</string>
 </resources>

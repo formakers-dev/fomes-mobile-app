@@ -24,4 +24,6 @@
     <color name="fomes_light_gray">#d4d4d4</color>
     <color name="fomes_pale_gray">#f0f0f1</color>
     <color name="fomes_white">#ffffff</color>
+
+    <color name="fomes_main_tab_content_background">#fafafa</color>
 </resources>
