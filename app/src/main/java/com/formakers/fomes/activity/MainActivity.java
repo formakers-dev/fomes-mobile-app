@@ -29,6 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+@Deprecated
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity
 
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.old_activity_main);
     }
 
     @Override

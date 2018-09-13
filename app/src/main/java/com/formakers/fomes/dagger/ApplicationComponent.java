@@ -4,7 +4,6 @@ import com.formakers.fomes.activity.CancelInterviewActivity;
 import com.formakers.fomes.activity.CodeVerificationActivity;
 import com.formakers.fomes.activity.InterviewDetailActivity;
 import com.formakers.fomes.activity.LoadingActivity;
-import com.formakers.fomes.activity.MainActivity;
 import com.formakers.fomes.activity.MyInterviewActivity;
 import com.formakers.fomes.activity.PermissionGuideActivity;
 import com.formakers.fomes.activity.ProjectDetailActivity;
@@ -13,6 +12,7 @@ import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
 import com.formakers.fomes.fragment.InterviewListFragment;
 import com.formakers.fomes.fragment.ProjectListFragment;
 import com.formakers.fomes.fragment.ReportMostUsedFragment;
+import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
 import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
@@ -28,7 +28,7 @@ public interface ApplicationComponent {
     void inject(LoadingActivity loadingActivity);
     void inject(PermissionGuideActivity permissionGuideActivity);
     void inject(com.formakers.fomes.activity.LoginActivity loginActivity);
-    void inject(MainActivity mainActivity);
+    void inject(com.formakers.fomes.activity.MainActivity mainActivity);
     void inject(ProjectDetailActivity projectDetailActivity);
     void inject(InterviewDetailActivity interviewDetailActivity);
     void inject(InterviewListFragment interviewListFragment);
@@ -46,4 +46,5 @@ public interface ApplicationComponent {
     void inject(ProvisioningPresenter provisioningPresenter);
 
     void inject(CurrentAnalysisReportActivity activity);
+    void inject(MainActivity activity);
 }

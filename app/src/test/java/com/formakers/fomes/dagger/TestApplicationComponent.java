@@ -4,7 +4,6 @@ import com.formakers.fomes.activity.CancelInterviewActivityTest;
 import com.formakers.fomes.activity.CodeVerificationActivityTest;
 import com.formakers.fomes.activity.InterviewDetailActivityTest;
 import com.formakers.fomes.activity.LoadingActivityTest;
-import com.formakers.fomes.activity.MainActivityTest;
 import com.formakers.fomes.activity.MyInterviewActivityTest;
 import com.formakers.fomes.activity.PermissionGuideActivityTest;
 import com.formakers.fomes.activity.ProjectDetailActivityTest;
@@ -15,10 +14,9 @@ import com.formakers.fomes.custom.AppBeeAlertDialogTest;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragmentTest;
 import com.formakers.fomes.fragment.InterviewListFragmentTest;
 import com.formakers.fomes.fragment.ProjectListFragmentTest;
+import com.formakers.fomes.main.view.MainActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
 import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivityTest;
-import com.formakers.fomes.provisioning.view.LoginActivityTest;
-import com.formakers.fomes.provisioning.view.ProvisioningActivityTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
 
 import javax.inject.Singleton;
@@ -32,7 +30,7 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(PermissionGuideActivityTest startActivityTest);
     void inject(ProjectDetailActivityTest projectDetailActivityTest);
     void inject(com.formakers.fomes.activity.LoginActivityTest loginActivityTest);
-    void inject(MainActivityTest mainActivityTest);
+    void inject(com.formakers.fomes.activity.MainActivityTest mainActivityTest);
     void inject(InterviewDetailActivityTest interviewDetailActivityTest);
     void inject(MyInterviewActivityTest myInterviewActivityTest);
     void inject(CancelInterviewActivityTest cancelInterviewActivityTest);
@@ -50,4 +48,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(LoginPresenterTest loginPresenterTest);
 
     void inject(CurrentAnalysisReportActivityTest activityTest);
+    void inject(MainActivityTest activityTest);
 }

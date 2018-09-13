@@ -10,6 +10,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
+@Deprecated
+@Ignore
 public class MainActivityTest extends BaseActivityTest<MainActivity> {
 
     @Inject
