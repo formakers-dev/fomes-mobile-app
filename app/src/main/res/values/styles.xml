@@ -69,4 +69,10 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <style name="FomesMainTabTheme.NavigationViewTextAppearance" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@drawable/nav_text_enable_selector</item>
+        <item name="android:textSize">16dp</item>
+        <!--<item name="android:icon">?attr/iconDrawable</item>-->
+    </style>
 </resources>

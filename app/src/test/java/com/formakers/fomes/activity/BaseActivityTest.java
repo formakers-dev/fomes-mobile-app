@@ -25,10 +25,10 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, application = TestAppBeeApplication.class)
 public abstract class BaseActivityTest<T extends Activity> {
-    static final int LIFECYCLE_TYPE_CREATE = 1;
-    static final int LIFECYCLE_TYPE_POST_CREATE = 2;
-    static final int LIFECYCLE_TYPE_RESUME = 3;
-    static final int LIFECYCLE_TYPE_VISIBLE = 4;
+    public static final int LIFECYCLE_TYPE_CREATE = 1;
+    public static final int LIFECYCLE_TYPE_POST_CREATE = 2;
+    public static final int LIFECYCLE_TYPE_RESUME = 3;
+    public static final int LIFECYCLE_TYPE_VISIBLE = 4;
 
     private Class activityClass;
     private ActivityController<T> activityController;

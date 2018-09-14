@@ -20,4 +20,7 @@
     <dimen name="item_app_content_margin_start">24dp</dimen>
     <dimen name="item_app_content_margin_end">24dp</dimen>
 
+    <!-- Main -->
+    <dimen name="main_nav_margin_start">27dp</dimen>
+    <dimen name="main_nav_header_margin_top">40dp</dimen>
 </resources>

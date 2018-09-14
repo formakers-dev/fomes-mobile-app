@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <TextView
+        android:id="@+id/user_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/main_nav_header_margin_top"
+        android:layout_marginStart="@dimen/main_nav_margin_start"
+        android:gravity="center_vertical"
+        android:text="닉네임"
+        android:textSize="20dp"
+        android:textColor="@color/appbee_gray"
+        android:textStyle="bold"
+        tools:ignore="MissingPrefix"/>
+
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginStart="@dimen/main_nav_margin_start"
+        android:gravity="center_vertical"
+        android:text="test@gmail.com"
+        android:textSize="12dp"
+        android:textColor="@color/appbee_gray"
+        tools:ignore="MissingPrefix"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary" />
+
+</LinearLayout>
