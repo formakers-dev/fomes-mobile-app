@@ -16,5 +16,8 @@
     <dimen name="provision_content_margin_top">21dp</dimen>
 
     <dimen name="current_analysis_content_title_size">16dp</dimen>
+    <dimen name="item_app_icon_width_height">70dp</dimen>
+    <dimen name="item_app_content_margin_start">24dp</dimen>
+    <dimen name="item_app_content_margin_end">24dp</dimen>
 
 </resources>
