@@ -4,7 +4,15 @@
         <attr name="iconDrawable" format="reference|integer" />
         <attr name="text" format="string" />
     </declare-styleable>
-    <attr name="divider_width" format="dimension"/>
-    <attr name="divider_height" format="dimension"/>
+    <attr name="divider_width" format="dimension">
+        <enum name="fill_parent" value="-1" />
+        <enum name="match_parent" value="-1" />
+        <enum name="wrap_content" value="-2" />
+    </attr>
+    <attr name="divider_height" format="dimension">
+        <enum name="fill_parent" value="-1" />
+        <enum name="match_parent" value="-1" />
+        <enum name="wrap_content" value="-2" />
+    </attr>
     <attr name="divider_color" format="color"/>
 </resources>

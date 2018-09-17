@@ -75,4 +75,10 @@
         <item name="android:textSize">16dp</item>
         <!--<item name="android:icon">?attr/iconDrawable</item>-->
     </style>
+
+    <style name="FomesMainTabTheme.RecommendDivider">
+        <item name="divider_width">0dp</item>
+        <item name="divider_height">1dp</item>
+        <item name="divider_color">@color/fomes_pale_gray</item>
+    </style>
 </resources>

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingStart="20dp"
     android:paddingTop="16dp"
-    android:paddingBottom="21dp"
+    android:paddingBottom="20dp"
     android:background="@color/fomes_white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -20,6 +20,9 @@
         android:layout_marginStart="@dimen/item_app_content_margin_start"
         android:layout_marginEnd="@dimen/item_app_content_margin_end"
         android:text="서먼 마스터즈"
+        android:textSize="16dp"
+        android:textColor="@color/fomes_gray"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -31,16 +34,25 @@
         android:layout_marginEnd="@dimen/item_app_content_margin_end"
         android:layout_marginTop="4dp"
         android:text="액션 / 캡틴스"
+        android:textSize="12dp"
+        android:textColor="@color/fomes_gray"
         app:layout_constraintTop_toBottomOf="@id/item_app_name_textview"
         app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview" />
 
     <TextView android:id="@+id/item_app_label_textview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/item_app_content_margin_start"
+        android:layout_marginStart="22dp"
         android:layout_marginEnd="@dimen/item_app_content_margin_end"
         android:layout_marginTop="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:text="배틀그라운드 게이머들이 많이 하는 게임 1위"
+        android:textSize="10dp"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/item_app_label_background"
         app:layout_constraintTop_toBottomOf="@id/item_app_genre_developer_textview"
         app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview"/>
 

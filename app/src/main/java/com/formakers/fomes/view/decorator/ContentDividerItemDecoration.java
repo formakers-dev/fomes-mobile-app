@@ -116,9 +116,6 @@ public class ContentDividerItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int position = parent.getChildAdapterPosition(view);
-        if (position == 0) {
-            return;
-        }
 
         if (orientation == VERTICAL) {
             outRect.set(0, 0, 0, divider.getIntrinsicHeight());
