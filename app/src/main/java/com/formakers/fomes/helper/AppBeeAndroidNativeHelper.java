@@ -33,6 +33,7 @@ public class AppBeeAndroidNativeHelper {
         this.context = context;
     }
 
+    // ShortTermStats
     public List<EventStat> getUsageStatEvents(long startTime, long endTime) {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
@@ -76,6 +77,7 @@ public class AppBeeAndroidNativeHelper {
         return nativeAppInfo;
     }
 
+    // LongTermStats
     public List<UsageStats> getUsageStats(int intervalType, long startTime, long endTime) {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 

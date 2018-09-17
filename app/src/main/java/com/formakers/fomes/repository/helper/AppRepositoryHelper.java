@@ -23,7 +23,7 @@ public class AppRepositoryHelper {
     public AppRepositoryHelper() {
     }
 
-    public void updateTotalUsedTime(List<DailyStatSummary> dailyStatSummaryList) {
+    public void updateAppUsages(List<DailyStatSummary> dailyStatSummaryList) {
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction(realm -> {
                 for (DailyStatSummary dailyStatSummary : dailyStatSummaryList) {

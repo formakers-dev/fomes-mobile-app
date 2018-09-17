@@ -46,7 +46,7 @@ public class AppRepositoryHelperTest {
     }
 
     @Test
-    public void updateTotalUsedTime호출시_일별_사용앱테이블의_TotalUsedTime컬럼값이_갱신된다() throws Exception {
+    public void updateAppUsages호출시_일별_사용앱테이블의_TotalUsedTime컬럼값이_갱신된다() throws Exception {
         insertDummyData();
 
         List<DailyStatSummary> dailyStatSummaryList = new ArrayList<>();
@@ -54,7 +54,7 @@ public class AppRepositoryHelperTest {
         dailyStatSummaryList.add(new DailyStatSummary("com.package.name1", 20171118, 2000L));
         dailyStatSummaryList.add(new DailyStatSummary("com.package.name2", 20171118, 3000L));
 
-        subject.updateTotalUsedTime(dailyStatSummaryList);
+        subject.updateAppUsages(dailyStatSummaryList);
 
         assertEquals(realm.where(AppUsageRealmObject.class).equalTo("appUsageKey", "com.package.name020171117").findFirst().getTotalUsedTime(), 1000L);
         assertEquals(realm.where(AppUsageRealmObject.class).equalTo("appUsageKey", "com.package.name120171117").findFirst().getTotalUsedTime(), 100L);

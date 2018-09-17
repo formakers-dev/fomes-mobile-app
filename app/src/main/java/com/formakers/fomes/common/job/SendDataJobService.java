@@ -9,6 +9,7 @@ import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
+import com.formakers.fomes.network.AppStatService;
 import com.formakers.fomes.network.UserService;
 
 import javax.inject.Inject;
@@ -26,6 +27,7 @@ public class SendDataJobService extends JobService {
     @Inject AppUsageDataHelper appUsageDataHelper;
     @Inject MessagingHelper messagingHelper;
     @Inject UserService userService;
+    @Inject AppStatService appStatService;
 
     @Override
     public void onCreate() {
@@ -57,7 +59,8 @@ public class SendDataJobService extends JobService {
                         }, (throwable) -> Log.e(TAG, throwable.toString()));
             }
 
-            Completable.merge(appUsageDataHelper.sendShortTermStats(), appUsageDataHelper.sendAppUsages())
+            Completable.merge(appUsageDataHelper.sendShortTermStats()
+                    , appStatService.sendAppUsages(appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS)))
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .doAfterTerminate(() -> this.jobFinished(params, true))

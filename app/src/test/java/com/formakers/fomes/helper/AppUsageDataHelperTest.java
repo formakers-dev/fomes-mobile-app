@@ -1,5 +1,6 @@
 package com.formakers.fomes.helper;
 
+import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
@@ -225,7 +226,7 @@ public class AppUsageDataHelperTest {
         subject.sendAppUsages().subscribe(testSubscriber);
 
         verify(mockAppRepositoryHelper).deleteAppUsages(anyInt());
-        verify(mockAppRepositoryHelper).updateTotalUsedTime(any(List.class));
+        verify(mockAppRepositoryHelper).updateAppUsages(any(List.class));
         verify(mockAppStatService).sendAppUsages(any(List.class));
         verify(mockSharedPreferencesHelper).setLastUpdateAppUsageTimestamp(eq(10L));
         testSubscriber.assertCompleted();
@@ -278,6 +279,37 @@ public class AppUsageDataHelperTest {
 
     }
 
+    @Test
+    public void getAppUsagesFor_호출시__현재시간부터_지정한기간까지의_앱_누적_사용량을_리턴한다() {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1512950400000L);
+        List<EventStat> mockEventStatList = new ArrayList<>();
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1250L));
+        mockEventStatList.add(new EventStat("packageB", MOVE_TO_FOREGROUND, 1100L));
+        mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1400L));
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1200L));
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1375L));
+
+        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong()))
+                .thenReturn(mockEventStatList);
+
+        List<AppUsage> result = subject.getAppUsagesFor(7);
+
+        // 7일 동안의 데이터를 가져왔니?
+        verify(mockAppBeeAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), endTimeCaptor.capture());
+        assertThat(endTimeCaptor.getValue() - startTimeCaptor.getValue()).isEqualTo(7 * 24 * 60 * 60 * 1000L);
+
+        // 앱 누적 사용량 제대로 리턴했니?
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.get(0).getPackageName()).isEqualTo("packageB");
+        assertThat(result.get(0).getTotalUsedTime()).isEqualTo(300L);
+        assertThat(result.get(1).getPackageName()).isEqualTo("packageA");
+        assertThat(result.get(1).getTotalUsedTime()).isEqualTo(250L);
+        assertThat(result.get(2).getPackageName()).isEqualTo("packageC");
+        assertThat(result.get(2).getTotalUsedTime()).isEqualTo(175L);
+    }
+
+    @Ignore
     @Test
     public void getWeeklyStatSummaryList호출시_app별_사용시간_합계를_구한다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1512950400000L); // 2017-12-11

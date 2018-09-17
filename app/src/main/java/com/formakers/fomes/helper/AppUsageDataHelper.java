@@ -2,6 +2,7 @@ package com.formakers.fomes.helper;
 
 import android.support.annotation.NonNull;
 
+import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
@@ -27,6 +28,8 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 
 @Singleton
 public class AppUsageDataHelper {
+    public static final int DEFAULT_APP_USAGE_DURATION_DAYS = 7;
+
     private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     private final AppStatService appStatService;
     private final AppRepositoryHelper appRepositoryHelper;
@@ -81,27 +84,24 @@ public class AppUsageDataHelper {
         final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
 
         return appStatService.sendShortTermStats(shortTermStatList)
-                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(to))
-                .doOnError(appStatService::logError);
+                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(to));
     }
 
+    @Deprecated
     public Completable sendAppUsages() {
         final long to = timeHelper.getStatBasedCurrentTime();
         deleteOldAppUsage();
         updateAppUsage(SharedPreferencesHelper.getLastUpdateAppUsageTimestamp(), to);
 
         return appStatService.sendAppUsages(appRepositoryHelper.getAppUsages())
-                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateAppUsageTimestamp(to))
-                .doOnError(appStatService::logError);
+                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateAppUsageTimestamp(to));
     }
 
     private void updateAppUsage(long from, long to) {
         final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
-        appRepositoryHelper.updateTotalUsedTime(getDailyStatSummary(shortTermStatList));
+        appRepositoryHelper.updateAppUsages(getDailyStatSummary(shortTermStatList));
     }
 
     private void deleteOldAppUsage() {
@@ -142,22 +142,31 @@ public class AppUsageDataHelper {
         return dailyStatSummaryList;
     }
 
-    public List<ShortTermStat> getWeeklyStatSummaryList() {
+    // 현재 시간부터 지정한 기간까지의 앱 누적 사용량을 리턴
+    public List<AppUsage> getAppUsagesFor(int days) {
         long endTimestamp = timeHelper.getCurrentTime();
-        long startTimestamp = endTimestamp - (7L * 24 * 60 * 60 * 1000);
+        long startTimestamp = endTimestamp - (days * 24 * 60 * 60 * 1000L);
 
-        List<ShortTermStat> shortTermStatList = new ArrayList<>();
+        List<ShortTermStat> shortTermStats = getShortTermStats(startTimestamp, endTimestamp);
+        List<AppUsage> appUsages = convertToAppUsage(shortTermStats);
 
-        summaryShortTermStat(endTimestamp, startTimestamp, shortTermStatList);
-        sortShortTermStat(shortTermStatList);
+        // 사용시간 순 정렬
+        Collections.sort(appUsages, (o1, o2) -> {
+            if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
+                return o1.getPackageName().compareTo(o2.getPackageName());
+            } else {
+                return (int) (o2.getTotalUsedTime() - o1.getTotalUsedTime());
+            }
+        });
 
-        return shortTermStatList;
+        return appUsages;
     }
 
-    private void summaryShortTermStat(long endTimestamp, long startTimestamp, List<ShortTermStat> shortTermStatList) {
+    // ShortTermStats 사용시간 누적 (리듀스) 해서 AppUsage로 바꿈
+    private List<AppUsage> convertToAppUsage(List<ShortTermStat> shortTermStatList) {
         Map<String, Long> map = new HashMap<>();
 
-        for (ShortTermStat shortTermStat : getShortTermStats(startTimestamp, endTimestamp)) {
+        for (ShortTermStat shortTermStat : shortTermStatList) {
             if (map.containsKey(shortTermStat.getPackageName())) {
                 map.put(shortTermStat.getPackageName(), map.get(shortTermStat.getPackageName()) + shortTermStat.getTotalUsedTime());
             } else {
@@ -165,12 +174,24 @@ public class AppUsageDataHelper {
             }
         }
 
-        for (String key : map.keySet()) {
-            shortTermStatList.add(new ShortTermStat(key, 0L, 0L, map.get(key)));
+        List<AppUsage> result = new ArrayList<>();
+        for (String packageName : map.keySet()) {
+            result.add(new AppUsage(packageName, map.get(packageName)));
         }
+
+        return result;
     }
 
-    private void sortShortTermStat(List<ShortTermStat> shortTermStatList) {
+    /******************************** AppBee Legacy **/
+    // 1주일 치 단기통계데에터 가져오기
+    @Deprecated
+    public List<ShortTermStat> getWeeklyStatSummaryList() {
+        long endTimestamp = timeHelper.getCurrentTime();
+        long startTimestamp = endTimestamp - (7L * 24 * 60 * 60 * 1000);    // 1주일 전
+
+        List<ShortTermStat> shortTermStatList = summaryShortTermStat(getShortTermStats(startTimestamp, endTimestamp));
+
+        // 사용시간 순 정렬
         Collections.sort(shortTermStatList, (o1, o2) -> {
             if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
                 return o1.getPackageName().compareTo(o2.getPackageName());
@@ -178,7 +199,32 @@ public class AppUsageDataHelper {
                 return (int) (o2.getTotalUsedTime() - o1.getTotalUsedTime());
             }
         });
+
+        return shortTermStatList;
     }
+
+    // ShortTermStats 사용시간 누적 - 리듀스
+    @Deprecated
+    private List<ShortTermStat> summaryShortTermStat(List<ShortTermStat> shortTermStatList) {
+        Map<String, Long> map = new HashMap<>();
+
+        for (ShortTermStat shortTermStat : shortTermStatList) {
+            if (map.containsKey(shortTermStat.getPackageName())) {
+                map.put(shortTermStat.getPackageName(), map.get(shortTermStat.getPackageName()) + shortTermStat.getTotalUsedTime());
+            } else {
+                map.put(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime());
+            }
+        }
+
+        List<ShortTermStat> result = new ArrayList<>();
+        for (String key : map.keySet()) {
+            shortTermStatList.add(new ShortTermStat(key, 0L, 0L, map.get(key)));
+        }
+
+        return result;
+    }
+
+    /************************** End of AppBee Legacy **/
 
     private void mergeTotalUsedTimeByStatKey(Map<StatKey, Long> map, StatKey statKey, long totalUsedTime) {
         if (map.get(statKey) != null) {
@@ -186,11 +232,5 @@ public class AppUsageDataHelper {
         } else {
             map.put(statKey, totalUsedTime);
         }
-    }
-
-    public interface SendDataCallback {
-        void onSuccess();
-
-        void onFail();
     }
 }

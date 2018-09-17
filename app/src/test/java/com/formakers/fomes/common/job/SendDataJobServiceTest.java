@@ -1,8 +1,6 @@
 package com.formakers.fomes.common.job;
 
 import android.app.job.JobParameters;
-import android.content.Intent;
-import android.os.Parcel;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
@@ -10,6 +8,8 @@ import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
+import com.formakers.fomes.model.AppUsage;
+import com.formakers.fomes.network.AppStatService;
 import com.formakers.fomes.network.UserService;
 
 import org.junit.After;
@@ -20,6 +20,9 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -45,6 +48,7 @@ public class SendDataJobServiceTest {
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
     @Inject MessagingHelper mockMessagingHelper;
     @Inject UserService mockUserService;
+    @Inject AppStatService mockAppStatService;
 
     @Before
     public void setUp() throws Exception {
@@ -82,7 +86,12 @@ public class SendDataJobServiceTest {
     }
 
     @Test
-    public void onStartJob_실행시_단기통계데이터와_앱사용통계정보를_서버로_전송한다() throws Exception {
+    public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() throws Exception {
+        List<AppUsage> appUsages = new ArrayList<>();
+        appUsages.add(new AppUsage("packageName1", 1000));
+        appUsages.add(new AppUsage("packageName2", 2000));
+        when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(appUsages);
+
         JobParameters jobParameters = mock(JobParameters.class);
         when(jobParameters.getJobId()).thenReturn(1);
         when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
@@ -90,7 +99,8 @@ public class SendDataJobServiceTest {
         subject.onStartJob(jobParameters);
 
         verify(mockAppUsageDataHelper).sendShortTermStats();
-        verify(mockAppUsageDataHelper).sendAppUsages();
+        verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
+        verify(mockAppStatService).sendAppUsages(eq(appUsages));
     }
 
     @Test
