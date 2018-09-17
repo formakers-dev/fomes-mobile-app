@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.view.ViewGroup;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.activity.OnboardingAnalysisActivity;
+import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 
 import org.junit.Before;
@@ -18,6 +21,7 @@ import org.robolectric.shadows.ShadowToast;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
@@ -76,6 +80,19 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         subject.onDrawerClosed(subject.drawerLayout);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("사이드메뉴아이템1");
+    }
+
+    @Test
+    public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() throws Exception {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.my_current_analysis);
+        when(item.getTitle()).thenReturn("내 분석 다시보기");
+
+        launchActivity();
+        subject.onNavigationItemSelected(item);
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(CurrentAnalysisReportActivity.class.getSimpleName());
     }
 
     @Test

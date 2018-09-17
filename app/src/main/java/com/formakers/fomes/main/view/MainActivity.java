@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.adapter.ContentsPagerAdapter;
+import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 
 import butterknife.BindView;
@@ -71,6 +73,14 @@ public class MainActivity extends FomesBaseActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+
+        switch(item.getItemId()) {
+            case R.id.my_current_analysis: {
+                startActivity(new Intent(this, CurrentAnalysisReportActivity.class));
+                break;
+            }
+        }
+
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
