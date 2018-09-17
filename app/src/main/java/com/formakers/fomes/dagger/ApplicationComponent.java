@@ -7,6 +7,7 @@ import com.formakers.fomes.activity.LoadingActivity;
 import com.formakers.fomes.activity.MyInterviewActivity;
 import com.formakers.fomes.activity.PermissionGuideActivity;
 import com.formakers.fomes.activity.ProjectDetailActivity;
+import com.formakers.fomes.analysis.presenter.CurrentAnalysisReportPresenter;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
 import com.formakers.fomes.fragment.InterviewListFragment;
@@ -44,6 +45,7 @@ public interface ApplicationComponent {
     // fomes
     void inject(LoginPresenter loginPresenter);
     void inject(ProvisioningPresenter provisioningPresenter);
+    void inject(CurrentAnalysisReportPresenter reportPresenter);
 
     void inject(CurrentAnalysisReportActivity activity);
     void inject(MainActivity activity);
