@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <fragment android:id="@+id/report_container"
+    <FrameLayout android:id="@+id/report_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        class="com.formakers.fomes.analysis.view.CurrentAnalysisReportFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

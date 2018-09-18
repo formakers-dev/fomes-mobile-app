@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class)
 public class CurrentAnalysisReportFragmentTest {
 
-    CurrentAnalysisReportFragment subject;
+    ShadowCurrentAnalysisReportFragment subject;
     SupportFragmentController<CurrentAnalysisReportFragment> controller;
     @Mock CurrentAnalysisReportContract.Presenter mockPresenter;
 
@@ -50,8 +50,8 @@ public class CurrentAnalysisReportFragmentTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new CurrentAnalysisReportFragment();
-        subject.setPresenter(mockPresenter);
+        subject = new ShadowCurrentAnalysisReportFragment();
+        subject.presenter = mockPresenter;
         controller = SupportFragmentController.of(subject);
 
         when(mockPresenter.requestPostUsages()).thenReturn(Completable.never());
@@ -61,7 +61,6 @@ public class CurrentAnalysisReportFragmentTest {
     public void tearDown() throws Exception {
         RxJavaHooks.reset();
         RxAndroidPlugins.getInstance().reset();
-
     }
 
     @Test
@@ -101,5 +100,10 @@ public class CurrentAnalysisReportFragmentTest {
         assertThat(subject.getView().findViewById(R.id.current_analysis_loading_layout).getVisibility()).isEqualTo(View.GONE);
         assertThat(subject.getView().findViewById(R.id.current_analysis_layout).getVisibility()).isEqualTo(View.GONE);
         assertThat(subject.getView().findViewById(R.id.current_analysis_error_layout).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    public static class ShadowCurrentAnalysisReportFragment extends CurrentAnalysisReportFragment {
+        @Override
+        public void setPresenter(CurrentAnalysisReportContract.Presenter presenter) { }
     }
 }
