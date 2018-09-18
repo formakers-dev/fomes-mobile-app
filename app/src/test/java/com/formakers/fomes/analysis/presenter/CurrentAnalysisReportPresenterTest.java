@@ -8,11 +8,13 @@ import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.network.AppStatService;
+import com.formakers.fomes.network.api.StatAPI;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -21,6 +23,7 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -34,7 +37,9 @@ import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -86,11 +91,14 @@ public class CurrentAnalysisReportPresenterTest {
         when(mockAppStatService.sendAppUsages(anyList())).thenReturn(Completable.complete());
 
         List<CategoryUsage> categoryUsages = new ArrayList<>();
-        categoryUsages.add(new CategoryUsage("GAME_RPG", "롤플레잉", 3000));
-        categoryUsages.add(new CategoryUsage("GAME_PUZZLE", "퍼즐", 2000));
-        categoryUsages.add(new CategoryUsage("GAME_SIMUL", "시뮬레이션", 1000));
-        categoryUsages.add(new CategoryUsage("GAME_ACTION", "액션", 100));
         when(mockAppStatService.requestCategoryUsage()).thenReturn(Observable.just(categoryUsages));
+
+        List<CategoryUsage> peopleCategoryUsages_gender_age = new ArrayList<>();
+        peopleCategoryUsages_gender_age.add(new CategoryUsage("GAME_RPG", "롤플레잉", 3000));
+        when(mockAppStatService.requestPeopleCategoryUsage(StatAPI.PeopleGroupFilter.GENDER_AND_AGE)).thenReturn(Observable.just(peopleCategoryUsages_gender_age));
+        List<CategoryUsage> peopleCategoryUsages2_job = new ArrayList<>();
+        peopleCategoryUsages2_job.add(new CategoryUsage("GAME_RPG_2", "롤플레잉2", 2000));
+        when(mockAppStatService.requestPeopleCategoryUsage(StatAPI.PeopleGroupFilter.JOB)).thenReturn(Observable.just(peopleCategoryUsages2_job));
 
         subject.loading().subscribe();
 
@@ -103,6 +111,14 @@ public class CurrentAnalysisReportPresenterTest {
         // requestMostUsedGameGenres - 카테고리별 사용시간 정렬된 리스트
         verify(mockAppStatService).requestCategoryUsage();
         verify(mockView).bindMyGenreViews(eq(categoryUsages));
+
+        // 사람들 장르
+        // requestPeopleCategoryUsage - 사람들의 카테고리별 사용시간 정렬된 리스트
+        ArgumentCaptor<Map> argumentCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(mockAppStatService, times(2)).requestPeopleCategoryUsage(anyString());
+        verify(mockView).bindPeopleGenreViews(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().get(StatAPI.PeopleGroupFilter.GENDER_AND_AGE)).isEqualTo(peopleCategoryUsages_gender_age);
+        assertThat(argumentCaptor.getValue().get(StatAPI.PeopleGroupFilter.JOB)).isEqualTo(peopleCategoryUsages2_job);
     }
 
     @Test

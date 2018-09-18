@@ -15,8 +15,10 @@ import com.formakers.fomes.analysis.presenter.CurrentAnalysisReportPresenter;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.model.CategoryUsage;
+import com.formakers.fomes.network.api.StatAPI;
 
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,6 +32,8 @@ public class CurrentAnalysisReportFragment extends BaseFragment implements Curre
     @BindView(R.id.current_analysis_my_genre_1) ViewGroup myGenreItem1;
     @BindView(R.id.current_analysis_my_genre_2) ViewGroup myGenreItem2;
     @BindView(R.id.current_analysis_my_genre_3) ViewGroup myGenreItem3;
+    @BindView(R.id.current_analysis_people_genre_gender_age) ViewGroup peopleGenreGenderAge;
+    @BindView(R.id.current_analysis_people_genre_job) ViewGroup peopleGenreJob;
 
     CurrentAnalysisReportContract.Presenter presenter;
 
@@ -83,5 +87,28 @@ public class CurrentAnalysisReportFragment extends BaseFragment implements Curre
         ((TextView) myGenreItem3.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(2).first.getCategoryName());
         ((TextView) myGenreItem3.findViewById(R.id.used_time_textview))
                 .setText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(2).second));
+    }
+
+    @Override
+    public void bindPeopleGenreViews(Map<String, List<CategoryUsage>> peopleGenres) {
+        List<Pair<CategoryUsage, Integer>> genderAgeUsagePercentagePair
+                = this.presenter.getPercentage(peopleGenres.get(StatAPI.PeopleGroupFilter.GENDER_AND_AGE), 0, 3);
+
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_1))
+                .setText(genderAgeUsagePercentagePair.get(0).first.getCategoryName());
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_2))
+                .setText(genderAgeUsagePercentagePair.get(1).first.getCategoryName());
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_3))
+                .setText(genderAgeUsagePercentagePair.get(2).first.getCategoryName());
+
+        List<Pair<CategoryUsage, Integer>> jobUsagePercentagePair
+                = this.presenter.getPercentage(peopleGenres.get(StatAPI.PeopleGroupFilter.JOB), 0, 3);
+
+        ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_1))
+                .setText(jobUsagePercentagePair.get(0).first.getCategoryName());
+        ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_2))
+                .setText(jobUsagePercentagePair.get(1).first.getCategoryName());
+        ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_3))
+                .setText(jobUsagePercentagePair.get(2).first.getCategoryName());
     }
 }

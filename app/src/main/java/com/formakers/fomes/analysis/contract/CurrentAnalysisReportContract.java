@@ -7,6 +7,7 @@ import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.model.CategoryUsage;
 
 import java.util.List;
+import java.util.Map;
 
 import rx.Completable;
 
@@ -19,5 +20,6 @@ public interface CurrentAnalysisReportContract {
     interface View extends BaseView<Presenter> {
         ApplicationComponent getApplicationComponent();
         void bindMyGenreViews(List<CategoryUsage> genres);
+        void bindPeopleGenreViews(Map<String, List<CategoryUsage>> peopleGenres);
     }
 }

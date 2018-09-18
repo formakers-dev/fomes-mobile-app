@@ -7,10 +7,13 @@ import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.network.AppStatService;
+import com.formakers.fomes.network.api.StatAPI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -47,12 +50,27 @@ public class CurrentAnalysisReportPresenter implements CurrentAnalysisReportCont
         return appStatService.requestCategoryUsage().observeOn(AndroidSchedulers.mainThread());
     }
 
+    private Observable<Map<String, List<CategoryUsage>>> requestPeopleCategoryUsage() {
+        Observable<Pair<String, List<CategoryUsage>>> genderAge = appStatService.requestPeopleCategoryUsage(StatAPI.PeopleGroupFilter.GENDER_AND_AGE).map(categoryUsages -> new Pair(StatAPI.PeopleGroupFilter.GENDER_AND_AGE, categoryUsages));
+        Observable<Pair<String, List<CategoryUsage>>> job = appStatService.requestPeopleCategoryUsage(StatAPI.PeopleGroupFilter.JOB).map(categoryUsages -> new Pair(StatAPI.PeopleGroupFilter.JOB, categoryUsages));
+
+        return Observable.zip(genderAge, job, (o1, o2) -> {
+            Map<String, List<CategoryUsage>> map = new HashMap<>();
+            map.put(o1.first, o1.second);
+            map.put(o2.first, o2.second);
+            return map;
+        }).subscribeOn(Schedulers.io());
+    }
+
     @Override
     public Completable loading() {
         return Completable.concat(
                 this.requestPostUsages()
-                , Observable.zip(this.requestCategoryUsage(), Observable.just(1), (genres, number) -> {
+                , Observable.zip(this.requestCategoryUsage()
+                        , this.requestPeopleCategoryUsage()
+                        , (genres, peopleGenres) -> {
                     this.view.bindMyGenreViews(genres);
+                    this.view.bindPeopleGenreViews(peopleGenres);
                     return true;
                 }).toCompletable())
                 .doOnError(e -> Log.e(TAG, e.toString() + "\n stacktrace=" + Arrays.asList(e.getStackTrace())))

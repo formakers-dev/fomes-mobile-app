@@ -37,8 +37,10 @@
         android:textSize="@dimen/provision_subtitle_text_size"
         app:layout_constraintTop_toBottomOf="@id/current_analysis_title_textview" />
 
+    <!-- start of My Genre -->
+
     <View
-        android:id="@+id/divider"
+        android:id="@+id/my_genre_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="44dp"
@@ -54,7 +56,7 @@
         android:textColor="@color/fomes_gray"
         android:textSize="@dimen/current_analysis_content_title_size"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/divider" />
+        app:layout_constraintTop_toBottomOf="@id/my_genre_divider" />
 
     <TextView
         android:id="@+id/current_analysis_my_genre_subtitle"
@@ -97,26 +99,57 @@
         app:layout_constraintStart_toEndOf="@id/current_analysis_my_genre_2"
         app:layout_constraintTop_toBottomOf="@+id/current_analysis_my_genre_subtitle" />
 
+    <!-- end of My Genre -->
 
+    <!-- start of People's Genre -->
     <View
+        android:id="@+id/people_genre_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/fomes_pale_gray" />
+        android:layout_marginTop="34dp"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_3" />
 
-    <LinearLayout
-        android:id="@+id/current_analysis_popular_genre_layout"
+    <TextView
+        android:id="@+id/current_analysis_people_genre_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="16dp"
+        android:text="@string/analysis_people_genre_title"
+        android:textColor="@color/fomes_gray"
+        android:textSize="@dimen/current_analysis_content_title_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/people_genre_divider" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/current_analysis_subtitle"
-            android:textColor="@color/fomes_gray"
-            android:textSize="@dimen/current_analysis_content_title_size" />
+    <TextView
+        android:id="@+id/current_analysis_people_genre_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/analysis_people_genre_subtitle"
+        android:textColor="@color/fomes_light_warm_gray"
+        android:textSize="@dimen/current_analysis_content_subtitle_size"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_people_genre_title" />
 
-    </LinearLayout>
+    <include
+        android:id="@+id/current_analysis_people_genre_gender_age"
+        layout="@layout/item_analysis_people_genre"
+        android:layout_width="@dimen/current_analysis_people_genre_item_width"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/current_analysis_people_genre_job"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_people_genre_subtitle" />
+
+    <include
+        android:id="@+id/current_analysis_people_genre_job"
+        layout="@layout/item_analysis_people_genre"
+        android:layout_width="@dimen/current_analysis_people_genre_item_width"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/current_analysis_people_genre_gender_age"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_people_genre_subtitle" />
+    <!-- end of People's Genre -->
 
     <View
         android:layout_width="match_parent"

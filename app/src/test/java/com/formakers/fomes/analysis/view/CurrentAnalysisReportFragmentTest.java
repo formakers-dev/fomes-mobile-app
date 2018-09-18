@@ -9,6 +9,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
 import com.formakers.fomes.model.CategoryUsage;
 
+import org.bouncycastle.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Completable;
 import rx.Scheduler;
@@ -30,7 +33,6 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
@@ -91,6 +93,28 @@ public class CurrentAnalysisReportFragmentTest {
     }
 
     @Test
+    public void 로딩_작업_실패시__화면을_모두_없애고_에러화면만_보여준다() {
+        when(mockPresenter.loading()).thenReturn(Completable.error(new Throwable()));
+
+        controller.create().start().resume().visible();
+
+        assertThat(subject.getView().findViewById(R.id.current_analysis_loading_layout).getVisibility()).isEqualTo(View.GONE);
+        assertThat(subject.getView().findViewById(R.id.current_analysis_layout).getVisibility()).isEqualTo(View.GONE);
+        assertThat(subject.getView().findViewById(R.id.current_analysis_error_layout).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void 로딩_작업_성공시__분석_결과_화면을_보여준다() {
+        when(mockPresenter.loading()).thenReturn(Completable.complete());
+
+        controller.create().start().resume().visible();
+
+        assertThat(subject.getView().findViewById(R.id.current_analysis_loading_layout).getVisibility()).isEqualTo(View.GONE);
+        assertThat(subject.getView().findViewById(R.id.current_analysis_layout).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.getView().findViewById(R.id.current_analysis_error_layout).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
     public void bindMyGenreViews_호출시__분석화면의_장르레이아웃에_데이터를_셋팅한다() {
         List<CategoryUsage> categoryUsages = new ArrayList<>();
         categoryUsages.add(new CategoryUsage("GAME_RPG", "롤플레잉", 3000));
@@ -129,25 +153,61 @@ public class CurrentAnalysisReportFragmentTest {
     }
 
     @Test
-    public void 로딩_작업_실패시__화면을_모두_없애고_에러화면만_보여준다() {
-        when(mockPresenter.loading()).thenReturn(Completable.error(new Throwable()));
+    public void bindPeopleGenreViews_호출시__분석화면의_사람들_장르레이아웃에_데이터를_셋팅한다() {
+        List<CategoryUsage> categoryUsages_gender_age = new ArrayList<>();
+        categoryUsages_gender_age.add(new CategoryUsage("GAME_RPG", "롤플레잉", 3000));
+        categoryUsages_gender_age.add(new CategoryUsage("GAME_PUZZLE", "퍼즐", 2000));
+        categoryUsages_gender_age.add(new CategoryUsage("GAME_SIMUL", "시뮬레이션", 1000));
+        categoryUsages_gender_age.add(new CategoryUsage("GAME_ACTION", "액션", 100));
+
+        List<CategoryUsage> categoryUsages_job = new ArrayList<>();
+        categoryUsages_job.add(new CategoryUsage("GAME_QUIZ", "퀴즈", 4000));
+        categoryUsages_job.add(new CategoryUsage("GAME_CASUAL", "캐주얼", 3000));
+        categoryUsages_job.add(new CategoryUsage("GAME_PUZZLE", "퍼즐", 2000));
+        categoryUsages_job.add(new CategoryUsage("GAME_ACTION", "액션", 1000));
+
+        Map<String, List<CategoryUsage>> peopleCategoryUsages = new HashMap<>();
+        peopleCategoryUsages.put("GENDER_AND_AGE", categoryUsages_gender_age);
+        peopleCategoryUsages.put("JOB", categoryUsages_job);
+
+        List<Pair<CategoryUsage, Integer>> usagePercentagePair_gender_age = new ArrayList<>();
+        usagePercentagePair_gender_age.add(new Pair<>(categoryUsages_gender_age.get(0), 49));
+        usagePercentagePair_gender_age.add(new Pair<>(categoryUsages_gender_age.get(1), 33));
+        usagePercentagePair_gender_age.add(new Pair<>(categoryUsages_gender_age.get(2), 16));
+
+        List<Pair<CategoryUsage, Integer>> usagePercentagePair_job = new ArrayList<>();
+        usagePercentagePair_job.add(new Pair<>(categoryUsages_job.get(0), 49));
+        usagePercentagePair_job.add(new Pair<>(categoryUsages_job.get(1), 33));
+        usagePercentagePair_job.add(new Pair<>(categoryUsages_job.get(2), 16));
+
+        when(mockPresenter.getPercentage(eq(categoryUsages_gender_age), anyInt(), anyInt())).thenReturn(usagePercentagePair_gender_age);
+        when(mockPresenter.getPercentage(eq(categoryUsages_job), anyInt(), anyInt())).thenReturn(usagePercentagePair_job);
 
         controller.create().start().resume().visible();
 
-        assertThat(subject.getView().findViewById(R.id.current_analysis_loading_layout).getVisibility()).isEqualTo(View.GONE);
-        assertThat(subject.getView().findViewById(R.id.current_analysis_layout).getVisibility()).isEqualTo(View.GONE);
-        assertThat(subject.getView().findViewById(R.id.current_analysis_error_layout).getVisibility()).isEqualTo(View.VISIBLE);
-    }
+        subject.bindPeopleGenreViews(peopleCategoryUsages);
 
-    @Test
-    public void 로딩_작업_성공시__분석_결과_화면을_보여준다() {
-        when(mockPresenter.loading()).thenReturn(Completable.complete());
+        // 상위 3개만 계산해온다
+        verify(mockPresenter).getPercentage(eq(categoryUsages_gender_age), eq(0), eq(3));
+        verify(mockPresenter).getPercentage(eq(categoryUsages_job), eq(0), eq(3));
 
-        controller.create().start().resume().visible();
+        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_gender_age)
+                .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("롤플레잉");
 
-        assertThat(subject.getView().findViewById(R.id.current_analysis_loading_layout).getVisibility()).isEqualTo(View.GONE);
-        assertThat(subject.getView().findViewById(R.id.current_analysis_layout).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.getView().findViewById(R.id.current_analysis_error_layout).getVisibility()).isEqualTo(View.GONE);
+        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_gender_age)
+                .findViewById(R.id.demographic_name_2)).getText()).isEqualTo("퍼즐");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_gender_age)
+                .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("시뮬레이션");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_job)
+                .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("퀴즈");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_job)
+                .findViewById(R.id.demographic_name_2)).getText()).isEqualTo("캐주얼");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_job)
+                .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("퍼즐");
     }
 
     public static class ShadowCurrentAnalysisReportFragment extends CurrentAnalysisReportFragment {

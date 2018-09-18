@@ -68,6 +68,14 @@ public class AppStatService extends AbstractAppBeeService {
                 .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
+    public Observable<List<CategoryUsage>> requestPeopleCategoryUsage(final String peopleGroupFilter) {
+        return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken(), peopleGroupFilter))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
+    }
+
     @Override
     protected String getTag() {
         return TAG;

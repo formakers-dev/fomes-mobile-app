@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/match_constraint"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/demographic_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="30대\n남성"
+        />
+
+    <TextView
+        android:id="@+id/demographic_number_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="12dp"
+        android:text="1"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/demographic_title"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/demographic_name_1"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:gravity="left|center_vertical"
+        android:textSize="11dp"
+        android:textStyle="bold"
+        android:textColor="@color/fomes_warm_gray"
+        app:layout_constraintStart_toEndOf="@id/demographic_number_1"
+        app:layout_constraintBaseline_toBaselineOf="@id/demographic_number_1"
+        tools:text="롤플레잉"
+        />
+
+    <TextView
+        android:id="@+id/demographic_number_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_demographic_name_margin_top"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="12dp"
+        android:text="2"
+        android:textColor="@color/fomes_squash"
+        app:layout_constraintTop_toBottomOf="@id/demographic_name_1"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/demographic_name_2"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:gravity="left|center_vertical"
+        android:textSize="11dp"
+        android:textStyle="bold"
+        android:textColor="@color/fomes_warm_gray"
+        app:layout_constraintStart_toEndOf="@id/demographic_number_2"
+        app:layout_constraintBaseline_toBaselineOf="@id/demographic_number_2"
+        tools:text="액션"
+        />
+
+    <TextView
+        android:id="@+id/demographic_number_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_demographic_name_margin_top"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="12dp"
+        android:text="3"
+        android:textColor="@color/fomes_blush_pink"
+        app:layout_constraintTop_toBottomOf="@id/demographic_name_2"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/demographic_name_3"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:gravity="left|center_vertical"
+        android:textSize="11dp"
+        android:textStyle="bold"
+        android:textColor="@color/fomes_warm_gray"
+        app:layout_constraintStart_toEndOf="@id/demographic_number_3"
+        app:layout_constraintBaseline_toBaselineOf="@id/demographic_number_3"
+        tools:text="자동차경주"
+        />
+
+</android.support.constraint.ConstraintLayout>
