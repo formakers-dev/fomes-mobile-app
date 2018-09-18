@@ -1,51 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/provision_padding_start_end"
+    android:paddingStart="@dimen/provision_padding_start_end">
+
+    <ImageView
+        android:id="@+id/analysis_icon_imageview"
+        android:layout_width="67dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="37dp"
+        android:src="@drawable/fomes_face_smile"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/current_analysis_title_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/provision_margin_start_end"
-        android:layout_marginStart="@dimen/provision_margin_start_end"
+        android:layout_marginTop="15dp"
         android:text="@string/current_analysis_title"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/provision_title_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/analysis_icon_imageview" />
 
     <TextView
         android:id="@+id/current_analysis_subtitle_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/provision_margin_start_end"
-        android:layout_marginStart="@dimen/provision_margin_start_end"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="@dimen/provision_subtitle_margin_top"
         android:text="@string/current_analysis_subtitle"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/provision_subtitle_text_size" />
+        android:textSize="@dimen/provision_subtitle_text_size"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_title_textview" />
 
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/fomes_pale_gray" />
+        android:layout_marginTop="44dp"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_subtitle_textview" />
 
-    <LinearLayout
-        android:id="@+id/current_analysis_my_genre_layout"
+    <TextView
+        android:id="@+id/current_analysis_my_genre_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="16dp"
+        android:text="@string/analysis_my_genre_title"
+        android:textColor="@color/fomes_gray"
+        android:textSize="@dimen/current_analysis_content_title_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/current_analysis_subtitle"
-            android:textColor="@color/fomes_gray"
-            android:textSize="@dimen/current_analysis_content_title_size" />
+    <TextView
+        android:id="@+id/current_analysis_my_genre_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/analysis_my_genre_subtitle"
+        android:textColor="@color/fomes_light_warm_gray"
+        android:textSize="@dimen/current_analysis_content_subtitle_size"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_title" />
 
-    </LinearLayout>
+    <include
+        android:id="@+id/current_analysis_my_genre_1"
+        layout="@layout/item_analysis_my_genre"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        app:layout_constraintEnd_toStartOf="@+id/current_analysis_my_genre_2"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_subtitle" />
+
+    <include
+        android:id="@+id/current_analysis_my_genre_2"
+        layout="@layout/item_analysis_my_genre"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        app:layout_constraintEnd_toStartOf="@+id/current_analysis_my_genre_3"
+        app:layout_constraintStart_toEndOf="@id/current_analysis_my_genre_1"
+        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_subtitle" />
+
+    <include
+        android:id="@+id/current_analysis_my_genre_3"
+        layout="@layout/item_analysis_my_genre"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/current_analysis_my_genre_2"
+        app:layout_constraintTop_toBottomOf="@+id/current_analysis_my_genre_subtitle" />
+
 
     <View
         android:layout_width="match_parent"
@@ -171,6 +222,7 @@
         android:textColor="@color/fomes_white"
         android:textSize="@dimen/provision_bottom_button_text_size"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -161,6 +161,11 @@
     <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 성향을 분석했습니다.</string>
     <string name="analysis_loading">당신을 분석 중 입니다…</string>
 
+    <!-- Analysis -->
+    <string name="analysis_my_genre_title">나의 게임 장르</string>
+    <string name="analysis_my_genre_subtitle">나의 7일간 모바일 게임 장르별 플레이 시간 집계</string>
+    <string name="analysis_my_genre_used_time_format">총 시간의 %d%%</string>
+
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>
     <string name="main_tab_betatest">베타테스트</string>

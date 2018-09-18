@@ -24,6 +24,11 @@
     <color name="fomes_light_warm_gray">#9b9b9b</color>
     <color name="fomes_light_gray">#d4d4d4</color>
     <color name="fomes_pale_gray">#f0f0f1</color>
+
+    <color name="fomes_squash">#f8ab1c</color>
+
+    <color name="fomes_blush_pink">#ff8997</color>
+
     <color name="fomes_white">#ffffff</color>
 
     <color name="fomes_main_tab_content_background">#fafafa</color>
