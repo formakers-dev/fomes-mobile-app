@@ -17,7 +17,7 @@ import com.formakers.fomes.fragment.InterviewListFragmentTest;
 import com.formakers.fomes.fragment.ProjectListFragmentTest;
 import com.formakers.fomes.main.view.MainActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
-import com.formakers.fomes.provisioning.view.CurrentAnalysisReportActivityTest;
+import com.formakers.fomes.provisioning.view.RecentAnalysisReportActivityTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
 
 import javax.inject.Singleton;
@@ -49,6 +49,6 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(LoginPresenterTest loginPresenterTest);
     void inject(CurrentAnalysisReportPresenterTest presenterTest);
 
-    void inject(CurrentAnalysisReportActivityTest activityTest);
+    void inject(RecentAnalysisReportActivityTest activityTest);
     void inject(MainActivityTest activityTest);
 }

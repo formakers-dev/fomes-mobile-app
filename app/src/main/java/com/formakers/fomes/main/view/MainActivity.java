@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.adapter.ContentsPagerAdapter;
-import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
+import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 
 import butterknife.BindView;
@@ -76,7 +76,7 @@ public class MainActivity extends FomesBaseActivity
 
         switch(item.getItemId()) {
             case R.id.my_current_analysis: {
-                startActivity(new Intent(this, CurrentAnalysisReportActivity.class));
+                startActivity(new Intent(this, RecentAnalysisReportActivity.class));
                 break;
             }
         }

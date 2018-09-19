@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.formakers.fomes.analysis.view.CurrentAnalysisReportFragment;
+import com.formakers.fomes.analysis.view.RecentAnalysisReportFragment;
 import com.formakers.fomes.fragment.BaseFragment;
 
 import org.robolectric.annotation.Implements;
 
-@Implements(value = CurrentAnalysisReportFragment.class)
+@Implements(value = RecentAnalysisReportFragment.class)
 public class ShadowCurrentAnalysisReportFragment extends BaseFragment {
     @Nullable
     @Override

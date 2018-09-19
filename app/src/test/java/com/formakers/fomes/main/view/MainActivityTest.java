@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.activity.OnboardingAnalysisActivity;
-import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
+import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 
 import org.junit.Before;
@@ -92,7 +91,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         subject.onNavigationItemSelected(item);
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(CurrentAnalysisReportActivity.class.getSimpleName());
+        assertThat(intent.getComponent().getClassName()).contains(RecentAnalysisReportActivity.class.getSimpleName());
     }
 
     @Test

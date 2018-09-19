@@ -9,7 +9,6 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
 import com.formakers.fomes.model.CategoryUsage;
 
-import org.bouncycastle.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,10 +40,10 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class CurrentAnalysisReportFragmentTest {
+public class RecentAnalysisReportFragmentTest {
 
-    ShadowCurrentAnalysisReportFragment subject;
-    SupportFragmentController<CurrentAnalysisReportFragment> controller;
+    ShadowRecentAnalysisReportFragment subject;
+    SupportFragmentController<RecentAnalysisReportFragment> controller;
     @Mock CurrentAnalysisReportContract.Presenter mockPresenter;
 
     @Before
@@ -62,7 +61,7 @@ public class CurrentAnalysisReportFragmentTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new ShadowCurrentAnalysisReportFragment();
+        subject = new ShadowRecentAnalysisReportFragment();
         subject.presenter = mockPresenter;
         controller = SupportFragmentController.of(subject);
 
@@ -210,7 +209,7 @@ public class CurrentAnalysisReportFragmentTest {
                 .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("퍼즐");
     }
 
-    public static class ShadowCurrentAnalysisReportFragment extends CurrentAnalysisReportFragment {
+    public static class ShadowRecentAnalysisReportFragment extends RecentAnalysisReportFragment {
         @Override
         public void setPresenter(CurrentAnalysisReportContract.Presenter presenter) { }
     }

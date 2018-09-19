@@ -8,6 +8,7 @@ import com.formakers.fomes.activity.MyInterviewActivity;
 import com.formakers.fomes.activity.PermissionGuideActivity;
 import com.formakers.fomes.activity.ProjectDetailActivity;
 import com.formakers.fomes.analysis.presenter.CurrentAnalysisReportPresenter;
+import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
 import com.formakers.fomes.fragment.InterviewListFragment;
@@ -16,7 +17,6 @@ import com.formakers.fomes.fragment.ReportMostUsedFragment;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
-import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
 import com.formakers.fomes.service.MessagingTokenService;
 
 import javax.inject.Singleton;
@@ -47,6 +47,6 @@ public interface ApplicationComponent {
     void inject(ProvisioningPresenter provisioningPresenter);
     void inject(CurrentAnalysisReportPresenter reportPresenter);
 
-    void inject(CurrentAnalysisReportActivity activity);
+    void inject(RecentAnalysisReportActivity activity);
     void inject(MainActivity activity);
 }

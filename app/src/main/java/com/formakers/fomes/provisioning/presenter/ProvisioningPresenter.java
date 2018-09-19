@@ -8,7 +8,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.analysis.view.CurrentAnalysisReportActivity;
+import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.util.FomesConstants;
 
@@ -88,7 +88,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         this.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-                        this.view.startActivityAndFinish(CurrentAnalysisReportActivity.class);
+                        this.view.startActivityAndFinish(RecentAnalysisReportActivity.class);
                     }, e -> {
                         if (e instanceof HttpException) {
                             int code = ((HttpException) e).code();

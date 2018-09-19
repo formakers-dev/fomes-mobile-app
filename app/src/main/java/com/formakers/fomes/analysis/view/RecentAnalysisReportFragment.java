@@ -23,8 +23,8 @@ import java.util.Map;
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class CurrentAnalysisReportFragment extends BaseFragment implements CurrentAnalysisReportContract.View {
-    public static final String TAG = CurrentAnalysisReportFragment.class.getSimpleName();
+public class RecentAnalysisReportFragment extends BaseFragment implements CurrentAnalysisReportContract.View {
+    public static final String TAG = RecentAnalysisReportFragment.class.getSimpleName();
 
     @BindView(R.id.current_analysis_loading_layout) ViewGroup loadingLayout;
     @BindView(R.id.current_analysis_layout) ViewGroup contentLayout;

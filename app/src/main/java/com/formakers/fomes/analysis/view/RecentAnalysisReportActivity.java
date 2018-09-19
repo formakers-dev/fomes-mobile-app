@@ -8,7 +8,7 @@ import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 
-public class CurrentAnalysisReportActivity extends FomesBaseActivity {
+public class RecentAnalysisReportActivity extends FomesBaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class CurrentAnalysisReportActivity extends FomesBaseActivity {
         super.onPostCreate(savedInstanceState);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.report_container, new CurrentAnalysisReportFragment());
+        ft.replace(R.id.report_container, new RecentAnalysisReportFragment());
         ft.commit();
     }
 }
