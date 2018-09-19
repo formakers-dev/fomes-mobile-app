@@ -11,7 +11,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.network.UserService;
+import com.formakers.fomes.common.network.UserService;
 
 import javax.inject.Inject;
 

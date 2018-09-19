@@ -14,7 +14,7 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.NativeAppInfoHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.ShortTermStat;
-import com.formakers.fomes.network.ConfigService;
+import com.formakers.fomes.common.network.ConfigService;
 
 import java.util.List;
 

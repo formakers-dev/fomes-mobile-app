@@ -1,4 +1,4 @@
-package com.formakers.fomes.network.api;
+package com.formakers.fomes.common.network.api;
 
 import com.formakers.fomes.model.User;
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.network.ProjectService;
+import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;

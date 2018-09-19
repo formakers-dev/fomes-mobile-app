@@ -11,8 +11,8 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.network.ConfigService;
-import com.formakers.fomes.network.UserService;
+import com.formakers.fomes.common.network.ConfigService;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.util.FomesConstants.EXTRA;
 
 import org.junit.After;

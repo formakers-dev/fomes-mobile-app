@@ -9,8 +9,8 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.network.AppStatService;
-import com.formakers.fomes.network.UserService;
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.UserService;
 
 import org.junit.After;
 import org.junit.Before;

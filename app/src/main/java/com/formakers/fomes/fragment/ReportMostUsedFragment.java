@@ -17,7 +17,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.CategoryUsage;
-import com.formakers.fomes.network.AppStatService;
+import com.formakers.fomes.common.network.AppStatService;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;

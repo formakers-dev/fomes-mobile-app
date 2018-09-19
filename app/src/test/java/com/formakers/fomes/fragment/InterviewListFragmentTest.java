@@ -7,7 +7,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.adapter.MainListAdapter;
 import com.formakers.fomes.model.Project;
-import com.formakers.fomes.network.ProjectService;
+import com.formakers.fomes.common.network.ProjectService;
 
 import org.junit.After;
 import org.junit.Before;

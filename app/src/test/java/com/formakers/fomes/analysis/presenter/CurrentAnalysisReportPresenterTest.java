@@ -7,8 +7,8 @@ import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.model.CategoryUsage;
-import com.formakers.fomes.network.AppStatService;
-import com.formakers.fomes.network.api.StatAPI;
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.api.StatAPI;
 
 import org.junit.After;
 import org.junit.Before;

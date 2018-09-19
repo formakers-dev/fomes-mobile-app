@@ -15,7 +15,7 @@ import com.formakers.fomes.analysis.presenter.CurrentAnalysisReportPresenter;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.model.CategoryUsage;
-import com.formakers.fomes.network.api.StatAPI;
+import com.formakers.fomes.common.network.api.StatAPI;
 
 import java.util.List;
 import java.util.Map;

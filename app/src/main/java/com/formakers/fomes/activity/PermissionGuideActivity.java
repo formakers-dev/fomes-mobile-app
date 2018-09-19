@@ -16,8 +16,8 @@ import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.custom.AppBeeAlertDialog;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.network.ConfigService;
-import com.formakers.fomes.network.UserService;
+import com.formakers.fomes.common.network.ConfigService;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.util.FomesConstants;
 
 import javax.inject.Inject;

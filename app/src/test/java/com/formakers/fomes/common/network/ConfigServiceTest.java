@@ -1,7 +1,7 @@
-package com.formakers.fomes.network;
+package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.network.api.ConfigAPI;
+import com.formakers.fomes.common.network.api.ConfigAPI;
 
 import org.junit.Before;
 import org.junit.Test;

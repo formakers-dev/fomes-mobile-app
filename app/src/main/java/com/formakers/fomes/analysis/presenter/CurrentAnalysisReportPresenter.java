@@ -6,8 +6,8 @@ import android.util.Pair;
 import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.model.CategoryUsage;
-import com.formakers.fomes.network.AppStatService;
-import com.formakers.fomes.network.api.StatAPI;
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.api.StatAPI;
 
 import java.util.ArrayList;
 import java.util.Arrays;

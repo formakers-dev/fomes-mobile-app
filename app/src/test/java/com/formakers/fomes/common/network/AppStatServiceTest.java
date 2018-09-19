@@ -1,9 +1,9 @@
-package com.formakers.fomes.network;
+package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.ShortTermStat;
-import com.formakers.fomes.network.api.StatAPI;
+import com.formakers.fomes.common.network.api.StatAPI;
 
 import org.junit.Before;
 import org.junit.Test;

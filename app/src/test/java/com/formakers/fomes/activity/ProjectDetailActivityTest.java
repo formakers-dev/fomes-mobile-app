@@ -14,14 +14,13 @@ import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.model.Project.ImageObject;
 import com.formakers.fomes.model.Project.Person;
-import com.formakers.fomes.network.ProjectService;
-import com.formakers.fomes.network.UserService;
+import com.formakers.fomes.common.network.ProjectService;
+import com.formakers.fomes.common.network.UserService;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;

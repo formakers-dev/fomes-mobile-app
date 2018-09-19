@@ -8,7 +8,7 @@ import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.network.UserService;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
 import com.formakers.fomes.util.FomesConstants;

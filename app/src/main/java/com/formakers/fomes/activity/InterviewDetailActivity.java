@@ -30,7 +30,7 @@ import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
-import com.formakers.fomes.network.ProjectService;
+import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.util.FomesConstants;
 import com.formakers.fomes.util.DateUtil;
 import com.formakers.fomes.util.FormatUtil;

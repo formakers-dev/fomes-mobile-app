@@ -4,7 +4,7 @@ import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
-import com.formakers.fomes.network.AppStatService;
+import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.repository.helper.AppRepositoryHelper;
 
 import org.junit.After;

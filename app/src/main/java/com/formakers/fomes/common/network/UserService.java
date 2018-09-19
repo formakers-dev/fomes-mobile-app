@@ -1,4 +1,4 @@
-package com.formakers.fomes.network;
+package com.formakers.fomes.common.network;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -6,7 +6,7 @@ import android.util.Log;
 import com.formakers.fomes.helper.AppBeeAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.network.api.UserAPI;
+import com.formakers.fomes.common.network.api.UserAPI;
 
 import javax.inject.Inject;
 

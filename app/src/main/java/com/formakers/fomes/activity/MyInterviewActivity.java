@@ -17,7 +17,7 @@ import com.formakers.fomes.adapter.RegisteredInterviewListAdapter;
 import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.Project;
-import com.formakers.fomes.network.ProjectService;
+import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.util.FomesConstants;
 
 import java.util.ArrayList;

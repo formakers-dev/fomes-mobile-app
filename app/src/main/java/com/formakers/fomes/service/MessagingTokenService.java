@@ -5,7 +5,7 @@ import android.util.Log;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
-import com.formakers.fomes.network.UserService;
+import com.formakers.fomes.common.network.UserService;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import javax.inject.Inject;

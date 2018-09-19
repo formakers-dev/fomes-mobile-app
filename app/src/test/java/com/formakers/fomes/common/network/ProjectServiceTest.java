@@ -1,10 +1,10 @@
-package com.formakers.fomes.network;
+package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.Project;
-import com.formakers.fomes.network.api.ProjectAPI;
+import com.formakers.fomes.common.network.api.ProjectAPI;
 
 import org.junit.Before;
 import org.junit.Test;

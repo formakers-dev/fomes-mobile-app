@@ -22,7 +22,7 @@ import com.formakers.fomes.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.fragment.InterviewListFragment;
 import com.formakers.fomes.fragment.ProjectListFragment;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.network.ProjectService;
+import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.util.FormatUtil;
 
 import javax.inject.Inject;

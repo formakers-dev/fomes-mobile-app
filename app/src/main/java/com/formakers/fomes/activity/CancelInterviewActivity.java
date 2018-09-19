@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.custom.AppBeeAlertDialog;
-import com.formakers.fomes.network.ProjectService;
+import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.util.FormatUtil;
 
 import java.util.Date;

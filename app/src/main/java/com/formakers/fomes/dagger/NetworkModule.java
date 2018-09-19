@@ -1,10 +1,10 @@
 package com.formakers.fomes.dagger;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.network.api.ConfigAPI;
-import com.formakers.fomes.network.api.ProjectAPI;
-import com.formakers.fomes.network.api.StatAPI;
-import com.formakers.fomes.network.api.UserAPI;
+import com.formakers.fomes.common.network.api.ConfigAPI;
+import com.formakers.fomes.common.network.api.ProjectAPI;
+import com.formakers.fomes.common.network.api.StatAPI;
+import com.formakers.fomes.common.network.api.UserAPI;
 
 import java.util.concurrent.TimeUnit;
 

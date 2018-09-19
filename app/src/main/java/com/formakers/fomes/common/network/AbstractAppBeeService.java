@@ -1,4 +1,4 @@
-package com.formakers.fomes.network;
+package com.formakers.fomes.common.network;
 
 import android.util.Log;
 

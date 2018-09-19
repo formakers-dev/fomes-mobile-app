@@ -1,7 +1,7 @@
 package com.formakers.fomes.helper;
 
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.network.api.UserAPI;
+import com.formakers.fomes.common.network.api.UserAPI;
 
 import java.util.concurrent.TimeUnit;
 

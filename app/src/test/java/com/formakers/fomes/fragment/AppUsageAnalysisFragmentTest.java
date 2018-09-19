@@ -11,7 +11,7 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.NativeAppInfoHelper;
 import com.formakers.fomes.model.NativeAppInfo;
 import com.formakers.fomes.model.ShortTermStat;
-import com.formakers.fomes.network.ConfigService;
+import com.formakers.fomes.common.network.ConfigService;
 
 import org.junit.After;
 import org.junit.Before;
