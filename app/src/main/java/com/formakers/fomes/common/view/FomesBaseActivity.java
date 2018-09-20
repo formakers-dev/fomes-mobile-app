@@ -3,6 +3,7 @@ package com.formakers.fomes.common.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.MenuItem;
 
 import com.formakers.fomes.activity.BaseActivity;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
@@ -43,6 +44,16 @@ public abstract class FomesBaseActivity extends BaseActivity {
                 finish();
                 return;
             }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 }
