@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@color/fomes_main_tab_content_background">
+    android:background="@color/fomes_content_background">
 
     <TextView android:id="@+id/betatest_title_textview"
         android:layout_width="match_parent"

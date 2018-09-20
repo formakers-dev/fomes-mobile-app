@@ -16,7 +16,7 @@
         android:icon="@mipmap/ic_launcher_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/FomesTheme.NoActionBar">
+        android:theme="@style/FomesTheme">
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -53,7 +53,8 @@
         <activity android:name=".activity.LoadingActivity" />
         <activity
             android:name=".activity.MainActivity"
-            android:label="">
+            android:label=""
+            android:theme="@style/FomesTheme.NoActionBar">
         </activity>
         <activity android:name=".activity.ProjectDetailActivity" />
         <activity android:name=".activity.InterviewDetailActivity" />
@@ -72,11 +73,15 @@
         </activity>
 
         <!-- Fomes -->
-        <activity android:name=".provisioning.view.LoginActivity"/>
+        <activity android:name=".provisioning.view.LoginActivity"
+            android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".provisioning.view.ProvisioningActivity"
             android:theme="@style/ProvisioningTheme" />
-        <activity android:name=".analysis.view.RecentAnalysisReportActivity"/>
-        <activity android:name=".main.view.MainActivity"/>
+        <activity android:name=".analysis.view.RecentAnalysisReportActivity"
+            android:theme="@style/FomesTheme.NoActionBar"/>
+        <activity android:name=".main.view.MainActivity"
+            android:theme="@style/FomesTheme.NoActionBar"/>
+        <activity android:name=".settings.SettingsActivity"/>
     </application>
 
 </manifest>

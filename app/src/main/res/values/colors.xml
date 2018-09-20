@@ -30,6 +30,7 @@
     <color name="fomes_blush_pink">#ff8997</color>
 
     <color name="fomes_white">#ffffff</color>
+    <color name="fomes_white_2">#fafafa</color>
 
-    <color name="fomes_main_tab_content_background">#fafafa</color>
+    <color name="fomes_content_background">@color/fomes_white_2</color>
 </resources>

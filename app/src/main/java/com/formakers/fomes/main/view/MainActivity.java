@@ -20,6 +20,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.settings.SettingsActivity;
 
 import butterknife.BindView;
 
@@ -77,6 +78,10 @@ public class MainActivity extends FomesBaseActivity
         switch(item.getItemId()) {
             case R.id.my_current_analysis: {
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
+                break;
+            }
+            case R.id.settings: {
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             }
         }

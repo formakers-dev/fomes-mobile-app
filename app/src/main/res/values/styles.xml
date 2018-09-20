@@ -7,7 +7,16 @@
         <!--<item name="colorAccent">@color/colorAccent</item>-->
         <item name="android:textColorHint">@color/textColorHint</item>
         <item name="android:windowBackground">@android:color/white</item>
+
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowActionModeOverlay">true</item>-->
+        <!--<item name="actionBarStyle">@style/FomesTheme.ActionBarStyle</item>-->
     </style>
+
+    <!--<style name="FomesTheme.ActionBarStyle" parent="Widget.AppCompat.ActionBar">-->
+        <!--<item name="displayOptions">showHome|homeAsUp|showTitle</item>-->
+    <!--</style>-->
 
     <style name="FomesTheme.NoActionBar" parent="FomesTheme">
         <item name="windowActionBar">false</item>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="25dp"
+    android:paddingEnd="25dp"
+    android:paddingTop="17dp"
+    android:paddingBottom="17dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/fomes_white">
+
+    <TextView android:id="@+id/title"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/fomes_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/side_info"
+        tools:text="포메스 정보" />
+
+    <TextView android:id="@+id/side_info"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/fomes_light_warm_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="0.1.23 Release"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -28,4 +28,13 @@ public interface FomesConstants {
             int COMPLETED = 9999;
         }
     }
+
+    interface Settings {
+        interface Menu {
+            int VERSION = 1;
+            int TNC_USAGE = 2;
+            int TNC_PRIVATE = 3;
+            int CONTACTS_US = 4;
+        }
+    }
 }

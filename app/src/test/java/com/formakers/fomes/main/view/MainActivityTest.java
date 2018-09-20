@@ -10,6 +10,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
+import com.formakers.fomes.settings.SettingsActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -92,6 +93,19 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(RecentAnalysisReportActivity.class.getSimpleName());
+    }
+
+    @Test
+    public void 사이드메뉴의_설정화면_클릭시__설정화면으로_이동한다() throws Exception {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.settings);
+        when(item.getTitle()).thenReturn("설정");
+
+        launchActivity();
+        subject.onNavigationItemSelected(item);
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(SettingsActivity.class.getSimpleName());
     }
 
     @Test
