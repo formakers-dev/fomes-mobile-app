@@ -17,10 +17,6 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface StatAPI {
-    interface PeopleGroupFilter {
-        String GENDER_AND_AGE = "GENDER_AND_AGE";
-        String JOB = "JOB";
-    }
 
     @POST("/stats/short")
     Observable<Void> sendShortTermStats(@Header("x-access-token") String accessToken, @Body List<ShortTermStat> shortTermStats);
@@ -35,8 +31,8 @@ public interface StatAPI {
     Observable<List<CategoryUsage>> getCategoryUsage(@Header("x-access-token") String accessToken);
 
     @GET("/stats/usages/category")
-    Observable<List<CategoryUsage>> getCategoryUsage(@Header("x-access-token") String accessToken, @Query("peopleGroup") String peopleGroup);
+    Observable<List<CategoryUsage>> getCategoryUsage(@Header("x-access-token") String accessToken, @Query("peopleGroup") int peopleGroup);
 
-    @POST("/report/category/{categoryId}/recent")
-    Observable<RecentReport> getRecentReport(@Header("x-access-token") String accessToken, @Body User user);
+    @POST("/stats/report/category/{categoryId}/recent")
+    Observable<RecentReport> getRecentReport(@Header("x-access-token") String accessToken, @Path("categoryId") String categoryId, @Body User user);
 }

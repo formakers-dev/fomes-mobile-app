@@ -4,13 +4,15 @@ import com.formakers.fomes.model.AppInfo;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class Usage {
     String id;
     String name;
     Long totalUsedTime;
     List<AppInfo> appInfos;  // optional
 
-    public Usage(String id, String name, Long totalUsedTime, List<AppInfo> appInfos) {
+    public Usage(String id, String name, Long totalUsedTime, @Nullable List<AppInfo> appInfos) {
         this.id = id;
         this.name = name;
         this.totalUsedTime = totalUsedTime;

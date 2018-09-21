@@ -9,7 +9,7 @@ import com.formakers.fomes.activity.PermissionGuideActivityTest;
 import com.formakers.fomes.activity.ProjectDetailActivityTest;
 import com.formakers.fomes.adapter.DescriptionImageAdapterTest;
 import com.formakers.fomes.adapter.RegisteredInterviewListAdapterTest;
-import com.formakers.fomes.analysis.presenter.CurrentAnalysisReportPresenterTest;
+import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenterTest;
 import com.formakers.fomes.common.job.SendDataJobServiceTest;
 import com.formakers.fomes.custom.AppBeeAlertDialogTest;
 import com.formakers.fomes.fragment.AppUsageAnalysisFragmentTest;
@@ -47,7 +47,7 @@ public interface TestApplicationComponent extends ApplicationComponent {
 
     // Fomes
     void inject(LoginPresenterTest loginPresenterTest);
-    void inject(CurrentAnalysisReportPresenterTest presenterTest);
+    void inject(RecentAnalysisReportPresenterTest presenterTest);
 
     void inject(RecentAnalysisReportActivityTest activityTest);
     void inject(MainActivityTest activityTest);

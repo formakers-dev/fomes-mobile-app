@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
-import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
-import com.formakers.fomes.model.CategoryUsage;
+import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
+import com.formakers.fomes.common.network.vo.Usage;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,9 +20,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rx.Completable;
 import rx.Scheduler;
@@ -44,7 +42,7 @@ public class RecentAnalysisReportFragmentTest {
 
     ShadowRecentAnalysisReportFragment subject;
     SupportFragmentController<RecentAnalysisReportFragment> controller;
-    @Mock CurrentAnalysisReportContract.Presenter mockPresenter;
+    @Mock RecentAnalysisReportContract.Presenter mockPresenter;
 
     @Before
     public void setUp() throws Exception {
@@ -75,7 +73,7 @@ public class RecentAnalysisReportFragmentTest {
     }
 
     @Test
-    public void CurrentAnalysisReportFragment_시작시__분석_로딩_화면이_나타난다() {
+    public void RecentAnalysisReportFragment_시작시__분석_로딩_화면이_나타난다() {
         controller.create().start().resume().visible();
 
         assertThat(subject.getView()).isNotNull();
@@ -115,13 +113,13 @@ public class RecentAnalysisReportFragmentTest {
 
     @Test
     public void bindMyGenreViews_호출시__분석화면의_장르레이아웃에_데이터를_셋팅한다() {
-        List<CategoryUsage> categoryUsages = new ArrayList<>();
-        categoryUsages.add(new CategoryUsage("GAME_RPG", "롤플레잉", 3000));
-        categoryUsages.add(new CategoryUsage("GAME_PUZZLE", "퍼즐", 2000));
-        categoryUsages.add(new CategoryUsage("GAME_SIMUL", "시뮬레이션", 1000));
-        categoryUsages.add(new CategoryUsage("GAME_ACTION", "액션", 100));
+        List<Usage> categoryUsages = new ArrayList<>();
+        categoryUsages.add(new Usage("GAME_RPG", "롤플레잉", 3000L, null));
+        categoryUsages.add(new Usage("GAME_PUZZLE", "퍼즐", 2000L, null));
+        categoryUsages.add(new Usage("GAME_SIMUL", "시뮬레이션", 1000L, null));
+        categoryUsages.add(new Usage("GAME_ACTION", "액션", 100L, null));
 
-        List<Pair<CategoryUsage, Integer>> usagePercentagePair = new ArrayList<>();
+        List<Pair<Usage, Integer>> usagePercentagePair = new ArrayList<>();
         usagePercentagePair.add(new Pair<>(categoryUsages.get(0), 49));
         usagePercentagePair.add(new Pair<>(categoryUsages.get(1), 33));
         usagePercentagePair.add(new Pair<>(categoryUsages.get(2), 16));
@@ -153,28 +151,24 @@ public class RecentAnalysisReportFragmentTest {
 
     @Test
     public void bindPeopleGenreViews_호출시__분석화면의_사람들_장르레이아웃에_데이터를_셋팅한다() {
-        List<CategoryUsage> categoryUsages_gender_age = new ArrayList<>();
-        categoryUsages_gender_age.add(new CategoryUsage("GAME_RPG", "롤플레잉", 3000));
-        categoryUsages_gender_age.add(new CategoryUsage("GAME_PUZZLE", "퍼즐", 2000));
-        categoryUsages_gender_age.add(new CategoryUsage("GAME_SIMUL", "시뮬레이션", 1000));
-        categoryUsages_gender_age.add(new CategoryUsage("GAME_ACTION", "액션", 100));
+        List<Usage> categoryUsages_gender_age = new ArrayList<>();
+        categoryUsages_gender_age.add(new Usage("GAME_RPG", "롤플레잉", 3000L, null));
+        categoryUsages_gender_age.add(new Usage("GAME_PUZZLE", "퍼즐", 2000L, null));
+        categoryUsages_gender_age.add(new Usage("GAME_SIMUL", "시뮬레이션", 1000L, null));
+        categoryUsages_gender_age.add(new Usage("GAME_ACTION", "액션", 100L, null));
 
-        List<CategoryUsage> categoryUsages_job = new ArrayList<>();
-        categoryUsages_job.add(new CategoryUsage("GAME_QUIZ", "퀴즈", 4000));
-        categoryUsages_job.add(new CategoryUsage("GAME_CASUAL", "캐주얼", 3000));
-        categoryUsages_job.add(new CategoryUsage("GAME_PUZZLE", "퍼즐", 2000));
-        categoryUsages_job.add(new CategoryUsage("GAME_ACTION", "액션", 1000));
+        List<Usage> categoryUsages_job = new ArrayList<>();
+        categoryUsages_job.add(new Usage("GAME_QUIZ", "퀴즈", 4000L, null));
+        categoryUsages_job.add(new Usage("GAME_CASUAL", "캐주얼", 3000L, null));
+        categoryUsages_job.add(new Usage("GAME_PUZZLE", "퍼즐", 2000L, null));
+        categoryUsages_job.add(new Usage("GAME_ACTION", "액션", 1000L, null));
 
-        Map<String, List<CategoryUsage>> peopleCategoryUsages = new HashMap<>();
-        peopleCategoryUsages.put("GENDER_AND_AGE", categoryUsages_gender_age);
-        peopleCategoryUsages.put("JOB", categoryUsages_job);
-
-        List<Pair<CategoryUsage, Integer>> usagePercentagePair_gender_age = new ArrayList<>();
+        List<Pair<Usage, Integer>> usagePercentagePair_gender_age = new ArrayList<>();
         usagePercentagePair_gender_age.add(new Pair<>(categoryUsages_gender_age.get(0), 49));
         usagePercentagePair_gender_age.add(new Pair<>(categoryUsages_gender_age.get(1), 33));
         usagePercentagePair_gender_age.add(new Pair<>(categoryUsages_gender_age.get(2), 16));
 
-        List<Pair<CategoryUsage, Integer>> usagePercentagePair_job = new ArrayList<>();
+        List<Pair<Usage, Integer>> usagePercentagePair_job = new ArrayList<>();
         usagePercentagePair_job.add(new Pair<>(categoryUsages_job.get(0), 49));
         usagePercentagePair_job.add(new Pair<>(categoryUsages_job.get(1), 33));
         usagePercentagePair_job.add(new Pair<>(categoryUsages_job.get(2), 16));
@@ -184,7 +178,7 @@ public class RecentAnalysisReportFragmentTest {
 
         controller.create().start().resume().visible();
 
-        subject.bindPeopleGenreViews(peopleCategoryUsages);
+        subject.bindPeopleGenreViews(categoryUsages_gender_age, categoryUsages_job);
 
         // 상위 3개만 계산해온다
         verify(mockPresenter).getPercentage(eq(categoryUsages_gender_age), eq(0), eq(3));
@@ -211,6 +205,6 @@ public class RecentAnalysisReportFragmentTest {
 
     public static class ShadowRecentAnalysisReportFragment extends RecentAnalysisReportFragment {
         @Override
-        public void setPresenter(CurrentAnalysisReportContract.Presenter presenter) { }
+        public void setPresenter(RecentAnalysisReportContract.Presenter presenter) { }
     }
 }

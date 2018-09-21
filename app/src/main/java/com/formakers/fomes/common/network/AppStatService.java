@@ -70,7 +70,7 @@ public class AppStatService extends AbstractAppBeeService {
                 .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
-    public Observable<List<CategoryUsage>> requestPeopleCategoryUsage(final String peopleGroupFilter) {
+    public Observable<List<CategoryUsage>> requestPeopleCategoryUsage(final int peopleGroupFilter) {
         return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken(), peopleGroupFilter))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
@@ -78,8 +78,8 @@ public class AppStatService extends AbstractAppBeeService {
                 .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
-    public Observable<RecentReport> requestRecentReport(User user) {
-        return Observable.defer(() -> statAPI.getRecentReport(SharedPreferencesHelper.getAccessToken(), user))
+    public Observable<RecentReport> requestRecentReport(String categoryId, User user) {
+        return Observable.defer(() -> statAPI.getRecentReport(SharedPreferencesHelper.getAccessToken(), categoryId, user))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

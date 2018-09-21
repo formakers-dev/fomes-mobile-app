@@ -10,20 +10,18 @@ import android.widget.TextView;
 
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.analysis.contract.CurrentAnalysisReportContract;
-import com.formakers.fomes.analysis.presenter.CurrentAnalysisReportPresenter;
+import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
+import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
-import com.formakers.fomes.model.CategoryUsage;
-import com.formakers.fomes.common.network.api.StatAPI;
 
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class RecentAnalysisReportFragment extends BaseFragment implements CurrentAnalysisReportContract.View {
+public class RecentAnalysisReportFragment extends BaseFragment implements RecentAnalysisReportContract.View {
     public static final String TAG = RecentAnalysisReportFragment.class.getSimpleName();
 
     @BindView(R.id.current_analysis_loading_layout) ViewGroup loadingLayout;
@@ -35,12 +33,12 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Curren
     @BindView(R.id.current_analysis_people_genre_gender_age) ViewGroup peopleGenreGenderAge;
     @BindView(R.id.current_analysis_people_genre_job) ViewGroup peopleGenreJob;
 
-    CurrentAnalysisReportContract.Presenter presenter;
+    RecentAnalysisReportContract.Presenter presenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setPresenter(new CurrentAnalysisReportPresenter(this));
+        setPresenter(new RecentAnalysisReportPresenter(this));
 
         return inflater.inflate(R.layout.fragment_current_analysis_report, container, false);
     }
@@ -64,7 +62,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Curren
     }
 
     @Override
-    public void setPresenter(CurrentAnalysisReportContract.Presenter presenter) {
+    public void setPresenter(RecentAnalysisReportContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -75,40 +73,40 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Curren
     }
 
     @Override
-    public void bindMyGenreViews(List<CategoryUsage> genres) {
-        List<Pair<CategoryUsage, Integer>> usagePercentagePair = this.presenter.getPercentage(genres, 0, 3);
+    public void bindMyGenreViews(List<Usage> categoryUsages) {
+        List<Pair<Usage, Integer>> usagePercentagePair = this.presenter.getPercentage(categoryUsages, 0, 3);
 
-        ((TextView) myGenreItem1.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(0).first.getCategoryName());
+        ((TextView) myGenreItem1.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(0).first.getName());
         ((TextView) myGenreItem1.findViewById(R.id.used_time_textview))
                 .setText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(0).second));
-        ((TextView) myGenreItem2.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(1).first.getCategoryName());
+        ((TextView) myGenreItem2.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(1).first.getName());
         ((TextView) myGenreItem2.findViewById(R.id.used_time_textview))
                 .setText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(1).second));
-        ((TextView) myGenreItem3.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(2).first.getCategoryName());
+        ((TextView) myGenreItem3.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(2).first.getName());
         ((TextView) myGenreItem3.findViewById(R.id.used_time_textview))
                 .setText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(2).second));
     }
 
     @Override
-    public void bindPeopleGenreViews(Map<String, List<CategoryUsage>> peopleGenres) {
-        List<Pair<CategoryUsage, Integer>> genderAgeUsagePercentagePair
-                = this.presenter.getPercentage(peopleGenres.get(StatAPI.PeopleGroupFilter.GENDER_AND_AGE), 0, 3);
+    public void bindPeopleGenreViews(List<Usage> genderAgeUsages, List<Usage> jobUsages) {
+        List<Pair<Usage, Integer>> genderAgeUsagePercentagePair
+                = this.presenter.getPercentage(genderAgeUsages, 0, 3);
 
         ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_1))
-                .setText(genderAgeUsagePercentagePair.get(0).first.getCategoryName());
+                .setText(genderAgeUsagePercentagePair.get(0).first.getName());
         ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_2))
-                .setText(genderAgeUsagePercentagePair.get(1).first.getCategoryName());
+                .setText(genderAgeUsagePercentagePair.get(1).first.getName());
         ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_3))
-                .setText(genderAgeUsagePercentagePair.get(2).first.getCategoryName());
+                .setText(genderAgeUsagePercentagePair.get(2).first.getName());
 
-        List<Pair<CategoryUsage, Integer>> jobUsagePercentagePair
-                = this.presenter.getPercentage(peopleGenres.get(StatAPI.PeopleGroupFilter.JOB), 0, 3);
+        List<Pair<Usage, Integer>> jobUsagePercentagePair
+                = this.presenter.getPercentage(jobUsages, 0, 3);
 
         ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_1))
-                .setText(jobUsagePercentagePair.get(0).first.getCategoryName());
+                .setText(jobUsagePercentagePair.get(0).first.getName());
         ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_2))
-                .setText(jobUsagePercentagePair.get(1).first.getCategoryName());
+                .setText(jobUsagePercentagePair.get(1).first.getName());
         ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_3))
-                .setText(jobUsagePercentagePair.get(2).first.getCategoryName());
+                .setText(jobUsagePercentagePair.get(2).first.getName());
     }
 }

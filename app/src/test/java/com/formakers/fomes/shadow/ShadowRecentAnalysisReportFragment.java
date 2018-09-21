@@ -12,7 +12,7 @@ import com.formakers.fomes.fragment.BaseFragment;
 import org.robolectric.annotation.Implements;
 
 @Implements(value = RecentAnalysisReportFragment.class)
-public class ShadowCurrentAnalysisReportFragment extends BaseFragment {
+public class ShadowRecentAnalysisReportFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

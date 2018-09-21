@@ -122,13 +122,13 @@ public class AppStatServiceTest extends AbstractServiceTest {
     @Test
     public void requestRecentReport_호출시__카테고리별_사용량을_요청한다() throws Exception {
         User user = new User();
-        subject.requestRecentReport(user).subscribe(new TestSubscriber<>());
+        subject.requestRecentReport("GAME", user).subscribe(new TestSubscriber<>());
 
-        verify(mockStatAPI).getRecentReport(anyString(), eq(user));
+        verify(mockStatAPI).getRecentReport(anyString(), eq("GAME"), eq(user));
     }
 
     @Test
     public void requestRecentReport_호출시__토큰_만료_여부를_확인한다() throws Exception {
-        verifyToCheckExpiredToken(subject.requestRecentReport(new User()));
+        verifyToCheckExpiredToken(subject.requestRecentReport("GAME", new User()));
     }
 }

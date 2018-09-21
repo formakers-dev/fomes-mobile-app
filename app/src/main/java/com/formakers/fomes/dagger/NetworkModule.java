@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-    private final static long NETWORK_TIMEOUT = 30L;
+    private final static long NETWORK_TIMEOUT = 60L;
 
     @Singleton
     @Provides
@@ -30,7 +30,7 @@ public class NetworkModule {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(interceptor);
         builder.connectTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
-        builder.writeTimeout(30L, TimeUnit.SECONDS);
+        builder.writeTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
         builder.readTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
         return builder.build();
     }

@@ -31,72 +31,81 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    public User setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getNickName() {
         return nickName;
     }
 
-    public void setNickName(String nickName) {
+    public User setNickName(String nickName) {
         this.nickName = nickName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public Integer getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Integer birthday) {
+    public User setBirthday(Integer birthday) {
         this.birthday = birthday;
+        return this;
     }
 
     public String getJob() {
         return job;
     }
 
-    public void setJob(String job) {
+    public User setJob(String job) {
         this.job = job;
+        return this;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public User setGender(String gender) {
         this.gender = gender;
+        return this;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public User setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     public String getRegistrationToken() {
         return registrationToken;
     }
 
-    public void setRegistrationToken(String registrationToken) {
+    public User setRegistrationToken(String registrationToken) {
         this.registrationToken = registrationToken;
+        return this;
     }
 
     public List<String> getLifeApps() {
         return lifeApps;
     }
 
-    public void setLifeApps(List<String> lifeApps) {
+    public User setLifeApps(List<String> lifeApps) {
         this.lifeApps = lifeApps;
+        return this;
     }
 
     @Override
