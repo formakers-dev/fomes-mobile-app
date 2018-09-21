@@ -4,11 +4,13 @@ import com.formakers.fomes.R;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
+@Ignore
 public class OnboardingActivityTest extends BaseActivityTest<OnboardingActivity> {
     private OnboardingActivity subject;
 

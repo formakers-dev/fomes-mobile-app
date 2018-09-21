@@ -7,12 +7,14 @@ import com.formakers.fomes.shadow.ShadowAppUsageAnalysisFragment;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
+@Ignore
 @Config(constants = BuildConfig.class, shadows = {ShadowAppUsageAnalysisFragment.class})
 public class MyAppUsageActivityTest extends BaseActivityTest<MyAppUsageActivity> {
 

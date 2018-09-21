@@ -11,12 +11,14 @@ import com.formakers.fomes.shadow.ShadowOnboardingRewardFragment;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
+@Ignore
 @Config(shadows = {ShadowAppUsageAnalysisFragment.class, ShadowOnboardingRewardFragment.class})
 public class OnboardingAnalysisActivityTest extends BaseActivityTest<OnboardingAnalysisActivity> {
 

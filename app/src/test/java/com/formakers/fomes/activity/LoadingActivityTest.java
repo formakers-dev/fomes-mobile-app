@@ -9,6 +9,7 @@ import com.formakers.fomes.common.network.UserService;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowToast;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
+@Ignore
 public class LoadingActivityTest extends BaseActivityTest<LoadingActivity> {
 
     private LoadingActivity subject;

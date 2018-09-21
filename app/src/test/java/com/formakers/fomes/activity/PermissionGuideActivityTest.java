@@ -17,6 +17,7 @@ import com.formakers.fomes.util.FomesConstants.EXTRA;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowActivity;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
+@Ignore
 public class PermissionGuideActivityTest extends BaseActivityTest<PermissionGuideActivity> {
 
     @Inject

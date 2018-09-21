@@ -28,6 +28,7 @@ import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RuntimeEnvironment;
@@ -59,6 +60,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
+@Ignore
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 public class InterviewDetailActivityTest extends BaseActivityTest<InterviewDetailActivity> {
     private final int DIM_GRAY_COLOR = 1;
