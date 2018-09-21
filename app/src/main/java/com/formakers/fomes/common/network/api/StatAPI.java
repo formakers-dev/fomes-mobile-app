@@ -1,8 +1,10 @@
 package com.formakers.fomes.common.network.api;
 
+import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.model.ShortTermStat;
+import com.formakers.fomes.model.User;
 
 import java.util.List;
 
@@ -34,4 +36,7 @@ public interface StatAPI {
 
     @GET("/stats/usages/category")
     Observable<List<CategoryUsage>> getCategoryUsage(@Header("x-access-token") String accessToken, @Query("peopleGroup") String peopleGroup);
+
+    @POST("/report/category/{categoryId}/recent")
+    Observable<RecentReport> getRecentReport(@Header("x-access-token") String accessToken, @Body User user);
 }

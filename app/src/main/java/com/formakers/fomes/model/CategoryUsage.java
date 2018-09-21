@@ -1,5 +1,6 @@
 package com.formakers.fomes.model;
 
+@Deprecated
 public class CategoryUsage {
     String categoryId;
     String categoryName;

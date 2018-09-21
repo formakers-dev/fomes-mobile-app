@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import rx.Observable;
+import rx.Single;
 import rx.observers.TestSubscriber;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;

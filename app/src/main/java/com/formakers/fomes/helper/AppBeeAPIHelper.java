@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
+import rx.Single;
 import rx.schedulers.Schedulers;
 
 @Singleton

@@ -1,11 +1,13 @@
 package com.formakers.fomes.common.network;
 
+import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.helper.AppBeeAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
+import com.formakers.fomes.model.User;
 
 import java.util.List;
 
@@ -70,6 +72,14 @@ public class AppStatService extends AbstractAppBeeService {
 
     public Observable<List<CategoryUsage>> requestPeopleCategoryUsage(final String peopleGroupFilter) {
         return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken(), peopleGroupFilter))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(appBeeAPIHelper.refreshExpiredToken());
+    }
+
+    public Observable<RecentReport> requestRecentReport(User user) {
+        return Observable.defer(() -> statAPI.getRecentReport(SharedPreferencesHelper.getAccessToken(), user))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

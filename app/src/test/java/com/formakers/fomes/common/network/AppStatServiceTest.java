@@ -4,6 +4,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
+import com.formakers.fomes.model.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -116,5 +117,18 @@ public class AppStatServiceTest extends AbstractServiceTest {
     @Test
     public void requestCategoryUsage호출시_토큰_만료_여부를_확인한다() throws Exception {
         verifyToCheckExpiredToken(subject.requestCategoryUsage());
+    }
+
+    @Test
+    public void requestRecentReport_호출시__카테고리별_사용량을_요청한다() throws Exception {
+        User user = new User();
+        subject.requestRecentReport(user).subscribe(new TestSubscriber<>());
+
+        verify(mockStatAPI).getRecentReport(anyString(), eq(user));
+    }
+
+    @Test
+    public void requestRecentReport_호출시__토큰_만료_여부를_확인한다() throws Exception {
+        verifyToCheckExpiredToken(subject.requestRecentReport(new User()));
     }
 }

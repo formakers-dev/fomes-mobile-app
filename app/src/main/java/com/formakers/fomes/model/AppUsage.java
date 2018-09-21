@@ -1,5 +1,6 @@
 package com.formakers.fomes.model;
 
+@Deprecated
 public class AppUsage {
     String packageName;
     long totalUsedTime;
