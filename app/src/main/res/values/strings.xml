@@ -136,6 +136,11 @@
     <string name="common_next_button">다음으로</string>
     <string name="common_confirm">확인</string>
     <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
+    <string name="common_age">%d대</string>
+    <string name="common_male">남성</string>
+    <string name="common_female">여성</string>
+    <string name="common_new_line">\n</string>
+    <string name="common_string">%s</string>
 
     <!-- Fomes - locality strings -->
     <!-- Login -->

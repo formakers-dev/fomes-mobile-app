@@ -41,6 +41,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     public RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view) {
         this.view = view;
         this.view.getApplicationComponent().inject(this);
+        // 임시
         this.user = new User().setUserId(sharedPreferencesHelper.getUserId()).setGender("female")
                 .setBirthday(1992).setJob("IT종사자");
     }
@@ -116,5 +117,10 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
         }
 
         return result;
+    }
+
+    @Override
+    public User getUserInfo() {
+        return user;
     }
 }

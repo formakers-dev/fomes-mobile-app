@@ -1,5 +1,10 @@
 package com.formakers.fomes.model;
 
+import android.support.annotation.StringRes;
+
+import com.formakers.fomes.R;
+
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -106,6 +111,15 @@ public class User {
     public User setLifeApps(List<String> lifeApps) {
         this.lifeApps = lifeApps;
         return this;
+    }
+
+    public int getAge() {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        return ((currentYear - this.birthday) / 10) * 10;
+    }
+
+    public @StringRes int getGenderToStringResId() {
+        return "male".equals(this.gender) ? R.string.common_male : R.string.common_female;
     }
 
     @Override

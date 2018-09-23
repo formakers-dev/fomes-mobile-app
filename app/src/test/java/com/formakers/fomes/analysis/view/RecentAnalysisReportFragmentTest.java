@@ -8,6 +8,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.vo.Usage;
+import com.formakers.fomes.model.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -175,6 +176,7 @@ public class RecentAnalysisReportFragmentTest {
 
         when(mockPresenter.getPercentage(eq(categoryUsages_gender_age), anyInt(), anyInt())).thenReturn(usagePercentagePair_gender_age);
         when(mockPresenter.getPercentage(eq(categoryUsages_job), anyInt(), anyInt())).thenReturn(usagePercentagePair_job);
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob("IT"));
 
         controller.create().start().resume().visible();
 
@@ -185,6 +187,9 @@ public class RecentAnalysisReportFragmentTest {
         verify(mockPresenter).getPercentage(eq(categoryUsages_job), eq(0), eq(3));
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
+                .findViewById(R.id.demographic_title)).getText()).isEqualTo("20대\n여성");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
                 .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("롤플레잉");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
@@ -192,6 +197,9 @@ public class RecentAnalysisReportFragmentTest {
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
                 .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("시뮬레이션");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
+                .findViewById(R.id.demographic_title)).getText()).isEqualTo("IT");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
                 .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("퀴즈");

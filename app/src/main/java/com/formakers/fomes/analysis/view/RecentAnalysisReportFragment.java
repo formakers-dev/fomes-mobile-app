@@ -15,6 +15,7 @@ import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
+import com.formakers.fomes.model.User;
 
 import java.util.List;
 
@@ -89,6 +90,12 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
     @Override
     public void bindPeopleGenreViews(List<Usage> genderAgeUsages, List<Usage> jobUsages) {
+        User userInfo = this.presenter.getUserInfo();
+
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_title))
+                .setText(String.format(getString(R.string.common_age) + getString(R.string.common_new_line) + getString(R.string.common_string),
+                        userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
+
         List<Pair<Usage, Integer>> genderAgeUsagePercentagePair
                 = this.presenter.getPercentage(genderAgeUsages, 0, 3);
 
@@ -98,6 +105,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(genderAgeUsagePercentagePair.get(1).first.getName());
         ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_3))
                 .setText(genderAgeUsagePercentagePair.get(2).first.getName());
+
+        ((TextView) peopleGenreJob.findViewById(R.id.demographic_title))
+                .setText(String.format(getString(R.string.common_string), userInfo.getJob()));
 
         List<Pair<Usage, Integer>> jobUsagePercentagePair
                 = this.presenter.getPercentage(jobUsages, 0, 3);
