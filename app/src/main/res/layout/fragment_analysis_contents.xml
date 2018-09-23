@@ -1,261 +1,375 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingEnd="@dimen/provision_padding_start_end"
-    android:paddingStart="@dimen/provision_padding_start_end">
+    android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/analysis_icon_imageview"
-        android:layout_width="67dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="37dp"
-        android:src="@drawable/fomes_face_smile"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/current_analysis_title_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/current_analysis_title"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/provision_title_text_size"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/analysis_icon_imageview" />
-
-    <TextView
-        android:id="@+id/current_analysis_subtitle_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/provision_subtitle_margin_top"
-        android:text="@string/current_analysis_subtitle"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/provision_subtitle_text_size"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_title_textview" />
-
-    <!-- start of My Genre -->
-
-    <View
-        android:id="@+id/my_genre_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="44dp"
-        android:background="@color/fomes_pale_gray"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_subtitle_textview" />
-
-    <TextView
-        android:id="@+id/current_analysis_my_genre_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/analysis_my_genre_title"
-        android:textColor="@color/fomes_gray"
-        android:textSize="@dimen/current_analysis_content_title_size"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/my_genre_divider" />
-
-    <TextView
-        android:id="@+id/current_analysis_my_genre_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="@string/analysis_my_genre_subtitle"
-        android:textColor="@color/fomes_light_warm_gray"
-        android:textSize="@dimen/current_analysis_content_subtitle_size"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_title" />
-
-    <include
-        android:id="@+id/current_analysis_my_genre_1"
-        layout="@layout/item_analysis_my_genre"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        app:layout_constraintEnd_toStartOf="@+id/current_analysis_my_genre_2"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_subtitle" />
-
-    <include
-        android:id="@+id/current_analysis_my_genre_2"
-        layout="@layout/item_analysis_my_genre"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        app:layout_constraintEnd_toStartOf="@+id/current_analysis_my_genre_3"
-        app:layout_constraintStart_toEndOf="@id/current_analysis_my_genre_1"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_subtitle" />
-
-    <include
-        android:id="@+id/current_analysis_my_genre_3"
-        layout="@layout/item_analysis_my_genre"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/current_analysis_my_genre_2"
-        app:layout_constraintTop_toBottomOf="@+id/current_analysis_my_genre_subtitle" />
-
-    <!-- end of My Genre -->
-
-    <!-- start of People's Genre -->
-    <View
-        android:id="@+id/people_genre_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="34dp"
-        android:background="@color/fomes_pale_gray"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_my_genre_3" />
-
-    <TextView
-        android:id="@+id/current_analysis_people_genre_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/analysis_people_genre_title"
-        android:textColor="@color/fomes_gray"
-        android:textSize="@dimen/current_analysis_content_title_size"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/people_genre_divider" />
-
-    <TextView
-        android:id="@+id/current_analysis_people_genre_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="@string/analysis_people_genre_subtitle"
-        android:textColor="@color/fomes_light_warm_gray"
-        android:textSize="@dimen/current_analysis_content_subtitle_size"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_people_genre_title" />
-
-    <include
-        android:id="@+id/current_analysis_people_genre_gender_age"
-        layout="@layout/item_analysis_people_genre"
-        android:layout_width="@dimen/current_analysis_people_genre_item_width"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/current_analysis_people_genre_job"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_people_genre_subtitle" />
-
-    <include
-        android:id="@+id/current_analysis_people_genre_job"
-        layout="@layout/item_analysis_people_genre"
-        android:layout_width="@dimen/current_analysis_people_genre_item_width"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/current_analysis_people_genre_gender_age"
-        app:layout_constraintTop_toBottomOf="@id/current_analysis_people_genre_subtitle" />
-    <!-- end of People's Genre -->
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/fomes_pale_gray" />
-
-    <LinearLayout
-        android:id="@+id/current_analysis_playtime_rank_layout"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/current_analysis_subtitle"
-            android:textColor="@color/fomes_gray"
-            android:textSize="@dimen/current_analysis_content_title_size" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/fomes_pale_gray" />
-
-    <LinearLayout
-        android:id="@+id/current_analysis_favorite_developer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/analysis_icon_imageview"
+            android:layout_width="67dp"
+            android:layout_height="73dp"
+            android:layout_marginTop="37dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:src="@drawable/fomes_face_smile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/analysis_title_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/current_analysis_subtitle"
-            android:textColor="@color/fomes_gray"
-            android:textSize="@dimen/current_analysis_content_title_size" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/fomes_pale_gray" />
-
-    <LinearLayout
-        android:id="@+id/current_analysis_my_game_rank_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/current_analysis_title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/provision_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/analysis_icon_imageview" />
 
         <TextView
+            android:id="@+id/analysis_subtitle_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/provision_subtitle_margin_top"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
             android:text="@string/current_analysis_subtitle"
-            android:textColor="@color/fomes_gray"
-            android:textSize="@dimen/current_analysis_content_title_size" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/provision_subtitle_text_size"
+            app:layout_constraintTop_toBottomOf="@id/analysis_title_textview" />
 
-    </LinearLayout>
+        <!-- start of My Genre -->
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/fomes_pale_gray" />
-
-    <LinearLayout
-        android:id="@+id/current_analysis_popular_game_rank_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <View
+            android:id="@+id/my_genre_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintTop_toBottomOf="@id/analysis_subtitle_textview" />
 
         <TextView
+            android:id="@+id/analysis_my_genre_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/current_analysis_subtitle"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_my_genre_title"
             android:textColor="@color/fomes_gray"
-            android:textSize="@dimen/current_analysis_content_title_size" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/current_analysis_announce_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+            android:textSize="@dimen/analysis_content_title_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/my_genre_divider" />
 
         <TextView
+            android:id="@+id/analysis_my_genre_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/current_analysis_subtitle"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_my_genre_subtitle"
+            android:textColor="@color/fomes_light_warm_gray"
+            android:textSize="@dimen/analysis_content_subtitle_size"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_title" />
+
+        <include
+            android:id="@+id/analysis_my_genre_1"
+            layout="@layout/item_analysis_my_genre"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            app:layout_constraintEnd_toStartOf="@+id/analysis_my_genre_2"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_subtitle" />
+
+        <include
+            android:id="@+id/analysis_my_genre_2"
+            layout="@layout/item_analysis_my_genre"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
+            app:layout_constraintEnd_toStartOf="@+id/analysis_my_genre_3"
+            app:layout_constraintStart_toEndOf="@id/analysis_my_genre_1"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_subtitle" />
+
+        <include
+            android:id="@+id/analysis_my_genre_3"
+            layout="@layout/item_analysis_my_genre"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/analysis_my_genre_2"
+            app:layout_constraintTop_toBottomOf="@+id/analysis_my_genre_subtitle" />
+
+        <!-- end of My Genre -->
+
+        <!-- start of People's Genre -->
+        <View
+            android:id="@+id/people_genre_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_3" />
+
+        <TextView
+            android:id="@+id/analysis_people_genre_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_people_genre_title"
             android:textColor="@color/fomes_gray"
-            android:textSize="@dimen/current_analysis_content_title_size" />
+            android:textSize="@dimen/analysis_content_title_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/people_genre_divider" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/analysis_people_genre_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_people_genre_subtitle"
+            android:textColor="@color/fomes_light_warm_gray"
+            android:textSize="@dimen/analysis_content_subtitle_size"
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_genre_title" />
 
-    <Button
-        android:id="@+id/current_analysis_exit_button"
-        android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/common_next_button"
-        android:textColor="@color/fomes_white"
-        android:textSize="@dimen/provision_bottom_button_text_size"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints" />
+        <include
+            android:id="@+id/analysis_people_genre_gender_age"
+            layout="@layout/item_analysis_people_genre"
+            android:layout_width="@dimen/current_analysis_people_genre_item_width"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            app:layout_constraintEnd_toStartOf="@+id/analysis_people_genre_job"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_genre_subtitle" />
 
-</android.support.constraint.ConstraintLayout>
+        <include
+            android:id="@+id/analysis_people_genre_job"
+            layout="@layout/item_analysis_people_genre"
+            android:layout_width="@dimen/current_analysis_people_genre_item_width"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/analysis_people_genre_gender_age"
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_genre_subtitle" />
+        <!-- end of People's Genre -->
+
+        <!-- start of Playtime Rank -->
+        <View
+            android:id="@+id/playtime_rank_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_genre_job" />
+
+        <TextView
+            android:id="@+id/analysis_playtime_rank_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_playtime_rank_title"
+            android:textColor="@color/fomes_gray"
+            android:textSize="@dimen/analysis_content_title_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/playtime_rank_divider" />
+
+        <TextView
+            android:id="@+id/analysis_playtime_rank_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_playtime_rank_subtitle"
+            android:textColor="@color/fomes_light_warm_gray"
+            android:textSize="@dimen/analysis_content_subtitle_size"
+            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_title" />
+        <!-- end of Playtime Rank -->
+
+        <!-- start of Favorite Developer -->
+        <View
+            android:id="@+id/favorite_developer_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_subtitle" />
+
+        <TextView
+            android:id="@+id/analysis_favorite_developer_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_favorite_developer_title"
+            android:textColor="@color/fomes_gray"
+            android:textSize="@dimen/analysis_content_title_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/favorite_developer_divider" />
+
+        <TextView
+            android:id="@+id/analysis_favorite_developer_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_favorite_developer_subtitle"
+            android:textColor="@color/fomes_light_warm_gray"
+            android:textSize="@dimen/analysis_content_subtitle_size"
+            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_title" />
+        <!-- end of Favorite Developer -->
+
+        <!-- start of My Games -->
+        <View
+            android:id="@+id/my_games_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_title" />
+
+        <TextView
+            android:id="@+id/analysis_my_games_divider_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_my_games_title"
+            android:textColor="@color/fomes_gray"
+            android:textSize="@dimen/analysis_content_title_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/my_games_divider" />
+
+        <TextView
+            android:id="@+id/analysis_my_games_divider_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_my_games_subtitle"
+            android:textColor="@color/fomes_light_warm_gray"
+            android:textSize="@dimen/analysis_content_subtitle_size"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_games_divider_title" />
+        <!-- end of My Games -->
+
+        <!-- start of People Games -->
+        <View
+            android:id="@+id/people_games_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_games_divider_subtitle" />
+
+        <TextView
+            android:id="@+id/analysis_people_games_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_people_games_title"
+            android:textColor="@color/fomes_gray"
+            android:textSize="@dimen/analysis_content_title_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/people_games_divider" />
+
+        <TextView
+            android:id="@+id/analysis_people_games_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_people_games_subtitle"
+            android:textColor="@color/fomes_light_warm_gray"
+            android:textSize="@dimen/analysis_content_subtitle_size"
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_games_title" />
+        <!-- end of People Games -->
+
+        <LinearLayout
+            android:id="@+id/analysis_announce_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="59dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:padding="15dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_games_subtitle"
+            android:background="@drawable/item_rect_background">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/analysis_q_lifegame"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="@dimen/analysis_qna_text_size" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/analysis_a_lifegame"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/analysis_qna_text_size" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/current_analysis_exit_button"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_marginTop="38dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/common_confirm"
+            android:textColor="@color/fomes_white"
+            android:textSize="@dimen/provision_bottom_button_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysis_announce_layout"
+            tools:ignore="MissingConstraints" />
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

@@ -133,19 +133,19 @@ public class RecentAnalysisReportFragmentTest {
         // 상위 3개만 계산해온다
         verify(mockPresenter).getPercentage(eq(categoryUsages), eq(0), eq(3));
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_my_genre_1)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_1)
                 .findViewById(R.id.name_textview)).getText()).isEqualTo("롤플레잉");
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_my_genre_1)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_1)
                 .findViewById(R.id.used_time_textview)).getText()).isEqualTo("총 시간의 49%");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_my_genre_2)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_2)
                 .findViewById(R.id.name_textview)).getText()).isEqualTo("퍼즐");
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_my_genre_2)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_2)
                 .findViewById(R.id.used_time_textview)).getText()).isEqualTo("총 시간의 33%");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_my_genre_3)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_3)
                 .findViewById(R.id.name_textview)).getText()).isEqualTo("시뮬레이션");
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_my_genre_3)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_3)
                 .findViewById(R.id.used_time_textview)).getText()).isEqualTo("총 시간의 16%");
     }
 
@@ -184,22 +184,22 @@ public class RecentAnalysisReportFragmentTest {
         verify(mockPresenter).getPercentage(eq(categoryUsages_gender_age), eq(0), eq(3));
         verify(mockPresenter).getPercentage(eq(categoryUsages_job), eq(0), eq(3));
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_gender_age)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
                 .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("롤플레잉");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_gender_age)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
                 .findViewById(R.id.demographic_name_2)).getText()).isEqualTo("퍼즐");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_gender_age)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
                 .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("시뮬레이션");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_job)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
                 .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("퀴즈");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_job)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
                 .findViewById(R.id.demographic_name_2)).getText()).isEqualTo("캐주얼");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.current_analysis_people_genre_job)
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
                 .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("퍼즐");
     }
 

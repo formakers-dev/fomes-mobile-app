@@ -27,11 +27,11 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.current_analysis_loading_layout) ViewGroup loadingLayout;
     @BindView(R.id.current_analysis_layout) ViewGroup contentLayout;
     @BindView(R.id.current_analysis_error_layout) ViewGroup errorLayout;
-    @BindView(R.id.current_analysis_my_genre_1) ViewGroup myGenreItem1;
-    @BindView(R.id.current_analysis_my_genre_2) ViewGroup myGenreItem2;
-    @BindView(R.id.current_analysis_my_genre_3) ViewGroup myGenreItem3;
-    @BindView(R.id.current_analysis_people_genre_gender_age) ViewGroup peopleGenreGenderAge;
-    @BindView(R.id.current_analysis_people_genre_job) ViewGroup peopleGenreJob;
+    @BindView(R.id.analysis_my_genre_1) ViewGroup myGenreItem1;
+    @BindView(R.id.analysis_my_genre_2) ViewGroup myGenreItem2;
+    @BindView(R.id.analysis_my_genre_3) ViewGroup myGenreItem3;
+    @BindView(R.id.analysis_people_genre_gender_age) ViewGroup peopleGenreGenderAge;
+    @BindView(R.id.analysis_people_genre_job) ViewGroup peopleGenreJob;
 
     RecentAnalysisReportContract.Presenter presenter;
 

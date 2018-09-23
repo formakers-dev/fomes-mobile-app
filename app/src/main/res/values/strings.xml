@@ -134,6 +134,7 @@
 
     <!-- Fomes - common strings -->
     <string name="common_next_button">다음으로</string>
+    <string name="common_confirm">확인</string>
     <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
 
     <!-- Fomes - locality strings -->
@@ -167,6 +168,16 @@
     <string name="analysis_my_genre_used_time_format">총 시간의 %d%%</string>
     <string name="analysis_people_genre_title">사람들의 게임 장르</string>
     <string name="analysis_people_genre_subtitle">나이/성별/직업 기준 7일간 모바일 게임 장르별 플레이 시간 집계</string>
+    <string name="analysis_playtime_rank_title">플레이 시간 순위</string>
+    <string name="analysis_playtime_rank_subtitle">유저들의 7일간 게임 플레이 시간 집계</string>
+    <string name="analysis_favorite_developer_title">최장 플레이 개발사</string>
+    <string name="analysis_favorite_developer_subtitle">유저들이 7일간 가장 오래 플레이한 게임의 개발사</string>
+    <string name="analysis_my_games_title">나의 게임 1/2/3위</string>
+    <string name="analysis_my_games_subtitle">나의 7일간 모바일 게임별 플레이 시간 집계</string>
+    <string name="analysis_people_games_title">사람들의 게임 1/2/3위</string>
+    <string name="analysis_people_games_subtitle">나이/성별/직업 기준 7일간 모바일 게임별 플레이 시간 집계</string>
+    <string name="analysis_q_lifegame">Q. 인생게임에 대한 분석은 왜 없나요?</string>
+    <string name="analysis_a_lifegame">A. 더 정확한 분석을 위해 데이터를 수집 중입니다.\n충분한 데이터가 모이면 최대한 빠르게 인생게임에 대한 분석 &amp; 추천을 오픈하고 알려드리겠습니다! :-)</string>
 
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>

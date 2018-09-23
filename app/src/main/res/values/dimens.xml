@@ -17,12 +17,14 @@
     <dimen name="provision_content_margin_top">21dp</dimen>
 
     <!-- Analysis -->
-    <dimen name="current_analysis_content_title_size">16dp</dimen>
-    <dimen name="current_analysis_content_subtitle_size">10dp</dimen>
+    <dimen name="analysis_content_title_size">16dp</dimen>
+    <dimen name="analysis_content_subtitle_size">10dp</dimen>
     <dimen name="item_app_icon_width_height">70dp</dimen>
     <dimen name="item_app_content_margin_start">24dp</dimen>
     <dimen name="item_app_content_margin_end">24dp</dimen>
     <dimen name="item_demographic_name_margin_top">5dp</dimen>
+
+    <dimen name="analysis_qna_text_size">12dp</dimen>
 
     <!-- Main -->
     <dimen name="main_nav_margin_start">27dp</dimen>
