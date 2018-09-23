@@ -22,6 +22,7 @@ import com.formakers.fomes.model.User;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class RecentAnalysisReportFragment extends BaseFragment implements RecentAnalysisReportContract.View {
@@ -173,5 +174,10 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(getString(R.string.analysis_favorite_developer_description, genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_description))
                 .setText(getString(R.string.analysis_favorite_developer_description, jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
+    }
+
+    @OnClick(R.id.current_analysis_exit_button)
+    public void onConfirmButtonClick() {
+        this.getActivity().finish();
     }
 }

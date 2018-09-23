@@ -291,6 +291,15 @@ public class RecentAnalysisReportFragmentTest {
                 .findViewById(R.id.developer_description)).getText()).isEqualTo("순순디자인게임\n게임 개발사");
     }
 
+    @Test
+    public void 확인_버튼_클릭시__화면을_종료한다() {
+        controller.create().start().resume().visible();
+
+        subject.getView().findViewById(R.id.current_analysis_exit_button).performClick();
+
+        assertThat(subject.getActivity().isFinishing()).isTrue();
+    }
+
     public static class ShadowRecentAnalysisReportFragment extends RecentAnalysisReportFragment {
         @Override
         public void setPresenter(RecentAnalysisReportContract.Presenter presenter) { }
