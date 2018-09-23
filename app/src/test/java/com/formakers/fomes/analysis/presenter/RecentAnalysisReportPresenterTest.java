@@ -99,8 +99,8 @@ public class RecentAnalysisReportPresenterTest {
 
         List<Rank> totalUsedTimeRank = new ArrayList<>();
         totalUsedTimeRank.add(new Rank("user1", 1, 10000000L));
-        totalUsedTimeRank.add(new Rank("mockUserId", 24, 1000000L));
         totalUsedTimeRank.add(new Rank("user3", 999, 1L));
+        totalUsedTimeRank.add(new Rank("mockUserId", 24, 1000000L));
 
         List<UsageGroup> usages = new ArrayList<>();
 
@@ -120,6 +120,7 @@ public class RecentAnalysisReportPresenterTest {
         verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
         verify(mockAppStatService).sendAppUsages(anyList());
 
+        // 분석 결과 요청
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockAppStatService).requestRecentReport(eq("GAME"), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getUserId()).isEqualTo("mockUserId");
@@ -127,14 +128,22 @@ public class RecentAnalysisReportPresenterTest {
         assertThat(argumentCaptor.getValue().getBirthday()).isEqualTo(1989);
         assertThat(argumentCaptor.getValue().getJob()).isEqualTo("IT종사자");
 
+        // 나의 장르 뷰 업데이트
         verify(mockView).bindMyGenreViews(eq(report.getUsages().get(0).getCategoryUsages()));
 
+        // 사람들의 장르 뷰 업데이트
         verify(mockView).bindPeopleGenreViews(eq(report.getUsages().get(1).getCategoryUsages()),
                 eq(report.getUsages().get(2).getCategoryUsages()));
 
+        // 사용시간 랭킹 뷰 업데이트
+        ArgumentCaptor<List<Rank>> ranksArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockView).bindRankingViews(ranksArgumentCaptor.capture());
+        List<Rank> capturedList = ranksArgumentCaptor.getValue();
+        assertThat(capturedList.get(0).getRank()).isEqualTo(1);
+        assertThat(capturedList.get(1).getRank()).isEqualTo(24);
+        assertThat(capturedList.get(2).getRank()).isEqualTo(999);
+
         // TODO : 구현필요
-//        verify(mockView).bindRankingViews(eq(report.getTotalUsedTimeRank()));
-//
 //        verify(mockView).bindFavoritDeveloperViews(eq(report.getUsages().get(0).getDeveloperUsages()),
 //                eq(report.getUsages().get(1).getDeveloperUsages()),
 //                eq(report.getUsages().get(2).getDeveloperUsages()));

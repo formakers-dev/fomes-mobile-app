@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
+import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.model.User;
 
@@ -209,6 +210,32 @@ public class RecentAnalysisReportFragmentTest {
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
                 .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("퍼즐");
+    }
+
+    @Test
+    public void bindRankingViews_호출시__분석화면의_사용시간_랭킹_레이아웃에_데이터를_셋팅한다() {
+        List<Rank> rankList = new ArrayList<>();
+        rankList.add(new Rank("bestUserId", 1, 10000000L));
+        rankList.add(new Rank("myUserId", 4, 5000000L));
+        rankList.add(new Rank("worstUserId", 100, 1000000L));
+
+        controller.create().start().resume().visible();
+
+        subject.bindRankingViews(rankList);
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_best)
+                .findViewById(R.id.rank_number)).getText()).isEqualTo("1등");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_mine)
+                .findViewById(R.id.rank_number)).getText()).isEqualTo("4등");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_worst)
+                .findViewById(R.id.rank_number)).getText()).isEqualTo("꼴등");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_best)
+                .findViewById(R.id.rank_content)).getText()).isEqualTo("2.8\n시간");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_mine)
+                .findViewById(R.id.rank_content)).getText()).isEqualTo("1.4\n시간");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_worst)
+                .findViewById(R.id.rank_content)).getText()).isEqualTo("0.3\n시간");
     }
 
     public static class ShadowRecentAnalysisReportFragment extends RecentAnalysisReportFragment {

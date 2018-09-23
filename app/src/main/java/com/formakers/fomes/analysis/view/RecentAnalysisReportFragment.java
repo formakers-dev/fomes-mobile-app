@@ -2,6 +2,7 @@ package com.formakers.fomes.analysis.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
@@ -33,6 +35,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_genre_3) ViewGroup myGenreItem3;
     @BindView(R.id.analysis_people_genre_gender_age) ViewGroup peopleGenreGenderAge;
     @BindView(R.id.analysis_people_genre_job) ViewGroup peopleGenreJob;
+    @BindView(R.id.analysis_playtime_rank_best) ViewGroup rankBest;
+    @BindView(R.id.analysis_playtime_rank_mine) ViewGroup rankMine;
+    @BindView(R.id.analysis_playtime_rank_worst) ViewGroup rankWorst;
 
     RecentAnalysisReportContract.Presenter presenter;
 
@@ -118,5 +123,27 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(jobUsagePercentagePair.get(1).first.getName());
         ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_3))
                 .setText(jobUsagePercentagePair.get(2).first.getName());
+    }
+
+    @Override
+    public void bindRankingViews(List<Rank> totalUsedTimeRank) {
+        Log.d(TAG, String.valueOf(totalUsedTimeRank));
+
+        ((TextView) rankBest.findViewById(R.id.rank_number))
+                .setText(String.format(getString(R.string.analysis_playtime_rank_number), totalUsedTimeRank.get(0).getRank()));
+        ((TextView) rankMine.findViewById(R.id.rank_number))
+                .setText(String.format(getString(R.string.analysis_playtime_rank_number),totalUsedTimeRank.get(1).getRank()));
+        ((TextView) rankWorst.findViewById(R.id.rank_number))
+                .setText(R.string.analysis_playtime_rank_number_last);
+
+        ((TextView) rankBest.findViewById(R.id.rank_content))
+                .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
+                        totalUsedTimeRank.get(0).getContent(Rank.CONVERT_TYPE_HOURS)));
+        ((TextView) rankMine.findViewById(R.id.rank_content))
+                .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
+                        totalUsedTimeRank.get(1).getContent(Rank.CONVERT_TYPE_HOURS)));
+        ((TextView) rankWorst.findViewById(R.id.rank_content))
+                .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
+                        totalUsedTimeRank.get(2).getContent(Rank.CONVERT_TYPE_HOURS)));
     }
 }

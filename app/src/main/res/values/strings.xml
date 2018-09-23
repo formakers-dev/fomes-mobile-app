@@ -175,6 +175,9 @@
     <string name="analysis_people_genre_subtitle">나이/성별/직업 기준 7일간 모바일 게임 장르별 플레이 시간 집계</string>
     <string name="analysis_playtime_rank_title">플레이 시간 순위</string>
     <string name="analysis_playtime_rank_subtitle">유저들의 7일간 게임 플레이 시간 집계</string>
+    <string name="analysis_playtime_rank_number">%d등</string>
+    <string name="analysis_playtime_rank_number_last">꼴등</string>
+    <string name="analysis_playtime_rank_hours">%.1f\n시간</string>
     <string name="analysis_favorite_developer_title">최장 플레이 개발사</string>
     <string name="analysis_favorite_developer_subtitle">유저들이 7일간 가장 오래 플레이한 게임의 개발사</string>
     <string name="analysis_my_games_title">나의 게임 1/2/3위</string>

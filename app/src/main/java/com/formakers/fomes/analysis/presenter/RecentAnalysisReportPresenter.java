@@ -4,12 +4,12 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
+import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.model.User;
 
@@ -67,6 +67,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
         return Completable.concat(
                 this.requestPostUsages()
                 , Completable.create(emitter -> requestRecentReport().map(recentReport -> {
+                    // RecentReport 에 sort 메소드 추가하여 분리 필요
                     for (UsageGroup usageGroup : recentReport.getUsages()) {
                         Usage[] appUsages = new Usage[usageGroup.getAppUsages().size()];
                         usageGroup.getAppUsages().toArray(appUsages);
@@ -86,6 +87,13 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                         usageGroup.setDeveloperUsages(Arrays.asList(developerUsages));
                     }
 
+                    Rank[] ranks = new Rank[recentReport.getTotalUsedTimeRank().size()];
+                    recentReport.getTotalUsedTimeRank().toArray(ranks);
+
+                    Arrays.sort(ranks, (o1, o2) -> o1.getRank() > o2.getRank() ? 1 : -1);
+
+                    recentReport.setTotalUsedTimeRank(Arrays.asList(ranks));
+
                     return recentReport;
                 }).subscribe(recentReport -> {
                     Map<Integer, UsageGroup> usageGroupMap = new HashMap<>();
@@ -97,6 +105,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                     this.view.bindMyGenreViews(usageGroupMap.get(UsageGroup.TYPE_MINE).getCategoryUsages());
                     this.view.bindPeopleGenreViews(usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER).getCategoryUsages()
                             , usageGroupMap.get(UsageGroup.TYPE_JOB).getCategoryUsages());
+                    this.view.bindRankingViews(recentReport.getTotalUsedTimeRank());
 
                     emitter.onCompleted();
                 }, e -> emitter.onError(e)))
