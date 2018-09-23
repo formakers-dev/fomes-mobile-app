@@ -180,6 +180,9 @@
     <string name="analysis_playtime_rank_hours">%.1f\n시간</string>
     <string name="analysis_favorite_developer_title">최장 플레이 개발사</string>
     <string name="analysis_favorite_developer_subtitle">유저들이 7일간 가장 오래 플레이한 게임의 개발사</string>
+    <string name="analysis_favorite_developer_group_mine">나의 1위</string>
+    <string name="analysis_favorite_developer_group">%s 1위</string>
+    <string name="analysis_favorite_developer_description">%s\n게임 개발사</string>
     <string name="analysis_my_games_title">나의 게임 1/2/3위</string>
     <string name="analysis_my_games_subtitle">나의 7일간 모바일 게임별 플레이 시간 집계</string>
     <string name="analysis_people_games_title">사람들의 게임 1/2/3위</string>

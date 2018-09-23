@@ -24,5 +24,6 @@ public interface RecentAnalysisReportContract {
         void bindMyGenreViews(List<Usage> categoryUsages);
         void bindPeopleGenreViews(List<Usage> genderAgeUsages, List<Usage> jobUsages);
         void bindRankingViews(List<Rank> totalUsedTimeRank);
+        void bindFavoriteDeveloperViews(List<Usage> myDeveloperUsages, List<Usage> genderAgeDeveloperUsages, List<Usage> jobDeveloperUsages);
     }
 }

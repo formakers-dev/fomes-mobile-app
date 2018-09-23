@@ -9,6 +9,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
+import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.User;
 
 import org.junit.After;
@@ -236,6 +237,58 @@ public class RecentAnalysisReportFragmentTest {
                 .findViewById(R.id.rank_content)).getText()).isEqualTo("1.4\n시간");
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_worst)
                 .findViewById(R.id.rank_content)).getText()).isEqualTo("0.3\n시간");
+    }
+
+    @Test
+    public void bindFavoriteDeveloperViews_호출시__분석화면의_최애개발사_레이아웃에_데이터를_셋팅한다() {
+        List<Usage> mine = new ArrayList<>();
+        List<Usage> genderAge = new ArrayList<>();
+        List<Usage> job = new ArrayList<>();
+
+        List<AppInfo> appInfos = new ArrayList<>();
+        appInfos.add(new AppInfo("pk1", "블루홀게임").setTotalUsedTime(9000L));
+        appInfos.add(new AppInfo("pk2", "블루홀게임2").setTotalUsedTime(999L));
+        mine.add(new Usage("블루홀", "블루홀", 9999L, appInfos));
+        mine.add(new Usage("노잼", "노잼", 99L, appInfos));
+
+        List<AppInfo> appInfos2 = new ArrayList<>();
+        appInfos2.add(new AppInfo("pk1", "블리자드게임").setTotalUsedTime(9000L));
+        appInfos2.add(new AppInfo("pk2", "블리자드게임2").setTotalUsedTime(999L));
+        genderAge.add(new Usage("블리자드", "블리자드", 9999L, appInfos2));
+        genderAge.add(new Usage("노잼", "노잼", 99L, appInfos2));
+
+        List<AppInfo> appInfos3 = new ArrayList<>();
+        appInfos3.add(new AppInfo("pk1", "순순디자인게임").setTotalUsedTime(9000L));
+        appInfos3.add(new AppInfo("pk2", "순순디자인게임2").setTotalUsedTime(999L));
+        job.add(new Usage("순순디자인", "순순디자인", 9999L, appInfos3));
+        job.add(new Usage("노잼", "노잼", 99L, appInfos3));
+
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob("IT"));
+
+        controller.create().start().resume().visible();
+
+        subject.bindFavoriteDeveloperViews(mine, genderAge, job);
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_favorite_developer)
+                .findViewById(R.id.group)).getText()).isEqualTo("나의 1위");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_gender_age_favorite_developer)
+                .findViewById(R.id.group)).getText()).isEqualTo("20대 여성 1위");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_job_favorite_developer)
+                .findViewById(R.id.group)).getText()).isEqualTo("IT 1위");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_favorite_developer)
+                .findViewById(R.id.developer_name)).getText()).isEqualTo("블루홀");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_gender_age_favorite_developer)
+                .findViewById(R.id.developer_name)).getText()).isEqualTo("블리자드");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_job_favorite_developer)
+                .findViewById(R.id.developer_name)).getText()).isEqualTo("순순디자인");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_favorite_developer)
+                .findViewById(R.id.developer_description)).getText()).isEqualTo("블루홀게임\n게임 개발사");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_gender_age_favorite_developer)
+                .findViewById(R.id.developer_description)).getText()).isEqualTo("블리자드게임\n게임 개발사");
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_job_favorite_developer)
+                .findViewById(R.id.developer_description)).getText()).isEqualTo("순순디자인게임\n게임 개발사");
     }
 
     public static class ShadowRecentAnalysisReportFragment extends RecentAnalysisReportFragment {

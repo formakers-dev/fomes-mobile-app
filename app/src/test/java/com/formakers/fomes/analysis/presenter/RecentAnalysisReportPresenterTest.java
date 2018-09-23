@@ -143,11 +143,11 @@ public class RecentAnalysisReportPresenterTest {
         assertThat(capturedList.get(1).getRank()).isEqualTo(24);
         assertThat(capturedList.get(2).getRank()).isEqualTo(999);
 
+        verify(mockView).bindFavoriteDeveloperViews(eq(report.getUsages().get(0).getDeveloperUsages()),
+                eq(report.getUsages().get(1).getDeveloperUsages()),
+                eq(report.getUsages().get(2).getDeveloperUsages()));
+
         // TODO : 구현필요
-//        verify(mockView).bindFavoritDeveloperViews(eq(report.getUsages().get(0).getDeveloperUsages()),
-//                eq(report.getUsages().get(1).getDeveloperUsages()),
-//                eq(report.getUsages().get(2).getDeveloperUsages()));
-//
 //        verify(mockView).bindMyGames(eq(report.getUsages().get(0).getAppUsages()));
 //        verify(mockView).bindPeopleGames(eq(report.getUsages().get(1).getAppUsages()),
 //                eq(report.getUsages().get(2).getAppUsages()));

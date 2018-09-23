@@ -106,6 +106,9 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                     this.view.bindPeopleGenreViews(usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER).getCategoryUsages()
                             , usageGroupMap.get(UsageGroup.TYPE_JOB).getCategoryUsages());
                     this.view.bindRankingViews(recentReport.getTotalUsedTimeRank());
+                    this.view.bindFavoriteDeveloperViews(usageGroupMap.get(UsageGroup.TYPE_MINE).getDeveloperUsages()
+                            , usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER).getDeveloperUsages()
+                            , usageGroupMap.get(UsageGroup.TYPE_JOB).getDeveloperUsages());
 
                     emitter.onCompleted();
                 }, e -> emitter.onError(e)))

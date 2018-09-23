@@ -38,6 +38,10 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_playtime_rank_best) ViewGroup rankBest;
     @BindView(R.id.analysis_playtime_rank_mine) ViewGroup rankMine;
     @BindView(R.id.analysis_playtime_rank_worst) ViewGroup rankWorst;
+    @BindView(R.id.analysis_my_favorite_developer) ViewGroup myFavoriteDeveloper;
+    @BindView(R.id.analysis_gender_age_favorite_developer) ViewGroup genderAgeFavoriteDeveloper;
+    @BindView(R.id.analysis_job_favorite_developer) ViewGroup jobFavoriteDeveloper;
+
 
     RecentAnalysisReportContract.Presenter presenter;
 
@@ -145,5 +149,29 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         ((TextView) rankWorst.findViewById(R.id.rank_content))
                 .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
                         totalUsedTimeRank.get(2).getContent(Rank.CONVERT_TYPE_HOURS)));
+    }
+
+    @Override
+    public void bindFavoriteDeveloperViews(List<Usage> myDeveloperUsages, List<Usage> genderAgeDeveloperUsages, List<Usage> jobDeveloperUsages) {
+        User userInfo = presenter.getUserInfo();
+
+        ((TextView) myFavoriteDeveloper.findViewById(R.id.group)).setText(R.string.analysis_favorite_developer_group_mine);
+        ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.group))
+                .setText(getString(R.string.analysis_favorite_developer_group,
+                        getString(R.string.common_age, userInfo.getAge()) + " " +
+                                getString(R.string.common_string, getString(userInfo.getGenderToStringResId()))));
+        ((TextView) jobFavoriteDeveloper.findViewById(R.id.group))
+                .setText(getString(R.string.analysis_favorite_developer_group, userInfo.getJob()));
+
+        ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_name)).setText(myDeveloperUsages.get(0).getName());
+        ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_name)).setText(genderAgeDeveloperUsages.get(0).getName());
+        ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_name)).setText(jobDeveloperUsages.get(0).getName());
+
+        ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_description))
+                .setText(getString(R.string.analysis_favorite_developer_description, myDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
+        ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_description))
+                .setText(getString(R.string.analysis_favorite_developer_description, genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
+        ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_description))
+                .setText(getString(R.string.analysis_favorite_developer_description, jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
     }
 }
