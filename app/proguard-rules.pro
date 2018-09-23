@@ -124,6 +124,9 @@
 -keep class com.google.api.services.people.v1.model.** { *; }
 -dontwarn com.google.api.services.people.v1.model.**
 
-# AppBee Model
+# Fomes Model
 -keep class com.formakers.fomes.model.** { *; }
 -dontwarn com.formakers.fomes.model.**
+
+-keep class com.formakers.fomes.common.network.vo.** { *; }
+-dontwarn com.formakers.fomes.common.network.vo.**
