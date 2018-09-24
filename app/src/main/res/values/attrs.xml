@@ -15,6 +15,8 @@
         <enum name="wrap_content" value="-2" />
     </attr>
     <attr name="divider_color" format="color"/>
+    <attr name="item_color" format="reference|color"/>
+    <attr name="item_number" format="reference|string"/>
 
     <declare-styleable name="RankAppItemView">
         <attr name="rank_number" format="reference|string" />

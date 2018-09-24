@@ -90,4 +90,19 @@
         <item name="divider_height">1dp</item>
         <item name="divider_color">@color/fomes_pale_gray</item>
     </style>
+
+    <style name="FomesTheme.TurquoiseItem">
+        <item name="item_color">@color/colorPrimary</item>
+        <item name="item_number">@string/common_number_one</item>
+    </style>
+
+    <style name="FomesTheme.SquashItem">
+        <item name="item_color">@color/fomes_squash</item>
+        <item name="item_number">@string/common_number_two</item>
+    </style>
+
+    <style name="FomesTheme.BlushPinkItem">
+        <item name="item_color">@color/fomes_blush_pink</item>
+        <item name="item_number">@string/common_number_three</item>
+    </style>
 </resources>

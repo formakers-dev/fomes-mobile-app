@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         presenter.loading()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnCompleted(() -> initViews())
                 .subscribe(() -> {
                     // TODO : 아래 뷰들 Fragment 관리로 변경 필요
                     loadingLayout.setVisibility(View.GONE);
@@ -82,6 +84,15 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @Override
     public ApplicationComponent getApplicationComponent() {
         return ((AppBeeApplication) this.getActivity().getApplication()).getComponent();
+    }
+
+    /*
+     * Applying style and attributes for analysis views
+     */
+    public void initViews() {
+        myFavoriteDeveloper.setBackground(getResources().getDrawable(R.drawable.item_rect_solid_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_TurquoiseItem).getTheme()));
+        genderAgeFavoriteDeveloper.setBackground(getResources().getDrawable(R.drawable.item_rect_solid_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_SquashItem).getTheme()));
+        jobFavoriteDeveloper.setBackground(getResources().getDrawable(R.drawable.item_rect_solid_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_BlushPinkItem).getTheme()));
     }
 
     @Override
