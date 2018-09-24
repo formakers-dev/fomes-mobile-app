@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.fragment.BaseFragment;
+import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import butterknife.BindView;

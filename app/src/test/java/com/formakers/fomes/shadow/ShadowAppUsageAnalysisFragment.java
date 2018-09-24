@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.formakers.fomes.fragment.AppUsageAnalysisFragment;
-import com.formakers.fomes.fragment.BaseFragment;
+import com.formakers.fomes.appbee.fragment.AppUsageAnalysisFragment;
+import com.formakers.fomes.common.view.BaseFragment;
 
 import org.robolectric.annotation.Implements;
 

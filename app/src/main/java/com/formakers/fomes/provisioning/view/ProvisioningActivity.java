@@ -17,9 +17,9 @@ import android.widget.Toast;
 
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.activity.BaseActivity;
+import com.formakers.fomes.common.view.BaseActivity;
+import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.dagger.ApplicationComponent;
-import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
 import com.formakers.fomes.util.FomesConstants;

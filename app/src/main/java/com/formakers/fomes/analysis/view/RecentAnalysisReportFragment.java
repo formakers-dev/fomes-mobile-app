@@ -16,9 +16,9 @@ import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
+import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.RankAppItemView;
 import com.formakers.fomes.dagger.ApplicationComponent;
-import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.model.User;
 
 import java.util.List;

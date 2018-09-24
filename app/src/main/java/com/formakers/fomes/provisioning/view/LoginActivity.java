@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.activity.BaseActivity;
+import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;

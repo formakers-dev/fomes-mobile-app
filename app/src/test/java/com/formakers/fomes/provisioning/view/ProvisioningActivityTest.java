@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.activity.BaseActivityTest;
+import com.formakers.fomes.common.view.BaseActivityTest;
 import com.formakers.fomes.util.FomesConstants;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity.ProvisioningPagerAdapter;
 

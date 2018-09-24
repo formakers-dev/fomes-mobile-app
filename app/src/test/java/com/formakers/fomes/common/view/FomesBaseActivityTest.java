@@ -2,7 +2,6 @@ package com.formakers.fomes.common.view;
 
 import android.content.Intent;
 
-import com.formakers.fomes.activity.BaseActivityTest;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;

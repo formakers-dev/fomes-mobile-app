@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.fragment.BaseFragment;
+import com.formakers.fomes.common.view.BaseFragment;
+import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.presenter.RecommendPresenter;
 import com.formakers.fomes.model.AppInfo;
-import com.formakers.fomes.view.decorator.ContentDividerItemDecoration;
 
 import butterknife.BindView;
 

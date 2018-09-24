@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
-import com.formakers.fomes.activity.BaseActivity;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;

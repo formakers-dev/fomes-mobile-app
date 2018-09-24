@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.adapter.ContentsPagerAdapter;
+import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.settings.SettingsActivity;

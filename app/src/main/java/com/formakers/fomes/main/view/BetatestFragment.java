@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.fragment.BaseFragment;
+import com.formakers.fomes.common.view.BaseFragment;
 
 public class BetatestFragment extends BaseFragment {
 
