@@ -141,6 +141,9 @@
     <string name="common_female">여성</string>
     <string name="common_new_line">\n</string>
     <string name="common_string">%s</string>
+    <string name="common_number_one">1</string>
+    <string name="common_number_two">2</string>
+    <string name="common_number_three">3</string>
 
     <!-- Fomes - locality strings -->
     <!-- Login -->

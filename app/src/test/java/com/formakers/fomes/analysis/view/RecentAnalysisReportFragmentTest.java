@@ -9,6 +9,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
+import com.formakers.fomes.common.view.RankAppItemView;
 import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.User;
 
@@ -136,20 +137,20 @@ public class RecentAnalysisReportFragmentTest {
         // 상위 3개만 계산해온다
         verify(mockPresenter).getPercentage(eq(categoryUsages), eq(0), eq(3));
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_1)
-                .findViewById(R.id.name_textview)).getText()).isEqualTo("롤플레잉");
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_1)
-                .findViewById(R.id.used_time_textview)).getText()).isEqualTo("총 시간의 49%");
+        assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_1)).getTitleText())
+                .isEqualTo("롤플레잉");
+        assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_1)).getDescriptionText())
+                .isEqualTo("총 시간의 49%");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_2)
-                .findViewById(R.id.name_textview)).getText()).isEqualTo("퍼즐");
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_2)
-                .findViewById(R.id.used_time_textview)).getText()).isEqualTo("총 시간의 33%");
+        assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_2)).getTitleText())
+                .isEqualTo("퍼즐");
+        assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_2)).getDescriptionText())
+                .isEqualTo("총 시간의 33%");
 
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_3)
-                .findViewById(R.id.name_textview)).getText()).isEqualTo("시뮬레이션");
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_3)
-                .findViewById(R.id.used_time_textview)).getText()).isEqualTo("총 시간의 16%");
+        assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_3)).getTitleText())
+                .isEqualTo("시뮬레이션");
+        assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_3)).getDescriptionText())
+                .isEqualTo("총 시간의 16%");
     }
 
     @Test

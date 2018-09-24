@@ -15,6 +15,7 @@ import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
+import com.formakers.fomes.common.view.RankAppItemView;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.fragment.BaseFragment;
 import com.formakers.fomes.model.User;
@@ -31,9 +32,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.current_analysis_loading_layout) ViewGroup loadingLayout;
     @BindView(R.id.current_analysis_layout) ViewGroup contentLayout;
     @BindView(R.id.current_analysis_error_layout) ViewGroup errorLayout;
-    @BindView(R.id.analysis_my_genre_1) ViewGroup myGenreItem1;
-    @BindView(R.id.analysis_my_genre_2) ViewGroup myGenreItem2;
-    @BindView(R.id.analysis_my_genre_3) ViewGroup myGenreItem3;
+    @BindView(R.id.analysis_my_genre_1) RankAppItemView myGenreItem1;
+    @BindView(R.id.analysis_my_genre_2) RankAppItemView myGenreItem2;
+    @BindView(R.id.analysis_my_genre_3) RankAppItemView myGenreItem3;
     @BindView(R.id.analysis_people_genre_gender_age) ViewGroup peopleGenreGenderAge;
     @BindView(R.id.analysis_people_genre_job) ViewGroup peopleGenreJob;
     @BindView(R.id.analysis_playtime_rank_best) ViewGroup rankBest;
@@ -87,15 +88,12 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     public void bindMyGenreViews(List<Usage> categoryUsages) {
         List<Pair<Usage, Integer>> usagePercentagePair = this.presenter.getPercentage(categoryUsages, 0, 3);
 
-        ((TextView) myGenreItem1.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(0).first.getName());
-        ((TextView) myGenreItem1.findViewById(R.id.used_time_textview))
-                .setText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(0).second));
-        ((TextView) myGenreItem2.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(1).first.getName());
-        ((TextView) myGenreItem2.findViewById(R.id.used_time_textview))
-                .setText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(1).second));
-        ((TextView) myGenreItem3.findViewById(R.id.name_textview)).setText(usagePercentagePair.get(2).first.getName());
-        ((TextView) myGenreItem3.findViewById(R.id.used_time_textview))
-                .setText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(2).second));
+        myGenreItem1.setTitleText(usagePercentagePair.get(0).first.getName());
+        myGenreItem1.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(0).second));
+        myGenreItem2.setTitleText(usagePercentagePair.get(1).first.getName());
+        myGenreItem2.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(1).second));
+        myGenreItem3.setTitleText(usagePercentagePair.get(2).first.getName());
+        myGenreItem3.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(2).second));
     }
 
     @Override

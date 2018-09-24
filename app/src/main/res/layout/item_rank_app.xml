@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/match_constraint"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -12,18 +12,25 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/circle_background"
-        android:backgroundTint="@color/colorPrimary"
         android:gravity="center"
-        android:text="1"
         android:textColor="@color/fomes_white"
         android:textSize="12dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+    
+    <ImageView android:id="@+id/icon_imageview"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_textview" />
 
     <TextView
-        android:id="@+id/name_textview"
+        android:id="@+id/title_textview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -31,13 +38,13 @@
         android:textSize="11dp"
         android:textStyle="bold"
         android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/icon_imageview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_textview"
         tools:text="롤플레잉" />
 
     <TextView
-        android:id="@+id/used_time_textview"
+        android:id="@+id/desc_textview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -46,7 +53,7 @@
         android:gravity="center_horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_textview"
+        app:layout_constraintTop_toBottomOf="@id/title_textview"
         tools:text="총 시간의 54%" />
 
 </android.support.constraint.ConstraintLayout>
