@@ -26,12 +26,6 @@
             android:icon="@drawable/icon_settings"/>
     </group>
 
-    <group android:id="@+id/menu_group_temp" android:checkableBehavior="none">
-        <item
-            android:id="@+id/my_report"
-            android:title="[임시] 리포트" />
-    </group>
-
     <group android:id="@+id/menu_group5" android:checkableBehavior="none">
         <item
             android:id="@+id/my_not_hope_games"

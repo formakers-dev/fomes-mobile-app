@@ -116,31 +116,31 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     public void bindPeopleGenreViews(List<Usage> genderAgeCategoryUsages, List<Usage> jobCategoryUsages) {
         User userInfo = this.presenter.getUserInfo();
 
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_title))
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.group))
                 .setText(String.format(getString(R.string.common_age) + getString(R.string.common_new_line) + getString(R.string.common_string),
                         userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
 
         List<Pair<Usage, Integer>> genderAgeUsagePercentagePair
                 = this.presenter.getPercentage(genderAgeCategoryUsages, 0, 3);
 
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_1))
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.title_1))
                 .setText(genderAgeUsagePercentagePair.get(0).first.getName());
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_2))
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.title_2))
                 .setText(genderAgeUsagePercentagePair.get(1).first.getName());
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_3))
+        ((TextView) peopleGenreGenderAge.findViewById(R.id.title_3))
                 .setText(genderAgeUsagePercentagePair.get(2).first.getName());
 
-        ((TextView) peopleGenreJob.findViewById(R.id.demographic_title))
+        ((TextView) peopleGenreJob.findViewById(R.id.group))
                 .setText(String.format(getString(R.string.common_string), userInfo.getJob()));
 
         List<Pair<Usage, Integer>> jobUsagePercentagePair
                 = this.presenter.getPercentage(jobCategoryUsages, 0, 3);
 
-        ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_1))
+        ((TextView) peopleGenreJob.findViewById(R.id.title_1))
                 .setText(jobUsagePercentagePair.get(0).first.getName());
-        ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_2))
+        ((TextView) peopleGenreJob.findViewById(R.id.title_2))
                 .setText(jobUsagePercentagePair.get(1).first.getName());
-        ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_3))
+        ((TextView) peopleGenreJob.findViewById(R.id.title_3))
                 .setText(jobUsagePercentagePair.get(2).first.getName());
     }
 

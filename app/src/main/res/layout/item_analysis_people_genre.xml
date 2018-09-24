@@ -7,10 +7,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/demographic_title"
+        android:id="@+id/group"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="51dp"
         android:gravity="center"
         android:textSize="12dp"
         android:textColor="@color/fomes_warm_gray"
@@ -21,7 +20,7 @@
         />
 
     <TextView
-        android:id="@+id/demographic_number_1"
+        android:id="@+id/number_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
@@ -31,12 +30,12 @@
         android:textSize="12dp"
         android:text="1"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/demographic_title"
+        app:layout_constraintTop_toBottomOf="@id/group"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <TextView
-        android:id="@+id/demographic_name_1"
+        android:id="@+id/title_1"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
@@ -44,28 +43,28 @@
         android:textSize="11dp"
         android:textStyle="bold"
         android:textColor="@color/fomes_warm_gray"
-        app:layout_constraintStart_toEndOf="@id/demographic_number_1"
-        app:layout_constraintBaseline_toBaselineOf="@id/demographic_number_1"
+        app:layout_constraintStart_toEndOf="@id/number_1"
+        app:layout_constraintBaseline_toBaselineOf="@id/number_1"
         tools:text="롤플레잉"
         />
 
     <TextView
-        android:id="@+id/demographic_number_2"
+        android:id="@+id/number_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/item_demographic_name_margin_top"
+        android:layout_marginTop="@dimen/item_people_genre_title_margin_top"
         android:layout_marginStart="5dp"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="12dp"
         android:text="2"
         android:textColor="@color/fomes_squash"
-        app:layout_constraintTop_toBottomOf="@id/demographic_name_1"
+        app:layout_constraintTop_toBottomOf="@id/title_1"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <TextView
-        android:id="@+id/demographic_name_2"
+        android:id="@+id/title_2"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
@@ -73,28 +72,28 @@
         android:textSize="11dp"
         android:textStyle="bold"
         android:textColor="@color/fomes_warm_gray"
-        app:layout_constraintStart_toEndOf="@id/demographic_number_2"
-        app:layout_constraintBaseline_toBaselineOf="@id/demographic_number_2"
+        app:layout_constraintStart_toEndOf="@id/number_2"
+        app:layout_constraintBaseline_toBaselineOf="@id/number_2"
         tools:text="액션"
         />
 
     <TextView
-        android:id="@+id/demographic_number_3"
+        android:id="@+id/number_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/item_demographic_name_margin_top"
+        android:layout_marginTop="@dimen/item_people_genre_title_margin_top"
         android:layout_marginStart="5dp"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="12dp"
         android:text="3"
         android:textColor="@color/fomes_blush_pink"
-        app:layout_constraintTop_toBottomOf="@id/demographic_name_2"
+        app:layout_constraintTop_toBottomOf="@id/title_2"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <TextView
-        android:id="@+id/demographic_name_3"
+        android:id="@+id/title_3"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
@@ -102,8 +101,8 @@
         android:textSize="11dp"
         android:textStyle="bold"
         android:textColor="@color/fomes_warm_gray"
-        app:layout_constraintStart_toEndOf="@id/demographic_number_3"
-        app:layout_constraintBaseline_toBaselineOf="@id/demographic_number_3"
+        app:layout_constraintStart_toEndOf="@id/number_3"
+        app:layout_constraintBaseline_toBaselineOf="@id/number_3"
         tools:text="자동차경주"
         />
 

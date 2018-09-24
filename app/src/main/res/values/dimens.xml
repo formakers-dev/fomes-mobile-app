@@ -22,7 +22,8 @@
     <dimen name="item_app_icon_width_height">70dp</dimen>
     <dimen name="item_app_content_margin_start">24dp</dimen>
     <dimen name="item_app_content_margin_end">24dp</dimen>
-    <dimen name="item_demographic_name_margin_top">5dp</dimen>
+    <dimen name="item_people_genre_title_margin_top">5dp</dimen>
+    <dimen name="item_my_games_content_margin_top">36dp</dimen>
     <dimen name="item_people_games_genre_text_size">12dp</dimen>
     <dimen name="analysis_content_table_margin_start_end">43dp</dimen>
     <dimen name="item_people_games_padding_start_end">15dp</dimen>

@@ -196,28 +196,28 @@ public class RecentAnalysisReportFragmentTest {
         verify(mockPresenter).getPercentage(eq(categoryUsages_job), eq(0), eq(3));
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
-                .findViewById(R.id.demographic_title)).getText()).isEqualTo("20대\n여성");
+                .findViewById(R.id.group)).getText()).isEqualTo("20대\n여성");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
-                .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("롤플레잉");
+                .findViewById(R.id.title_1)).getText()).isEqualTo("롤플레잉");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
-                .findViewById(R.id.demographic_name_2)).getText()).isEqualTo("퍼즐");
+                .findViewById(R.id.title_2)).getText()).isEqualTo("퍼즐");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_gender_age)
-                .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("시뮬레이션");
+                .findViewById(R.id.title_3)).getText()).isEqualTo("시뮬레이션");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
-                .findViewById(R.id.demographic_title)).getText()).isEqualTo("IT");
+                .findViewById(R.id.group)).getText()).isEqualTo("IT");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
-                .findViewById(R.id.demographic_name_1)).getText()).isEqualTo("퀴즈");
+                .findViewById(R.id.title_1)).getText()).isEqualTo("퀴즈");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
-                .findViewById(R.id.demographic_name_2)).getText()).isEqualTo("캐주얼");
+                .findViewById(R.id.title_2)).getText()).isEqualTo("캐주얼");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
-                .findViewById(R.id.demographic_name_3)).getText()).isEqualTo("퍼즐");
+                .findViewById(R.id.title_3)).getText()).isEqualTo("퍼즐");
     }
 
     @Test

@@ -114,7 +114,6 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginEnd">@dimen/provision_padding_start_end</item>
         <item name="android:layout_marginStart">@dimen/provision_padding_start_end</item>
-        <item name="android:layout_marginTop">34dp</item>
         <item name="android:background">@color/fomes_pale_gray</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="layout_constraintEnd_toEndOf">parent</item>
