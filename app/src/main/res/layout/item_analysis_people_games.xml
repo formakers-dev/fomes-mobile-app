@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/fomes_light_warm_gray"
+        android:textSize="@dimen/item_people_games_genre_text_size"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/icon_1"
+        tools:text="30대\n남성" />
+
+    <ImageView
+        android:id="@+id/icon_1"
+        android:layout_width="@dimen/item_people_games_icon_width_height"
+        android:layout_height="@dimen/item_people_games_icon_width_height"
+        app:layout_constraintBottom_toTopOf="@+id/title_1"
+        app:layout_constraintStart_toEndOf="@id/group"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/icon_2"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:src="@drawable/icon_my_betatest" />
+
+    <TextView
+        android:id="@+id/title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_people_games_title_margin_top"
+        android:gravity="center"
+        tools:text="딱따구리열렸네"
+        android:textColor="@color/fomes_warm_gray"
+        android:textSize="@dimen/item_people_games_title_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/icon_1"
+        app:layout_constraintStart_toStartOf="@id/icon_1"
+        app:layout_constraintTop_toBottomOf="@id/icon_1" />
+
+    <ImageView
+        android:id="@+id/icon_2"
+        android:layout_width="@dimen/item_people_games_icon_width_height"
+        android:layout_height="@dimen/item_people_games_icon_width_height"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@+id/title_2"
+        app:layout_constraintStart_toEndOf="@id/icon_1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/icon_3"
+        tools:src="@drawable/icon_my_current_analysis" />
+
+    <TextView
+        android:id="@+id/title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_people_games_title_margin_top"
+        android:gravity="center"
+        tools:text="퀴즈어벤저스"
+        android:textColor="@color/fomes_warm_gray"
+        android:textSize="@dimen/item_people_games_title_text_size"
+        app:layout_constraintTop_toBottomOf="@id/icon_2"
+        app:layout_constraintStart_toStartOf="@id/icon_2"
+        app:layout_constraintEnd_toEndOf="@id/icon_2"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon_3"
+        android:layout_width="@dimen/item_people_games_icon_width_height"
+        android:layout_height="@dimen/item_people_games_icon_width_height"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@+id/title_3"
+        app:layout_constraintStart_toEndOf="@id/icon_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/icon_my_hope_game" />
+
+    <TextView
+        android:id="@+id/title_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_people_games_title_margin_top"
+        android:gravity="center"
+        android:textColor="@color/fomes_warm_gray"
+        android:textSize="@dimen/item_people_games_title_text_size"
+        app:layout_constraintTop_toBottomOf="@id/icon_3"
+        app:layout_constraintStart_toStartOf="@id/icon_3"
+        app:layout_constraintEnd_toEndOf="@id/icon_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="깃발꽂기" />
+
+</android.support.constraint.ConstraintLayout>
