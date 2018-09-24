@@ -22,6 +22,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/main_nav_header"
         app:menu="@menu/main_nav"
+        app:itemIconTint="@color/main_nav_menu_item_color_selector"
         app:itemTextAppearance="@style/FomesMainTabTheme.NavigationViewTextAppearance" />
 
 </android.support.v4.widget.DrawerLayout>

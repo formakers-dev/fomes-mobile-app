@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,21 +12,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.settings.SettingsActivity;
 
 import butterknife.BindView;
 
 public class MainActivity extends FomesBaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener, TabLayout.OnTabSelectedListener {
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
@@ -60,6 +64,7 @@ public class MainActivity extends FomesBaseActivity
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
+        this.tabLayout.addOnTabSelectedListener(this);
     }
 
     @Override
@@ -76,7 +81,7 @@ public class MainActivity extends FomesBaseActivity
         Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
 
         switch(item.getItemId()) {
-            case R.id.my_current_analysis: {
+            case R.id.my_recent_analysis: {
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
                 break;
             }
@@ -107,6 +112,25 @@ public class MainActivity extends FomesBaseActivity
 
     @Override
     public void onDrawerStateChanged(int newState) {
+
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
+        wordtoSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tab.setText(wordtoSpan);
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
+        wordtoSpan.setSpan(new StyleSpan(Typeface.NORMAL), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tab.setText(wordtoSpan);
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
 
     }
 }

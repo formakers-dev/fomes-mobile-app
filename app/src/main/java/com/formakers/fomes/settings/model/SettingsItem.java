@@ -4,11 +4,13 @@ public class SettingsItem {
     int id;
     String title;
     String sideInfo;
+    boolean isClickable;
 
-    private SettingsItem(int id, String title, String sideInfo) {
+    private SettingsItem(int id, String title, String sideInfo, boolean isClickable) {
         this.id = id;
         this.title = title;
         this.sideInfo = sideInfo;
+        this.isClickable = isClickable;
     }
 
     public int getId() {
@@ -23,10 +25,15 @@ public class SettingsItem {
         return sideInfo;
     }
 
+    public boolean isClickable() {
+        return isClickable;
+    }
+
     public static class Builder {
         int id;
         String title;
         String sideInfo;
+        boolean isClickable = true;
 
         public Builder setId(int id) {
             this.id = id;
@@ -43,8 +50,13 @@ public class SettingsItem {
             return this;
         }
 
+        public Builder setClickable(boolean clickable) {
+            isClickable = clickable;
+            return this;
+        }
+
         public SettingsItem build() {
-            return new SettingsItem(this.id, this.title, this.sideInfo);
+            return new SettingsItem(this.id, this.title, this.sideInfo, this.isClickable);
         }
     }
 }

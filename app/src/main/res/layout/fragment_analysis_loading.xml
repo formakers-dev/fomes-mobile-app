@@ -4,8 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/login_background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_background" />
 
     <ImageView android:id="@+id/fragment_loading_imageview"
         android:layout_width="139dp"
@@ -20,8 +25,13 @@
     <TextView android:id="@+id/fragment_loading_textview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="@string/analysis_loading"
+        android:textSize="18dp"
+        android:textColor="@color/fomes_white"
+        android:textStyle="bold"
+        android:lineSpacingExtra="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_loading_imageview"

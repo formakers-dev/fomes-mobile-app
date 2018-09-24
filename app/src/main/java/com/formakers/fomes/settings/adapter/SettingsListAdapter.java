@@ -56,6 +56,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             titleTextView.setText(item.getTitle());
             sideInfoTextView.setText(item.getSideInfo());
             itemView.setOnClickListener(v -> listener.onItemClick(item));
+            itemView.setClickable(item.isClickable());
         }
     }
 }

@@ -4,32 +4,32 @@
     <group android:id="@+id/menu_group1" android:checkableBehavior="none">
         <item
             android:id="@+id/my_hope_games"
-            android:title="관심있는 게임들"
+            android:title="@string/main_menu_my_hope_games"
             android:icon="@drawable/icon_my_hope_game"/>
     </group>
     <group  android:id="@+id/menu_group2" android:checkableBehavior="none">
         <item
-            android:id="@+id/my_current_analysis"
-            android:title="내 분석 다시보기"
-            android:icon="@drawable/icon_my_current_analysis" />
+            android:id="@+id/my_recent_analysis"
+            android:title="@string/main_menu_my_recent_analysis"
+            android:icon="@drawable/icon_my_recent_analysis"/>
     </group>
     <group android:enabled="false" android:id="@+id/menu_group3" android:checkableBehavior="none">
         <item
             android:id="@+id/my_betatest"
-            android:title="베타테스트 (준비중)"
-            android:icon="@drawable/icon_my_betatest" />
+            android:title="@string/main_menu_my_betatest"
+            android:icon="@drawable/icon_my_betatest"/>
     </group>
     <group android:id="@+id/menu_group4" android:checkableBehavior="none">
         <item
             android:id="@+id/settings"
-            android:title="설정"
+            android:title="@string/main_menu_settings"
             android:icon="@drawable/icon_settings"/>
     </group>
 
     <group android:id="@+id/menu_group5" android:checkableBehavior="none">
         <item
             android:id="@+id/my_not_hope_games"
-            android:title="관심 없음 표시한 게임들 보기" />
+            android:title="@string/main_menu_my_ignore_games" />
     </group>
 
 </menu>

@@ -56,7 +56,7 @@ public class SettingsActivity extends FomesBaseActivity implements SettingsListA
         List<SettingsItem> settingsItems = new ArrayList<>();
 
         settingsItems.add(new SettingsItem.Builder().setId(Menu.VERSION).setTitle("포메스 정보")
-                .setSideInfo(BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE).build());
+                .setSideInfo(BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE).setClickable(false).build());
         settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_USAGE).setTitle("이용약관").build());
         settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_PRIVATE).setTitle("개인정보 취급 방침").build());
         settingsItems.add(new SettingsItem.Builder().setId(Menu.CONTACTS_US).setTitle("이메일로 문의하기").build());
