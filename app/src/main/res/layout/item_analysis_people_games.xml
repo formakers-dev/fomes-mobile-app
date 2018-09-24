@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/group"
-        android:layout_width="35dp"
+        android:layout_width="@dimen/item_people_games_group_width"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/fomes_light_warm_gray"

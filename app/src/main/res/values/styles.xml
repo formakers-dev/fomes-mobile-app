@@ -86,7 +86,7 @@
     </style>
 
     <style name="FomesMainTabTheme.RecommendDivider">
-        <item name="divider_width">0dp</item>
+        <item name="divider_width">@dimen/match_constraint</item>
         <item name="divider_height">1dp</item>
         <item name="divider_color">@color/fomes_pale_gray</item>
     </style>
@@ -104,5 +104,33 @@
     <style name="FomesTheme.BlushPinkItem">
         <item name="item_color">@color/fomes_blush_pink</item>
         <item name="item_number">@string/common_number_three</item>
+    </style>
+
+    <style name="AnaylsisTheme" parent="FomesTheme.NoActionBar">
+    </style>
+
+    <style name="AnaylsisTheme.Divider">
+        <item name="android:layout_width">@dimen/match_constraint</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginEnd">@dimen/provision_padding_start_end</item>
+        <item name="android:layout_marginStart">@dimen/provision_padding_start_end</item>
+        <item name="android:layout_marginTop">34dp</item>
+        <item name="android:background">@color/fomes_pale_gray</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+    </style>
+
+    <style name="AnaylsisTheme.Table">
+        <item name="android:layout_width">@dimen/match_constraint</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/analysis_content_table_margin_start_end</item>
+        <item name="android:layout_marginStart">@dimen/analysis_content_table_margin_start_end</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+    </style>
+
+    <style name="AnaylsisTheme.Table.Divider">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/fomes_light_warm_gray</item>
     </style>
 </resources>

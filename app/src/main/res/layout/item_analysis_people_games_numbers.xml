@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/item_people_games_padding_start_end"
+    android:paddingEnd="@dimen/item_people_games_padding_start_end"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    >
+
+    <TextView
+        android:id="@+id/group"
+        android:layout_width="@dimen/item_people_games_group_width"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/fomes_light_warm_gray"
+        android:textSize="@dimen/item_people_games_genre_text_size"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/title_1"
+        tools:text="30대\n남성" />
+
+    <TextView
+        android:id="@+id/title_1"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_people_games_divider_width"
+        android:gravity="center"
+        android:text="1위"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/item_people_games_number_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/group"
+        app:layout_constraintEnd_toStartOf="@+id/title_2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title_2"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_people_games_divider_width"
+        android:gravity="center"
+        android:text="2위"
+        android:textColor="@color/fomes_squash"
+        android:textSize="@dimen/item_people_games_number_text_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/title_1"
+        app:layout_constraintEnd_toStartOf="@+id/title_3"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/title_3"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_people_games_divider_width"
+        android:gravity="center"
+        android:text="3위"
+        android:textColor="@color/fomes_blush_pink"
+        android:textSize="@dimen/item_people_games_number_text_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/title_2"
+        app:layout_constraintEnd_toEndOf="parent"
+         />
+
+</android.support.constraint.ConstraintLayout>
