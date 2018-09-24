@@ -2,6 +2,7 @@ package com.formakers.fomes.analysis.view;
 
 import android.util.Pair;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.RequestBuilder;
@@ -341,6 +342,68 @@ public class RecentAnalysisReportFragmentTest {
         assertThat(game3.getDescriptionText()).isEqualTo("0.3시간 플레이");
         verify(mockRequestManager).load("simulIconUrl");
         verify(mockRequestBuilder).into(eq(game3.getIconImageView()));
+    }
+
+    @Test
+    public void bindPeopleGamesViews_호출시__분석화면의_사람들의_최애_게임_뷰를_셋팅한다() {
+        List<Usage> appUsages = new ArrayList<>();
+        appUsages.add(new Usage("com.game.rgp", "롤플레잉게임명", 10000000L, Collections.singletonList(new AppInfo("com.game.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
+        appUsages.add(new Usage("com.game.puzzle", "퍼즐게임명", 5000000L, Collections.singletonList(new AppInfo("com.game.puzzle", "퍼즐게임명", null, null, null, null, "puzzleIconUrl"))));
+        appUsages.add(new Usage("com.game.simulation", "시뮬레이션게임명", 1000000L, Collections.singletonList(new AppInfo("com.game.simulation", "시뮬레이션게임명", null, null, null, null, "simulIconUrl"))));
+        appUsages.add(new Usage("com.game.action", "액션게임명", 100L, Collections.singletonList(new AppInfo("com.game.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
+
+        List<Usage> appUsages2 = new ArrayList<>();
+        appUsages2.add(new Usage("com.game.action", "액션게임명", 10000000L, Collections.singletonList(new AppInfo("com.game.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
+        appUsages2.add(new Usage("com.game.edu", "교육게임명", 5000000L, Collections.singletonList(new AppInfo("com.game.simulation", "시뮬레이션게임명", null, null, null, null, "eduIconUrl"))));
+        appUsages2.add(new Usage("com.game.acade", "아케이드게임명", 1000000L, Collections.singletonList(new AppInfo("com.game.puzzle", "퍼즐게임명", null, null, null, null, "acadeIconUrl"))));
+        appUsages2.add(new Usage("com.game.rgp", "롤플레잉게임명", 100L, Collections.singletonList(new AppInfo("com.game.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
+
+        RequestManager mockRequestManager = mock(RequestManager.class);
+        when(mockPresenter.getImageLoader()).thenReturn(mockRequestManager);
+        RequestBuilder mockRequestBuilder = mock(RequestBuilder.class);
+        when(mockRequestManager.load(any())).thenReturn(mockRequestBuilder);
+
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob("IT"));
+
+        controller.create().start().resume().visible();
+
+        subject.bindPeopleGamesViews(appUsages, appUsages2);
+
+        View genderAgeGamesView = subject.getView().findViewById(R.id.analysis_people_games_gender_age);
+
+        assertThat(((TextView) genderAgeGamesView.findViewById(R.id.group)).getText())
+                .isEqualTo("20대\n여성");
+
+        assertThat(((TextView) genderAgeGamesView.findViewById(R.id.title_1)).getText())
+                .isEqualTo("롤플레잉게임명");
+        verify(mockRequestManager).load("rpgIconUrl");
+        verify(mockRequestBuilder).into(eq(((ImageView) genderAgeGamesView.findViewById(R.id.icon_1))));
+        assertThat(((TextView) genderAgeGamesView.findViewById(R.id.title_2)).getText())
+                .isEqualTo("퍼즐게임명");
+        verify(mockRequestManager).load("puzzleIconUrl");
+        verify(mockRequestBuilder).into(eq(((ImageView) genderAgeGamesView.findViewById(R.id.icon_2))));
+        assertThat(((TextView) genderAgeGamesView.findViewById(R.id.title_3)).getText())
+                .isEqualTo("시뮬레이션게임명");
+        verify(mockRequestManager).load("simulIconUrl");
+        verify(mockRequestBuilder).into(eq(((ImageView) genderAgeGamesView.findViewById(R.id.icon_3))));
+
+        View jobGamesView = subject.getView().findViewById(R.id.analysis_people_games_job);
+
+        assertThat(((TextView) jobGamesView.findViewById(R.id.group)).getText())
+                .isEqualTo("IT");
+
+        assertThat(((TextView) jobGamesView.findViewById(R.id.title_1)).getText())
+                .isEqualTo("액션게임명");
+        verify(mockRequestManager).load("actionIconUrl");
+        verify(mockRequestBuilder).into(eq(((ImageView) jobGamesView.findViewById(R.id.icon_1))));
+        assertThat(((TextView) jobGamesView.findViewById(R.id.title_2)).getText())
+                .isEqualTo("교육게임명");
+        verify(mockRequestManager).load("eduIconUrl");
+        verify(mockRequestBuilder).into(eq(((ImageView) jobGamesView.findViewById(R.id.icon_2))));
+        assertThat(((TextView) jobGamesView.findViewById(R.id.title_3)).getText())
+                .isEqualTo("아케이드게임명");
+        verify(mockRequestManager).load("acadeIconUrl");
+        verify(mockRequestBuilder).into(eq(((ImageView) jobGamesView.findViewById(R.id.icon_2))));
     }
 
     @Test

@@ -147,9 +147,8 @@ public class RecentAnalysisReportPresenterTest {
 
         verify(mockView).bindMyGames(eq(report.getUsages().get(0).getAppUsages()));
 
-        // TODO : 구현필요
-//        verify(mockView).bindPeopleGames(eq(report.getUsages().get(1).getAppUsages()),
-//                eq(report.getUsages().get(2).getAppUsages()));
+        verify(mockView).bindPeopleGamesViews(eq(report.getUsages().get(1).getAppUsages()),
+                eq(report.getUsages().get(2).getAppUsages()));
     }
 
     @Test

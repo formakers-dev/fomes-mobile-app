@@ -456,28 +456,37 @@
             layout="@layout/item_analysis_people_games"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginEnd="@dimen/analysis_content_table_margin_start_end"
+            android:layout_marginStart="@dimen/analysis_content_table_margin_start_end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/analysis_people_games_table_top"/>
+
+        <View android:id="@+id/analysis_people_games_table_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="@dimen/analysis_content_table_margin_start_end"
+            android:layout_marginStart="@dimen/analysis_content_table_margin_start_end"
+            android:background="@color/fomes_light_warm_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_games_gender_age"/>
 
         <include android:id="@+id/analysis_people_games_job"
             layout="@layout/item_analysis_people_games"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginEnd="@dimen/analysis_content_table_margin_start_end"
+            android:layout_marginStart="@dimen/analysis_content_table_margin_start_end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_people_games_gender_age"/>
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_games_table_divider"/>
 
         <View android:id="@+id/analysis_people_games_table_bottom"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginEnd="@dimen/analysis_content_table_margin_start_end"
             android:layout_marginStart="@dimen/analysis_content_table_margin_start_end"
-            android:layout_marginTop="13dp"
             android:background="@color/fomes_light_warm_gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

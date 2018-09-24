@@ -44,27 +44,27 @@
             android:permission="android.permission.BIND_JOB_SERVICE">
         </service>
 
-        <activity android:name=".activity.OnboardingActivity"/>
-        <activity android:name=".activity.OnboardingAnalysisActivity"/>
-        <activity android:name=".activity.CodeVerificationActivity"
+        <activity android:name=".appbee.activity.OnboardingActivity"/>
+        <activity android:name=".appbee.activity.OnboardingAnalysisActivity"/>
+        <activity android:name=".appbee.activity.CodeVerificationActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.PermissionGuideActivity"/>
-        <activity android:name=".activity.LoadingActivity" />
+        <activity android:name=".appbee.activity.LoginActivity" />
+        <activity android:name=".appbee.activity.PermissionGuideActivity"/>
+        <activity android:name=".appbee.activity.LoadingActivity" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".appbee.activity.MainActivity"
             android:label=""
             android:theme="@style/FomesTheme.NoActionBar">
         </activity>
-        <activity android:name=".activity.ProjectDetailActivity" />
-        <activity android:name=".activity.InterviewDetailActivity" />
-        <activity android:name=".activity.MyInterviewActivity" />
-        <activity android:name=".activity.CancelInterviewActivity" />
-        <activity android:name=".activity.MyAppUsageActivity" />
-        <activity android:name=".activity.ReportActivity" />
+        <activity android:name=".appbee.activity.ProjectDetailActivity" />
+        <activity android:name=".appbee.activity.InterviewDetailActivity" />
+        <activity android:name=".appbee.activity.MyInterviewActivity" />
+        <activity android:name=".appbee.activity.CancelInterviewActivity" />
+        <activity android:name=".appbee.activity.MyAppUsageActivity" />
+        <activity android:name=".appbee.activity.ReportActivity" />
 
         <!-- Temp -->
-        <activity android:name=".activity.LaunchActivity">
+        <activity android:name=".appbee.activity.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />

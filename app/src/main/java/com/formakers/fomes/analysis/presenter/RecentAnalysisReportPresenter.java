@@ -105,14 +105,16 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                         usageGroupMap.put(usageGroup.getGroupType(), usageGroup);
                     }
 
-                    this.view.bindMyGenreViews(usageGroupMap.get(UsageGroup.TYPE_MINE).getCategoryUsages());
-                    this.view.bindPeopleGenreViews(usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER).getCategoryUsages()
-                            , usageGroupMap.get(UsageGroup.TYPE_JOB).getCategoryUsages());
-                    this.view.bindRankingViews(recentReport.getTotalUsedTimeRank());
-                    this.view.bindFavoriteDeveloperViews(usageGroupMap.get(UsageGroup.TYPE_MINE).getDeveloperUsages()
-                            , usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER).getDeveloperUsages()
-                            , usageGroupMap.get(UsageGroup.TYPE_JOB).getDeveloperUsages());
-                    this.view.bindMyGames(usageGroupMap.get(UsageGroup.TYPE_MINE).getAppUsages());
+                    UsageGroup myUsages = usageGroupMap.get(UsageGroup.TYPE_MINE);
+                    UsageGroup genderAgeUsages = usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER);
+                    UsageGroup jobUsages = usageGroupMap.get(UsageGroup.TYPE_JOB);
+
+                    view.bindMyGenreViews(myUsages.getCategoryUsages());
+                    view.bindPeopleGenreViews(genderAgeUsages.getCategoryUsages(), jobUsages.getCategoryUsages());
+                    view.bindRankingViews(recentReport.getTotalUsedTimeRank());
+                    view.bindFavoriteDeveloperViews(myUsages.getDeveloperUsages(), genderAgeUsages.getDeveloperUsages(), jobUsages.getDeveloperUsages());
+                    view.bindMyGames(myUsages.getAppUsages());
+                    view.bindPeopleGamesViews(genderAgeUsages.getAppUsages(), jobUsages.getAppUsages());
 
                     emitter.onCompleted();
                 }, e -> emitter.onError(e)))

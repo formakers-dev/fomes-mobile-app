@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.formakers.fomes.AppBeeApplication;
@@ -47,6 +48,8 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_games_1) RankAppItemView myGamesItem1;
     @BindView(R.id.analysis_my_games_2) RankAppItemView myGamesItem2;
     @BindView(R.id.analysis_my_games_3) RankAppItemView myGamesItem3;
+    @BindView(R.id.analysis_people_games_gender_age) ViewGroup genderAgeGames;
+    @BindView(R.id.analysis_people_games_job) ViewGroup jobGames;
 
     RecentAnalysisReportContract.Presenter presenter;
 
@@ -110,7 +113,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     }
 
     @Override
-    public void bindPeopleGenreViews(List<Usage> genderAgeUsages, List<Usage> jobUsages) {
+    public void bindPeopleGenreViews(List<Usage> genderAgeCategoryUsages, List<Usage> jobCategoryUsages) {
         User userInfo = this.presenter.getUserInfo();
 
         ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_title))
@@ -118,7 +121,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                         userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
 
         List<Pair<Usage, Integer>> genderAgeUsagePercentagePair
-                = this.presenter.getPercentage(genderAgeUsages, 0, 3);
+                = this.presenter.getPercentage(genderAgeCategoryUsages, 0, 3);
 
         ((TextView) peopleGenreGenderAge.findViewById(R.id.demographic_name_1))
                 .setText(genderAgeUsagePercentagePair.get(0).first.getName());
@@ -131,7 +134,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(String.format(getString(R.string.common_string), userInfo.getJob()));
 
         List<Pair<Usage, Integer>> jobUsagePercentagePair
-                = this.presenter.getPercentage(jobUsages, 0, 3);
+                = this.presenter.getPercentage(jobCategoryUsages, 0, 3);
 
         ((TextView) peopleGenreJob.findViewById(R.id.demographic_name_1))
                 .setText(jobUsagePercentagePair.get(0).first.getName());
@@ -188,18 +191,46 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     }
 
     @Override
-    public void bindMyGames(List<Usage> myGames) {
-        myGamesItem1.setTitleText(myGames.get(0).getName());
-        myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myGames.get(0).getTotalUsedTime())));
-        presenter.getImageLoader().load(myGames.get(0).getAppInfos().get(0).getIconUrl()).into(myGamesItem1.getIconImageView());
+    public void bindMyGames(List<Usage> myAppUsages) {
+        myGamesItem1.setTitleText(myAppUsages.get(0).getName());
+        myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(0).getTotalUsedTime())));
+        presenter.getImageLoader().load(myAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into(myGamesItem1.getIconImageView());
 
-        myGamesItem2.setTitleText(myGames.get(1).getName());
-        myGamesItem2.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myGames.get(1).getTotalUsedTime())));
-        presenter.getImageLoader().load(myGames.get(1).getAppInfos().get(0).getIconUrl()).into(myGamesItem2.getIconImageView());
+        myGamesItem2.setTitleText(myAppUsages.get(1).getName());
+        myGamesItem2.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(1).getTotalUsedTime())));
+        presenter.getImageLoader().load(myAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into(myGamesItem2.getIconImageView());
 
-        myGamesItem3.setTitleText(myGames.get(2).getName());
-        myGamesItem3.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myGames.get(2).getTotalUsedTime())));
-        presenter.getImageLoader().load(myGames.get(2).getAppInfos().get(0).getIconUrl()).into(myGamesItem3.getIconImageView());
+        myGamesItem3.setTitleText(myAppUsages.get(2).getName());
+        myGamesItem3.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(2).getTotalUsedTime())));
+        presenter.getImageLoader().load(myAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into(myGamesItem3.getIconImageView());
+    }
+
+    @Override
+    public void bindPeopleGamesViews(List<Usage> genderAgeAppUsages, List<Usage> jobAppUsages) {
+        User userInfo = this.presenter.getUserInfo();
+
+        ((TextView) genderAgeGames.findViewById(R.id.group))
+                .setText(String.format(getString(R.string.common_age) + getString(R.string.common_new_line) + getString(R.string.common_string),
+                        userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
+
+        presenter.getImageLoader().load(genderAgeAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into((ImageView) genderAgeGames.findViewById(R.id.icon_1));
+        presenter.getImageLoader().load(genderAgeAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into((ImageView) genderAgeGames.findViewById(R.id.icon_2));
+        presenter.getImageLoader().load(genderAgeAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into((ImageView) genderAgeGames.findViewById(R.id.icon_3));
+
+        ((TextView) genderAgeGames.findViewById(R.id.title_1)).setText(genderAgeAppUsages.get(0).getName());
+        ((TextView) genderAgeGames.findViewById(R.id.title_2)).setText(genderAgeAppUsages.get(1).getName());
+        ((TextView) genderAgeGames.findViewById(R.id.title_3)).setText(genderAgeAppUsages.get(2).getName());
+
+        ((TextView) jobGames.findViewById(R.id.group))
+                .setText(String.format(getString(R.string.common_string), userInfo.getJob()));
+
+        presenter.getImageLoader().load(jobAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_1));
+        presenter.getImageLoader().load(jobAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_2));
+        presenter.getImageLoader().load(jobAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_3));
+
+        ((TextView) jobGames.findViewById(R.id.title_1)).setText(jobAppUsages.get(0).getName());
+        ((TextView) jobGames.findViewById(R.id.title_2)).setText(jobAppUsages.get(1).getName());
+        ((TextView) jobGames.findViewById(R.id.title_3)).setText(jobAppUsages.get(2).getName());
     }
 
     @OnClick(R.id.current_analysis_exit_button)

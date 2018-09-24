@@ -23,8 +23,11 @@
     <dimen name="item_app_content_margin_start">24dp</dimen>
     <dimen name="item_app_content_margin_end">24dp</dimen>
     <dimen name="item_demographic_name_margin_top">5dp</dimen>
-    <dimen name="analysis_content_table_margin_start_end">43dp</dimen>
     <dimen name="item_people_games_genre_text_size">12dp</dimen>
+    <dimen name="analysis_content_table_margin_start_end">43dp</dimen>
+    <dimen name="item_people_games_padding_start_end">15dp</dimen>
+    <dimen name="item_people_games_padding_top_bottom">13dp</dimen>
+    <dimen name="item_people_games_divider_width">10dp</dimen>
     <dimen name="item_people_games_icon_width_height">26dp</dimen>
     <dimen name="item_people_games_title_margin_top">5dp</dimen>
     <dimen name="item_people_games_title_text_size">9dp</dimen>
