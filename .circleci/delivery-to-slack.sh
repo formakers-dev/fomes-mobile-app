@@ -2,7 +2,8 @@
 # $1 : flavor
 # $2 : Slack Channel
 # $3 : Branch
-VERSION="$(./gradlew -q getAppVersion | grep -Po '(\d\.\d\.\d)')"
+VERSION="$(./gradlew -q getAppVersion | grep -Po 'appVersion=(\d\.\d\.\d)')"
+echo VERSION
 APK_NAME="Fomes-$VERSION-$1.apk"
 echo $APK_NAME
 curl -F file=@app/build/outputs/apk/$APK_NAME \
