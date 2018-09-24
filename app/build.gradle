@@ -2,11 +2,14 @@ apply plugin: 'com.android.application'
 apply from: "build-jacoco.gradle"
 
 Properties localProperties = new Properties()
-localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-def localhost = InetAddress.getLocalHost().getHostAddress()
-if (localhost == '127.0.0.1' || !localhost.contains('192')) {
-    localhost = localProperties.getProperty('my.localhost')
+def localhostAddress = InetAddress.getLocalHost().getHostAddress()
+try {
+    localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+    if (localhostAddress == '127.0.0.1' || !localhostAddress.contains('192')) {
+        localhostAddress = localProperties.getProperty('my.localhost')
+    }
+} catch (Exception e) {
+    println("You can't access local.properties file. Your localhost Address is " + localhostAddress);
 }
 
 project.ext.set("packageID", "Fomes")
@@ -39,7 +42,7 @@ android {
         debug {
             debuggable true
             testCoverageEnabled true
-            buildConfigField 'String', 'SERVER_BASE_URL', "\"http://${localhost}:8080/\""
+            buildConfigField 'String', 'SERVER_BASE_URL', "\"http://${localhostAddress}:8080/\""
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
         }
         // DEV
