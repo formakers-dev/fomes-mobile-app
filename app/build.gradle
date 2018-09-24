@@ -76,10 +76,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     testOptions {
-        unitTests.all {
-            forkEvery = 5
-            jacoco {
-                includeNoLocationClasses = true
+        unitTests {
+            includeAndroidResources = true
+            all {
+                forkEvery = 5
+                jacoco {
+                    includeNoLocationClasses = true
+                }
             }
         }
     }
@@ -163,8 +166,8 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.7.22'
-    testImplementation 'org.robolectric:robolectric:3.7.1'
-    testImplementation 'org.robolectric:shadows-support-v4:3.4-rc2'
+    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation 'org.robolectric:shadows-supportv4:3.8'
     testImplementation 'org.assertj:assertj-core:3.8.0'
     testImplementation 'com.squareup.okhttp:mockwebserver:1.2.1'
     testImplementation 'com.google.guava:guava:23.0-android'
