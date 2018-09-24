@@ -25,7 +25,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { ApplicationModule.class, NetworkModule.class })
+@Component(modules = { ApplicationModule.class, NetworkModule.class, GlideModule.class })
 public interface ApplicationComponent {
     void inject(LoadingActivity loadingActivity);
     void inject(PermissionGuideActivity permissionGuideActivity);

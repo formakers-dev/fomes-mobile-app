@@ -92,6 +92,7 @@
             android:layout_marginTop="29dp"
             app:rank_number="1"
             app:rank_numberBackgroundTint="@color/colorPrimary"
+            app:rank_appIconVisibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/analysis_my_genre_2"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +106,7 @@
             android:layout_marginTop="29dp"
             app:rank_number="2"
             app:rank_numberBackgroundTint="@color/fomes_squash"
+            app:rank_appIconVisibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/analysis_my_genre_3"
             app:layout_constraintStart_toEndOf="@id/analysis_my_genre_1"
             app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_subtitle"
@@ -119,6 +121,7 @@
             android:layout_marginTop="29dp"
             app:rank_number="3"
             app:rank_numberBackgroundTint="@color/fomes_blush_pink"
+            app:rank_appIconVisibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/analysis_my_genre_2"
             app:layout_constraintTop_toBottomOf="@+id/analysis_my_genre_subtitle"
@@ -360,6 +363,46 @@
             android:textColor="@color/fomes_light_warm_gray"
             android:textSize="@dimen/analysis_content_subtitle_size"
             app:layout_constraintTop_toBottomOf="@id/analysis_my_games_divider_title" />
+
+        <com.formakers.fomes.common.view.RankAppItemView
+            android:id="@+id/analysis_my_games_1"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginTop="29dp"
+            app:rank_number="1"
+            app:rank_numberBackgroundTint="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@+id/analysis_my_games_2"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_games_divider_subtitle"
+            style="@style/FomesTheme.TurquoiseItem"/>
+
+        <com.formakers.fomes.common.view.RankAppItemView
+            android:id="@+id/analysis_my_games_2"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
+            app:rank_number="2"
+            app:rank_numberBackgroundTint="@color/fomes_squash"
+            app:layout_constraintEnd_toStartOf="@+id/analysis_my_games_3"
+            app:layout_constraintStart_toEndOf="@id/analysis_my_games_1"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_games_divider_subtitle"
+            style="@style/FomesTheme.SquashItem"/>
+
+        <com.formakers.fomes.common.view.RankAppItemView
+            android:id="@+id/analysis_my_games_3"
+            layout="@layout/item_rank_app"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginTop="29dp"
+            app:rank_number="3"
+            app:rank_numberBackgroundTint="@color/fomes_blush_pink"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/analysis_my_games_2"
+            app:layout_constraintTop_toBottomOf="@+id/analysis_my_games_divider_subtitle"
+            style="@style/FomesTheme.BlushPinkItem"/>
         <!-- end of My Games -->
 
         <!-- start of People Games -->
@@ -371,7 +414,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="34dp"
             android:background="@color/fomes_pale_gray"
-            app:layout_constraintTop_toBottomOf="@id/analysis_my_games_divider_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_games_3" />
 
         <TextView
             android:id="@+id/analysis_people_games_title"

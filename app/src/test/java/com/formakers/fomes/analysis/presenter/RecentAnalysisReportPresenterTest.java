@@ -48,10 +48,8 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class)
 public class RecentAnalysisReportPresenterTest {
 
-    @Inject
-    AppUsageDataHelper mockAppUsageDataHelper;
-    @Inject
-    AppStatService mockAppStatService;
+    @Inject AppUsageDataHelper mockAppUsageDataHelper;
+    @Inject AppStatService mockAppStatService;
 
     @Mock RecentAnalysisReportContract.View mockView;
 
@@ -147,8 +145,9 @@ public class RecentAnalysisReportPresenterTest {
                 eq(report.getUsages().get(1).getDeveloperUsages()),
                 eq(report.getUsages().get(2).getDeveloperUsages()));
 
+        verify(mockView).bindMyGames(eq(report.getUsages().get(0).getAppUsages()));
+
         // TODO : 구현필요
-//        verify(mockView).bindMyGames(eq(report.getUsages().get(0).getAppUsages()));
 //        verify(mockView).bindPeopleGames(eq(report.getUsages().get(1).getAppUsages()),
 //                eq(report.getUsages().get(2).getAppUsages()));
     }
@@ -170,5 +169,12 @@ public class RecentAnalysisReportPresenterTest {
         assertThat(usagePercentagePair.get(1).second).isEqualTo(33);
         assertThat(usagePercentagePair.get(2).first.getName()).isEqualTo("시뮬레이션");
         assertThat(usagePercentagePair.get(2).second).isEqualTo(16);
+    }
+
+    @Test
+    public void getHour_호출시__시간으로_변환후_소수점_첫째까지까지_올림하여_리턴한다() {
+        float hour = subject.getHour(10000000L);
+
+        assertThat(hour).isEqualTo(2.8f);
     }
 }

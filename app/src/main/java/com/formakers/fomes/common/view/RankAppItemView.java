@@ -51,6 +51,7 @@ public class RankAppItemView extends ConstraintLayout {
         numberTextView.setText(typedArray.getString(R.styleable.RankAppItemView_rank_number));
         numberTextView.getBackground().setTint(typedArray.getColor(R.styleable.RankAppItemView_rank_numberBackgroundTint, getResources().getColor(R.color.colorPrimary)));
         iconImageView.setImageDrawable(typedArray.getDrawable(R.styleable.RankAppItemView_rank_appIconDrawable));
+        iconImageView.setVisibility(typedArray.getInteger(R.styleable.RankAppItemView_rank_appIconVisibility, View.VISIBLE));
         titleTextView.setText(typedArray.getString(R.styleable.RankAppItemView_rank_title));
         descTextView.setText(typedArray.getString(R.styleable.RankAppItemView_rank_description));
 
@@ -71,6 +72,10 @@ public class RankAppItemView extends ConstraintLayout {
 
     public void setNumberBackgroundTint(@ColorRes int colorResId) {
         numberTextView.getBackground().setTint(getResources().getColor(colorResId));
+    }
+
+    public ImageView getIconImageView() {
+        return iconImageView;
     }
 
     public void setIconImageDrawable(@DrawableRes int resId) {

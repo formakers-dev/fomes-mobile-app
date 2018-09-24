@@ -44,7 +44,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_favorite_developer) ViewGroup myFavoriteDeveloper;
     @BindView(R.id.analysis_gender_age_favorite_developer) ViewGroup genderAgeFavoriteDeveloper;
     @BindView(R.id.analysis_job_favorite_developer) ViewGroup jobFavoriteDeveloper;
-
+    @BindView(R.id.analysis_my_games_1) RankAppItemView myGamesItem1;
+    @BindView(R.id.analysis_my_games_2) RankAppItemView myGamesItem2;
+    @BindView(R.id.analysis_my_games_3) RankAppItemView myGamesItem3;
 
     RecentAnalysisReportContract.Presenter presenter;
 
@@ -152,13 +154,13 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         ((TextView) rankBest.findViewById(R.id.rank_content))
                 .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
-                        totalUsedTimeRank.get(0).getContent(Rank.CONVERT_TYPE_HOURS)));
+                        presenter.getHour(totalUsedTimeRank.get(0).getContent())));
         ((TextView) rankMine.findViewById(R.id.rank_content))
                 .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
-                        totalUsedTimeRank.get(1).getContent(Rank.CONVERT_TYPE_HOURS)));
+                        presenter.getHour(totalUsedTimeRank.get(1).getContent())));
         ((TextView) rankWorst.findViewById(R.id.rank_content))
                 .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
-                        totalUsedTimeRank.get(2).getContent(Rank.CONVERT_TYPE_HOURS)));
+                        presenter.getHour(totalUsedTimeRank.get(2).getContent())));
     }
 
     @Override
@@ -183,6 +185,21 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(getString(R.string.analysis_favorite_developer_description, genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_description))
                 .setText(getString(R.string.analysis_favorite_developer_description, jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
+    }
+
+    @Override
+    public void bindMyGames(List<Usage> myGames) {
+        myGamesItem1.setTitleText(myGames.get(0).getName());
+        myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myGames.get(0).getTotalUsedTime())));
+        presenter.getImageLoader().load(myGames.get(0).getAppInfos().get(0).getIconUrl()).into(myGamesItem1.getIconImageView());
+
+        myGamesItem2.setTitleText(myGames.get(1).getName());
+        myGamesItem2.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myGames.get(1).getTotalUsedTime())));
+        presenter.getImageLoader().load(myGames.get(1).getAppInfos().get(0).getIconUrl()).into(myGamesItem2.getIconImageView());
+
+        myGamesItem3.setTitleText(myGames.get(2).getName());
+        myGamesItem3.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myGames.get(2).getTotalUsedTime())));
+        presenter.getImageLoader().load(myGames.get(2).getAppInfos().get(0).getIconUrl()).into(myGamesItem3.getIconImageView());
     }
 
     @OnClick(R.id.current_analysis_exit_button)

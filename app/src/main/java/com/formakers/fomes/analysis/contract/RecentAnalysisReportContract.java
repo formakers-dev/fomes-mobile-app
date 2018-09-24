@@ -2,6 +2,7 @@ package com.formakers.fomes.analysis.contract;
 
 import android.util.Pair;
 
+import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
@@ -17,6 +18,8 @@ public interface RecentAnalysisReportContract {
         Completable loading();
         List<Pair<Usage,Integer>> getPercentage(List<Usage> categoryUsages, int start, int end);
         User getUserInfo();
+        float getHour(long milliseconds);
+        RequestManager getImageLoader();
     }
 
     interface View extends BaseView<Presenter> {
@@ -25,5 +28,6 @@ public interface RecentAnalysisReportContract {
         void bindPeopleGenreViews(List<Usage> genderAgeUsages, List<Usage> jobUsages);
         void bindRankingViews(List<Rank> totalUsedTimeRank);
         void bindFavoriteDeveloperViews(List<Usage> myDeveloperUsages, List<Usage> genderAgeDeveloperUsages, List<Usage> jobDeveloperUsages);
+        void bindMyGames(List<Usage> myGames);
     }
 }

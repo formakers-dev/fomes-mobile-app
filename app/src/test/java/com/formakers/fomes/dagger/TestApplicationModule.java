@@ -2,6 +2,7 @@ package com.formakers.fomes.dagger;
 
 import android.content.Context;
 
+import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
@@ -155,4 +156,9 @@ public class TestApplicationModule {
         return mock(MessagingHelper.class);
     }
 
+    @Singleton
+    @Provides
+    RequestManager glideRequestManager() {
+        return mock(RequestManager.class);
+    }
 }

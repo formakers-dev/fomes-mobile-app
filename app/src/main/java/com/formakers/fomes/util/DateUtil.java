@@ -9,6 +9,12 @@ import java.util.Locale;
 public class DateUtil {
     private static final SimpleDateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
+    public static final int CONVERT_TYPE_SECONDS = 1;
+    public static final int CONVERT_TYPE_MINUTES = 2;
+    public static final int CONVERT_TYPE_HOURS = 3;
+    public static final int CONVERT_TYPE_DAYS = 4;
+
+
     public static int calDateDiff(long fromTimestamp, long toTimestamp) {
         int dDay = 0;
 
@@ -90,5 +96,25 @@ public class DateUtil {
                 break;
         }
         return result;
+    }
+
+    public static float convertDurationFromMilliseconds(int convertedType, long milliseconds, int floatPoint) {
+            float converted = milliseconds;
+
+            switch (convertedType) {
+                case CONVERT_TYPE_DAYS:
+                    converted = converted / 24;
+                case CONVERT_TYPE_HOURS:
+                    converted = converted / 60;
+                case CONVERT_TYPE_MINUTES:
+                    converted = converted / 60;
+                case CONVERT_TYPE_SECONDS:
+                    converted =  converted / 1000;
+                    break;
+                default:
+                    converted = milliseconds;
+            }
+
+            return (float) Math.ceil(converted * (10 * floatPoint) ) / (10 * floatPoint);
     }
 }

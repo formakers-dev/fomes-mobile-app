@@ -1,11 +1,6 @@
 package com.formakers.fomes.common.network.vo;
 
 public class Rank {
-    public static final int CONVERT_TYPE_SECONDS = 1;
-    public static final int CONVERT_TYPE_MINUTES = 2;
-    public static final int CONVERT_TYPE_HOURS = 3;
-    public static final int CONVERT_TYPE_DAYS = 4;
-
     String userId;
     Integer rank;
     Long content;
@@ -38,26 +33,6 @@ public class Rank {
 
     public void setContent(Long content) {
         this.content = content;
-    }
-
-    public float getContent(int convertedType) {
-        float converted = this.content;
-
-        switch (convertedType) {
-            case CONVERT_TYPE_DAYS:
-                converted = converted / 24;
-            case CONVERT_TYPE_HOURS:
-                converted = converted / 60;
-            case CONVERT_TYPE_MINUTES:
-                converted = converted / 60;
-            case CONVERT_TYPE_SECONDS:
-                converted =  converted / 1000;
-                break;
-            default:
-                converted = getContent();
-        }
-
-        return (float) Math.ceil(converted * 10) / 10;
     }
 
     @Override

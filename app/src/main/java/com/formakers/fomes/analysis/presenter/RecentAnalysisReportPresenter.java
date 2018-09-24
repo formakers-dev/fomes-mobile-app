@@ -3,6 +3,7 @@ package com.formakers.fomes.analysis.presenter;
 import android.util.Log;
 import android.util.Pair;
 
+import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
@@ -12,6 +13,7 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.model.User;
+import com.formakers.fomes.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     @Inject AppUsageDataHelper appUsageDataHelper;
     @Inject AppStatService appStatService;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
+    @Inject RequestManager requestManager;
 
     User user;
 
@@ -109,6 +112,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                     this.view.bindFavoriteDeveloperViews(usageGroupMap.get(UsageGroup.TYPE_MINE).getDeveloperUsages()
                             , usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER).getDeveloperUsages()
                             , usageGroupMap.get(UsageGroup.TYPE_JOB).getDeveloperUsages());
+                    this.view.bindMyGames(usageGroupMap.get(UsageGroup.TYPE_MINE).getAppUsages());
 
                     emitter.onCompleted();
                 }, e -> emitter.onError(e)))
@@ -134,5 +138,15 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     @Override
     public User getUserInfo() {
         return user;
+    }
+
+    @Override
+    public float getHour(long milliseconds) {
+        return DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_HOURS, milliseconds, 1);
+    }
+
+    @Override
+    public RequestManager getImageLoader() {
+        return requestManager;
     }
 }
