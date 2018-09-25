@@ -1,11 +1,17 @@
 package com.formakers.fomes.common.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.formakers.fomes.AppBeeApplication;
+import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.R;
+import com.formakers.fomes.appbee.custom.AppBeeAlertDialog;
+import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
@@ -16,15 +22,20 @@ import com.formakers.fomes.util.FomesConstants;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+
 
 public class FomesBaseActivity extends BaseActivity {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    @Inject ConfigService configService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((AppBeeApplication) getApplication()).getComponent().inject(this);
+
+        checkUpdatePopup();
     }
 
     @Override
@@ -84,4 +95,35 @@ public class FomesBaseActivity extends BaseActivity {
 
         return true;
     }
+
+    private void checkUpdatePopup() {
+        configService.getAppVersion()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(version -> {
+                    if (BuildConfig.VERSION_CODE < version) {
+                        displayVersionUpdateDialog();
+                    }
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    private void displayVersionUpdateDialog() {
+        AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.update_dialog_title),
+                getString(R.string.update_dialog_message), (dialog, which) -> {
+            moveToPlayStore();
+            dialog.dismiss();
+        });
+        appBeeAlertDialog.setOnCancelListener(dialog -> {
+//            finishAffinity();
+            dialog.dismiss();
+        });
+        appBeeAlertDialog.show();
+    }
+
+    private void moveToPlayStore() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=com.formakers.fomes"));
+        startActivity(intent);
+//        finishAffinity();
+    }
+
 }

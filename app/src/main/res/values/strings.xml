@@ -115,8 +115,6 @@
     <string name="my_app_usage_title">앱 사용패턴 다시 분석하기</string>
     <string name="my_analysis_description">지금으로부터 최근 일주일동안\n앱 사용패턴을 분석해 보았어요.</string>
 
-    <string name="app_update_dialog_title">신규 버전 업데이트</string>
-    <string name="app_update_dialog_message">AppBee의 신규 버전이 업데이트 되었습니다.\n마켓에서 업데이트 진행 후 이용 부탁드립니다.</string>
     <string name="my_interview_cancel_warning">* 인터뷰를 취소하려면 눌러주세요 (취소 패널티 주의)</string>
     <string name="dialog_interview_register_fail_title">인터뷰 신청 실패</string>
     <string name="dialog_interview_register_fail_message">선택한 일정의 인터뷰 신청이 마감되었습니다.</string>
@@ -147,6 +145,10 @@
     <string name="common_number_three">3</string>
 
     <!-- Fomes - locality strings -->
+    <!-- Base -->
+    <string name="update_dialog_title">신규 버전 업데이트</string>
+    <string name="update_dialog_message">Fomes의 신규 버전이 업데이트 되었습니다.\n마켓에서 업데이트 진행 후 이용 부탁드립니다.</string>
+
     <!-- Login -->
     <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
     <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing">사용약관</a>]]> 및 <![CDATA[<a href="https://docs.google.com/document/d/1QxWuv2zlKYsGYglUTiP5d5IFxZUy6HwKGObXC8x0034/edit?usp=sharing">개인정보 취급방침</a>]]>에 동의됩니다.</string>

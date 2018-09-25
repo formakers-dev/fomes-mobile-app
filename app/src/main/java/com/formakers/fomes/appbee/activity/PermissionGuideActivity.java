@@ -107,7 +107,7 @@ public class PermissionGuideActivity extends BaseActivity {
     }
 
     private void displayVersionUpdateDialog() {
-        AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.app_update_dialog_title), getString(R.string.app_update_dialog_message), (dialog, which) -> moveToPlayStore());
+        AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.update_dialog_title), getString(R.string.update_dialog_message), (dialog, which) -> moveToPlayStore());
         appBeeAlertDialog.setOnCancelListener(dialog -> finishAffinity());
         appBeeAlertDialog.show();
     }

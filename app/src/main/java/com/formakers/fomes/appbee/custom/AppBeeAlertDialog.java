@@ -58,7 +58,7 @@ public class AppBeeAlertDialog {
         ImageView imageView = ((ImageView) view.findViewById(R.id.dialog_image));
         TextView titleTextView = ((TextView) view.findViewById(R.id.dialog_title));
         TextView messageTextView = ((TextView) view.findViewById(R.id.dialog_message));
-        titleTextView.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_bmjua_path)));
+//        titleTextView.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_bmjua_path)));
         titleTextView.setText(title);
 
         messageTextView.setText(message);
