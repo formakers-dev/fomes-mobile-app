@@ -36,7 +36,7 @@ public class SharedPreferencesHelperTest {
                 .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
                 .putLong("LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP", 1000L)
                 .putString("INVITATION_CODE", "CODE")
-                .putInt("PROVISIONING_PROGRESS_STATUS", 9999)
+                .putInt("PROVISIONING_PROGRESS_STATUS", -1)
                 .apply();
     }
 
@@ -118,13 +118,22 @@ public class SharedPreferencesHelperTest {
     }
 
     @Test
-    public void getProvisioningProgressStatus호출시_SharedPreference에_저장된_인증코드를_리턴한다() throws Exception {
-        assertThat(subject.getProvisioningProgressStatus()).isEqualTo(9999);
+    public void getProvisioningProgressStatus호출시__프로비저닝_진행상태를_리턴한다() throws Exception {
+        assertThat(subject.getProvisioningProgressStatus()).isEqualTo(-1);
     }
 
     @Test
-    public void setProvisioningProgressStatus호출시_SharedPreference에_인증코드를_저장한다() throws Exception {
+    public void setProvisioningProgressStatus호출시__프로비저닝_진행상태를_저장한다() throws Exception {
         subject.setProvisioningProgressStatus(1);
         assertThat(sf.getInt("PROVISIONING_PROGRESS_STATUS", 0)).isEqualTo(1);
+
+        subject.setProvisioningProgressStatus(0);
+        assertThat(sf.getInt("PROVISIONING_PROGRESS_STATUS", 0)).isEqualTo(1);
+
+        subject.setProvisioningProgressStatus(2);
+        assertThat(sf.getInt("PROVISIONING_PROGRESS_STATUS", 0)).isEqualTo(2);
+
+        subject.setProvisioningProgressStatus(-1);
+        assertThat(sf.getInt("PROVISIONING_PROGRESS_STATUS", 0)).isEqualTo(-1);
     }
 }

@@ -127,7 +127,6 @@ public class LoginPresenterTest {
         verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
         verify(mockSharedPreferencesHelper).setUserId(eq("testId"));
         verify(mockSharedPreferencesHelper).setEmail(eq("testEmail"));
-        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(eq(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO));
 
         verify(mockView).startActivityAndFinish(eq(ProvisioningActivity.class));
     }

@@ -30,27 +30,11 @@ public class FomesBaseActivity extends BaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        int status = sharedPreferencesHelper.getProvisioningProgressStatus();
-
-        switch (status) {
-            case FomesConstants.PROVISIONING.PROGRESS_STATUS.NOT_LOGIN:
-                moveActivityTo(LoginActivity.class);
-                return;
-            case FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO: {
-                Intent intent = new Intent(this, ProvisioningActivity.class);
-                intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningUserInfoFragment.TAG);
-                startActivity(intent);
-                finish();
-                return;
-            }
-            case FomesConstants.PROVISIONING.PROGRESS_STATUS.NO_PERMISSION: {
-                Intent intent = new Intent(this, ProvisioningActivity.class);
-                intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningPermissionFragment.TAG);
-                startActivity(intent);
-                finish();
-                return;
-            }
+        if (isNeedProvisioning()) {
+            finish();
+            return;
         }
+
     }
 
     @Override
@@ -61,5 +45,35 @@ public class FomesBaseActivity extends BaseActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean isNeedProvisioning() {
+        int status = sharedPreferencesHelper.getProvisioningProgressStatus();
+
+        if (status < 0) {
+            return false;
+        }
+
+        switch (status) {
+            case FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN: {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO: {
+                Intent intent = new Intent(this, ProvisioningActivity.class);
+                intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningUserInfoFragment.TAG);
+                startActivity(intent);
+                break;
+            }
+            case FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION: {
+                Intent intent = new Intent(this, ProvisioningActivity.class);
+                intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningPermissionFragment.TAG);
+                startActivity(intent);
+                break;
+            }
+        }
+
+        return true;
     }
 }

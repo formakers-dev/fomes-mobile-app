@@ -45,7 +45,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
     @Test
     public void 액티비티_진입시__프로비저닝_상태가_미로그인_상태면__로그인_화면으로_진입한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
-                .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.NOT_LOGIN);
+                .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
         subject = getActivity();
 
@@ -69,7 +69,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
     @Test
     public void 액티비티_진입시__프로비저닝_상태가_권한미허용_상태면__프로비저닝_권한화면으로_진입한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
-                .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.NO_PERMISSION);
+                .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
 
         subject = getActivity();
 

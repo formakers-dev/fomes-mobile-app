@@ -8,6 +8,7 @@ import android.widget.Spinner;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -62,6 +63,11 @@ public class ProvisioningUserInfoFragmentTest {
         assertThat(subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_male_radiobutton).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_female_radiobutton).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void ProvisioningUserInfoFragment_시작시__프로비저닝_진행상황을_업데이트한다() {
+        verify(mockPresenter).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
     }
 
     @Test

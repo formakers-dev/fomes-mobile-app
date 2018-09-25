@@ -8,6 +8,7 @@ import android.view.View;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +58,7 @@ public class ProvisioningPermissionFragmentTest {
 
         subject.onSelectedPage();
 
+        verify(mockPresenter).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
         verify(mockPresenter).emitGrantedEvent(false);
     }
 

@@ -22,10 +22,10 @@ public interface FomesConstants {
 
     interface PROVISIONING {
         interface PROGRESS_STATUS {
-            int NOT_LOGIN = 0;
+            int COMPLETED = -1;
+            int LOGIN = 0;
             int INTRO = 1;
-            int NO_PERMISSION = 2;
-            int COMPLETED = 9999;
+            int PERMISSION = 2;
         }
     }
 

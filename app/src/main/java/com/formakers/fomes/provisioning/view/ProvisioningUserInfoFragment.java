@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.util.FomesConstants;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
@@ -35,6 +36,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
         return inflater.inflate(R.layout.fragment_provision_user_info, container, false);
     }
 
@@ -87,13 +89,12 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
 
     @SuppressLint("ResourceType")
     private void emitFilledUpEvent() {
-
-            if (birthSpinner.getSelectedItemPosition() > 0
-                    && jobSpinner.getSelectedItemPosition() > 0
-                    && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
-                this.presenter.emitFilledUpEvent(this,true);
-            } else {
-                this.presenter.emitFilledUpEvent(this,false);
-            }
+        if (birthSpinner.getSelectedItemPosition() > 0
+                && jobSpinner.getSelectedItemPosition() > 0
+                && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
+            this.presenter.emitFilledUpEvent(this, true);
+        } else {
+            this.presenter.emitFilledUpEvent(this, false);
+        }
     }
 }

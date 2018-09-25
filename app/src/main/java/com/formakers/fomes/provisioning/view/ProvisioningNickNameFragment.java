@@ -52,7 +52,6 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
         this.presenter.requestUpdateUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                            this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.NO_PERMISSION);
                             this.presenter.emitNextPageEvent();
                         },
                         e -> Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show());

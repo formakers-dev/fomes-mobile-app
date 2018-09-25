@@ -143,10 +143,17 @@ public class SharedPreferencesHelper {
     }
 
     public int getProvisioningProgressStatus() {
-        return getInt(KEY_PROVISIONING_PROGRESS_STATUS, FomesConstants.PROVISIONING.PROGRESS_STATUS.NOT_LOGIN);
+        return getInt(KEY_PROVISIONING_PROGRESS_STATUS, FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
     }
 
     public void setProvisioningProgressStatus(int status) {
-        putInt(KEY_PROVISIONING_PROGRESS_STATUS, status);
+        int currentStatus = getProvisioningProgressStatus();
+
+        if (status <= FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED || status >= currentStatus) {
+            putInt(KEY_PROVISIONING_PROGRESS_STATUS, status);
+        } else {
+            Log.e(TAG, "You tried to set older progress status (" + status + ") than " +
+                    "current progress status (" + currentStatus +"). It will be not set. Please check it.");
+        }
     }
 }

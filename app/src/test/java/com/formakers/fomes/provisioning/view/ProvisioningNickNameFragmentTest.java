@@ -24,7 +24,6 @@ import rx.Completable;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -87,7 +86,6 @@ public class ProvisioningNickNameFragmentTest {
         subject.onNextButtonClick();
 
         verify(mockPresenter).requestUpdateUser();
-        verify(mockPresenter).setProvisioningProgressStatus(eq(FomesConstants.PROVISIONING.PROGRESS_STATUS.NO_PERMISSION));
         verify(mockPresenter).emitNextPageEvent();
     }
 

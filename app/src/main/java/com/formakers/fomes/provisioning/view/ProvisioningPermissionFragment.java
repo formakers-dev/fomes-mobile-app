@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.util.FomesConstants;
 
 public class ProvisioningPermissionFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
@@ -53,6 +54,7 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
 
     @Override
     public void onSelectedPage() {
+        this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
         this.presenter.emitGrantedEvent(this.presenter.hasUsageStatsPermission());
     }
 }
