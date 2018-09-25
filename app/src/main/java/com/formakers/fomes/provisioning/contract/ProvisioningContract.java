@@ -17,12 +17,15 @@ public interface ProvisioningContract {
 
         void emitNextPageEvent();
         void emitFilledUpEvent(BaseFragment fragment, boolean isEnable);
-        void emitGrantedEvent(boolean isGranted);
+        void emitNeedToGrantEvent();
+        void emitStartActivityAndFinishEvent(Class<?> destActivity);
 
+        Completable requestVerifyUserToken();
         Completable requestUpdateUser();
 
         boolean hasUsageStatsPermission();
         boolean isSelected(BaseFragment fragment);
+        boolean isProvisiongProgress();
     }
 
     interface View extends BaseView<Presenter> {

@@ -76,6 +76,12 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
             String selectedFragment = bundle.getString(FomesConstants.EXTRA.START_FRAGMENT_NAME);
 
             if (!TextUtils.isEmpty(selectedFragment)) {
+                if (ProvisioningPermissionFragment.TAG.equals(selectedFragment)) {
+                    provisioningPagerAdapter.clear();
+                    provisioningPagerAdapter.addFragment(fragmentMap.get(selectedFragment));
+                    provisioningPagerAdapter.notifyDataSetChanged();
+                    return;
+                }
                 viewPager.setCurrentItem(provisioningPagerAdapter.getItemPosition(fragmentMap.get(selectedFragment)));
                 Log.d(TAG, "viewPager current item = " + viewPager.getCurrentItem());
             }
@@ -199,6 +205,10 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
             } else {
                 throw new IllegalArgumentException("it is not a Fragment!");
             }
+        }
+
+        public void clear() {
+            fragmentList.clear();
         }
 
         public List<Fragment> getFragmentList() {

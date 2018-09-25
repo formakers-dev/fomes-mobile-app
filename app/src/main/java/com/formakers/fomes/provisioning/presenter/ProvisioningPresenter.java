@@ -85,29 +85,19 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void emitGrantedEvent(boolean isGranted) {
-        if (isGranted) {
-            this.userService.verifyToken()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        this.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-                        this.view.startActivityAndFinish(RecentAnalysisReportActivity.class);
-                    }, e -> {
-                        if (e instanceof HttpException) {
-                            int code = ((HttpException) e).code();
-                            if (code == 401 || code == 403) {
-                                this.view.showToast("인증 오류가 발생하였습니다. 재로그인이 필요합니다.");
-                                this.view.startActivityAndFinish(LoginActivity.class);
-                                return;
-                            }
-                        }
+    public void emitNeedToGrantEvent() {
+        this.view.setNextButtonText(R.string.common_go_to_grant);
+        this.view.setNextButtonVisibility(true);
+    }
 
-                        this.view.showToast("예상치 못한 에러가 발생하였습니다.");
-                    });
-        } else {
-            this.view.setNextButtonText(R.string.common_go_to_grant);
-            this.view.setNextButtonVisibility(true);
-        }
+    @Override
+    public void emitStartActivityAndFinishEvent(Class<?> destActivity) {
+        this.view.startActivityAndFinish(destActivity);
+    }
+
+    @Override
+    public Completable requestVerifyUserToken() {
+        return this.userService.verifyToken();
     }
 
     @Override
@@ -123,6 +113,12 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public boolean isSelected(BaseFragment fragment) {
         return this.view.isSelectedFragement(fragment);
+    }
+
+    @Override
+    public boolean isProvisiongProgress() {
+        return this.sharedPreferencesHelper.getProvisioningProgressStatus()
+                != FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED;
     }
 
 }

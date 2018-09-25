@@ -1,15 +1,13 @@
 package com.formakers.fomes.provisioning.presenter;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.provisioning.view.LoginActivity;
-import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,9 +17,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
@@ -105,43 +100,28 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void emitGrantedEvent__권한_허용_이벤트_발생시__토큰검증을_하고_성공시__뷰에_화면을_이동하도록_요청한다() {
-        when(mockUserService.verifyToken()).thenReturn(Completable.complete());
-
-        subject.emitGrantedEvent(true);
-
-        verify(mockUserService).verifyToken();
-        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(eq(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED));
-        verify(mockView).startActivityAndFinish(eq(RecentAnalysisReportActivity.class));
-    }
-
-    @Test
-    public void emitGrantedEvent__권한_허용_이벤트_발생시__토큰검증을_하고_실패시__뷰에_토스트를_요청한다() {
-        when(mockUserService.verifyToken()).thenReturn(Completable.error(new Throwable()));
-
-        subject.emitGrantedEvent(true);
-
-        verify(mockUserService).verifyToken();
-        verify(mockView).showToast(eq("예상치 못한 에러가 발생하였습니다."));
-    }
-
-    @Test
-    public void emitGrantedEvent__권한_허용_이벤트_발생시__토큰검증을_하고_인증오류시__뷰에_로그인화면_이동을_요청한다() {
-        when(mockUserService.verifyToken()).thenReturn(Completable.error(new HttpException(Response.error(401, ResponseBody.create(null, "")))));
-
-        subject.emitGrantedEvent(true);
-
-        verify(mockUserService).verifyToken();
-        verify(mockView).startActivityAndFinish(eq(LoginActivity.class));
-        verify(mockView).showToast(eq("인증 오류가 발생하였습니다. 재로그인이 필요합니다."));
-    }
-
-    @Test
-    public void emitGrantedEvent__권한_미허용_이벤트_발생시__뷰에_다음버튼을_보여주도록_요청한다() {
-        subject.emitGrantedEvent(false);
+    public void emitNeedToGrantEvent__권한이_필요하다는_이벤트_발생시__권한허용_버튼을_셋팅한다() {
+        subject.emitNeedToGrantEvent();
 
         verify(mockView).setNextButtonText(eq(R.string.common_go_to_grant));
         verify(mockView).setNextButtonVisibility(eq(true));
+    }
+
+    @Test
+    public void emitStartActivityAndFinishEvent__화면전환_이벤트_발생시__화면을_이동하고_종료하도록_뷰에_요청한다() {
+
+        subject.emitStartActivityAndFinishEvent(MainActivity.class);
+
+        verify(mockView).startActivityAndFinish(eq(MainActivity.class));
+    }
+
+    @Test
+    public void requestVerifyUserToken_호출시__유저_토큰_검증을_요청한다() {
+        when(mockUserService.verifyToken()).thenReturn(Completable.complete());
+
+        subject.requestVerifyUserToken();
+
+        verify(mockUserService).verifyToken();
     }
 
     @Test

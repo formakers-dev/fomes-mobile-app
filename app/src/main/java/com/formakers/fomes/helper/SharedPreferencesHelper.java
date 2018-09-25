@@ -148,6 +148,12 @@ public class SharedPreferencesHelper {
 
     public void setProvisioningProgressStatus(int status) {
         int currentStatus = getProvisioningProgressStatus();
+        if (currentStatus == FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED) {
+            Log.e(TAG, "You tried to set older progress status (" + status + ") "
+                    + "although you already have completed Provisioning Flow (" + currentStatus + "). "
+                    + "It will be not set. Please check it.");
+            return;
+        }
 
         if (status <= FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED || status >= currentStatus) {
             putInt(KEY_PROVISIONING_PROGRESS_STATUS, status);

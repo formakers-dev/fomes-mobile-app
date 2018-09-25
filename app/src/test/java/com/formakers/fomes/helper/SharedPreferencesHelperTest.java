@@ -36,7 +36,7 @@ public class SharedPreferencesHelperTest {
                 .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
                 .putLong("LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP", 1000L)
                 .putString("INVITATION_CODE", "CODE")
-                .putInt("PROVISIONING_PROGRESS_STATUS", -1)
+                .putInt("PROVISIONING_PROGRESS_STATUS", 0)
                 .apply();
     }
 
@@ -119,7 +119,7 @@ public class SharedPreferencesHelperTest {
 
     @Test
     public void getProvisioningProgressStatus호출시__프로비저닝_진행상태를_리턴한다() throws Exception {
-        assertThat(subject.getProvisioningProgressStatus()).isEqualTo(-1);
+        assertThat(subject.getProvisioningProgressStatus()).isEqualTo(0);
     }
 
     @Test
