@@ -80,7 +80,8 @@
         <activity android:name=".analysis.view.RecentAnalysisReportActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".main.view.MainActivity"
-            android:theme="@style/FomesTheme.NoActionBar"/>
+            android:theme="@style/FomesTheme.NoActionBar"
+            android:launchMode="singleTask"/>
         <activity android:name=".settings.SettingsActivity"/>
     </application>
 

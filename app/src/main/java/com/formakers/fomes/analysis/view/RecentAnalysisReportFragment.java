@@ -1,5 +1,6 @@
 package com.formakers.fomes.analysis.view;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.RankAppItemView;
 import com.formakers.fomes.common.view.RankItemView;
 import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -296,6 +298,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
     @OnClick(R.id.current_analysis_exit_button)
     public void onConfirmButtonClick() {
+        // TODO : 추후 일반 종료로 변경해야 함
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
         this.getActivity().finish();
     }
 }

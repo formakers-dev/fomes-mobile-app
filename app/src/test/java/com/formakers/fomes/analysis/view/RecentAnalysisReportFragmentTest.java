@@ -1,5 +1,6 @@
 package com.formakers.fomes.analysis.view;
 
+import android.content.Intent;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.view.RankAppItemView;
+import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.User;
 
@@ -45,6 +47,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -407,11 +410,13 @@ public class RecentAnalysisReportFragmentTest {
     }
 
     @Test
-    public void 확인_버튼_클릭시__화면을_종료한다() {
+    public void 확인_버튼_클릭시__메인화면으로_이동후_화면을_종료한다() {
         controller.create().start().resume().visible();
 
         subject.getView().findViewById(R.id.current_analysis_exit_button).performClick();
 
+        Intent intent = shadowOf(subject.getActivity()).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(MainActivity.class.getSimpleName());
         assertThat(subject.getActivity().isFinishing()).isTrue();
     }
 
