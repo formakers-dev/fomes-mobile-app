@@ -124,6 +124,10 @@
 -keep class com.google.api.services.people.v1.model.** { *; }
 -dontwarn com.google.api.services.people.v1.model.**
 
+# MPAndoridChart
+-keep class com.github.mikephil.charting.** { *; }
+-dontwarn io.realm.**
+
 # Fomes Model
 -keep class com.formakers.fomes.model.** { *; }
 -dontwarn com.formakers.fomes.model.**

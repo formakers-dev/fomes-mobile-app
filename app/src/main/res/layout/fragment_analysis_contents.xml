@@ -79,6 +79,15 @@
             android:textColor="@color/fomes_light_warm_gray"
             android:textSize="@dimen/analysis_content_subtitle_size"
             app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_title" />
+        
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/analysis_my_genre_chart"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="33dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_subtitle"/>
 
         <com.formakers.fomes.common.view.RankAppItemView
             android:id="@+id/analysis_my_genre_1"
@@ -91,7 +100,7 @@
             app:layout_constraintEnd_toStartOf="@+id/analysis_my_genre_2"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_chart"
             app:rank_appIconVisibility="gone"
             app:rank_number="1"
             app:rank_color="@color/colorPrimary" />
@@ -105,7 +114,7 @@
             app:layout_goneMarginEnd="@dimen/provision_padding_start_end"
             app:layout_constraintEnd_toStartOf="@+id/analysis_my_genre_3"
             app:layout_constraintStart_toEndOf="@id/analysis_my_genre_1"
-            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_chart"
             app:rank_appIconVisibility="gone"
             app:rank_number="2"
             app:rank_color="@color/fomes_squash" />
@@ -120,7 +129,7 @@
             android:layout_marginTop="29dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/analysis_my_genre_2"
-            app:layout_constraintTop_toBottomOf="@+id/analysis_my_genre_subtitle"
+            app:layout_constraintTop_toBottomOf="@+id/analysis_my_genre_chart"
             app:rank_appIconVisibility="gone"
             app:rank_number="3"
             app:rank_color="@color/fomes_blush_pink" />
@@ -162,7 +171,7 @@
         <include
             android:id="@+id/analysis_people_genre_gender_age"
             layout="@layout/item_analysis_people_genre"
-            android:layout_width="@dimen/current_analysis_people_genre_item_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/provision_padding_start_end"
             android:layout_marginStart="@dimen/provision_padding_start_end"
@@ -175,7 +184,7 @@
         <include
             android:id="@+id/analysis_people_genre_job"
             layout="@layout/item_analysis_people_genre"
-            android:layout_width="@dimen/current_analysis_people_genre_item_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/provision_padding_start_end"
             android:layout_marginStart="@dimen/provision_padding_start_end"

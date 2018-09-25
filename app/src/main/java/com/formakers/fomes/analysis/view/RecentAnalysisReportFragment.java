@@ -1,5 +1,6 @@
 package com.formakers.fomes.analysis.view;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -22,7 +23,13 @@ import com.formakers.fomes.common.view.RankAppItemView;
 import com.formakers.fomes.common.view.RankItemView;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.model.User;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +42,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.current_analysis_loading_layout) ViewGroup loadingLayout;
     @BindView(R.id.current_analysis_layout) ViewGroup contentLayout;
     @BindView(R.id.current_analysis_error_layout) ViewGroup errorLayout;
+    @BindView(R.id.analysis_my_genre_chart) PieChart myGenrePieChart;
     @BindView(R.id.analysis_my_genre_1) RankAppItemView myGenreItem1;
     @BindView(R.id.analysis_my_genre_2) RankAppItemView myGenreItem2;
     @BindView(R.id.analysis_my_genre_3) RankAppItemView myGenreItem3;
@@ -101,28 +109,73 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         jobFavoriteDeveloper.setBackground(getResources().getDrawable(R.drawable.item_rect_solid_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_BlushPinkItem).getTheme()));
     }
 
+    private void bindChart(PieChart pieChart, List<Number> datas) {
+        List<PieEntry> pieEntries = new ArrayList<>();
+        float total = 0;
+        for (Number data : datas) {
+            pieEntries.add(new PieEntry(data.floatValue()));
+            total += data.floatValue();
+        }
+        pieEntries.add(new PieEntry(100 - total));
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,"");
+
+        Resources res = getResources();
+        List<Integer> colors = Arrays.asList(res.getColor(R.color.colorPrimary), res.getColor(R.color.fomes_squash),
+                res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_gray));
+        pieDataSet.setColors(colors);
+        pieDataSet.setDrawValues(false);
+
+        pieChart.setData(new PieData(pieDataSet));
+        pieChart.setDrawSlicesUnderHole(false);
+        pieChart.setDrawEntryLabels(false);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setHoleRadius(0.0f);
+        pieChart.setTransparentCircleRadius(72f);
+        pieChart.setTransparentCircleAlpha(255);
+        pieChart.setTouchEnabled(false);
+    }
+
     @Override
     public void bindMyGenreViews(List<Usage> categoryUsages) {
         List<Pair<Usage, Integer>> usagePercentagePair = this.presenter.getPercentage(categoryUsages, 0, 3);
 
+        int bestPercent = usagePercentagePair.get(0).second;
+        int myPercent = usagePercentagePair.get(1).second;
+        int worstPercent = usagePercentagePair.get(2).second;
+
+        List<Number> percentages = new ArrayList<>();
+        for (Pair<Usage, Integer> pair : usagePercentagePair) {
+            percentages.add(pair.second);
+        }
+        bindChart(myGenrePieChart, percentages);
+
         myGenreItem1.setTitleText(usagePercentagePair.get(0).first.getName());
-        myGenreItem1.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(0).second));
+        myGenreItem1.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), bestPercent));
         myGenreItem2.setTitleText(usagePercentagePair.get(1).first.getName());
-        myGenreItem2.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(1).second));
+        myGenreItem2.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), myPercent));
         myGenreItem3.setTitleText(usagePercentagePair.get(2).first.getName());
-        myGenreItem3.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), usagePercentagePair.get(2).second));
+        myGenreItem3.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), worstPercent));
     }
 
     @Override
     public void bindPeopleGenreViews(List<Usage> genderAgeCategoryUsages, List<Usage> jobCategoryUsages) {
         User userInfo = this.presenter.getUserInfo();
 
+        // 동일 성별/나이
         ((TextView) peopleGenreGenderAge.findViewById(R.id.group))
                 .setText(String.format(getString(R.string.common_age) + getString(R.string.common_new_line) + getString(R.string.common_string),
                         userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
 
         List<Pair<Usage, Integer>> genderAgeUsagePercentagePair
                 = this.presenter.getPercentage(genderAgeCategoryUsages, 0, 3);
+
+        List<Number> genderAgePercentages = new ArrayList<>();
+        for (Pair<Usage, Integer> pair : genderAgeUsagePercentagePair) {
+            genderAgePercentages.add(pair.second);
+        }
+        bindChart(peopleGenreGenderAge.findViewById(R.id.chart), genderAgePercentages);
+        Log.d(TAG, genderAgeCategoryUsages.toString());
 
         ((TextView) peopleGenreGenderAge.findViewById(R.id.title_1))
                 .setText(genderAgeUsagePercentagePair.get(0).first.getName());
@@ -131,11 +184,18 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         ((TextView) peopleGenreGenderAge.findViewById(R.id.title_3))
                 .setText(genderAgeUsagePercentagePair.get(2).first.getName());
 
+        // 동일 직업군
         ((TextView) peopleGenreJob.findViewById(R.id.group))
                 .setText(String.format(getString(R.string.common_string), userInfo.getJob()));
 
         List<Pair<Usage, Integer>> jobUsagePercentagePair
                 = this.presenter.getPercentage(jobCategoryUsages, 0, 3);
+
+        List<Number> jobPercentages = new ArrayList<>();
+        for (Pair<Usage, Integer> pair : jobUsagePercentagePair) {
+            jobPercentages.add(pair.second);
+        }
+        bindChart(peopleGenreJob.findViewById(R.id.chart), jobPercentages);
 
         ((TextView) peopleGenreJob.findViewById(R.id.title_1))
                 .setText(jobUsagePercentagePair.get(0).first.getName());

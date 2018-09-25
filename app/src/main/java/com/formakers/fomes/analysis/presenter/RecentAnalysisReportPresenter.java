@@ -131,7 +131,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
 
         List<Pair<Usage, Integer>> result = new ArrayList<>();
         for (Usage categoryUsage : categoryUsages.subList(start, categoryUsages.size() > end ? end : categoryUsages.size())) {
-            result.add(new Pair<>(categoryUsage, Math.round(categoryUsage.getTotalUsedTime() / total * 100)));
+            result.add(new Pair<>(categoryUsage, (int) Math.ceil(categoryUsage.getTotalUsedTime() / total * 100)));
         }
 
         return result;

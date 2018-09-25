@@ -152,7 +152,7 @@ public class RecentAnalysisReportPresenterTest {
     }
 
     @Test
-    public void getPercentage_호출시__전체사용량_대비_현재사용량_비율을_리턴한다() {
+    public void getPercentage_호출시__전체사용량_대비_현재사용량_비율을_올림하여_리턴한다() {
         List<Usage> categoryUsages = new ArrayList<>();
         categoryUsages.add(new Usage("GAME_RPG", "롤플레잉", 3000L, null));
         categoryUsages.add(new Usage("GAME_PUZZLE", "퍼즐", 2000L, null));
@@ -163,11 +163,11 @@ public class RecentAnalysisReportPresenterTest {
 
         assertThat(usagePercentagePair.size()).isEqualTo(3);
         assertThat(usagePercentagePair.get(0).first.getName()).isEqualTo("롤플레잉");
-        assertThat(usagePercentagePair.get(0).second).isEqualTo(49);
+        assertThat(usagePercentagePair.get(0).second).isEqualTo(50);
         assertThat(usagePercentagePair.get(1).first.getName()).isEqualTo("퍼즐");
         assertThat(usagePercentagePair.get(1).second).isEqualTo(33);
         assertThat(usagePercentagePair.get(2).first.getName()).isEqualTo("시뮬레이션");
-        assertThat(usagePercentagePair.get(2).second).isEqualTo(16);
+        assertThat(usagePercentagePair.get(2).second).isEqualTo(17);
     }
 
     @Test
