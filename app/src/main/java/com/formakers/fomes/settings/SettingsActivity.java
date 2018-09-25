@@ -1,6 +1,7 @@
 package com.formakers.fomes.settings;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class SettingsActivity extends FomesBaseActivity implements SettingsListAdapter.OnItemClickListener{
+public class SettingsActivity extends FomesBaseActivity implements SettingsListAdapter.OnItemClickListener {
 
     @BindView(R.id.settings_recyclerview) RecyclerView settingsRecyclerView;
 
@@ -67,6 +68,16 @@ public class SettingsActivity extends FomesBaseActivity implements SettingsListA
     @Override
     public void onItemClick(SettingsItem item) {
         switch (item.getId()) {
+            case Menu.TNC_USAGE: {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing"));
+                startActivity(intent);
+                break;
+            }
+            case Menu.TNC_PRIVATE: {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/1QxWuv2zlKYsGYglUTiP5d5IFxZUy6HwKGObXC8x0034/edit?usp=sharing"));
+                startActivity(intent);
+                break;
+            }
             case Menu.CONTACTS_US: {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("message/rfc822");

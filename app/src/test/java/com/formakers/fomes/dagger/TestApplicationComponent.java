@@ -19,6 +19,7 @@ import com.formakers.fomes.main.view.MainActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
 import com.formakers.fomes.provisioning.view.RecentAnalysisReportActivityTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
+import com.formakers.fomes.settings.SettingsActivityTest;
 
 import javax.inject.Singleton;
 
@@ -51,4 +52,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
 
     void inject(RecentAnalysisReportActivityTest activityTest);
     void inject(MainActivityTest activityTest);
+    void inject(SettingsActivityTest activityTest);
 }

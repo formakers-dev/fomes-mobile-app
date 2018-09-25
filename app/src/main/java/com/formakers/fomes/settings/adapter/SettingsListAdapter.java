@@ -41,6 +41,10 @@ public class SettingsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return settingsList.size();
     }
 
+    public SettingsItem getItem(int position) {
+        return settingsList.get(position);
+    }
+
     class SettingsViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView sideInfoTextView;
@@ -57,6 +61,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             sideInfoTextView.setText(item.getSideInfo());
             itemView.setOnClickListener(v -> listener.onItemClick(item));
             itemView.setClickable(item.isClickable());
+            itemView.setTag(item.getId());
         }
     }
 }

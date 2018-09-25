@@ -148,7 +148,7 @@
     <!-- Fomes - locality strings -->
     <!-- Login -->
     <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
-    <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="https://www.naver.com">개인정보 취급방침</a>]]>에 동의됩니다.</string>
+    <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing">사용약관</a>]]> 및 <![CDATA[<a href="https://docs.google.com/document/d/1QxWuv2zlKYsGYglUTiP5d5IFxZUy6HwKGObXC8x0034/edit?usp=sharing">개인정보 취급방침</a>]]>에 동의됩니다.</string>
 
     <!-- Provisioning -->
     <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다.\n몇 가지 궁금한 점이 있습니다.</string>
