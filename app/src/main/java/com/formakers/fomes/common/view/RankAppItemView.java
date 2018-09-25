@@ -49,7 +49,7 @@ public class RankAppItemView extends ConstraintLayout {
 
     private void setTypeArray(TypedArray typedArray) {
         numberTextView.setText(typedArray.getString(R.styleable.RankAppItemView_rank_number));
-        numberTextView.getBackground().setTint(typedArray.getColor(R.styleable.RankAppItemView_rank_numberBackgroundTint, getResources().getColor(R.color.colorPrimary)));
+        numberTextView.getBackground().setTint(typedArray.getColor(R.styleable.RankAppItemView_rank_color, getResources().getColor(R.color.colorPrimary)));
         iconImageView.setImageDrawable(typedArray.getDrawable(R.styleable.RankAppItemView_rank_appIconDrawable));
         iconImageView.setVisibility(typedArray.getInteger(R.styleable.RankAppItemView_rank_appIconVisibility, View.VISIBLE));
         titleTextView.setText(typedArray.getString(R.styleable.RankAppItemView_rank_title));

@@ -20,7 +20,7 @@
 
     <declare-styleable name="RankAppItemView">
         <attr name="rank_number" format="reference|string" />
-        <attr name="rank_numberBackgroundTint" format="reference|color" />
+        <attr name="rank_color" format="reference|color" />
         <attr name="rank_title" format="reference|string" />
         <attr name="rank_description" format="reference|string" />
         <attr name="rank_appIconDrawable" format="reference|integer" />
@@ -30,4 +30,13 @@
             <enum name="visible" value="0" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="RankItemView">
+        <attr name="rank_item_line_height" format="reference|dimension"/>
+        <attr name="rank_item_color" format="reference|color" />
+        <attr name="rank_item_title" format="reference|string" />
+        <attr name="rank_item_description" format="reference|string" />
+        <attr name="rank_item_content_isTop" format="reference|boolean"/>
+    </declare-styleable>
+
 </resources>

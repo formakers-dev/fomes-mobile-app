@@ -11,7 +11,7 @@
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/content_layout"/>
 
     <View android:id="@+id/arrow_view"
         android:layout_width="26dp"
@@ -27,7 +27,7 @@
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/arrow_view"
+        app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical">
 
         <TextView android:id="@+id/title_textview"
