@@ -186,6 +186,6 @@ apply plugin: 'realm-android'
 
 task getAppVersion() {
     def appVersion = "${majorVersion}.${minorVersion}.${patchVersion}"
-    println 'appVersion='+ appVersion
+    println '####' + appVersion + '####'
     return appVersion
 }
