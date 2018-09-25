@@ -1,7 +1,6 @@
 package com.formakers.fomes.dagger;
 
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
-import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.appbee.activity.CancelInterviewActivity;
 import com.formakers.fomes.appbee.activity.CodeVerificationActivity;
 import com.formakers.fomes.appbee.activity.InterviewDetailActivity;
@@ -14,8 +13,7 @@ import com.formakers.fomes.appbee.fragment.InterviewListFragment;
 import com.formakers.fomes.appbee.fragment.ProjectListFragment;
 import com.formakers.fomes.appbee.fragment.ReportMostUsedFragment;
 import com.formakers.fomes.common.job.SendDataJobService;
-import com.formakers.fomes.main.view.MainActivity;
-import com.formakers.fomes.settings.SettingsActivity;
+import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
 import com.formakers.fomes.service.MessagingTokenService;
@@ -48,7 +46,5 @@ public interface ApplicationComponent {
     void inject(ProvisioningPresenter provisioningPresenter);
     void inject(RecentAnalysisReportPresenter reportPresenter);
 
-    void inject(RecentAnalysisReportActivity activity);
-    void inject(MainActivity activity);
-    void inject(SettingsActivity activity);
+    void inject(FomesBaseActivity activity);
 }

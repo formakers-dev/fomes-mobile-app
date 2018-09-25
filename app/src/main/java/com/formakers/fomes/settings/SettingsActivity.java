@@ -29,7 +29,6 @@ public class SettingsActivity extends FomesBaseActivity implements SettingsListA
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppBeeApplication) getApplication()).getComponent().inject(this);
 
         setContentView(R.layout.activity_settings);
 
