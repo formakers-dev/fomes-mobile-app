@@ -88,12 +88,13 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
 
     @SuppressLint("ResourceType")
     private void emitFilledUpEvent() {
-        if (birthSpinner.getSelectedItemPosition() > 0
-                && jobSpinner.getSelectedItemPosition() > 0
-                && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
-            this.presenter.emitFilledUpEvent(true);
-        } else {
-            this.presenter.emitFilledUpEvent(false);
-        }
+
+            if (birthSpinner.getSelectedItemPosition() > 0
+                    && jobSpinner.getSelectedItemPosition() > 0
+                    && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
+                this.presenter.emitFilledUpEvent(this,true);
+            } else {
+                this.presenter.emitFilledUpEvent(this,false);
+            }
     }
 }

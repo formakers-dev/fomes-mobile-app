@@ -3,6 +3,7 @@ package com.formakers.fomes.provisioning.contract;
 import android.support.annotation.DrawableRes;
 
 import com.formakers.fomes.common.mvp.BaseView;
+import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.dagger.ApplicationComponent;
 
 import rx.Completable;
@@ -15,13 +16,14 @@ public interface ProvisioningContract {
         void setProvisioningProgressStatus(int status);
 
         void emitNextPageEvent();
-        void emitFilledUpEvent(boolean isEnable);
+        void emitFilledUpEvent(BaseFragment fragment, boolean isEnable);
         void emitGrantedEvent(boolean isGranted);
         void emitAlmostCompletedEvent(boolean isAlmostCompleted);
 
         Completable requestUpdateUser();
 
         boolean hasUsageStatsPermission();
+        boolean isSelected(BaseFragment fragment);
     }
 
     interface View extends BaseView<Presenter> {
@@ -31,5 +33,6 @@ public interface ProvisioningContract {
         ApplicationComponent getApplicationComponent();
         void startActivityAndFinish(Class<?> destActivity);
         void showToast(String toastMessage);
+        boolean isSelectedFragement(BaseFragment fragment);
     }
 }

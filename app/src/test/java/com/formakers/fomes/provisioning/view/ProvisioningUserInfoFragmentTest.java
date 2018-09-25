@@ -73,7 +73,7 @@ public class ProvisioningUserInfoFragmentTest {
     @Test
     public void ProvisioningUserInfoFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
         subject.onSelectedPage();
-        verify(this.mockPresenter, atLeast(1)).emitFilledUpEvent(anyBoolean());
+        verify(this.mockPresenter, atLeast(1)).emitFilledUpEvent(eq(subject), anyBoolean());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ProvisioningUserInfoFragmentTest {
         jobSpinner.setSelection(1);
         genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
 
-        verify(mockPresenter).emitFilledUpEvent(true);
+        verify(mockPresenter).emitFilledUpEvent(subject, true);
     }
 
     @Test
@@ -116,25 +116,25 @@ public class ProvisioningUserInfoFragmentTest {
         jobSpinner.setSelection(0);
         genderRadioGroup.clearCheck();
 
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(false);
+        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
 
         // 일부 미임력시
         birthSpinner.setSelection(1);
         jobSpinner.setSelection(0);
         genderRadioGroup.clearCheck();
 
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(false);
+        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
 
         birthSpinner.setSelection(0);
         jobSpinner.setSelection(1);
         genderRadioGroup.clearCheck();
 
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(false);
+        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
 
         birthSpinner.setSelection(0);
         jobSpinner.setSelection(0);
         genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
 
-        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(false);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
     }
 }

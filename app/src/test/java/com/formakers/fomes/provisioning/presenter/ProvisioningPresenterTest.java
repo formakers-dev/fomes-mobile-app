@@ -1,5 +1,6 @@
 package com.formakers.fomes.provisioning.presenter;
 
+import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
@@ -96,7 +97,10 @@ public class ProvisioningPresenterTest {
 
     @Test
     public void emitFilledUpEvent__항목들을_다_채웠다는_이벤트_발생시__뷰에_다음버튼을_보여주도록_요청한다() {
-        subject.emitFilledUpEvent(true);
+        when(mockView.isSelectedFragement(any(BaseFragment.class))).thenReturn(true);
+
+        subject.emitFilledUpEvent(new BaseFragment(), true);
+
         verify(mockView).setNextButtonVisibility(eq(true));
     }
 

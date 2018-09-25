@@ -3,6 +3,7 @@ package com.formakers.fomes.provisioning.presenter;
 import android.util.Log;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
@@ -77,8 +78,10 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void emitFilledUpEvent(boolean isFilledUp) {
-        this.view.setNextButtonVisibility(isFilledUp);
+    public void emitFilledUpEvent(BaseFragment fragment, boolean isFilledUp) {
+        if (isSelected(fragment)) {
+            this.view.setNextButtonVisibility(isFilledUp);
+        }
     }
 
     @Override
@@ -123,6 +126,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public boolean hasUsageStatsPermission() {
         return this.appBeeAndroidNativeHelper.hasUsageStatsPermission();
+    }
+
+    @Override
+    public boolean isSelected(BaseFragment fragment) {
+        return this.view.isSelectedFragement(fragment);
     }
 
 }

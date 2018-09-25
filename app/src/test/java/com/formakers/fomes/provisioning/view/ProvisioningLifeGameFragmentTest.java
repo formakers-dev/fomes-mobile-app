@@ -59,7 +59,7 @@ public class ProvisioningLifeGameFragmentTest {
     @Test
     public void ProvisioningLifeGameFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
         subject.onSelectedPage();
-        verify(this.mockPresenter).emitFilledUpEvent(anyBoolean());
+        verify(this.mockPresenter).emitFilledUpEvent(eq(subject), anyBoolean());
     }
 
     @Test
@@ -77,13 +77,13 @@ public class ProvisioningLifeGameFragmentTest {
     public void 인생게임_입력시__입력완료_이벤트를_보낸다() {
         ((EditText) subject.getView().findViewById(R.id.provision_life_game_content_edittext)).setText("마비노기");
 
-        verify(mockPresenter).emitFilledUpEvent(true);
+        verify(mockPresenter).emitFilledUpEvent(subject, true);
     }
 
     @Test
     public void 인생게임_미입력시__입력미완료_이벤트를_보낸다() {
         ((EditText) subject.getView().findViewById(R.id.provision_life_game_content_edittext)).setText("");
 
-        verify(mockPresenter).emitFilledUpEvent(false);
+        verify(mockPresenter).emitFilledUpEvent(subject, false);
     }
 }

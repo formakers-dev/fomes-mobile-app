@@ -83,7 +83,12 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
 
     @Override
     public void onBackPressed() {
-        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        int currentPosition = viewPager.getCurrentItem();
+        if (currentPosition <= 0 || currentPosition >= viewPager.getAdapter().getItemPosition(fragmentMap.get(ProvisioningPermissionFragment.TAG))) {
+            this.finishAffinity();
+        } else {
+            viewPager.setCurrentItem(currentPosition - 1);
+        }
     }
 
     @Override
@@ -124,6 +129,11 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @Override
     public void showToast(String toastMessage) {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean isSelectedFragement(BaseFragment fragment) {
+        return this.viewPager.getCurrentItem() == this.viewPager.getAdapter().getItemPosition(fragment);
     }
 
     @OnClick(R.id.next_button)

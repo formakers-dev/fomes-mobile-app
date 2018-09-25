@@ -62,6 +62,6 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     @OnTextChanged(value = R.id.provision_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
     public void onLifeGameTextChanged(CharSequence text, int start, int before, int count) {
         Log.v(TAG, text + " start=" + start + ", before=" + before + ", count=" + count);
-        this.presenter.emitFilledUpEvent(count > 0);
+        this.presenter.emitFilledUpEvent(this, count > 0);
     }
 }

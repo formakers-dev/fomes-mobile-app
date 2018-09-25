@@ -70,7 +70,7 @@ public class ProvisioningNickNameFragmentTest {
     @Test
     public void ProvisioningNickNameFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
         subject.onSelectedPage();
-        verify(this.mockPresenter).emitFilledUpEvent(anyBoolean());
+        verify(this.mockPresenter).emitFilledUpEvent(eq(subject), anyBoolean());
     }
 
     @Test
@@ -112,13 +112,13 @@ public class ProvisioningNickNameFragmentTest {
     public void 닉네임_입력시__입력완료_이벤트를_보낸다() {
         ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("예나르");
 
-        verify(mockPresenter).emitFilledUpEvent(true);
+        verify(mockPresenter).emitFilledUpEvent(subject, true);
     }
 
     @Test
     public void 닉네임_미입력시__입력미완료_이벤트를_보낸다() {
         ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("");
 
-        verify(mockPresenter).emitFilledUpEvent(false);
+        verify(mockPresenter).emitFilledUpEvent(subject, false);
     }
 }
