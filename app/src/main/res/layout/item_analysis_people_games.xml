@@ -62,7 +62,7 @@
         app:layout_constraintStart_toStartOf="@+id/title_2"
         app:layout_constraintEnd_toEndOf="@+id/title_2"
         app:layout_constraintBaseline_toBaselineOf="@id/icon_1"
-        tools:src="@drawable/icon_my_current_analysis" />
+        tools:src="@drawable/icon_my_recent_analysis" />
 
     <TextView
         android:id="@+id/title_2"

@@ -85,7 +85,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     @Test
     public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() throws Exception {
         MenuItem item = mock(MenuItem.class);
-        when(item.getItemId()).thenReturn(R.id.my_current_analysis);
+        when(item.getItemId()).thenReturn(R.id.my_recent_analysis);
         when(item.getTitle()).thenReturn("내 분석 다시보기");
 
         launchActivity();
