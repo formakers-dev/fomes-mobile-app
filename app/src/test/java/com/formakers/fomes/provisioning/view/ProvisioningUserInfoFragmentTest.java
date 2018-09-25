@@ -65,12 +65,6 @@ public class ProvisioningUserInfoFragmentTest {
     }
 
     @Test
-    public void ProvisioningUserInfoFragment_가_보여질시__프로비저닝_플로우가_완료되지_않았음을_뜻하는_이벤트를_보낸다() {
-        subject.onSelectedPage();
-        verify(this.mockPresenter, atLeast(1)).emitAlmostCompletedEvent(eq(false));
-    }
-
-    @Test
     public void ProvisioningUserInfoFragment_가_보여질시__입력완료여부_이벤트를_보낸다() {
         subject.onSelectedPage();
         verify(this.mockPresenter, atLeast(1)).emitFilledUpEvent(eq(subject), anyBoolean());

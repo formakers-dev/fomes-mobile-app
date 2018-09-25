@@ -41,7 +41,6 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
-            this.presenter.emitAlmostCompletedEvent(false);
             CharSequence nickName = nickNameEditText.getText();
             onLifeGameTextChanged(nickName, 0, 0, nickName.length());
         }

@@ -1,12 +1,13 @@
 package com.formakers.fomes.provisioning.presenter;
 
+import com.formakers.fomes.R;
+import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.util.FomesConstants;
 
@@ -29,7 +30,6 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -140,14 +140,8 @@ public class ProvisioningPresenterTest {
     public void emitGrantedEvent__권한_미허용_이벤트_발생시__뷰에_다음버튼을_보여주도록_요청한다() {
         subject.emitGrantedEvent(false);
 
+        verify(mockView).setNextButtonText(eq(R.string.common_go_to_grant));
         verify(mockView).setNextButtonVisibility(eq(true));
-    }
-
-    @Test
-    public void emitAlmostCompletedEvent__프로비저닝이_거의_완료되었다는_이벤트_발생시__뷰에_이미지를_변경하도록_요청한다() {
-        subject.emitAlmostCompletedEvent(true);
-
-        verify(mockView).setIconImage(anyInt());
     }
 
     @Test

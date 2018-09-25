@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -112,6 +113,11 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         if (nextButton.getVisibility() == visibility) return;
 
         nextButton.setVisibility(visibility);
+    }
+
+    @Override
+    public void setNextButtonText(@StringRes int stringResId) {
+        nextButton.setText(stringResId);
     }
 
     @Override

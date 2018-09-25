@@ -9,7 +9,6 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +20,6 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment.REQUEST_CODE_USAGE_STATS_PERMISSION;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -53,13 +50,6 @@ public class ProvisioningPermissionFragmentTest {
         assertThat(subject.getView().findViewById(R.id.provision_permission_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_permission_imageview).getVisibility()).isEqualTo(View.VISIBLE);
     }
-
-    @Test
-    public void ProvisioningPermissionFragment_가_보여질시__프로비저닝_플로우가_거의_완료되었음을_뜻하는_이벤트를_보낸다() {
-        subject.onSelectedPage();
-        verify(this.mockPresenter, atLeast(1)).emitAlmostCompletedEvent(eq(true));
-    }
-
 
     @Test
     public void ProvisioningPermissionFragment_가_보여질시__권한이_없으면__권한없음_이벤트를_보낸다() {

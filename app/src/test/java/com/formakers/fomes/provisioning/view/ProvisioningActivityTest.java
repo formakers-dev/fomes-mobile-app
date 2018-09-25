@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Button;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseActivityTest;
@@ -144,6 +145,14 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         subject.setNextButtonVisibility(false);
 
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
+    }
+
+    @Test
+    public void setNextButtonText_호출시__다음버튼의_텍스트를_변경한다() {
+        launchActivity();
+        subject.setNextButtonText(R.string.common_go_to_grant);
+
+        assertThat(((Button) subject.findViewById(R.id.next_button)).getText()).isEqualTo("허용하러 가기");
     }
 
     @Test

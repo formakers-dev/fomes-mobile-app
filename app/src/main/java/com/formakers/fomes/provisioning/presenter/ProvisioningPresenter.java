@@ -105,16 +105,8 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
                         this.view.showToast("예상치 못한 에러가 발생하였습니다.");
                     });
         } else {
+            this.view.setNextButtonText(R.string.common_go_to_grant);
             this.view.setNextButtonVisibility(true);
-        }
-    }
-
-    @Override
-    public void emitAlmostCompletedEvent(boolean isAlmostCompleted) {
-        if (isAlmostCompleted) {
-            this.view.setIconImage(R.drawable.fomes_face_smile);
-        } else {
-            this.view.setIconImage(R.drawable.fomes_face);
         }
     }
 

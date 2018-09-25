@@ -18,7 +18,6 @@ public interface ProvisioningContract {
         void emitNextPageEvent();
         void emitFilledUpEvent(BaseFragment fragment, boolean isEnable);
         void emitGrantedEvent(boolean isGranted);
-        void emitAlmostCompletedEvent(boolean isAlmostCompleted);
 
         Completable requestUpdateUser();
 
@@ -30,6 +29,7 @@ public interface ProvisioningContract {
         void nextPage();
         void setIconImage(@DrawableRes int drawableResId);
         void setNextButtonVisibility(boolean isVisible);
+        void setNextButtonText(int stringResId);
         ApplicationComponent getApplicationComponent();
         void startActivityAndFinish(Class<?> destActivity);
         void showToast(String toastMessage);

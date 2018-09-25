@@ -134,6 +134,7 @@
 
     <!-- Fomes - common strings -->
     <string name="common_next_button">다음으로</string>
+    <string name="common_go_to_grant">허용하러 가기</string>
     <string name="common_confirm">확인</string>
     <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
     <string name="common_age">%d대</string>
