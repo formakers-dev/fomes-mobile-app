@@ -211,4 +211,12 @@
     <string name="coming_soon">Coming Soon</string>
     <string name="betatest_title">누구보다 먼저, 누구보다 솔직하게\n게임 고수인 당신의 의견을 전하세요!</string>
     <string name="betatest_subtitle">게임 좀 하시는 고수들을 모십니다.\n분석된 취향에 맞는 뉴비 게임을 보내드립니다.\n누구보다 먼저 써보고 가치있는 피드백을 주세요.\n( 각종 아이템 &amp; 리워드를 드립니다. )</string>
+
+    <!-- Settings -->
+    <string name="settings_menu_version">포메스 정보</string>
+    <string name="settings_menu_usage">이용약관</string>
+    <string name="settings_menu_private">개인정보 취급 방침</string>
+    <string name="settings_menu_contact_us">이메일로 문의하기</string>
+    <string name="thanks_to_title">Special thanks to</string>
+    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 제이슨, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인,  싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
 </resources>
