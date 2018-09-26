@@ -53,7 +53,7 @@ public class UserDAOTest {
 
         UserRealmObject user = realm.where(UserRealmObject.class).findFirst();
         assertNotNull(user);
-        assertEquals(user.getUserId(), "newUserId");
+        assertEquals(user.getUserId(), "testUserId");
         assertEquals(user.getNickName(), "newNickName");
         assertEquals(user.getBirthday().intValue(), 1992);
         assertEquals(user.getGender(), "male");

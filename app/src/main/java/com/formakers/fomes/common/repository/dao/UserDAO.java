@@ -38,7 +38,7 @@ public class UserDAO {
                     userRealmObject = new UserRealmObject();
                 }
 
-                if (!TextUtils.isEmpty(userInfo.getUserId())) {
+                if (TextUtils.isEmpty(userRealmObject.getUserId()) && !TextUtils.isEmpty(userInfo.getUserId())) {
                     userRealmObject.setUserId(userInfo.getUserId());
                 }
 
