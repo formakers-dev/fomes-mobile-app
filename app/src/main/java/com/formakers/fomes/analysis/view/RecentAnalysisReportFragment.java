@@ -20,6 +20,7 @@ import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.view.BaseFragment;
+import com.formakers.fomes.common.view.FavoriteDeveloperItemView;
 import com.formakers.fomes.common.view.RankAppItemView;
 import com.formakers.fomes.common.view.RankItemView;
 import com.formakers.fomes.dagger.ApplicationComponent;
@@ -53,9 +54,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_playtime_rank_best) RankItemView rankBest;
     @BindView(R.id.analysis_playtime_rank_mine) RankItemView rankMine;
     @BindView(R.id.analysis_playtime_rank_worst) RankItemView rankWorst;
-    @BindView(R.id.analysis_my_favorite_developer) ViewGroup myFavoriteDeveloper;
-    @BindView(R.id.analysis_gender_age_favorite_developer) ViewGroup genderAgeFavoriteDeveloper;
-    @BindView(R.id.analysis_job_favorite_developer) ViewGroup jobFavoriteDeveloper;
+    @BindView(R.id.analysis_my_favorite_developer) FavoriteDeveloperItemView myFavoriteDeveloper;
+    @BindView(R.id.analysis_gender_age_favorite_developer) FavoriteDeveloperItemView genderAgeFavoriteDeveloper;
+    @BindView(R.id.analysis_job_favorite_developer) FavoriteDeveloperItemView jobFavoriteDeveloper;
     @BindView(R.id.analysis_my_games_1) RankAppItemView myGamesItem1;
     @BindView(R.id.analysis_my_games_2) RankAppItemView myGamesItem2;
     @BindView(R.id.analysis_my_games_3) RankAppItemView myGamesItem3;
@@ -78,7 +79,6 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         presenter.loading()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnCompleted(() -> initViews())
                 .subscribe(() -> {
                     // TODO : 아래 뷰들 Fragment 관리로 변경 필요
                     loadingLayout.setVisibility(View.GONE);
@@ -100,15 +100,6 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @Override
     public ApplicationComponent getApplicationComponent() {
         return ((AppBeeApplication) this.getActivity().getApplication()).getComponent();
-    }
-
-    /*
-     * Applying style and attributes for analysis views
-     */
-    public void initViews() {
-        myFavoriteDeveloper.setBackground(getResources().getDrawable(R.drawable.item_rect_solid_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_TurquoiseItem).getTheme()));
-        genderAgeFavoriteDeveloper.setBackground(getResources().getDrawable(R.drawable.item_rect_solid_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_SquashItem).getTheme()));
-        jobFavoriteDeveloper.setBackground(getResources().getDrawable(R.drawable.item_rect_solid_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_BlushPinkItem).getTheme()));
     }
 
     private void bindChart(PieChart pieChart, List<Number> datas) {
@@ -246,11 +237,11 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_name)).setText(jobDeveloperUsages.get(0).getName());
 
         ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_description))
-                .setText(getString(R.string.analysis_favorite_developer_description, myDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
+                .setText(myDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
         ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_description))
-                .setText(getString(R.string.analysis_favorite_developer_description, genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
+                .setText(genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_description))
-                .setText(getString(R.string.analysis_favorite_developer_description, jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName()));
+                .setText(jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
     }
 
     @Override

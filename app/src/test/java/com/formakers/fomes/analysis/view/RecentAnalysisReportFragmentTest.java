@@ -298,11 +298,11 @@ public class RecentAnalysisReportFragmentTest {
                 .findViewById(R.id.developer_name)).getText()).isEqualTo("순순디자인");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_favorite_developer)
-                .findViewById(R.id.developer_description)).getText()).isEqualTo("블루홀게임\n게임 개발사");
+                .findViewById(R.id.developer_description)).getText()).isEqualTo("블루홀게임");
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_gender_age_favorite_developer)
-                .findViewById(R.id.developer_description)).getText()).isEqualTo("블리자드게임\n게임 개발사");
+                .findViewById(R.id.developer_description)).getText()).isEqualTo("블리자드게임");
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_job_favorite_developer)
-                .findViewById(R.id.developer_description)).getText()).isEqualTo("순순디자인게임\n게임 개발사");
+                .findViewById(R.id.developer_description)).getText()).isEqualTo("순순디자인게임");
     }
 
     @Test

@@ -308,38 +308,38 @@
             app:constraint_referenced_ids="analysis_my_favorite_developer,analysis_gender_age_favorite_developer,analysis_job_favorite_developer"
             app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_subtitle"/>
 
-        <include
+        <com.formakers.fomes.common.view.FavoriteDeveloperItemView
             android:id="@+id/analysis_my_favorite_developer"
-            layout="@layout/item_analysis_developer"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:theme="@style/FomesTheme.TurquoiseItem"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintBottom_toBottomOf="@+id/analysis_favorite_developer_barrier"
             app:layout_constraintEnd_toStartOf="@+id/analysis_gender_age_favorite_developer"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/analysis_favorite_developer_top_barrier" />
+            app:layout_constraintTop_toTopOf="@id/analysis_favorite_developer_top_barrier"/>
 
-        <include
+        <com.formakers.fomes.common.view.FavoriteDeveloperItemView
             android:id="@+id/analysis_gender_age_favorite_developer"
-            layout="@layout/item_analysis_developer"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
+            android:theme="@style/FomesTheme.SquashItem"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintTop_toTopOf="@id/analysis_favorite_developer_top_barrier"
             app:layout_constraintBottom_toBottomOf="@+id/analysis_favorite_developer_barrier"
             app:layout_constraintEnd_toStartOf="@+id/analysis_job_favorite_developer"
-            app:layout_constraintStart_toEndOf="@+id/analysis_my_favorite_developer" />
+            app:layout_constraintStart_toEndOf="@+id/analysis_my_favorite_developer"/>
 
-        <include
+        <com.formakers.fomes.common.view.FavoriteDeveloperItemView
             android:id="@+id/analysis_job_favorite_developer"
-            layout="@layout/item_analysis_developer"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/provision_padding_start_end"
             android:layout_marginStart="14dp"
+            android:theme="@style/FomesTheme.BlushPinkItem"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintTop_toTopOf="@id/analysis_favorite_developer_top_barrier"
             app:layout_constraintBottom_toBottomOf="@+id/analysis_favorite_developer_barrier"
