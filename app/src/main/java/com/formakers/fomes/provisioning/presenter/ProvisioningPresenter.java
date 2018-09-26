@@ -3,32 +3,31 @@ package com.formakers.fomes.provisioning.presenter;
 import android.util.Log;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
-import com.formakers.fomes.provisioning.view.LoginActivity;
+import com.formakers.fomes.repository.dao.UserDAO;
 import com.formakers.fomes.util.FomesConstants;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
 
-    private ProvisioningContract.View view;
-    private User user = new User();
     @Inject UserService userService;
     @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
+    @Inject UserDAO userDAO;
+
+    private ProvisioningContract.View view;
+    private User user = new User();
 
     public ProvisioningPresenter(ProvisioningContract.View view) {
         this.view = view;
@@ -36,12 +35,13 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     // temporary code for test
-    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper) {
+    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
         this.view = view;
         this.user = user;
         this.userService = userService;
         this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -102,6 +102,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
 
     @Override
     public Completable requestUpdateUser() {
+        userDAO.updateUserInfo(this.user);
         return this.userService.updateUser(this.user);
     }
 

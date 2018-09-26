@@ -8,7 +8,7 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.repository.dao.UserDAO;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -20,7 +20,8 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Inject GoogleSignInAPIHelper googleSignInAPIHelper;
     @Inject UserService userService;
-    @Inject SharedPreferencesHelper SharedPreferencesHelper;
+    @Inject SharedPreferencesHelper sharedPreferencesHelper;
+    @Inject UserDAO userDAO;
 
     private LoginContract.View view;
 
@@ -31,11 +32,12 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     // TODO : ActivityComponent로 변환후 변경 필요
     // temporary code for test
-    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper) {
+    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper, UserDAO userDAO) {
         this.view = view;
         this.googleSignInAPIHelper = googleSignInAPIHelper;
         this.userService = userService;
-        this.SharedPreferencesHelper = SharedPreferencesHelper;
+        this.sharedPreferencesHelper = SharedPreferencesHelper;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -47,13 +49,17 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         GoogleSignInAccount account = result.getSignInAccount();
-        userService.signUp(account.getIdToken(), new User(account.getId(), account.getEmail(), SharedPreferencesHelper.getRegistrationToken()))
+        User userInfo = new User().setUserId(account.getId())
+                .setName(account.getDisplayName())
+                .setEmail(account.getEmail())
+                .setRegistrationToken(sharedPreferencesHelper.getRegistrationToken());
+
+        userService.signUp(account.getIdToken(), userInfo)
                 .observeOn(Schedulers.io())
                 .subscribe(fomesToken -> {
-                    // TODO : 리팩토링 고려 필요
-                    SharedPreferencesHelper.setAccessToken(fomesToken);
-                    SharedPreferencesHelper.setUserId(account.getId());
-                    SharedPreferencesHelper.setEmail(account.getEmail());
+                    sharedPreferencesHelper.setAccessToken(fomesToken);
+                    userDAO.updateUserInfo(userInfo);
+
                     this.view.startActivityAndFinish(ProvisioningActivity.class);
                 }, e -> this.view.showToast("가입에 실패하였습니다. 재시도 고고"));
 

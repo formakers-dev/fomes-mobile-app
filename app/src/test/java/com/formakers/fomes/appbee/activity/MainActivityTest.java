@@ -43,7 +43,7 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        when(mockSharedPreferencesHelper.getEmail()).thenReturn("anyEmail@gmail.com");
+//        when(mockSharedPreferencesHelper.getEmail()).thenReturn("anyEmail@gmail.com");
 
         subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
     }

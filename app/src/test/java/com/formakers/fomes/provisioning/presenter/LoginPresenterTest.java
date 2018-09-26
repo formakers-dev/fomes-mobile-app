@@ -5,13 +5,13 @@ import android.content.Intent;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.repository.dao.UserDAO;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -47,6 +47,7 @@ public class LoginPresenterTest {
     @Inject UserService mockUserService;
     @Inject GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
+    @Inject UserDAO mockUserDAO;
 
     @Mock LoginContract.View mockView;
 
@@ -57,7 +58,7 @@ public class LoginPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper);
+        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO);
     }
 
     @After
@@ -114,6 +115,7 @@ public class LoginPresenterTest {
         when(mockAccount.getIdToken()).thenReturn("testIdToken");
         when(mockAccount.getId()).thenReturn("testId");
         when(mockAccount.getEmail()).thenReturn("testEmail");
+        when(mockAccount.getDisplayName()).thenReturn("testName");
         when(mockResult.getSignInAccount()).thenReturn(mockAccount);
 
         when(mockGoogleSignInAPIHelper.getSignInResult(any(Intent.class))).thenReturn(mockResult);
@@ -125,8 +127,15 @@ public class LoginPresenterTest {
         subject.requestSignUpBy(mock(Intent.class));
 
         verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
-        verify(mockSharedPreferencesHelper).setUserId(eq("testId"));
-        verify(mockSharedPreferencesHelper).setEmail(eq("testEmail"));
+
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
+
+        User user = userArgumentCaptor.getValue();
+        assertThat(user.getUserId()).isEqualTo("testId");
+        assertThat(user.getName()).isEqualTo("testName");
+        assertThat(user.getEmail()).isEqualTo("testEmail");
+        assertThat(user.getRegistrationToken()).isEqualTo("testRegistrationToken");
 
         verify(mockView).startActivityAndFinish(eq(ProvisioningActivity.class));
     }

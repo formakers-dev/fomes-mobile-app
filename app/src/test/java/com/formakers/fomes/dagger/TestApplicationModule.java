@@ -20,6 +20,7 @@ import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.repository.dao.UserDAO;
 import com.formakers.fomes.repository.helper.AppRepositoryHelper;
 
 import javax.inject.Singleton;
@@ -160,5 +161,15 @@ public class TestApplicationModule {
     @Provides
     RequestManager glideRequestManager() {
         return mock(RequestManager.class);
+    }
+
+    /**
+     * Database
+     */
+
+    @Singleton
+    @Provides
+    UserDAO userDAO() {
+        return mock(UserDAO.class);
     }
 }

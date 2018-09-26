@@ -84,15 +84,6 @@ public class SharedPreferencesHelper {
         return getString(KEY_ACCESS_TOKEN, EMPTY_STRING);
     }
 
-    public void setUserId(String userId) {
-        putString(KEY_USER_ID, userId);
-    }
-
-    @NonNull
-    public String getUserId() {
-        return getString(KEY_USER_ID, EMPTY_STRING);
-    }
-
     public void setRegistrationToken(String registrationToken) {
         putString(KEY_REGISTRATION_TOKEN, registrationToken);
     }
@@ -100,15 +91,6 @@ public class SharedPreferencesHelper {
     @NonNull
     public String getRegistrationToken() {
         return getString(KEY_REGISTRATION_TOKEN, EMPTY_STRING);
-    }
-
-    @NonNull
-    public String getEmail() {
-        return getString(KEY_EMAIL, EMPTY_STRING);
-    }
-
-    public void setEmail(String email) {
-        putString(KEY_EMAIL, email);
     }
 
     public long getLastUpdateAppUsageTimestamp() {

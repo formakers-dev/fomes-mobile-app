@@ -17,6 +17,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.exceptions.RealmException;
 
+@Deprecated
 public class AppRepositoryHelper {
 
     @Inject

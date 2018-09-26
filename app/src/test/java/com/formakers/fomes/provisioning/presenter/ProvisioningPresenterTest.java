@@ -8,6 +8,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.repository.dao.UserDAO;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +37,7 @@ public class ProvisioningPresenterTest {
     @Mock UserService mockUserService;
     @Mock AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
+    @Mock UserDAO mockUserDAO;
 
     ProvisioningPresenter subject;
 
@@ -56,7 +58,7 @@ public class ProvisioningPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAppBeeAndroidNativeHelper, mockSharedPreferencesHelper);
+        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAppBeeAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO);
     }
 
     @After
@@ -130,6 +132,7 @@ public class ProvisioningPresenterTest {
 
         subject.requestUpdateUser();
 
+        verify(mockUserDAO).updateUserInfo(eq(mockUser));
         verify(mockUserService).updateUser(eq(mockUser));
     }
 

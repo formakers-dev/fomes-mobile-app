@@ -4,6 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
 
+@Deprecated
 public class AppUsageRealmObject extends RealmObject {
 
     @PrimaryKey

@@ -38,8 +38,13 @@ public class AppBeeApplication extends Application {
 
     protected void initRealm() {
         Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration
-                .Builder()
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder();
+
+        if (BuildConfig.DEBUG) {
+            builder.directory(getExternalFilesDir(null));
+        }
+
+        RealmConfiguration config = builder
                 .name("appbeeDB")
                 .deleteRealmIfMigrationNeeded()
                 .build();

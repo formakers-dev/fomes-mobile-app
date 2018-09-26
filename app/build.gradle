@@ -176,6 +176,7 @@ dependencies {
     testImplementation 'com.squareup.okhttp:mockwebserver:1.2.1'
     testImplementation 'com.google.guava:guava:23.0-android'
     // android test
+    androidTestImplementation 'com.android.support.test:runner:1.0.2-alpha1'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

@@ -152,8 +152,8 @@ public class LoginActivity extends BaseActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(accessToken -> {
                             SharedPreferencesHelper.setAccessToken(accessToken);
-                            SharedPreferencesHelper.setUserId(userId);
-                            SharedPreferencesHelper.setEmail(email);
+//                            SharedPreferencesHelper.setUserId(userId);
+//                            SharedPreferencesHelper.setEmail(email);
 
                             moveToNextActivity();
                         }, e -> {

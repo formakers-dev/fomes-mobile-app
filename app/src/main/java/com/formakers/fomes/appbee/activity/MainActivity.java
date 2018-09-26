@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         userIdTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_id);
-        userIdTextView.setText(FormatUtil.parseEmailName(SharedPreferencesHelper.getEmail()));
+//        userIdTextView.setText(FormatUtil.parseEmailName(SharedPreferencesHelper.getEmail()));
 
         mainNestedScrollView.setFillViewport(true);
 

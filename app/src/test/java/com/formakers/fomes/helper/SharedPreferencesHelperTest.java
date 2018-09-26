@@ -52,17 +52,6 @@ public class SharedPreferencesHelperTest {
     }
 
     @Test
-    public void setUserId호출시_SharedPreference에_값을_저장한다() throws Exception {
-        subject.setUserId("test_user_id");
-        assertThat(sf.getString("USER_ID", "")).isEqualTo("test_user_id");
-    }
-
-    @Test
-    public void getUserId호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
-        assertThat(subject.getUserId()).isEqualTo("user_id");
-    }
-
-    @Test
     public void setRegistrationToken호출시_SharedPreference에_fcm_등록토큰값을_저장한다() throws Exception {
         subject.setRegistrationToken("test_registration_token");
         assertThat(sf.getString("REGISTRATION_TOKEN", "")).isEqualTo("test_registration_token");
@@ -71,17 +60,6 @@ public class SharedPreferencesHelperTest {
     @Test
     public void getRegistrationToken호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
         assertThat(subject.getRegistrationToken()).isEqualTo("TEST_REGISTRATION_TOKEN");
-    }
-
-    @Test
-    public void getEmail호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
-        assertThat(subject.getEmail()).isEqualTo("appbee0627@gmail.com");
-    }
-
-    @Test
-    public void setEmail호출시_SharedPreference에_이메일주소를_저장한다() throws Exception {
-        subject.setEmail("appbee0627@gmail.com");
-        assertThat(sf.getString("EMAIL", "")).isEqualTo("appbee0627@gmail.com");
     }
 
     @Test
