@@ -13,10 +13,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content_layout"/>
 
-    <View android:id="@+id/arrow_view"
-        android:layout_width="26dp"
-        android:layout_height="14dp"
-        android:background="@drawable/item_triangle_background"
+    <ImageView android:id="@+id/arrow_view"
+        android:layout_width="13dp"
+        android:layout_height="7dp"
+        android:background="@drawable/top_arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line_view"/>
