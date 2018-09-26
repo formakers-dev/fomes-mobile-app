@@ -46,4 +46,5 @@
     <dimen name="main_nav_margin_start">27dp</dimen>
     <dimen name="main_nav_header_margin_top">40dp</dimen>
     <dimen name="current_analysis_people_genre_item_width">90dp</dimen>
+    <dimen name="item_analysis_rank_desc_text_size">9dp</dimen>
 </resources>
