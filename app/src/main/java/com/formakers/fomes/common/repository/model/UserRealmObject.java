@@ -1,4 +1,4 @@
-package com.formakers.fomes.repository.model;
+package com.formakers.fomes.common.repository.model;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

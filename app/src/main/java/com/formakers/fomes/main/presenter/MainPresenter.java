@@ -2,7 +2,7 @@ package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.repository.dao.UserDAO;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import javax.inject.Inject;
 

@@ -1,10 +1,10 @@
-package com.formakers.fomes.repository.helper;
+package com.formakers.fomes.common.repository.helper;
 
 import android.support.test.runner.AndroidJUnit4;
 
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
-import com.formakers.fomes.repository.model.AppUsageRealmObject;
+import com.formakers.fomes.common.repository.model.AppUsageRealmObject;
 
 import org.junit.After;
 import org.junit.Before;

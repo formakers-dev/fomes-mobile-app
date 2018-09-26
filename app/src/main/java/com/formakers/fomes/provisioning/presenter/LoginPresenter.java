@@ -8,7 +8,7 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
-import com.formakers.fomes.repository.dao.UserDAO;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 

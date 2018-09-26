@@ -12,7 +12,7 @@ import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.repository.dao.UserDAO;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import org.assertj.core.util.Lists;
 import org.junit.After;

@@ -13,7 +13,7 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.repository.dao.UserDAO;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.util.DateUtil;
 
 import java.util.ArrayList;

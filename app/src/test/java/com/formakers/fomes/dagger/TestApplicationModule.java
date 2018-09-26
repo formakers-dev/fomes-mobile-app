@@ -20,8 +20,8 @@ import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.network.UserService;
-import com.formakers.fomes.repository.dao.UserDAO;
-import com.formakers.fomes.repository.helper.AppRepositoryHelper;
+import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
 
 import javax.inject.Singleton;
 

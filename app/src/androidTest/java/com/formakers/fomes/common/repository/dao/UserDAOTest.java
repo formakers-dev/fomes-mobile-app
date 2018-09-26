@@ -1,9 +1,9 @@
-package com.formakers.fomes.repository.dao;
+package com.formakers.fomes.common.repository.dao;
 
 import android.support.test.runner.AndroidJUnit4;
 
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.repository.model.UserRealmObject;
+import com.formakers.fomes.common.repository.model.UserRealmObject;
 
 import org.junit.After;
 import org.junit.Before;

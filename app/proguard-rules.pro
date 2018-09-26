@@ -134,3 +134,6 @@
 
 -keep class com.formakers.fomes.common.network.vo.** { *; }
 -dontwarn com.formakers.fomes.common.network.vo.**
+
+-keep class com.formakers.fomes.common.repository.model.** { *; }
+-dontwarn com.formakers.fomes.common.repository.model.**
