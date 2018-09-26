@@ -2,6 +2,7 @@ package com.formakers.fomes.provisioning.view;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
@@ -18,6 +19,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -89,6 +93,21 @@ public class ProvisioningNickNameFragmentTest {
     }
 
     @Test
+    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_아이디_중복시_중복경고문구를_보여준다() {
+//        when(mockPresenter.requestUpdateUserWithoutRefreshToken()).
+        when(mockPresenter.requestUpdateUser()).
+                thenReturn(Completable.error(new HttpException(Response.error(409, ResponseBody.create(null, "")))));
+
+        subject.onNextButtonClick();
+
+//        verify(mockPresenter).requestUpdateUserWithoutRefreshToken();
+        verify(mockPresenter).requestUpdateUser();
+        verify(mockPresenter).emitFilledUpEvent(subject, false);
+        assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText()).isEqualTo("* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.");
+    }
+
+    @Test
     public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_실패시_실패문구를_띄운다() {
         when(mockPresenter.requestUpdateUser()).thenReturn(Completable.error(new Throwable()));
 
@@ -119,5 +138,6 @@ public class ProvisioningNickNameFragmentTest {
 
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText()).isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
     }
 }
