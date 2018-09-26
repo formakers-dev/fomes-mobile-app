@@ -50,10 +50,23 @@
         android:layout_marginTop="@dimen/provision_content_margin_top"
         android:inputType="textPersonName"
         android:hint="@string/provision_nickname_content_hint"
-        android:maxLength="10"
         android:backgroundTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_title_textview" />
+
+    <TextView
+        android:id="@+id/provision_nickname_format_warning_textview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/provision_nickname_format_warning"
+        android:textSize="@dimen/provision_content_title_text_size"
+        android:textColor="@color/fomes_red"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_edittext" />
 
 </android.support.constraint.ConstraintLayout>

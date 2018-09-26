@@ -32,5 +32,7 @@
     <color name="fomes_white">#ffffff</color>
     <color name="fomes_white_2">#fafafa</color>
 
+    <color name="fomes_red">#d0021b</color>
+
     <color name="fomes_content_background">@color/fomes_white_2</color>
 </resources>

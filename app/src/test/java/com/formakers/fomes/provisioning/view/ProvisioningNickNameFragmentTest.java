@@ -6,7 +6,6 @@ import android.widget.EditText;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.util.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -112,5 +111,13 @@ public class ProvisioningNickNameFragmentTest {
         ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("");
 
         verify(mockPresenter).emitFilledUpEvent(subject, false);
+    }
+
+    @Test
+    public void 닉네임_규칙에_맞지않는_닉네임_입력시__경고문구를_보여주고_입력미완료_이벤트를_보낸다() {
+        ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("%");
+
+        verify(mockPresenter).emitFilledUpEvent(subject, false);
+        assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
     }
 }
