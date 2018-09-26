@@ -1,7 +1,7 @@
 package com.formakers.fomes.helper;
 
-import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.model.User;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +10,6 @@ import javax.inject.Singleton;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
-import rx.Single;
 import rx.schedulers.Schedulers;
 
 @Singleton
@@ -33,8 +32,13 @@ public class AppBeeAPIHelper {
                     return errors.observeOn(Schedulers.io())
                             .take(2)
                             .filter(error -> error instanceof HttpException)
-                            .filter(error -> ((HttpException) error).code() == 401 || ((HttpException) error).code() == 403)
-                            .flatMap(error -> googleSignInAPIHelper.requestSilentSignInResult())
+                            .flatMap(error -> {
+                                if (((HttpException) error).code() == 401 || ((HttpException) error).code() == 403) {
+                                    return googleSignInAPIHelper.requestSilentSignInResult();
+                                } else {
+                                    return Observable.error(error);
+                                }
+                            })
                             .filter(googleSignInResult -> googleSignInResult != null && googleSignInResult.isSuccess() && googleSignInResult.getSignInAccount() != null)
                             .flatMap(googleSignInResult -> Observable.just(googleSignInResult.getSignInAccount()))
                             .filter(account -> account != null)
