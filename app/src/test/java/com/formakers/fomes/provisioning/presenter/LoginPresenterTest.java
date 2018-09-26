@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
@@ -48,6 +49,7 @@ public class LoginPresenterTest {
     @Inject GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
     @Inject UserDAO mockUserDAO;
+    @Inject JobManager mockJobManager;
 
     @Mock LoginContract.View mockView;
 
@@ -58,7 +60,7 @@ public class LoginPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO);
+        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO, mockJobManager);
     }
 
     @After
@@ -130,6 +132,8 @@ public class LoginPresenterTest {
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
+
+        verify(mockJobManager).registerSendDataJob(eq(JobManager.JOB_ID_SEND_DATA));
 
         User user = userArgumentCaptor.getValue();
         assertThat(user.getUserId()).isEqualTo("testId");

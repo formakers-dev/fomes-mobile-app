@@ -2,6 +2,7 @@ package com.formakers.fomes.provisioning.presenter;
 
 import android.content.Intent;
 
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
@@ -22,6 +23,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Inject UserService userService;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserDAO userDAO;
+    @Inject JobManager jobManaer;
 
     private LoginContract.View view;
 
@@ -32,12 +34,13 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     // TODO : ActivityComponent로 변환후 변경 필요
     // temporary code for test
-    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper, UserDAO userDAO) {
+    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper, UserDAO userDAO, JobManager jobManaer) {
         this.view = view;
         this.googleSignInAPIHelper = googleSignInAPIHelper;
         this.userService = userService;
         this.sharedPreferencesHelper = SharedPreferencesHelper;
         this.userDAO = userDAO;
+        this.jobManaer = jobManaer;
     }
 
     @Override
@@ -59,6 +62,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .subscribe(fomesToken -> {
                     sharedPreferencesHelper.setAccessToken(fomesToken);
                     userDAO.updateUserInfo(userInfo);
+                    jobManaer.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
 
                     this.view.startActivityAndFinish(ProvisioningActivity.class);
                 }, e -> this.view.showToast("가입에 실패하였습니다. 재시도 고고"));

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
@@ -157,10 +158,24 @@ public class TestApplicationModule {
         return mock(MessagingHelper.class);
     }
 
+    /**
+     * ImageLoaders
+     */
+
     @Singleton
     @Provides
     RequestManager glideRequestManager() {
         return mock(RequestManager.class);
+    }
+
+    /**
+     * Andorid Job
+     */
+
+    @Singleton
+    @Provides
+    JobManager jobManager() {
+        return mock(JobManager.class);
     }
 
     /**
