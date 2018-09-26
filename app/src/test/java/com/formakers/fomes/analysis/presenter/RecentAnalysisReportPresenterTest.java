@@ -12,6 +12,7 @@ import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.model.User;
+import com.formakers.fomes.repository.dao.UserDAO;
 
 import org.assertj.core.util.Lists;
 import org.junit.After;
@@ -33,6 +34,7 @@ import javax.inject.Inject;
 import rx.Completable;
 import rx.Observable;
 import rx.Scheduler;
+import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
@@ -41,6 +43,7 @@ import rx.schedulers.Schedulers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,6 +53,7 @@ public class RecentAnalysisReportPresenterTest {
 
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
     @Inject AppStatService mockAppStatService;
+    @Inject UserDAO mockUserDAO;
 
     @Mock RecentAnalysisReportContract.View mockView;
 
@@ -81,8 +85,9 @@ public class RecentAnalysisReportPresenterTest {
         when(mockUser.getGender()).thenReturn("male");
         when(mockUser.getBirthday()).thenReturn(1989);
         when(mockUser.getJob()).thenReturn("IT종사자");
+        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
 
-        subject = new RecentAnalysisReportPresenter(mockView, mockAppUsageDataHelper, mockAppStatService, mockUser);
+        subject = new RecentAnalysisReportPresenter(mockView, mockAppUsageDataHelper, mockAppStatService, mockUser, mockUserDAO);
     }
 
     @After
@@ -117,6 +122,7 @@ public class RecentAnalysisReportPresenterTest {
         // requestPostUsages - 7일간의_앱_누적_사용시간을_서버에_전송한다
         verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
         verify(mockAppStatService).sendAppUsages(anyList());
+        verify(mockUserDAO).getUserInfo();
 
         // 분석 결과 요청
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);

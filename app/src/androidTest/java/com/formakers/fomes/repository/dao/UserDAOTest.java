@@ -85,7 +85,7 @@ public class UserDAOTest {
     public void getUserInfo_호출시__저장된_유저_정보를_리턴한다() {
         insertDummyData();
 
-        User user = subject.getUserInfo();
+        User user = subject.getUserInfo().toBlocking().value();
 
         assertNotNull(user);
         assertEquals(user.getUserId(), "testUserId");

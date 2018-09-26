@@ -13,6 +13,8 @@ import javax.inject.Singleton;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.exceptions.RealmException;
+import rx.Single;
+import rx.schedulers.Schedulers;
 
 @Singleton
 public class UserDAO {
@@ -81,17 +83,23 @@ public class UserDAO {
         }
     }
 
-    public User getUserInfo() {
-        User user = null;
-        try (Realm realmInstance = Realm.getDefaultInstance()) {
-            UserRealmObject userRealmObject = realmInstance.where(UserRealmObject.class).findFirst();
-            user = gson.fromJson(gson.toJson(realmInstance.copyFromRealm(userRealmObject)), User.class);
-            Log.d(TAG, "[Realm] Get UserInfo=" + user);
-        } catch (RealmException e) {
-            Log.e(TAG, String.valueOf(e) + "\n" + e.getCause());
-        } catch (Exception e) {
-            Log.e(TAG, String.valueOf(e) + "\n" + e.getCause());
-        }
-        return user;
+    public Single<User> getUserInfo() {
+        Single<User> userSingle = Single.create(emitter -> {
+            try (Realm realmInstance = Realm.getDefaultInstance()) {
+                UserRealmObject userRealmObject = realmInstance.where(UserRealmObject.class).findFirst();
+                User user = gson.fromJson(gson.toJson(realmInstance.copyFromRealm(userRealmObject)), User.class);
+                Log.d(TAG, "[Realm] Get UserInfo=" + user);
+
+                emitter.onSuccess(user);
+            } catch (RealmException e) {
+                Log.e(TAG, String.valueOf(e) + "\n" + e.getCause());
+                emitter.onError(e);
+            } catch (Exception e) {
+                Log.e(TAG, String.valueOf(e) + "\n" + e.getCause());
+                emitter.onError(e);
+            }
+        });
+
+        return userSingle.subscribeOn(Schedulers.io());
     }
 }

@@ -13,6 +13,7 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.model.User;
+import com.formakers.fomes.repository.dao.UserDAO;
 import com.formakers.fomes.util.DateUtil;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     @Inject AppStatService appStatService;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject RequestManager requestManager;
+    @Inject UserDAO userDAO;
 
     User user;
 
@@ -44,16 +46,25 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     public RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view) {
         this.view = view;
         this.view.getApplicationComponent().inject(this);
-        // 임시
-        this.user = new User().setUserId(sharedPreferencesHelper.getUserId()).setGender("female")
-                .setBirthday(1992).setJob("IT종사자");
     }
 
-    RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view, AppUsageDataHelper appUsageDataHelper, AppStatService appStatService, User user) {
+    RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view, AppUsageDataHelper appUsageDataHelper, AppStatService appStatService, User user, UserDAO userDAO) {
         this.view = view;
         this.appUsageDataHelper = appUsageDataHelper;
         this.appStatService = appStatService;
         this.user = user;
+        this.userDAO = userDAO;
+    }
+
+    private Completable initData() {
+        return Completable.create(emitter -> {
+            userDAO.getUserInfo()
+                    .observeOn(Schedulers.io())
+                    .subscribe(userInfo -> {
+                this.user = userInfo;
+                emitter.onCompleted();
+            }, e -> emitter.onError(e));
+        });
     }
 
     private Completable requestPostUsages() {
@@ -61,14 +72,15 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     }
 
     private Observable<RecentReport> requestRecentReport() {
-        // TODO : categoryIds Constants로 분리 필요
+        // TODO : categoryIds Constants로 분리 필요ㅏ
         return appStatService.requestRecentReport("GAME", user).observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Completable loading() {
         return Completable.concat(
-                this.requestPostUsages()
+                this.requestPostUsages(),
+                initData()
                 , Completable.create(emitter -> requestRecentReport().map(recentReport -> {
                     // RecentReport 에 sort 메소드 추가하여 분리 필요
                     for (UsageGroup usageGroup : recentReport.getUsages()) {
