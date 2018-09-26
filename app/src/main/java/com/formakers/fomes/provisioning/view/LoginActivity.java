@@ -64,13 +64,15 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         loginTncTextView.setText(Html.fromHtml(getString(R.string.login_tnc)));
         loginTncTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        presenter.googleSilentSignIn()
+        addToCompositeSubscription(
+            presenter.googleSilentSignIn()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(googleSignInResult -> {
                     signIn(googleSignInResult);
                 }, e -> {
                     loginButton.setVisibility(View.VISIBLE);
-                });
+                })
+        );
     }
 
     @Override

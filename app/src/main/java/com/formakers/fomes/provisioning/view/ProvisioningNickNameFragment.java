@@ -56,12 +56,15 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     @Override
     public void onNextButtonClick() {
         this.presenter.updateNickNameToUser(nickNameEditText.getText().toString());
-        this.presenter.requestUpdateUser()
+
+        addCompositeSubscription(
+            this.presenter.requestUpdateUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                             this.presenter.emitNextPageEvent();
                         },
-                        e -> Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show());
+                        e -> Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show())
+        );
     }
 
     @OnTextChanged(value = R.id.provision_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)

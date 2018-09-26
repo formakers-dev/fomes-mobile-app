@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import javax.inject.Inject;
 
 import rx.Single;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 public class LoginPresenter implements LoginContract.Presenter {

@@ -79,14 +79,16 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        presenter.requestUserInfo()
+        addToCompositeSubscription(
+            presenter.requestUserInfo()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
                     ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
                             .setText(user.getNickName());
                     ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
                             .setText(user.getEmail());
-                });
+                })
+        );
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
         contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
@@ -189,7 +191,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     }
 
     private void verifyAccessToken() {
-        presenter.requestVerifyAccessToken()
+        addToCompositeSubscription(
+            presenter.requestVerifyAccessToken()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {}, e -> {
                     // TODO : 이거 넘나 공통화 시키고 싶다
@@ -204,7 +207,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                     }
 
                     Toast.makeText(this, "예상치 못한 에러가 발생하였습니다. e=" + String.valueOf(e), Toast.LENGTH_SHORT).show();
-                });
+                })
+        );
     }
 
     private <T> void startActivity(Class<T> destActivity) {

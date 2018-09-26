@@ -77,7 +77,8 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter.loading()
+        addCompositeSubscription(
+            presenter.loading()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     // TODO : 아래 뷰들 Fragment 관리로 변경 필요
@@ -88,7 +89,8 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                     loadingLayout.setVisibility(View.GONE);
                     contentLayout.setVisibility(View.GONE);
                     errorLayout.setVisibility(View.VISIBLE);
-                });
+                })
+        );
     }
 
     @Override

@@ -85,13 +85,15 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void checkUpdatePopup() {
-        configService.getAppVersion()
+        addToCompositeSubscription(
+            configService.getAppVersion()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(version -> {
                     if (BuildConfig.VERSION_CODE < version) {
                         displayVersionUpdateDialog();
                     }
-                }, e -> Log.e(TAG, String.valueOf(e)));
+                }, e -> Log.e(TAG, String.valueOf(e)))
+        );
     }
 
     private void displayVersionUpdateDialog() {
