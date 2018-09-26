@@ -15,6 +15,7 @@ import com.formakers.fomes.appbee.fragment.InterviewListFragmentTest;
 import com.formakers.fomes.appbee.fragment.ProjectListFragmentTest;
 import com.formakers.fomes.common.job.SendDataJobServiceTest;
 import com.formakers.fomes.appbee.custom.AppBeeAlertDialogTest;
+import com.formakers.fomes.main.presenter.MainPresenterTest;
 import com.formakers.fomes.main.view.MainActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
 import com.formakers.fomes.provisioning.view.LoginActivityTest;
@@ -51,6 +52,7 @@ public interface TestApplicationComponent extends ApplicationComponent {
     // Fomes
     void inject(LoginPresenterTest loginPresenterTest);
     void inject(RecentAnalysisReportPresenterTest presenterTest);
+    void inject(MainPresenterTest presenterTest);
 
     void inject(RecentAnalysisReportActivityTest activityTest);
     void inject(MainActivityTest activityTest);

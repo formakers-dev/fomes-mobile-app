@@ -53,7 +53,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
-        subject = getActivity();
+        launchActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
@@ -64,7 +64,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
 
-        subject = getActivity();
+        launchActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedActivity.getStringExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME))
@@ -77,7 +77,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
 
-        subject = getActivity();
+        launchActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedActivity.getStringExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME))
@@ -90,7 +90,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
-        subject = getActivity();
+        launchActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedActivity).isNull();
@@ -100,7 +100,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
     public void 액티비티_진입시__권한이_없으면__권한허용화면으로_진입한다() {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
-        subject = getActivity();
+        launchActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedActivity.getStringExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME))
@@ -112,7 +112,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
     public void 액티비티_진입시__권한이_있으면__현재화면으로_진입한다() {
         when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
-        subject = getActivity();
+        launchActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedActivity).isNull();

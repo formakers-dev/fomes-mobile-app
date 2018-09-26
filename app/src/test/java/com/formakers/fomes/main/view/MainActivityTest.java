@@ -5,25 +5,34 @@ import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
+import com.formakers.fomes.main.contract.MainContract;
+import com.formakers.fomes.model.User;
 import com.formakers.fomes.settings.SettingsActivity;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowToast;
 
+import rx.Single;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
+
+    @Mock MainContract.Presenter mockPresenter;
 
     public MainActivityTest() {
         super(MainActivity.class);
@@ -31,7 +40,9 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
     @Override
     public void launchActivity() {
-        subject = getActivity();
+        subject = getActivity(LIFECYCLE_TYPE_CREATE);
+        subject.setPresenter(mockPresenter);
+        getActivityController().start().postCreate(null).resume();
     }
 
     @Before
@@ -39,6 +50,9 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         MockitoAnnotations.initMocks(this);
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         super.setUp();
+
+        User user = new User().setNickName("testUserNickName").setEmail("test@email.com");
+        when(mockPresenter.requestUserInfo()).thenReturn(Single.just(user));
     }
 
     @Test
@@ -59,7 +73,20 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("베타테스트");
     }
 
-//    @Test
+    @Test
+    public void MainActivity_시작시__사이드메뉴에_유저정보가_셋팅된다() {
+        launchActivity();
+
+        verify(mockPresenter).requestUserInfo();
+
+        View sideHeaderView = subject.navigationView.getHeaderView(0);
+        assertThat(((TextView) sideHeaderView.findViewById(R.id.user_nickname)).getText())
+                .isEqualTo("testUserNickName");
+        assertThat(((TextView) sideHeaderView.findViewById(R.id.user_email)).getText())
+                .isEqualTo("test@email.com");
+    }
+
+    //    @Test
 //    public void 액션바의_왼쪽상단메뉴_클릭시__사이드메뉴가_열린다() {
 //        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
 //        subject.toolbar.getChildAt(0).performClick();

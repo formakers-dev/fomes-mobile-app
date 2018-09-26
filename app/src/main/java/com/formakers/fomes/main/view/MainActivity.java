@@ -19,18 +19,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
+import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.main.contract.MainContract;
+import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.settings.SettingsActivity;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
 
-public class MainActivity extends FomesBaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener, TabLayout.OnTabSelectedListener {
+public class MainActivity extends FomesBaseActivity implements MainContract.View,
+        NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener, TabLayout.OnTabSelectedListener {
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
@@ -38,10 +44,18 @@ public class MainActivity extends FomesBaseActivity
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
 
+    MainContract.Presenter presenter;
+
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
+        setPresenter(new MainPresenter(this));
     }
 
     @Override
@@ -57,6 +71,15 @@ public class MainActivity extends FomesBaseActivity
         drawerToggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        presenter.requestUserInfo()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user -> {
+                    ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
+                            .setText(user.getNickName());
+                    ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
+                            .setText(user.getEmail());
+                });
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
         contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
@@ -151,5 +174,10 @@ public class MainActivity extends FomesBaseActivity
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public ApplicationComponent getApplicationComponent() {
+        return ((AppBeeApplication) getApplication()).getComponent();
     }
 }

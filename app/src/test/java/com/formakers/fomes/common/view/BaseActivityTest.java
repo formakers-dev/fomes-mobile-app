@@ -151,7 +151,7 @@ public abstract class BaseActivityTest<T extends Activity> {
     public void 액티비티_진입시__크리티컬_업데이트_버전을_체크한다() {
         when(configService.getAppVersion()).thenReturn(Single.just(3L));
 
-        subject = getActivity();
+        launchActivity();
 
         verify(configService).getAppVersion();
     }
@@ -160,7 +160,7 @@ public abstract class BaseActivityTest<T extends Activity> {
     public void 액티비티_진입시__현재버전이_크리티컬_업데이트_버전보다_낮으면__업데이트_팝업을_띄운다() {
         when(configService.getAppVersion()).thenReturn(Single.just(Long.MAX_VALUE));
 
-        subject = getActivity();
+        launchActivity();
 
         verify(configService).getAppVersion();
 
