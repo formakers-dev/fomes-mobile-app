@@ -103,7 +103,7 @@ public class BaseActivity extends AppCompatActivity {
             dialog.dismiss();
         });
         appBeeAlertDialog.setOnCancelListener(dialog -> {
-//            finishAffinity();
+            finishAffinity();
             dialog.dismiss();
         });
         appBeeAlertDialog.show();
@@ -113,6 +113,6 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("market://details?id=com.formakers.fomes"));
         startActivity(intent);
-//        finishAffinity();
+        finishAffinity();
     }
 }
