@@ -8,6 +8,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,11 +16,14 @@ import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
@@ -28,8 +32,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private static final int REQUEST_CODE_SIGN_IN = 9001;
 
     @BindView(R.id.login_tnc) TextView loginTncTextView;
+    @BindView(R.id.login_google_button) Button loginButton;
 
     LoginContract.Presenter presenter;
+
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        if (this.presenter == null) {
+            this.presenter = presenter;
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,11 +50,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         this.setContentView(R.layout.activity_login);
 
         setPresenter(new LoginPresenter(this));
-    }
-
-    @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     @Override
@@ -56,6 +63,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         loginTncTextView.setText(Html.fromHtml(getString(R.string.login_tnc)));
         loginTncTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        presenter.googleSilentSignIn()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(googleSignInResult -> {
+                    signIn(googleSignInResult);
+                }, e -> {
+                    loginButton.setVisibility(View.VISIBLE);
+                });
     }
 
     @Override
@@ -64,20 +79,18 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Log.d(TAG, "requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             if (resultCode != Activity.RESULT_OK) {
-                Toast.makeText(this, "구글 로그인이 취소되었습니다.", Toast.LENGTH_LONG).show();
+                showToast("구글 로그인이 취소되었습니다.");
                 return;
             }
 
-            if (!this.presenter.requestSignUpBy(data)) {
-                Toast.makeText(this, "구글 로그인에 실패하였습니다.", Toast.LENGTH_LONG).show();
+            GoogleSignInResult googleSignInResult = this.presenter.convertGoogleSignInResult(data);
+            if (googleSignInResult == null) {
+                showToast("구글 로그인에 실패하였습니다.");
+                return;
             }
-        }
-    }
 
-    @OnClick(R.id.login_google_button)
-    public void onLoginButtonClick(View view) {
-        Intent signInIntent = this.presenter.getGoogleSignInIntent();
-        startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
+            signIn(googleSignInResult);
+        }
     }
 
     @Override
@@ -90,5 +103,23 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Intent intent = new Intent(this, destActivity);
         this.startActivity(intent);
         this.finish();
+    }
+
+    private void signIn(GoogleSignInResult googleSignInResult) {
+        this.presenter.requestSignUpBy(googleSignInResult)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(fomesToken -> {
+                    if (presenter.isProvisioningProgress()) {
+                        startActivityAndFinish(ProvisioningActivity.class);
+                    } else {
+                        startActivityAndFinish(MainActivity.class);
+                    }
+                }, e -> showToast("가입에 실패하였습니다. 재시도 고고"));
+    }
+
+    @OnClick(R.id.login_google_button)
+    public void onLoginButtonClick(View view) {
+        Intent signInIntent = this.presenter.getGoogleSignInIntent();
+        startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
     }
 }

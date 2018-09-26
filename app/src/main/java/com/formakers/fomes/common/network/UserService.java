@@ -9,11 +9,14 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.schedulers.Schedulers;
 
+@Singleton
 public class UserService extends AbstractAppBeeService {
 
     private static final String TAG = "UserService";
@@ -28,7 +31,7 @@ public class UserService extends AbstractAppBeeService {
         this.appBeeAPIHelper = appBeeAPIHelper;
     }
 
-    public Observable<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
+    public Single<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
         return userAPI.signUp(googleIdToken, user)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());

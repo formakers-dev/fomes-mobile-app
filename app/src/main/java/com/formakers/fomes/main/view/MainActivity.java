@@ -30,9 +30,11 @@ import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
+import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 
 import butterknife.BindView;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
@@ -48,7 +50,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
-        this.presenter = presenter;
+        if (this.presenter == null) {
+            this.presenter = presenter;
+        }
     }
 
     @Override
@@ -56,6 +60,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
         setPresenter(new MainPresenter(this));
+
+        // 혹시나 모를 상황을 대비해 런치화면 진입시 토큰체크
+        verifyAccessToken();
     }
 
     @Override
@@ -179,5 +186,29 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public ApplicationComponent getApplicationComponent() {
         return ((AppBeeApplication) getApplication()).getComponent();
+    }
+
+    private void verifyAccessToken() {
+        presenter.requestVerifyAccessToken()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {}, e -> {
+                    // TODO : 이거 넘나 공통화 시키고 싶다
+                    if (e instanceof HttpException) {
+                        int code = ((HttpException) e).code();
+                        if (code == 401 || code == 403) {
+                            Toast.makeText(this, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                            startActivity(LoginActivity.class);
+                            finish();
+                            return;
+                        }
+                    }
+
+                    Toast.makeText(this, "예상치 못한 에러가 발생하였습니다. e=" + String.valueOf(e), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private <T> void startActivity(Class<T> destActivity) {
+        Intent intent = new Intent(this, destActivity);
+        startActivity(intent);
     }
 }

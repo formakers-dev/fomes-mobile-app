@@ -13,8 +13,10 @@ import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
+import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,7 +24,16 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowToast;
 
+import okhttp3.ResponseBody;
+import retrofit2.adapter.rxjava.HttpException;
+import retrofit2.Response;
+import rx.Completable;
+import rx.Scheduler;
 import rx.Single;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -40,19 +51,61 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
     @Override
     public void launchActivity() {
-        subject = getActivity(LIFECYCLE_TYPE_CREATE);
+        subject = getActivityController().get();
+//        subject = getActivity(LIFECYCLE_TYPE_CREATE);
         subject.setPresenter(mockPresenter);
-        getActivityController().start().postCreate(null).resume();
+        getActivityController().create().start().postCreate(null).resume();
     }
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+
+            }
+        });
+
         MockitoAnnotations.initMocks(this);
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         super.setUp();
 
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");
         when(mockPresenter.requestUserInfo()).thenReturn(Single.just(user));
+        when(mockPresenter.requestVerifyAccessToken()).thenReturn(Completable.complete());
+    }
+
+    @Override
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
+        RxAndroidPlugins.getInstance().reset();
+        super.tearDown();
+    }
+
+    @Test
+    public void MainActivity_진입시__토큰검증을_시도한다() {
+        launchActivity();
+        verify(mockPresenter).requestVerifyAccessToken();
+    }
+
+    @Test
+    public void MainActivity_진입시__토큰검증_만료시__로그인화면으로_이동하고_종료한다() {
+        when(mockPresenter.requestVerifyAccessToken())
+                .thenReturn(Completable.error(new HttpException(Response.error(401, ResponseBody.create(null, "")))));
+
+        launchActivity();
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(LoginActivity.class.getSimpleName());
+        assertThat(subject.isFinishing()).isTrue();
     }
 
     @Test

@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
 import rx.Observable;
+import rx.Single;
 import rx.observers.TestSubscriber;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -42,7 +43,7 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     public void signUp호출시_가입_요청을_서버에_전송한다() throws Exception {
-        when(mockUserAPI.signUp(anyString(), any(User.class))).thenReturn(mock(Observable.class));
+        when(mockUserAPI.signUp(anyString(), any(User.class))).thenReturn(mock(Single.class));
 
         User mockUser = mock(User.class);
         subject.signUp("GOOGLE_TOKEN", mockUser);

@@ -67,7 +67,7 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
 
         if (requestCode == REQUEST_CODE_USAGE_STATS_PERMISSION
                 && this.presenter.hasUsageStatsPermission()) {
-            verifyUserTokenAndMoveToNextPage();
+            moveToNextPage();
         }
     }
 
@@ -76,34 +76,19 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
         this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
 
         if (this.presenter.hasUsageStatsPermission()) {
-            verifyUserTokenAndMoveToNextPage();
+            moveToNextPage();
         } else {
             this.presenter.emitNeedToGrantEvent();
         }
     }
 
-    private void verifyUserTokenAndMoveToNextPage() {
-        this.presenter.requestVerifyUserToken()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    if (!this.presenter.isProvisiongProgress()) {
-                        getActivity().finish();
-                        return;
-                    }
+    private void moveToNextPage() {
+        if (!this.presenter.isProvisiongProgress()) {
+            getActivity().finish();
+            return;
+        }
 
-                    this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-                    this.presenter.emitStartActivityAndFinishEvent(RecentAnalysisReportActivity.class);
-                },  e -> {
-                    if (e instanceof HttpException) {
-                        int code = ((HttpException) e).code();
-                        if (code == 401 || code == 403) {
-                            Toast.makeText(context, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
-                            this.presenter.emitStartActivityAndFinishEvent(LoginActivity.class);
-                            return;
-                        }
-                    }
-
-                    Toast.makeText(context, "예상치 못한 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show();
-                });
+        this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+        this.presenter.emitStartActivityAndFinishEvent(RecentAnalysisReportActivity.class);
     }
 }

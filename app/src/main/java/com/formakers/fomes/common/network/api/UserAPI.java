@@ -8,11 +8,12 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
+import rx.Single;
 
 public interface UserAPI {
     // Return : FomesToken
     @POST("/user/signup")
-    Observable<String> signUp(@Header("x-id-token") String googleIdToken, @Body User user);
+    Single<String> signUp(@Header("x-id-token") String googleIdToken, @Body User user);
 
     // Return : FomesToken
     @POST("/user/auth")

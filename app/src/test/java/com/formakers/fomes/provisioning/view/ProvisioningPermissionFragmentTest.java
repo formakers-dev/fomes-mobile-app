@@ -68,20 +68,9 @@ public class ProvisioningPermissionFragmentTest {
     }
 
     @Test
-    public void ProvisioningPermissionFragment_가_보여질시__권한이_있으면__토큰검증을_시도한다() {
+    public void ProvisioningPermissionFragment_가_보여질시__권한이_있으면__상태를_업데이트하고_다음화면으로_이동한다() {
         when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
         when(mockPresenter.isProvisiongProgress()).thenReturn(true);
-        when(mockPresenter.requestVerifyUserToken()).thenReturn(Completable.complete());
-
-        subject.onSelectedPage();
-
-        verify(mockPresenter).requestVerifyUserToken();
-    }
-    @Test
-    public void ProvisioningPermissionFragment_가_보여질시__권한이_있고_토큰검증이_성공하면__상태를_업데이트하고_다음화면으로_이동한다() {
-        when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
-        when(mockPresenter.isProvisiongProgress()).thenReturn(true);
-        when(mockPresenter.requestVerifyUserToken()).thenReturn(Completable.complete());
 
         subject.onSelectedPage();
 
@@ -90,10 +79,9 @@ public class ProvisioningPermissionFragmentTest {
     }
 
     @Test
-    public void ProvisioningPermissionFragment_가_보여질시__권한이_있고_토큰검증이_성공하고_프로비저닝상태가_아닐경우__종료한다() {
+    public void ProvisioningPermissionFragment_가_보여질시__권한이_있고_프로비저닝상태가_아닐경우__종료한다() {
         when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
         when(mockPresenter.isProvisiongProgress()).thenReturn(false);
-        when(mockPresenter.requestVerifyUserToken()).thenReturn(Completable.complete());
 
         subject.onSelectedPage();
 
@@ -109,21 +97,9 @@ public class ProvisioningPermissionFragmentTest {
     }
 
     @Test
-    public void 권한_설정_액티비티_종료시__권한설정_되었을경우__토큰검증을_시도한다() {
+    public void 권한_설정_액티비티_종료시__권한설정_되었을경우__상태를_업데이트하고_다음화면으로_이동한다() {
         when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
         when(mockPresenter.isProvisiongProgress()).thenReturn(true);
-        when(mockPresenter.requestVerifyUserToken()).thenReturn(Completable.complete());
-
-        subject.onActivityResult(REQUEST_CODE_USAGE_STATS_PERMISSION, -1, null);
-
-        verify(mockPresenter).requestVerifyUserToken();
-    }
-
-    @Test
-    public void 권한_설정_액티비티_종료시__권한설정_되었고_토큰검증이_성공하면__상태를_업데이트하고_다음화면으로_이동한다() {
-        when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
-        when(mockPresenter.isProvisiongProgress()).thenReturn(true);
-        when(mockPresenter.requestVerifyUserToken()).thenReturn(Completable.complete());
 
         subject.onActivityResult(REQUEST_CODE_USAGE_STATS_PERMISSION, -1, null);
 
@@ -132,16 +108,14 @@ public class ProvisioningPermissionFragmentTest {
     }
 
     @Test
-    public void 권한_설정_액티비티_종료시__권한설정_되었고_토큰검증이_성공하고_프로비저닝상태가_아닐경우__종료한다() {
+    public void 권한_설정_액티비티_종료시__권한설정_되었고_프로비저닝상태가_아닐경우__종료한다() {
         when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
         when(mockPresenter.isProvisiongProgress()).thenReturn(false);
-        when(mockPresenter.requestVerifyUserToken()).thenReturn(Completable.complete());
 
         subject.onActivityResult(REQUEST_CODE_USAGE_STATS_PERMISSION, -1, null);
 
         assertThat(subject.getActivity().isFinishing()).isTrue();
     }
-
 
     @Test
     public void 권한_설정_액티비티_종료시__권한설정_되지않았을경우__아무것도_안한다() {

@@ -10,7 +10,9 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.common.view.BaseActivityTest;
+import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
 
 import org.junit.Before;
@@ -24,8 +26,12 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowToast;
 
+import rx.Single;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -42,8 +48,10 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
     @Override
     public void launchActivity() {
-        subject = getActivity();
+        subject = getActivityController().get();
+//        subject = getActivity(LIFECYCLE_TYPE_CREATE);
         subject.setPresenter(mockPresenter);
+        getActivityController().create().start().postCreate(null).resume();
     }
 
     @Before
@@ -51,6 +59,8 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         MockitoAnnotations.initMocks(this);
         super.setUp();
+
+        when(mockPresenter.googleSilentSignIn()).thenReturn(Single.error(new Throwable()));
     }
 
     @Test
@@ -62,6 +72,23 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
         assertThat(subject.findViewById(R.id.login_subtitle).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_google_button).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_tnc).getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void LoginActivity_시작시__사일런트사인인을_시도한다() {
+        launchActivity();
+
+        verify(mockPresenter).googleSilentSignIn();
+    }
+
+    @Test
+    public void LoginActivity_시작시__사일런트사인인을_성공하면__로그인버튼이_사라진다() {
+        when(mockPresenter.googleSilentSignIn()).thenReturn(Single.just(mock(GoogleSignInResult.class)));
+        when(mockPresenter.requestSignUpBy(any())).thenReturn(Single.just("fomesAccessToken"));
+
+        launchActivity();
+
+        assertThat(subject.findViewById(R.id.login_google_button).getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test
@@ -90,17 +117,6 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     }
 
     @Test
-    public void Google_인증_성공시_Fomes에_가입을_요청한다() {
-        launchActivity();
-
-        when(mockPresenter.requestSignUpBy(any())).thenReturn(true);
-
-        subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
-
-        verify(mockPresenter).requestSignUpBy(any(Intent.class));
-    }
-
-    @Test
     public void Google_인증_실패시_실패문구를_띄운다() {
         launchActivity();
 
@@ -110,13 +126,68 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     }
 
     @Test
-    public void Google_인증_성공후_Fomes에_가입_요청이_실패한_경우_실패문구를_띄운다() {
+    public void Google_인증_성공후_구글정보변환이_실패한경우__실패문구를_띄운다() {
+        when(mockPresenter.convertGoogleSignInResult(any())).thenReturn(null);
+
         launchActivity();
-
-        when(mockPresenter.requestSignUpBy(any())).thenReturn(false);
-
         subject.onActivityResult(9001, Activity.RESULT_OK, null);
 
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("구글 로그인에 실패하였습니다.");
+    }
+
+    @Test
+    public void Google_인증_성공후_구글정보변환이_성공한경우__Fomes에_가입을_요청한다() {
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockPresenter.convertGoogleSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(mockPresenter.requestSignUpBy(any())).thenReturn(Single.just("fomesAccessToken"));
+
+        launchActivity();
+        subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
+
+        verify(mockPresenter).requestSignUpBy(eq(mockGoogleSignInResult));
+    }
+
+    @Test
+    public void Google_인증_성공후_구글정보변환이_성공하고_Fomes_가입요청이_성공하고_프로비저닝_상태이면__프로비저닝_플로우로_이동한다() {
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockPresenter.convertGoogleSignInResult(any(Intent.class))).thenReturn(mockGoogleSignInResult);
+        when(mockPresenter.requestSignUpBy(any())).thenReturn(Single.just("fomesAccessToken"));
+        when(mockPresenter.isProvisioningProgress()).thenReturn(true);
+
+        launchActivity();
+        subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
+
+        verify(mockPresenter).requestSignUpBy(eq(mockGoogleSignInResult));
+
+        Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(ProvisioningActivity.class.getName());
+    }
+
+    @Test
+    public void Google_인증_성공후_구글정보변환이_성공하고_Fomes_가입요청이_성공하고_프로비저닝_상태가_아니면__런치화면으로_이동한다() {
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockPresenter.convertGoogleSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(mockPresenter.requestSignUpBy(any())).thenReturn(Single.just("fomesAccessToken"));
+        when(mockPresenter.isProvisioningProgress()).thenReturn(false);
+
+        launchActivity();
+        subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
+
+        verify(mockPresenter).requestSignUpBy(eq(mockGoogleSignInResult));
+
+        Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
+    }
+
+    @Test
+    public void Google_인증_성공후_구글정보변환이_성공하고_Fomes_가입요청이_실패하면__실패문구를_띄운다() {
+        GoogleSignInResult mockGoogleSignInResult = mock(GoogleSignInResult.class);
+        when(mockPresenter.convertGoogleSignInResult(any())).thenReturn(mockGoogleSignInResult);
+        when(mockPresenter.requestSignUpBy(any())).thenReturn(Single.error(new Throwable()));
+
+        launchActivity();
+        subject.onActivityResult(9001, Activity.RESULT_OK, new Intent());
+
+        assertThat(ShadowToast.getTextOfLatestToast()).contains("가입에 실패하였습니다.");
     }
 }

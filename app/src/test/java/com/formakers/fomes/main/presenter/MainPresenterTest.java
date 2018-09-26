@@ -2,6 +2,7 @@ package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.verify;
 public class MainPresenterTest {
 
     @Inject UserDAO mockUserDAO;
+    @Inject UserService mockUserService;
 
     @Mock
     MainContract.View mockView;
@@ -34,7 +36,7 @@ public class MainPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = new MainPresenter(mockView, mockUserDAO);
+        subject = new MainPresenter(mockView, mockUserDAO, mockUserService);
     }
 
     @After
@@ -46,5 +48,12 @@ public class MainPresenterTest {
         subject.requestUserInfo();
 
         verify(mockUserDAO).getUserInfo();
+    }
+
+    @Test
+    public void requestVerifyAccessToken_호출시__토큰_검증을_요청한다() {
+        subject.requestVerifyAccessToken();
+
+        verify(mockUserService).verifyToken();
     }
 }
