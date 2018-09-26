@@ -17,6 +17,8 @@ import com.formakers.fomes.common.job.SendDataJobServiceTest;
 import com.formakers.fomes.appbee.custom.AppBeeAlertDialogTest;
 import com.formakers.fomes.main.view.MainActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
+import com.formakers.fomes.provisioning.view.LoginActivityTest;
+import com.formakers.fomes.provisioning.view.ProvisioningActivityTest;
 import com.formakers.fomes.provisioning.view.RecentAnalysisReportActivityTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
 import com.formakers.fomes.settings.SettingsActivityTest;
@@ -53,4 +55,6 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(RecentAnalysisReportActivityTest activityTest);
     void inject(MainActivityTest activityTest);
     void inject(SettingsActivityTest activityTest);
+    void inject(LoginActivityTest activityTest);
+    void inject(ProvisioningActivityTest activityTest);
 }

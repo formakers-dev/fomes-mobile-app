@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
+import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.common.view.BaseActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
@@ -47,7 +48,9 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
 
     @Before
     public void setUp() throws Exception {
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         MockitoAnnotations.initMocks(this);
+        super.setUp();
     }
 
     @Test

@@ -13,6 +13,7 @@ import com.formakers.fomes.appbee.fragment.InterviewListFragment;
 import com.formakers.fomes.appbee.fragment.ProjectListFragment;
 import com.formakers.fomes.appbee.fragment.ReportMostUsedFragment;
 import com.formakers.fomes.common.job.SendDataJobService;
+import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.provisioning.presenter.LoginPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
@@ -47,4 +48,5 @@ public interface ApplicationComponent {
     void inject(RecentAnalysisReportPresenter reportPresenter);
 
     void inject(FomesBaseActivity activity);
+    void inject(BaseActivity activity);
 }

@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
+import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import rx.Completable;
 
@@ -37,6 +37,7 @@ public class ProvisioningPermissionFragmentTest {
     ProvisioningContract.Presenter mockPresenter;
 
     ProvisioningPermissionFragment subject;
+    SupportFragmentController<ProvisioningPermissionFragment> controller;
 
     @Before
     public void setUp() throws Exception {
@@ -44,7 +45,8 @@ public class ProvisioningPermissionFragmentTest {
 
         subject = new ProvisioningPermissionFragment();
         subject.setPresenter(mockPresenter);
-        SupportFragmentTestUtil.startFragment(subject, ProvisioningActivity.class);
+        controller = SupportFragmentController.of(subject);
+        controller.create().start().resume().visible();
     }
 
     @Test

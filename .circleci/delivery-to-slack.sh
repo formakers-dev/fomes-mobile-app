@@ -8,6 +8,7 @@ echo $VERSION
 VERSION=${VERSION%####*}
 echo $VERSION
 VERSION=${VERSION#*####}
+echo $VERSION
 
 APK_NAME="Fomes-$VERSION-$1.apk"
 echo $APK_NAME

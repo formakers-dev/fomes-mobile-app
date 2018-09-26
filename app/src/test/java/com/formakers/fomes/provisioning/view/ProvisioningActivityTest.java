@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.TestAppBeeApplication;
 import com.formakers.fomes.common.view.BaseActivityTest;
 import com.formakers.fomes.util.FomesConstants;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity.ProvisioningPagerAdapter;
@@ -17,6 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowToast;
 
@@ -37,7 +39,9 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Before
     public void setUp() throws Exception {
+        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
         MockitoAnnotations.initMocks(this);
+        super.setUp();
     }
 
     @Override
