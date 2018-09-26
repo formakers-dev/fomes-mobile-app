@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnTextChanged;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class ProvisioningNickNameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
@@ -59,11 +60,23 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
 
         addCompositeSubscription(
             this.presenter.requestUpdateUser()
+//            this.presenter.requestUpdateUserWithoutRefreshToken()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                            this.presenter.emitNextPageEvent();
-                        },
-                        e -> Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show())
+                        this.presenter.emitNextPageEvent();
+                    },
+                    e -> {
+                        if (e instanceof HttpException) {
+                            if (((HttpException) e).code() == 409) {
+                                this.presenter.emitFilledUpEvent(this, false);
+                                nickNameWarningTextView.setText(getResources().getString(R.string.provision_nickname_already_exist_warning));
+                                nickNameWarningTextView.setVisibility(View.VISIBLE);
+                                nickNameEditText.getBackground().setTint(getResources().getColor(R.color.fomes_red));
+                            }
+                        } else {
+                            Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show();
+                        }
+                    })
         );
     }
 
@@ -74,12 +87,13 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
         boolean isMatched = Pattern.matches(NICKNAME_REGEX, text);
 
         this.presenter.emitFilledUpEvent(this, isMatched);
+        nickNameWarningTextView.setText(getResources().getString(R.string.provision_nickname_format_warning));
         nickNameWarningTextView.setVisibility(isMatched ? View.GONE : View.VISIBLE);
 
         if (isMatched) {
-            nickNameEditText.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+            nickNameEditText.getBackground().setTint(getResources().getColor(R.color.colorPrimary));
         } else {
-            nickNameEditText.getBackground().setColorFilter(getResources().getColor(R.color.fomes_red), PorterDuff.Mode.SRC_ATOP);
+            nickNameEditText.getBackground().setTint(getResources().getColor(R.color.fomes_red));
         }
     }
 }
