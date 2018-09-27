@@ -41,7 +41,6 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +58,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
     @BindView(R.id.fragment_loading_imageview) ImageView loadingImageView;
 
+    @BindView(R.id.analysis_icon_imageview) ImageView iconImageView;
+    @BindView(R.id.analysis_title_textview) TextView titleTextView;
+    @BindView(R.id.analysis_subtitle_textview) TextView subtitleTextView;
     @BindView(R.id.analysis_my_genre_chart) PieChart myGenrePieChart;
     @BindView(R.id.analysis_my_genre_1) RankAppItemView myGenreItem1;
     @BindView(R.id.analysis_my_genre_2) RankAppItemView myGenreItem2;
@@ -117,6 +119,13 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @Override
     public ApplicationComponent getApplicationComponent() {
         return ((AppBeeApplication) this.getActivity().getApplication()).getComponent();
+    }
+
+    @Override
+    public void bindErrorHeaderView() {
+        iconImageView.setImageDrawable(getResources().getDrawable(R.drawable.fomes_face_cry, null));
+        titleTextView.setText(R.string.analysis_error_header_not_enough_data_title);
+        subtitleTextView.setText(R.string.analysis_error_header_not_enough_data_subtitle);
     }
 
     private void bindChart(PieChart pieChart, List<Number> datas) {
