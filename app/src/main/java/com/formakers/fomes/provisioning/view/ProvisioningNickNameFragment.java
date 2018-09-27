@@ -1,8 +1,9 @@
 package com.formakers.fomes.provisioning.view;
 
-import android.graphics.PorterDuff;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +26,11 @@ import rx.android.schedulers.AndroidSchedulers;
 public class ProvisioningNickNameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
     public static final String TAG = ProvisioningNickNameFragment.class.getSimpleName();
+
     private static final String NICKNAME_REGEX = "[a-zA-Zㄱ-ㅎ가-힣0-9]{2,10}";
 
-    @BindView(R.id.provision_nickname_content_edittext)
-    EditText nickNameEditText;
-    @BindView(R.id.provision_nickname_format_warning_textview)
-    TextView nickNameWarningTextView;
+    @BindView(R.id.provision_nickname_content_edittext) EditText nickNameEditText;
+    @BindView(R.id.provision_nickname_format_warning_textview) TextView nickNameWarningTextView;
 
     ProvisioningContract.Presenter presenter;
 
@@ -67,10 +67,7 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
                     e -> {
                         if (e instanceof HttpException) {
                             if (((HttpException) e).code() == 409) {
-                                this.presenter.emitFilledUpEvent(this, false);
-                                nickNameWarningTextView.setText(getResources().getString(R.string.provision_nickname_already_exist_warning));
-                                nickNameWarningTextView.setVisibility(View.VISIBLE);
-                                nickNameEditText.getBackground().setTint(getResources().getColor(R.color.fomes_red));
+                                warning(true, R.string.provision_nickname_already_exist_warning);
                             }
                         } else {
                             Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show();
@@ -84,15 +81,19 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
         Log.v(TAG, text + " start=" + start + ", before=" + before + ", count=" + count);
 
         boolean isMatched = Pattern.matches(NICKNAME_REGEX, text);
+        warning(!isMatched, R.string.provision_nickname_format_warning);
+    }
 
-        this.presenter.emitFilledUpEvent(this, isMatched);
-        nickNameWarningTextView.setText(getResources().getString(R.string.provision_nickname_format_warning));
-        nickNameWarningTextView.setVisibility(isMatched ? View.GONE : View.VISIBLE);
-
-        if (isMatched) {
-            nickNameEditText.getBackground().setTint(getResources().getColor(R.color.colorPrimary));
+    private void warning(boolean isWarn, @StringRes int stringResId) {
+        Resources res = getResources();
+        if (isWarn) {
+            nickNameWarningTextView.setText(res.getString(stringResId));
+            nickNameWarningTextView.setVisibility(View.VISIBLE);
+            nickNameEditText.getBackground().setTint(res.getColor(R.color.fomes_red));
         } else {
-            nickNameEditText.getBackground().setTint(getResources().getColor(R.color.fomes_red));
+            nickNameEditText.getBackground().setTint(res.getColor(R.color.colorPrimary));
         }
+
+        this.presenter.emitFilledUpEvent(this, !isWarn);
     }
 }

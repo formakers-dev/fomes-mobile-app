@@ -93,7 +93,7 @@ public class ProvisioningNickNameFragmentTest {
     }
 
     @Test
-    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_아이디_중복시_중복경고문구를_보여준다() {
+    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_아이디_중복_실패시__중복경고문구를_보여준다() {
         when(mockPresenter.requestUpdateUser()).
                 thenReturn(Completable.error(new HttpException(Response.error(409, ResponseBody.create(null, "")))));
 
@@ -102,11 +102,12 @@ public class ProvisioningNickNameFragmentTest {
         verify(mockPresenter).requestUpdateUser();
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText()).isEqualTo("* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.");
+        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
+                .isEqualTo("* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.");
     }
 
     @Test
-    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_실패시_실패문구를_띄운다() {
+    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_실패시__실패문구를_띄운다() {
         when(mockPresenter.requestUpdateUser()).thenReturn(Completable.error(new Throwable()));
 
         subject.onNextButtonClick();
@@ -121,6 +122,7 @@ public class ProvisioningNickNameFragmentTest {
         ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("예나르");
 
         verify(mockPresenter).emitFilledUpEvent(subject, true);
+        assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test
@@ -131,11 +133,32 @@ public class ProvisioningNickNameFragmentTest {
     }
 
     @Test
-    public void 닉네임_규칙에_맞지않는_닉네임_입력시__경고문구를_보여주고_입력미완료_이벤트를_보낸다() {
+    public void 닉네임_특수문자_입력시__경고문구를_보여주고_입력미완료_이벤트를_보낸다() {
         ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("%");
 
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText()).isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
+        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
+                .isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
+    }
+
+    @Test
+    public void 닉네임_글자수가_제한길이보다_클경우__경고문구를_보여주고_입력미완료_이벤트를_보낸다() {
+        ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("일이삼사오육칠팔구십십십십");
+
+        verify(mockPresenter).emitFilledUpEvent(subject, false);
+        assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
+                .isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
+    }
+
+    @Test
+    public void 닉네임_글자수가_제한길이보다_작을경우__경고문구를_보여주고_입력미완료_이벤트를_보낸다() {
+        ((EditText) subject.getView().findViewById(R.id.provision_nickname_content_edittext)).setText("일");
+
+        verify(mockPresenter).emitFilledUpEvent(subject, false);
+        assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
+                .isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
     }
 }
