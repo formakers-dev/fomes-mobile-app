@@ -117,21 +117,18 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.option_menu_my_hope_games).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
-        return true;
+        return onNavigationItemSelected(item);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
-
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.my_recent_analysis: {
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
                 break;

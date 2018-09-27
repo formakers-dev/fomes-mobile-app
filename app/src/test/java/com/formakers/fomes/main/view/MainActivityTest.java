@@ -120,8 +120,8 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     public void MainActivity_시작시__2개의_탭과_페이저가_나타난다() throws Exception {
         launchActivity();
 
-        assertThat(subject.contentsViewPager.getAdapter().getCount()).isEqualTo(2);
-        assertThat(subject.tabLayout.getTabCount()).isEqualTo(2);
+        assertThat(subject.contentsViewPager.getAdapter().getCount()).isEqualTo(1);
+        assertThat(subject.tabLayout.getTabCount()).isEqualTo(1);
         assertThat(subject.tabLayout.getTabAt(0).getText()).isEqualTo("게임 추천");
         assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("베타테스트");
     }
@@ -148,7 +148,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 //    }
 
     @Test
-    public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫고_아이템의_타이틀을_토스트로_띄운다() throws Exception {
+    public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫는다() throws Exception {
         MenuItem item = mock(MenuItem.class);
         when(item.getTitle()).thenReturn("사이드메뉴아이템1");
 
@@ -156,10 +156,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         subject.onNavigationItemSelected(item);
 
         assertThat(subject.drawerLayout.isDrawerOpen(GravityCompat.START)).isFalse();
-
-        subject.onDrawerClosed(subject.drawerLayout);
-
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("사이드메뉴아이템1");
     }
 
     @Test

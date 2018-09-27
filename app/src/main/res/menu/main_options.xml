@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/option_menu_my_hope_games"
-        android:icon="@drawable/icon_my_hope_game"
+    <item android:id="@+id/my_recent_analysis"
+        android:icon="@drawable/icon_my_recent_analysis_option"
         android:iconTint="@color/fomes_white"
-        android:title="@string/main_menu_my_hope_games"
+        android:title="@string/main_menu_my_recent_analysis"
         app:showAsAction="always"/>
 </menu>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/fomes_content_background">
+
+
+    <TextView android:id="@+id/betatest_comming_soon_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:gravity="center"
+        android:text="@string/coming_soon"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView android:id="@+id/betatest_title_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/betatest_title"
+        android:textSize="18dp"
+        android:textColor="@color/fomes_gray"/>
+
+    <TextView android:id="@+id/betatest_subtitle_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/betatest_subtitle"
+        android:textSize="12dp"
+        android:textColor="@color/fomes_light_warm_gray" />
+    
+    <ImageView android:id="@+id/betatest_imageview"
+        android:layout_width="67dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/loading_progress_back"
+        android:backgroundTint="@color/fomes_light_gray"/>
+    
+</LinearLayout>
