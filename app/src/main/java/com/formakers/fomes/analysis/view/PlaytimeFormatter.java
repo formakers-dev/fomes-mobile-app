@@ -30,12 +30,12 @@ public class PlaytimeFormatter implements IValueFormatter, IAxisValueFormatter {
     // IAxisValueFormatter
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return defaultFormat.format(value) + "시간";
+        return value > 0 ? defaultFormat.format(value) + "시간" : "정보가 부족해요ㅠㅠ";
     }
 
     // IValueFormatter
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        return defaultFormat.format(value) + "시간";
+        return value > 0 ? defaultFormat.format(value) + "시간" : "정보가 부족해요ㅠㅠ";
     }
 }

@@ -239,24 +239,39 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     public void bindRankingViews(List<Rank> totalUsedTimeRank) {
         Log.d(TAG, String.valueOf(totalUsedTimeRank));
 
-        float best = presenter.getHour(totalUsedTimeRank.get(0).getContent());
-        float mine = presenter.getHour(totalUsedTimeRank.get(1).getContent());
-        float worst = presenter.getHour(totalUsedTimeRank.get(2).getContent());
+        Rank bestRank = totalUsedTimeRank.get(0);
+        Rank mineRank = totalUsedTimeRank.get(1);
+        Rank worstRank = totalUsedTimeRank.get(totalUsedTimeRank.size() - 1);
 
+        if (totalUsedTimeRank.size() < 3) {
+            mineRank = new Rank("", -1, 0L);
+        }
+
+        float bestHour = presenter.getHour(bestRank.getContent());
+        float worstHour = presenter.getHour(worstRank.getContent());
+        float mineHour = presenter.getHour(mineRank.getContent());
+
+        Resources res = getResources();
         Map<Float, String> labelMap = new HashMap<>();
-        labelMap.put(3f, getResources().getString(R.string.analysis_playtime_rank_number, totalUsedTimeRank.get(0).getRank()));
-        labelMap.put(2f, getResources().getString(R.string.analysis_playtime_my_rank_number, totalUsedTimeRank.get(1).getRank()));
-        labelMap.put(1f, getResources().getString(R.string.analysis_playtime_rank_number_last));
+
+        labelMap.put(3f, res.getString(R.string.analysis_playtime_rank_number, bestRank.getRank()));
+        labelMap.put(1f, res.getString(R.string.analysis_playtime_rank_number_last));
+        if (!worstRank.getContent().equals(mineRank.getContent())) {
+            labelMap.put(2f, res.getString(R.string.analysis_playtime_my_rank_number,
+                    mineRank.getRank() >= 0 ? getString(R.string.analysis_playtime_rank_number, mineRank.getRank())
+                            : getString(R.string.analysis_playtime_rank_number_string, "?")));
+        } else {
+            labelMap.put(2f, res.getString(R.string.analysis_playtime_my_rank_number, getString(R.string.analysis_playtime_rank_number_last)));
+        }
 
         List<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(3f, best));
-        barEntries.add(new BarEntry(2f, mine));
-        barEntries.add(new BarEntry(1f, worst));
+        barEntries.add(new BarEntry(3f, bestHour));
+        barEntries.add(new BarEntry(2f, mineHour));
+        barEntries.add(new BarEntry(1f, worstHour));
         Log.d(TAG, String.valueOf(barEntries));
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "");
 
-        Resources res = getResources();
         List<Integer> colors = Arrays.asList(res.getColor(R.color.colorPrimary), res.getColor(R.color.fomes_squash),
                 res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_gray));
         barDataSet.setColors(colors);

@@ -124,8 +124,8 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                     UsageGroup jobUsages = usageGroupMap.get(UsageGroup.TYPE_JOB);
 
                     view.bindMyGenreViews(myUsages.getCategoryUsages());
-//                    view.bindPeopleGenreViews(genderAgeUsages.getCategoryUsages(), jobUsages.getCategoryUsages());
-//                    view.bindRankingViews(recentReport.getTotalUsedTimeRank());
+                    view.bindPeopleGenreViews(genderAgeUsages.getCategoryUsages(), jobUsages.getCategoryUsages());
+                    view.bindRankingViews(recentReport.getTotalUsedTimeRank());
 //                    view.bindFavoriteDeveloperViews(myUsages.getDeveloperUsages(), genderAgeUsages.getDeveloperUsages(), jobUsages.getDeveloperUsages());
 //                    view.bindMyGames(myUsages.getAppUsages());
 //                    view.bindPeopleGamesViews(genderAgeUsages.getAppUsages(), jobUsages.getAppUsages());

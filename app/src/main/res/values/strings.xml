@@ -184,7 +184,8 @@
     <string name="analysis_playtime_rank_title">플레이 시간 순위</string>
     <string name="analysis_playtime_rank_subtitle">유저들의 7일간 게임 플레이 시간 집계</string>
     <string name="analysis_playtime_rank_number">%d등</string>
-    <string name="analysis_playtime_my_rank_number">나(%d등)</string>
+    <string name="analysis_playtime_rank_number_string">%s등</string>
+    <string name="analysis_playtime_my_rank_number">나(%s)</string>
     <string name="analysis_playtime_rank_number_last">꼴등</string>
     <string name="analysis_playtime_rank_hours">%.1f시간</string>
     <string name="analysis_favorite_developer_title">최장 플레이 개발사</string>
