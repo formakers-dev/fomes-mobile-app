@@ -22,7 +22,6 @@ public interface ProvisioningContract {
 
         Completable requestVerifyUserToken();
         Completable requestUpdateUser();
-        Completable requestUpdateUserWithoutRefreshToken();
 
         boolean hasUsageStatsPermission();
         boolean isSelected(BaseFragment fragment);

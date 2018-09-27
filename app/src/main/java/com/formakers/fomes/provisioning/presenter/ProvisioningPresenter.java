@@ -107,12 +107,6 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public Completable requestUpdateUserWithoutRefreshToken() {
-        return this.userService.updateUserWithoutRefreshToken(this.user);
-    }
-
-
-    @Override
     public boolean hasUsageStatsPermission() {
         return this.appBeeAndroidNativeHelper.hasUsageStatsPermission();
     }

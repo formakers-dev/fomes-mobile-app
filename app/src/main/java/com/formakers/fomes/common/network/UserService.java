@@ -53,16 +53,6 @@ public class UserService extends AbstractAppBeeService {
                 .toCompletable();
     }
 
-    public Completable updateUserWithoutRefreshToken(User user) {
-        return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), user))
-                .doOnCompleted(() -> Log.d(TAG, "updateUser) Completed!"))
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-//                .observeOn(Schedulers.io())
-//                .compose(appBeeAPIHelper.refreshExpiredToken())
-                .toCompletable();
-    }
-
     public Completable updateRegistrationToken(String registrationToken) {
         return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), new User(registrationToken)))
                 .doOnError(this::logError)

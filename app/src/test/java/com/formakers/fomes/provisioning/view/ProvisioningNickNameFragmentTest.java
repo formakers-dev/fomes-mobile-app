@@ -94,13 +94,11 @@ public class ProvisioningNickNameFragmentTest {
 
     @Test
     public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_아이디_중복시_중복경고문구를_보여준다() {
-//        when(mockPresenter.requestUpdateUserWithoutRefreshToken()).
         when(mockPresenter.requestUpdateUser()).
                 thenReturn(Completable.error(new HttpException(Response.error(409, ResponseBody.create(null, "")))));
 
         subject.onNextButtonClick();
 
-//        verify(mockPresenter).requestUpdateUserWithoutRefreshToken();
         verify(mockPresenter).requestUpdateUser();
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);

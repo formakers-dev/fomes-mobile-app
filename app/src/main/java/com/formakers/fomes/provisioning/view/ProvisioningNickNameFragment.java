@@ -60,7 +60,6 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
 
         addCompositeSubscription(
             this.presenter.requestUpdateUser()
-//            this.presenter.requestUpdateUserWithoutRefreshToken()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                         this.presenter.emitNextPageEvent();
