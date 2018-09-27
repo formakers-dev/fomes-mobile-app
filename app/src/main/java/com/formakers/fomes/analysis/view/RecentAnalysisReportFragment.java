@@ -74,13 +74,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_genre_3) RankAppItemView myGenreItem3;
     @BindView(R.id.analysis_people_genre_gender_age) ViewGroup peopleGenreGenderAge;
     @BindView(R.id.analysis_people_genre_job) ViewGroup peopleGenreJob;
-    @BindView(R.id.analysis_playtime_rank_chart_1) LineChart rankLineChart1;
-    @BindView(R.id.analysis_playtime_rank_chart) LineChart rankLineChart;
-    @BindView(R.id.analysis_playtime_rank_bar_chart) BarChart rankBarChart;
     @BindView(R.id.analysis_playtime_rank_horizontal_bar_chart) HorizontalBarChart rankHorizontalBarChart;
-    @BindView(R.id.analysis_playtime_rank_best) RankItemView rankBest;
-    @BindView(R.id.analysis_playtime_rank_mine) RankItemView rankMine;
-    @BindView(R.id.analysis_playtime_rank_worst) RankItemView rankWorst;
     @BindView(R.id.analysis_my_favorite_developer) FavoriteDeveloperItemView myFavoriteDeveloper;
     @BindView(R.id.analysis_gender_age_favorite_developer) FavoriteDeveloperItemView genderAgeFavoriteDeveloper;
     @BindView(R.id.analysis_job_favorite_developer) FavoriteDeveloperItemView jobFavoriteDeveloper;
@@ -227,236 +221,67 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(jobUsagePercentagePair.get(2).first.getName());
     }
 
-    private void drawLineChart(List<Rank> rankList) {
-        // line chart - 1
-        float best = presenter.getHour(rankList.get(0).getContent());
-        float mine = presenter.getHour(rankList.get(1).getContent());
-        float worst = presenter.getHour(rankList.get(2).getContent());
-
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(best, worst));
-        entries.add(new Entry(mine, mine));
-        entries.add(new Entry(worst, best));
-        Collections.sort(entries, new EntryXComparator());
-
-        Log.d(TAG, String.valueOf(entries));
-
-        LineDataSet lineDataSet = new LineDataSet(entries, "");
-
-        Resources res = getResources();
-        List<Integer> colors = Arrays.asList(res.getColor(R.color.colorPrimary), res.getColor(R.color.fomes_squash),
-                res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_gray));
-
-        lineDataSet.setCircleColors(colors);
-        lineDataSet.setDrawCircleHole(false);
-        lineDataSet.setCircleRadius(7f);
-
-        lineDataSet.setValueFormatter(new PlaytimeFormatter());
-        lineDataSet.setValueTextSize(9f);
-        lineDataSet.setValueTextColor(res.getColor(R.color.fomes_warm_gray));
-
-        lineDataSet.setDrawFilled(true);
-        lineDataSet.setColor(res.getColor(R.color.fomes_pale_gray));
-        lineDataSet.setFillColor(getResources().getColor(R.color.fomes_pale_gray));
-
-        LineData lineData = new LineData(lineDataSet);
-        rankLineChart1.setData(lineData);
-
-        XAxis xAxis = rankLineChart1.getXAxis();
-        xAxis.setTextSize(12f);
-        xAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        xAxis.setTextColor(res.getColor(R.color.fomes_warm_gray));
-        xAxis.setAxisLineColor(Color.TRANSPARENT);
-        xAxis.setDrawLabels(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setYOffset(8f);
-
-        rankLineChart1.getAxisRight().setAxisLineColor(Color.TRANSPARENT);
-        rankLineChart1.getAxisRight().setDrawLabels(false);
-        rankLineChart1.getAxisRight().setDrawGridLines(false);
-        rankLineChart1.getAxisLeft().setAxisLineColor(Color.TRANSPARENT);
-        rankLineChart1.getAxisLeft().setDrawLabels(false);
-        rankLineChart1.getAxisLeft().setDrawGridLines(false);
-        rankLineChart1.setDrawBorders(false);
-        rankLineChart1.setDrawGridBackground(false);
-        rankLineChart1.getDescription().setEnabled(false);
-        rankLineChart1.getLegend().setEnabled(false);
-        rankLineChart1.setTouchEnabled(false);
-        rankLineChart1.invalidate();
-        rankLineChart1.setExtraBottomOffset(15);
-        rankLineChart1.setExtraLeftOffset(15);
-        rankLineChart1.setExtraRightOffset(15);
-    }
-
     @Override
     public void bindRankingViews(List<Rank> totalUsedTimeRank) {
         Log.d(TAG, String.valueOf(totalUsedTimeRank));
 
-//        long best = totalUsedTimeRank.get(0).getContent();
-//        float mine = (float) totalUsedTimeRank.get(1).getContent() / best * 100;
-//        float worst = (float) totalUsedTimeRank.get(2).getContent() / best * 100;
         float best = presenter.getHour(totalUsedTimeRank.get(0).getContent());
         float mine = presenter.getHour(totalUsedTimeRank.get(1).getContent());
         float worst = presenter.getHour(totalUsedTimeRank.get(2).getContent());
 
         Map<Float, String> labelMap = new HashMap<>();
-        labelMap.put(1f, getResources().getString(R.string.analysis_playtime_rank_number, totalUsedTimeRank.get(0).getRank()));
+        labelMap.put(3f, getResources().getString(R.string.analysis_playtime_rank_number, totalUsedTimeRank.get(0).getRank()));
         labelMap.put(2f, getResources().getString(R.string.analysis_playtime_my_rank_number, totalUsedTimeRank.get(1).getRank()));
-        labelMap.put(3f, getResources().getString(R.string.analysis_playtime_rank_number_last));
+        labelMap.put(1f, getResources().getString(R.string.analysis_playtime_rank_number_last));
 
-        List<Entry> entries = new ArrayList<>();
-//        Drawable topArrow = getResources().getDrawable(R.drawable.top_arrow, null);
-//        topArrow.setTint(getResources().getColor(R.color.colorPrimary));
-        entries.add(new Entry(3, worst));
-        entries.add(new Entry(2, mine));
-        entries.add(new Entry(1, best));
-        Collections.sort(entries, new EntryXComparator());
+        List<BarEntry> barEntries = new ArrayList<>();
+        barEntries.add(new BarEntry(3f, best));
+        barEntries.add(new BarEntry(2f, mine));
+        barEntries.add(new BarEntry(1f, worst));
+        Log.d(TAG, String.valueOf(barEntries));
 
-        Log.d(TAG, String.valueOf(entries));
-
-        LineDataSet lineDataSet = new LineDataSet(entries, "");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "");
 
         Resources res = getResources();
         List<Integer> colors = Arrays.asList(res.getColor(R.color.colorPrimary), res.getColor(R.color.fomes_squash),
                 res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_gray));
-        lineDataSet.setCircleColors(colors);
-        lineDataSet.setDrawCircleHole(false);
-        lineDataSet.setCircleRadius(7f);
-
-        lineDataSet.setValueFormatter(new PlaytimeFormatter());
-        lineDataSet.setValueTextSize(9f);
-        lineDataSet.setValueTextColor(res.getColor(R.color.fomes_warm_gray));
-
-        lineDataSet.setDrawFilled(true);
-        lineDataSet.setColor(res.getColor(R.color.fomes_pale_gray));
-        lineDataSet.setFillColor(getResources().getColor(R.color.fomes_pale_gray));
-
-        LineData lineData = new LineData(lineDataSet);
-        rankLineChart.setData(lineData);
-
-        XAxis xAxis = rankLineChart.getXAxis();
-        xAxis.setTextSize(12f);
-        xAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        xAxis.setTextColor(res.getColor(R.color.fomes_warm_gray));
-        xAxis.setAxisLineColor(Color.BLACK);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Log.d(TAG, "value="+value);
-                return labelMap.get(value);
-            }
-        });
-        xAxis.setDrawLabels(true);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setYOffset(8f);
-
-        rankLineChart.getAxisRight().setAxisLineColor(Color.TRANSPARENT);
-        rankLineChart.getAxisRight().setDrawLabels(false);
-        rankLineChart.getAxisRight().setDrawGridLines(false);
-        rankLineChart.getAxisLeft().setAxisLineColor(Color.TRANSPARENT);
-        rankLineChart.getAxisLeft().setDrawLabels(false);
-        rankLineChart.getAxisLeft().setDrawGridLines(false);
-        rankLineChart.setDrawBorders(false);
-        rankLineChart.setDrawGridBackground(false);
-        rankLineChart.getDescription().setEnabled(false);
-        rankLineChart.getLegend().setEnabled(false);
-        rankLineChart.setTouchEnabled(false);
-        rankLineChart.invalidate();
-        rankLineChart.setExtraBottomOffset(15);
-        rankLineChart.setExtraLeftOffset(15);
-        rankLineChart.setExtraRightOffset(15);
-
-        // line chart -1
-        drawLineChart(totalUsedTimeRank);
-
-        /// barChart
-        List<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1, best));
-        barEntries.add(new BarEntry(2, mine));
-        barEntries.add(new BarEntry(3, worst));
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "");
         barDataSet.setColors(colors);
 
         barDataSet.setValueFormatter(new PlaytimeFormatter());
         barDataSet.setValueTextSize(9f);
         barDataSet.setValueTextColor(res.getColor(R.color.fomes_warm_gray));
+        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         BarData barData = new BarData(barDataSet);
-        rankBarChart.setData(barData);
 
-        rankBarChart.setDrawGridBackground(false);
-        rankBarChart.setDrawBorders(false);
-
-        XAxis barXAxis = rankBarChart.getXAxis();
-
-        barXAxis.setTextSize(12f);
-        barXAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        barXAxis.setTextColor(res.getColor(R.color.fomes_warm_gray));
-        barXAxis.setAxisLineColor(Color.TRANSPARENT);
-        barXAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Log.d(TAG, "value="+value);
-                return labelMap.get(value);
-            }
-        });
-        barXAxis.setDrawLabels(true);
-        barXAxis.setDrawGridLines(false);
-        barXAxis.setGranularityEnabled(true);
-        barXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        barXAxis.setYOffset(8f);
-
-        rankBarChart.getAxisRight().setAxisLineColor(Color.TRANSPARENT);
-        rankBarChart.getAxisRight().setDrawLabels(false);
-        rankBarChart.getAxisRight().setDrawGridLines(false);
-        rankBarChart.getAxisLeft().setAxisLineColor(Color.TRANSPARENT);
-        rankBarChart.getAxisLeft().setDrawLabels(false);
-        rankBarChart.getAxisLeft().setDrawGridLines(false);
-        rankBarChart.setDrawBorders(false);
-        rankBarChart.setDrawGridBackground(false);
-        rankBarChart.getDescription().setEnabled(false);
-        rankBarChart.getLegend().setEnabled(false);
-        rankBarChart.setTouchEnabled(false);
-        rankBarChart.setDrawValueAboveBar(true);
-        rankBarChart.setFitBars(true);
-        rankBarChart.setTouchEnabled(false);
-        rankBarChart.invalidate();
-        rankBarChart.setExtraBottomOffset(15);
-        rankBarChart.setExtraLeftOffset(15);
-        rankBarChart.setExtraRightOffset(15);
-
-
-        // horizontal barchart
         rankHorizontalBarChart.setData(barData);
         XAxis HorizontalBarXAxis = rankHorizontalBarChart.getXAxis();
 
-        HorizontalBarXAxis.setTextSize(12f);
+        HorizontalBarXAxis.setTextSize(10f);
         HorizontalBarXAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         HorizontalBarXAxis.setTextColor(res.getColor(R.color.fomes_warm_gray));
-        HorizontalBarXAxis.setAxisLineColor(Color.TRANSPARENT);
-        HorizontalBarXAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Log.d(TAG, "value="+value);
-                return labelMap.get(value);
-            }
-        });
+        HorizontalBarXAxis.setAxisLineColor(res.getColor(R.color.fomes_light_gray));
+        HorizontalBarXAxis.setValueFormatter((value, axis) -> labelMap.get(value));
         HorizontalBarXAxis.setDrawLabels(true);
         HorizontalBarXAxis.setDrawGridLines(false);
         HorizontalBarXAxis.setGranularityEnabled(true);
         HorizontalBarXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        HorizontalBarXAxis.setXOffset(9);
+        HorizontalBarXAxis.setYOffset(0);
 
+        YAxis HorizontalBarYAxis = rankHorizontalBarChart.getAxisLeft();
+        HorizontalBarYAxis.setAxisLineColor(Color.TRANSPARENT);
+        HorizontalBarYAxis.setDrawLabels(false);
+        HorizontalBarYAxis.setDrawGridLines(false);
+        HorizontalBarYAxis.setXOffset(0);
+        HorizontalBarYAxis.setAxisMinimum(0);
+
+        rankHorizontalBarChart.getAxisRight().setAxisMinimum(0);
+        rankHorizontalBarChart.getAxisRight().setAxisMaximum(0);
         rankHorizontalBarChart.getAxisRight().setAxisLineColor(Color.TRANSPARENT);
         rankHorizontalBarChart.getAxisRight().setDrawLabels(false);
         rankHorizontalBarChart.getAxisRight().setDrawGridLines(false);
-        rankHorizontalBarChart.getAxisLeft().setAxisLineColor(Color.TRANSPARENT);
-        rankHorizontalBarChart.getAxisLeft().setDrawLabels(false);
-        rankHorizontalBarChart.getAxisLeft().setDrawGridLines(false);
+
         rankHorizontalBarChart.setDrawBorders(false);
         rankHorizontalBarChart.setDrawGridBackground(false);
         rankHorizontalBarChart.getDescription().setEnabled(false);
@@ -465,28 +290,8 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         rankHorizontalBarChart.setDrawValueAboveBar(true);
         rankHorizontalBarChart.setFitBars(true);
         rankHorizontalBarChart.setTouchEnabled(false);
-        rankHorizontalBarChart.setExtraBottomOffset(15);
-        rankHorizontalBarChart.setExtraLeftOffset(15);
-        rankHorizontalBarChart.setExtraRightOffset(15);
-
-        /// old
-
-        ((TextView) rankBest.findViewById(R.id.title_textview))
-                .setText(String.format(getString(R.string.analysis_playtime_rank_number), totalUsedTimeRank.get(0).getRank()));
-        ((TextView) rankMine.findViewById(R.id.title_textview))
-                .setText(String.format(getString(R.string.analysis_playtime_my_rank_number),totalUsedTimeRank.get(1).getRank()));
-        ((TextView) rankWorst.findViewById(R.id.title_textview))
-                .setText(R.string.analysis_playtime_rank_number_last);
-
-        ((TextView) rankBest.findViewById(R.id.desc_textview))
-                .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
-                        presenter.getHour(totalUsedTimeRank.get(0).getContent())));
-        ((TextView) rankMine.findViewById(R.id.desc_textview))
-                .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
-                        presenter.getHour(totalUsedTimeRank.get(1).getContent())));
-        ((TextView) rankWorst.findViewById(R.id.desc_textview))
-                .setText(String.format(getString(R.string.analysis_playtime_rank_hours),
-                        presenter.getHour(totalUsedTimeRank.get(2).getContent())));
+        rankHorizontalBarChart.setViewPortOffsets(0,0,0,0);
+        rankHorizontalBarChart.setExtraRightOffset(30);
     }
 
     @Override

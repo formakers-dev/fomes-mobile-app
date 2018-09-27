@@ -226,87 +226,16 @@
             android:textSize="@dimen/analysis_content_subtitle_size"
             app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_title" />
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/analysis_playtime_rank_chart_1"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="153dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_subtitle"/>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/analysis_playtime_rank_chart"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="153dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_chart_1"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/analysis_playtime_rank_bar_chart"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="200dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_chart"/>
-
         <com.github.mikephil.charting.charts.HorizontalBarChart
             android:id="@+id/analysis_playtime_rank_horizontal_bar_chart"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="200dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_bar_chart"/>
-
-        <com.formakers.fomes.common.view.RankItemView
-            android:id="@+id/analysis_playtime_rank_best"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
-            android:layout_marginTop="45dp"
-            app:rank_item_color="@color/colorPrimary"
-            app:layout_constraintEnd_toStartOf="@+id/analysis_playtime_rank_mine"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_horizontal_bar_chart" />
-
-        <com.formakers.fomes.common.view.RankItemView
-            android:id="@+id/analysis_playtime_rank_mine"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
-            android:layout_marginTop="45dp"
-            app:rank_item_color="@color/fomes_squash"
-            app:rank_item_content_isTop="true"
-            app:layout_constraintEnd_toStartOf="@+id/analysis_playtime_rank_worst"
-            app:layout_constraintStart_toEndOf="@id/analysis_playtime_rank_best"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_horizontal_bar_chart" />
-
-        <com.formakers.fomes.common.view.RankItemView
-            android:id="@+id/analysis_playtime_rank_worst"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
-            android:layout_marginTop="45dp"
-            app:rank_item_color="@color/fomes_blush_pink"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/analysis_playtime_rank_mine"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_horizontal_bar_chart" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_subtitle"/>
 
         <!-- end of Playtime Rank -->
 
@@ -314,8 +243,8 @@
         <View
             android:id="@+id/favorite_developer_divider"
             style="@style/AnaylsisTheme.Divider"
-            android:layout_marginTop="26dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_worst" />
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_horizontal_bar_chart" />
 
         <TextView
             android:id="@+id/analysis_favorite_developer_title"
