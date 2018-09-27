@@ -439,4 +439,10 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         startActivity(intent);
         this.getActivity().finish();
     }
+
+    // TODO : 프래그먼트 분리후 제거
+    @OnClick(R.id.analysis_error_botton_button)
+    public void onErrorBottomButtonClick() {
+        onConfirmButtonClick();
+    }
 }
