@@ -67,8 +67,9 @@ public class LoginActivityTest extends BaseActivityTest<LoginActivity> {
     public void LoginActivity_시작시_로그인화면이_나타난다() {
         launchActivity();
 
+        assertThat(subject.findViewById(R.id.login_beta_label).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_logo).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.findViewById(R.id.login_title).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.findViewById(R.id.login_game_logo).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_subtitle).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_google_button).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.login_tnc).getVisibility()).isEqualTo(View.VISIBLE);
