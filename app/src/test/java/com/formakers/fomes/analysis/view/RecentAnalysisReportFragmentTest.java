@@ -194,7 +194,7 @@ public class RecentAnalysisReportFragmentTest {
 
         when(mockPresenter.getPercentage(eq(categoryUsages_gender_age), anyInt(), anyInt())).thenReturn(usagePercentagePair_gender_age);
         when(mockPresenter.getPercentage(eq(categoryUsages_job), anyInt(), anyInt())).thenReturn(usagePercentagePair_job);
-        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob("IT"));
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob(2001));
 
         controller.create().start().resume().visible();
 
@@ -217,7 +217,7 @@ public class RecentAnalysisReportFragmentTest {
                 .findViewById(R.id.title_3)).getText()).isEqualTo("시뮬레이션");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
-                .findViewById(R.id.group)).getText()).isEqualTo("IT");
+                .findViewById(R.id.group)).getText()).isEqualTo("IT 종사자");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_people_genre_job)
                 .findViewById(R.id.title_1)).getText()).isEqualTo("퀴즈");
@@ -269,7 +269,7 @@ public class RecentAnalysisReportFragmentTest {
         job.add(new Usage("순순디자인", "순순디자인", 9999L, appInfos3));
         job.add(new Usage("노잼", "노잼", 99L, appInfos3));
 
-        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob("IT"));
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob(2001));
 
         controller.create().start().resume().visible();
 
@@ -280,7 +280,7 @@ public class RecentAnalysisReportFragmentTest {
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_gender_age_favorite_developer)
                 .findViewById(R.id.group)).getText()).isEqualTo("20대 여성 1위");
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_job_favorite_developer)
-                .findViewById(R.id.group)).getText()).isEqualTo("IT 1위");
+                .findViewById(R.id.group)).getText()).isEqualTo("IT 종사자 1위");
 
         assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_favorite_developer)
                 .findViewById(R.id.developer_name)).getText()).isEqualTo("블루홀");
@@ -358,7 +358,7 @@ public class RecentAnalysisReportFragmentTest {
         RequestBuilder mockRequestBuilder = mock(RequestBuilder.class);
         when(mockRequestManager.load(any())).thenReturn(mockRequestBuilder);
 
-        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob("IT"));
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob(2001));
 
         controller.create().start().resume().visible();
 
@@ -385,7 +385,7 @@ public class RecentAnalysisReportFragmentTest {
         View jobGamesView = subject.getView().findViewById(R.id.analysis_people_games_job);
 
         assertThat(((TextView) jobGamesView.findViewById(R.id.group)).getText())
-                .isEqualTo("IT");
+                .isEqualTo("IT 종사자");
 
         assertThat(((TextView) jobGamesView.findViewById(R.id.title_1)).getText())
                 .isEqualTo("액션게임명");

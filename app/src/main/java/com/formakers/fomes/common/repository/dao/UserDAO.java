@@ -59,8 +59,9 @@ public class UserDAO {
                     userRealmObject.setBirthday(userInfo.getBirthday());
                 }
 
-                if (!TextUtils.isEmpty(userInfo.getJob())) {
-                    userRealmObject.setJob(userInfo.getJob());
+                Integer job = userInfo.getJob();
+                if (job != null && job > 0) {
+                    userRealmObject.setJob(job);
                 }
 
                 if (!TextUtils.isEmpty(userInfo.getGender())) {

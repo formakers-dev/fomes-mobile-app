@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,8 +15,11 @@ import android.widget.Spinner;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseFragment;
+import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.util.FomesConstants;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
@@ -40,6 +44,20 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
         return inflater.inflate(R.layout.fragment_provision_user_info, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ArrayList<String> items = new ArrayList<>();
+        items.add(getResources().getString(R.string.common_spinner_hint));
+        for (User.JobCategory job : User.JobCategory.values()) {
+            if (job.getSelectable())
+                items.add(job.getName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, items);
+        jobSpinner.setAdapter(adapter);
+    }
+
     public ProvisioningUserInfoFragment setPresenter(ProvisioningContract.Presenter presenter) {
         this.presenter = presenter;
         return this;
@@ -61,7 +79,8 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
         }
 
         int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
-        String job = jobSpinner.getSelectedItem().toString();
+        User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
+        int job = jobCategory != null ? jobCategory.getCode() : 0;
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.provision_user_info_male_radiobutton ? "male" : "female";
 
         this.presenter.updateDemographicsToUser(birth, job, gender);

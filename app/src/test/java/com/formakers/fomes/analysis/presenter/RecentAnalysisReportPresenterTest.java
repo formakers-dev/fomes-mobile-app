@@ -84,7 +84,7 @@ public class RecentAnalysisReportPresenterTest {
         when(mockUser.getUserId()).thenReturn("mockUserId");
         when(mockUser.getGender()).thenReturn("male");
         when(mockUser.getBirthday()).thenReturn(1989);
-        when(mockUser.getJob()).thenReturn("IT종사자");
+        when(mockUser.getJob()).thenReturn(3);
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
 
         subject = new RecentAnalysisReportPresenter(mockView, mockAppUsageDataHelper, mockAppStatService, mockUser, mockUserDAO);
@@ -130,7 +130,7 @@ public class RecentAnalysisReportPresenterTest {
         assertThat(argumentCaptor.getValue().getUserId()).isEqualTo("mockUserId");
         assertThat(argumentCaptor.getValue().getGender()).isEqualTo("male");
         assertThat(argumentCaptor.getValue().getBirthday()).isEqualTo(1989);
-        assertThat(argumentCaptor.getValue().getJob()).isEqualTo("IT종사자");
+        assertThat(argumentCaptor.getValue().getJob()).isEqualTo(3);
 
         // 나의 장르 뷰 업데이트
         verify(mockView).bindMyGenreViews(eq(report.getUsages().get(0).getCategoryUsages()));

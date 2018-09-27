@@ -10,7 +10,7 @@ import rx.Completable;
 
 public interface ProvisioningContract {
     interface Presenter {
-        void updateDemographicsToUser(Integer birth, String job, String gender);
+        void updateDemographicsToUser(Integer birth, Integer job, String gender);
         void updateLifeGameToUser(String game);
         void updateNickNameToUser(String nickName);
         void setProvisioningProgressStatus(int status);

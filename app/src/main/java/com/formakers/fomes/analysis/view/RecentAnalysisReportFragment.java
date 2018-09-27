@@ -197,7 +197,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         // 동일 직업군
         ((TextView) peopleGenreJob.findViewById(R.id.group))
-                .setText(String.format(getString(R.string.common_string), userInfo.getJob()));
+                .setText(String.format(getString(R.string.common_string), User.JobCategory.get(userInfo.getJob()).getName()));
 
         List<Pair<Usage, Integer>> jobUsagePercentagePair
                 = this.presenter.getPercentage(jobCategoryUsages, 0, 3);
@@ -299,7 +299,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                         getString(R.string.common_age, userInfo.getAge()) + " " +
                                 getString(R.string.common_string, getString(userInfo.getGenderToStringResId()))));
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.group))
-                .setText(getString(R.string.analysis_favorite_developer_group, userInfo.getJob()));
+                .setText(getString(R.string.analysis_favorite_developer_group, User.JobCategory.get(userInfo.getJob()).getName()));
 
         ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_name)).setText(myDeveloperUsages.get(0).getName());
         ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_name)).setText(genderAgeDeveloperUsages.get(0).getName());
@@ -345,7 +345,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         ((TextView) genderAgeGames.findViewById(R.id.title_3)).setText(genderAgeAppUsages.get(2).getName());
 
         ((TextView) jobGames.findViewById(R.id.group))
-                .setText(String.format(getString(R.string.common_string), userInfo.getJob()));
+                .setText(String.format(getString(R.string.common_string), User.JobCategory.get(userInfo.getJob()).getName()));
 
         presenter.getImageLoader().load(jobAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_1));
         presenter.getImageLoader().load(jobAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_2));

@@ -69,10 +69,10 @@ public class ProvisioningPresenterTest {
 
     @Test
     public void updateDemographicsToUser__호출시__유저정보를_업데이트한다() {
-        subject.updateDemographicsToUser(1989, "developer", "male");
+        subject.updateDemographicsToUser(1989, 1, "male");
 
         verify(mockUser).setBirthday(eq(1989));
-        verify(mockUser).setJob(eq("developer"));
+        verify(mockUser).setJob(eq(1));
         verify(mockUser).setGender(eq("male"));
     }
 

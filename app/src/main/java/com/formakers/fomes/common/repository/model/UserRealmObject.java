@@ -10,7 +10,7 @@ public class UserRealmObject extends RealmObject {
     private String nickName;
     private String email;
     private Integer birthday;
-    private String job;
+    private Integer job;
     private String gender;
     private RealmList<String> lifeApps;
 
@@ -59,11 +59,11 @@ public class UserRealmObject extends RealmObject {
         return this;
     }
 
-    public String getJob() {
+    public Integer getJob() {
         return job;
     }
 
-    public UserRealmObject setJob(String job) {
+    public UserRealmObject setJob(Integer job) {
         this.job = job;
         return this;
     }

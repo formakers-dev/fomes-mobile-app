@@ -45,7 +45,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void updateDemographicsToUser(Integer birth, String job, String gender) {
+    public void updateDemographicsToUser(Integer birth, Integer job, String gender) {
         this.user.setBirthday(birth);
         this.user.setJob(job);
         this.user.setGender(gender);

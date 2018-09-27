@@ -74,16 +74,4 @@
         <item>2009</item>
         <item>2010</item>
     </string-array>
-    <string-array name="job_items">
-        <item>@string/common_spinner_hint</item>
-        <item>중고등학생</item>
-        <item>대학생</item>
-        <item>주부</item>
-        <item>IT종사자</item>
-        <item>서비스직</item>
-        <item>사무직</item>
-        <item>전문직</item>
-        <item>공무원</item>
-        <item>그 외</item>
-    </string-array>
 </resources>
