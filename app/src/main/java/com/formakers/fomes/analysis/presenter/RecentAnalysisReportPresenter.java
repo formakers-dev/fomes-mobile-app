@@ -125,8 +125,8 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                     view.bindPeopleGenreViews(genderAgeUsages.getCategoryUsages(), jobUsages.getCategoryUsages());
                     view.bindRankingViews(recentReport.getTotalUsedTimeRank());
                     view.bindFavoriteDeveloperViews(myUsages.getDeveloperUsages(), genderAgeUsages.getDeveloperUsages(), jobUsages.getDeveloperUsages());
-//                    view.bindMyGames(myUsages.getAppUsages());
-//                    view.bindPeopleGamesViews(genderAgeUsages.getAppUsages(), jobUsages.getAppUsages());
+                    view.bindMyGames(myUsages.getAppUsages());
+                    view.bindPeopleGamesViews(genderAgeUsages.getAppUsages(), jobUsages.getAppUsages());
 
 
                     emitter.onCompleted();

@@ -72,6 +72,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_games_1) RankAppItemView myGamesItem1;
     @BindView(R.id.analysis_my_games_2) RankAppItemView myGamesItem2;
     @BindView(R.id.analysis_my_games_3) RankAppItemView myGamesItem3;
+    @BindView(R.id.analysis_my_game_suggestion_textview) TextView myGamesSuggestionTextView;
     @BindView(R.id.analysis_people_games_gender_age) ViewGroup genderAgeGames;
     @BindView(R.id.analysis_people_games_job) ViewGroup jobGames;
 
@@ -359,17 +360,48 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
     @Override
     public void bindMyGames(List<Usage> myAppUsages) {
-        myGamesItem1.setTitleText(myAppUsages.get(0).getName());
-        myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(0).getTotalUsedTime())));
-        presenter.getImageLoader().load(myAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into(myGamesItem1.getIconImageView());
+        int size = myAppUsages.size();
 
-        myGamesItem2.setTitleText(myAppUsages.get(1).getName());
-        myGamesItem2.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(1).getTotalUsedTime())));
-        presenter.getImageLoader().load(myAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into(myGamesItem2.getIconImageView());
+        if (size <= 0) {
+            myGamesItem1.setTitleText(R.string.analysis_cannot_know_yet);
+            myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, 0f));
+            presenter.getImageLoader().load(R.drawable.fomes_crying_app_icon).into(myGamesItem1.getIconImageView());
+            myGamesItem1.setVisibility(View.VISIBLE);
+        }
 
-        myGamesItem3.setTitleText(myAppUsages.get(2).getName());
-        myGamesItem3.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(2).getTotalUsedTime())));
-        presenter.getImageLoader().load(myAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into(myGamesItem3.getIconImageView());
+        if (size > 0) {
+            myGamesItem1.setTitleText(myAppUsages.get(0).getName());
+            myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(0).getTotalUsedTime())));
+            presenter.getImageLoader().load(myAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into(myGamesItem1.getIconImageView());
+            myGamesItem1.setVisibility(View.VISIBLE);
+        }
+
+        if (size > 1) {
+            myGamesItem2.setTitleText(myAppUsages.get(1).getName());
+            myGamesItem2.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(1).getTotalUsedTime())));
+            presenter.getImageLoader().load(myAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into(myGamesItem2.getIconImageView());
+            myGamesItem2.setVisibility(View.VISIBLE);
+        }
+
+        if (size > 2) {
+            myGamesItem3.setTitleText(myAppUsages.get(2).getName());
+            myGamesItem3.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(2).getTotalUsedTime())));
+            presenter.getImageLoader().load(myAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into(myGamesItem3.getIconImageView());
+            myGamesItem3.setVisibility(View.VISIBLE);
+        }
+
+        if (size <= 0) {
+            myGamesSuggestionTextView.setText(R.string.analysis_game_suggestion_without_1_2_3);
+            myGamesSuggestionTextView.setVisibility(View.VISIBLE);
+        } else if (size == 1) {
+            myGamesSuggestionTextView.setText(R.string.analysis_game_suggestion_without_2_3);
+            myGamesSuggestionTextView.setVisibility(View.VISIBLE);
+        } else if (size == 2) {
+            myGamesSuggestionTextView.setText(R.string.analysis_game_suggestion_without_3);
+            myGamesSuggestionTextView.setVisibility(View.VISIBLE);
+        } else {
+            myGamesSuggestionTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override
