@@ -41,6 +41,7 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,15 +99,22 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                             .into(loadingImageView);
                 }).subscribe(() -> {
                     // TODO : 아래 뷰들 Fragment 관리로 변경 필요
-                    loadingLayout.setVisibility(View.GONE);
-                    contentLayout.setVisibility(View.VISIBLE);
-                    errorLayout.setVisibility(View.GONE);
+                    loadingComplete(true);
                 }, e -> {
-                    loadingLayout.setVisibility(View.GONE);
-                    contentLayout.setVisibility(View.GONE);
-                    errorLayout.setVisibility(View.VISIBLE);
+                    if (e instanceof NullPointerException) {
+                        loadingComplete(true);
+                        bindMyGenreViews(Collections.emptyList());
+                    } else {
+                        loadingComplete(false);
+                    }
                 })
         );
+    }
+
+    private void loadingComplete(boolean isSuccess) {
+        loadingLayout.setVisibility(View.GONE);
+        contentLayout.setVisibility(isSuccess ? View.VISIBLE : View.GONE);
+        errorLayout.setVisibility(isSuccess ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -163,7 +171,15 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
             percentages.add(pair.second);
         }
 
+        if (size <= 0) {
+            myGenreItem1.setNumberText("?");
+            myGenreItem1.setTitleText(R.string.analysis_my_genre_cannot_know_genre);
+            myGenreItem1.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), 0));
+            myGenreItem1.setVisibility(View.VISIBLE);
+        }
+
         if (size > 0) {
+            myGenreItem1.setNumberText("1");
             int bestPercent = usagePercentagePair.get(0).second;
             myGenreItem1.setTitleText(usagePercentagePair.get(0).first.getName());
             myGenreItem1.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), bestPercent));
@@ -177,6 +193,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
             myGenreItem2.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), myPercent));
             myGenreItem2.setVisibility(View.VISIBLE);
         }
+
         // TODO : Refactor
         if (size > 2) {
             int worstPercent = usagePercentagePair.get(2).second;

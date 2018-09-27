@@ -196,6 +196,7 @@
     <string name="analysis_my_games_title">나의 게임 1/2/3위</string>
     <string name="analysis_my_games_subtitle">나의 7일간 모바일 게임별 플레이 시간 집계</string>
     <string name="analysis_my_games_description">%.1f시간 플레이</string>
+    <string name="analysis_my_genre_cannot_know_genre">나의 게임 장르를 알수 없어요.</string>
     <string name="analysis_people_games_title">사람들의 게임 1/2/3위</string>
     <string name="analysis_people_games_subtitle">나이/성별/직업 기준 7일간 모바일 게임별 플레이 시간 집계</string>
     <string name="analysis_q_lifegame">Q. 인생게임에 대한 분석은 왜 없나요?</string>
