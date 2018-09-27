@@ -4,19 +4,18 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
@@ -26,34 +25,22 @@ import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.FavoriteDeveloperItemView;
 import com.formakers.fomes.common.view.RankAppItemView;
-import com.formakers.fomes.common.view.RankItemView;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +55,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.current_analysis_loading_layout) ViewGroup loadingLayout;
     @BindView(R.id.current_analysis_layout) ViewGroup contentLayout;
     @BindView(R.id.current_analysis_error_layout) ViewGroup errorLayout;
+
+    @BindView(R.id.fragment_loading_imageview) ImageView loadingImageView;
+
     @BindView(R.id.analysis_my_genre_chart) PieChart myGenrePieChart;
     @BindView(R.id.analysis_my_genre_1) RankAppItemView myGenreItem1;
     @BindView(R.id.analysis_my_genre_2) RankAppItemView myGenreItem2;
@@ -101,7 +91,12 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         addCompositeSubscription(
             presenter.loading()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
+                .doOnSubscribe((subscription) -> {
+                    presenter.getImageLoader().asGif()
+                            .load(R.drawable.loading)
+                            .apply(new RequestOptions().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                            .into(loadingImageView);
+                }).subscribe(() -> {
                     // TODO : 아래 뷰들 Fragment 관리로 변경 필요
                     loadingLayout.setVisibility(View.GONE);
                     contentLayout.setVisibility(View.VISIBLE);
