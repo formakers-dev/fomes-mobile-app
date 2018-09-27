@@ -127,7 +127,11 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
             pieEntries.add(new PieEntry(data.floatValue()));
             total += data.floatValue();
         }
-        pieEntries.add(new PieEntry(100 - total));
+
+        // TODO : Refactor
+        if (datas.size() <= 0 || datas.size() >= 3) {
+            pieEntries.add(new PieEntry(100 - total));
+        }
         PieDataSet pieDataSet = new PieDataSet(pieEntries,"");
 
         Resources res = getResources();
@@ -149,24 +153,39 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
     @Override
     public void bindMyGenreViews(List<Usage> categoryUsages) {
-        List<Pair<Usage, Integer>> usagePercentagePair = this.presenter.getPercentage(categoryUsages, 0, 3);
+        int size = categoryUsages.size();
 
-        int bestPercent = usagePercentagePair.get(0).second;
-        int myPercent = usagePercentagePair.get(1).second;
-        int worstPercent = usagePercentagePair.get(2).second;
+        List<Pair<Usage, Integer>> usagePercentagePair = this.presenter.getPercentage(categoryUsages, 0,
+                size > 3 ? 3 : size);
 
         List<Number> percentages = new ArrayList<>();
         for (Pair<Usage, Integer> pair : usagePercentagePair) {
             percentages.add(pair.second);
         }
-        bindChart(myGenrePieChart, percentages);
 
-        myGenreItem1.setTitleText(usagePercentagePair.get(0).first.getName());
-        myGenreItem1.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), bestPercent));
-        myGenreItem2.setTitleText(usagePercentagePair.get(1).first.getName());
-        myGenreItem2.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), myPercent));
-        myGenreItem3.setTitleText(usagePercentagePair.get(2).first.getName());
-        myGenreItem3.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), worstPercent));
+        if (size > 0) {
+            int bestPercent = usagePercentagePair.get(0).second;
+            myGenreItem1.setTitleText(usagePercentagePair.get(0).first.getName());
+            myGenreItem1.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), bestPercent));
+            myGenreItem1.setVisibility(View.VISIBLE);
+        }
+
+        // TODO : Refactor
+        if (size > 1) {
+            int myPercent = usagePercentagePair.get(1).second;
+            myGenreItem2.setTitleText(usagePercentagePair.get(1).first.getName());
+            myGenreItem2.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), myPercent));
+            myGenreItem2.setVisibility(View.VISIBLE);
+        }
+        // TODO : Refactor
+        if (size > 2) {
+            int worstPercent = usagePercentagePair.get(2).second;
+            myGenreItem3.setTitleText(usagePercentagePair.get(2).first.getName());
+            myGenreItem3.setDescriptionText(String.format(getString(R.string.analysis_my_genre_used_time_format), worstPercent));
+            myGenreItem3.setVisibility(View.VISIBLE);
+        }
+
+        bindChart(myGenrePieChart, percentages);
     }
 
     @Override

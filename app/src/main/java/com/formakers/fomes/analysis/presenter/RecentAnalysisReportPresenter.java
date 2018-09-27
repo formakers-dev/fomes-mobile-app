@@ -81,7 +81,9 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
         return Completable.concat(
                 this.requestPostUsages(),
                 initData()
-                , Completable.create(emitter -> requestRecentReport().map(recentReport -> {
+                , Completable.create(emitter -> requestRecentReport()
+                        .flatMap(res -> res != null ? Observable.just(res) : Observable.error(new NullPointerException()))
+                        .map(recentReport -> {
                     // RecentReport 에 sort 메소드 추가하여 분리 필요
                     for (UsageGroup usageGroup : recentReport.getUsages()) {
                         Usage[] appUsages = new Usage[usageGroup.getAppUsages().size()];
@@ -122,11 +124,11 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                     UsageGroup jobUsages = usageGroupMap.get(UsageGroup.TYPE_JOB);
 
                     view.bindMyGenreViews(myUsages.getCategoryUsages());
-                    view.bindPeopleGenreViews(genderAgeUsages.getCategoryUsages(), jobUsages.getCategoryUsages());
-                    view.bindRankingViews(recentReport.getTotalUsedTimeRank());
-                    view.bindFavoriteDeveloperViews(myUsages.getDeveloperUsages(), genderAgeUsages.getDeveloperUsages(), jobUsages.getDeveloperUsages());
-                    view.bindMyGames(myUsages.getAppUsages());
-                    view.bindPeopleGamesViews(genderAgeUsages.getAppUsages(), jobUsages.getAppUsages());
+//                    view.bindPeopleGenreViews(genderAgeUsages.getCategoryUsages(), jobUsages.getCategoryUsages());
+//                    view.bindRankingViews(recentReport.getTotalUsedTimeRank());
+//                    view.bindFavoriteDeveloperViews(myUsages.getDeveloperUsages(), genderAgeUsages.getDeveloperUsages(), jobUsages.getDeveloperUsages());
+//                    view.bindMyGames(myUsages.getAppUsages());
+//                    view.bindPeopleGamesViews(genderAgeUsages.getAppUsages(), jobUsages.getAppUsages());
 
                     emitter.onCompleted();
                 }, e -> emitter.onError(e)))
