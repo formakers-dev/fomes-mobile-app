@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.BuildConfig;
@@ -14,6 +15,7 @@ import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.view.RankAppItemView;
+import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.User;
@@ -25,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
@@ -61,6 +64,8 @@ public class RecentAnalysisReportFragmentTest {
     public void setUp() throws Exception {
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
 
         RxAndroidPlugins.getInstance().reset();
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
@@ -76,6 +81,7 @@ public class RecentAnalysisReportFragmentTest {
         subject.presenter = mockPresenter;
         controller = SupportFragmentController.of(subject);
 
+        when(mockPresenter.getImageLoader()).thenReturn(Glide.with(RuntimeEnvironment.application));
         when(mockPresenter.loading()).thenReturn(Completable.never());
     }
 
@@ -87,7 +93,7 @@ public class RecentAnalysisReportFragmentTest {
 
     @Test
     public void RecentAnalysisReportFragment_시작시__분석_로딩_화면이_나타난다() {
-        controller.create().start().resume().visible();
+        controller.create().start().resume();
 
         assertThat(subject.getView()).isNotNull();
         assertThat(subject.getView().findViewById(R.id.current_analysis_loading_layout).getVisibility()).isEqualTo(View.VISIBLE);
