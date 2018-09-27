@@ -139,7 +139,7 @@ public class ProvisioningNickNameFragmentTest {
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
-                .isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
+                .isEqualTo("* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.");
     }
 
     @Test
@@ -149,7 +149,7 @@ public class ProvisioningNickNameFragmentTest {
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
-                .isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
+                .isEqualTo("* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.");
     }
 
     @Test
@@ -159,6 +159,6 @@ public class ProvisioningNickNameFragmentTest {
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
-                .isEqualTo("* 죄송합니다. 닉네임은 2글자에서 10글자 사이여아 합니다.");
+                .isEqualTo("* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.");
     }
 }
