@@ -97,21 +97,12 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                             .load(R.drawable.loading)
                             .apply(new RequestOptions().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                             .into(loadingImageView);
-                }).subscribe(() -> {
-                    // TODO : 아래 뷰들 Fragment 관리로 변경 필요
-                    loadingComplete(true);
-                }, e -> {
-                    if (e instanceof NullPointerException) {
-                        loadingComplete(true);
-                        bindMyGenreViews(Collections.emptyList());
-                    } else {
-                        loadingComplete(false);
-                    }
-                })
+                }).subscribe(() -> loadingComplete(true), e -> loadingComplete(false))
         );
     }
 
     private void loadingComplete(boolean isSuccess) {
+        // TODO : 아래 뷰들 Fragment 관리로 변경 필요
         loadingLayout.setVisibility(View.GONE);
         contentLayout.setVisibility(isSuccess ? View.VISIBLE : View.GONE);
         errorLayout.setVisibility(isSuccess ? View.GONE : View.VISIBLE);
