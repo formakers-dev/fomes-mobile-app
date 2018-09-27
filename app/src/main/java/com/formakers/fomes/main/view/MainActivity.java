@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.dagger.ApplicationComponent;
@@ -91,14 +92,19 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         );
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
-//        contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
-//        contentsPagerAdapter.addFragment(new BetatestFragment(), getString(R.string.main_tab_betatest));
-        contentsPagerAdapter.addFragment(new EventFragment(), getString(R.string.main_tab_event));
+
+        if (Feature.MAIN_RECOMMEND) {
+            contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
+            contentsPagerAdapter.addFragment(new BetatestFragment(), getString(R.string.main_tab_betatest));
+        } else {
+            contentsPagerAdapter.addFragment(new EventFragment(), getString(R.string.main_tab_event));
+            this.tabLayout.setVisibility(View.GONE);
+        }
+
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
-        this.tabLayout.setVisibility(View.GONE);
     }
 
     @Override
