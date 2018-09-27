@@ -54,7 +54,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
             if (job.getSelectable())
                 items.add(job.getName());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
         jobSpinner.setAdapter(adapter);
     }
 

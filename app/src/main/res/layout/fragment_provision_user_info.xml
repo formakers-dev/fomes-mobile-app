@@ -50,6 +50,7 @@
         android:layout_marginTop="@dimen/provision_content_margin_top"
         android:entries="@array/birth_items"
         android:backgroundTint="@color/colorPrimary"
+        android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_title_textview" />
@@ -73,6 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/provision_content_margin_top"
         android:backgroundTint="@color/colorPrimary"
+        android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_title_textview" />
