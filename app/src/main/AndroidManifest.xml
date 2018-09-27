@@ -76,7 +76,8 @@
         <activity android:name=".provisioning.view.LoginActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".provisioning.view.ProvisioningActivity"
-            android:theme="@style/ProvisioningTheme" />
+            android:theme="@style/ProvisioningTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".analysis.view.RecentAnalysisReportActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".main.view.MainActivity"
