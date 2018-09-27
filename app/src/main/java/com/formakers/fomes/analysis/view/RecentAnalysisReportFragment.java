@@ -345,21 +345,24 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         User userInfo = presenter.getUserInfo();
 
         ((TextView) myFavoriteDeveloper.findViewById(R.id.group)).setText(R.string.analysis_favorite_developer_group_mine);
+        ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_name))
+                .setText(!myDeveloperUsages.isEmpty() ? myDeveloperUsages.get(0).getName() : getString(R.string.analysis_error_not_enough_data));
+        ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_description))
+                .setText(!myDeveloperUsages.isEmpty() ? myDeveloperUsages.get(0).getAppInfos().get(0).getAppName() : getString(R.string.common_dash));
+
+
         ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.group))
                 .setText(getString(R.string.analysis_favorite_developer_group,
                         getString(R.string.common_age, userInfo.getAge()) + " " +
                                 getString(R.string.common_string, getString(userInfo.getGenderToStringResId()))));
-        ((TextView) jobFavoriteDeveloper.findViewById(R.id.group))
-                .setText(getString(R.string.analysis_favorite_developer_group, User.JobCategory.get(userInfo.getJob()).getName()));
-
-        ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_name)).setText(myDeveloperUsages.get(0).getName());
         ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_name)).setText(genderAgeDeveloperUsages.get(0).getName());
-        ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_name)).setText(jobDeveloperUsages.get(0).getName());
-
-        ((TextView) myFavoriteDeveloper.findViewById(R.id.developer_description))
-                .setText(myDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
         ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_description))
                 .setText(genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
+
+
+        ((TextView) jobFavoriteDeveloper.findViewById(R.id.group))
+                .setText(getString(R.string.analysis_favorite_developer_group, User.JobCategory.get(userInfo.getJob()).getName()));
+        ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_name)).setText(jobDeveloperUsages.get(0).getName());
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_description))
                 .setText(jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
     }
