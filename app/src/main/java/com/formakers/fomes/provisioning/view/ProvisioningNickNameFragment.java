@@ -91,6 +91,7 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
             nickNameWarningTextView.setVisibility(View.VISIBLE);
             nickNameEditText.getBackground().setTint(res.getColor(R.color.fomes_red));
         } else {
+            nickNameWarningTextView.setVisibility(View.GONE);
             nickNameEditText.getBackground().setTint(res.getColor(R.color.colorPrimary));
         }
 
