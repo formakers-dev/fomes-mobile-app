@@ -91,12 +91,14 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         );
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
-        contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
-        contentsPagerAdapter.addFragment(new BetatestFragment(), getString(R.string.main_tab_betatest));
+//        contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
+//        contentsPagerAdapter.addFragment(new BetatestFragment(), getString(R.string.main_tab_betatest));
+        contentsPagerAdapter.addFragment(new EventFragment(), getString(R.string.main_tab_event));
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
+        this.tabLayout.setVisibility(View.GONE);
     }
 
     @Override

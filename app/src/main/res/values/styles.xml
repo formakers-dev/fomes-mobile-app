@@ -133,4 +133,9 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/fomes_light_warm_gray</item>
     </style>
+
+    <style name="ProgressBackground">
+        <item name="item_color">@color/fomes_white</item>
+        <item name="item_backgorund_round">@dimen/progress_round_size</item>
+    </style>
 </resources>

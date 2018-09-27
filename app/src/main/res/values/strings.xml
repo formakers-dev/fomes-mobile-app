@@ -203,11 +203,17 @@
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>
     <string name="main_tab_betatest">베타테스트</string>
+    <string name="main_tab_event">이벤트</string>
     <string name="main_menu_my_hope_games">내 게임 컬렉션</string>
     <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
     <string name="main_menu_my_betatest">피드백 존 (준비중)</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
+
+    <!-- Temp -->
+    <string name="temp_event_notice">포메스 베타버전은 &lt; 1단계 : 게임 분석 &gt; 까지만 구현되어 있습니다.</string>
+    <string name="temp_event_desc">3단계 오픈까지 포메스 앱을 유지해 주세요.\n유지해 주신 대상자 분들께 선물을 드려요!</string>
+    <string name="temp_event_who_desc">9월 29~30에 포메스 앱을 설치한 유저들 중에서 3단계 오픈까지 포메스 앱을 삭제하지 않은 유저</string>
 
     <!-- Beta Test -->
     <string name="coming_soon">Coming Soon</string>

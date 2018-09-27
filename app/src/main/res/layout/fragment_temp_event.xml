@@ -1,47 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     android:background="@color/fomes_content_background">
 
-
-    <TextView android:id="@+id/betatest_comming_soon_textview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
-        android:gravity="center"
-        android:text="@string/coming_soon"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"/>
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <TextView android:id="@+id/betatest_title_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="@string/betatest_title"
-        android:textSize="18dp"
-        android:textColor="@color/fomes_gray"/>
 
-    <TextView android:id="@+id/betatest_subtitle_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:lineSpacingExtra="3dp"
-        android:text="@string/betatest_subtitle"
-        android:textSize="12dp"
-        android:textColor="@color/fomes_light_warm_gray" />
-    
-    <ImageView android:id="@+id/betatest_imageview"
-        android:layout_width="67dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/loading_progress_back"
-        android:backgroundTint="@color/fomes_light_gray"/>
-    
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fomes_gray"
+            android:gravity="center"
+            android:paddingBottom="13dp"
+            android:paddingEnd="27dp"
+            android:paddingStart="27dp"
+            android:paddingTop="13dp"
+            android:text="@string/temp_event_notice"
+            android:textColor="@color/colorPrimary"
+            android:textSize="11dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="49dp"
+            android:gravity="center"
+            android:text="포메스 앱 유지 이벤트"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/betatest_title_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="이 앱 첨부터 내가 봤는데 EVENT"
+            android:textColor="@color/fomes_gray"
+            android:textSize="22dp" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/item_rect_solid_background"
+            android:theme="@style/ProgressBackground">
+
+            <View
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:background="@color/fomes_light_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/progress_number_1"
+                app:layout_constraintEnd_toEndOf="@+id/progress_number_3"
+                app:layout_constraintStart_toStartOf="@+id/progress_number_1"
+                app:layout_constraintTop_toTopOf="@+id/progress_number_1" />
+
+            <TextView
+                android:id="@+id/progress_number_1"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/fomes_white"
+                android:textSize="8dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_title_1"
+                app:layout_constraintEnd_toEndOf="@+id/progress_title_1"
+                app:layout_constraintStart_toStartOf="@+id/progress_title_1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/progress_number_2"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/fomes_white"
+                android:textSize="8dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_title_2"
+                app:layout_constraintEnd_toEndOf="@+id/progress_title_2"
+                app:layout_constraintStart_toStartOf="@+id/progress_title_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/progress_number_3"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/fomes_white"
+                android:textSize="8dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_title_3"
+                app:layout_constraintEnd_toEndOf="@+id/progress_title_3"
+                app:layout_constraintStart_toStartOf="@+id/progress_title_3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+
+            <TextView
+                android:id="@+id/progress_title_1"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="게임 분석"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_desc_1"
+                app:layout_constraintEnd_toStartOf="@+id/progress_title_2"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progress_number_1" />
+
+            <TextView
+                android:id="@+id/progress_title_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="게임 추천"
+                android:textColor="@color/fomes_light_warm_gray"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_desc_2"
+                app:layout_constraintEnd_toStartOf="@+id/progress_title_3"
+                app:layout_constraintStart_toEndOf="@id/progress_title_1"
+                app:layout_constraintTop_toBottomOf="@id/progress_number_2" />
+
+            <TextView
+                android:id="@+id/progress_title_3"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="피드백"
+                android:textColor="@color/fomes_light_warm_gray"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_desc_3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/progress_title_2"
+                app:layout_constraintTop_toBottomOf="@id/progress_number_3" />
+
+
+            <TextView
+                android:id="@+id/progress_desc_1"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:text="1단계 오픈 완료"
+                android:textColor="@color/colorPrimary"
+                android:textSize="9dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/progress_desc_2"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progress_title_1" />
+
+            <TextView
+                android:id="@+id/progress_desc_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:text="2단계 오픈 : 10월 말"
+                android:textColor="@color/fomes_light_warm_gray"
+                android:textSize="9dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/progress_desc_3"
+                app:layout_constraintStart_toEndOf="@id/progress_desc_1"
+                app:layout_constraintTop_toBottomOf="@id/progress_title_2" />
+
+            <TextView
+                android:id="@+id/progress_desc_3"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:text="3단계 오픈 : 연말"
+                android:textColor="@color/fomes_light_warm_gray"
+                android:textSize="9dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/progress_desc_2"
+                app:layout_constraintTop_toBottomOf="@id/progress_title_3" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="53dp"
+            android:layout_marginStart="53dp"
+            android:layout_marginTop="48dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="대상"
+                    android:textColor="@color/fomes_gray"
+                    android:textSize="11dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/temp_event_who_desc"
+                    android:textColor="@color/fomes_gray"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="방법"
+                    android:textColor="@color/fomes_gray"
+                    android:textSize="11dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="대상자 중에서 추첨 (앱을 통해 당첨자에게 공지)"
+                    android:textColor="@color/fomes_gray"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="선물"
+                    android:textColor="@color/fomes_gray"
+                    android:textSize="11dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="문화상품권 부터 모바일 게임 패드까지, 게이머를 위한 다양한 선물"
+                    android:textColor="@color/fomes_gray"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

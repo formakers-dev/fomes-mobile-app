@@ -4,7 +4,9 @@
     <dimen name="nav_header_height">80dp</dimen>
     <dimen name="design_navigation_separator_vertical_padding">0dp</dimen>
 
+    <!-- Common -->
     <dimen name="match_constraint">0dp</dimen>
+    <dimen name="progress_round_size">40dp</dimen>
 
     <!-- Provisioning -->
     <dimen name="provision_title_text_size">20dp</dimen>
