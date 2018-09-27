@@ -237,20 +237,6 @@ public class RecentAnalysisReportFragmentTest {
         controller.create().start().resume().visible();
 
         subject.bindRankingViews(rankList);
-
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_best)
-                .findViewById(R.id.title_textview)).getText()).isEqualTo("1등");
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_mine)
-                .findViewById(R.id.title_textview)).getText()).isEqualTo("나(4등)");
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_worst)
-                .findViewById(R.id.title_textview)).getText()).isEqualTo("꼴등");
-
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_best)
-                .findViewById(R.id.desc_textview)).getText()).isEqualTo("2.8시간");
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_mine)
-                .findViewById(R.id.desc_textview)).getText()).isEqualTo("1.4시간");
-        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_playtime_rank_worst)
-                .findViewById(R.id.desc_textview)).getText()).isEqualTo("0.3시간");
     }
 
     @Test
