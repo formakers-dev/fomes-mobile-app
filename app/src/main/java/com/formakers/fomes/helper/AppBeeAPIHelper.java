@@ -31,9 +31,13 @@ public class AppBeeAPIHelper {
         return observable -> observable.retryWhen(errors -> {
                     return errors.observeOn(Schedulers.io())
                             .take(2)
-                            .filter(error -> error instanceof HttpException)
                             .flatMap(error -> {
-                                if (((HttpException) error).code() == 401 || ((HttpException) error).code() == 403) {
+                                if (!(error instanceof HttpException)) {
+                                    return Observable.error(error);
+                                }
+
+                                int errorCode = ((HttpException) error).code();
+                                if (errorCode == 401 || errorCode == 403) {
                                     return googleSignInAPIHelper.requestSilentSignInResult();
                                 } else {
                                     return Observable.error(error);

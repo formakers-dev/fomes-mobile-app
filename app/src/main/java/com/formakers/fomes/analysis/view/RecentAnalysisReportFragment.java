@@ -92,12 +92,11 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         addCompositeSubscription(
             presenter.loading()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe((subscription) -> {
-                    presenter.getImageLoader().asGif()
-                            .load(R.drawable.loading)
-                            .apply(new RequestOptions().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                            .into(loadingImageView);
-                }).subscribe(() -> loadingComplete(true), e -> loadingComplete(false))
+                .doOnSubscribe((subscription) ->
+                    presenter.getImageLoader().asGif().load(R.drawable.loading)
+                        .apply(new RequestOptions().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                        .into(loadingImageView)
+                ).subscribe(() -> loadingComplete(true), e -> loadingComplete(false))
         );
     }
 
