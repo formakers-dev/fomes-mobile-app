@@ -18,8 +18,11 @@ import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.provisioning.contract.LoginContract;
-import com.formakers.fomes.provisioning.presenter.LoginPresenter;
+import com.formakers.fomes.provisioning.dagger.DaggerLoginActivityComponent;
+import com.formakers.fomes.provisioning.dagger.LoginActivityModule;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,7 +37,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.login_tnc) TextView loginTncTextView;
     @BindView(R.id.login_google_button) Button loginButton;
 
-    LoginContract.Presenter presenter;
+    @Inject LoginContract.Presenter presenter;
 
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {
@@ -47,14 +50,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DaggerLoginActivityComponent.builder()
+                .applicationComponent(FomesApplication.get(this).getComponent())
+                .loginActivityModule(new LoginActivityModule(this))
+                .build()
+                .inject(this);
+
         this.setContentView(R.layout.activity_login);
-
-        setPresenter(new LoginPresenter(this));
-    }
-
-    @Override
-    public ApplicationComponent getApplicationComponent() {
-        return ((FomesApplication) getApplication()).getComponent();
     }
 
     @Override

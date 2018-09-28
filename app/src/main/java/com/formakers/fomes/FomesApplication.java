@@ -1,5 +1,6 @@
 package com.formakers.fomes;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.formakers.fomes.dagger.ApplicationComponent;
@@ -24,7 +25,6 @@ public class FomesApplication extends Application {
         applicationComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(this))
-                .networkModule(new NetworkModule())
                 .build();
     }
 
@@ -53,5 +53,9 @@ public class FomesApplication extends Application {
 
     public ApplicationComponent getComponent() {
         return applicationComponent;
+    }
+
+    public static FomesApplication get(Activity activity) {
+        return (FomesApplication) activity.getApplication();
     }
 }

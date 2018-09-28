@@ -26,28 +26,20 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private static final String TAG = LoginPresenter.class.getSimpleName();
 
-    @Inject GoogleSignInAPIHelper googleSignInAPIHelper;
-    @Inject UserService userService;
-    @Inject SharedPreferencesHelper sharedPreferencesHelper;
-    @Inject UserDAO userDAO;
-    @Inject JobManager jobManaer;
+    private GoogleSignInAPIHelper googleSignInAPIHelper;
+    private UserService userService;
+    private SharedPreferencesHelper sharedPreferencesHelper;
+    private UserDAO userDAO;
 
     private LoginContract.View view;
 
-    public LoginPresenter(LoginContract.View view) {
-        this.view = view;
-        this.view.getApplicationComponent().inject(this);
-    }
-
-    // TODO : ActivityComponent로 변환후 변경 필요
-    // temporary code for test
+    @Inject
     LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper, UserDAO userDAO) {
         this.view = view;
         this.googleSignInAPIHelper = googleSignInAPIHelper;
         this.userService = userService;
         this.sharedPreferencesHelper = SharedPreferencesHelper;
         this.userDAO = userDAO;
-        this.jobManaer = jobManaer;
     }
 
     @Override
