@@ -107,6 +107,14 @@
         <item name="item_number">@string/common_number_three</item>
     </style>
 
+    <style name="FomesTheme.WhiteItem">
+        <item name="item_color">@color/fomes_white</item>
+    </style>
+
+    <style name="FomesTheme.LightGray">
+        <item name="item_color">@color/fomes_light_gray</item>
+    </style>
+
     <style name="AnaylsisTheme" parent="FomesTheme.NoActionBar">
     </style>
 

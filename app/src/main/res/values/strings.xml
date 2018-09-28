@@ -222,9 +222,13 @@
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
 
     <!-- Temp -->
-    <string name="temp_event_notice">포메스 베타버전은 &lt; 1단계 : 게임 분석 &gt; 까지만 구현되어 있습니다.</string>
+    <string name="temp_event_notice">현재 버전에서는 게임 분석만 가능합니다.</string>
+    <string name="temp_event_title"> 그 대신 준비한 첫 유저 이벤트\n앱 유지만 하면 선물을 드려요!</string>
     <string name="temp_event_desc">3단계 오픈까지 포메스 앱을 유지해 주세요.\n유지해 주신 대상자 분들께 선물을 드려요!</string>
     <string name="temp_event_who_desc">9월 29~30에 포메스 앱을 설치한 유저들 중에서 3단계 오픈까지 포메스 앱을 삭제하지 않은 유저</string>
+    <string name="temp_event_how_desc">유지 후 인증 ( 인증방법은 3단계 오픈 후 공지 )\n앱을 통해 대상자에게 공지 &amp; 인증방법 안내예정</string>
+    <string name="temp_event_gift_desc">게이머를 위한 다양한 선물을 드립니다!!!\n문화상품권 부터 모바일 게임 패드까지 가즈아!!</string>
+
 
     <!-- Beta Test -->
     <string name="coming_soon">Coming Soon</string>

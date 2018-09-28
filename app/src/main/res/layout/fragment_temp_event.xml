@@ -12,26 +12,51 @@
         android:orientation="vertical">
 
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/fomes_gray"
-            android:gravity="center"
-            android:paddingBottom="13dp"
-            android:paddingEnd="27dp"
-            android:paddingStart="27dp"
-            android:paddingTop="13dp"
-            android:text="@string/temp_event_notice"
-            android:textColor="@color/colorPrimary"
-            android:textSize="11dp"
-            android:textStyle="bold" />
+            android:layout_height="44dp"
+            android:background="@color/fomes_white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="13dp"
+                android:paddingEnd="27dp"
+                android:paddingStart="27dp"
+                android:paddingTop="13dp"
+                android:text="@string/main_tab_recommend"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="14dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="13dp"
+                android:paddingEnd="27dp"
+                android:paddingStart="27dp"
+                android:paddingTop="13dp"
+                android:text="@string/main_tab_betatest"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/fomes_light_gray"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="49dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
-            android:text="포메스 앱 유지 이벤트"
+            android:text="@string/temp_event_notice"
             android:textColor="@color/colorPrimary"
             android:textSize="13dp"
             android:textStyle="bold" />
@@ -40,171 +65,250 @@
             android:id="@+id/betatest_title_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="19dp"
             android:gravity="center"
-            android:text="이 앱 첨부터 내가 봤는데 EVENT"
+            android:text="@string/temp_event_title"
             android:textColor="@color/fomes_gray"
             android:textSize="22dp" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="89dp"
+            android:layout_height="93dp"
             android:layout_marginEnd="29dp"
             android:layout_marginStart="29dp"
             android:layout_marginTop="48dp"
-            android:background="@drawable/item_rect_solid_background"
             android:theme="@style/ProgressBackground">
 
             <View
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
-                android:background="@color/fomes_light_gray"
-                app:layout_constraintBottom_toBottomOf="@+id/progress_number_1"
-                app:layout_constraintEnd_toEndOf="@+id/progress_number_3"
-                app:layout_constraintStart_toStartOf="@+id/progress_number_1"
-                app:layout_constraintTop_toTopOf="@+id/progress_number_1" />
+                android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/progress_background_1"
+                app:layout_constraintEnd_toEndOf="@+id/progress_background_3"
+                app:layout_constraintStart_toStartOf="@+id/progress_background_1"
+                app:layout_constraintTop_toTopOf="@+id/progress_background_1" />
+
+            <View android:id="@+id/progress_background_1"
+                android:layout_width="93dp"
+                android:layout_height="93dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/colorPrimary"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/progress_background_2"
+                />
 
             <TextView
                 android:id="@+id/progress_number_1"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:background="@drawable/circle_background"
-                android:backgroundTint="@color/colorPrimary"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="1"
-                android:textColor="@color/fomes_white"
-                android:textSize="8dp"
+                android:text="1단계"
+                android:textColor="@color/fomes_gray"
+                android:textSize="9dp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/progress_background_1"
+                app:layout_constraintStart_toStartOf="@+id/progress_background_1"
+                app:layout_constraintTop_toTopOf="@id/progress_background_1"
                 app:layout_constraintBottom_toTopOf="@+id/progress_title_1"
-                app:layout_constraintEnd_toEndOf="@+id/progress_title_1"
-                app:layout_constraintStart_toStartOf="@+id/progress_title_1"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/progress_number_2"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:background="@drawable/circle_background"
-                android:backgroundTint="@color/colorPrimary"
-                android:gravity="center"
-                android:text="2"
-                android:textColor="@color/fomes_white"
-                android:textSize="8dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/progress_title_2"
-                app:layout_constraintEnd_toEndOf="@+id/progress_title_2"
-                app:layout_constraintStart_toStartOf="@+id/progress_title_2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/progress_number_3"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:background="@drawable/circle_background"
-                android:backgroundTint="@color/colorPrimary"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="@color/fomes_white"
-                android:textSize="8dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/progress_title_3"
-                app:layout_constraintEnd_toEndOf="@+id/progress_title_3"
-                app:layout_constraintStart_toStartOf="@+id/progress_title_3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
-
 
             <TextView
                 android:id="@+id/progress_title_1"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="게임 분석"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12dp"
+                android:textColor="@color/fomes_white"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/progress_desc_1"
-                app:layout_constraintEnd_toStartOf="@+id/progress_title_2"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/progress_background_1"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_1"
                 app:layout_constraintTop_toBottomOf="@id/progress_number_1" />
-
-            <TextView
-                android:id="@+id/progress_title_2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="게임 추천"
-                android:textColor="@color/fomes_light_warm_gray"
-                android:textSize="12dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/progress_desc_2"
-                app:layout_constraintEnd_toStartOf="@+id/progress_title_3"
-                app:layout_constraintStart_toEndOf="@id/progress_title_1"
-                app:layout_constraintTop_toBottomOf="@id/progress_number_2" />
-
-            <TextView
-                android:id="@+id/progress_title_3"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="피드백"
-                android:textColor="@color/fomes_light_warm_gray"
-                android:textSize="12dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/progress_desc_3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/progress_title_2"
-                app:layout_constraintTop_toBottomOf="@id/progress_number_3" />
-
 
             <TextView
                 android:id="@+id/progress_desc_1"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:gravity="center"
-                android:text="1단계 오픈 완료"
-                android:textColor="@color/colorPrimary"
+                android:text="오픈 완료!!"
+                android:textColor="@color/fomes_white"
                 android:textSize="9dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/progress_desc_2"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/progress_label_1"
+                app:layout_constraintStart_toStartOf="@id/progress_background_1"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_1"
                 app:layout_constraintTop_toBottomOf="@id/progress_title_1" />
 
             <TextView
-                android:id="@+id/progress_desc_2"
-                android:layout_width="0dp"
+                android:id="@+id/progress_label_1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:gravity="center"
-                android:text="2단계 오픈 : 10월 말"
-                android:textColor="@color/fomes_light_warm_gray"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="Good"
+                android:textColor="@color/fomes_white"
+                android:textSize="8dp"
+                android:textStyle="bold"
+                android:background="@drawable/item_rect_background"
+                android:theme="@style/FomesTheme.WhiteItem"
+                app:layout_constraintBottom_toBottomOf="@id/progress_background_1"
+                app:layout_constraintStart_toStartOf="@id/progress_background_1"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_1"
+                app:layout_constraintTop_toBottomOf="@id/progress_desc_1" />
+
+
+            <View android:id="@+id/progress_background_2"
+                android:layout_width="93dp"
+                android:layout_height="93dp"
+                android:background="@drawable/circle_stroke_background"
+                style="@style/FomesTheme.TurquoiseItem"
+                app:layout_constraintStart_toEndOf="@id/progress_background_1"
+                app:layout_constraintEnd_toStartOf="@+id/progress_background_3"
+                />
+
+            <TextView
+                android:id="@+id/progress_number_2"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="2단계"
+                android:textColor="@color/fomes_light_gray"
                 android:textSize="9dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/progress_desc_3"
-                app:layout_constraintStart_toEndOf="@id/progress_desc_1"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/progress_background_2"
+                app:layout_constraintStart_toStartOf="@+id/progress_background_2"
+                app:layout_constraintTop_toTopOf="@id/progress_background_2"
+                app:layout_constraintBottom_toTopOf="@+id/progress_title_2"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/progress_title_2"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="게임 추천"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_desc_2"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="@id/progress_background_2"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_2"
+                app:layout_constraintTop_toBottomOf="@id/progress_number_2" />
+
+            <TextView
+                android:id="@+id/progress_desc_2"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="오픈 : 10월 말"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="9dp"
+                app:layout_constraintBottom_toTopOf="@+id/progress_label_2"
+                app:layout_constraintStart_toStartOf="@id/progress_background_2"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_2"
                 app:layout_constraintTop_toBottomOf="@id/progress_title_2" />
+
+            <TextView
+                android:id="@+id/progress_label_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="대기"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="8dp"
+                android:textStyle="bold"
+                android:background="@drawable/item_rect_background"
+                android:theme="@style/FomesTheme.LightGray"
+                app:layout_constraintBottom_toBottomOf="@id/progress_background_2"
+                app:layout_constraintStart_toStartOf="@id/progress_background_2"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_2"
+                app:layout_constraintTop_toBottomOf="@id/progress_desc_2" />
+
+
+
+            <View android:id="@+id/progress_background_3"
+                android:layout_width="93dp"
+                android:layout_height="93dp"
+                android:background="@drawable/circle_stroke_background"
+                app:layout_constraintStart_toEndOf="@id/progress_background_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/progress_number_3"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="3단계"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="9dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/progress_background_3"
+                app:layout_constraintStart_toStartOf="@+id/progress_background_3"
+                app:layout_constraintTop_toTopOf="@id/progress_background_3"
+                app:layout_constraintBottom_toTopOf="@+id/progress_title_3"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/progress_title_3"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="피드백존"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/progress_desc_3"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="@id/progress_background_3"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_3"
+                app:layout_constraintTop_toBottomOf="@id/progress_number_3" />
 
             <TextView
                 android:id="@+id/progress_desc_3"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:gravity="center"
-                android:text="3단계 오픈 : 연말"
-                android:textColor="@color/fomes_light_warm_gray"
+                android:text="오픈 : 연말"
+                android:textColor="@color/fomes_light_gray"
                 android:textSize="9dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/progress_desc_2"
+                app:layout_constraintBottom_toTopOf="@+id/progress_label_3"
+                app:layout_constraintStart_toStartOf="@id/progress_background_3"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_3"
                 app:layout_constraintTop_toBottomOf="@id/progress_title_3" />
+
+            <TextView
+                android:id="@+id/progress_label_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="대기"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="8dp"
+                android:textStyle="bold"
+                android:background="@drawable/item_rect_background"
+                android:theme="@style/FomesTheme.LightGray"
+                app:layout_constraintBottom_toBottomOf="@id/progress_background_3"
+                app:layout_constraintStart_toStartOf="@id/progress_background_3"
+                app:layout_constraintEnd_toEndOf="@id/progress_background_3"
+                app:layout_constraintTop_toBottomOf="@id/progress_desc_3" />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -212,14 +316,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="53dp"
-            android:layout_marginStart="53dp"
-            android:layout_marginTop="48dp"
-            android:orientation="vertical">
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="32dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="25dp"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:orientation="vertical"
+            android:background="@drawable/item_rect_rounded_corner_background"
+            android:theme="@style/FomesTheme.WhiteItem">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="포메스 ONLY 첫 유저 이벤트"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -267,7 +387,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:text="대상자 중에서 추첨 (앱을 통해 당첨자에게 공지)"
+                    android:text="@string/temp_event_how_desc"
                     android:textColor="@color/fomes_gray"
                     android:textSize="11dp" />
             </LinearLayout>
