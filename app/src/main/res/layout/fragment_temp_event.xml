@@ -418,7 +418,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:text="문화상품권 부터 모바일 게임 패드까지, 게이머를 위한 다양한 선물"
+                    android:text="@string/temp_event_gift_desc"
                     android:textColor="@color/fomes_gray"
                     android:textSize="11dp" />
             </LinearLayout>

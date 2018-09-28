@@ -54,11 +54,11 @@ public class SettingsActivity extends FomesBaseActivity implements SettingsListA
     private List<SettingsItem> createSettingsList() {
         List<SettingsItem> settingsItems = new ArrayList<>();
 
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.VERSION).setTitle("포메스 정보")
+        settingsItems.add(new SettingsItem.Builder().setId(Menu.VERSION).setTitle(getString(R.string.settings_menu_version))
                 .setSideInfo(BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE).setClickable(false).build());
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_USAGE).setTitle("이용약관").build());
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_PRIVATE).setTitle("개인정보 취급 방침").build());
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.CONTACTS_US).setTitle("이메일로 문의하기").build());
+        settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_USAGE).setTitle(getString(R.string.settings_menu_usage)).build());
+        settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_PRIVATE).setTitle(getString(R.string.settings_menu_private)).build());
+        settingsItems.add(new SettingsItem.Builder().setId(Menu.CONTACTS_US).setTitle(getString(R.string.settings_menu_contact_us)).build());
 
         return settingsItems;
     }

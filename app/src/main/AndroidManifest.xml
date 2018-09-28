@@ -24,7 +24,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/appbee_yellow" />
+            android:resource="@color/fomes_yellow" />
 
         <!-- 백그라운드 앱의 알림 수신 -->
         <service android:name=".service.MessagingService"

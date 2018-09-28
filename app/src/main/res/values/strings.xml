@@ -1,126 +1,20 @@
 <resources>
     <string name="app_name">포메스</string>
-    <string name="empty" />
 
     <!-- Fonts -->
     <string name="font_bmjua">BMJUA</string>
-    <string name="font_bmjua_path">BMJUA.otf</string>
     <string name="font_medium">medium</string>
     <string name="font_medium_path">NotoSans-Medium.otf</string>
 
     <!-- start of AppBee's strings -->
     <string name="login_button_text">Google로 쉬운 시작</string>
 
-    <string name="permission_guide_title">앱 사용패턴 분석을 위해\n아래 권한이 필요합니다.</string>
-    <string name="app_data_permission">앱 사용정보 접근 권한</string>
-    <string name="app_data_permission_text">* 당신에게 프로젝트를 추천하기 위한 용도로만 사용합니다.</string>
-    <string name="permission_button_text">권한 허용하러 가기</string>
-    <string name="loading_description">당신만의 독특한 앱 사용패턴 분석중…</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="fail_to_sign_in">Fail to sign in</string>
-    <string name="fail_to_connect_google_play">Fail to connect Google Play Service</string>
-    <string name="recommendation_apps_title">유저 인터뷰 체험하기</string>
-    <string name="recommendation_apps_subtitle">앱 사용패턴 기반 신청가능한 유저 인터뷰 입니다.</string>
-    <string name="tag_key_image_url">TAG_KEY_IMAGE_URL</string>
-    <string name="interview_date_text">%1$s (%2$s)</string>
-    <string name="d_day_text">D-%d</string>
-    <string name="greeting_title">환영합니다!</string>
-    <string name="greeting_message">앱비는 당신의 앱 사용패턴을 분석해서\n새 프로젝트 &amp; 유저 인터뷰를 보여드려요.</string>
-    <string name="tnc_agree_text">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1t11gomrftWIlXFmJ9ZAqXjHLb1SAjkmcMdxwItXWtf4/edit?usp=sharing">사용약관 및 개인정보 취급방침</a>]]>에 동의됩니다.</string>
-
-    <string name="analysis_title">앱 사용패턴 분석 완료!</string>
-    <string name="analysis_description">이 결과를 기반으로 새 프로젝트와\n유저인터뷰를 추천해 드릴게요.</string>
-    <string name="onboarding_rewards_title">신상앱 유저인터뷰 체험하고\n리워드를 받아가세요.</string>
-    <string name="onboarding_rewards_description">인사이트 얻고, 인터뷰 하고, 리워드 받고!</string>
-
     <!-- Bottom Button -->
-    <string name="start_button">시작하기</string>
-    <string name="contents_title_interview">체험하기</string>
-    <string name="contents_title_project">둘러보기</string>
-    <string name="project_list_header_title">프로젝트 둘러보기</string>
-    <string name="project_list_header_subtitle">새로운 프로젝트를 둘러보고 인사이트를 얻으세요.</string>
-    <string name="personality_apps_text">나의 특성을 보여주는 앱</string>
-    <string name="most_used_apps_text">내가 많이 사용하는 앱</string>
-    <string name="my_interview_text">다가오는 유저 인터뷰</string>
-    <string name="my_app_usage_pattern_text">나의 앱 사용패턴 분석 다시 보기</string>
-    <string name="appbee_question_text">앱비에게 문의하기</string>
-    <string name="code_verification_title">앱비 초대장 코드\n인증을 부탁드립니다.</string>
-    <string name="code_verification_message">사전 신청하신 임직원 분들께 메일로\n발송된 초대장 코드를 입력해주세요.</string>
-    <string name="code_verification_button_name">인증</string>
-    <string name="code_verification_warning">* 초대장 코드에 문제가 있으시면 앱비로 연락주세요.</string>
-    <string name="interview_submit_button">유저 인터뷰 신청하기</string>
-    <string name="registered_interview_submit_button">이미 신청한 인터뷰입니다.</string>
-    <string name="closed_interview_submit_button">신청이 마감된 인터뷰입니다.</string>
-    <string name="interview_detail_plans_title_format">%s 유저 인터뷰</string>
-    <string name="interview_detail_plans_description_format">%1$s (%2$s) %3$s</string>
     <string name="confirm_button_name">확인</string>
     <string name="negative_button_name">닫기</string>
-    <string name="invitation_code_dialog_title">코드를 확인해주세요.</string>
-    <string name="invitation_code_dialog_message">유효하지 않은 초대장 코드 입니다.</string>
-    <string name="dialog_registered_interview_success_title">신청이 완료되었습니다.</string>
-    <string name="dialog_registered_interview_success_message">인터뷰 확정이 되면 푸시가 갑니다.\n확정 후 안내 메일을 참고해주세요.</string>
-    <string name="recommand_to_user_of_similar_app">\'%s\' 앱 유저에게 추천</string>
-    <string name="registered_interview_title">다가오는 유저 인터뷰</string>
-    <string name="cancel_button">취소하기</string>
-    <string name="interview_notice_title1">인터뷰 신청 후 ‘확정’을 기다려주세요.</string>
-    <string name="interview_notice_description1">확정된 인터뷰만 실제로 진행됩니다. 조금만 기다려주세요.</string>
-    <string name="interview_notice_description2">신청 마감일 이후 앱비에서 확인 후 확정 푸시를 보내드립니다.</string>
-    <string name="interview_notice_title2">확정 후 취소/ 노쇼 / 지각은 패널티가 있을 수 있습니다.</string>
-    <string name="interview_notice_title3">확정 후 변동 시 인터뷰 담당자에게 꼭 연락주세요.</string>
-    <string name="interview_notice_description3">인터뷰는 약속입니다. 준비하신 분들께 예의를 지켜주세요.</string>
-    <string name="interview_notice_description4">( 확정 후 취소 / 노쇼 / 지각 패널티 : 3개월간 신청 불가)</string>
-    <string name="interview_notice_description5">피치못할 사정이 생겼을 때 대응할 수 있도록 협조해주세요.</string>
-    <string name="interview_notice_description6">( 담당자 번호는 인터뷰 신청 후 확정되면 안내됩니다.)</string>
-    <string name="show_project_information_button">프로젝트 설명 다시 보기</string>
-    <string name="cancel_penalty">* 확정 후 취소 / 노쇼 / 지각은 패널티가 부과될 수 있습니다.</string>
-    <string name="introduce_my_project">저희 프로젝트를 소개합니다.</string>
-    <string name="project_owner">창작자</string>
-    <string name="notice_interview_process_title">유저인터뷰 신청 전 읽어주세요</string>
-    <string name="interview_date_title">인터뷰 날짜</string>
-    <string name="interview_type_title">인터뷰 종류</string>
-    <string name="interview_location_title">인터뷰 장소</string>
-    <string name="interview_rewards_title">감사 선물</string>
-    <string name="interview_duration_title">인터뷰 시간</string>
-    <string name="interview_close_date_title">신청 마감 날짜</string>
-    <string name="interview_introduce_title">인터뷰 안내</string>
-    <string name="interview_progress_guide_close">확정</string>
-    <string name="interview_progress_guide_close_desc">신청 마감/확정</string>
-    <string name="interview_progress_guide_request">신청</string>
-    <string name="interview_progress_guide_request_desc">신청 버튼 클릭</string>
-    <string name="interview_progress_guide_end">완료</string>
-    <string name="interview_progress_guide_end_desc">인터뷰 진행/완료</string>
-    <string name="interview_detail_plan_title">세부일정 선택</string>
-    <string name="interview_detail_plan_description">* 유저인터뷰 신청 후 확정이 되면 안내해드립니다(일주일 내)\n* 확정 후 취소 / 당일 노쇼 / 지각은 패널티가 부과됩니다.\n* 정확한 인터뷰 회의실과 담당자 번호는 확정 후 알려드립니다.</string>
-    <string name="registered_interview_formated_title">%s 유저 인터뷰</string>
-    <string name="registered_interview_date_location">%1$s %2$s %3$02d:00</string>
-    <string name="registered_interview_location">* 인터뷰 위치 : %1$s %2$s</string>
-    <string name="registered_interview_emergency_phone_title">* 비상 시에는 아래 연락처로 미리 연락 부탁드립니다.</string>
-    <string name="cancel_interview_activity_title">유저 인터뷰 취소</string>
-    <string name="cancel_penalty_message">*확정 후 취소는 패널티가 있을 수 있습니다.</string>
-    <string name="cancel_confirm_message">정말 취소하시겠습니까?</string>
-    <string name="cancel_yes">네, 취소합니다.</string>
-    <string name="cancel_no">아니오.</string>
-    <string name="dialog_cancel_title">취소 되었습니다.</string>
-    <string name="dialog_cancel_message">확정 후 취소하셨기 때문에\n패널티가 있을 수 있습니다.</string>
-    <string name="cancel_interview_name_status">%1$s 유저인터뷰 : %2$s</string>
-    <string name="cancel_interview_date_location">%1$s %2$s %3$02d:00</string>
-    <string name="interview_duration_40_mins">약 40분</string>
-    <string name="empty_registered_interview">신청하신 유저 인터뷰가 없습니다.</string>
-    <string name="empty_interview">도착한 유저 인터뷰가 없습니다.</string>
-    <string name="empty_project">도착한 둘러보기 프로젝트가 없습니다.</string>
-
-    <string name="my_app_usage_title">앱 사용패턴 다시 분석하기</string>
-    <string name="my_analysis_description">지금으로부터 최근 일주일동안\n앱 사용패턴을 분석해 보았어요.</string>
-
-    <string name="my_interview_cancel_warning">* 인터뷰를 취소하려면 눌러주세요 (취소 패널티 주의)</string>
-    <string name="dialog_interview_register_fail_title">인터뷰 신청 실패</string>
-    <string name="dialog_interview_register_fail_message">선택한 일정의 인터뷰 신청이 마감되었습니다.</string>
-    <string name="dialog_interview_already_registered_fail_message">이미 신청한 인터뷰입니다.</string>
-    <string name="dialog_interview_cancel_fail_title">인터뷰 취소 실패</string>
-    <string name="dialog_interview_cancel_fail_message">취소 기한이 지난 인터뷰입니다.</string>
 
     <!-- Error Messages -->
     <string name="app_usage_data_http_fail_message">데이터 전송에 실패하였습니다.</string>
@@ -224,7 +118,6 @@
     <!-- Temp -->
     <string name="temp_event_notice">현재 버전에서는 게임 분석만 가능합니다.</string>
     <string name="temp_event_title"> 그 대신 준비한 첫 유저 이벤트\n앱 유지만 하면 선물을 드려요!</string>
-    <string name="temp_event_desc">3단계 오픈까지 포메스 앱을 유지해 주세요.\n유지해 주신 대상자 분들께 선물을 드려요!</string>
     <string name="temp_event_who_desc">9월 29~30에 포메스 앱을 설치한 유저들 중에서 3단계 오픈까지 포메스 앱을 삭제하지 않은 유저</string>
     <string name="temp_event_how_desc">유지 후 인증 ( 인증방법은 3단계 오픈 후 공지 )\n앱을 통해 대상자에게 공지 &amp; 인증방법 안내예정</string>
     <string name="temp_event_gift_desc">게이머를 위한 다양한 선물을 드립니다!!!\n문화상품권 부터 모바일 게임 패드까지 가즈아!!</string>

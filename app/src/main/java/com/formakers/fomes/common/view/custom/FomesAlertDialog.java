@@ -100,7 +100,7 @@ public class FomesAlertDialog {
 
         positiveButton.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_medium_path)));
         positiveButton.setTextSize(20);
-        positiveButton.setTextColor(new ResourceHelper(context).getColorValue(R.color.appbee_warm_gray));
+        positiveButton.setTextColor(new ResourceHelper(context).getColorValue(R.color.fomes_warm_gray));
         positiveButton.setLayoutParams(lp);
     }
 }

@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Appbee colors -->
-    <color name="appbee_yellow">#FFCD00</color>
-    <color name="appbee_gray">#4a4a4a</color>
-    <color name="appbee_light_gray">#d4d4d4</color>
-    <color name="appbee_warm_gray">#808080</color>
-    <color name="appbee_pale_gray">#f0f0f1</color>
-    <color name="appbee_dim_gray">#d8d8d8</color>
-    <color name="appbee_sky_blue">#00c8ff</color>
-    <color name="appbee_red">#d0021b</color>
-    <color name="appbee_dim_foreground">#8c000000</color>
-
     <!-- Android Default colors -->
     <color name="colorPrimary">#00bfba</color>
     <color name="colorPrimaryDark">#198380</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="textColorPrimary">@color/fomes_gray</color>
     <color name="textColorHint">@color/fomes_light_gray</color>
 
     <!-- Fomes colors -->
@@ -33,6 +20,7 @@
     <color name="fomes_white_2">#fafafa</color>
 
     <color name="fomes_red">#d0021b</color>
+    <color name="fomes_yellow">#FFCD00</color>
 
     <color name="fomes_content_background">@color/fomes_white_2</color>
 </resources>

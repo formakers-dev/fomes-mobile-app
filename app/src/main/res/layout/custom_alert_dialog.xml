@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:textSize="24dp"
-        android:textColor="@color/appbee_gray"
+        android:textColor="@color/fomes_gray"
         android:textStyle="bold"
         android:textAlignment="center"
         tools:text="업데이트 팝업"/>
@@ -30,7 +30,7 @@
         android:layout_marginTop="10dp"
         android:textSize="14dp"
         android:lineSpacingExtra="6dp"
-        android:textColor="@color/appbee_warm_gray"
+        android:textColor="@color/fomes_warm_gray"
         android:textAlignment="center"
         tools:text="업데이트 메세지 입니다."/>
     <View
