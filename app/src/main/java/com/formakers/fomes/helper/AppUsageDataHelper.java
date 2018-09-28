@@ -30,19 +30,19 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 public class AppUsageDataHelper {
     public static final int DEFAULT_APP_USAGE_DURATION_DAYS = 7;
 
-    private final AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    private final AndroidNativeHelper androidNativeHelper;
     private final AppStatService appStatService;
     private final AppRepositoryHelper appRepositoryHelper;
     private final TimeHelper timeHelper;
     private final SharedPreferencesHelper SharedPreferencesHelper;
 
     @Inject
-    public AppUsageDataHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper,
+    public AppUsageDataHelper(AndroidNativeHelper androidNativeHelper,
                               AppStatService appStatService,
                               AppRepositoryHelper appRepositoryHelper,
                               SharedPreferencesHelper SharedPreferencesHelper,
                               TimeHelper timeHelper) {
-        this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
+        this.androidNativeHelper = androidNativeHelper;
         this.appStatService = appStatService;
         this.appRepositoryHelper = appRepositoryHelper;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
@@ -51,7 +51,7 @@ public class AppUsageDataHelper {
 
     @NonNull
     List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
-        List<EventStat> eventStats = appBeeAndroidNativeHelper.getUsageStatEvents(startTime, endTime);
+        List<EventStat> eventStats = androidNativeHelper.getUsageStatEvents(startTime, endTime);
         List<ShortTermStat> shortTermStats = new ArrayList<>();
 
         EventStat beforeForegroundEvent = null;

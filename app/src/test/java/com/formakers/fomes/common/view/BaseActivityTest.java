@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.ConfigService;
 
 import org.junit.After;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestAppBeeApplication.class)
+@Config(constants = BuildConfig.class, application = TestFomesApplication.class)
 public abstract class BaseActivityTest<T extends Activity> {
     public static final int LIFECYCLE_TYPE_CREATE = 1;
     public static final int LIFECYCLE_TYPE_POST_CREATE = 2;

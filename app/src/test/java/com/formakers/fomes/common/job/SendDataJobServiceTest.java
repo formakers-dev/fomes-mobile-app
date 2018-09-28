@@ -3,8 +3,8 @@ package com.formakers.fomes.common.job;
 import android.app.job.JobParameters;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
@@ -44,7 +44,8 @@ public class SendDataJobServiceTest {
     private SendDataJobService subject;
 
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
-    @Inject AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    @Inject
+    AndroidNativeHelper mockAndroidNativeHelper;
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
     @Inject MessagingHelper mockMessagingHelper;
     @Inject UserService mockUserService;
@@ -55,9 +56,9 @@ public class SendDataJobServiceTest {
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
         when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
@@ -105,7 +106,7 @@ public class SendDataJobServiceTest {
 
     @Test
     public void onStartJob_실행시_권한이없으면_아무것도하지않는다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
         JobParameters jobParameters = mock(JobParameters.class);
         when(jobParameters.getJobId()).thenReturn(1);

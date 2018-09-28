@@ -4,7 +4,7 @@ package com.formakers.fomes.provisioning.presenter;
 import android.content.Intent;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -79,7 +79,7 @@ public class LoginPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
         subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO, mockJobManager);
     }
 

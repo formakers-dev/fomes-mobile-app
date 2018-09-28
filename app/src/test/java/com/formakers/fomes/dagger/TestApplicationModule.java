@@ -3,9 +3,9 @@ package com.formakers.fomes.dagger;
 import android.content.Context;
 
 import com.bumptech.glide.RequestManager;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.job.JobManager;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.ImageLoader;
@@ -33,9 +33,9 @@ import static org.mockito.Mockito.mock;
 
 @Module
 public class TestApplicationModule {
-    private final TestAppBeeApplication application;
+    private final TestFomesApplication application;
 
-    public TestApplicationModule(TestAppBeeApplication application) {
+    public TestApplicationModule(TestFomesApplication application) {
         this.application = application;
     }
 
@@ -124,8 +124,8 @@ public class TestApplicationModule {
 
     @Provides
     @Singleton
-    AppBeeAndroidNativeHelper appBeeAndroidNativeHelper() {
-        return mock(AppBeeAndroidNativeHelper.class);
+    AndroidNativeHelper appBeeAndroidNativeHelper() {
+        return mock(AndroidNativeHelper.class);
     }
 
     @Singleton

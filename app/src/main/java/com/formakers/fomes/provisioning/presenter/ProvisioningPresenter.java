@@ -5,7 +5,7 @@ import android.util.Log;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
@@ -22,7 +22,8 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
 
     @Inject UserService userService;
-    @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    @Inject
+    AndroidNativeHelper androidNativeHelper;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserDAO userDAO;
 
@@ -35,11 +36,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     // temporary code for test
-    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AppBeeAndroidNativeHelper appBeeAndroidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
+    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
         this.view = view;
         this.user = user;
         this.userService = userService;
-        this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
+        this.androidNativeHelper = androidNativeHelper;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
         this.userDAO = userDAO;
     }
@@ -108,7 +109,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
 
     @Override
     public boolean hasUsageStatsPermission() {
-        return this.appBeeAndroidNativeHelper.hasUsageStatsPermission();
+        return this.androidNativeHelper.hasUsageStatsPermission();
     }
 
     @Override

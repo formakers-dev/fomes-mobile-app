@@ -1,7 +1,7 @@
 package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -35,7 +35,7 @@ public class MainPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
         subject = new MainPresenter(mockView, mockUserDAO, mockUserService);
     }
 

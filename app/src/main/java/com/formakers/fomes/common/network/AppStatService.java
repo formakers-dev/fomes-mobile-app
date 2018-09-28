@@ -1,7 +1,7 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.vo.RecentReport;
-import com.formakers.fomes.helper.AppBeeAPIHelper;
+import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.CategoryUsage;
@@ -17,17 +17,17 @@ import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class AppStatService extends AbstractAppBeeService {
+public class AppStatService extends AbstractService {
     private static final String TAG = "AppStatService";
     private final StatAPI statAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
-    private final AppBeeAPIHelper appBeeAPIHelper;
+    private final APIHelper APIHelper;
 
     @Inject
-    public AppStatService(StatAPI statAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public AppStatService(StatAPI statAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper) {
         this.statAPI = statAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
-        this.appBeeAPIHelper = appBeeAPIHelper;
+        this.APIHelper = APIHelper;
     }
 
     public Completable sendShortTermStats(List<ShortTermStat> shortTermStatList) {
@@ -38,7 +38,7 @@ public class AppStatService extends AbstractAppBeeService {
                     .doOnError(this::logError)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
-                    .compose(appBeeAPIHelper.refreshExpiredToken())
+                    .compose(APIHelper.refreshExpiredToken())
                     .toCompletable();
         } else {
             return Completable.complete();
@@ -50,7 +50,7 @@ public class AppStatService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
@@ -59,7 +59,7 @@ public class AppStatService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<List<CategoryUsage>> requestCategoryUsage() {
@@ -67,7 +67,7 @@ public class AppStatService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<List<CategoryUsage>> requestPeopleCategoryUsage(final int peopleGroupFilter) {
@@ -75,7 +75,7 @@ public class AppStatService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<RecentReport> requestRecentReport(String categoryId, User user) {
@@ -83,7 +83,7 @@ public class AppStatService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     @Override

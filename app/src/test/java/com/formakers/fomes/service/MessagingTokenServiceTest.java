@@ -1,7 +1,7 @@
 package com.formakers.fomes.service;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.common.network.UserService;
@@ -42,7 +42,7 @@ public class MessagingTokenServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         when(messagingHelper.getMessagingToken()).thenReturn("NEW_TOKEN");
         when(SharedPreferencesHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");

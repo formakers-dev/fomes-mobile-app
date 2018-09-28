@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name=".AppBeeApplication"
+        android:name=".FomesApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher_app"
         android:label="@string/app_name"
@@ -44,34 +44,6 @@
             android:permission="android.permission.BIND_JOB_SERVICE">
         </service>
 
-        <activity android:name=".appbee.activity.OnboardingActivity"/>
-        <activity android:name=".appbee.activity.OnboardingAnalysisActivity"/>
-        <activity android:name=".appbee.activity.CodeVerificationActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".appbee.activity.LoginActivity" />
-        <activity android:name=".appbee.activity.PermissionGuideActivity"/>
-        <activity android:name=".appbee.activity.LoadingActivity" />
-        <activity
-            android:name=".appbee.activity.MainActivity"
-            android:label=""
-            android:theme="@style/FomesTheme.NoActionBar">
-        </activity>
-        <activity android:name=".appbee.activity.ProjectDetailActivity" />
-        <activity android:name=".appbee.activity.InterviewDetailActivity" />
-        <activity android:name=".appbee.activity.MyInterviewActivity" />
-        <activity android:name=".appbee.activity.CancelInterviewActivity" />
-        <activity android:name=".appbee.activity.MyAppUsageActivity" />
-        <activity android:name=".appbee.activity.ReportActivity" />
-
-        <!-- Temp -->
-        <activity android:name=".appbee.activity.LaunchActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <!-- Fomes -->
         <activity android:name=".provisioning.view.LoginActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
@@ -82,7 +54,13 @@
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".main.view.MainActivity"
             android:theme="@style/FomesTheme.NoActionBar"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".settings.SettingsActivity"/>
     </application>
 

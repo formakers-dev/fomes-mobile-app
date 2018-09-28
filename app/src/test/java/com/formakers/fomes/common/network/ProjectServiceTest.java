@@ -45,7 +45,7 @@ public class ProjectServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new ProjectService(mockProjectAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        subject = new ProjectService(mockProjectAPI, mockSharedPreferencesHelper, getMockAPIHelper());
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_TOKEN");
     }
 

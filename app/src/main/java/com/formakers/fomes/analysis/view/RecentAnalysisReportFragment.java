@@ -16,15 +16,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.formakers.fomes.AppBeeApplication;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.common.view.FavoriteDeveloperItemView;
-import com.formakers.fomes.common.view.RankAppItemView;
+import com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView;
+import com.formakers.fomes.common.view.custom.RankAppItemView;
 import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
@@ -118,7 +118,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
     @Override
     public ApplicationComponent getApplicationComponent() {
-        return ((AppBeeApplication) this.getActivity().getApplication()).getComponent();
+        return ((FomesApplication) this.getActivity().getApplication()).getComponent();
     }
 
     @Override

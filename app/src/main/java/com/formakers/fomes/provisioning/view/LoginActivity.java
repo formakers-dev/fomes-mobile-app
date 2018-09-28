@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.formakers.fomes.AppBeeApplication;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.dagger.ApplicationComponent;
@@ -54,7 +54,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public ApplicationComponent getApplicationComponent() {
-        return ((AppBeeApplication) getApplication()).getComponent();
+        return ((FomesApplication) getApplication()).getComponent();
     }
 
     @Override

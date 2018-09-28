@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 
-import com.formakers.fomes.AppBeeApplication;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.FomesBaseActivity;

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.main.contract.MainContract;
@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowToast;
 
 import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.HttpException;
@@ -74,7 +73,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         });
 
         MockitoAnnotations.initMocks(this);
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
         super.setUp();
 
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");

@@ -3,7 +3,7 @@ package com.formakers.fomes.common.network;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.formakers.fomes.helper.AppBeeAPIHelper;
+import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
@@ -17,18 +17,18 @@ import rx.Single;
 import rx.schedulers.Schedulers;
 
 @Singleton
-public class UserService extends AbstractAppBeeService {
+public class UserService extends AbstractService {
 
     private static final String TAG = "UserService";
     private final UserAPI userAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
-    private final AppBeeAPIHelper appBeeAPIHelper;
+    private final APIHelper APIHelper;
 
     @Inject
-    public UserService(UserAPI userAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public UserService(UserAPI userAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper) {
         this.userAPI = userAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
-        this.appBeeAPIHelper = appBeeAPIHelper;
+        this.APIHelper = APIHelper;
     }
 
     public Single<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
@@ -49,7 +49,7 @@ public class UserService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
@@ -58,7 +58,7 @@ public class UserService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 

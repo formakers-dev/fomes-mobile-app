@@ -4,8 +4,8 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.util.Log;
 
-import com.formakers.fomes.AppBeeApplication;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.FomesApplication;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
@@ -23,7 +23,8 @@ public class SendDataJobService extends JobService {
     private static String TAG = SendDataJobService.class.getSimpleName();
 
     @Inject SharedPreferencesHelper SharedPreferencesHelper;
-    @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    @Inject
+    AndroidNativeHelper androidNativeHelper;
     @Inject AppUsageDataHelper appUsageDataHelper;
     @Inject MessagingHelper messagingHelper;
     @Inject UserService userService;
@@ -33,7 +34,7 @@ public class SendDataJobService extends JobService {
     public void onCreate() {
         super.onCreate();
 
-        ((AppBeeApplication) getApplication()).getComponent().inject(this);
+        ((FomesApplication) getApplication()).getComponent().inject(this);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class SendDataJobService extends JobService {
             Log.d(TAG, "[" + params.getJobId() + "] isOverrideDeadlineExpired!");
         }
 
-        if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+        if (androidNativeHelper.hasUsageStatsPermission()) {
             Log.d(TAG, "Start to update data!");
 
             // 노티 토큰 업데이트 로직 추가 - onRefreshToken 에서 에러난 경우에 대한 대비책

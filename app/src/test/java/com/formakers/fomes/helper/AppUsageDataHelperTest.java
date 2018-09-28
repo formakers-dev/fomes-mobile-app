@@ -46,7 +46,7 @@ public class AppUsageDataHelperTest {
     @Captor
     ArgumentCaptor<Long> endTimeCaptor = ArgumentCaptor.forClass(Long.class);
 
-    private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    private AndroidNativeHelper mockAndroidNativeHelper;
     private AppStatService mockAppStatService;
     private AppRepositoryHelper mockAppRepositoryHelper;
     private TimeHelper mockTimeHelper;
@@ -65,12 +65,12 @@ public class AppUsageDataHelperTest {
             }
         });
 
-        this.mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
+        this.mockAndroidNativeHelper = mock(AndroidNativeHelper.class);
         this.mockAppStatService = mock(AppStatService.class);
         this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
         this.mockTimeHelper = mock(TimeHelper.class);
         this.mockSharedPreferencesHelper = mock(SharedPreferencesHelper.class);
-        subject = new AppUsageDataHelper(mockAppBeeAndroidNativeHelper, mockAppStatService, mockAppRepositoryHelper, mockSharedPreferencesHelper, mockTimeHelper);
+        subject = new AppUsageDataHelper(mockAndroidNativeHelper, mockAppStatService, mockAppRepositoryHelper, mockSharedPreferencesHelper, mockTimeHelper);
     }
 
     @After
@@ -84,7 +84,7 @@ public class AppUsageDataHelperTest {
         List<EventStat> mockEventStatList = new ArrayList<>();
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1100L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
@@ -100,7 +100,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_FOREGROUND, 1100L));
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1250L));
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1300L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
@@ -114,7 +114,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_FOREGROUND, 1000L));
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1100L));
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1300L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
@@ -131,7 +131,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1250L));
         mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1375L));
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1400L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
@@ -145,7 +145,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1100L));
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1300L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
@@ -159,7 +159,7 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
         mockEventStatList.add(new EventStat("packageB", MOVE_TO_FOREGROUND, 1100L));
         mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1300L));
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<ShortTermStat> shortTermStats = subject.getShortTermStats(0L, 9999L);
 
@@ -168,11 +168,11 @@ public class AppUsageDataHelperTest {
 
     @Test
     public void getShortTermStats호출시_파라미터로_넘어온_조회시작시간을_기준으로_통계데이터를_조회한다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
 
         subject.getShortTermStats(200L, 300L);
 
-        verify(mockAppBeeAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), endTimeCaptor.capture());
+        verify(mockAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), endTimeCaptor.capture());
         assertThat(startTimeCaptor.getValue()).isEqualTo(200L);
         assertThat(endTimeCaptor.getValue()).isEqualTo(300L);
     }
@@ -189,7 +189,7 @@ public class AppUsageDataHelperTest {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockSharedPreferencesHelper.getLastUpdateShortTermStatTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendShortTermStats(any(List.class))).thenReturn(Completable.complete());
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
@@ -205,7 +205,7 @@ public class AppUsageDataHelperTest {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockSharedPreferencesHelper.getLastUpdateShortTermStatTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendShortTermStats(any(List.class))).thenReturn(Completable.error(new Throwable()));
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
@@ -219,7 +219,7 @@ public class AppUsageDataHelperTest {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.complete());
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
@@ -237,7 +237,7 @@ public class AppUsageDataHelperTest {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
         when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.error(new Throwable()));
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
@@ -290,13 +290,13 @@ public class AppUsageDataHelperTest {
         mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1200L));
         mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1375L));
 
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong()))
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong()))
                 .thenReturn(mockEventStatList);
 
         List<AppUsage> result = subject.getAppUsagesFor(7);
 
         // 7일 동안의 데이터를 가져왔니?
-        verify(mockAppBeeAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), endTimeCaptor.capture());
+        verify(mockAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), endTimeCaptor.capture());
         assertThat(endTimeCaptor.getValue() - startTimeCaptor.getValue()).isEqualTo(7 * 24 * 60 * 60 * 1000L);
 
         // 앱 누적 사용량 제대로 리턴했니?
@@ -323,7 +323,7 @@ public class AppUsageDataHelperTest {
         // B 300
         // A 250
         // C 175
-        when(mockAppBeeAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<ShortTermStat> weeklyStatSummaryList = subject.getWeeklyStatSummaryList();
 

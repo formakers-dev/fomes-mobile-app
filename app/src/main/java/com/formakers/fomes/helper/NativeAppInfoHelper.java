@@ -5,14 +5,14 @@ import com.formakers.fomes.model.NativeAppInfo;
 import javax.inject.Inject;
 
 public class NativeAppInfoHelper {
-    private AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    private AndroidNativeHelper androidNativeHelper;
 
     @Inject
-    public NativeAppInfoHelper(AppBeeAndroidNativeHelper appBeeAndroidNativeHelper) {
-        this.appBeeAndroidNativeHelper = appBeeAndroidNativeHelper;
+    public NativeAppInfoHelper(AndroidNativeHelper androidNativeHelper) {
+        this.androidNativeHelper = androidNativeHelper;
     }
 
     public NativeAppInfo getNativeAppInfo(String packageName) {
-        return appBeeAndroidNativeHelper.getNativeAppInfo(packageName);
+        return androidNativeHelper.getNativeAppInfo(packageName);
     }
 }

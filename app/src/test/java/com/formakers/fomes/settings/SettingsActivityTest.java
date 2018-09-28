@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.settings.adapter.SettingsListAdapter;
 import com.formakers.fomes.settings.model.SettingsItem;
@@ -34,7 +34,7 @@ public class SettingsActivityTest extends FomesBaseActivityTest<SettingsActivity
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
         super.setUp();
     }
 

@@ -89,7 +89,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_subtitle"/>
 
-        <com.formakers.fomes.common.view.RankAppItemView
+        <com.formakers.fomes.common.view.custom.RankAppItemView
             android:id="@+id/analysis_my_genre_1"
             style="@style/FomesTheme.TurquoiseItem"
             android:layout_width="@dimen/match_constraint"
@@ -106,7 +106,7 @@
             app:rank_number="1"
             app:rank_color="@color/colorPrimary" />
 
-        <com.formakers.fomes.common.view.RankAppItemView
+        <com.formakers.fomes.common.view.custom.RankAppItemView
             android:id="@+id/analysis_my_genre_2"
             style="@style/FomesTheme.SquashItem"
             android:layout_width="@dimen/match_constraint"
@@ -121,7 +121,7 @@
             app:rank_number="2"
             app:rank_color="@color/fomes_squash" />
 
-        <com.formakers.fomes.common.view.RankAppItemView
+        <com.formakers.fomes.common.view.custom.RankAppItemView
             android:id="@+id/analysis_my_genre_3"
             style="@style/FomesTheme.BlushPinkItem"
             layout="@layout/item_rank_app"
@@ -274,7 +274,7 @@
             android:textSize="@dimen/analysis_content_subtitle_size"
             app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_title"/>
 
-        <com.formakers.fomes.common.view.FavoriteDeveloperItemView
+        <com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView
             android:id="@+id/analysis_my_favorite_developer"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <com.formakers.fomes.common.view.FavoriteDeveloperItemView
+        <com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView
             android:id="@+id/analysis_gender_age_favorite_developer"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
@@ -299,7 +299,7 @@
             app:layout_constraintEnd_toStartOf="@+id/analysis_job_favorite_developer"
             app:layout_constraintStart_toEndOf="@+id/analysis_my_favorite_developer"/>
 
-        <com.formakers.fomes.common.view.FavoriteDeveloperItemView
+        <com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView
             android:id="@+id/analysis_job_favorite_developer"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
@@ -345,7 +345,7 @@
             android:textSize="@dimen/analysis_content_subtitle_size"
             app:layout_constraintTop_toBottomOf="@id/analysis_my_games_divider_title" />
 
-        <com.formakers.fomes.common.view.RankAppItemView
+        <com.formakers.fomes.common.view.custom.RankAppItemView
             android:id="@+id/analysis_my_games_1"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
@@ -360,7 +360,7 @@
             app:rank_number="1"
             app:rank_color="@color/colorPrimary" />
 
-        <com.formakers.fomes.common.view.RankAppItemView
+        <com.formakers.fomes.common.view.custom.RankAppItemView
             android:id="@+id/analysis_my_games_2"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
@@ -373,7 +373,7 @@
             app:rank_number="2"
             app:rank_color="@color/fomes_squash" />
 
-        <com.formakers.fomes.common.view.RankAppItemView
+        <com.formakers.fomes.common.view.custom.RankAppItemView
             android:id="@+id/analysis_my_games_3"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"

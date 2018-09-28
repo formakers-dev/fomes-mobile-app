@@ -2,7 +2,7 @@ package com.formakers.fomes.dagger;
 
 import android.content.Context;
 
-import com.formakers.fomes.AppBeeApplication;
+import com.formakers.fomes.FomesApplication;
 
 import javax.inject.Singleton;
 
@@ -11,9 +11,9 @@ import dagger.Provides;
 
 @Module
 public class ApplicationModule {
-    private final AppBeeApplication application;
+    private final FomesApplication application;
 
-    public ApplicationModule(AppBeeApplication application) {
+    public ApplicationModule(FomesApplication application) {
         this.application = application;
     }
 

@@ -37,7 +37,7 @@ public class UserServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new UserService(mockUserAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        subject = new UserService(mockUserAPI, mockSharedPreferencesHelper, getMockAPIHelper());
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 

@@ -44,7 +44,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new AppStatService(mockStatAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        subject = new AppStatService(mockStatAPI, mockSharedPreferencesHelper, getMockAPIHelper());
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 

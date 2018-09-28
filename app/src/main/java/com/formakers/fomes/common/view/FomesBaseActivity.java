@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
-import com.formakers.fomes.AppBeeApplication;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.FomesApplication;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
@@ -19,19 +19,20 @@ import javax.inject.Inject;
 
 public class FomesBaseActivity extends BaseActivity {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
-    @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    @Inject
+    AndroidNativeHelper androidNativeHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppBeeApplication) getApplication()).getComponent().inject(this);
+        ((FomesApplication) getApplication()).getComponent().inject(this);
 
         if (isNeedProvisioning()) {
             finish();
             return;
         }
 
-        if (!appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+        if (!androidNativeHelper.hasUsageStatsPermission()) {
             Intent intent = new Intent(this, ProvisioningActivity.class);
             intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningPermissionFragment.TAG);
             startActivity(intent);

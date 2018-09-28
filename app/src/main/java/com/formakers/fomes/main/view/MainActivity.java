@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.formakers.fomes.AppBeeApplication;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.Feature;
@@ -192,7 +192,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public ApplicationComponent getApplicationComponent() {
-        return ((AppBeeApplication) getApplication()).getComponent();
+        return ((FomesApplication) getApplication()).getComponent();
     }
 
     private void verifyAccessToken() {

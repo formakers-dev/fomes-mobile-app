@@ -10,19 +10,19 @@ import static org.mockito.Mockito.verify;
 
 public class NativeAppInfoHelperTest {
 
-    private AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    private AndroidNativeHelper mockAndroidNativeHelper;
 
     private NativeAppInfoHelper subject;
 
     @Before
     public void setUp() throws Exception {
-        mockAppBeeAndroidNativeHelper = mock(AppBeeAndroidNativeHelper.class);
-        subject = new NativeAppInfoHelper(mockAppBeeAndroidNativeHelper);
+        mockAndroidNativeHelper = mock(AndroidNativeHelper.class);
+        subject = new NativeAppInfoHelper(mockAndroidNativeHelper);
     }
 
     @Test
     public void getNativeAppInfo호출시_AppBeeAndroidNativieHelper_getNativeAppInfo메소드를_호출한다() throws Exception {
         subject.getNativeAppInfo("com.package.name");
-        verify(mockAppBeeAndroidNativeHelper).getNativeAppInfo(eq("com.package.name"));
+        verify(mockAndroidNativeHelper).getNativeAppInfo(eq("com.package.name"));
     }
 }

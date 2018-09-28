@@ -9,10 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.formakers.fomes.AppBeeApplication;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
-import com.formakers.fomes.appbee.custom.AppBeeAlertDialog;
+import com.formakers.fomes.common.view.custom.FomesAlertDialog;
 import com.formakers.fomes.common.network.ConfigService;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
@@ -47,7 +47,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppBeeApplication) getApplication()).getComponent().inject(this);
+        ((FomesApplication) getApplication()).getComponent().inject(this);
     }
 
     @Override
@@ -97,16 +97,16 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void displayVersionUpdateDialog() {
-        AppBeeAlertDialog appBeeAlertDialog = new AppBeeAlertDialog(this, getString(R.string.update_dialog_title),
+        FomesAlertDialog fomesAlertDialog = new FomesAlertDialog(this, getString(R.string.update_dialog_title),
                 getString(R.string.update_dialog_message), (dialog, which) -> {
             moveToPlayStore();
             dialog.dismiss();
         });
-        appBeeAlertDialog.setOnCancelListener(dialog -> {
+        fomesAlertDialog.setOnCancelListener(dialog -> {
             finishAffinity();
             dialog.dismiss();
         });
-        appBeeAlertDialog.show();
+        fomesAlertDialog.show();
     }
 
     private void moveToPlayStore() {

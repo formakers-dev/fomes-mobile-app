@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.helper.AppBeeAPIHelper;
+import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.Project;
 import com.formakers.fomes.common.network.api.ProjectAPI;
@@ -15,17 +15,17 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 @Singleton
-public class ProjectService extends AbstractAppBeeService {
+public class ProjectService extends AbstractService {
     private static final String TAG = "ProjectService";
     private final ProjectAPI projectAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
-    private final AppBeeAPIHelper appBeeAPIHelper;
+    private final APIHelper APIHelper;
 
     @Inject
-    public ProjectService(ProjectAPI projectAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public ProjectService(ProjectAPI projectAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper) {
         this.projectAPI = projectAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
-        this.appBeeAPIHelper = appBeeAPIHelper;
+        this.APIHelper = APIHelper;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ProjectService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<Project> getProject(String projectId) {
@@ -46,7 +46,7 @@ public class ProjectService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<List<Project>> getAllInterviews() {
@@ -54,7 +54,7 @@ public class ProjectService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<List<Project>> getRegisteredInterviews() {
@@ -62,7 +62,7 @@ public class ProjectService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<Project> getInterview(String projectId, long seq) {
@@ -70,7 +70,7 @@ public class ProjectService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Completable postParticipate(String projectId, long seq, String slotId) {
@@ -78,7 +78,7 @@ public class ProjectService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
@@ -87,7 +87,7 @@ public class ProjectService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
     }
 }

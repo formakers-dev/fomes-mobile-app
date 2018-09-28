@@ -2,7 +2,7 @@ package com.formakers.fomes.service;
 
 import android.util.Log;
 
-import com.formakers.fomes.AppBeeApplication;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.common.network.UserService;
@@ -27,7 +27,7 @@ public class MessagingTokenService extends FirebaseInstanceIdService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((AppBeeApplication) getApplication()).getComponent().inject(this);
+        ((FomesApplication) getApplication()).getComponent().inject(this);
     }
 
     @Override

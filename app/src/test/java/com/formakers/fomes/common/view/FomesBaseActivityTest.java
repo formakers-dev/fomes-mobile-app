@@ -2,7 +2,7 @@ package com.formakers.fomes.common.view;
 
 import android.content.Intent;
 
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
@@ -22,7 +22,8 @@ import static org.robolectric.Shadows.shadowOf;
 public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends BaseActivityTest<T> {
 
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
-    @Inject AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    @Inject
+    AndroidNativeHelper mockAndroidNativeHelper;
 
     public FomesBaseActivityTest(Class<T> clazz) {
         super(clazz);
@@ -44,7 +45,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
     }
 
     /* base test for each activity */
@@ -98,7 +99,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
 
     @Test
     public void 액티비티_진입시__권한이_없으면__권한허용화면으로_진입한다() {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
         launchActivity();
 
@@ -110,7 +111,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
 
     @Test
     public void 액티비티_진입시__권한이_있으면__현재화면으로_진입한다() {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
         launchActivity();
 

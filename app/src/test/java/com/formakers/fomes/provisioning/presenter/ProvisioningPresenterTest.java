@@ -3,7 +3,7 @@ package com.formakers.fomes.provisioning.presenter;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
@@ -35,7 +35,8 @@ public class ProvisioningPresenterTest {
     @Mock ProvisioningContract.View mockView;
     @Mock User mockUser;
     @Mock UserService mockUserService;
-    @Mock AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    @Mock
+    AndroidNativeHelper mockAndroidNativeHelper;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
     @Mock UserDAO mockUserDAO;
 
@@ -58,7 +59,7 @@ public class ProvisioningPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAppBeeAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO);
+        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO);
     }
 
     @After
@@ -140,7 +141,7 @@ public class ProvisioningPresenterTest {
     public void hasUsageStatsPermission__호출시__사용정보_접근_권한을_체크한다() {
         subject.hasUsageStatsPermission();
 
-        verify(mockAppBeeAndroidNativeHelper).hasUsageStatsPermission();
+        verify(mockAndroidNativeHelper).hasUsageStatsPermission();
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.formakers.fomes.provisioning.view;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.shadow.ShadowRecentAnalysisReportFragment;
@@ -28,7 +28,7 @@ public class RecentAnalysisReportActivityTest extends FomesBaseActivityTest {
     @Override
     @Before
     public void setUp() throws Exception {
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
         super.setUp();
     }
 }

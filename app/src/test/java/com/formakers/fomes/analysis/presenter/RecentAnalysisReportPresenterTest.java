@@ -3,7 +3,7 @@ package com.formakers.fomes.analysis.presenter;
 import android.util.Pair;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.TestAppBeeApplication;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.vo.Rank;
@@ -78,7 +78,7 @@ public class RecentAnalysisReportPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(new ArrayList<>());
         when(mockUser.getUserId()).thenReturn("mockUserId");
