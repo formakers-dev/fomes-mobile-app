@@ -16,7 +16,7 @@ public interface UserAPI {
     Single<String> signUp(@Header("x-id-token") String googleIdToken, @Body User user);
 
     // Return : FomesToken
-    @POST("/user/auth")
+    @POST("/user/signIn")
     Observable<String> signIn(@Header("x-id-token") String googleIdToken, @Body User user);
 
     @POST("/user")
