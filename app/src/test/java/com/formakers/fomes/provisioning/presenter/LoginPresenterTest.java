@@ -55,7 +55,6 @@ public class LoginPresenterTest {
     @Inject GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
     @Inject UserDAO mockUserDAO;
-    @Inject JobManager mockJobManager;
 
     @Mock LoginContract.View mockView;
 
@@ -80,7 +79,7 @@ public class LoginPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO, mockJobManager);
+        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO);
     }
 
     @After
@@ -113,7 +112,7 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void requestSignUpBy_호출시__가입요청_성공시__FomesToken_및_유저정보을_저장하고_데이터잡을_등록한다() {
+    public void requestSignUpBy_호출시__가입요청_성공시__FomesToken_및_유저정보을_저장한다() {
         GoogleSignInResult mockResult = mock(GoogleSignInResult.class);
         when(mockResult.isSuccess()).thenReturn(true);
 
@@ -134,8 +133,6 @@ public class LoginPresenterTest {
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
-
-        verify(mockJobManager).registerSendDataJob(eq(JobManager.JOB_ID_SEND_DATA));
 
         User user = userArgumentCaptor.getValue();
         assertThat(user.getUserId()).isEqualTo("testId");

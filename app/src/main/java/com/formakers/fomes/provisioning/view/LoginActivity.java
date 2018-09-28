@@ -111,6 +111,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         this.presenter.requestSignUpBy(googleSignInResult)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(fomesToken -> {
+                    Log.d(TAG, "signin");
                     if (presenter.isProvisioningProgress()) {
                         startActivityAndFinish(ProvisioningActivity.class);
                     } else {

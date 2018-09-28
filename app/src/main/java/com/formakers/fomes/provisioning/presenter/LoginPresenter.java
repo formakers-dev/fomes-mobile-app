@@ -2,6 +2,7 @@ package com.formakers.fomes.provisioning.presenter;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
@@ -18,9 +19,12 @@ import javax.inject.Inject;
 
 import rx.Single;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginPresenter implements LoginContract.Presenter {
+
+    private static final String TAG = LoginPresenter.class.getSimpleName();
 
     @Inject GoogleSignInAPIHelper googleSignInAPIHelper;
     @Inject UserService userService;
@@ -37,7 +41,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     // TODO : ActivityComponent로 변환후 변경 필요
     // temporary code for test
-    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper, UserDAO userDAO, JobManager jobManaer) {
+    LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper, UserDAO userDAO) {
         this.view = view;
         this.googleSignInAPIHelper = googleSignInAPIHelper;
         this.userService = userService;
@@ -60,7 +64,6 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .doOnSuccess(fomesToken -> {
                     sharedPreferencesHelper.setAccessToken(fomesToken);
                     userDAO.updateUserInfo(userInfo);
-                    jobManaer.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
                 });
     }
 

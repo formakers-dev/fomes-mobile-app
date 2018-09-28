@@ -3,6 +3,7 @@ package com.formakers.fomes.provisioning.presenter;
 import android.util.Log;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AndroidNativeHelper;
@@ -22,10 +23,10 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
 
     @Inject UserService userService;
-    @Inject
-    AndroidNativeHelper androidNativeHelper;
+    @Inject AndroidNativeHelper androidNativeHelper;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserDAO userDAO;
+    @Inject JobManager jobManager;
 
     private ProvisioningContract.View view;
     private User user = new User();
@@ -121,6 +122,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public boolean isProvisiongProgress() {
         return this.sharedPreferencesHelper.getProvisioningProgressStatus()
                 != FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED;
+    }
+
+    @Override
+    public int registerSendDataJob() {
+        return this.jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
     }
 
 }

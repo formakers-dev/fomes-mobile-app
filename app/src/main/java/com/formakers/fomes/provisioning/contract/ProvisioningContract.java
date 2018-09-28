@@ -26,6 +26,8 @@ public interface ProvisioningContract {
         boolean hasUsageStatsPermission();
         boolean isSelected(BaseFragment fragment);
         boolean isProvisiongProgress();
+
+        int registerSendDataJob();
     }
 
     interface View extends BaseView<Presenter> {

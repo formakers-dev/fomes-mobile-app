@@ -5,6 +5,8 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 
+import com.formakers.fomes.BuildConfig;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -25,8 +27,8 @@ public class JobManager {
 
     public int registerSendDataJob(int jobId) {
         return jobScheduler.schedule(new JobInfo.Builder(jobId, new ComponentName(context, SendDataJobService.class))
-                .setMinimumLatency(21600000L)   // 6 hours
-                .setOverrideDeadline(28800000L) // 8 hours
+                .setMinimumLatency(BuildConfig.DEBUG ? 1L : 21600000L)   // 6 hours
+                .setOverrideDeadline(BuildConfig.DEBUG ? 1L :28800000L) // 8 hours
                 .setPersisted(true)
                 .setRequiresCharging(true)
                 .build());

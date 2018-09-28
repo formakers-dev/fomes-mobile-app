@@ -33,6 +33,7 @@ public class SendDataJobService extends JobService {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, " onCreate : " + this);
 
         ((FomesApplication) getApplication()).getComponent().inject(this);
     }
