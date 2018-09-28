@@ -6,6 +6,7 @@
     <color name="textColorHint">@color/fomes_light_gray</color>
 
     <!-- Fomes colors -->
+    <color name="fomes_black">#000000</color>
     <color name="fomes_gray">#4a4a4a</color>
     <color name="fomes_warm_gray">#808080</color>
     <color name="fomes_light_warm_gray">#9b9b9b</color>
