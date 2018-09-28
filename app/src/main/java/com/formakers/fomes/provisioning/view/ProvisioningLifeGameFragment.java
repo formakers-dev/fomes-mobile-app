@@ -38,6 +38,7 @@ public class ProvisioningLifeGameFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
+            this.presenter.emitUpdateHeaderViewEvent(R.string.provision_life_game_title, R.string.provision_life_game_subtitle);
             CharSequence nickName = lifeGameEditText.getText();
             onLifeGameTextChanged(nickName, 0, 0, nickName.length());
         }

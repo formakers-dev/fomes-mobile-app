@@ -75,6 +75,7 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
     @Override
     public void onSelectedPage() {
         this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
+        this.presenter.emitUpdateHeaderViewEvent(R.string.provision_permission_title, R.string.provision_permission_subtitle);
 
         if (this.presenter.hasUsageStatsPermission()) {
             moveToNextPage();

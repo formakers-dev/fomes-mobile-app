@@ -67,6 +67,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
+            this.presenter.emitUpdateHeaderViewEvent(R.string.provision_user_info_title, R.string.provision_user_info_subtitle);
             emitFilledUpEvent();
         }
     }

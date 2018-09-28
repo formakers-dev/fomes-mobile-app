@@ -1,6 +1,6 @@
 package com.formakers.fomes.provisioning.contract;
 
-import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -15,6 +15,7 @@ public interface ProvisioningContract {
         void updateNickNameToUser(String nickName);
         void setProvisioningProgressStatus(int status);
 
+        void emitUpdateHeaderViewEvent(@StringRes int titleResId, @StringRes int subTitleResId);
         void emitNextPageEvent();
         void emitFilledUpEvent(BaseFragment fragment, boolean isEnable);
         void emitNeedToGrantEvent();
@@ -32,7 +33,7 @@ public interface ProvisioningContract {
 
     interface View extends BaseView<Presenter> {
         void nextPage();
-        void setIconImage(@DrawableRes int drawableResId);
+        void setHeaderView(@StringRes int titleResId, @StringRes int subTitleResId);
         void setNextButtonVisibility(boolean isVisible);
         void setNextButtonText(int stringResId);
         ApplicationComponent getApplicationComponent();

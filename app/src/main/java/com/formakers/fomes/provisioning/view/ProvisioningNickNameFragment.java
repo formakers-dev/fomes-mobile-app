@@ -49,6 +49,7 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
+            this.presenter.emitUpdateHeaderViewEvent(R.string.provision_nickname_title, R.string.provision_nickname_subtitle);
             CharSequence nickName = nickNameEditText.getText();
             onNickNameTextChanged(nickName, 0, 0, nickName.length());
         }

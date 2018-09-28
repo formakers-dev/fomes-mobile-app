@@ -57,8 +57,6 @@ public class ProvisioningNickNameFragmentTest {
     @Test
     public void ProvisioningNickNameFragment_시작시__프로비저닝_인생게임_화면이_나타난다() {
         assertThat(subject.getView()).isNotNull();
-        assertThat(subject.getView().findViewById(R.id.provision_nickname_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.getView().findViewById(R.id.provision_nickname_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
     }

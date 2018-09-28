@@ -52,8 +52,6 @@ public class ProvisioningPermissionFragmentTest {
     @Test
     public void ProvisioningPermissionFragment_시작시__프로비저닝_데모그래픽정보입력_화면이_나타난다() {
         assertThat(subject.getView()).isNotNull();
-        assertThat(subject.getView().findViewById(R.id.provision_permission_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
-        assertThat(subject.getView().findViewById(R.id.provision_permission_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_permission_imageview).getVisibility()).isEqualTo(View.VISIBLE);
     }
 

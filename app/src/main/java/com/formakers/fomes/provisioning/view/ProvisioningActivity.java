@@ -2,7 +2,6 @@ package com.formakers.fomes.provisioning.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -14,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
@@ -38,6 +38,9 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     private static final String TAG = ProvisioningActivity.class.getSimpleName();
 
     @BindView(R.id.provision_icon_imageview) ImageView iconImageView;
+    @BindView(R.id.provision_title_textview) TextView titleTextView;
+    @BindView(R.id.provision_subtitle_textview) TextView subTitleTextView;
+
     @BindView(R.id.provision_viewpager) ViewPager viewPager;
     @BindView(R.id.next_button) Button nextButton;
 
@@ -109,8 +112,9 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     }
 
     @Override
-    public void setIconImage(@DrawableRes int drawableResId) {
-        iconImageView.setImageResource(drawableResId);
+    public void setHeaderView(@StringRes int titleResId, @StringRes int subTitleResId) {
+        titleTextView.setText(titleResId);
+        subTitleTextView.setText(subTitleResId);
     }
 
     @Override
