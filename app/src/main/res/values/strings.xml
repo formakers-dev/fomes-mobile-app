@@ -215,9 +215,9 @@
     <string name="main_tab_recommend">게임 추천</string>
     <string name="main_tab_betatest">베타테스트</string>
     <string name="main_tab_event">이벤트</string>
-    <string name="main_menu_my_hope_games">내 게임 컬렉션</string>
+    <string name="main_menu_my_hope_games">추천게임 컬렉션 (2차오픈)</string>
     <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
-    <string name="main_menu_my_betatest">피드백 존 (준비중)</string>
+    <string name="main_menu_my_betatest">피드백 존 (3차오픈)</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
 
