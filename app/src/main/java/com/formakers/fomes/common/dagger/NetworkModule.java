@@ -1,4 +1,4 @@
-package com.formakers.fomes.dagger;
+package com.formakers.fomes.common.dagger;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.common.network.api.ConfigAPI;

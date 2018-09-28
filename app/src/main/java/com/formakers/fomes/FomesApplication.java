@@ -3,10 +3,9 @@ package com.formakers.fomes;
 import android.app.Activity;
 import android.app.Application;
 
-import com.formakers.fomes.dagger.ApplicationComponent;
-import com.formakers.fomes.dagger.ApplicationModule;
-import com.formakers.fomes.dagger.DaggerApplicationComponent;
-import com.formakers.fomes.dagger.NetworkModule;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.dagger.ApplicationModule;
+import com.formakers.fomes.common.dagger.DaggerApplicationComponent;
 import com.tsengvn.typekit.Typekit;
 
 import io.realm.Realm;

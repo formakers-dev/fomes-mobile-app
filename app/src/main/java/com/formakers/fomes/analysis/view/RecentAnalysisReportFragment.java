@@ -25,7 +25,7 @@ import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView;
 import com.formakers.fomes.common.view.custom.RankAppItemView;
-import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.github.mikephil.charting.charts.HorizontalBarChart;

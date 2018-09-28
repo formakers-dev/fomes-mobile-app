@@ -1,6 +1,6 @@
 package com.formakers.fomes.provisioning.dagger;
 
-import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.provisioning.dagger.scope.LoginActivityScope;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 

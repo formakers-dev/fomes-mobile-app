@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseActivity;
-import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.dagger.DaggerLoginActivityComponent;
