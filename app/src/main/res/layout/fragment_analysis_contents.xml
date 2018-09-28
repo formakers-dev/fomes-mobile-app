@@ -269,20 +269,10 @@
             android:layout_marginEnd="@dimen/provision_padding_start_end"
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="46dp"
             android:text="@string/analysis_favorite_developer_subtitle"
             android:textColor="@color/fomes_light_warm_gray"
             android:textSize="@dimen/analysis_content_subtitle_size"
-            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_title"
-            app:layout_constraintBottom_toTopOf="@+id/analysis_favorite_developer_top_barrier"/>
-
-        <android.support.constraint.Barrier
-            android:id="@+id/analysis_favorite_developer_top_barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="top"
-            app:constraint_referenced_ids="analysis_my_favorite_developer,analysis_gender_age_favorite_developer,analysis_job_favorite_developer"
-            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_subtitle"/>
+            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_title"/>
 
         <com.formakers.fomes.common.view.FavoriteDeveloperItemView
             android:id="@+id/analysis_my_favorite_developer"
@@ -290,22 +280,22 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginTop="46dp"
             android:theme="@style/FomesTheme.TurquoiseItem"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintBottom_toBottomOf="@+id/analysis_favorite_developer_barrier"
+            app:layout_constraintTop_toBottomOf="@+id/analysis_favorite_developer_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/analysis_gender_age_favorite_developer"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/analysis_favorite_developer_top_barrier"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <com.formakers.fomes.common.view.FavoriteDeveloperItemView
             android:id="@+id/analysis_gender_age_favorite_developer"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:theme="@style/FomesTheme.SquashItem"
+            android:layout_marginTop="46dp"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintTop_toTopOf="@id/analysis_favorite_developer_top_barrier"
-            app:layout_constraintBottom_toBottomOf="@+id/analysis_favorite_developer_barrier"
+            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/analysis_job_favorite_developer"
             app:layout_constraintStart_toEndOf="@+id/analysis_my_favorite_developer"/>
 
@@ -315,20 +305,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/provision_padding_start_end"
             android:layout_marginStart="14dp"
+            android:layout_marginTop="46dp"
             android:theme="@style/FomesTheme.BlushPinkItem"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintTop_toTopOf="@id/analysis_favorite_developer_top_barrier"
-            app:layout_constraintBottom_toBottomOf="@+id/analysis_favorite_developer_barrier"
+            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_subtitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/analysis_gender_age_favorite_developer"/>
-
-        <android.support.constraint.Barrier
-            android:id="@+id/analysis_favorite_developer_barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="analysis_my_favorite_developer,analysis_gender_age_favorite_developer,analysis_job_favorite_developer" />
-
         <!-- end of Favorite Developer -->
 
         <!-- start of My Games -->
@@ -336,7 +318,7 @@
             android:id="@+id/my_games_divider"
             style="@style/AnaylsisTheme.Divider"
             android:layout_marginTop="53dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_favorite_developer_barrier" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_favorite_developer" />
 
         <TextView
             android:id="@+id/analysis_my_games_divider_title"
@@ -404,6 +386,13 @@
             app:rank_number="3"
             app:rank_color="@color/fomes_blush_pink" />
 
+        <android.support.constraint.Barrier
+            android:id="@+id/analysis_my_game_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="analysis_my_games_1,analysis_my_games_2,analysis_my_games_3"/>
+
         <TextView
             android:id="@+id/analysis_my_game_suggestion_textview"
             android:layout_width="@dimen/match_constraint"
@@ -413,7 +402,7 @@
             android:textColor="@color/colorPrimary"
             android:background="@drawable/analysis_rect_rounded_background"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/analysis_my_games_1"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_game_barrier"
             app:layout_constraintStart_toStartOf="@id/my_games_divider"
             app:layout_constraintEnd_toEndOf="@id/my_games_divider"/>
         <!-- end of My Games -->
@@ -422,8 +411,8 @@
         <View
             android:id="@+id/people_games_divider"
             style="@style/AnaylsisTheme.Divider"
-            android:layout_marginTop="33dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_my_game_suggestion_textview" />
+            android:layout_marginTop="67dp"
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_game_barrier" />
 
         <TextView
             android:id="@+id/analysis_people_games_title"

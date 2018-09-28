@@ -88,7 +88,7 @@ public class ProvisioningUserInfoFragmentTest {
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).updateDemographicsToUser(eq(1940), eq(2001), eq("female"));
+        verify(mockPresenter).updateDemographicsToUser(eq(2010), eq(2001), eq("female"));
         verify(mockPresenter).emitNextPageEvent();
     }
 
