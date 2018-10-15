@@ -6,4 +6,11 @@
         android:iconTint="@color/fomes_white"
         android:title="@string/main_menu_my_recent_analysis"
         app:showAsAction="always"/>
+
+    <item android:id="@+id/my_game_collection"
+        android:icon="@drawable/icon_my_hope_game"
+        android:iconTint="@color/fomes_white"
+        android:title="@string/main_menu_my_game_collection"
+        android:visible="false"
+        app:showAsAction="always"/>
 </menu>

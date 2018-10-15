@@ -79,6 +79,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         drawerToggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().clear();
+
+        if (Feature.MAIN_RECOMMEND) {
+            navigationView.inflateMenu(R.menu.main_nav);
+        } else {
+            navigationView.inflateMenu(R.menu.main_nav_old);
+        }
 
         addToCompositeSubscription(
             presenter.requestUserInfo()
@@ -125,7 +132,15 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        if (Feature.MAIN_RECOMMEND) {
+            menu.findItem(R.id.my_game_collection).setVisible(true);
+            menu.findItem(R.id.my_recent_analysis).setVisible(false);
+            menu.findItem(R.id.my_game_collection).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        } else {
+            menu.findItem(R.id.my_game_collection).setVisible(false);
+            menu.findItem(R.id.my_recent_analysis).setVisible(true);
+            menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        }
         return true;
     }
 
@@ -134,11 +149,15 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         return onNavigationItemSelected(item);
     }
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.my_recent_analysis: {
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
+                break;
+            }
+            case R.id.my_game_collection: {
                 break;
             }
             case R.id.settings: {
