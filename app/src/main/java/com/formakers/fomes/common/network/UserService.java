@@ -1,12 +1,12 @@
 package com.formakers.fomes.common.network;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

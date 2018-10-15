@@ -1,7 +1,5 @@
 package com.formakers.fomes.provisioning.presenter;
 
-import android.util.Log;
-
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
@@ -12,6 +10,7 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
 

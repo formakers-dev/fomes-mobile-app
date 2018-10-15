@@ -2,7 +2,6 @@ package com.formakers.fomes.common.job;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.util.Log;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.helper.AndroidNativeHelper;
@@ -11,6 +10,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
 

@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.custom.FomesAlertDialog;
 import com.formakers.fomes.common.network.ConfigService;
+import com.formakers.fomes.common.util.Log;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import javax.inject.Inject;

@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network;
 
-import android.util.Log;
+import com.formakers.fomes.common.util.Log;
 
 import retrofit2.adapter.rxjava.HttpException;
 

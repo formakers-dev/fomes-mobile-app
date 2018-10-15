@@ -1,10 +1,9 @@
 package com.formakers.fomes.common.repository.helper;
 
-import android.util.Log;
-
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.common.repository.model.AppUsageRealmObject;
+import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;

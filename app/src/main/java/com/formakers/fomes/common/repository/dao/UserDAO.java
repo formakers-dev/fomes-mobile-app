@@ -1,10 +1,10 @@
 package com.formakers.fomes.common.repository.dao;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.repository.model.UserRealmObject;
+import com.formakers.fomes.common.util.Log;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
