@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.view.BaseActivityTest;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity.ProvisioningPagerAdapter;
 
 import org.junit.After;

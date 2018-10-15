@@ -17,7 +17,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 
 import java.util.ArrayList;
 

@@ -9,7 +9,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +19,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
-
-import rx.Completable;
 
 import static com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment.REQUEST_CODE_USAGE_STATS_PERMISSION;
 import static org.assertj.core.api.Java6Assertions.assertThat;

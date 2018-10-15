@@ -23,7 +23,7 @@ import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;

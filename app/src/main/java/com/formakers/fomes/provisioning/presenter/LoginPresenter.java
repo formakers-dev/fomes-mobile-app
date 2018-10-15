@@ -2,24 +2,20 @@ package com.formakers.fomes.provisioning.presenter;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.LoginContract;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import javax.inject.Inject;
 
 import rx.Single;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginPresenter implements LoginContract.Presenter {

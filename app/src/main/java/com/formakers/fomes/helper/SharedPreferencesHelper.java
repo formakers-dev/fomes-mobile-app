@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

@@ -8,7 +8,7 @@ import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
 import com.formakers.fomes.provisioning.view.ProvisioningUserInfoFragment;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 
 import org.junit.Before;
 import org.junit.Test;

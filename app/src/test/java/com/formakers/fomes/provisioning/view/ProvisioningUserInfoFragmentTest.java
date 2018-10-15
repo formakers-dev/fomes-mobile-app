@@ -8,7 +8,7 @@ import android.widget.Spinner;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package com.formakers.fomes.util;
+package com.formakers.fomes.common.util;
 
 import org.junit.Ignore;
 import org.junit.Test;

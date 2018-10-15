@@ -11,7 +11,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 
 import java.util.ArrayList;
 
