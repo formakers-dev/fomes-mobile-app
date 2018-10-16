@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <include layout="@layout/recommend_app_item"
+    <include layout="@layout/layout_app_info"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/detail_view"

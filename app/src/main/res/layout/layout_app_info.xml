@@ -6,7 +6,6 @@
     android:paddingStart="20dp"
     android:paddingTop="16dp"
     android:paddingBottom="20dp"
-    android:background="@color/fomes_white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView android:id="@+id/item_app_icon_imageview"
