@@ -5,13 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.model.AppInfo;
 
 import butterknife.BindView;
@@ -31,10 +29,7 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
 
     @BindView(R.id.collection_button) Button saveCollectionButton;
     @BindView(R.id.block_button) Button blockButton;
-    @BindView(R.id.item_app_icon_imageview) ImageView iconImageView;
-    @BindView(R.id.item_app_name_textview) TextView nameTextView;
-    @BindView(R.id.item_app_genre_developer_textview) TextView genreDeveloperTextView;
-    @BindView(R.id.item_app_label_textview) TextView labelTextView;
+    @BindView(R.id.app_detail_view) RecommendAppItemView appDetailView;
     @BindView(R.id.download_button) Button downloadButton;
 
     Unbinder unbinder;
@@ -71,9 +66,9 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
 
         Glide.with(getContext()).load(appInfo.getIconUrl())
                 .apply(new RequestOptions().override(70, 70).centerCrop())
-                .into(iconImageView);
-        nameTextView.setText(appInfo.getAppName());
-        genreDeveloperTextView.setText(String.format("%s / %s", appInfo.getCategoryName1(), appInfo.getDeveloper()));
+                .into(appDetailView.getIconImageView());
+        appDetailView.setNameText(appInfo.getAppName());
+        appDetailView.setCategoryDeveloperText(appInfo.getCategoryName1(), appInfo.getDeveloper());
 
         downloadButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -82,8 +77,8 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
         });
 
         // temp
-        labelTextView.setBackground(getContext().getResources().getDrawable(R.drawable.item_app_label_background, new ContextThemeWrapper(getContext(), R.style.FomesTheme_TurquoiseItem).getTheme()));
-        labelTextView.setText("배틀그라운드 게이머들이 많이 하는 게임 1위");
+        appDetailView.setRecommendType(RecommendAppItemView.RECOMMEND_TYPE_FAVORITE_GAME);
+        appDetailView.setLabelText("배틀그라운드", 1);
         saveCollectionButton.setOnClickListener(v -> Toast.makeText(getContext(), "컬렉션 저장 버튼 클릭함", Toast.LENGTH_LONG).show());
         blockButton.setOnClickListener(v -> Toast.makeText(getContext(), "컬렉션 저장 버튼 클릭함", Toast.LENGTH_LONG).show());
     }

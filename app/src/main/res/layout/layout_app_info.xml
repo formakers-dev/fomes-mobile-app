@@ -55,7 +55,6 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         android:textSize="10dp"
-        android:textColor="@color/colorPrimary"
         android:background="@drawable/item_app_label_background"
         app:layout_constraintTop_toBottomOf="@id/item_app_genre_developer_textview"
         app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview"

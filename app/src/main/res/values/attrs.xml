@@ -40,4 +40,18 @@
         <attr name="rank_item_content_isTop" format="reference|boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="RecommendAppItemView">
+        <attr name="app_iconDrawable" format="reference|integer" />
+        <attr name="app_nameText" format="reference|string" />
+        <attr name="app_categoryText" format="reference|string" />
+        <attr name="app_developerText" format="reference|string" />
+        <attr name="app_recommendType" format="reference|integer">
+            <enum name="favorite_game" value="1" />
+            <enum name="favorite_developer" value="2" />
+            <enum name="favorite_category" value="3" />
+            <enum name="similar_demographic" value="4" />
+        </attr>
+        <attr name="app_verbose" format="reference|boolean"/>
+    </declare-styleable>
+
 </resources>

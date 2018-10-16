@@ -2,16 +2,12 @@ package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 import com.formakers.fomes.model.AppInfo;
@@ -56,18 +52,13 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
         final AppInfo appInfo = appList.get(position);
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
+        viewHolder.recommendAppItemView.bindAppInfo(appInfo);
 
-        // TODO : Glide Dagger로 빼기
-        Glide.with(context).load(appInfo.getIconUrl())
-                .apply(new RequestOptions().override(70, 70).centerCrop())
-                .into(viewHolder.iconImageView);
-        viewHolder.appNameTextView.setText(appInfo.getAppName());
-        viewHolder.genreDeveloperTextView.setText(String.format("%s / %s", appInfo.getCategoryName1(), appInfo.getDeveloper()));
         viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(appInfo));
 
         // temp
-        viewHolder.labelTextView.setBackground(context.getResources().getDrawable(R.drawable.item_app_label_background, new ContextThemeWrapper(context, R.style.FomesTheme_TurquoiseItem).getTheme()));
-        viewHolder.labelTextView.setText("배틀그라운드 게이머들이 많이 하는 게임 1위");
+        viewHolder.recommendAppItemView.setRecommendType(RecommendAppItemView.RECOMMEND_TYPE_FAVORITE_GAME);
+        viewHolder.recommendAppItemView.setLabelText("배틀그라운드", 1);
     }
 
     @Override
@@ -100,18 +91,11 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {
-        ImageView iconImageView;
-        TextView appNameTextView;
-        TextView genreDeveloperTextView;
-        TextView labelTextView;
+        RecommendAppItemView recommendAppItemView;
 
         public AppViewHolder(View itemView) {
             super(itemView);
-
-            iconImageView = itemView.findViewById(R.id.item_app_icon_imageview);
-            appNameTextView = itemView.findViewById(R.id.item_app_name_textview);
-            genreDeveloperTextView = itemView.findViewById(R.id.item_app_genre_developer_textview);
-            labelTextView = itemView.findViewById(R.id.item_app_label_textview);
+            recommendAppItemView = itemView.findViewById(R.id.recommend_app_item_view);
         }
     }
 }

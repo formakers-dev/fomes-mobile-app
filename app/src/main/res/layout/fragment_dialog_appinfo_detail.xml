@@ -39,12 +39,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <include layout="@layout/layout_app_info"
+    <com.formakers.fomes.common.view.custom.RecommendAppItemView
+        android:id="@+id/app_detail_view"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/detail_view"
         app:layout_constraintStart_toStartOf="@id/detail_view"
-        app:layout_constraintEnd_toEndOf="@id/detail_view" />
+        app:layout_constraintEnd_toEndOf="@id/detail_view"
+        app:app_verbose="true"/>
     
     <Button android:id="@+id/download_button"
         android:layout_width="0dp"

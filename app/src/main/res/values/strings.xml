@@ -150,4 +150,8 @@
     <string name="save_collection">컬렉션에 저장</string>
     <string name="save_block">관심없음 처리</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
+    <string name="recommend_label_format_favorite_game">%1$s 게이머들이 많이 하는 게임 %2$d위</string>
+    <string name="recommend_label_format_favorite_developer">%s 게임 개발사가 만든 다른 게임들</string>
+    <string name="recommend_label_format_favorite_category">포메스 픽! %s 장르 랜덤 추천 게임</string>
+    <string name="recommend_label_format_similar_demographic">나와 같은 %1$s들이 많이 하는 게임 %2$d위</string>
 </resources>

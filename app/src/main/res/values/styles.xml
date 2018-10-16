@@ -87,6 +87,10 @@
         <item name="item_background_radius">4dp</item>
     </style>
 
+    <style name="FomesTheme.WarmGrayItem">
+        <item name="item_color">@color/fomes_warm_gray</item>
+    </style>
+
     <style name="FomesTheme.LightGray">
         <item name="item_color">@color/fomes_light_gray</item>
     </style>
