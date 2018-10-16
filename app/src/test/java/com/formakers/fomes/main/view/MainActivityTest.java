@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.formakers.fomes.R;
@@ -24,8 +23,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 
 import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
 import rx.Scheduler;
 import rx.Single;
@@ -108,24 +107,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void MainActivity_시작시_메인화면이_나타난다() throws Exception  {
-        launchActivity();
-
-        assertThat(((ViewGroup) subject.findViewById(R.id.main_side_bar_layout))).isNotNull();
-        assertThat(subject.findViewById(R.id.main_content_layout).getVisibility()).isEqualTo(View.VISIBLE);
-    }
-
-    @Test
-    public void MainActivity_시작시__2개의_탭과_페이저가_나타난다() throws Exception {
-        launchActivity();
-
-        assertThat(subject.contentsViewPager.getAdapter().getCount()).isEqualTo(1);
-        assertThat(subject.tabLayout.getTabCount()).isEqualTo(1);
-//        assertThat(subject.tabLayout.getTabAt(0).getText()).isEqualTo("게임 추천");
-//        assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("베타테스트");
-    }
-
-    @Test
     public void MainActivity_시작시__사이드메뉴에_유저정보가_셋팅된다() {
         launchActivity();
 
@@ -137,14 +118,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         assertThat(((TextView) sideHeaderView.findViewById(R.id.user_email)).getText())
                 .isEqualTo("test@email.com");
     }
-
-    //    @Test
-//    public void 액션바의_왼쪽상단메뉴_클릭시__사이드메뉴가_열린다() {
-//        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
-//        subject.toolbar.getChildAt(0).performClick();
-//
-//        assertThat(subject.drawerLayout.isDrawerOpen(GravityCompat.START)).isTrue();
-//    }
 
     @Test
     public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫는다() throws Exception {
