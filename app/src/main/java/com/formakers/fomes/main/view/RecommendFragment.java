@@ -8,9 +8,9 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
@@ -60,6 +60,12 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void onShowDetailEvent(AppInfo appInfo) {
-        Toast.makeText(getContext(), appInfo.getPackageName(), Toast.LENGTH_LONG).show();
+        AppInfoDetailDialogFragment appInfoDetailDialogFragment = new AppInfoDetailDialogFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(FomesConstants.EXTRA.APPINFO, appInfo);
+        appInfoDetailDialogFragment.setArguments(bundle);
+
+        appInfoDetailDialogFragment.show(getChildFragmentManager(), AppInfoDetailDialogFragment.TAG);
     }
 }

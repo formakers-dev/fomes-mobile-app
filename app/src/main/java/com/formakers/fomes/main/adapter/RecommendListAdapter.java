@@ -2,10 +2,10 @@ package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +63,11 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
                 .into(viewHolder.iconImageView);
         viewHolder.appNameTextView.setText(appInfo.getAppName());
         viewHolder.genreDeveloperTextView.setText(String.format("%s / %s", appInfo.getCategoryName1(), appInfo.getDeveloper()));
-        viewHolder.moreButton.setOnClickListener(v -> this.presenter.emitShowDetailEvent(appInfo));
+        viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(appInfo));
+
+        // temp
+        viewHolder.labelTextView.setBackground(context.getResources().getDrawable(R.drawable.item_app_label_background, new ContextThemeWrapper(context, R.style.FomesTheme_TurquoiseItem).getTheme()));
+        viewHolder.labelTextView.setText("배틀그라운드 게이머들이 많이 하는 게임 1위");
     }
 
     @Override
@@ -100,7 +104,6 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView appNameTextView;
         TextView genreDeveloperTextView;
         TextView labelTextView;
-        Button moreButton;
 
         public AppViewHolder(View itemView) {
             super(itemView);
@@ -109,7 +112,6 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
             appNameTextView = itemView.findViewById(R.id.item_app_name_textview);
             genreDeveloperTextView = itemView.findViewById(R.id.item_app_genre_developer_textview);
             labelTextView = itemView.findViewById(R.id.item_app_label_textview);
-            moreButton = itemView.findViewById(R.id.item_app_more_button);
         }
     }
 }

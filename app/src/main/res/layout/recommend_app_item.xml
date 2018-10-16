@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="20dp"
     android:paddingTop="16dp"
     android:paddingBottom="20dp"
@@ -12,20 +13,24 @@
         android:layout_width="@dimen/item_app_icon_width_height"
         android:layout_height="@dimen/item_app_icon_width_height"
         android:src="@drawable/not_found_app_icon"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView android:id="@+id/item_app_name_textview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/item_app_content_margin_start"
         android:layout_marginEnd="@dimen/item_app_content_margin_end"
-        android:text="서먼 마스터즈"
         android:textSize="16dp"
         android:textColor="@color/fomes_gray"
         android:textStyle="bold"
+        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/item_app_genre_developer_textview"
         app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="서먼 마스터즈" />
 
     <TextView android:id="@+id/item_app_genre_developer_textview"
         android:layout_width="wrap_content"
@@ -33,11 +38,12 @@
         android:layout_marginStart="@dimen/item_app_content_margin_start"
         android:layout_marginEnd="@dimen/item_app_content_margin_end"
         android:layout_marginTop="4dp"
-        android:text="액션 / 캡틴스"
         android:textSize="12dp"
         android:textColor="@color/fomes_gray"
         app:layout_constraintTop_toBottomOf="@id/item_app_name_textview"
-        app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview" />
+        app:layout_constraintBottom_toTopOf="@+id/item_app_label_textview"
+        app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview"
+        tools:text="액션 / 캡틴스" />
 
     <TextView android:id="@+id/item_app_label_textview"
         android:layout_width="@dimen/match_constraint"
@@ -49,18 +55,12 @@
         android:paddingEnd="10dp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
-        android:text="배틀그라운드 게이머들이 많이 하는 게임 1위"
         android:textSize="10dp"
         android:textColor="@color/colorPrimary"
         android:background="@drawable/item_app_label_background"
         app:layout_constraintTop_toBottomOf="@id/item_app_genre_developer_textview"
-        app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview"/>
+        app:layout_constraintStart_toEndOf="@id/item_app_icon_imageview"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="배틀그라운드 게이머들이 많이 하는 게임 1위" />
 
-    <Button android:id="@+id/item_app_more_button"
-        android:layout_width="10dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="23dp"
-        android:background="@drawable/fomes_face"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

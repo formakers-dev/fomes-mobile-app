@@ -3,6 +3,7 @@ package com.formakers.fomes.common;
 public interface FomesConstants {
     interface EXTRA {
         String START_FRAGMENT_NAME = "EXTRA_FRAGEMENT_NAME";
+        String APPINFO="EXTRA_APPINFO";
 
         String PROJECT_ID = "EXTRA_PROJECT_ID";
         String INTERVIEW_SEQ = "EXTRA_INTERVIEW_SEQ";

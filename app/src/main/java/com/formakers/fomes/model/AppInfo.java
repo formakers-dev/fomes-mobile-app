@@ -1,6 +1,9 @@
 package com.formakers.fomes.model;
 
-public class AppInfo {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class AppInfo implements Parcelable {
     private String packageName;
     private String appName;
     private String categoryId1;
@@ -10,6 +13,10 @@ public class AppInfo {
     private String developer;
     private String iconUrl;
     private Long totalUsedTime;
+
+    public AppInfo(Parcel in) {
+        readFromParcel(in);
+    }
 
     public AppInfo(String packageName, String appName) {
         this.packageName = packageName;
@@ -121,4 +128,48 @@ public class AppInfo {
                 ", totalUsedTime=" + totalUsedTime +
                 '}';
     }
+
+    /**
+     * for Parcelable
+     */
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(packageName);
+        dest.writeString(appName);
+        dest.writeString(categoryId1);
+        dest.writeString(categoryName1);
+        dest.writeString(categoryId2);
+        dest.writeString(categoryName2);
+        dest.writeString(developer);
+        dest.writeString(iconUrl);
+        dest.writeLong(totalUsedTime == null ? 0L : totalUsedTime);
+    }
+
+    private void readFromParcel(Parcel in) {
+        packageName = in.readString();
+        appName = in.readString();
+        categoryId1 = in.readString();
+        categoryName1 = in.readString();
+        categoryId2 = in.readString();
+        categoryName2 = in.readString();
+        developer = in.readString();
+        iconUrl = in.readString();
+        totalUsedTime = in.readLong();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public AppInfo createFromParcel(Parcel in) {
+            return new AppInfo(in);
+        }
+
+        public AppInfo[] newArray(int size) {
+            return new AppInfo[size];
+        }
+    };
 }

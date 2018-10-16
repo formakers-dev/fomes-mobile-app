@@ -12,7 +12,7 @@
         <item
             android:id="@+id/my_hope_games"
             android:title="@string/main_menu_my_hope_games"
-            android:icon="@drawable/icon_my_hope_game"/>
+            android:icon="@drawable/icon_my_collection_game"/>
     </group>
     <group android:id="@+id/menu_group3" android:checkableBehavior="none"
         android:enabled="false">
