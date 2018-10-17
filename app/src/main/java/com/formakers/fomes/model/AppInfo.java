@@ -3,6 +3,8 @@ package com.formakers.fomes.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class AppInfo implements Parcelable {
     private String packageName;
     private String appName;
@@ -12,7 +14,12 @@ public class AppInfo implements Parcelable {
     private String categoryName2;
     private String developer;
     private String iconUrl;
+    private Double star;
+    private Integer installsMin;
+    private Integer installsMax;
+    private String contentsRating;
     private Long totalUsedTime;
+    private List<String> imageUrls;
 
     public AppInfo(Parcel in) {
         readFromParcel(in);
@@ -114,6 +121,51 @@ public class AppInfo implements Parcelable {
         return this;
     }
 
+    public Double getStar() {
+        return star;
+    }
+
+    public AppInfo setStar(Double star) {
+        this.star = star;
+        return this;
+    }
+
+    public Integer getInstallsMin() {
+        return installsMin;
+    }
+
+    public AppInfo setInstallsMin(Integer installsMin) {
+        this.installsMin = installsMin;
+        return this;
+    }
+
+    public Integer getInstallsMax() {
+        return installsMax;
+    }
+
+    public AppInfo setInstallsMax(Integer installsMax) {
+        this.installsMax = installsMax;
+        return this;
+    }
+
+    public String getContentsRating() {
+        return contentsRating;
+    }
+
+    public AppInfo setContentsRating(String contentsRating) {
+        this.contentsRating = contentsRating;
+        return this;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public AppInfo setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "AppInfo{" +
@@ -125,7 +177,12 @@ public class AppInfo implements Parcelable {
                 ", categoryName2='" + categoryName2 + '\'' +
                 ", developer='" + developer + '\'' +
                 ", iconUrl='" + iconUrl + '\'' +
+                ", star=" + star +
+                ", installsMin=" + installsMin +
+                ", installsMax=" + installsMax +
+                ", contentsRating='" + contentsRating + '\'' +
                 ", totalUsedTime=" + totalUsedTime +
+                ", imageUrls=" + imageUrls +
                 '}';
     }
 

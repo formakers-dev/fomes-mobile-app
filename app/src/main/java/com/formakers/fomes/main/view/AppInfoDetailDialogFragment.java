@@ -64,11 +64,7 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
         AppInfo appInfo = bundle.getParcelable(FomesConstants.EXTRA.APPINFO);
         Log.d(TAG, String.valueOf(appInfo));
 
-        Glide.with(getContext()).load(appInfo.getIconUrl())
-                .apply(new RequestOptions().override(70, 70).centerCrop())
-                .into(appDetailView.getIconImageView());
-        appDetailView.setNameText(appInfo.getAppName());
-        appDetailView.setCategoryDeveloperText(appInfo.getCategoryName1(), appInfo.getDeveloper());
+        appDetailView.bindAppInfo(appInfo);
 
         downloadButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -77,10 +73,8 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
         });
 
         // temp
-        appDetailView.setRecommendType(RecommendAppItemView.RECOMMEND_TYPE_FAVORITE_GAME);
-        appDetailView.setLabelText("배틀그라운드", 1);
         saveCollectionButton.setOnClickListener(v -> Toast.makeText(getContext(), "컬렉션 저장 버튼 클릭함", Toast.LENGTH_LONG).show());
-        blockButton.setOnClickListener(v -> Toast.makeText(getContext(), "컬렉션 저장 버튼 클릭함", Toast.LENGTH_LONG).show());
+        blockButton.setOnClickListener(v -> Toast.makeText(getContext(), "관심없음 처리 버튼 클릭함", Toast.LENGTH_LONG).show());
     }
 
     @Override

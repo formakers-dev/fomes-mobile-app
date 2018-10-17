@@ -154,4 +154,6 @@
     <string name="recommend_label_format_favorite_developer">%s 게임 개발사가 만든 다른 게임들</string>
     <string name="recommend_label_format_favorite_category">포메스 픽! %s 장르 랜덤 추천 게임</string>
     <string name="recommend_label_format_similar_demographic">나와 같은 %1$s들이 많이 하는 게임 %2$d위</string>
+    <string name="format_app_info_star_score">%.1f 점</string>
+    <string name="format_app_info_download_count">설치수 %d+</string>
 </resources>

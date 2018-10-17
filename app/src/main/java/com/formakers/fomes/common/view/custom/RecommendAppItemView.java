@@ -5,19 +5,29 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.adapter.NetworkImagePagerAdapter;
 import com.formakers.fomes.model.AppInfo;
 
+import java.util.List;
+
 public class RecommendAppItemView extends ConstraintLayout {
+
+    public static final String TAG = RecommendAppItemView.class.getSimpleName();
 
     public static final int RECOMMEND_TYPE_FAVORITE_GAME = 1;
     public static final int RECOMMEND_TYPE_FAVORITE_DEVELOPER = 2;
@@ -28,6 +38,11 @@ public class RecommendAppItemView extends ConstraintLayout {
     private TextView nameTextView;
     private TextView categoryDeveloperTextView;
     private TextView labelTextView;
+    private Group verboseGroup;
+    private TextView reviewScoreTextView;
+    private TextView downloadCountTextView;
+    private TextView ageLimitTextView;
+    private ViewPager imageViewPager;
 
     private int recommendType;
     private String recommendReason;
@@ -58,6 +73,11 @@ public class RecommendAppItemView extends ConstraintLayout {
         nameTextView = findViewById(R.id.item_app_name_textview);
         categoryDeveloperTextView = findViewById(R.id.item_app_genre_developer_textview);
         labelTextView = findViewById(R.id.item_app_label_textview);
+        verboseGroup = findViewById(R.id.verbose_group);
+        reviewScoreTextView = findViewById(R.id.item_app_review_score);
+        downloadCountTextView = findViewById(R.id.item_app_download_count);
+        ageLimitTextView = findViewById(R.id.item_app_age_limit);
+        imageViewPager = findViewById(R.id.item_app_image_viewpager);
     }
 
     private void setTypeArray(TypedArray typedArray) {
@@ -71,21 +91,34 @@ public class RecommendAppItemView extends ConstraintLayout {
 
         setRecommendType(typedArray.getInteger(R.styleable.RecommendAppItemView_app_recommendType, RECOMMEND_TYPE_FAVORITE_GAME));
 
-        boolean isVerbose = typedArray.getBoolean(R.styleable.RecommendAppItemView_app_verbose, false);
-        if (isVerbose) {
-            // detail visible
-        }
+        setVerbose(typedArray.getBoolean(R.styleable.RecommendAppItemView_app_verbose, false));
 
         typedArray.recycle();
     }
 
     public void bindAppInfo(AppInfo appInfo) {
+        Log.d(TAG, "bindAppInfo - appInfo=" + appInfo);
+
         Glide.with(getContext()).load(appInfo.getIconUrl())
                 .apply(new RequestOptions().override(70, 70).centerCrop())
                 .into(iconImageView);
 
         setNameText(appInfo.getAppName());
         setCategoryDeveloperText(appInfo.getCategoryName1(), appInfo.getDeveloper());
+
+        // verbose 체크해서 그릴까? setVerbose 하면 리프레쉬 시키고
+        setVerboseGroup(appInfo.getStar(), appInfo.getInstallsMin(), appInfo.getContentsRating());
+        if (appInfo.getImageUrls() != null) {
+            imageViewPager.setAdapter(new NetworkImagePagerAdapter(appInfo.getImageUrls()));
+        }
+    }
+
+    private void setVerboseGroup(Double star, Integer installsMin, String contentsRating) {
+        reviewScoreTextView.setText(String.format(getContext().getString(R.string.format_app_info_star_score),
+                (float) Math.round(star * 10) / 10));
+        downloadCountTextView.setText(String.format(getContext().getString(R.string.format_app_info_download_count),
+                installsMin));
+        ageLimitTextView.setText(contentsRating);
     }
 
     public ImageView getIconImageView() {
@@ -115,6 +148,10 @@ public class RecommendAppItemView extends ConstraintLayout {
         this.recommendType = recommendType;
 
         refreshLabelTextView();
+    }
+
+    public void setVerbose(boolean isVerbose) {
+        verboseGroup.setVisibility(isVerbose ? View.VISIBLE : View.GONE);
     }
 
     // 고민되네 map으로 처리할까...
