@@ -4,8 +4,10 @@ import android.support.v4.app.Fragment;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.main.presenter.RecommendPresenter;
 import com.formakers.fomes.model.AppInfo;
+import com.google.common.collect.Lists;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +17,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
+
+import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -41,12 +45,22 @@ public class RecommendFragmentViewTest {
         appInfo.setStar(2.999).setInstallsMin(1000).setContentsRating("contentRating");
         appInfo.setDeveloper("포메스");
 
-        subject.onShowDetailEvent(appInfo);
+        RecommendApp recommendApp = new RecommendApp().setAppInfo(appInfo)
+                .setRecommendType(4).setCriteria(Lists.newArrayList("reason1", "reason2"));
+
+        subject.onShowDetailEvent(recommendApp, 1);
 
         Fragment fragment = subject.getChildFragmentManager().findFragmentByTag(AppInfoDetailDialogFragment.TAG);
         AppInfo actualAppInfo = fragment.getArguments().getParcelable(FomesConstants.EXTRA.APPINFO);
+        int recommendType = fragment.getArguments().getInt(FomesConstants.EXTRA.RECOMMEND_TYPE);
+        List<String> recommendCriteria = fragment.getArguments().getStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA);
+        int rank = fragment.getArguments().getInt(FomesConstants.EXTRA.RANK);
 
         assertThat(actualAppInfo).isNotNull();
         assertThat(actualAppInfo.getPackageName()).isEqualTo("com.formakers.fomes");
+        assertThat(recommendType).isEqualTo(4);
+        assertThat(recommendCriteria.get(0)).isEqualTo("reason1");
+        assertThat(recommendCriteria.get(1)).isEqualTo("reason2");
+        assertThat(rank).isEqualTo(1);
     }
 }

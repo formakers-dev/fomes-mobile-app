@@ -12,13 +12,14 @@ import android.view.ViewGroup;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
 import com.formakers.fomes.main.dagger.RecommendFragmentModule;
-import com.formakers.fomes.model.AppInfo;
+import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 
@@ -80,11 +81,14 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     }
 
     @Override
-    public void onShowDetailEvent(AppInfo appInfo) {
+    public void onShowDetailEvent(RecommendApp recommendApp, int rank) {
         AppInfoDetailDialogFragment appInfoDetailDialogFragment = new AppInfoDetailDialogFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(FomesConstants.EXTRA.APPINFO, appInfo);
+        bundle.putParcelable(FomesConstants.EXTRA.APPINFO, recommendApp.getAppInfo());
+        bundle.putInt(FomesConstants.EXTRA.RECOMMEND_TYPE, recommendApp.getRecommendType());
+        bundle.putStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA, Lists.newArrayList(recommendApp.getCriteria()));
+        bundle.putInt(FomesConstants.EXTRA.RANK, rank);
         appInfoDetailDialogFragment.setArguments(bundle);
 
         appInfoDetailDialogFragment.show(getChildFragmentManager(), AppInfoDetailDialogFragment.TAG);

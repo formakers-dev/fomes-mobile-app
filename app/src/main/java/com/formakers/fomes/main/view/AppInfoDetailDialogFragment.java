@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.model.AppInfo;
+import com.google.common.base.Joiner;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,9 +63,15 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
         }
 
         AppInfo appInfo = bundle.getParcelable(FomesConstants.EXTRA.APPINFO);
-        Log.d(TAG, String.valueOf(appInfo));
+        int recommendType = bundle.getInt(FomesConstants.EXTRA.RECOMMEND_TYPE);
+        List<String> recommendCriteria = bundle.getStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA);
+        int rank = bundle.getInt(FomesConstants.EXTRA.RANK);
+
+        Log.v(TAG, String.valueOf(appInfo));
 
         appDetailView.bindAppInfo(appInfo);
+        appDetailView.setRecommendType(recommendType);
+        appDetailView.setLabelText(Joiner.on(" ").join(recommendCriteria.toArray()), rank);
 
         downloadButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);

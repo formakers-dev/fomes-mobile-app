@@ -4,7 +4,6 @@ import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
-import com.formakers.fomes.model.AppInfo;
 
 import java.util.List;
 
@@ -30,8 +29,8 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
-    public void emitShowDetailEvent(AppInfo appInfo) {
-        this.view.onShowDetailEvent(appInfo);
+    public void emitShowDetailEvent(RecommendApp recommendApp, int rank) {
+        this.view.onShowDetailEvent(recommendApp, rank);
     }
 
     @Override

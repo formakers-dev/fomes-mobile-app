@@ -39,12 +39,15 @@ public class RecommendPresenterTest {
 
     @Test
     public void emitShowDetailEvent__디테일화면을_보여주라는_이벤트_발생시__뷰에_콜백을_호출한다() {
-        subject.emitShowDetailEvent(new AppInfo("packageName", "appName"));
+        RecommendApp app = new RecommendApp().setAppInfo(new AppInfo("packageName").setAppName("appName"));
+        subject.emitShowDetailEvent(app, 1);
 
-        ArgumentCaptor<AppInfo> captor = ArgumentCaptor.forClass(AppInfo.class);
-        verify(mockView).onShowDetailEvent(captor.capture());
-        assertThat(captor.getValue().getPackageName()).isEqualTo("packageName");
-        assertThat(captor.getValue().getAppName()).isEqualTo("appName");
+        ArgumentCaptor<RecommendApp> captor = ArgumentCaptor.forClass(RecommendApp.class);
+        ArgumentCaptor<Integer> rankCaptor = ArgumentCaptor.forClass(Integer.class);
+        verify(mockView).onShowDetailEvent(captor.capture(), rankCaptor.capture());
+        assertThat(captor.getValue().getAppInfo().getPackageName()).isEqualTo("packageName");
+        assertThat(captor.getValue().getAppInfo().getAppName()).isEqualTo("appName");
+        assertThat(rankCaptor.getValue()).isEqualTo(1);
     }
 
     @Test

@@ -48,11 +48,10 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
         viewHolder.recommendAppItemView.bindAppInfo(recommendApp.getAppInfo());
-
-        viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp.getAppInfo()));
-
         viewHolder.recommendAppItemView.setRecommendType(recommendApp.getRecommendType());
         viewHolder.recommendAppItemView.setLabelText(Joiner.on(" ").join(recommendApp.getCriteria()), position + 1);
+
+        viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp, position + 1));
     }
 
     @Override
