@@ -7,7 +7,6 @@ import com.formakers.fomes.common.view.custom.FomesAlertDialogTest;
 import com.formakers.fomes.main.presenter.MainPresenterTest;
 import com.formakers.fomes.main.view.MainActivityTest;
 import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
-import com.formakers.fomes.provisioning.view.LoginActivityTest;
 import com.formakers.fomes.provisioning.view.ProvisioningActivityTest;
 import com.formakers.fomes.provisioning.view.RecentAnalysisReportActivityTest;
 import com.formakers.fomes.service.MessagingTokenServiceTest;
@@ -32,6 +31,5 @@ public interface TestApplicationComponent extends ApplicationComponent {
     void inject(RecentAnalysisReportActivityTest activityTest);
     void inject(MainActivityTest activityTest);
     void inject(SettingsActivityTest activityTest);
-    void inject(LoginActivityTest activityTest);
     void inject(ProvisioningActivityTest activityTest);
 }
