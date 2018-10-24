@@ -18,8 +18,8 @@ import rx.schedulers.Schedulers;
 
 @Singleton
 public class UserService extends AbstractService {
-
     private static final String TAG = "UserService";
+
     private final UserAPI userAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
     private final APIHelper APIHelper;

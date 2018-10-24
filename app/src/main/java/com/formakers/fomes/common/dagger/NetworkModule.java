@@ -3,6 +3,7 @@ package com.formakers.fomes.common.dagger;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.common.network.api.ConfigAPI;
 import com.formakers.fomes.common.network.api.ProjectAPI;
+import com.formakers.fomes.common.network.api.RecommendAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 
@@ -68,5 +69,11 @@ public class NetworkModule {
     @Provides
     ConfigAPI configAPI(Retrofit retrofit) {
         return retrofit.create(ConfigAPI.class);
+    }
+
+    @Singleton
+    @Provides
+    RecommendAPI recommendAPI(Retrofit retrofit) {
+        return retrofit.create(RecommendAPI.class);
     }
 }

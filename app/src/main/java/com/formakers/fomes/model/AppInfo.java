@@ -8,10 +8,12 @@ import java.util.List;
 public class AppInfo implements Parcelable {
     private String packageName;
     private String appName;
-    private String categoryId1;
-    private String categoryName1;
-    private String categoryId2;
-    private String categoryName2;
+    @Deprecated private String categoryId1;
+    @Deprecated private String categoryName1;
+    @Deprecated private String categoryId2;
+    @Deprecated private String categoryName2;
+    private String categoryId;
+    private String categoryName;
     private String developer;
     private String iconUrl;
     private Double star;
@@ -20,6 +22,10 @@ public class AppInfo implements Parcelable {
     private String contentsRating;
     private Long totalUsedTime;
     private List<String> imageUrls;
+
+    public AppInfo(String packageName) {
+        this.packageName = packageName;
+    }
 
     public AppInfo(Parcel in) {
         readFromParcel(in);
@@ -58,39 +64,65 @@ public class AppInfo implements Parcelable {
         return this;
     }
 
+    @Deprecated
     public String getCategoryId1() {
         return categoryId1;
     }
 
+    @Deprecated
     public AppInfo setCategoryId1(String categoryId1) {
         this.categoryId1 = categoryId1;
         return this;
     }
 
+    @Deprecated
     public String getCategoryName1() {
         return categoryName1;
     }
 
+    @Deprecated
     public AppInfo setCategoryName1(String categoryName1) {
         this.categoryName1 = categoryName1;
         return this;
     }
 
+    @Deprecated
     public String getCategoryId2() {
         return categoryId2;
     }
 
+    @Deprecated
     public AppInfo setCategoryId2(String categoryId2) {
         this.categoryId2 = categoryId2;
         return this;
     }
 
+    @Deprecated
     public String getCategoryName2() {
         return categoryName2;
     }
 
+    @Deprecated
     public AppInfo setCategoryName2(String categoryName2) {
         this.categoryName2 = categoryName2;
+        return this;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public AppInfo setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+        return this;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public AppInfo setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
         return this;
     }
 
@@ -175,6 +207,8 @@ public class AppInfo implements Parcelable {
                 ", categoryName1='" + categoryName1 + '\'' +
                 ", categoryId2='" + categoryId2 + '\'' +
                 ", categoryName2='" + categoryName2 + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", categoryName='" + categoryName + '\'' +
                 ", developer='" + developer + '\'' +
                 ", iconUrl='" + iconUrl + '\'' +
                 ", star=" + star +
@@ -198,6 +232,8 @@ public class AppInfo implements Parcelable {
         dest.writeString(categoryName1);
         dest.writeString(categoryId2);
         dest.writeString(categoryName2);
+        dest.writeString(categoryId);
+        dest.writeString(categoryName);
         dest.writeString(developer);
         dest.writeString(iconUrl);
         dest.writeLong(totalUsedTime == null ? 0L : totalUsedTime);
@@ -210,6 +246,8 @@ public class AppInfo implements Parcelable {
         categoryName1 = in.readString();
         categoryId2 = in.readString();
         categoryName2 = in.readString();
+        categoryId = in.readString();
+        categoryName = in.readString();
         developer = in.readString();
         iconUrl = in.readString();
         totalUsedTime = in.readLong();

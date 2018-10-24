@@ -5,6 +5,8 @@ import android.content.Context;
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.job.JobManager;
+import com.formakers.fomes.common.network.RecommendService;
+import com.formakers.fomes.common.network.api.RecommendAPI;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
@@ -73,6 +75,12 @@ public class TestApplicationModule {
         return mock(ConfigAPI.class);
     }
 
+    @Singleton
+    @Provides
+    RecommendAPI recommendAPI() {
+        return mock(RecommendAPI.class);
+    }
+
     /**
      * API Service
      */
@@ -98,6 +106,12 @@ public class TestApplicationModule {
     @Provides
     ConfigService configService() {
         return mock(ConfigService.class);
+    }
+
+    @Singleton
+    @Provides
+    RecommendService recommendService() {
+        return mock(RecommendService.class);
     }
 
     /**

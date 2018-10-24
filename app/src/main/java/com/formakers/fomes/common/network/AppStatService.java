@@ -12,11 +12,13 @@ import com.formakers.fomes.model.User;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+@Singleton
 public class AppStatService extends AbstractService {
     private static final String TAG = "AppStatService";
     private final StatAPI statAPI;

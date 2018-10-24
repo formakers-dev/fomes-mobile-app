@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.network;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import rx.Observable;
 import rx.Single;
