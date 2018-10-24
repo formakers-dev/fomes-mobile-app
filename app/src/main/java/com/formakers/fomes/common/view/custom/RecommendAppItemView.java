@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.adapter.NetworkImagePagerAdapter;
 import com.formakers.fomes.model.AppInfo;
@@ -24,11 +25,6 @@ import com.formakers.fomes.model.AppInfo;
 public class RecommendAppItemView extends ConstraintLayout {
 
     public static final String TAG = RecommendAppItemView.class.getSimpleName();
-
-    public static final int RECOMMEND_TYPE_FAVORITE_GAME = 1;
-    public static final int RECOMMEND_TYPE_FAVORITE_DEVELOPER = 2;
-    public static final int RECOMMEND_TYPE_FAVORITE_CATEGORY = 3;
-    public static final int RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC = 4;
 
     private ImageView iconImageView;
     private TextView nameTextView;
@@ -85,7 +81,7 @@ public class RecommendAppItemView extends ConstraintLayout {
                 typedArray.getString(R.styleable.RecommendAppItemView_app_categoryText),
                 typedArray.getString(R.styleable.RecommendAppItemView_app_developerText));
 
-        setRecommendType(typedArray.getInteger(R.styleable.RecommendAppItemView_app_recommendType, RECOMMEND_TYPE_FAVORITE_GAME));
+        setRecommendType(typedArray.getInteger(R.styleable.RecommendAppItemView_app_recommendType, RecommendApp.RECOMMEND_TYPE_FAVORITE_GAME));
 
         setVerbose(typedArray.getBoolean(R.styleable.RecommendAppItemView_app_verbose, false));
 
@@ -159,22 +155,22 @@ public class RecommendAppItemView extends ConstraintLayout {
         String format;
 
         switch (recommendType) {
-            case RECOMMEND_TYPE_FAVORITE_GAME:
+            case RecommendApp.RECOMMEND_TYPE_FAVORITE_GAME:
                 styleResId = R.style.FomesTheme_TurquoiseItem;
                 colorResId = R.color.colorPrimary;
                 format = res.getString(R.string.recommend_label_format_favorite_game);
                 break;
-            case RECOMMEND_TYPE_FAVORITE_DEVELOPER:
+            case RecommendApp.RECOMMEND_TYPE_FAVORITE_DEVELOPER:
                 styleResId = R.style.FomesTheme_BlushPinkItem;
                 colorResId = R.color.fomes_blush_pink;
                 format = res.getString(R.string.recommend_label_format_favorite_developer);
                 break;
-            case RECOMMEND_TYPE_FAVORITE_CATEGORY:
+            case RecommendApp.RECOMMEND_TYPE_FAVORITE_CATEGORY:
                 styleResId = R.style.FomesTheme_WarmGrayItem;
                 colorResId = R.color.fomes_warm_gray;
                 format = res.getString(R.string.recommend_label_format_favorite_category);
                 break;
-            case RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC:
+            case RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC:
                 styleResId = R.style.FomesTheme_SquashItem;
                 colorResId = R.color.fomes_squash;
                 format = res.getString(R.string.recommend_label_format_similar_demographic);

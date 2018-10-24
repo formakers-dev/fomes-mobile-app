@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.common.network.RecommendService;
+import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 import com.formakers.fomes.model.AppInfo;
@@ -34,7 +35,10 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
-    public Observable<List<AppInfo>> loadSimilarAppsByDemographic() {
-        return recommendService.requestSimilarAppsByDemographic(1, 10);
+    public Observable<List<RecommendApp>> loadSimilarAppsByDemographic() {
+        return recommendService.requestSimilarAppsByDemographic(1, 10)
+                .concatMap(items -> Observable.from(items))
+                .map(item -> item.setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC))
+                .toList();
     }
 }

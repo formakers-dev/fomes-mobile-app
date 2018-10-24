@@ -1,9 +1,9 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.RecommendAPI;
+import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.AppInfo;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class RecommendService extends AbstractService {
         this.APIHelper = APIHelper;
     }
 
-    public Observable<List<AppInfo>> requestSimilarAppsByDemographic(int page, int limit) {
+    public Observable<List<RecommendApp>> requestSimilarAppsByDemographic(int page, int limit) {
         return  Observable.defer(() -> recommendAPI.getSimilarAppsByDemographic(SharedPreferencesHelper.getAccessToken(), page, limit))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())

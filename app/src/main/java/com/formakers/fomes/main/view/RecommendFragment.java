@@ -69,12 +69,14 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
 
-        presenter.loadSimilarAppsByDemographic()
+        addCompositeSubscription(
+            presenter.loadSimilarAppsByDemographic()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(appInfos -> {
-                    recommendListAdapter.addAll(appInfos);
+                .subscribe(recommendApps -> {
+                    recommendListAdapter.addAll(recommendApps);
                     recommendListAdapter.notifyDataSetChanged();
-                });
+                })
+        );
     }
 
     @Override

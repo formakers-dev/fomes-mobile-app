@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network.api;
 
-import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.common.network.vo.RecommendApp;
 
 import java.util.List;
 
@@ -12,6 +12,6 @@ import rx.Observable;
 public interface RecommendAPI {
 
     @GET("/recommend/similar/demographic")
-    Observable<List<AppInfo>> getSimilarAppsByDemographic(@Header("x-access-token") String accessToken, @Query("page") int page, @Query("limit") int limit);
+    Observable<List<RecommendApp>> getSimilarAppsByDemographic(@Header("x-access-token") String accessToken, @Query("page") int page, @Query("limit") int limit);
 
 }
