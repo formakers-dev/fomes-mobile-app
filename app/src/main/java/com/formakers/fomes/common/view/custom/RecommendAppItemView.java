@@ -6,13 +6,11 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +20,6 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.adapter.NetworkImagePagerAdapter;
 import com.formakers.fomes.model.AppInfo;
-
-import java.util.List;
 
 public class RecommendAppItemView extends ConstraintLayout {
 
@@ -104,7 +100,7 @@ public class RecommendAppItemView extends ConstraintLayout {
                 .into(iconImageView);
 
         setNameText(appInfo.getAppName());
-        setCategoryDeveloperText(appInfo.getCategoryName1(), appInfo.getDeveloper());
+        setCategoryDeveloperText(appInfo.getCategoryName(), appInfo.getDeveloper());
 
         // verbose 체크해서 그릴까? setVerbose 하면 리프레쉬 시키고
         setVerboseGroup(appInfo.getStar(), appInfo.getInstallsMin(), appInfo.getContentsRating());

@@ -9,16 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
-import com.formakers.fomes.main.presenter.RecommendPresenter;
+import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
+import com.formakers.fomes.main.dagger.RecommendFragmentModule;
 import com.formakers.fomes.model.AppInfo;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class RecommendFragment extends BaseFragment implements RecommendContract.View {
 
@@ -26,17 +31,24 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     RecommendListAdapter recommendListAdapter;
 
-    RecommendContract.Presenter presenter;
+    @Inject RecommendContract.Presenter presenter;
 
     @Override
     public void setPresenter(RecommendContract.Presenter presenter) {
-        this.presenter = presenter;
+        if (this.presenter == null) {
+            this.presenter = presenter;
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.setPresenter(new RecommendPresenter(this));
+        DaggerRecommendFragmentComponent.builder()
+                .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
+                .recommendFragmentModule(new RecommendFragmentModule(this))
+                .build()
+                .inject(this);
+
         return inflater.inflate(R.layout.fragment_recommend, container, false);
     }
 
@@ -56,6 +68,13 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapter.setPresenter(presenter);
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
+
+        presenter.loadSimilarAppsByDemographic()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(appInfos -> {
+                    recommendListAdapter.addAll(appInfos);
+                    recommendListAdapter.notifyDataSetChanged();
+                });
     }
 
     @Override
