@@ -142,12 +142,12 @@
         <item name="item_background_radius">6dp</item>
     </style>
 
-    <style name="RecommendTheme.BottomSheetDialog.CollectionButtonStyle">
+    <style name="RecommendTheme.BottomSheetDialog.WishListButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">38dp</item>
         <item name="android:layout_marginBottom">17dp</item>
-        <item name="android:paddingStart">17dp</item>
-        <item name="android:paddingEnd">17dp</item>
+        <item name="android:paddingStart">38dp</item>
+        <item name="android:paddingEnd">38dp</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:gravity">center</item>

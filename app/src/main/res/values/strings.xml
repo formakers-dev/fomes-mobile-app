@@ -110,9 +110,11 @@
     <string name="main_tab_betatest">베타테스트</string>
     <string name="main_tab_event">이벤트</string>
     <string name="main_menu_my_game_collection">내 게임 컬렉션</string>
+    <string name="main_menu_my_wish_list">위시리스트</string>
     <string name="main_menu_my_hope_games">추천게임 컬렉션 (2차오픈)</string>
     <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
     <string name="main_menu_my_betatest">피드백 존 (3차오픈)</string>
+    <string name="main_menu_my_feedback_zone">피드백 존 (준비중)</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
 
@@ -147,8 +149,7 @@
     <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 제이슨, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인,  싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
 
     <!-- Recommend -->
-    <string name="save_collection">컬렉션에 저장</string>
-    <string name="save_block">관심없음 처리</string>
+    <string name="save_wish_list">위시리스트에 저장</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
     <string name="recommend_label_format_favorite_game">%1$s 게이머들이 많이 하는 게임 %2$d위</string>
     <string name="recommend_label_format_favorite_developer">%s 게임 개발사가 만든 다른 게임들</string>

@@ -28,8 +28,7 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
 
     public static final String TAG = AppInfoDetailDialogFragment.class.getSimpleName();
 
-    @BindView(R.id.collection_button) Button saveCollectionButton;
-    @BindView(R.id.block_button) Button blockButton;
+    @BindView(R.id.wish_list_button) Button saveWishListButton;
     @BindView(R.id.app_detail_view) RecommendAppItemView appDetailView;
     @BindView(R.id.download_button) Button downloadButton;
 
@@ -80,8 +79,9 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
         });
 
         // temp
-        saveCollectionButton.setOnClickListener(v -> Toast.makeText(getContext(), "컬렉션 저장 버튼 클릭함", Toast.LENGTH_LONG).show());
-        blockButton.setOnClickListener(v -> Toast.makeText(getContext(), "관심없음 처리 버튼 클릭함", Toast.LENGTH_LONG).show());
+        saveWishListButton.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "컬렉션 저장 버튼 클릭함", Toast.LENGTH_LONG).show();
+        });
     }
 
     @Override
