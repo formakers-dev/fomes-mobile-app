@@ -1,9 +1,8 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.network.api.UserAPI;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import rx.Observable;
 import rx.Single;
@@ -84,6 +82,15 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     public void updateRegistrationToken호출시_토큰_만료_여부를_확인한다() throws Exception {
         verifyToCheckExpiredToken(subject.updateRegistrationToken("REFRESHED_PUSH_TOKEN").toObservable());
+    }
+
+    @Test
+    public void requestSaveAppToWishList_호출시__앱을_위시리스트에_추가하는_요청을_한다() {
+        when(mockUserAPI.postWishList(anyString(), anyString())).thenReturn(mock(Observable.class));
+
+        subject.requestSaveAppToWishList("com.test.app1").subscribe(new TestSubscriber<>());
+
+        verify(mockUserAPI).postWishList(anyString(), eq("com.test.app1"));
     }
 
     @Test

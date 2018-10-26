@@ -22,6 +22,10 @@ public interface UserAPI {
     @POST("/user")
     Observable<Void> update(@Header("x-access-token") String accessToken, @Body User user);
 
+    @POST("/user/wishlist")
+    Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body String packageName);
+
+    @Deprecated
     @GET("/user/verifyInvitationCode/{code}")
     Observable<Void> verifyInvitationCode(@Path("code") String code);
 

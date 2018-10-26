@@ -62,6 +62,16 @@ public class UserService extends AbstractService {
                 .toCompletable();
     }
 
+    public Completable requestSaveAppToWishList(String packageName) {
+        return Observable.defer(() -> userAPI.postWishList(SharedPreferencesHelper.getAccessToken(), packageName))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(APIHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
+    @Deprecated
     public Completable verifyInvitationCode(String code) {
         return userAPI.verifyInvitationCode(code)
                 .doOnError(this::logError)
