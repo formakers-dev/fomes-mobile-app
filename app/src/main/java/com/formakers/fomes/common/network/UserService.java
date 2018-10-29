@@ -8,6 +8,8 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.util.Log;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -63,7 +65,10 @@ public class UserService extends AbstractService {
     }
 
     public Completable requestSaveAppToWishList(String packageName) {
-        return Observable.defer(() -> userAPI.postWishList(SharedPreferencesHelper.getAccessToken(), packageName))
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("packageName", packageName);
+
+        return Observable.defer(() -> userAPI.postWishList(SharedPreferencesHelper.getAccessToken(), map))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

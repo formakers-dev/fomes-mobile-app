@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -16,8 +17,10 @@ import com.google.common.base.Joiner;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.android.schedulers.AndroidSchedulers;
+
 public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-    implements RecommendListAdapterContract.View, RecommendListAdapterContract.Model {
+        implements RecommendListAdapterContract.View, RecommendListAdapterContract.Model {
 
     private static final String TAG = "RecommendListAdapter";
 
@@ -52,6 +55,18 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
         viewHolder.recommendAppItemView.setLabelText(Joiner.on(" ").join(recommendApp.getCriteria()), position + 1);
 
         viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp, position + 1));
+
+        viewHolder.itemView.findViewById(R.id.app_info_wishlist_button).setOnClickListener(v -> {
+
+            this.presenter.emitSaveToWishList(recommendApp.getAppInfo().getPackageName())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    // TODO : 토글처리에 대한 UI 업데이트 - 현재는 임시로 등록에 대한 UI업데이트 표시만 수행
+                    viewHolder.itemView.findViewById(R.id.app_info_wishlist_button).setBackground(context.getDrawable(R.drawable.icon_star));
+                }, e -> {
+                    Toast.makeText(this.context, "위시리스트 등록에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                });
+        });
     }
 
     @Override

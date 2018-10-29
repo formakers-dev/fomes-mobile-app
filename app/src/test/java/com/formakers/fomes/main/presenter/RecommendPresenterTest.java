@@ -2,6 +2,7 @@ package com.formakers.fomes.main.presenter;
 
 
 import com.formakers.fomes.common.network.RecommendService;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.model.AppInfo;
@@ -27,6 +28,7 @@ public class RecommendPresenterTest {
 
     @Mock RecommendContract.View mockView;
     @Mock RecommendService mockRecommendService;
+    @Mock UserService mockUserService;
 
     RecommendPresenter subject;
 
@@ -34,7 +36,7 @@ public class RecommendPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        subject = new RecommendPresenter(mockView, mockRecommendService);
+        subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService);
     }
 
     @Test
@@ -76,5 +78,12 @@ public class RecommendPresenterTest {
         assertThat(result.get(1).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
         assertThat(result.get(2).getAppInfo().getPackageName()).isEqualTo("com.test3");
         assertThat(result.get(2).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
+    }
+
+    @Test
+    public void emitSaveToWishList_호출시__앱을_위시리스트에_추가하도록_서버에_요청한다() {
+        subject.emitSaveToWishList("com.test");
+
+        verify(mockUserService).requestSaveAppToWishList("com.test");
     }
 }

@@ -11,6 +11,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.HashMap;
+
 import rx.Observable;
 import rx.Single;
 import rx.observers.TestSubscriber;
@@ -86,11 +88,16 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     public void requestSaveAppToWishList_호출시__앱을_위시리스트에_추가하는_요청을_한다() {
-        when(mockUserAPI.postWishList(anyString(), anyString())).thenReturn(mock(Observable.class));
+        when(mockUserAPI.postWishList(anyString(), any(HashMap.class))).thenReturn(mock(Observable.class));
 
         subject.requestSaveAppToWishList("com.test.app1").subscribe(new TestSubscriber<>());
 
-        verify(mockUserAPI).postWishList(anyString(), eq("com.test.app1"));
+        ArgumentCaptor<HashMap> wishListMapCaptor = ArgumentCaptor.forClass(HashMap.class);
+
+        verify(mockUserAPI).postWishList(anyString(), wishListMapCaptor.capture());
+
+        HashMap<String, Object> wishListMap = wishListMapCaptor.getValue();
+        assertThat(wishListMap.get("packageName")).isEqualTo("com.test.app1");
     }
 
     @Test

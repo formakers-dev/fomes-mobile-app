@@ -2,6 +2,8 @@ package com.formakers.fomes.common.network.api;
 
 import com.formakers.fomes.model.User;
 
+import java.util.HashMap;
+
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -23,7 +25,7 @@ public interface UserAPI {
     Observable<Void> update(@Header("x-access-token") String accessToken, @Body User user);
 
     @POST("/user/wishlist")
-    Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body String packageName);
+    Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body HashMap<String, Object> wishListMap);
 
     @Deprecated
     @GET("/user/verifyInvitationCode/{code}")

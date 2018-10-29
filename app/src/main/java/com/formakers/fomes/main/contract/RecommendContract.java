@@ -5,6 +5,7 @@ import com.formakers.fomes.common.network.vo.RecommendApp;
 
 import java.util.List;
 
+import rx.Completable;
 import rx.Observable;
 
 public interface RecommendContract {
@@ -12,6 +13,8 @@ public interface RecommendContract {
         void setAdapterModel(RecommendListAdapterContract.Model adapterModel);
         void emitShowDetailEvent(RecommendApp recommendApp, int rank);
         Observable<List<RecommendApp>> loadSimilarAppsByDemographic();
+
+        Completable emitSaveToWishList(String packageName);
     }
 
     interface View extends BaseView<Presenter> {
