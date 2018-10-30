@@ -15,6 +15,7 @@ public interface RecommendContract {
         Observable<List<RecommendApp>> loadSimilarAppsByDemographic();
 
         Completable emitSaveToWishList(String packageName);
+        Completable emitRemoveFromWishList(String packageName);
     }
 
     interface View extends BaseView<Presenter> {

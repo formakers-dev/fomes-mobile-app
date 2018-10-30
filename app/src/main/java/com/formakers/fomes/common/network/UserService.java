@@ -2,11 +2,11 @@ package com.formakers.fomes.common.network;
 
 import android.support.annotation.NonNull;
 
+import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.network.api.UserAPI;
-import com.formakers.fomes.common.util.Log;
 
 import java.util.HashMap;
 
@@ -69,6 +69,15 @@ public class UserService extends AbstractService {
         map.put("packageName", packageName);
 
         return Observable.defer(() -> userAPI.postWishList(SharedPreferencesHelper.getAccessToken(), map))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(APIHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
+    public Completable requestRemoveAppFromWishList(String packageName) {
+        return Observable.defer(() -> userAPI.deleteWishList(SharedPreferencesHelper.getAccessToken(), packageName))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

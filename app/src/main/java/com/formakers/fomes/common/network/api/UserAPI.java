@@ -5,6 +5,7 @@ import com.formakers.fomes.model.User;
 import java.util.HashMap;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -33,4 +34,7 @@ public interface UserAPI {
 
     @GET("/user/verifyToken")
     Observable<Void> verifyToken(@Header("x-access-token") String accessToken);
+
+    @DELETE("/user/wishlist/{packageName}")
+    Observable<Void> deleteWishList(@Header("x-access-token") String accessToken, @Path("packageName") String packageName);
 }

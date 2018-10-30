@@ -49,4 +49,9 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     public Completable emitSaveToWishList(String packageName) {
         return userService.requestSaveAppToWishList(packageName);
     }
+
+    @Override
+    public Completable emitRemoveFromWishList(String packageName) {
+        return userService.requestRemoveAppFromWishList(packageName);
+    }
 }

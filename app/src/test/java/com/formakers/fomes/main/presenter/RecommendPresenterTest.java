@@ -26,11 +26,11 @@ import static org.mockito.Mockito.when;
 
 public class RecommendPresenterTest {
 
-    @Mock RecommendContract.View mockView;
-    @Mock RecommendService mockRecommendService;
-    @Mock UserService mockUserService;
+    @Mock private RecommendContract.View mockView;
+    @Mock private RecommendService mockRecommendService;
+    @Mock private UserService mockUserService;
 
-    RecommendPresenter subject;
+    private RecommendPresenter subject;
 
     @Before
     public void setUp() throws Exception {
@@ -85,5 +85,12 @@ public class RecommendPresenterTest {
         subject.emitSaveToWishList("com.test");
 
         verify(mockUserService).requestSaveAppToWishList("com.test");
+    }
+
+    @Test
+    public void emitRemoveFromWishList_호출시__앱을_위시리스트에서_삭제하도록_서버에_요청한다() {
+        subject.emitRemoveFromWishList("com.test");
+
+        verify(mockUserService).requestRemoveAppFromWishList("com.test");
     }
 }

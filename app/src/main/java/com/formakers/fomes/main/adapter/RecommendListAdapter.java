@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -57,15 +58,17 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
         viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp, position + 1));
 
         viewHolder.itemView.findViewById(R.id.app_info_wishlist_button).setOnClickListener(v -> {
-
-            this.presenter.emitSaveToWishList(recommendApp.getAppInfo().getPackageName())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    // TODO : 토글처리에 대한 UI 업데이트 - 현재는 임시로 등록에 대한 UI업데이트 표시만 수행
-                    ((RecommendAppItemView)viewHolder.itemView).setWishListChecked(true);
-                }, e -> {
-                    Toast.makeText(this.context, "위시리스트 등록에 실패하였습니다.", Toast.LENGTH_LONG).show();
-                });
+            if (!((ToggleButton) v).isChecked()) {
+                this.presenter.emitRemoveFromWishList(recommendApp.getAppInfo().getPackageName())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> ((ToggleButton)v).setChecked(false),
+                                e -> Toast.makeText(this.context, "위시리스트 삭제에 실패하였습니다.", Toast.LENGTH_LONG).show());
+            } else {
+                this.presenter.emitSaveToWishList(recommendApp.getAppInfo().getPackageName())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> ((ToggleButton)v).setChecked(true),
+                                e -> Toast.makeText(this.context, "위시리스트 등록에 실패하였습니다.", Toast.LENGTH_LONG).show());
+            }
         });
     }
 
