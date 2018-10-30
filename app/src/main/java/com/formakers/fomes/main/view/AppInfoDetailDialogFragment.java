@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
@@ -28,7 +27,6 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
 
     public static final String TAG = AppInfoDetailDialogFragment.class.getSimpleName();
 
-    @BindView(R.id.wish_list_button) Button saveWishListButton;
     @BindView(R.id.app_detail_view) RecommendAppItemView appDetailView;
     @BindView(R.id.download_button) Button downloadButton;
 
@@ -76,11 +74,6 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("market://details?id=" + appInfo.getPackageName()));
             startActivity(intent);
-        });
-
-        // temp
-        saveWishListButton.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "컬렉션 저장 버튼 클릭함", Toast.LENGTH_LONG).show();
         });
     }
 
