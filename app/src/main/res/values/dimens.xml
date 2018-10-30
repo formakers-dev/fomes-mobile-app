@@ -38,7 +38,7 @@
     <dimen name="item_people_games_title_margin_top">5dp</dimen>
     <dimen name="item_people_games_title_text_size">9dp</dimen>
     <dimen name="analysis_line_width">1dp</dimen>
-    <dimen name="analysis_line_default_hieght">142dp</dimen>
+    <dimen name="analysis_line_default_height">142dp</dimen>
 
     <dimen name="analysis_qna_text_size">12dp</dimen>
 

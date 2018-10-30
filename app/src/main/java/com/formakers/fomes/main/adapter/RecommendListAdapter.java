@@ -62,7 +62,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     // TODO : 토글처리에 대한 UI 업데이트 - 현재는 임시로 등록에 대한 UI업데이트 표시만 수행
-                    viewHolder.itemView.findViewById(R.id.app_info_wishlist_button).setBackground(context.getDrawable(R.drawable.icon_star));
+                    ((RecommendAppItemView)viewHolder.itemView).setWishListChecked(true);
                 }, e -> {
                     Toast.makeText(this.context, "위시리스트 등록에 실패하였습니다.", Toast.LENGTH_LONG).show();
                 });

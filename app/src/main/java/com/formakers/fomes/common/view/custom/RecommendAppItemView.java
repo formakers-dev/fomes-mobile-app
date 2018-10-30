@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -35,6 +36,7 @@ public class RecommendAppItemView extends ConstraintLayout {
     private TextView downloadCountTextView;
     private TextView ageLimitTextView;
     private ViewPager imageViewPager;
+    private ToggleButton wishListButton;
 
     private int recommendType;
     private String recommendReason;
@@ -70,6 +72,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         downloadCountTextView = findViewById(R.id.item_app_download_count);
         ageLimitTextView = findViewById(R.id.item_app_age_limit);
         imageViewPager = findViewById(R.id.item_app_image_viewpager);
+        wishListButton = findViewById(R.id.app_info_wishlist_button);
     }
 
     private void setTypeArray(TypedArray typedArray) {
@@ -103,6 +106,8 @@ public class RecommendAppItemView extends ConstraintLayout {
         if (appInfo.getImageUrls() != null) {
             imageViewPager.setAdapter(new NetworkImagePagerAdapter(appInfo.getImageUrls()));
         }
+
+        setWishListChecked(appInfo.getWishedByMe());
     }
 
     private void setVerboseGroup(Double star, Integer installsMin, String contentsRating) {
@@ -111,10 +116,6 @@ public class RecommendAppItemView extends ConstraintLayout {
         downloadCountTextView.setText(String.format(getContext().getString(R.string.format_app_info_download_count),
                 installsMin));
         ageLimitTextView.setText(contentsRating);
-    }
-
-    public ImageView getIconImageView() {
-        return iconImageView;
     }
 
     public void setIconImageDrawable(Drawable iconDrawable) {
@@ -144,6 +145,10 @@ public class RecommendAppItemView extends ConstraintLayout {
 
     public void setVerbose(boolean isVerbose) {
         verboseGroup.setVisibility(isVerbose ? View.VISIBLE : View.GONE);
+    }
+
+    public void setWishListChecked(boolean wishedByMe) {
+        wishListButton.setChecked(wishedByMe);
     }
 
     // 고민되네 map으로 처리할까...
