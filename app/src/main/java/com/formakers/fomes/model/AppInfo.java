@@ -203,8 +203,9 @@ public class AppInfo implements Parcelable {
         return wishedByMe;
     }
 
-    public void setWishedByMe(Boolean wishedByMe) {
+    public AppInfo setWishedByMe(Boolean wishedByMe) {
         this.wishedByMe = wishedByMe;
+        return this;
     }
 
     @Override

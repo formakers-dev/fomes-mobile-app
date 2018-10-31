@@ -84,6 +84,8 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     public void onShowDetailEvent(RecommendApp recommendApp, int rank) {
         AppInfoDetailDialogFragment appInfoDetailDialogFragment = new AppInfoDetailDialogFragment();
 
+        appInfoDetailDialogFragment.setPresenter(this.presenter);
+
         Bundle bundle = new Bundle();
         bundle.putParcelable(FomesConstants.EXTRA.APPINFO, recommendApp.getAppInfo());
         bundle.putInt(FomesConstants.EXTRA.RECOMMEND_TYPE, recommendApp.getRecommendType());
@@ -92,5 +94,10 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         appInfoDetailDialogFragment.setArguments(bundle);
 
         appInfoDetailDialogFragment.show(getChildFragmentManager(), AppInfoDetailDialogFragment.TAG);
+    }
+
+    @Override
+    public void refreshWishedByMe(String packageName, boolean wishedByMe) {
+        recommendListAdapter.updateWishedByMe(packageName, wishedByMe);
     }
 }

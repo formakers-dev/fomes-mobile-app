@@ -16,9 +16,11 @@ public interface RecommendContract {
 
         Completable emitSaveToWishList(String packageName);
         Completable emitRemoveFromWishList(String packageName);
+        void emitRefreshWishedByMe(String packageName, boolean wishedByMe);
     }
 
     interface View extends BaseView<Presenter> {
         void onShowDetailEvent(RecommendApp recommendApp, int rank);
+        void refreshWishedByMe(String packageName, boolean wishedByMe);
     }
 }

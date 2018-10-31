@@ -93,4 +93,11 @@ public class RecommendPresenterTest {
 
         verify(mockUserService).requestRemoveAppFromWishList("com.test");
     }
+
+    @Test
+    public void emitRefreshWishedByMe_호출시__특정_앱의_위시리스트_아이콘을_변경한다() {
+        subject.emitRefreshWishedByMe("com.test", true);
+
+        verify(mockView).refreshWishedByMe("com.test", true);
+    }
 }

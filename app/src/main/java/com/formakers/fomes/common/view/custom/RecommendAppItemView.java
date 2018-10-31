@@ -151,6 +151,10 @@ public class RecommendAppItemView extends ConstraintLayout {
         wishListButton.setChecked(wishedByMe);
     }
 
+    public void setOnWishListToggleButtonListener(OnClickListener onClickListener) {
+        wishListButton.setOnClickListener(onClickListener);
+    }
+
     // 고민되네 map으로 처리할까...
     private void refreshLabelTextView() {
         int styleResId;
@@ -188,7 +192,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         }
 
         labelTextView.setBackground(res.getDrawable(R.drawable.item_app_label_background,
-                        new ContextThemeWrapper(getContext(), styleResId).getTheme()));
+                new ContextThemeWrapper(getContext(), styleResId).getTheme()));
         labelTextView.setTextColor(res.getColor(colorResId));
         labelTextView.setText(String.format(format, recommendReason, rank));
     }

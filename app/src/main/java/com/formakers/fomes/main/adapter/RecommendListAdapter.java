@@ -29,7 +29,6 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final List<RecommendApp> recommendApps = new ArrayList<>();
 
     private RecommendContract.Presenter presenter;
-//    private RecommendContract.View view;
 
     public RecommendListAdapter() {
     }
@@ -57,16 +56,16 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp, position + 1));
 
-        viewHolder.itemView.findViewById(R.id.app_info_wishlist_button).setOnClickListener(v -> {
+        viewHolder.recommendAppItemView.setOnWishListToggleButtonListener(v -> {
             if (!((ToggleButton) v).isChecked()) {
                 this.presenter.emitRemoveFromWishList(recommendApp.getAppInfo().getPackageName())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> ((ToggleButton)v).setChecked(false),
+                        .subscribe(() -> updateWishedByMe(position, false),
                                 e -> Toast.makeText(this.context, "위시리스트 삭제에 실패하였습니다.", Toast.LENGTH_LONG).show());
             } else {
                 this.presenter.emitSaveToWishList(recommendApp.getAppInfo().getPackageName())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> ((ToggleButton)v).setChecked(true),
+                        .subscribe(() -> updateWishedByMe(position, true),
                                 e -> Toast.makeText(this.context, "위시리스트 등록에 실패하였습니다.", Toast.LENGTH_LONG).show());
             }
         });
@@ -94,11 +93,21 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public RecommendApp getItem(int position) {
-        if (position == 0) {
-            throw new IllegalArgumentException("this is a header!");
-        }
-
         return recommendApps.get(position);
+    }
+
+    public void updateWishedByMe(String packageName, boolean wishedByMe) {
+        for(int position=0; position<getItemCount(); position++) {
+            if (packageName.equals(recommendApps.get(position).getAppInfo().getPackageName())) {
+                updateWishedByMe(position, wishedByMe);
+                break;
+            }
+        }
+    }
+
+    private void updateWishedByMe(int position, boolean wishedByMe) {
+        getItem(position).getAppInfo().setWishedByMe(wishedByMe);
+        notifyItemChanged(position);
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {

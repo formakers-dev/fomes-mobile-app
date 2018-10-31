@@ -54,4 +54,9 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     public Completable emitRemoveFromWishList(String packageName) {
         return userService.requestRemoveAppFromWishList(packageName);
     }
+
+    @Override
+    public void emitRefreshWishedByMe(String packageName, boolean wishedByMe) {
+        this.view.refreshWishedByMe(packageName, wishedByMe);
+    }
 }
