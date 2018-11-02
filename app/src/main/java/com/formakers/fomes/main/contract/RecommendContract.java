@@ -12,7 +12,7 @@ public interface RecommendContract {
     interface Presenter {
         void setAdapterModel(RecommendListAdapterContract.Model adapterModel);
         void emitShowDetailEvent(RecommendApp recommendApp, int rank);
-        Observable<List<RecommendApp>> loadSimilarAppsByDemographic();
+        Observable<List<RecommendApp>> loadRecommendApps(String categoryId);
 
         Completable emitSaveToWishList(String packageName);
         Completable emitRemoveFromWishList(String packageName);

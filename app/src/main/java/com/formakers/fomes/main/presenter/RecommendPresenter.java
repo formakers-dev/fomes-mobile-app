@@ -38,11 +38,8 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
-    public Observable<List<RecommendApp>> loadSimilarAppsByDemographic() {
-        return recommendService.requestSimilarAppsByDemographic(1, 10)
-                .concatMap(items -> Observable.from(items))
-                .map(item -> item.setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC))
-                .toList();
+    public Observable<List<RecommendApp>> loadRecommendApps(String categoryId) {
+        return recommendService.requestRecommendApps(categoryId, 1, 10);
     }
 
     @Override

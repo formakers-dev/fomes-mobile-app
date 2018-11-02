@@ -21,6 +21,7 @@ import rx.observers.TestSubscriber;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,31 +54,31 @@ public class RecommendPresenterTest {
     }
 
     @Test
-    public void loadSimilarAppsByDemographic__비슷한_인적사항_기준_리스트_로드시__해당_서버에_요청한다() {
+    public void loadRecommendApps__추천_앱_리스트_로드시__해당_서버에_요청한다() {
         List<RecommendApp> items = new ArrayList<>();
 
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
                 .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test2"))
-                .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
+                .setRecommendType(RecommendApp.RECOMMEND_TYPE_FAVORITE_CATEGORY));
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test3"))
-                .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
+                .setRecommendType(RecommendApp.RECOMMEND_TYPE_FAVORITE_DEVELOPER));
 
-        when(mockRecommendService.requestSimilarAppsByDemographic(anyInt(), anyInt())).thenReturn(Observable.just(items));
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt(), anyInt())).thenReturn(Observable.just(items));
 
         TestSubscriber<List<RecommendApp>> testSubscriber = new TestSubscriber<>();
-        subject.loadSimilarAppsByDemographic().subscribe(testSubscriber);
+        subject.loadRecommendApps("GAME").subscribe(testSubscriber);
 
-        verify(mockRecommendService).requestSimilarAppsByDemographic(anyInt(), anyInt());
+        verify(mockRecommendService).requestRecommendApps(anyString(), anyInt(), anyInt());
 
         List<RecommendApp> result = testSubscriber.getOnNextEvents().get(0);
 
         assertThat(result.get(0).getAppInfo().getPackageName()).isEqualTo("com.test1");
         assertThat(result.get(0).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
         assertThat(result.get(1).getAppInfo().getPackageName()).isEqualTo("com.test2");
-        assertThat(result.get(1).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
+        assertThat(result.get(1).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_FAVORITE_CATEGORY);
         assertThat(result.get(2).getAppInfo().getPackageName()).isEqualTo("com.test3");
-        assertThat(result.get(2).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
+        assertThat(result.get(2).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_FAVORITE_DEVELOPER);
     }
 
     @Test

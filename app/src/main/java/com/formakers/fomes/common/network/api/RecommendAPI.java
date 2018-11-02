@@ -6,12 +6,13 @@ import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
 public interface RecommendAPI {
 
-    @GET("/recommend/similar/demographic")
-    Observable<List<RecommendApp>> getSimilarAppsByDemographic(@Header("x-access-token") String accessToken, @Query("page") int page, @Query("limit") int limit);
+    @GET("/recommend/apps/{categoryId}")
+    Observable<List<RecommendApp>> getRecommendApps(@Header("x-access-token") String accessToken, @Path("categoryId") String categoryId, @Query("page") int page, @Query("limit") int limit);
 
 }

@@ -29,9 +29,9 @@ public class RecommendServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void requestSimilarAppsByDemographic_호출시__비슷한_인적사항_기준_추천_리스트_API를_호출한다() {
-        subject.requestSimilarAppsByDemographic(1, 2).subscribe(new TestSubscriber<>());
+    public void requestRecommendApps_호출시__추천_앱_리스트_API를_호출한다() {
+        subject.requestRecommendApps("GAME", 1, 2).subscribe(new TestSubscriber<>());
 
-        verify(mockRecommendAPI).getSimilarAppsByDemographic(anyString(), eq(1), eq(2));
+        verify(mockRecommendAPI).getRecommendApps(anyString(), eq("GAME"), eq(1), eq(2));
     }
 }

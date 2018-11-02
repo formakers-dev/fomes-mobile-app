@@ -71,7 +71,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         presenter.setAdapterModel(recommendListAdapter);
 
         addCompositeSubscription(
-            presenter.loadSimilarAppsByDemographic()
+            presenter.loadRecommendApps("GAME")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(recommendApps -> {
                     recommendListAdapter.addAll(recommendApps);
