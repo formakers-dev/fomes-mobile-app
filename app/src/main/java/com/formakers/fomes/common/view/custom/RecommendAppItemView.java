@@ -192,6 +192,20 @@ public class RecommendAppItemView extends ConstraintLayout {
         labelTextView.setBackground(res.getDrawable(R.drawable.item_app_label_background,
                 new ContextThemeWrapper(getContext(), styleResId).getTheme()));
         labelTextView.setTextColor(res.getColor(colorResId));
-        labelTextView.setText(String.format(format, recommendReason));
+        labelTextView.setText(String.format(format, getShortenRecommendReason()));
+    }
+
+    private String getShortenRecommendReason() {
+        switch (recommendType) {
+            case RecommendApp.RECOMMEND_TYPE_FAVORITE_APP:
+            case RecommendApp.RECOMMEND_TYPE_FAVORITE_DEVELOPER:
+                if (recommendReason != null && recommendReason.length() > 10) {
+                    return recommendReason.substring(0, 10) + getContext().getResources().getString(R.string.shorten_symbol);
+                }
+
+                break;
+        }
+
+        return recommendReason;
     }
 }

@@ -146,15 +146,16 @@
     <string name="settings_menu_private">개인정보 취급 방침</string>
     <string name="settings_menu_contact_us">이메일로 문의하기</string>
     <string name="thanks_to_title">Special thanks to</string>
-    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 제이슨, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인,  싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
+    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인, 싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
 
     <!-- Recommend -->
     <string name="save_wish_list">위시리스트에 저장</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
-    <string name="recommend_label_format_favorite_game">%1$s 게이머들이 즐겨하는 게임</string>
+    <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
     <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>
     <string name="recommend_label_format_favorite_category">포메스 픽! %s 장르 랜덤 추천 게임</string>
-    <string name="recommend_label_format_similar_demographic">나와 같은 %1$s들이 즐겨하는 게임</string>
+    <string name="recommend_label_format_similar_demographic">나와 같은 %s들이 즐겨하는 게임</string>
     <string name="format_app_info_star_score">%.1f 점</string>
     <string name="format_app_info_download_count">설치수 %d+</string>
+    <string name="shorten_symbol">…</string>
 </resources>
