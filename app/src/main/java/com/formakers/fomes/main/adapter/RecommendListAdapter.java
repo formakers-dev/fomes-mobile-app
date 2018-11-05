@@ -48,13 +48,14 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final RecommendApp recommendApp = recommendApps.get(position);
+        final int rank = recommendApp.getRank();
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
         viewHolder.recommendAppItemView.bindAppInfo(recommendApp.getAppInfo());
         viewHolder.recommendAppItemView.setRecommendType(recommendApp.getRecommendType());
-        viewHolder.recommendAppItemView.setLabelText(Joiner.on(" ").join(recommendApp.getCriteria()), position + 1);
+        viewHolder.recommendAppItemView.setLabelText(Joiner.on(" ").join(recommendApp.getCriteria()), rank);
 
-        viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp, position + 1));
+        viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp, rank));
 
         viewHolder.recommendAppItemView.setOnWishListToggleButtonListener(v -> {
             if (!((ToggleButton) v).isChecked()) {

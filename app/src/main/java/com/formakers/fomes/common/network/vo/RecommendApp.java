@@ -14,6 +14,7 @@ public class RecommendApp {
 
     int recommendType;
     List<String> criteria;
+    int rank;
     @SerializedName("app") AppInfo appInfo;
 
     public RecommendApp() {
@@ -37,6 +38,14 @@ public class RecommendApp {
         return this;
     }
 
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
     public AppInfo getAppInfo() {
         return appInfo;
     }
@@ -51,6 +60,7 @@ public class RecommendApp {
         return "RecommendApp{" +
                 "recommendType=" + recommendType +
                 ", criteria=" + criteria +
+                ", rank=" + rank +
                 ", appInfo=" + appInfo +
                 '}';
     }
