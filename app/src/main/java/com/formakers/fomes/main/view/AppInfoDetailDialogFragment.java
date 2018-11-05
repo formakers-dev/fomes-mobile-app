@@ -74,13 +74,12 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
         AppInfo appInfo = bundle.getParcelable(FomesConstants.EXTRA.APPINFO);
         int recommendType = bundle.getInt(FomesConstants.EXTRA.RECOMMEND_TYPE);
         List<String> recommendCriteria = bundle.getStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA);
-        int rank = bundle.getInt(FomesConstants.EXTRA.RANK);
 
         Log.v(TAG, String.valueOf(appInfo));
 
         appDetailView.bindAppInfo(appInfo);
         appDetailView.setRecommendType(recommendType);
-        appDetailView.setLabelText(Joiner.on(" ").join(recommendCriteria.toArray()), rank);
+        appDetailView.setLabelText(Joiner.on(" ").join(recommendCriteria.toArray()));
         appDetailView.setOnWishListToggleButtonListener(v -> {
             if (!((ToggleButton) v).isChecked()) {
                 this.presenter.emitRemoveFromWishList(appInfo.getPackageName())

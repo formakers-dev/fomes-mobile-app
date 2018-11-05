@@ -33,8 +33,8 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
-    public void emitShowDetailEvent(RecommendApp recommendApp, int rank) {
-        this.view.onShowDetailEvent(recommendApp, rank);
+    public void emitShowDetailEvent(RecommendApp recommendApp) {
+        this.view.onShowDetailEvent(recommendApp);
     }
 
     @Override

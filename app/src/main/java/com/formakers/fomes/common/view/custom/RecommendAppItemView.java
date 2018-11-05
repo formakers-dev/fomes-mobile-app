@@ -40,7 +40,6 @@ public class RecommendAppItemView extends ConstraintLayout {
 
     private int recommendType;
     private String recommendReason;
-    private int rank;
 
     public RecommendAppItemView(Context context) {
         super(context);
@@ -130,9 +129,8 @@ public class RecommendAppItemView extends ConstraintLayout {
         categoryDeveloperTextView.setText(String.format("%s / %s", category, developer));
     }
 
-    public void setLabelText(String recommendReason, int rank) {
+    public void setLabelText(String recommendReason) {
         this.recommendReason = recommendReason;
-        this.rank = rank;
 
         refreshLabelTextView();
     }
@@ -194,6 +192,6 @@ public class RecommendAppItemView extends ConstraintLayout {
         labelTextView.setBackground(res.getDrawable(R.drawable.item_app_label_background,
                 new ContextThemeWrapper(getContext(), styleResId).getTheme()));
         labelTextView.setTextColor(res.getColor(colorResId));
-        labelTextView.setText(String.format(format, recommendReason, rank));
+        labelTextView.setText(String.format(format, recommendReason));
     }
 }

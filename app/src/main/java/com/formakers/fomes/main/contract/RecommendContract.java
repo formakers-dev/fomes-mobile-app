@@ -11,7 +11,7 @@ import rx.Observable;
 public interface RecommendContract {
     interface Presenter {
         void setAdapterModel(RecommendListAdapterContract.Model adapterModel);
-        void emitShowDetailEvent(RecommendApp recommendApp, int rank);
+        void emitShowDetailEvent(RecommendApp recommendApp);
         Observable<List<RecommendApp>> loadRecommendApps(String categoryId);
 
         Completable emitSaveToWishList(String packageName);
@@ -20,7 +20,7 @@ public interface RecommendContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void onShowDetailEvent(RecommendApp recommendApp, int rank);
+        void onShowDetailEvent(RecommendApp recommendApp);
         void refreshWishedByMe(String packageName, boolean wishedByMe);
     }
 }

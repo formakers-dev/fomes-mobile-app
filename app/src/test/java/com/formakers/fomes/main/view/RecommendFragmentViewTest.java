@@ -48,19 +48,17 @@ public class RecommendFragmentViewTest {
         RecommendApp recommendApp = new RecommendApp().setAppInfo(appInfo)
                 .setRecommendType(4).setCriteria(Lists.newArrayList("reason1", "reason2"));
 
-        subject.onShowDetailEvent(recommendApp, 1);
+        subject.onShowDetailEvent(recommendApp);
 
         Fragment fragment = subject.getChildFragmentManager().findFragmentByTag(AppInfoDetailDialogFragment.TAG);
         AppInfo actualAppInfo = fragment.getArguments().getParcelable(FomesConstants.EXTRA.APPINFO);
         int recommendType = fragment.getArguments().getInt(FomesConstants.EXTRA.RECOMMEND_TYPE);
         List<String> recommendCriteria = fragment.getArguments().getStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA);
-        int rank = fragment.getArguments().getInt(FomesConstants.EXTRA.RANK);
 
         assertThat(actualAppInfo).isNotNull();
         assertThat(actualAppInfo.getPackageName()).isEqualTo("com.formakers.fomes");
         assertThat(recommendType).isEqualTo(4);
         assertThat(recommendCriteria.get(0)).isEqualTo("reason1");
         assertThat(recommendCriteria.get(1)).isEqualTo("reason2");
-        assertThat(rank).isEqualTo(1);
     }
 }
