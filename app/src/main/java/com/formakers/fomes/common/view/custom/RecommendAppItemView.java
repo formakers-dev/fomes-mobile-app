@@ -84,7 +84,7 @@ public class RecommendAppItemView extends ConstraintLayout {
                 typedArray.getString(R.styleable.RecommendAppItemView_app_categoryText),
                 typedArray.getString(R.styleable.RecommendAppItemView_app_developerText));
 
-        setRecommendType(typedArray.getInteger(R.styleable.RecommendAppItemView_app_recommendType, RecommendApp.RECOMMEND_TYPE_FAVORITE_GAME));
+        setRecommendType(typedArray.getInteger(R.styleable.RecommendAppItemView_app_recommendType, RecommendApp.RECOMMEND_TYPE_FAVORITE_APP));
 
         setVerbose(typedArray.getBoolean(R.styleable.RecommendAppItemView_app_verbose, false));
 
@@ -164,7 +164,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         String format;
 
         switch (recommendType) {
-            case RecommendApp.RECOMMEND_TYPE_FAVORITE_GAME:
+            case RecommendApp.RECOMMEND_TYPE_FAVORITE_APP:
                 styleResId = R.style.FomesTheme_TurquoiseItem;
                 colorResId = R.color.colorPrimary;
                 format = res.getString(R.string.recommend_label_format_favorite_game);

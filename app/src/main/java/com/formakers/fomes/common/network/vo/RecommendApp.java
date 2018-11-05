@@ -7,7 +7,7 @@ import java.util.List;
 
 public class RecommendApp {
 
-    public static final int RECOMMEND_TYPE_FAVORITE_GAME = 1;
+    public static final int RECOMMEND_TYPE_FAVORITE_APP = 1;
     public static final int RECOMMEND_TYPE_FAVORITE_DEVELOPER = 2;
     public static final int RECOMMEND_TYPE_FAVORITE_CATEGORY = 3;
     public static final int RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC = 4;
