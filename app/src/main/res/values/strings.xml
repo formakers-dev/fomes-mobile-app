@@ -162,4 +162,5 @@
     <string name="download">다운로드</string>
     <string name="wish_list">위시리스트</string>
     <string name="wish_list_description">지금 다운로드 가능한 게임들입니다.</string>
+    <string name="wish_list_empty_description">아직 컬렉션에 저장한 게임이 없으시네요.\n추천된 게임 중에서 맘에드는 게임이 있을 때\n‘위시리스트에 저장’ 버튼을 누르시면 됩니다.</string>
 </resources>

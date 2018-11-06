@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
+import android.view.View;
 import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
@@ -22,6 +23,8 @@ import rx.android.schedulers.AndroidSchedulers;
 public class WishListActivity extends FomesBaseActivity implements WishListContract.View {
 
     @BindView(R.id.wish_list_recyclerview) RecyclerView wishListRecyclerView;
+    @BindView(R.id.wish_list_group) View wishListGroup;
+    @BindView(R.id.wish_list_empty_group) View wishListEmptyGroup;
 
     WishListContract.Presenter presenter;
 
@@ -57,11 +60,21 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
                 presenter.emitRequestWishList()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(appInfoList -> {
-                            WishListAdapter wishListAdapter = new WishListAdapter(appInfoList);
-                            wishListAdapter.setPresenter(presenter);
-                            wishListRecyclerView.setAdapter(wishListAdapter);
+                            if (appInfoList.size() == 0) {
+                                showWishListUI(false);
+                            } else {
+                                showWishListUI(true);
+                                WishListAdapter wishListAdapter = new WishListAdapter(appInfoList);
+                                wishListAdapter.setPresenter(presenter);
+                                wishListRecyclerView.setAdapter(wishListAdapter);
+                            }
                         })
         );
+    }
+
+    private void showWishListUI(boolean visible) {
+        wishListGroup.setVisibility(visible? View.VISIBLE : View.GONE);
+        wishListEmptyGroup.setVisibility(visible? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -71,12 +84,18 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
 
     @Override
     public void removeApp(String packageName) {
-        ((WishListAdapter) wishListRecyclerView.getAdapter()).removeApp(packageName);
+        final WishListAdapter adapter = (WishListAdapter) wishListRecyclerView.getAdapter();
+        adapter.removeApp(packageName);
     }
 
     @Override
     public void showToast(String toastMessage) {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showEmptyList() {
+        showWishListUI(false);
     }
 
     @Override

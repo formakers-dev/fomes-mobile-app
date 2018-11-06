@@ -10,6 +10,7 @@ import rx.Observable;
 
 public interface WishListContract {
     interface Presenter {
+        void emitShowEmptyList();
         void emitRemoveFromWishList(String packageName);
         Observable<List<AppInfo>> emitRequestWishList();
     }
@@ -18,5 +19,6 @@ public interface WishListContract {
         ApplicationComponent getApplicationComponent();
         void removeApp(String packageName);
         void showToast(String toastMessage);
+        void showEmptyList();
     }
 }

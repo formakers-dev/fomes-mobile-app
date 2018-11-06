@@ -23,6 +23,11 @@ public class WishListPresenter implements WishListContract.Presenter {
     }
 
     @Override
+    public void emitShowEmptyList() {
+        this.view.showEmptyList();
+    }
+
+    @Override
     public void emitRemoveFromWishList(String packageName) {
         userService.requestRemoveAppFromWishList(packageName)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -66,6 +66,10 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             }
         }
+
+        if(getItemCount() == 0) {
+            presenter.emitShowEmptyList();
+        }
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {
