@@ -26,7 +26,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 26
         multiDexEnabled true
-        versionCode 2
+        versionCode 3
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
