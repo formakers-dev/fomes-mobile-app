@@ -76,7 +76,7 @@
         tools:text="액션 / 캡틴스" />
 
     <TextView android:id="@+id/item_app_label_textview"
-        android:layout_width="@dimen/match_constraint"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/item_app_content_margin_start"
         android:layout_marginEnd="@dimen/item_app_content_margin_end"

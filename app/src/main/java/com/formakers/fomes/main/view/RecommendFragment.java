@@ -73,6 +73,14 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapter.setPresenter(presenter);
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        recommendListAdapter.clear();
+        recommendListAdapter.notifyDataSetChanged();
 
         addCompositeSubscription(
                 presenter.loadRecommendApps("GAME")
