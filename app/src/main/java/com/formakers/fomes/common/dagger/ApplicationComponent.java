@@ -15,7 +15,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
 import com.formakers.fomes.service.MessagingTokenService;
-import com.formakers.fomes.wishList.WishListActivity;
+import com.formakers.fomes.wishList.presenter.WishListPresenter;
 
 import javax.inject.Singleton;
 
@@ -42,8 +42,8 @@ public interface ApplicationComponent {
     void inject(ProvisioningPresenter provisioningPresenter);
     void inject(RecentAnalysisReportPresenter reportPresenter);
     void inject(MainPresenter presenter);
+    void inject(WishListPresenter presenter);
 
     void inject(FomesBaseActivity activity);
     void inject(BaseActivity activity);
-    void inject(WishListActivity activity);
 }

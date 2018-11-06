@@ -5,30 +5,31 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
+import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.wishList.adapter.WishListAdapter;
-
-import javax.inject.Inject;
+import com.formakers.fomes.wishList.contract.WishListContract;
+import com.formakers.fomes.wishList.presenter.WishListPresenter;
 
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class WishListActivity extends FomesBaseActivity {
+public class WishListActivity extends FomesBaseActivity implements WishListContract.View {
 
     @BindView(R.id.wish_list_recyclerview) RecyclerView wishListRecyclerView;
 
-    @Inject UserService userService;
+    WishListContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FomesApplication.get(this).getComponent().inject(this);
+        setPresenter(new WishListPresenter(this));
 
         setContentView(R.layout.activity_wish_list);
 
@@ -48,13 +49,40 @@ public class WishListActivity extends FomesBaseActivity {
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_RecommendDivider).getTheme()));
         wishListRecyclerView.addItemDecoration(dividerItemDecoration);
 
+        loadWishList();
+    }
+
+    private void loadWishList() {
         addToCompositeSubscription(
-                userService.requestWishList()
+                presenter.emitRequestWishList()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(appInfoList -> {
                             WishListAdapter wishListAdapter = new WishListAdapter(appInfoList);
+                            wishListAdapter.setPresenter(presenter);
                             wishListRecyclerView.setAdapter(wishListAdapter);
                         })
         );
+    }
+
+    @Override
+    public ApplicationComponent getApplicationComponent() {
+        return FomesApplication.get(this).getComponent();
+    }
+
+    @Override
+    public void removeApp(String packageName) {
+        ((WishListAdapter) wishListRecyclerView.getAdapter()).removeApp(packageName);
+    }
+
+    @Override
+    public void showToast(String toastMessage) {
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setPresenter(WishListContract.Presenter presenter) {
+        if (this.presenter == null) {
+            this.presenter = presenter;
+        }
     }
 }

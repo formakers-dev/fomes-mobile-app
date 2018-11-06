@@ -177,6 +177,10 @@ public class RecommendAppItemView extends ConstraintLayout {
         wishListButton.setOnClickListener(onClickListener);
     }
 
+    public void setOnDownloadButtonListener(OnClickListener onClickListener) {
+        downloadButton.setOnClickListener(onClickListener);
+    }
+
     // 고민되네 map으로 처리할까...
     private void refreshLabelTextView() {
         int styleResId;

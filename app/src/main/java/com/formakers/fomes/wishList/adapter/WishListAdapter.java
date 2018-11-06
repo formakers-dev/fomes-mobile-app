@@ -1,5 +1,8 @@
 package com.formakers.fomes.wishList.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.view.ViewGroup;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.wishList.contract.WishListContract;
 
 import java.util.List;
 
@@ -15,13 +19,17 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<AppInfo> wishList;
 
+    private WishListContract.Presenter presenter;
+    private Context context;
+
     public WishListAdapter(List<AppInfo> wishList) {
         this.wishList = wishList;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wish_list_app, parent, false);
+        this.context = parent.getContext();
+        View itemView = LayoutInflater.from(context).inflate(R.layout.item_wish_list_app, parent, false);
         return new WishListAdapter.AppViewHolder(itemView);
     }
 
@@ -31,11 +39,33 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
         viewHolder.wishListAppItemView.bindAppInfo(wishListApp);
+        viewHolder.wishListAppItemView.setOnWishListToggleButtonListener(v -> {
+            this.presenter.emitRemoveFromWishList(wishListApp.getPackageName());
+        });
+        viewHolder.wishListAppItemView.setOnDownloadButtonListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + wishListApp.getPackageName()));
+            context.startActivity(intent);
+        });
     }
 
     @Override
     public int getItemCount() {
         return wishList.size();
+    }
+
+    public void setPresenter(WishListContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    public void removeApp(String packageName) {
+        for (int position = 0; position < getItemCount(); position++) {
+            if (packageName.equals(wishList.get(position).getPackageName())) {
+                wishList.remove(position);
+                notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {
