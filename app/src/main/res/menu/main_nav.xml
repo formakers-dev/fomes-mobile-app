@@ -9,7 +9,7 @@
 
     <group android:id="@+id/menu_group2" android:checkableBehavior="none">
         <item
-            android:id="@+id/my_game_collection"
+            android:id="@+id/my_wish_list"
             android:title="@string/main_menu_my_wish_list"
             android:icon="@drawable/icon_wish_list"/>
     </group>

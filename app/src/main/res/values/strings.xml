@@ -109,7 +109,6 @@
     <string name="main_tab_recommend">게임 추천</string>
     <string name="main_tab_betatest">베타테스트</string>
     <string name="main_tab_event">이벤트</string>
-    <string name="main_menu_my_game_collection">내 게임 컬렉션</string>
     <string name="main_menu_my_wish_list">위시리스트</string>
     <string name="main_menu_my_hope_games">추천게임 컬렉션 (2차오픈)</string>
     <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
@@ -158,5 +157,9 @@
     <string name="format_app_info_star_score">%.1f 점</string>
     <string name="format_app_info_download_count">설치수 %d+</string>
     <string name="shorten_symbol">…</string>
+
+    <!-- Wish List -->
     <string name="download">다운로드</string>
+    <string name="wish_list">위시리스트</string>
+    <string name="wish_list_description">지금 다운로드 가능한 게임들입니다.</string>
 </resources>

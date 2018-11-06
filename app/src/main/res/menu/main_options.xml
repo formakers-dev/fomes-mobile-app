@@ -7,10 +7,10 @@
         android:title="@string/main_menu_my_recent_analysis"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/my_game_collection"
+    <item android:id="@+id/my_wish_list"
         android:icon="@drawable/icon_wish_list"
         android:iconTint="@color/fomes_white"
-        android:title="@string/main_menu_my_game_collection"
+        android:title="@string/main_menu_my_wish_list"
         android:visible="false"
         app:showAsAction="always"/>
 </menu>

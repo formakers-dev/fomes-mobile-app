@@ -26,13 +26,14 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.Feature;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
+import com.formakers.fomes.wishList.WishListActivity;
 
 import butterknife.BindView;
 import retrofit2.adapter.rxjava.HttpException;
@@ -133,11 +134,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (Feature.MAIN_RECOMMEND) {
-            menu.findItem(R.id.my_game_collection).setVisible(true);
+            menu.findItem(R.id.my_wish_list).setVisible(true);
             menu.findItem(R.id.my_recent_analysis).setVisible(false);
-            menu.findItem(R.id.my_game_collection).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+            menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
         } else {
-            menu.findItem(R.id.my_game_collection).setVisible(false);
+            menu.findItem(R.id.my_wish_list).setVisible(false);
             menu.findItem(R.id.my_recent_analysis).setVisible(true);
             menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
         }
@@ -149,7 +150,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         return onNavigationItemSelected(item);
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -157,7 +157,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
                 break;
             }
-            case R.id.my_game_collection: {
+            case R.id.my_wish_list: {
+                startActivity(new Intent(this, WishListActivity.class));
                 break;
             }
             case R.id.settings: {

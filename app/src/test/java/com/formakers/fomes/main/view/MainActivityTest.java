@@ -14,6 +14,7 @@ import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
+import com.formakers.fomes.wishList.WishListActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -67,7 +68,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
             @Override
             public Scheduler getMainThreadScheduler() {
                 return Schedulers.immediate();
-
             }
         });
 
@@ -120,7 +120,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫는다() throws Exception {
+    public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫는다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getTitle()).thenReturn("사이드메뉴아이템1");
 
@@ -131,7 +131,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() throws Exception {
+    public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.my_recent_analysis);
         when(item.getTitle()).thenReturn("내 분석 다시보기");
@@ -144,7 +144,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 사이드메뉴의_설정화면_클릭시__설정화면으로_이동한다() throws Exception {
+    public void 사이드메뉴의_설정화면_클릭시__설정화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.settings);
         when(item.getTitle()).thenReturn("설정");
@@ -154,6 +154,30 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(SettingsActivity.class.getSimpleName());
+    }
+
+    @Test
+    public void 사이드메뉴의_위시리스트_클릭시__위시리스트화면으로_이동한다() {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.my_wish_list);
+
+        launchActivity();
+        subject.onNavigationItemSelected(item);
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(WishListActivity.class.getSimpleName());
+    }
+
+    @Test
+    public void 옵선아이템의_위시리스트_클릭시__위시리스트화면으로_이동한다() {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.my_wish_list);
+
+        launchActivity();
+        subject.onOptionsItemSelected(item);
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(WishListActivity.class.getSimpleName());
     }
 
     @Test
