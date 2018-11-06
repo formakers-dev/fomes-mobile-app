@@ -6,9 +6,11 @@ import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -83,6 +85,14 @@ public class UserService extends AbstractService {
                 .observeOn(Schedulers.io())
                 .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
+    }
+
+    public Observable<List<AppInfo>> requestWishList() {
+        return Observable.defer(() -> userAPI.getWishList(SharedPreferencesHelper.getAccessToken()))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     @Deprecated

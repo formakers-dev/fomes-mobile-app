@@ -1,8 +1,10 @@
 package com.formakers.fomes.common.network.api;
 
+import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -37,4 +39,7 @@ public interface UserAPI {
 
     @DELETE("/user/wishlist/{packageName}")
     Observable<Void> deleteWishList(@Header("x-access-token") String accessToken, @Path("packageName") String packageName);
+
+    @GET("/user/wishlist")
+    Observable<List<AppInfo>> getWishList(@Header("x-access-token") String accessToken);
 }
