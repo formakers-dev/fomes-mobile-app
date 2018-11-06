@@ -21,7 +21,8 @@
         app:layout_constraintTop_toTopOf="@id/detail_view"
         app:layout_constraintStart_toStartOf="@id/detail_view"
         app:layout_constraintEnd_toEndOf="@id/detail_view"
-        app:app_verbose="true"/>
+        app:app_verbose="true"
+        app:app_downloadable="false"/>
     
     <Button android:id="@+id/download_button"
         android:layout_width="0dp"

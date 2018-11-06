@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -37,9 +38,11 @@ public class RecommendAppItemView extends ConstraintLayout {
     private TextView ageLimitTextView;
     private ViewPager imageViewPager;
     private ToggleButton wishListButton;
+    private Button downloadButton;
 
     private int recommendType;
     private String recommendReason;
+    private int baseAppIconSize;
 
     public RecommendAppItemView(Context context) {
         super(context);
@@ -72,6 +75,9 @@ public class RecommendAppItemView extends ConstraintLayout {
         ageLimitTextView = findViewById(R.id.item_app_age_limit);
         imageViewPager = findViewById(R.id.item_app_image_viewpager);
         wishListButton = findViewById(R.id.app_info_wishlist_button);
+        downloadButton = findViewById(R.id.app_info_download_button);
+
+        baseAppIconSize = iconImageView.getLayoutParams().width;
     }
 
     private void setTypeArray(TypedArray typedArray) {
@@ -86,6 +92,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         setRecommendType(typedArray.getInteger(R.styleable.RecommendAppItemView_app_recommendType, RecommendApp.RECOMMEND_TYPE_FAVORITE_APP));
 
         setVerbose(typedArray.getBoolean(R.styleable.RecommendAppItemView_app_verbose, false));
+        setDownloadable(typedArray.getBoolean(R.styleable.RecommendAppItemView_app_downloadable, false));
 
         typedArray.recycle();
     }
@@ -143,6 +150,23 @@ public class RecommendAppItemView extends ConstraintLayout {
 
     public void setVerbose(boolean isVerbose) {
         verboseGroup.setVisibility(isVerbose ? View.VISIBLE : View.GONE);
+    }
+
+    public void setDownloadable(boolean isDownloadable) {
+        if (isDownloadable) {
+            downloadButton.setVisibility(VISIBLE);
+            labelTextView.setVisibility(GONE);
+            resizeIconImageView((int)(baseAppIconSize * 0.63));
+        } else {
+            downloadButton.setVisibility(GONE);
+            labelTextView.setVisibility(VISIBLE);
+            resizeIconImageView(baseAppIconSize);
+        }
+    }
+
+    private void resizeIconImageView(int size) {
+        iconImageView.getLayoutParams().height = size;
+        iconImageView.getLayoutParams().width = size;
     }
 
     public void setWishListChecked(boolean wishedByMe) {

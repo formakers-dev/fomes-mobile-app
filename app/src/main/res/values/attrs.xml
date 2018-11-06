@@ -52,6 +52,7 @@
             <enum name="similar_demographic" value="4" />
         </attr>
         <attr name="app_verbose" format="reference|boolean"/>
+        <attr name="app_downloadable" format="reference|boolean"/>
     </declare-styleable>
 
 </resources>

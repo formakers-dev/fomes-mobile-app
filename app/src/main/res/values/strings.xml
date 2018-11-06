@@ -158,4 +158,5 @@
     <string name="format_app_info_star_score">%.1f 점</string>
     <string name="format_app_info_download_count">설치수 %d+</string>
     <string name="shorten_symbol">…</string>
+    <string name="download">다운로드</string>
 </resources>
