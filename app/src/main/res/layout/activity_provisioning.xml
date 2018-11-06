@@ -18,22 +18,54 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="37dp"
             android:src="@drawable/fomes_face"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/provision_title_textview"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/provision_title_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:text="@string/provision_user_info_title"
+            android:textSize="@dimen/provision_title_text_size"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/provision_icon_imageview"
+            app:layout_constraintBottom_toTopOf="@+id/provision_subtitle_textview"/>
+
+        <TextView
+            android:id="@+id/provision_subtitle_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/provision_subtitle_margin_top"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:text="@string/provision_user_info_subtitle"
+            android:textSize="@dimen/provision_subtitle_text_size"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/provision_title_textview"
+            app:layout_constraintBottom_toTopOf="@+id/provision_viewpager"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/provision_viewpager"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="@dimen/match_constraint"
+            android:layout_marginTop="60dp"
             android:layout_marginBottom="30dp"
-            android:layout_marginTop="15dp"
             android:overScrollMode="never"
             android:paddingEnd="@dimen/provision_padding_start_end"
             android:paddingStart="@dimen/provision_padding_start_end"
             app:layout_constraintBottom_toBottomOf="@+id/next_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/provision_icon_imageview"
+            app:layout_constraintTop_toBottomOf="@id/provision_subtitle_textview"
             tools:ignore="MissingConstraints" />
 
         <Button

@@ -1,10 +1,9 @@
 package com.formakers.fomes.service;
 
-import android.util.Log;
-
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.helper.MessagingHelper;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.network.UserService;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 

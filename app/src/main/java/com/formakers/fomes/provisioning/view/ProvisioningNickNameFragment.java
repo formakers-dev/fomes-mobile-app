@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
@@ -49,6 +49,7 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
+            this.presenter.emitUpdateHeaderViewEvent(R.string.provision_nickname_title, R.string.provision_nickname_subtitle);
             CharSequence nickName = nickNameEditText.getText();
             onNickNameTextChanged(nickName, 0, 0, nickName.length());
         }

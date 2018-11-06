@@ -62,6 +62,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".wishList.WishListActivity"/>
     </application>
 
 </manifest>

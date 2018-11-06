@@ -67,20 +67,28 @@
     <style name="FomesTheme.TurquoiseItem">
         <item name="item_color">@color/colorPrimary</item>
         <item name="item_number">@string/common_number_one</item>
+        <item name="item_background_radius">4dp</item>
     </style>
 
     <style name="FomesTheme.SquashItem">
         <item name="item_color">@color/fomes_squash</item>
         <item name="item_number">@string/common_number_two</item>
+        <item name="item_background_radius">4dp</item>
     </style>
 
     <style name="FomesTheme.BlushPinkItem">
         <item name="item_color">@color/fomes_blush_pink</item>
         <item name="item_number">@string/common_number_three</item>
+        <item name="item_background_radius">4dp</item>
     </style>
 
     <style name="FomesTheme.WhiteItem">
         <item name="item_color">@color/fomes_white</item>
+        <item name="item_background_radius">4dp</item>
+    </style>
+
+    <style name="FomesTheme.WarmGrayItem">
+        <item name="item_color">@color/fomes_warm_gray</item>
     </style>
 
     <style name="FomesTheme.LightGray">
@@ -116,6 +124,55 @@
 
     <style name="ProgressBackground">
         <item name="item_color">@color/fomes_white</item>
-        <item name="item_backgorund_round">@dimen/progress_round_size</item>
+        <item name="item_background_radius">@dimen/progress_round_size</item>
+    </style>
+
+    <style name="RecommendTheme"/>
+
+    <style name="RecommendTheme.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RecommendTheme.BottomSheetStyle</item>
+    </style>
+
+    <style name="RecommendTheme.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="RecommendTheme.BottomSheetDialog.Background">
+        <item name="item_color">@color/fomes_white</item>
+        <item name="item_background_radius">6dp</item>
+    </style>
+
+    <style name="RecommendTheme.BottomSheetDialog.WishListButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_marginBottom">17dp</item>
+        <item name="android:paddingStart">38dp</item>
+        <item name="android:paddingEnd">38dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/fomes_white</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:background">@drawable/item_rect_rounded_corner_background</item>
+        <item name="android:theme">@style/CollectionButtonBackgroundTheme</item>
+    </style>
+
+    <style name="CollectionButtonBackgroundTheme">
+        <item name="item_color">@color/colorPrimary</item>
+        <item name="item_background_radius">22.5dp</item>
+    </style>
+
+    <style name="AppInfoGridItemStyle">
+        <item name="android:layout_width">@dimen/match_constraint</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/fomes_light_warm_gray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="layout_constraintTop_toBottomOf">@+id/divider_top</item>
+        <item name="layout_constraintBottom_toTopOf">@+id/divider_bottom</item>
     </style>
 </resources>

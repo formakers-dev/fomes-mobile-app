@@ -1,8 +1,13 @@
 package com.formakers.fomes.common.network.api;
 
+import com.formakers.fomes.model.AppInfo;
 import com.formakers.fomes.model.User;
 
+import java.util.HashMap;
+import java.util.List;
+
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -22,9 +27,19 @@ public interface UserAPI {
     @POST("/user")
     Observable<Void> update(@Header("x-access-token") String accessToken, @Body User user);
 
+    @POST("/user/wishlist")
+    Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body HashMap<String, Object> wishListMap);
+
+    @Deprecated
     @GET("/user/verifyInvitationCode/{code}")
     Observable<Void> verifyInvitationCode(@Path("code") String code);
 
     @GET("/user/verifyToken")
     Observable<Void> verifyToken(@Header("x-access-token") String accessToken);
+
+    @DELETE("/user/wishlist/{packageName}")
+    Observable<Void> deleteWishList(@Header("x-access-token") String accessToken, @Path("packageName") String packageName);
+
+    @GET("/user/wishlist")
+    Observable<List<AppInfo>> getWishList(@Header("x-access-token") String accessToken);
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group  android:id="@+id/menu_group2" android:checkableBehavior="none">
+        <item
+            android:id="@+id/my_recent_analysis"
+            android:title="@string/main_menu_my_recent_analysis"
+            android:icon="@drawable/icon_my_recent_analysis"/>
+    </group>
+    <group android:id="@+id/menu_group1" android:checkableBehavior="none"
+        android:enabled="false">
+        <item
+            android:id="@+id/my_hope_games"
+            android:title="@string/main_menu_my_hope_games"
+            android:icon="@drawable/icon_wish_list"/>
+    </group>
+    <group android:id="@+id/menu_group3" android:checkableBehavior="none"
+        android:enabled="false">
+        <item
+            android:id="@+id/my_betatest"
+            android:title="@string/main_menu_my_betatest"
+            android:icon="@drawable/icon_my_betatest"/>
+    </group>
+    <group android:id="@+id/menu_group4" android:checkableBehavior="none">
+        <item
+            android:id="@+id/settings"
+            android:title="@string/main_menu_settings"
+            android:icon="@drawable/icon_settings"/>
+    </group>
+
+    <!--<group android:id="@+id/menu_group5" android:checkableBehavior="none">-->
+        <!--<item-->
+            <!--android:id="@+id/my_not_hope_games"-->
+            <!--android:title="@string/main_menu_my_ignore_games" />-->
+    <!--</group>-->
+
+</menu>

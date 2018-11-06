@@ -91,7 +91,7 @@
         app:layout_constraintStart_toStartOf="@+id/title_3"
         app:layout_constraintEnd_toEndOf="@+id/title_3"
         app:layout_constraintBaseline_toBaselineOf="@id/icon_2"
-        tools:src="@drawable/icon_my_hope_game" />
+        tools:src="@drawable/icon_wish_list" />
 
     <TextView
         android:id="@+id/title_3"

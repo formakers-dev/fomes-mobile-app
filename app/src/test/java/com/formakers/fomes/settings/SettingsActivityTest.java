@@ -10,7 +10,7 @@ import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.settings.adapter.SettingsListAdapter;
 import com.formakers.fomes.settings.model.SettingsItem;
-import com.formakers.fomes.util.FomesConstants.Settings.*;
+import com.formakers.fomes.common.FomesConstants.Settings.*;
 
 import org.junit.Before;
 import org.junit.Test;

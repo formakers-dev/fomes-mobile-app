@@ -1,8 +1,8 @@
 package com.formakers.fomes;
 
-import com.formakers.fomes.dagger.DaggerTestApplicationComponent;
-import com.formakers.fomes.dagger.TestApplicationComponent;
-import com.formakers.fomes.dagger.TestApplicationModule;
+import com.formakers.fomes.common.dagger.DaggerTestApplicationComponent;
+import com.formakers.fomes.common.dagger.TestApplicationComponent;
+import com.formakers.fomes.common.dagger.TestApplicationModule;
 
 public class TestFomesApplication extends FomesApplication {
     private TestApplicationComponent testApplicationComponent;

@@ -1,7 +1,5 @@
 package com.formakers.fomes.provisioning.presenter;
 
-import android.util.Log;
-
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
@@ -11,7 +9,8 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
 
@@ -72,6 +71,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public void setProvisioningProgressStatus(int status) {
         this.sharedPreferencesHelper.setProvisioningProgressStatus(status);
+    }
+
+    @Override
+    public void emitUpdateHeaderViewEvent(int titleResId, int subTitleResId) {
+        this.view.setHeaderView(titleResId, subTitleResId);
     }
 
     @Override

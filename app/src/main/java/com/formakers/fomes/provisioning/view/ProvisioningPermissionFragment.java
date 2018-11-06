@@ -5,20 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.util.FomesConstants;
-
-import retrofit2.adapter.rxjava.HttpException;
-import rx.android.schedulers.AndroidSchedulers;
+import com.formakers.fomes.common.FomesConstants;
 
 public class ProvisioningPermissionFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
@@ -75,6 +71,7 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
     @Override
     public void onSelectedPage() {
         this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
+        this.presenter.emitUpdateHeaderViewEvent(R.string.provision_permission_title, R.string.provision_permission_subtitle);
 
         if (this.presenter.hasUsageStatsPermission()) {
             moveToNextPage();

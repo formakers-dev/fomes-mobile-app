@@ -1,6 +1,6 @@
 package com.formakers.fomes.main.contract;
 
-import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.common.network.vo.RecommendApp;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ public interface RecommendListAdapterContract {
     interface Model {
         int getItemCount();
         Object getItem(int position);
-        void add(AppInfo appInfo);
-        void addAll(List<AppInfo> appInfos);
+        void add(RecommendApp item);
+        void addAll(List<RecommendApp> items);
         void clear();
     }
 }

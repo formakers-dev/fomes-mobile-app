@@ -1,6 +1,6 @@
 package com.formakers.fomes.service;
 
-import android.util.Log;
+import com.formakers.fomes.common.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

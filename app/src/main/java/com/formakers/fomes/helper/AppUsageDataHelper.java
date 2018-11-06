@@ -9,7 +9,7 @@ import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.model.StatKey;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
-import com.formakers.fomes.util.DateUtil;
+import com.formakers.fomes.common.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

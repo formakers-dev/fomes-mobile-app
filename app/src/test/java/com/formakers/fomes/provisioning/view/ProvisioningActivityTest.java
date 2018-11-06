@@ -5,11 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.view.BaseActivityTest;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity.ProvisioningPagerAdapter;
 
 import org.junit.After;
@@ -126,13 +127,16 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex < size ? expectedPageIndex : size);
     }
 
-    @Ignore
     @Test
-    public void setIconImage_호출시__상단_아이콘_이미지를_변경한다() {
+    public void setHeaderView_호출시__상단_헤더뷰를_셋팅한다() {
          launchActivity();
 
-         int newImageRedId = 1234;
-         subject.setIconImage(newImageRedId);
+         subject.setHeaderView(R.string.provision_user_info_title, R.string.provision_user_info_subtitle);
+
+         assertThat(((TextView) subject.findViewById(R.id.provision_title_textview)).getText())
+                 .contains("안녕하세요");
+         assertThat(((TextView) subject.findViewById(R.id.provision_subtitle_textview)).getText())
+                 .contains("분석으로만");
     }
 
     @Test

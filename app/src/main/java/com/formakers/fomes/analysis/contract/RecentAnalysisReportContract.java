@@ -6,7 +6,7 @@ import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
-import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.model.User;
 
 import java.util.List;

@@ -31,6 +31,7 @@
             android:paddingTop="3dp"
             android:text="@string/thanks_to_title"
             android:textColor="@color/colorPrimary"
+            android:theme="@style/FomesTheme.TurquoiseItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

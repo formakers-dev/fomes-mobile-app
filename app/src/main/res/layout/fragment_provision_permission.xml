@@ -6,37 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/provision_permission_title_textview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/provision_permission_title"
-        android:textSize="@dimen/provision_title_text_size"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/provision_permission_subtitle_textview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/provision_subtitle_margin_top"
-        android:text="@string/provision_permission_subtitle"
-        android:textSize="@dimen/provision_subtitle_text_size"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_permission_title_textview" />
-
     <ImageView android:id="@+id/provision_permission_imageview"
         android:layout_width="360dp"
         android:layout_height="313dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="12dp"
         android:src="@drawable/provision_permission_guide"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_permission_subtitle_textview"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

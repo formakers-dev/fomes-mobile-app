@@ -26,13 +26,14 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.Feature;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
-import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
+import com.formakers.fomes.wishList.WishListActivity;
 
 import butterknife.BindView;
 import retrofit2.adapter.rxjava.HttpException;
@@ -79,6 +80,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         drawerToggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().clear();
+
+        if (Feature.MAIN_RECOMMEND) {
+            navigationView.inflateMenu(R.menu.main_nav);
+        } else {
+            navigationView.inflateMenu(R.menu.main_nav_old);
+        }
 
         addToCompositeSubscription(
             presenter.requestUserInfo()
@@ -125,7 +133,15 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        if (Feature.MAIN_RECOMMEND) {
+            menu.findItem(R.id.my_wish_list).setVisible(true);
+            menu.findItem(R.id.my_recent_analysis).setVisible(false);
+            menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        } else {
+            menu.findItem(R.id.my_wish_list).setVisible(false);
+            menu.findItem(R.id.my_recent_analysis).setVisible(true);
+            menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        }
         return true;
     }
 
@@ -139,6 +155,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         switch (item.getItemId()) {
             case R.id.my_recent_analysis: {
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
+                break;
+            }
+            case R.id.my_wish_list: {
+                startActivity(new Intent(this, WishListActivity.class));
                 break;
             }
             case R.id.settings: {

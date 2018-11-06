@@ -1,6 +1,5 @@
 package com.formakers.fomes.analysis.presenter;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.bumptech.glide.RequestManager;
@@ -14,7 +13,8 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.util.DateUtil;
+import com.formakers.fomes.common.util.DateUtil;
+import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
