@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingEnd="@dimen/provision_padding_start_end"
+    android:paddingStart="@dimen/provision_padding_start_end">
 
     <TextView
         android:id="@+id/provision_user_info_content_title_textview"

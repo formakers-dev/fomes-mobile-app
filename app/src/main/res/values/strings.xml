@@ -64,7 +64,7 @@
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
     <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.</string>
     <string name="provision_nickname_already_exist_warning">* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.</string>
-    <string name="provision_permission_title">정확한 분석을 위해\n아래의 권한 허용이 필요합니다.</string>
+    <string name="provision_permission_title">포메스 아이콘을 찾아서\n권한을 허용해주세요.</string>
     <string name="provision_permission_subtitle">게임 앱 사용시간 데이터를 기반으로 분석합니다.</string>
 
     <!-- Analysis -->
