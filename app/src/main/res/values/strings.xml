@@ -164,6 +164,8 @@
     <string name="format_app_info_star_score">%.1f 점</string>
     <string name="format_app_info_download_count">설치수 %d+</string>
     <string name="shorten_symbol">…</string>
+    <string name="recommend_error_title">Sorry!</string>
+    <string name="recommend_error_description">게임을 추천할\n데이터가 부족합니다.</string>
 
     <!-- Wish List -->
     <string name="download">다운로드</string>

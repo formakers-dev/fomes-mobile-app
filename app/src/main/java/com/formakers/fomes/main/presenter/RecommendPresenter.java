@@ -6,12 +6,13 @@ import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class RecommendPresenter implements RecommendContract.Presenter {
 
@@ -38,8 +39,17 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
-    public Observable<List<RecommendApp>> loadRecommendApps(String categoryId) {
-        return recommendService.requestRecommendApps(categoryId, 1, 10);
+    public void loadRecommendApps(String categoryId) {
+        recommendService.requestRecommendApps(categoryId, 1, 10)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(recommendApps -> {
+                    if (recommendApps.size() > 0) {
+                        List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
+                        this.view.bindRecommendList(duplicationRemovedRecommendApps);
+                    } else {
+                        this.view.showEmptyRecommendList();
+                    }
+                });
     }
 
     @Override
@@ -55,5 +65,22 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     @Override
     public void emitRefreshWishedByMe(String packageName, boolean wishedByMe) {
         this.view.refreshWishedByMe(packageName, wishedByMe);
+    }
+
+    private List<RecommendApp> removeDuplicatedRecommendApps(List<RecommendApp> recommendApps) {
+        final List<String> packageNames = new ArrayList<>();
+
+        for (int i = 0; i < recommendApps.size(); ) {
+            final String packageName = recommendApps.get(i).getAppInfo().getPackageName();
+
+            if (packageNames.contains(packageName)) {
+                recommendApps.remove(i);
+            } else {
+                packageNames.add(packageName);
+                i++;
+            }
+        }
+
+        return recommendApps;
     }
 }
