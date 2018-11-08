@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -20,12 +21,19 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     private RecommendContract.View view;
     private RecommendService recommendService;
     private UserService userService;
+    private RequestManager requestManager;
 
     @Inject
-    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService) {
+    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, RequestManager requestManager) {
         this.view = view;
         this.recommendService = recommendService;
         this.userService = userService;
+        this.requestManager = requestManager;
+    }
+
+    @Override
+    public RequestManager getImageLoader() {
+        return requestManager;
     }
 
     @Override
@@ -40,6 +48,8 @@ public class RecommendPresenter implements RecommendContract.Presenter {
 
     @Override
     public void loadRecommendApps(String categoryId) {
+        this.view.showLoading();
+
         recommendService.requestRecommendApps(categoryId, 1, 10)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(recommendApps -> {
