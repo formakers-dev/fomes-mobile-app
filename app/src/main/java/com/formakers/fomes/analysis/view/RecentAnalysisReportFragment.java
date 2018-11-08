@@ -77,6 +77,10 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_game_suggestion_textview) TextView myGamesSuggestionTextView;
     @BindView(R.id.analysis_people_games_gender_age) ViewGroup genderAgeGames;
     @BindView(R.id.analysis_people_games_job) ViewGroup jobGames;
+    @BindView(R.id.analysis_my_playtime_rank_medal_text) TextView myPlaytimeRankMedalTextView;
+    @BindView(R.id.analysis_my_playtime_rank_summary) TextView myPlaytimeRankSummaryTextView;
+    @BindView(R.id.analysis_my_playtime_rank_description_title) TextView myPlaytimeRankDescriptionTitleTextView;
+    @BindView(R.id.analysis_my_playtime_rank_description_content) TextView myPlaytimeRankDescriptionContentTextView;
 
     RecentAnalysisReportContract.Presenter presenter;
 
@@ -252,38 +256,56 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(jobUsagePercentagePair.get(2).first.getName());
     }
 
+    private String getMyRankText(Rank myRank, Rank worstRank) {
+        if (!worstRank.getContent().equals(myRank.getContent())) {
+            return myRank.isValid() ?
+                    getString(R.string.analysis_playtime_rank_number, myRank.getRank())
+                    : getString(R.string.analysis_playtime_rank_number_string, "?");
+        } else {
+            return getString(R.string.analysis_playtime_rank_number_last);
+        }
+    }
+
     @Override
     public void bindRankingViews(List<Rank> totalUsedTimeRank) {
         Log.d(TAG, String.valueOf(totalUsedTimeRank));
 
         Rank bestRank = totalUsedTimeRank.get(0);
-        Rank mineRank = totalUsedTimeRank.get(1);
+        Rank myRank = totalUsedTimeRank.get(1);
         Rank worstRank = totalUsedTimeRank.get(totalUsedTimeRank.size() - 1);
 
         if (totalUsedTimeRank.size() < 3) {
-            mineRank = new Rank("", -1, 0L);
+            myRank = new Rank("", -1, 0L);
         }
+
+        String myRankText = getMyRankText(myRank, worstRank);
 
         float bestHour = presenter.getHour(bestRank.getContent());
         float worstHour = presenter.getHour(worstRank.getContent());
-        float mineHour = presenter.getHour(mineRank.getContent());
+        float myHour = presenter.getHour(myRank.getContent());
 
         Resources res = getResources();
+
+        // 나의 플레이 등수 관련 세팅
+        myPlaytimeRankMedalTextView.setText(myRankText);
+        myPlaytimeRankSummaryTextView.setText(String.format(getString(R.string.analysis_my_playtime_rank_summary), myHour));
+
+        if (myRank.isValid()) {
+            myPlaytimeRankDescriptionTitleTextView.setText(String.format(res.getString(R.string.analysis_my_playtime_rank_description_title), myRankText));
+        } else {
+            myPlaytimeRankDescriptionTitleTextView.setText(res.getString(R.string.analysis_my_playtime_rank_no_data_title));
+            myPlaytimeRankDescriptionContentTextView.setText(res.getString(R.string.analysis_my_playtime_rank_no_data_content));
+        }
+
         Map<Float, String> labelMap = new HashMap<>();
 
         labelMap.put(3f, res.getString(R.string.analysis_playtime_rank_number, bestRank.getRank()));
         labelMap.put(1f, res.getString(R.string.analysis_playtime_rank_number_last));
-        if (!worstRank.getContent().equals(mineRank.getContent())) {
-            labelMap.put(2f, res.getString(R.string.analysis_playtime_my_rank_number,
-                    mineRank.getRank() >= 0 ? getString(R.string.analysis_playtime_rank_number, mineRank.getRank())
-                            : getString(R.string.analysis_playtime_rank_number_string, "?")));
-        } else {
-            labelMap.put(2f, res.getString(R.string.analysis_playtime_my_rank_number, getString(R.string.analysis_playtime_rank_number_last)));
-        }
+        labelMap.put(2f, res.getString(R.string.analysis_playtime_my_rank_number, myRankText));
 
         List<BarEntry> barEntries = new ArrayList<>();
         barEntries.add(new BarEntry(3f, bestHour));
-        barEntries.add(new BarEntry(2f, mineHour));
+        barEntries.add(new BarEntry(2f, myHour));
         barEntries.add(new BarEntry(1f, worstHour));
         Log.d(TAG, String.valueOf(barEntries));
 

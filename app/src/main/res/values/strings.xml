@@ -75,6 +75,14 @@
     <string name="analysis_my_genre_used_time_format">총 시간의 %d%%</string>
     <string name="analysis_people_genre_title">나와 비슷한 사람들의 게임 장르</string>
     <string name="analysis_people_genre_subtitle">나이/성별/직업 기준 7일간 모바일 게임 장르별 플레이 시간 집계</string>
+    <string name="analysis_my_playtime_rank_title">나의 플레이 등수</string>
+    <string name="analysis_my_playtime_rank_subtitle">나의 7일간 게임 플레이 시간 집계</string>
+    <string name="analysis_my_playtime_rank_summary">총 %.1f시간 게임 플레이</string>
+    <string name="analysis_my_playtime_rank_description_title">나는 %s인데 너는 몇 등이니?</string>
+    <string name="analysis_my_playtime_rank_description_content">함께 게임을 즐기는 친구들과 게임 앱 분석결과를 공유하고,\n게임 플레이시간 / 장르 / 게임을 비교해보세요.</string>
+    <string name="analysis_my_playtime_rank_no_data_title">등수 산정을 위한 게임 정보가 부족해요.</string>
+    <string name="analysis_my_playtime_rank_no_data_content">스마트폰으로 게임을 플레이 하신 후 다시 도전해 보세요.\n플레이 데이터가 쌓이면 나의 등수를 확인할 수 있습니다.</string>
+
     <string name="analysis_playtime_rank_title">플레이 시간 비교</string>
     <string name="analysis_playtime_rank_subtitle">나와 유저들의 7일간 게임 플레이 시간 집계</string>
     <string name="analysis_playtime_rank_number">%d등</string>
