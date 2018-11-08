@@ -114,7 +114,7 @@
 
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>
-    <string name="main_tab_betatest">베타테스트</string>
+    <string name="main_tab_betatest">피드백 존</string>
     <string name="main_tab_event">이벤트</string>
     <string name="main_menu_my_wish_list">위시리스트</string>
     <string name="main_menu_my_hope_games">추천게임 컬렉션 (2차오픈)</string>
@@ -142,9 +142,10 @@
 
 
     <!-- Beta Test -->
-    <string name="coming_soon">Coming Soon</string>
-    <string name="betatest_title">누구보다 먼저, 누구보다 솔직하게\n게임 고수인 당신의 의견을 전하세요!</string>
-    <string name="betatest_subtitle">게임 좀 하시는 고수들을 모십니다.\n분석된 취향에 맞는 뉴비 게임을 보내드립니다.\n누구보다 먼저 써보고 가치있는 피드백을 주세요.\n( 각종 아이템 &amp; 리워드를 드립니다. )</string>
+    <string name="betatest_coming_soon">2018년 연말 오픈각</string>
+    <string name="betatest_title">품격있는 게이머들의\n소소한 겜테크 취미생활</string>
+    <string name="betatest_subtitle">플레이하고, 피드백주고, 리워드 받고!</string>
+    <string name="betatest_description">나의 피드백으로 만드는 개성넘치는 한국 모바일 게임 시장</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>
