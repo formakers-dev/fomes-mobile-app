@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
+import com.formakers.fomes.event.EventActivity;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
@@ -37,6 +39,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
     @BindView(R.id.recommend_loading_layout) ViewGroup recommendLoadingLayout;
     @BindView(R.id.recommend_loading_imageview) ImageView recommendLoadingImageView;
+    @BindView(R.id.recommend_event_banner_background) ImageView recommendEventImageView;
 
     RecommendListAdapter recommendListAdapter;
 
@@ -77,6 +80,10 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapter.setPresenter(presenter);
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
+
+        recommendEventImageView.setOnClickListener(v -> {
+            startActivity(new Intent(this.getContext(), EventActivity.class));
+        });
     }
 
     @Override

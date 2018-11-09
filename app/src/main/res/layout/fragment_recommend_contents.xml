@@ -1,17 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/fomes_content_background">
+    android:fillViewport="true">
+    
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fomes_content_background"
+        android:descendantFocusability="blocksDescendants">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recommend_recyclerview"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="@dimen/match_constraint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageView
+            android:id="@+id/recommend_event_banner_background"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            android:src="@drawable/event_banner_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="12:5"/>
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/recommend_event_banner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="5dp"
+            android:text="@string/event_banner_title"
+            android:textColor="@color/fomes_white"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/recommend_event_banner_background"
+            app:layout_constraintEnd_toEndOf="@+id/recommend_event_banner_background"
+            app:layout_constraintStart_toStartOf="@+id/recommend_event_banner_background"
+            app:layout_constraintTop_toTopOf="@+id/recommend_event_banner_background"
+            app:layout_constraintVertical_bias="0.20" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/event_banner_subtitle"
+            android:textAlignment="center"
+            android:textColor="@color/fomes_white"
+            android:textSize="21dp"
+            app:layout_constraintBottom_toBottomOf="@id/recommend_event_banner_background"
+            app:layout_constraintEnd_toEndOf="@+id/recommend_event_banner_background"
+            app:layout_constraintStart_toStartOf="@+id/recommend_event_banner_background"
+            app:layout_constraintTop_toBottomOf="@+id/recommend_event_banner_title"
+            app:layout_constraintVertical_bias="0.25" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recommend_recyclerview"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recommend_event_banner_background"
+            android:nestedScrollingEnabled="false"/>
+
+    </android.support.constraint.ConstraintLayout>
+    
+</android.support.v4.widget.NestedScrollView>
