@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,31 +9,37 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.RecommendApp;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
+import com.formakers.fomes.event.EventActivity;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
 import com.formakers.fomes.main.dagger.RecommendFragmentModule;
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class RecommendFragment extends BaseFragment implements RecommendContract.View {
 
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
+    @BindView(R.id.recommend_contents_layout) ViewGroup recommendContentsLayout;
+    @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
+    @BindView(R.id.recommend_loading_layout) ViewGroup recommendLoadingLayout;
+    @BindView(R.id.recommend_loading_imageview) ImageView recommendLoadingImageView;
+    @BindView(R.id.recommend_event_banner_background) ImageView recommendEventImageView;
 
     RecommendListAdapter recommendListAdapter;
 
@@ -73,36 +80,17 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapter.setPresenter(presenter);
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
+
+        recommendEventImageView.setOnClickListener(v -> {
+            startActivity(new Intent(this.getContext(), EventActivity.class));
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        recommendListAdapter.clear();
-        recommendListAdapter.notifyDataSetChanged();
-
-        addCompositeSubscription(
-                presenter.loadRecommendApps("GAME")
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(recommendApps -> {
-                            final List<String> packageNames = new ArrayList<>();
-
-                            for (int i = 0; i < recommendApps.size(); ) {
-                                final String packageName = recommendApps.get(i).getAppInfo().getPackageName();
-
-                                if (packageNames.contains(packageName)) {
-                                    recommendApps.remove(i);
-                                } else {
-                                    packageNames.add(packageName);
-                                    i++;
-                                }
-                            }
-
-                            recommendListAdapter.addAll(recommendApps);
-                            recommendListAdapter.notifyDataSetChanged();
-                        }, e -> Log.d("FOMES", e.toString()))
-        );
+        presenter.loadRecommendApps("GAME");
     }
 
     @Override
@@ -123,5 +111,34 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void refreshWishedByMe(String packageName, boolean wishedByMe) {
         recommendListAdapter.updateWishedByMe(packageName, wishedByMe);
+    }
+
+    @Override
+    public void showEmptyRecommendList() {
+        recommendLoadingLayout.setVisibility(View.GONE);
+        recommendContentsLayout.setVisibility(View.GONE);
+        recommendErrorLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showLoading() {
+        recommendLoadingLayout.setVisibility(View.VISIBLE);
+        recommendContentsLayout.setVisibility(View.GONE);
+        recommendErrorLayout.setVisibility(View.GONE);
+
+        this.presenter.getImageLoader().asGif().load(R.drawable.loading)
+                .apply(new RequestOptions().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                .into(recommendLoadingImageView);
+    }
+
+    @Override
+    public void bindRecommendList(List<RecommendApp> recommendApps) {
+        recommendListAdapter.clear();
+        recommendListAdapter.addAll(recommendApps);
+        recommendListAdapter.notifyDataSetChanged();
+
+        recommendLoadingLayout.setVisibility(View.GONE);
+        recommendContentsLayout.setVisibility(View.VISIBLE);
+        recommendErrorLayout.setVisibility(View.GONE);
     }
 }

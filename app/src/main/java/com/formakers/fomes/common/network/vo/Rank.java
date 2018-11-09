@@ -35,6 +35,10 @@ public class Rank {
         this.content = content;
     }
 
+    public Boolean isValid() {
+        return rank >= 0;
+    }
+
     @Override
     public String toString() {
         return "Rank{" +

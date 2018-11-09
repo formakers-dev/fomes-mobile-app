@@ -43,5 +43,6 @@ public class BetatestFragmentTest {
         assertThat(subject.getView().findViewById(R.id.betatest_comming_soon_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.betatest_subtitle_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.betatest_imageview).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.getView().findViewById(R.id.betatest_description_textview).getVisibility()).isEqualTo(View.VISIBLE);
     }
 }

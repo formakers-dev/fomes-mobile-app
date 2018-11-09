@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fomes_white_2"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/recommend_error_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="66dp"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:text="@string/recommend_error_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/recommend_error_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp"
+        android:textColor="@color/fomes_gray"
+        android:textAlignment="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/recommend_error_description"
+        app:layout_constraintTop_toBottomOf="@+id/recommend_error_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:layout_width="67dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="19dp"
+        android:src="@drawable/recommend_fomes_face_cry"
+        app:layout_constraintTop_toBottomOf="@+id/recommend_error_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

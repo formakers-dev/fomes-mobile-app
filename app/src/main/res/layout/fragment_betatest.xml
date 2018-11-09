@@ -8,40 +8,59 @@
     android:background="@color/fomes_content_background">
 
 
-    <TextView android:id="@+id/betatest_comming_soon_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
+    <TextView
+        android:id="@+id/betatest_comming_soon_textview"
+        android:layout_width="103dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="53dp"
         android:gravity="center"
-        android:text="@string/coming_soon"
-        android:textSize="16dp"
+        android:text="@string/betatest_coming_soon"
+        android:textSize="10dp"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/fomes_white"
+        android:background="@color/colorPrimary"/>
 
-    <TextView android:id="@+id/betatest_title_textview"
+    <TextView
+        android:id="@+id/betatest_title_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="@string/betatest_title"
-        android:textSize="18dp"
-        android:textColor="@color/fomes_gray"/>
+        android:textSize="23dp"
+        android:textColor="@color/colorPrimary"/>
 
-    <TextView android:id="@+id/betatest_subtitle_textview"
+    <TextView
+        android:id="@+id/betatest_subtitle_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/betatest_subtitle"
+        android:textSize="15dp"
+        android:textColor="@color/fomes_gray"/>
+
+    <ImageView
+        android:id="@+id/betatest_imageview"
+        android:layout_width="177dp"
+        android:layout_height="214dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/event_feedback_capture"/>
+
+    <View
+        android:layout_width="231dp"
+        android:layout_height="2dp"
+        android:background="@color/fomes_gray" />
+
+    <TextView
+        android:id="@+id/betatest_description_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
         android:gravity="center"
         android:lineSpacingExtra="3dp"
-        android:text="@string/betatest_subtitle"
+        android:text="@string/betatest_description"
         android:textSize="12dp"
         android:textColor="@color/fomes_light_warm_gray" />
-    
-    <ImageView android:id="@+id/betatest_imageview"
-        android:layout_width="67dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/loading_progress_back"
-        android:backgroundTint="@color/fomes_light_gray"/>
-    
+
 </LinearLayout>

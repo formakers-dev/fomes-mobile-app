@@ -175,4 +175,9 @@
         <item name="layout_constraintTop_toBottomOf">@+id/divider_top</item>
         <item name="layout_constraintBottom_toTopOf">@+id/divider_bottom</item>
     </style>
+
+    <style name="TurquoiseRoundStrokeBackgroundTheme">
+        <item name="item_color">@color/colorPrimary</item>
+        <item name="item_background_radius">8dp</item>
+    </style>
 </resources>

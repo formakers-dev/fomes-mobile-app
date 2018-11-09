@@ -60,8 +60,6 @@
             android:layout_marginTop="60dp"
             android:layout_marginBottom="30dp"
             android:overScrollMode="never"
-            android:paddingEnd="@dimen/provision_padding_start_end"
-            android:paddingStart="@dimen/provision_padding_start_end"
             app:layout_constraintBottom_toBottomOf="@+id/next_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
