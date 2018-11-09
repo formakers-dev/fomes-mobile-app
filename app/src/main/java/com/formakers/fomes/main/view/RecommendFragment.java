@@ -81,9 +81,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
 
-        recommendEventImageView.setOnClickListener(v -> {
-            startActivity(new Intent(this.getContext(), EventActivity.class));
-        });
+        recommendEventImageView.setOnClickListener(v -> startActivity(new Intent(this.getContext(), EventActivity.class)));
     }
 
     @Override
@@ -140,5 +138,12 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendLoadingLayout.setVisibility(View.GONE);
         recommendContentsLayout.setVisibility(View.VISIBLE);
         recommendErrorLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        this.presenter.unsubscribe();
     }
 }

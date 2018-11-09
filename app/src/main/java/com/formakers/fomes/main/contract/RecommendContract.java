@@ -18,6 +18,7 @@ public interface RecommendContract {
         Completable emitSaveToWishList(String packageName);
         Completable emitRemoveFromWishList(String packageName);
         void emitRefreshWishedByMe(String packageName, boolean wishedByMe);
+        void unsubscribe();
     }
 
     interface View extends BaseView<Presenter> {

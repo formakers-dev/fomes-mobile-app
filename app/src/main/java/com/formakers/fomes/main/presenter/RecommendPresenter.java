@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import rx.Completable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class RecommendPresenter implements RecommendContract.Presenter {
 
@@ -22,6 +23,7 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     private RecommendService recommendService;
     private UserService userService;
     private RequestManager requestManager;
+    private CompositeSubscription compositeSubscription;
 
     @Inject
     public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, RequestManager requestManager) {
@@ -29,6 +31,7 @@ public class RecommendPresenter implements RecommendContract.Presenter {
         this.recommendService = recommendService;
         this.userService = userService;
         this.requestManager = requestManager;
+        this.compositeSubscription = new CompositeSubscription();
     }
 
     @Override
@@ -50,16 +53,18 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     public void loadRecommendApps(String categoryId) {
         this.view.showLoading();
 
-        recommendService.requestRecommendApps(categoryId, 1, 10)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(recommendApps -> {
-                    if (recommendApps.size() > 0) {
-                        List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
-                        this.view.bindRecommendList(duplicationRemovedRecommendApps);
-                    } else {
-                        this.view.showEmptyRecommendList();
-                    }
-                });
+        compositeSubscription.add(
+            recommendService.requestRecommendApps(categoryId, 1, 10)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(recommendApps -> {
+                        if (recommendApps.size() > 0) {
+                            List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
+                            this.view.bindRecommendList(duplicationRemovedRecommendApps);
+                        } else {
+                            this.view.showEmptyRecommendList();
+                        }
+                    })
+        );
     }
 
     @Override
@@ -75,6 +80,13 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     @Override
     public void emitRefreshWishedByMe(String packageName, boolean wishedByMe) {
         this.view.refreshWishedByMe(packageName, wishedByMe);
+    }
+
+    @Override
+    public void unsubscribe() {
+        if(compositeSubscription != null) {
+            compositeSubscription.clear();
+        }
     }
 
     private List<RecommendApp> removeDuplicatedRecommendApps(List<RecommendApp> recommendApps) {
