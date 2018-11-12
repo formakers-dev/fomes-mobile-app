@@ -39,6 +39,11 @@ public class NetworkImagePagerAdapter extends PagerAdapter {
     }
 
     @Override
+    public float getPageWidth(int position) {
+        return 0.333f;
+    }
+
+    @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((ImageView) object);
     }
