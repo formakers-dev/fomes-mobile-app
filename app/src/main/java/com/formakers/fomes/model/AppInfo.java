@@ -17,8 +17,8 @@ public class AppInfo implements Parcelable {
     private String developer;
     private String iconUrl;
     private Double star;
-    private Integer installsMin;
-    private Integer installsMax;
+    private Long installsMin;
+    private Long installsMax;
     private String contentsRating;
     private Long totalUsedTime;
     private List<String> imageUrls;
@@ -163,20 +163,20 @@ public class AppInfo implements Parcelable {
         return this;
     }
 
-    public Integer getInstallsMin() {
+    public Long getInstallsMin() {
         return installsMin;
     }
 
-    public AppInfo setInstallsMin(Integer installsMin) {
+    public AppInfo setInstallsMin(Long installsMin) {
         this.installsMin = installsMin;
         return this;
     }
 
-    public Integer getInstallsMax() {
+    public Long getInstallsMax() {
         return installsMax;
     }
 
-    public AppInfo setInstallsMax(Integer installsMax) {
+    public AppInfo setInstallsMax(Long installsMax) {
         this.installsMax = installsMax;
         return this;
     }

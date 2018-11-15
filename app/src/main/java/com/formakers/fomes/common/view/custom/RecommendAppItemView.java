@@ -116,7 +116,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         setWishListChecked(appInfo.getWishedByMe());
     }
 
-    private void setVerboseGroup(Double star, Integer installsMin, String contentsRating) {
+    private void setVerboseGroup(Double star, Long installsMin, String contentsRating) {
         reviewScoreTextView.setText(String.format(getContext().getString(R.string.format_app_info_star_score),
                 (float) Math.round(star * 10) / 10));
         downloadCountTextView.setText(String.format(getContext().getString(R.string.format_app_info_download_count),
