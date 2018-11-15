@@ -42,7 +42,7 @@ public class RecommendFragmentViewTest {
     @Test
     public void onShowDetailEvent__디테일정보를_보여달라는_이벤트_발생시__디테일_정보를_보여주는_하단_다이얼로그를_띄운다() {
         AppInfo appInfo = new AppInfo("com.formakers.fomes", "포메스", "카테고리ID", "카테고리", "카테고리ID2", "카테고리2", "https://lh3.googleusercontent.com/AHQJwkSC1J602KgQq0d3oMB-waafBrbaw9wAS80HGXQSSaEem4-zMowrGpbHIUuyyw=s360-rw");
-        appInfo.setStar(2.999).setInstallsMin(1000).setContentsRating("contentRating");
+        appInfo.setStar(2.999).setInstallsMin(5000000000L).setContentsRating("contentRating");
         appInfo.setDeveloper("포메스");
 
         RecommendApp recommendApp = new RecommendApp().setAppInfo(appInfo)
