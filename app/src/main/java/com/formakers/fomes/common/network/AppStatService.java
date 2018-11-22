@@ -4,7 +4,6 @@ import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.model.User;
