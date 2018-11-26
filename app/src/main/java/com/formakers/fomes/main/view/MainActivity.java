@@ -20,13 +20,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
 import com.formakers.fomes.main.contract.MainContract;
@@ -41,6 +41,8 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
         NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener, TabLayout.OnTabSelectedListener {
+
+    private static final String TAG = "MainActivity";
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
@@ -224,14 +226,14 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                     if (e instanceof HttpException) {
                         int code = ((HttpException) e).code();
                         if (code == 401 || code == 403) {
-                            Toast.makeText(this, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.");
                             startActivity(LoginActivity.class);
                             finish();
                             return;
                         }
                     }
 
-                    Toast.makeText(this, "예상치 못한 에러가 발생하였습니다. e=" + String.valueOf(e), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "예상치 못한 에러가 발생하였습니다. e=" + String.valueOf(e));
                 })
         );
     }
