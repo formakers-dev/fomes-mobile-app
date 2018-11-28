@@ -7,93 +7,177 @@
     android:layout_height="match_parent"
     android:paddingEnd="@dimen/provision_padding_start_end"
     android:paddingStart="@dimen/provision_padding_start_end">
+    
+    <View android:id="@+id/provision_user_info_content_divider_0"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/provision_life_game_content_title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/provision_life_game_content_title"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+        android:textSize="@dimen/provision_content_title_text_size"
+        android:textColor="@color/fomes_gray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/provision_nickname_content_edittext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_0"/>
+
+    <EditText
+        android:id="@+id/provision_life_game_content_edittext"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:inputType="textShortMessage"
+        android:hint="@string/provision_life_game_content_hint"
+        android:textColorHint="@color/fomes_light_warm_gray"
+        android:textSize="@dimen/provision_content_title_text_size"
+        android:backgroundTint="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintBaseline_toBaselineOf="@+id/provision_life_game_content_title_textview"/>
+
+
+    <View android:id="@+id/provision_user_info_content_divider_1"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/provision_user_info_content_title_textview"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/provision_user_info_birth_title"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
         android:textSize="@dimen/provision_content_title_text_size"
-        android:textColor="@color/fomes_warm_gray"
+        android:textColor="@color/fomes_gray"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_1"/>
 
     <Spinner
         android:id="@+id/provision_user_info_birth_spinner"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="25dp"
-        android:layout_marginTop="@dimen/provision_content_margin_top"
         android:entries="@array/birth_items"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/fomes_light_warm_gray"
         android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_edittext"
+        app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_1"
+        app:layout_constraintBottom_toTopOf="@+id/provision_user_info_content_divider_2"/>
+
+    <View android:id="@+id/provision_user_info_content_divider_2"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_title_textview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_title_textview" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <TextView
         android:id="@+id/provision_user_info_job_title_textview"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
         android:text="@string/provision_user_info_job_title"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
         android:textSize="@dimen/provision_content_title_text_size"
-        android:textColor="@color/fomes_warm_gray"
+        android:textColor="@color/fomes_gray"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_birth_spinner" />
+        app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_2"/>
 
     <Spinner
         android:id="@+id/provision_user_info_job_spinner"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/provision_content_margin_top"
-        android:backgroundTint="@color/colorPrimary"
+        android:layout_height="25dp"
+        android:backgroundTint="@color/fomes_light_warm_gray"
         android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_edittext"
+        app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_2"
+        app:layout_constraintBottom_toTopOf="@+id/provision_user_info_content_divider_3" />
+
+    <View android:id="@+id/provision_user_info_content_divider_3"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_title_textview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_title_textview" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/provision_user_info_gender_title_textview"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:layout_marginTop="51dp"
         android:text="@string/provision_user_info_gender_title"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
         android:textSize="@dimen/provision_content_title_text_size"
-        android:textColor="@color/fomes_warm_gray"
+        android:textColor="@color/fomes_gray"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_spinner" />
+        app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_title_textview"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_3"/>
 
     <RadioGroup
         android:id="@+id/provision_user_info_gender_radiogroup"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:divider="@drawable/divider"
         android:showDividers="middle"
         android:theme="@style/ProvisioningTheme.RadioGroup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/provision_user_info_gender_title_textview"
-        app:layout_constraintTop_toTopOf="@+id/provision_user_info_gender_title_textview">
+        app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_edittext"
+        app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_3"
+        app:layout_constraintBottom_toTopOf="@+id/provision_user_info_content_divider_4">
 
         <RadioButton
             android:id="@+id/provision_user_info_male_radiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/gender_male_radiobutton" />
+            android:textSize="12dp"
+            android:textColor="@color/gender_radiobutton_color_selector"
+            android:text="남자"
+            android:button="@null"
+            android:drawablePadding="6dp"
+            android:drawableTint="@color/gender_radiobutton_color_selector"
+            android:drawableLeft="@drawable/male_icon" />
 
         <RadioButton
             android:id="@+id/provision_user_info_female_radiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/gender_female_radiobutton" />
+            android:textSize="12dp"
+            android:textColor="@color/gender_radiobutton_color_selector"
+            android:text="여자"
+            android:button="@null"
+            android:drawablePadding="6dp"
+            android:drawableTint="@color/gender_radiobutton_color_selector"
+            android:drawableLeft="@drawable/female_icon"/>
     </RadioGroup>
+
+    <View android:id="@+id/provision_user_info_content_divider_4"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@+id/provision_user_info_gender_title_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -2,8 +2,10 @@ package com.formakers.fomes.provisioning.view;
 
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
@@ -53,6 +55,9 @@ public class ProvisioningUserInfoFragmentTest {
     @Test
     public void ProvisioningUserInfoFragmentTest_시작시__프로비저닝_데모그래픽정보입력_화면이_나타난다() {
         assertThat(subject.getView()).isNotNull();
+        assertThat(subject.getView().findViewById(R.id.provision_life_game_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.getView().findViewById(R.id.provision_life_game_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.getView().findViewById(R.id.provision_user_info_birth_spinner).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_birth_spinner).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_job_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
@@ -76,26 +81,30 @@ public class ProvisioningUserInfoFragmentTest {
 
     @Test
     public void 다음버튼_클릭시__입력된_데모그래픽_정보를_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
+        EditText lifeGame = subject.getView().findViewById(R.id.provision_life_game_content_edittext);
         Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
         Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
         RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
 
+        lifeGame.setText("인생게임");
         birthSpinner.setSelection(1);
         jobSpinner.setSelection(3);
         genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).updateDemographicsToUser(eq(2010), eq(2001), eq("female"));
+        verify(mockPresenter).updateUserInfo(eq("인생게임"), eq(2010), eq(2001), eq("female"));
         verify(mockPresenter).emitNextPageEvent();
     }
 
     @Test
     public void 항목_전체_입력시__입력완료_이벤트를_보낸다() {
+        EditText lifeGame = subject.getView().findViewById(R.id.provision_life_game_content_edittext);
         Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
         Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
         RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
 
+        lifeGame.setText("인생게임");
         birthSpinner.setSelection(1);
         jobSpinner.setSelection(1);
         genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
@@ -105,34 +114,45 @@ public class ProvisioningUserInfoFragmentTest {
 
     @Test
     public void 항목_미입력시__입력미완료_이벤트를_보낸다() {
+        EditText lifeGame = subject.getView().findViewById(R.id.provision_life_game_content_edittext);
         Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
         Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
         RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
 
         // 전체 미임력시
+        lifeGame.setText("");
         birthSpinner.setSelection(0);
         jobSpinner.setSelection(0);
         genderRadioGroup.clearCheck();
 
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
 
         // 일부 미임력시
+        lifeGame.setText("");
         birthSpinner.setSelection(1);
         jobSpinner.setSelection(0);
         genderRadioGroup.clearCheck();
 
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
 
+        lifeGame.setText("");
         birthSpinner.setSelection(0);
         jobSpinner.setSelection(1);
         genderRadioGroup.clearCheck();
 
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
 
+        lifeGame.setText("");
         birthSpinner.setSelection(0);
         jobSpinner.setSelection(0);
         genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
 
+        verify(mockPresenter, atLeast(4)).emitFilledUpEvent(subject, false);
+
+        lifeGame.setText("인생게임");
+        birthSpinner.setSelection(0);
+        jobSpinner.setSelection(0);
+        genderRadioGroup.clearCheck();
         verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
     }
 }

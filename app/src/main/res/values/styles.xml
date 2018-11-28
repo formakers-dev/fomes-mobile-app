@@ -34,7 +34,7 @@
     </style>
 
     <style name="ProvisioningTheme.RadioGroup">
-        <item name="divider_width">52dp</item>
+        <item name="divider_width">44dp</item>
         <item name="divider_height">0dp</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>

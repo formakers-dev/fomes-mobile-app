@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -24,11 +25,13 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnItemSelected;
+import butterknife.OnTextChanged;
 
 public class ProvisioningUserInfoFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
     public static final String TAG = ProvisioningUserInfoFragment.class.getSimpleName();
 
+    @BindView(R.id.provision_life_game_content_edittext) EditText lifeGameEditText;
     @BindView(R.id.provision_user_info_birth_spinner)       Spinner birthSpinner;
     @BindView(R.id.provision_user_info_job_spinner)         Spinner jobSpinner;
     @BindView(R.id.provision_user_info_gender_radiogroup)   RadioGroup genderRadioGroup;
@@ -49,7 +52,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
         super.onViewCreated(view, savedInstanceState);
 
         ArrayList<String> items = new ArrayList<>();
-        items.add(getResources().getString(R.string.common_spinner_hint));
+        items.add(getResources().getString(R.string.job_spinner_hint));
         for (User.JobCategory job : User.JobCategory.values()) {
             if (job.getSelectable())
                 items.add(job.getName());
@@ -67,7 +70,8 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
-            this.presenter.emitUpdateHeaderViewEvent(R.string.provision_user_info_title, R.string.provision_user_info_subtitle);
+            this.presenter.emitUpdateHeaderViewEvent(getString(R.string.provision_user_info_title, presenter.getUserNickName()),
+                    getString(R.string.provision_user_info_subtitle));
             emitFilledUpEvent();
         }
     }
@@ -79,13 +83,20 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
             return;
         }
 
+        String game = lifeGameEditText.getText().toString();
         int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
         User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
         int job = jobCategory != null ? jobCategory.getCode() : 0;
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.provision_user_info_male_radiobutton ? "male" : "female";
 
-        this.presenter.updateDemographicsToUser(birth, job, gender);
+        this.presenter.updateUserInfo(game, birth, job, gender);
         this.presenter.emitNextPageEvent();
+    }
+
+    @OnTextChanged(value = R.id.provision_life_game_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onLifeGameTextChanged(CharSequence text, int start, int before, int count) {
+        Log.v(TAG, "onLifeGameTextChanged) " + text + " start=" + start + ", before=" + before + ", count=" + count);
+        emitFilledUpEvent();
     }
 
     @OnItemSelected(R.id.provision_user_info_birth_spinner)
@@ -109,7 +120,8 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
 
     @SuppressLint("ResourceType")
     private void emitFilledUpEvent() {
-        if (birthSpinner.getSelectedItemPosition() > 0
+        if (lifeGameEditText.getText().length() > 0
+                && birthSpinner.getSelectedItemPosition() > 0
                 && jobSpinner.getSelectedItemPosition() > 0
                 && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
             this.presenter.emitFilledUpEvent(this, true);

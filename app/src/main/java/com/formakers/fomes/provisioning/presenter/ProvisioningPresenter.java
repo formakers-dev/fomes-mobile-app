@@ -1,18 +1,17 @@
 package com.formakers.fomes.provisioning.presenter;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.util.Log;
-
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 
@@ -46,19 +45,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void updateDemographicsToUser(Integer birth, Integer job, String gender) {
+    public void updateUserInfo(String game, Integer birth, Integer job, String gender) {
+        this.user.setLifeApps(Lists.newArrayList(game));
         this.user.setBirthday(birth);
         this.user.setJob(job);
         this.user.setGender(gender);
-        Log.d(TAG, user.toString());
-    }
-
-    @Override
-    public void updateLifeGameToUser(String game) {
-        ArrayList<String> lifeGames = new ArrayList<>();
-        lifeGames.add(game);
-        
-        this.user.setLifeApps(lifeGames);
         Log.d(TAG, user.toString());
     }
 
@@ -74,8 +65,18 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
+    public String getUserNickName() {
+        return user.getNickName();
+    }
+
+    @Override
     public void emitUpdateHeaderViewEvent(int titleResId, int subTitleResId) {
         this.view.setHeaderView(titleResId, subTitleResId);
+    }
+
+    @Override
+    public void emitUpdateHeaderViewEvent(String title, String subTitle) {
+        this.view.setHeaderView(title, subTitle);
     }
 
     @Override

@@ -6,13 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import com.formakers.fomes.FomesApplication;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
+import com.formakers.fomes.provisioning.view.ProvisioningNickNameFragment;
 import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
-import com.formakers.fomes.provisioning.view.ProvisioningUserInfoFragment;
-import com.formakers.fomes.common.FomesConstants;
 
 import javax.inject.Inject;
 
@@ -65,7 +65,7 @@ public class FomesBaseActivity extends BaseActivity {
             }
             case FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO: {
                 Intent intent = new Intent(this, ProvisioningActivity.class);
-                intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningUserInfoFragment.TAG);
+                intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningNickNameFragment.TAG);
                 startActivity(intent);
                 break;
             }

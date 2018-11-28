@@ -6,6 +6,7 @@ import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
+import com.formakers.fomes.provisioning.view.ProvisioningNickNameFragment;
 import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
 import com.formakers.fomes.provisioning.view.ProvisioningUserInfoFragment;
 import com.formakers.fomes.common.FomesConstants;
@@ -69,7 +70,7 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
         assertThat(nextStartedActivity.getStringExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME))
-                .isEqualTo(ProvisioningUserInfoFragment.TAG);
+                .isEqualTo(ProvisioningNickNameFragment.TAG);
         assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(ProvisioningActivity.class.getName());
     }
 
