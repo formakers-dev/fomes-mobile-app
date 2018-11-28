@@ -11,6 +11,7 @@
     <View android:id="@+id/provision_nickname_content_title_top_divider"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_pager_margin_top"
         android:background="@color/fomes_pale_gray"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

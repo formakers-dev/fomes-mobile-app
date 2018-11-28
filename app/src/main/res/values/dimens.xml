@@ -7,6 +7,7 @@
     <dimen name="progress_round_size">40dp</dimen>
 
     <!-- Provisioning -->
+    <dimen name="provision_pager_margin_top">53dp</dimen>
     <dimen name="provision_title_text_size">20dp</dimen>
     <dimen name="provision_subtitle_text_size">12dp</dimen>
     <dimen name="provision_subtitle_margin_top">7dp</dimen>

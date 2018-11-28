@@ -57,7 +57,6 @@
             android:id="@+id/provision_viewpager"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="@dimen/match_constraint"
-            android:layout_marginTop="53dp"
             android:layout_marginBottom="30dp"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="@+id/next_button"
