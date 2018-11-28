@@ -109,6 +109,15 @@ public class UserService extends AbstractService {
                 .subscribeOn(Schedulers.io()).toCompletable();
     }
 
+    public Completable verifyNickName(String nickName) {
+        return Observable.defer(() -> userAPI.verifyNickName(SharedPreferencesHelper.getAccessToken(), nickName)
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(APIHelper.refreshExpiredToken()))
+                .toCompletable();
+    }
+
     @Override
     protected String getTag() {
         return TAG;
