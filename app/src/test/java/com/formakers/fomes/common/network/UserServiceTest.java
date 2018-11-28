@@ -131,7 +131,7 @@ public class UserServiceTest extends AbstractServiceTest {
     public void verifyNickName_호출시__닉네임_체크_요청을_한다() {
         when(mockUserAPI.verifyNickName(anyString(), anyString())).thenReturn(mock(Observable.class));
 
-        subject.verifyNickName("닉네임");
+        subject.verifyNickName("닉네임").subscribe(new TestSubscriber<>());;
 
         verify(mockUserAPI).verifyNickName(eq("TEST_ACCESS_TOKEN"), eq("닉네임"));
     }

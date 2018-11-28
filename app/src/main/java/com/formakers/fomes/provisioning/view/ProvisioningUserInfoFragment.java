@@ -12,13 +12,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.common.FomesConstants;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class ProvisioningUserInfoFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
@@ -90,7 +92,14 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.provision_user_info_male_radiobutton ? "male" : "female";
 
         this.presenter.updateUserInfo(game, birth, job, gender);
-        this.presenter.emitNextPageEvent();
+        addCompositeSubscription(
+                this.presenter.requestUpdateUser()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> this.presenter.emitNextPageEvent(), e -> {
+                            Log.e(TAG, String.valueOf(e));
+                            Toast.makeText(this.getContext(), "유저 정보 업데이트 시 오류가 발생하였습니다. 재시도 부탁드립니다.", Toast.LENGTH_LONG).show();
+                        })
+        );
     }
 
     @OnTextChanged(value = R.id.provision_life_game_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)

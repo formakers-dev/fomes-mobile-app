@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import okhttp3.ResponseBody;
@@ -26,6 +25,7 @@ import rx.Completable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -68,52 +68,39 @@ public class ProvisioningNickNameFragmentTest {
     }
 
     @Test
-    public void 다음버튼_클릭시__입력된_닉네임을_유저정보에_업데이트하고_서버에_업데이트_요청을_한다() {
+    public void 다음버튼_클릭시__입력된_닉네임_검사_API를_호출한다() {
         EditText nickNameEditText = subject.getView().findViewById(R.id.provision_nickname_content_edittext);
         nickNameEditText.setText("새로운닉네임");
 
-        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
+        when(mockPresenter.requestVerifyUserNickName(anyString())).thenReturn(Completable.complete());
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).updateNickNameToUser(eq("새로운닉네임"));
-        verify(mockPresenter).requestUpdateUser();
+        verify(mockPresenter).requestVerifyUserNickName(eq("새로운닉네임"));
     }
 
     @Test
-    public void 서버에_업데이트_요청_성공시__프로비저닝_플로우를_업데이트한_후_다음페이지로_넘어가는_이벤트를_보낸다() {
-        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
+    public void 다음버튼_클릭시__닉네임_검사에_성공하면__업데이트하고_다음화면으로_넘어간다() {
+        when(mockPresenter.requestVerifyUserNickName(anyString())).thenReturn(Completable.complete());
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).requestUpdateUser();
+        verify(mockPresenter).updateNickNameToUser(anyString());
         verify(mockPresenter).emitNextPageEvent();
     }
 
     @Test
-    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_아이디_중복_실패시__중복경고문구를_보여준다() {
-        when(mockPresenter.requestUpdateUser()).
+    public void 다음버튼_클릭시__닉네임_검사에_실패하면__중복경고문구를_보여준다() {
+        when(mockPresenter.requestVerifyUserNickName(anyString())).
                 thenReturn(Completable.error(new HttpException(Response.error(409, ResponseBody.create(null, "")))));
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).requestUpdateUser();
         verify(mockPresenter).emitFilledUpEvent(subject, false);
         assertThat(subject.getView().findViewById(R.id.provision_nickname_format_warning_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(((TextView) subject.getView().findViewById(R.id.provision_nickname_format_warning_textview)).getText())
                 .isEqualTo("* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.");
     }
-
-    @Test
-    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_실패시__실패문구를_띄운다() {
-        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.error(new Throwable()));
-
-        subject.onNextButtonClick();
-
-        verify(mockPresenter).requestUpdateUser();
-        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("유저 정보 업데이트를 실패하였습니다.");
-    }
-
 
     @Test
     public void 닉네임_입력시__입력완료_이벤트를_보낸다() {

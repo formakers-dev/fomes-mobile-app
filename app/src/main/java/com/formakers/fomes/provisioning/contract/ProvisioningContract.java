@@ -24,6 +24,7 @@ public interface ProvisioningContract {
         void emitStartActivityAndFinishEvent(Class<?> destActivity);
 
         Completable requestVerifyUserToken();
+        Completable requestVerifyUserNickName(String nickName);
         Completable requestUpdateUser();
 
         boolean hasUsageStatsPermission();

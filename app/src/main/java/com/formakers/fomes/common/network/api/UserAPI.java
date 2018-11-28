@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 import rx.Single;
 
@@ -38,7 +39,7 @@ public interface UserAPI {
     Observable<Void> verifyToken(@Header("x-access-token") String accessToken);
 
     @GET("/user/verify/info")
-    Observable<Void> verifyNickName(@Header("x-access-token") String accessToken, @Path("nickName") String nickName);
+    Observable<Void> verifyNickName(@Header("x-access-token") String accessToken, @Query("nickName") String nickName);
 
     @DELETE("/user/wishlist/{packageName}")
     Observable<Void> deleteWishList(@Header("x-access-token") String accessToken, @Path("packageName") String packageName);

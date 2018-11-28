@@ -147,6 +147,16 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
+    public void requestVerifyUserNickName__호출시__닉네임_검사_API를_호출한다() {
+        when(mockUserService.verifyNickName(anyString())).thenReturn(Completable.complete());
+
+        subject.requestVerifyUserNickName("닉네임");
+
+        verify(mockUserService).verifyNickName(eq("닉네임"));
+    }
+
+
+    @Test
     public void hasUsageStatsPermission__호출시__사용정보_접근_권한을_체크한다() {
         subject.hasUsageStatsPermission();
 

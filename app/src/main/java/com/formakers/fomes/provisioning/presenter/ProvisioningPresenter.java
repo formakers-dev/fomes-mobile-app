@@ -108,6 +108,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
+    public Completable requestVerifyUserNickName(String nickName) {
+        return this.userService.verifyNickName(nickName);
+    }
+
+    @Override
     public Completable requestUpdateUser() {
         userDAO.updateUserInfo(this.user);
         return this.userService.updateUser(this.user);
