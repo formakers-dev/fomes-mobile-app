@@ -1,7 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
 
-import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -37,7 +36,6 @@ public class RecommendPresenterTest {
     @Mock private RecommendContract.View mockView;
     @Mock private RecommendService mockRecommendService;
     @Mock private UserService mockUserService;
-    @Mock private RequestManager mockRequestManager;
 
     private RecommendPresenter subject;
 
@@ -58,7 +56,7 @@ public class RecommendPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService, mockRequestManager);
+        subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService);
     }
 
     @Test
@@ -79,6 +77,15 @@ public class RecommendPresenterTest {
         subject.loadRecommendApps("GAME");
 
         verify(mockView).showLoading();
+    }
+
+    @Test
+    public void loadRecommendApps__호출시__서버결과_수신후_로딩화면을_숨긴다() {
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+
+        subject.loadRecommendApps("GAME");
+
+        verify(mockView).hideLoading();
     }
 
     @Test

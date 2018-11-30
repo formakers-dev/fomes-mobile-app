@@ -1,6 +1,5 @@
 package com.formakers.fomes.main.presenter;
 
-import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -22,22 +21,15 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     private RecommendContract.View view;
     private RecommendService recommendService;
     private UserService userService;
-    private RequestManager requestManager;
     private CompositeSubscription compositeSubscription;
     private int currentPage;
 
     @Inject
-    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, RequestManager requestManager) {
+    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService) {
         this.view = view;
         this.recommendService = recommendService;
         this.userService = userService;
-        this.requestManager = requestManager;
         this.compositeSubscription = new CompositeSubscription();
-    }
-
-    @Override
-    public RequestManager getImageLoader() {
-        return requestManager;
     }
 
     @Override
@@ -52,12 +44,12 @@ public class RecommendPresenter implements RecommendContract.Presenter {
 
     @Override
     public void loadRecommendApps(String categoryId) {
-        this.view.showLoading();
-
         setCurrentPage(1);
 
         compositeSubscription.add(
                 recommendService.requestRecommendApps(categoryId, getCurrentPage())
+                        .doOnSubscribe(() -> this.view.showLoading())
+                        .doOnTerminate(() -> this.view.hideLoading())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(recommendApps -> {
                             List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
@@ -73,6 +65,8 @@ public class RecommendPresenter implements RecommendContract.Presenter {
 
             compositeSubscription.add(
                     recommendService.requestRecommendApps(categoryId, nextPage)
+                            .doOnSubscribe(() -> this.view.showLoading())
+                            .doOnTerminate(() -> this.view.hideLoading())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(recommendApps -> {
                                 setCurrentPage(nextPage);
@@ -101,7 +95,7 @@ public class RecommendPresenter implements RecommendContract.Presenter {
 
     @Override
     public void unsubscribe() {
-        if(compositeSubscription != null) {
+        if (compositeSubscription != null) {
             compositeSubscription.clear();
         }
     }

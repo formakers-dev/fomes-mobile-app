@@ -4,9 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include android:id="@+id/recommend_loading_layout"
-        layout="@layout/fragment_recommend_loading"/>
-
     <include android:id="@+id/recommend_contents_layout"
         layout="@layout/fragment_recommend_contents"
         android:visibility="gone"/>
@@ -14,5 +11,10 @@
     <include android:id="@+id/recommend_error_layout"
         layout="@layout/fragment_recommend_error"
         android:visibility="gone"/>
+
+    <ProgressBar android:id="@+id/recommend_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
 </FrameLayout>
