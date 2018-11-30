@@ -28,8 +28,8 @@ public class RecommendService extends AbstractService {
         this.APIHelper = APIHelper;
     }
 
-    public Observable<List<RecommendApp>> requestRecommendApps(String categoryId, int page, int limit) {
-        return  Observable.defer(() -> recommendAPI.getRecommendApps(SharedPreferencesHelper.getAccessToken(), categoryId, page, limit))
+    public Observable<List<RecommendApp>> requestRecommendApps(String categoryId, int page) {
+        return  Observable.defer(() -> recommendAPI.getRecommendApps(SharedPreferencesHelper.getAccessToken(), categoryId, page))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

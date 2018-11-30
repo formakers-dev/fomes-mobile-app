@@ -30,8 +30,8 @@ public class RecommendServiceTest extends AbstractServiceTest {
 
     @Test
     public void requestRecommendApps_호출시__추천_앱_리스트_API를_호출한다() {
-        subject.requestRecommendApps("GAME", 1, 2).subscribe(new TestSubscriber<>());
+        subject.requestRecommendApps("GAME", 1).subscribe(new TestSubscriber<>());
 
-        verify(mockRecommendAPI).getRecommendApps(anyString(), eq("GAME"), eq(1), eq(2));
+        verify(mockRecommendAPI).getRecommendApps(anyString(), eq("GAME"), eq(1));
     }
 }

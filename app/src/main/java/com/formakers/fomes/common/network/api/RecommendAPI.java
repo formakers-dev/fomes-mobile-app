@@ -13,6 +13,6 @@ import rx.Observable;
 public interface RecommendAPI {
 
     @GET("/recommend/apps/{categoryId}")
-    Observable<List<RecommendApp>> getRecommendApps(@Header("x-access-token") String accessToken, @Path("categoryId") String categoryId, @Query("page") int page, @Query("limit") int limit);
+    Observable<List<RecommendApp>> getRecommendApps(@Header("x-access-token") String accessToken, @Path("categoryId") String categoryId, @Query("page") int page);
 
 }

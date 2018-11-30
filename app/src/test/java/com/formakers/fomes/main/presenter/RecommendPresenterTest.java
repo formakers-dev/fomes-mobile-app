@@ -25,8 +25,10 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -72,7 +74,7 @@ public class RecommendPresenterTest {
 
     @Test
     public void loadRecommendApps__호출시__로딩화면_표시를_요청한다() {
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
 
         subject.loadRecommendApps("GAME");
 
@@ -80,21 +82,13 @@ public class RecommendPresenterTest {
     }
 
     @Test
-    public void loadRecommendApps__추천_앱_리스트_로드시__해당_서버에_요청한다() {
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+    public void loadRecommendApps__추천_앱_리스트_로드시__현재페이지를_1로_초기화하고_해당_서버에_첫번째_페이지를_요청한다() {
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
 
         subject.loadRecommendApps("GAME");
 
-        verify(mockRecommendService).requestRecommendApps(anyString(), anyInt(), anyInt());
-    }
-
-    @Test
-    public void loadRecommendApps_호출결과목록이_없으면__데이터없음_화면을_표시한다() {
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
-
-        subject.loadRecommendApps("GAME");
-
-        verify(mockView).showEmptyRecommendList();
+        assertEquals(subject.getCurrentPage(), 1);
+        verify(mockRecommendService).requestRecommendApps("GAME", 1);
     }
 
     @Test
@@ -104,7 +98,7 @@ public class RecommendPresenterTest {
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
                 .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
 
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt(), anyInt())).thenReturn(Observable.just(items));
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(items));
 
         subject.loadRecommendApps("GAME");
 
@@ -127,12 +121,89 @@ public class RecommendPresenterTest {
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test3"))
                 .setRecommendType(RecommendApp.RECOMMEND_TYPE_FAVORITE_APP));
 
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt(), anyInt())).thenReturn(Observable.just(items));
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(items));
 
         subject.loadRecommendApps("GAME");
 
         ArgumentCaptor<List<RecommendApp>> captor = ArgumentCaptor.forClass(List.class);
         verify(mockView).bindRecommendList(captor.capture());
+
+        List<RecommendApp> recommendApps = captor.getValue();
+        assertThat(recommendApps.get(0).getAppInfo().getPackageName()).isEqualTo("com.test1");
+        assertThat(recommendApps.get(0).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
+        assertThat(recommendApps.get(1).getAppInfo().getPackageName()).isEqualTo("com.test2");
+        assertThat(recommendApps.get(1).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
+        assertThat(recommendApps.get(2).getAppInfo().getPackageName()).isEqualTo("com.test3");
+        assertThat(recommendApps.get(2).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_FAVORITE_APP);
+    }
+
+    @Test
+    public void loadRecommendAppsMore__호출시__서버에_다음_페이지의_추천앱_목록을_요청한다() {
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+
+        subject.setCurrentPage(1);
+        subject.loadRecommendAppsMore("GAME");
+
+        verify(mockRecommendService).requestRecommendApps("GAME", 2);
+    }
+
+    @Test
+    public void loadRecommendAppsMore__호출시__loadRecommendApps가_먼저_호출되지_않은_경우_서버에_추천앱_목록을_요청하지_않는다() {
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+
+        subject.loadRecommendAppsMore("GAME");
+
+        verify(mockRecommendService, never()).requestRecommendApps(anyString(), anyInt());
+    }
+
+    @Test
+    public void loadRecommendAppsMore_호출결과목록이_있으면__추천앱_목록을_화면에_표시한다() {
+        List<RecommendApp> items = new ArrayList<>();
+
+        items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
+                .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
+
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(items));
+
+        subject.setCurrentPage(1);
+        subject.loadRecommendAppsMore("GAME");
+
+        ArgumentCaptor<List<RecommendApp>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mockView).bindRecommendListMore(captor.capture());
+        assertThat(captor.getValue().get(0).getAppInfo().getPackageName()).isEqualTo("com.test1");
+        assertThat(captor.getValue().get(0).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
+    }
+
+    @Test
+    public void loadRecommendAppsMore_호출결과_서버로_부터_정상응답을_받으면_현재페이지_값을_1만큼_증가시킨다() {
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+
+        subject.setCurrentPage(2);
+        subject.loadRecommendAppsMore("GAME");
+
+        assertThat(subject.getCurrentPage()).isEqualTo(3);
+    }
+
+    @Test
+    public void loadRecommendAppsMore_호출결과_중복목록이_있으면__중복된_앱_제거후_추천앱_목록을_화면에_표시한다() {
+        List<RecommendApp> items = new ArrayList<>();
+
+        items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
+                .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
+        items.add(new RecommendApp().setAppInfo(new AppInfo("com.test2"))
+                .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
+        items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
+                .setRecommendType(RecommendApp.RECOMMEND_TYPE_FAVORITE_DEVELOPER));
+        items.add(new RecommendApp().setAppInfo(new AppInfo("com.test3"))
+                .setRecommendType(RecommendApp.RECOMMEND_TYPE_FAVORITE_APP));
+
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(items));
+
+        subject.setCurrentPage(1);
+        subject.loadRecommendAppsMore("GAME");
+
+        ArgumentCaptor<List<RecommendApp>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mockView).bindRecommendListMore(captor.capture());
 
         List<RecommendApp> recommendApps = captor.getValue();
         assertThat(recommendApps.get(0).getAppInfo().getPackageName()).isEqualTo("com.test1");

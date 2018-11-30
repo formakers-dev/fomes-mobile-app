@@ -3,6 +3,7 @@ package com.formakers.fomes.main.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
@@ -82,6 +83,20 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         presenter.setAdapterModel(recommendListAdapter);
 
         recommendEventImageView.setOnClickListener(v -> startActivity(new Intent(this.getContext(), EventActivity.class)));
+
+        setNestedScrollViewOnScrollChangeListener((NestedScrollView) recommendContentsLayout);
+    }
+
+    private void setNestedScrollViewOnScrollChangeListener(NestedScrollView view) {
+        view.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            View lastChildView = nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
+
+            boolean isBottom = (lastChildView.getBottom() - (nestedScrollView.getHeight() + scrollY)) == 0;
+
+            if (isBottom) {
+                presenter.loadRecommendAppsMore("GAME");
+            }
+        });
     }
 
     @Override
@@ -111,11 +126,16 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapter.updateWishedByMe(packageName, wishedByMe);
     }
 
-    @Override
-    public void showEmptyRecommendList() {
-        recommendLoadingLayout.setVisibility(View.GONE);
-        recommendContentsLayout.setVisibility(View.GONE);
-        recommendErrorLayout.setVisibility(View.VISIBLE);
+    private void showRecommendList(boolean hasData) {
+        if (hasData) {
+            recommendLoadingLayout.setVisibility(View.GONE);
+            recommendContentsLayout.setVisibility(View.VISIBLE);
+            recommendErrorLayout.setVisibility(View.GONE);
+        } else {
+            recommendLoadingLayout.setVisibility(View.GONE);
+            recommendContentsLayout.setVisibility(View.GONE);
+            recommendErrorLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -135,9 +155,13 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapter.addAll(recommendApps);
         recommendListAdapter.notifyDataSetChanged();
 
-        recommendLoadingLayout.setVisibility(View.GONE);
-        recommendContentsLayout.setVisibility(View.VISIBLE);
-        recommendErrorLayout.setVisibility(View.GONE);
+        showRecommendList(recommendApps.size() > 0);
+    }
+
+    @Override
+    public void bindRecommendListMore(List<RecommendApp> recommendApps) {
+        recommendListAdapter.addAll(recommendApps);
+        recommendListAdapter.notifyDataSetChanged();
     }
 
     @Override

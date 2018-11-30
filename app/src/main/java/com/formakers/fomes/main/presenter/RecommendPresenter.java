@@ -24,6 +24,7 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     private UserService userService;
     private RequestManager requestManager;
     private CompositeSubscription compositeSubscription;
+    private int currentPage;
 
     @Inject
     public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, RequestManager requestManager) {
@@ -53,18 +54,34 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     public void loadRecommendApps(String categoryId) {
         this.view.showLoading();
 
+        setCurrentPage(1);
+
         compositeSubscription.add(
-            recommendService.requestRecommendApps(categoryId, 1, 10)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(recommendApps -> {
-                        if (recommendApps.size() > 0) {
+                recommendService.requestRecommendApps(categoryId, getCurrentPage())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(recommendApps -> {
                             List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
                             this.view.bindRecommendList(duplicationRemovedRecommendApps);
-                        } else {
-                            this.view.showEmptyRecommendList();
-                        }
-                    })
+                        })
         );
+    }
+
+    @Override
+    public void loadRecommendAppsMore(String categoryId) {
+        if (getCurrentPage() > 0) {
+            int nextPage = getCurrentPage() + 1;
+
+            compositeSubscription.add(
+                    recommendService.requestRecommendApps(categoryId, nextPage)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(recommendApps -> {
+                                setCurrentPage(nextPage);
+
+                                List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
+                                this.view.bindRecommendListMore(duplicationRemovedRecommendApps);
+                            })
+            );
+        }
     }
 
     @Override
@@ -104,5 +121,13 @@ public class RecommendPresenter implements RecommendContract.Presenter {
         }
 
         return recommendApps;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 }
