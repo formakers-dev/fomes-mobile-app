@@ -83,6 +83,8 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendEventImageView.setOnClickListener(v -> startActivity(new Intent(this.getContext(), EventActivity.class)));
 
         setNestedScrollViewOnScrollChangeListener((NestedScrollView) recommendContentsLayout);
+
+        presenter.loadRecommendApps("GAME");
     }
 
     private void setNestedScrollViewOnScrollChangeListener(NestedScrollView view) {
@@ -92,16 +94,9 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
             boolean isBottom = (lastChildView.getBottom() - (nestedScrollView.getHeight() + scrollY)) == 0;
 
             if (isBottom) {
-                presenter.loadRecommendAppsMore("GAME");
+                presenter.loadRecommendApps("GAME");
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        presenter.loadRecommendApps("GAME");
     }
 
     @Override
@@ -124,14 +119,16 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapter.updateWishedByMe(packageName, wishedByMe);
     }
 
-    private void showRecommendList(boolean hasData) {
-        if (hasData) {
-            recommendContentsLayout.setVisibility(View.VISIBLE);
-            recommendErrorLayout.setVisibility(View.GONE);
-        } else {
-            recommendContentsLayout.setVisibility(View.GONE);
-            recommendErrorLayout.setVisibility(View.VISIBLE);
-        }
+    @Override
+    public void showRecommendList() {
+        recommendContentsLayout.setVisibility(View.VISIBLE);
+        recommendErrorLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorPage() {
+        recommendContentsLayout.setVisibility(View.GONE);
+        recommendErrorLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -146,15 +143,6 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void bindRecommendList(List<RecommendApp> recommendApps) {
-        recommendListAdapter.clear();
-        recommendListAdapter.addAll(recommendApps);
-        recommendListAdapter.notifyDataSetChanged();
-
-        showRecommendList(recommendApps.size() > 0);
-    }
-
-    @Override
-    public void bindRecommendListMore(List<RecommendApp> recommendApps) {
         recommendListAdapter.addAll(recommendApps);
         recommendListAdapter.notifyDataSetChanged();
     }

@@ -12,6 +12,7 @@ public interface RecommendListAdapterContract {
     interface Model {
         int getItemCount();
         Object getItem(int position);
+        List<RecommendApp> getAllItems();
         void add(RecommendApp item);
         void addAll(List<RecommendApp> items);
         void clear();

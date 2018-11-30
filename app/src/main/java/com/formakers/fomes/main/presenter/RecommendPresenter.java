@@ -3,6 +3,7 @@ package com.formakers.fomes.main.presenter;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 
@@ -16,6 +17,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class RecommendPresenter implements RecommendContract.Presenter {
+
+    public final static String TAG = "RecommendPresenter";
 
     private RecommendListAdapterContract.Model adapterModel;
     private RecommendContract.View view;
@@ -44,38 +47,29 @@ public class RecommendPresenter implements RecommendContract.Presenter {
 
     @Override
     public void loadRecommendApps(String categoryId) {
-        setCurrentPage(1);
+        final int nextPage = getCurrentPage() + 1;
 
         compositeSubscription.add(
-                recommendService.requestRecommendApps(categoryId, getCurrentPage())
+                recommendService.requestRecommendApps(categoryId, nextPage)
+                        .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(() -> this.view.showLoading())
                         .doOnTerminate(() -> this.view.hideLoading())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(recommendApps -> {
-                            List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
-                            this.view.bindRecommendList(duplicationRemovedRecommendApps);
+                            if (recommendApps.size() <= 0) {
+                                throw new IllegalArgumentException("Empty List");
+                            }
+
+                            this.view.bindRecommendList(removeDuplicatedRecommendApps(recommendApps));
+                        }, e -> {
+                            Log.e(TAG, e.toString());
+                            if (adapterModel.getItemCount() <= 0) {
+                                this.view.showErrorPage();
+                            }
+                        }, () -> {
+                            setCurrentPage(nextPage);
+                            this.view.showRecommendList();
                         })
         );
-    }
-
-    @Override
-    public void loadRecommendAppsMore(String categoryId) {
-        if (getCurrentPage() > 0) {
-            int nextPage = getCurrentPage() + 1;
-
-            compositeSubscription.add(
-                    recommendService.requestRecommendApps(categoryId, nextPage)
-                            .doOnSubscribe(() -> this.view.showLoading())
-                            .doOnTerminate(() -> this.view.hideLoading())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(recommendApps -> {
-                                setCurrentPage(nextPage);
-
-                                List<RecommendApp> duplicationRemovedRecommendApps = removeDuplicatedRecommendApps(recommendApps);
-                                this.view.bindRecommendListMore(duplicationRemovedRecommendApps);
-                            })
-            );
-        }
     }
 
     @Override
@@ -101,20 +95,25 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     private List<RecommendApp> removeDuplicatedRecommendApps(List<RecommendApp> recommendApps) {
+        List<RecommendApp> tempList = new ArrayList<>(adapterModel.getAllItems());
+        int startIndex = tempList.size() <= 0 ? 0 : tempList.size();
+
+        tempList.addAll(recommendApps);
+
         final List<String> packageNames = new ArrayList<>();
 
-        for (int i = 0; i < recommendApps.size(); ) {
-            final String packageName = recommendApps.get(i).getAppInfo().getPackageName();
+        for (int i = 0; i < tempList.size(); ) {
+            final String packageName = tempList.get(i).getAppInfo().getPackageName();
 
             if (packageNames.contains(packageName)) {
-                recommendApps.remove(i);
+                tempList.remove(i);
             } else {
                 packageNames.add(packageName);
                 i++;
             }
         }
 
-        return recommendApps;
+        return tempList.subList(startIndex, tempList.size());
     }
 
     public int getCurrentPage() {

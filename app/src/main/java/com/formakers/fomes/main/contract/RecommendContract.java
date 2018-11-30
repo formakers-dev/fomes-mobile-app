@@ -12,7 +12,6 @@ public interface RecommendContract {
         void setAdapterModel(RecommendListAdapterContract.Model adapterModel);
         void emitShowDetailEvent(RecommendApp recommendApp);
         void loadRecommendApps(String categoryId);
-        void loadRecommendAppsMore(String categoryId);
 
         Completable emitSaveToWishList(String packageName);
         Completable emitRemoveFromWishList(String packageName);
@@ -25,7 +24,8 @@ public interface RecommendContract {
         void refreshWishedByMe(String packageName, boolean wishedByMe);
         void showLoading();
         void hideLoading();
+        void showRecommendList();
+        void showErrorPage();
         void bindRecommendList(List<RecommendApp> recommendApps);
-        void bindRecommendListMore(List<RecommendApp> recommendApps);
     }
 }
