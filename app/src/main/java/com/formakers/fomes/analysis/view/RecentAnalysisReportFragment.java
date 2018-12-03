@@ -19,13 +19,13 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView;
 import com.formakers.fomes.common.view.custom.RankAppItemView;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -103,7 +103,10 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                     presenter.getImageLoader().asGif().load(R.drawable.loading)
                         .apply(new RequestOptions().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                         .into(loadingImageView)
-                ).subscribe(() -> loadingComplete(true), e -> loadingComplete(false))
+                ).subscribe(() -> loadingComplete(true), e -> {
+                    Log.e(TAG, String.valueOf(e));
+                    loadingComplete(false);
+            })
         );
     }
 
@@ -228,12 +231,23 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         bindChart(peopleGenreGenderAge.findViewById(R.id.chart), genderAgePercentages);
         Log.d(TAG, genderAgeCategoryUsages.toString());
 
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.title_1))
-                .setText(genderAgeUsagePercentagePair.get(0).first.getName());
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.title_2))
-                .setText(genderAgeUsagePercentagePair.get(1).first.getName());
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.title_3))
-                .setText(genderAgeUsagePercentagePair.get(2).first.getName());
+        int genderAgeSize = genderAgeUsagePercentagePair.size();
+
+        if (genderAgeSize > 0) {
+            ((TextView) peopleGenreGenderAge.findViewById(R.id.title_1)).setText(genderAgeUsagePercentagePair.get(0).first.getName());
+        }
+
+        if (genderAgeSize > 1) {
+            ((TextView) peopleGenreGenderAge.findViewById(R.id.title_2)).setText(genderAgeUsagePercentagePair.get(1).first.getName());
+            peopleGenreGenderAge.findViewById(R.id.number_2).setVisibility(View.VISIBLE);
+            peopleGenreGenderAge.findViewById(R.id.title_2).setVisibility(View.VISIBLE);
+        }
+
+        if (genderAgeSize > 2) {
+            ((TextView) peopleGenreGenderAge.findViewById(R.id.title_3)).setText(genderAgeUsagePercentagePair.get(2).first.getName());
+            peopleGenreGenderAge.findViewById(R.id.number_3).setVisibility(View.VISIBLE);
+            peopleGenreGenderAge.findViewById(R.id.title_3).setVisibility(View.VISIBLE);
+        }
 
         // 동일 직업군
         ((TextView) peopleGenreJob.findViewById(R.id.group))
@@ -248,12 +262,23 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         }
         bindChart(peopleGenreJob.findViewById(R.id.chart), jobPercentages);
 
-        ((TextView) peopleGenreJob.findViewById(R.id.title_1))
-                .setText(jobUsagePercentagePair.get(0).first.getName());
-        ((TextView) peopleGenreJob.findViewById(R.id.title_2))
-                .setText(jobUsagePercentagePair.get(1).first.getName());
-        ((TextView) peopleGenreJob.findViewById(R.id.title_3))
-                .setText(jobUsagePercentagePair.get(2).first.getName());
+        int jobSize = jobUsagePercentagePair.size();
+
+        if (jobSize > 0) {
+            ((TextView) peopleGenreJob.findViewById(R.id.title_1)).setText(jobUsagePercentagePair.get(0).first.getName());
+        }
+
+        if (jobSize > 1) {
+            ((TextView) peopleGenreJob.findViewById(R.id.title_2)).setText(jobUsagePercentagePair.get(1).first.getName());
+            peopleGenreJob.findViewById(R.id.number_2).setVisibility(View.VISIBLE);
+            peopleGenreJob.findViewById(R.id.title_2).setVisibility(View.VISIBLE);
+        }
+
+        if (jobSize > 2) {
+            ((TextView) peopleGenreJob.findViewById(R.id.title_3)).setText(jobUsagePercentagePair.get(2).first.getName());
+            peopleGenreJob.findViewById(R.id.number_3).setVisibility(View.VISIBLE);
+            peopleGenreJob.findViewById(R.id.title_3).setVisibility(View.VISIBLE);
+        }
     }
 
     private String getMyRankText(Rank myRank, Rank worstRank) {
@@ -443,24 +468,37 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(String.format(getString(R.string.common_age) + getString(R.string.common_new_line) + getString(R.string.common_string),
                         userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
 
-        presenter.getImageLoader().load(genderAgeAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into((ImageView) genderAgeGames.findViewById(R.id.icon_1));
-        presenter.getImageLoader().load(genderAgeAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into((ImageView) genderAgeGames.findViewById(R.id.icon_2));
-        presenter.getImageLoader().load(genderAgeAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into((ImageView) genderAgeGames.findViewById(R.id.icon_3));
-
-        ((TextView) genderAgeGames.findViewById(R.id.title_1)).setText(genderAgeAppUsages.get(0).getName());
-        ((TextView) genderAgeGames.findViewById(R.id.title_2)).setText(genderAgeAppUsages.get(1).getName());
-        ((TextView) genderAgeGames.findViewById(R.id.title_3)).setText(genderAgeAppUsages.get(2).getName());
+        bindPeopleGamesViews(genderAgeGames, genderAgeAppUsages);
 
         ((TextView) jobGames.findViewById(R.id.group))
                 .setText(String.format(getString(R.string.common_string), User.JobCategory.get(userInfo.getJob()).getName()));
 
-        presenter.getImageLoader().load(jobAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_1));
-        presenter.getImageLoader().load(jobAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_2));
-        presenter.getImageLoader().load(jobAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into((ImageView) jobGames.findViewById(R.id.icon_3));
+        bindPeopleGamesViews(jobGames, jobAppUsages);
+    }
 
-        ((TextView) jobGames.findViewById(R.id.title_1)).setText(jobAppUsages.get(0).getName());
-        ((TextView) jobGames.findViewById(R.id.title_2)).setText(jobAppUsages.get(1).getName());
-        ((TextView) jobGames.findViewById(R.id.title_3)).setText(jobAppUsages.get(2).getName());
+    private void bindPeopleGamesViews(ViewGroup peopleViewGroup, List<Usage> appUsages) {
+        int size = appUsages.size();
+
+        if (size > 0) {
+            presenter.getImageLoader().load(appUsages.get(0).getAppInfos().get(0).getIconUrl()).into((ImageView) peopleViewGroup.findViewById(R.id.icon_1));
+            ((TextView) peopleViewGroup.findViewById(R.id.title_1)).setText(appUsages.get(0).getName());
+        }
+
+        if (size > 1) {
+            presenter.getImageLoader().load(appUsages.get(1).getAppInfos().get(0).getIconUrl()).into((ImageView) peopleViewGroup.findViewById(R.id.icon_2));
+            ((TextView) peopleViewGroup.findViewById(R.id.title_2)).setText(appUsages.get(1).getName());
+
+            peopleViewGroup.findViewById(R.id.icon_2).setVisibility(View.VISIBLE);
+            peopleViewGroup.findViewById(R.id.title_2).setVisibility(View.VISIBLE);
+        }
+
+        if (size > 2) {
+            presenter.getImageLoader().load(appUsages.get(2).getAppInfos().get(0).getIconUrl()).into((ImageView) peopleViewGroup.findViewById(R.id.icon_3));
+            ((TextView) peopleViewGroup.findViewById(R.id.title_3)).setText(appUsages.get(2).getName());
+
+            peopleViewGroup.findViewById(R.id.icon_3).setVisibility(View.VISIBLE);
+            peopleViewGroup.findViewById(R.id.title_3).setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.current_analysis_exit_button)
