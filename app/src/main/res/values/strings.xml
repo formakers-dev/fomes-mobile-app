@@ -28,7 +28,6 @@
     <string name="common_next_button">다음으로</string>
     <string name="common_go_to_grant">허용하러 가기</string>
     <string name="common_confirm">확인</string>
-    <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
     <string name="common_age">%d대</string>
     <string name="common_male">남성</string>
     <string name="common_female">여성</string>
@@ -49,23 +48,25 @@
     <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing">사용약관</a>]]> 및 <![CDATA[<a href="https://docs.google.com/document/d/1QxWuv2zlKYsGYglUTiP5d5IFxZUy6HwKGObXC8x0034/edit?usp=sharing">개인정보 취급방침</a>]]>에 동의됩니다.</string>
 
     <!-- Provisioning -->
-    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다.\n몇 가지 궁금한 점이 있습니다.</string>
-    <string name="provision_user_info_subtitle">알려주신 정보는 분석으로만 사용됩니다.</string>
+    <string name="provision_user_info_title">%s님! 당신에 대해 알려주세요.\n게임 성향 분석을 해드릴게요!</string>
+    <string name="provision_user_info_subtitle">알려주신 정보는 분석을 위해 사용됩니다.</string>
     <string name="provision_user_info_birth_title">출생연도</string>
     <string name="provision_user_info_job_title">직업</string>
     <string name="provision_user_info_gender_title">성별</string>
-    <string name="provision_life_game_title">분석과 추천을 위해\n인생게임 1개를 입력해주세요.</string>
-    <string name="provision_life_game_subtitle">콘솔 / PC / 모바일 / 오래전 게임도 좋아요.</string>
+    <string name="provision_user_info_gender_male">남자</string>
+    <string name="provision_user_info_gender_female">여자</string>
     <string name="provision_life_game_content_title">인생게임</string>
-    <string name="provision_life_game_content_hint">예) 마비노기</string>
-    <string name="provision_nickname_title">포메스 앱에서 사용할\n닉네임을 입력해주세요.</string>
+    <string name="provision_life_game_content_hint">PC/콘솔/모바일 상관없이 1개만 적어주세요.</string>
+    <string name="birth_spinner_hint">태어난 연도를 선택해주세요.</string>
+    <string name="job_spinner_hint">당신의 직업을 선택해주세요..</string>
+    <string name="provision_nickname_title">반가워요! 포메스가 앞으로 당신을 어떻게 부르면 될까요?</string>
     <string name="provision_nickname_subtitle">닉네임은 2글자에서 10글자 사이로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
     <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.</string>
     <string name="provision_nickname_already_exist_warning">* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.</string>
-    <string name="provision_permission_title">포메스 아이콘을 찾아서\n권한을 허용해주세요.</string>
-    <string name="provision_permission_subtitle">게임 앱 사용시간 데이터를 기반으로 분석합니다.</string>
+    <string name="provision_permission_title">데이터 기반 분석을 위해\n포메스를 찾아서 허용해주세요.</string>
+    <string name="provision_permission_subtitle">구글 정책상 직접 선택해서 허용해야 합니다.</string>
 
     <!-- Analysis -->
     <string name="analysis_loading">게임 성향을 분석 중 입니다.</string>

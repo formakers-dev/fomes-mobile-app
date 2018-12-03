@@ -96,6 +96,11 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
         return recommendApps.get(position);
     }
 
+    @Override
+    public List<RecommendApp> getAllItems() {
+        return recommendApps;
+    }
+
     public void updateWishedByMe(String packageName, boolean wishedByMe) {
         for(int position=0; position<getItemCount(); position++) {
             if (packageName.equals(recommendApps.get(position).getAppInfo().getPackageName())) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="birth_items">
-        <item>@string/common_spinner_hint</item>
+        <item>@string/birth_spinner_hint</item>
         <item>2010</item>
         <item>2009</item>
         <item>2008</item>

@@ -10,6 +10,7 @@ import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 
+import org.assertj.core.util.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,7 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -70,27 +72,28 @@ public class ProvisioningPresenterTest {
 
     @Test
     public void updateDemographicsToUser__호출시__유저정보를_업데이트한다() {
-        subject.updateDemographicsToUser(1989, 1, "male");
+        subject.updateUserInfo("미러스엣지", 1989, 1, "male");
 
+        verify(mockUser).setLifeApps(eq(Lists.newArrayList("미러스엣지")));
         verify(mockUser).setBirthday(eq(1989));
         verify(mockUser).setJob(eq(1));
         verify(mockUser).setGender(eq("male"));
     }
 
     @Test
-    public void updateLifeGameToUser__호출시__유저의_인생게임정보를_업데이트한다() {
-        subject.updateLifeGameToUser("미러스엣지");
+    public void getUserNickName__호출시__유저의_닉네임을_반환한다() {
+        subject.getUserNickName();
 
-        ArrayList<String> lifeGames = new ArrayList<>();
-        lifeGames.add("미러스엣지");
-
-        verify(mockUser).setLifeApps(eq(lifeGames));
+        verify(mockUser).getNickName();
     }
 
     @Test
     public void emitUpdateHeaderViewEvent__헤더뷰업데이트_이벤트_발생시__뷰에_헤더뷰_셋팅을_요청한다() {
         subject.emitUpdateHeaderViewEvent(R.string.provision_user_info_title, R.string.provision_user_info_subtitle);
         verify(mockView).setHeaderView(eq(R.string.provision_user_info_title), eq(R.string.provision_user_info_subtitle));
+
+        subject.emitUpdateHeaderViewEvent("타이틀", "서브타이틀");
+        verify(mockView).setHeaderView("타이틀", "서브타이틀");
     }
 
     @Test
@@ -142,6 +145,16 @@ public class ProvisioningPresenterTest {
         verify(mockUserDAO).updateUserInfo(eq(mockUser));
         verify(mockUserService).updateUser(eq(mockUser));
     }
+
+    @Test
+    public void requestVerifyUserNickName__호출시__닉네임_검사_API를_호출한다() {
+        when(mockUserService.verifyNickName(anyString())).thenReturn(Completable.complete());
+
+        subject.requestVerifyUserNickName("닉네임");
+
+        verify(mockUserService).verifyNickName(eq("닉네임"));
+    }
+
 
     @Test
     public void hasUsageStatsPermission__호출시__사용정보_접근_권한을_체크한다() {

@@ -2,13 +2,14 @@ package com.formakers.fomes.provisioning.view;
 
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
-import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,13 +19,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
+
+import rx.Completable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -53,6 +58,9 @@ public class ProvisioningUserInfoFragmentTest {
     @Test
     public void ProvisioningUserInfoFragmentTest_시작시__프로비저닝_데모그래픽정보입력_화면이_나타난다() {
         assertThat(subject.getView()).isNotNull();
+        assertThat(subject.getView().findViewById(R.id.provision_life_game_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.getView().findViewById(R.id.provision_life_game_content_edittext).getVisibility()).isEqualTo(View.VISIBLE);
+        assertThat(subject.getView().findViewById(R.id.provision_user_info_birth_spinner).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_content_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_birth_spinner).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.getView().findViewById(R.id.provision_user_info_job_title_textview).getVisibility()).isEqualTo(View.VISIBLE);
@@ -75,64 +83,82 @@ public class ProvisioningUserInfoFragmentTest {
     }
 
     @Test
-    public void 다음버튼_클릭시__입력된_데모그래픽_정보를_유저정보에_업데이트하고_다음페이지로_넘어가는_이벤트를_보낸다() {
-        Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
-        Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
-        RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
+    public void 다음버튼_클릭시__입력된_데모그래픽_정보를_유저정보에_업데이트하고_서버에_업데이트_요청을_한다() {
+        setValuesToView("인생게임", 1, 3, R.id.provision_user_info_female_radiobutton);
 
-        birthSpinner.setSelection(1);
-        jobSpinner.setSelection(3);
-        genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
+        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).updateDemographicsToUser(eq(2010), eq(2001), eq("female"));
+        verify(mockPresenter).updateUserInfo(eq("인생게임"), eq(2010), eq(2001), eq("female"));
+        verify(mockPresenter).requestUpdateUser();
+    }
+
+    @Test
+    public void 서버에_업데이트_요청_성공시__프로비저닝_플로우를_업데이트한_후_다음페이지로_넘어가는_이벤트를_보낸다() {
+        setValuesToView("인생게임", 1, 3, R.id.provision_user_info_female_radiobutton);
+
+        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
+
+        subject.onNextButtonClick();
+
+        verify(mockPresenter).requestUpdateUser();
         verify(mockPresenter).emitNextPageEvent();
     }
 
     @Test
-    public void 항목_전체_입력시__입력완료_이벤트를_보낸다() {
-        Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
-        Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
-        RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
+    public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_실패시__실패문구를_띄운다() {
+        setValuesToView("인생게임", 1, 3, R.id.provision_user_info_female_radiobutton);
 
-        birthSpinner.setSelection(1);
-        jobSpinner.setSelection(1);
-        genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
+        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.error(new Throwable()));
+
+        subject.onNextButtonClick();
+
+        verify(mockPresenter).requestUpdateUser();
+        assertThat(ShadowToast.getTextOfLatestToast()).contains("재시도");
+    }
+
+    @Test
+    public void 항목_전체_입력시__입력완료_이벤트를_보낸다() {
+        setValuesToView("인생게임", 1, 3, R.id.provision_user_info_female_radiobutton);
 
         verify(mockPresenter).emitFilledUpEvent(subject, true);
     }
 
     @Test
     public void 항목_미입력시__입력미완료_이벤트를_보낸다() {
+        // 전체 미임력시
+        setValuesToView("", 0, 0, 0);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
+
+        // 일부 미임력시
+        setValuesToView("", 1, 0, 0);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
+
+        setValuesToView("", 0, 1, 0);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
+
+        setValuesToView("", 0, 0, R.id.provision_user_info_female_radiobutton);
+        verify(mockPresenter, atLeast(4)).emitFilledUpEvent(subject, false);
+
+        setValuesToView("", 0, 0, 0);
+        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
+    }
+
+    private void setValuesToView(String lifeGame, int birthPosition, int jobPosition, int genderRadioButtonId) {
+        EditText lifeGameEditText = subject.getView().findViewById(R.id.provision_life_game_content_edittext);
         Spinner birthSpinner = subject.getView().findViewById(R.id.provision_user_info_birth_spinner);
         Spinner jobSpinner = subject.getView().findViewById(R.id.provision_user_info_job_spinner);
         RadioGroup genderRadioGroup = subject.getView().findViewById(R.id.provision_user_info_gender_radiogroup);
 
-        // 전체 미임력시
-        birthSpinner.setSelection(0);
-        jobSpinner.setSelection(0);
-        genderRadioGroup.clearCheck();
-
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
-
-        // 일부 미임력시
+        lifeGameEditText.setText("인생게임");
         birthSpinner.setSelection(1);
-        jobSpinner.setSelection(0);
-        genderRadioGroup.clearCheck();
+        jobSpinner.setSelection(3);
 
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
-
-        birthSpinner.setSelection(0);
-        jobSpinner.setSelection(1);
-        genderRadioGroup.clearCheck();
-
-        verify(mockPresenter, atLeast(2)).emitFilledUpEvent(subject, false);
-
-        birthSpinner.setSelection(0);
-        jobSpinner.setSelection(0);
-        genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
-
-        verify(mockPresenter, atLeast(3)).emitFilledUpEvent(subject, false);
+        if (genderRadioButtonId != 0) {
+            genderRadioGroup.check(R.id.provision_user_info_female_radiobutton);
+        } else {
+            genderRadioGroup.clearCheck();
+        }
     }
 }

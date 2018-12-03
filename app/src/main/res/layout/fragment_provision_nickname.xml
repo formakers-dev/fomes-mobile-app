@@ -8,30 +8,50 @@
     android:paddingEnd="@dimen/provision_padding_start_end"
     android:paddingStart="@dimen/provision_padding_start_end">
 
+    <View android:id="@+id/provision_nickname_content_title_top_divider"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_pager_margin_top"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/provision_nickname_content_title_textview"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
         android:text="@string/provision_nickname_content_title"
         android:textSize="@dimen/provision_content_title_text_size"
-        android:textColor="@color/fomes_warm_gray"
+        android:textColor="@color/fomes_gray"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/provision_nickname_content_edittext"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_title_top_divider"/>
 
     <EditText
         android:id="@+id/provision_nickname_content_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/provision_content_margin_top"
+        android:layout_marginStart="13dp"
         android:inputType="textPersonName"
         android:hint="@string/provision_nickname_content_hint"
-        android:backgroundTint="@color/colorPrimary"
+        android:textColorHint="@color/fomes_light_warm_gray"
+        android:textSize="@dimen/provision_content_title_text_size"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_title_textview" />
+        app:layout_constraintStart_toEndOf="@id/provision_nickname_content_title_textview"
+        app:layout_constraintBaseline_toBaselineOf="@id/provision_nickname_content_title_textview"/>
+
+    <View android:id="@+id/provision_nickname_content_title_bottom_divider"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@id/provision_nickname_content_title_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/provision_nickname_format_warning_textview"
@@ -45,6 +65,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_title_bottom_divider" />
 
 </android.support.constraint.ConstraintLayout>

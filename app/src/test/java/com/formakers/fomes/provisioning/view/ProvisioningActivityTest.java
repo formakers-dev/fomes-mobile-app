@@ -60,22 +60,21 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
 
         List<Fragment> fragmentList = ((ProvisioningActivity.ProvisioningPagerAdapter) ((ViewPager) subject.findViewById(R.id.provision_viewpager)).getAdapter()).getFragmentList();
-        assertThat(fragmentList.size()).isEqualTo(4);
-        assertThat(fragmentList.get(0).getClass()).isEqualTo(ProvisioningUserInfoFragment.class);
-        assertThat(fragmentList.get(1).getClass()).isEqualTo(ProvisioningLifeGameFragment.class);
-        assertThat(fragmentList.get(2).getClass()).isEqualTo(ProvisioningNickNameFragment.class);
-        assertThat(fragmentList.get(3).getClass()).isEqualTo(ProvisioningPermissionFragment.class);
+        assertThat(fragmentList.size()).isEqualTo(3);
+        assertThat(fragmentList.get(0).getClass()).isEqualTo(ProvisioningNickNameFragment.class);
+        assertThat(fragmentList.get(1).getClass()).isEqualTo(ProvisioningUserInfoFragment.class);
+        assertThat(fragmentList.get(2).getClass()).isEqualTo(ProvisioningPermissionFragment.class);
     }
 
     @Test
     public void ProvisioningActivity_시작시__미리_선택된_프래그먼트가_존재한다면__그_프래그먼트를_보여준다() {
         Intent intent = new Intent();
-        intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningLifeGameFragment.TAG);
+        intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningNickNameFragment.TAG);
         subject = getActivity(intent);
 
         ViewPager viewPager = subject.findViewById(R.id.provision_viewpager);
         ProvisioningPagerAdapter adapter = (ProvisioningPagerAdapter) viewPager.getAdapter();
-        assertThat(adapter.getFragmentList().get(viewPager.getCurrentItem())).isInstanceOf(ProvisioningLifeGameFragment.class);
+        assertThat(adapter.getFragmentList().get(viewPager.getCurrentItem())).isInstanceOf(ProvisioningNickNameFragment.class);
     }
 
     @Test
@@ -134,9 +133,9 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
          subject.setHeaderView(R.string.provision_user_info_title, R.string.provision_user_info_subtitle);
 
          assertThat(((TextView) subject.findViewById(R.id.provision_title_textview)).getText())
-                 .contains("안녕하세요");
+                 .contains("알려주세요");
          assertThat(((TextView) subject.findViewById(R.id.provision_subtitle_textview)).getText())
-                 .contains("분석으로만");
+                 .contains("분석을");
     }
 
     @Test

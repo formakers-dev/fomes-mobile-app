@@ -60,14 +60,12 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         super.onPostCreate(savedInstanceState);
 
         fragmentMap.put(ProvisioningUserInfoFragment.TAG, new ProvisioningUserInfoFragment().setPresenter(this.presenter));
-        fragmentMap.put(ProvisioningLifeGameFragment.TAG, new ProvisioningLifeGameFragment().setPresenter(this.presenter));
         fragmentMap.put(ProvisioningNickNameFragment.TAG, new ProvisioningNickNameFragment().setPresenter(this.presenter));
         fragmentMap.put(ProvisioningPermissionFragment.TAG, new ProvisioningPermissionFragment().setPresenter(this.presenter));
 
         ProvisioningPagerAdapter provisioningPagerAdapter = new ProvisioningPagerAdapter(getSupportFragmentManager());
-        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningUserInfoFragment.TAG));
-        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningLifeGameFragment.TAG));
         provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningNickNameFragment.TAG));
+        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningUserInfoFragment.TAG));
         provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningPermissionFragment.TAG));
 
         viewPager.setAdapter(provisioningPagerAdapter);
@@ -115,6 +113,12 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     public void setHeaderView(@StringRes int titleResId, @StringRes int subTitleResId) {
         titleTextView.setText(titleResId);
         subTitleTextView.setText(subTitleResId);
+    }
+
+    @Override
+    public void setHeaderView(String title, String subTitle) {
+        titleTextView.setText(title);
+        subTitleTextView.setText(subTitle);
     }
 
     @Override

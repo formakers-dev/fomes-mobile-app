@@ -10,18 +10,21 @@ import rx.Completable;
 
 public interface ProvisioningContract {
     interface Presenter {
-        void updateDemographicsToUser(Integer birth, Integer job, String gender);
-        void updateLifeGameToUser(String game);
+        void updateUserInfo(String game, Integer birth, Integer job, String gender);
         void updateNickNameToUser(String nickName);
         void setProvisioningProgressStatus(int status);
 
+        String getUserNickName();
+
         void emitUpdateHeaderViewEvent(@StringRes int titleResId, @StringRes int subTitleResId);
+        void emitUpdateHeaderViewEvent(String title, String subTitle);
         void emitNextPageEvent();
         void emitFilledUpEvent(BaseFragment fragment, boolean isEnable);
         void emitNeedToGrantEvent();
         void emitStartActivityAndFinishEvent(Class<?> destActivity);
 
         Completable requestVerifyUserToken();
+        Completable requestVerifyUserNickName(String nickName);
         Completable requestUpdateUser();
 
         boolean hasUsageStatsPermission();
@@ -34,6 +37,7 @@ public interface ProvisioningContract {
     interface View extends BaseView<Presenter> {
         void nextPage();
         void setHeaderView(@StringRes int titleResId, @StringRes int subTitleResId);
+        void setHeaderView(String title, String subTitle);
         void setNextButtonVisibility(boolean isVisible);
         void setNextButtonText(int stringResId);
         ApplicationComponent getApplicationComponent();

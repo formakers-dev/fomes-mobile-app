@@ -7,14 +7,16 @@
     <dimen name="progress_round_size">40dp</dimen>
 
     <!-- Provisioning -->
+    <dimen name="provision_pager_margin_top">53dp</dimen>
     <dimen name="provision_title_text_size">20dp</dimen>
     <dimen name="provision_subtitle_text_size">12dp</dimen>
-    <dimen name="provision_subtitle_margin_top">8dp</dimen>
+    <dimen name="provision_subtitle_margin_top">7dp</dimen>
     <dimen name="provision_content_title_text_size">12dp</dimen>
-    <dimen name="provision_content_hint_text_size">18dp</dimen>
+    <dimen name="provision_content_hint_text_size">12dp</dimen>
     <dimen name="provision_bottom_button_text_size">24dp</dimen>
     <dimen name="provision_padding_start_end">32dp</dimen>
     <dimen name="provision_content_margin_top">21dp</dimen>
+    <dimen name="provision_content_divider_margin_top_bottom">27dp</dimen>
 
     <!-- Analysis -->
     <dimen name="analysis_content_title_size">16dp</dimen>
