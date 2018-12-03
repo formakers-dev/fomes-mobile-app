@@ -128,13 +128,6 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         return ((FomesApplication) this.getActivity().getApplication()).getComponent();
     }
 
-    @Override
-    public void bindErrorHeaderView() {
-        iconImageView.setImageDrawable(getResources().getDrawable(R.drawable.fomes_face_cry, null));
-        titleTextView.setText(R.string.analysis_error_header_not_enough_data_title);
-        subtitleTextView.setText(R.string.analysis_error_header_not_enough_data_subtitle);
-    }
-
     private void bindChart(PieChart pieChart, List<Number> datas) {
         List<PieEntry> pieEntries = new ArrayList<>();
         float total = 0;
@@ -235,6 +228,8 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         if (genderAgeSize > 0) {
             ((TextView) peopleGenreGenderAge.findViewById(R.id.title_1)).setText(genderAgeUsagePercentagePair.get(0).first.getName());
+            peopleGenreGenderAge.findViewById(R.id.number_1).setVisibility(View.VISIBLE);
+            peopleGenreGenderAge.findViewById(R.id.title_1).setVisibility(View.VISIBLE);
         }
 
         if (genderAgeSize > 1) {
@@ -266,6 +261,8 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         if (jobSize > 0) {
             ((TextView) peopleGenreJob.findViewById(R.id.title_1)).setText(jobUsagePercentagePair.get(0).first.getName());
+            peopleGenreJob.findViewById(R.id.number_1).setVisibility(View.VISIBLE);
+            peopleGenreJob.findViewById(R.id.title_1).setVisibility(View.VISIBLE);
         }
 
         if (jobSize > 1) {
@@ -402,16 +399,18 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 .setText(getString(R.string.analysis_favorite_developer_group,
                         getString(R.string.common_age, userInfo.getAge()) + " " +
                                 getString(R.string.common_string, getString(userInfo.getGenderToStringResId()))));
-        ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_name)).setText(genderAgeDeveloperUsages.get(0).getName());
+        ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_name))
+                .setText(!genderAgeDeveloperUsages.isEmpty() ? genderAgeDeveloperUsages.get(0).getName() : getString(R.string.analysis_error_not_enough_data));
         ((TextView) genderAgeFavoriteDeveloper.findViewById(R.id.developer_description))
-                .setText(genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
+                .setText(!genderAgeDeveloperUsages.isEmpty() ? genderAgeDeveloperUsages.get(0).getAppInfos().get(0).getAppName() : getString(R.string.common_dash));
 
 
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.group))
                 .setText(getString(R.string.analysis_favorite_developer_group, User.JobCategory.get(userInfo.getJob()).getName()));
-        ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_name)).setText(jobDeveloperUsages.get(0).getName());
+        ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_name))
+                .setText(!jobDeveloperUsages.isEmpty() ? jobDeveloperUsages.get(0).getName() : getString(R.string.analysis_error_not_enough_data));
         ((TextView) jobFavoriteDeveloper.findViewById(R.id.developer_description))
-                .setText(jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName());
+                .setText(!jobDeveloperUsages.isEmpty() ? jobDeveloperUsages.get(0).getAppInfos().get(0).getAppName() : getString(R.string.common_dash));
     }
 
     @Override
@@ -482,6 +481,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         if (size > 0) {
             presenter.getImageLoader().load(appUsages.get(0).getAppInfos().get(0).getIconUrl()).into((ImageView) peopleViewGroup.findViewById(R.id.icon_1));
             ((TextView) peopleViewGroup.findViewById(R.id.title_1)).setText(appUsages.get(0).getName());
+
+            peopleViewGroup.findViewById(R.id.icon_1).setVisibility(View.VISIBLE);
+            peopleViewGroup.findViewById(R.id.title_1).setVisibility(View.VISIBLE);
         }
 
         if (size > 1) {

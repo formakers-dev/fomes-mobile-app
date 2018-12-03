@@ -110,8 +110,6 @@
     <string name="analysis_game_suggestion_without_1_2_3">앗! 아직 1/2/3위가 없으시네요. 오늘 모바일 게임 한판 어때요?</string>
     <string name="analysis_game_suggestion_without_2_3">앗! 아직 2/3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
     <string name="analysis_game_suggestion_without_3">앗! 아직 3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
-    <string name="analysis_error_header_not_enough_data_title">분석을 위한 게임 정보가 부족해요. 사람들의 분석만 보여집니다.</string>
-    <string name="analysis_error_header_not_enough_data_subtitle">7일간의 게임 플레이 데이터가 쌓이면 내 분석이 가능합니다.</string>
 
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>

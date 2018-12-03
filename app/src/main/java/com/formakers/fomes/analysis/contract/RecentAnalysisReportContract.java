@@ -24,7 +24,6 @@ public interface RecentAnalysisReportContract {
 
     interface View extends BaseView<Presenter> {
         ApplicationComponent getApplicationComponent();
-        void bindErrorHeaderView();
         void bindMyGenreViews(List<Usage> categoryUsages);
         void bindPeopleGenreViews(List<Usage> genderAgeCategoryUsages, List<Usage> jobCategoryUsages);
         void bindRankingViews(List<Rank> totalUsedTimeRank);
