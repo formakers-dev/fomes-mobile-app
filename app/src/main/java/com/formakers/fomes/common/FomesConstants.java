@@ -17,12 +17,6 @@ public interface FomesConstants {
         String NOTIFICATION_TYPE = "EXTRA_NOTIFICATION_TYPE";
     }
 
-    interface HTTP_STATUS {
-        int CODE_405_METHOD_NOT_ALLOWED = 405;
-        int CODE_409_CONFLICT = 409;
-        int CODE_412_PRECONDITION_FAILED = 412;
-    }
-
     interface PROVISIONING {
         interface PROGRESS_STATUS {
             int COMPLETED = -1;

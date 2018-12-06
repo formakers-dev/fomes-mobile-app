@@ -82,18 +82,6 @@ public class APIHelperTest {
         verifyRefreshToken();
     }
 
-    @Test
-    public void API조회시_403에러코드를_받은_경우_새로운_토큰을_발급받아_갱신하고_재요청한다() throws Exception {
-        setupTokenException(403);
-
-        Observable.defer(() -> mockProjectAPI.getProject(any(), any()))
-                .compose(subject.refreshExpiredToken())
-                .toList().toBlocking().single();
-
-        verify(mockProjectAPI, times(2)).getProject(any(), any());
-        verifyRefreshToken();
-    }
-
     private void setupTokenException(int errorCode) {
         when(mockProjectAPI.getProject(any(), any()))
                 .thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))))

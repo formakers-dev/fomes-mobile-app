@@ -222,9 +222,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             presenter.requestVerifyAccessToken()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {}, e -> {
-                    // TODO : 이거 넘나 공통화 시키고 싶다
                     if (e instanceof HttpException) {
                         int code = ((HttpException) e).code();
+
+                        // 401 : 토큰이 만료되었으므로 재발급을 위해 로그인 화면으로 보낸다.
+                        // 403 : 만료 외 토큰 인증 실패이므로 메인화면에 진입할 수 없어야한다. -> 아무 권한 없이도 볼 수 있는 화면으로 보낸다. (로그인 화면)
                         if (code == 401 || code == 403) {
                             Log.d(TAG, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.");
                             startActivity(LoginActivity.class);

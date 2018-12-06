@@ -95,9 +95,21 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void MainActivity_진입시__토큰검증_만료시__로그인화면으로_이동하고_종료한다() {
+    public void MainActivity_진입시__토큰_만료_오류_발생시__로그인화면으로_이동하고_종료한다() {
         when(mockPresenter.requestVerifyAccessToken())
                 .thenReturn(Completable.error(new HttpException(Response.error(401, ResponseBody.create(null, "")))));
+
+        launchActivity();
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(LoginActivity.class.getSimpleName());
+        assertThat(subject.isFinishing()).isTrue();
+    }
+
+    @Test
+    public void MainActivity_진입시__토큰_만료_외_오류_발생시__로그인화면으로_이동하고_종료한다() {
+        when(mockPresenter.requestVerifyAccessToken())
+                .thenReturn(Completable.error(new HttpException(Response.error(403, ResponseBody.create(null, "")))));
 
         launchActivity();
 
