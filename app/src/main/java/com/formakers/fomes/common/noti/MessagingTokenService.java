@@ -1,4 +1,4 @@
-package com.formakers.fomes.service;
+package com.formakers.fomes.common.noti;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.helper.SharedPreferencesHelper;

@@ -2,9 +2,10 @@ package com.formakers.fomes.service;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.MessagingTokenService;
+import com.formakers.fomes.helper.MessagingHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
 import rx.Completable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;

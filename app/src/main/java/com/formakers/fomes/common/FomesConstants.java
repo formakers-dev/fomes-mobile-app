@@ -34,4 +34,9 @@ public interface FomesConstants {
             int CONTACTS_US = 4;
         }
     }
+
+    interface Notification {
+        String TITLE = "title";
+        String MESSAGE = "message";
+    }
 }
