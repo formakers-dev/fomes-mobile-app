@@ -88,15 +88,6 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void emitUpdateHeaderViewEvent__헤더뷰업데이트_이벤트_발생시__뷰에_헤더뷰_셋팅을_요청한다() {
-        subject.emitUpdateHeaderViewEvent(R.string.provision_user_info_title, R.string.provision_user_info_subtitle);
-        verify(mockView).setHeaderView(eq(R.string.provision_user_info_title), eq(R.string.provision_user_info_subtitle));
-
-        subject.emitUpdateHeaderViewEvent("타이틀", "서브타이틀");
-        verify(mockView).setHeaderView("타이틀", "서브타이틀");
-    }
-
-    @Test
     public void emitNextPageEvent__다음_화면으로_넘어가는_이벤트_발생시__뷰에_다음페이지를_요청한다() {
         subject.emitNextPageEvent();
         verify(mockView).nextPage();

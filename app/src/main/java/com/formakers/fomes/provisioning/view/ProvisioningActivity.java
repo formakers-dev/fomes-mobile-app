@@ -7,23 +7,21 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
-import com.formakers.fomes.common.FomesConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,11 +35,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
 
     private static final String TAG = ProvisioningActivity.class.getSimpleName();
 
-    @BindView(R.id.provision_icon_imageview) ImageView iconImageView;
-    @BindView(R.id.provision_title_textview) TextView titleTextView;
-    @BindView(R.id.provision_subtitle_textview) TextView subTitleTextView;
-
-    @BindView(R.id.provision_viewpager) ViewPager viewPager;
+    @BindView(R.id.provision_viewpager) SwipeViewPager viewPager;
     @BindView(R.id.next_button) Button nextButton;
 
     private ProvisioningContract.Presenter presenter;
@@ -70,7 +64,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
 
         viewPager.setAdapter(provisioningPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
-        viewPager.beginFakeDrag();
+        viewPager.setEnableSwipe(false);
 
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
@@ -107,18 +101,6 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @Override
     public void nextPage() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-    }
-
-    @Override
-    public void setHeaderView(@StringRes int titleResId, @StringRes int subTitleResId) {
-        titleTextView.setText(titleResId);
-        subTitleTextView.setText(subTitleResId);
-    }
-
-    @Override
-    public void setHeaderView(String title, String subTitle) {
-        titleTextView.setText(title);
-        subTitleTextView.setText(subTitle);
     }
 
     @Override

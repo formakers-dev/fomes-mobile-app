@@ -4,7 +4,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingEnd="@dimen/provision_padding_start_end"
+    android:paddingStart="@dimen/provision_padding_start_end">
+
+    <ImageView
+        android:id="@+id/provision_icon_imageview"
+        android:layout_width="38dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="@dimen/provision_image_margin_top"
+        android:src="@drawable/fomes_face"
+        app:layout_constraintBottom_toTopOf="@+id/provision_title_textview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/provision_title_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="@string/provision_permission_title"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/provision_title_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/provision_subtitle_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/provision_icon_imageview" />
+
+    <TextView
+        android:id="@+id/provision_subtitle_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/provision_subtitle_margin_top"
+        android:text="@string/provision_permission_subtitle"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/provision_subtitle_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_title_textview" />
 
     <ImageView android:id="@+id/provision_permission_imageview"
         android:layout_width="311dp"
@@ -12,7 +50,7 @@
         android:src="@drawable/provision_permission"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/provision_subtitle_textview"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

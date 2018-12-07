@@ -70,16 +70,6 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void emitUpdateHeaderViewEvent(int titleResId, int subTitleResId) {
-        this.view.setHeaderView(titleResId, subTitleResId);
-    }
-
-    @Override
-    public void emitUpdateHeaderViewEvent(String title, String subTitle) {
-        this.view.setHeaderView(title, subTitle);
-    }
-
-    @Override
     public void emitNextPageEvent() {
         this.view.nextPage();
     }

@@ -5,12 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
-import com.formakers.fomes.common.view.BaseActivityTest;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.view.BaseActivityTest;
+import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity.ProvisioningPagerAdapter;
 
 import org.junit.After;
@@ -55,7 +55,6 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     public void ProvisioningActivity_시작시__프로비저닝화면이_나타난다() {
         launchActivity();
 
-        assertThat(subject.findViewById(R.id.provision_icon_imageview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.provision_viewpager).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
 
@@ -95,7 +94,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         ProvisioningActivity.ProvisioningPagerAdapter mockPagerAdapter = mock(ProvisioningActivity.ProvisioningPagerAdapter.class);
         when(mockPagerAdapter.getItem(anyInt())).thenReturn(mockFragment);
 
-        ViewPager mockViewPager = mock(ViewPager.class);
+        SwipeViewPager mockViewPager = mock(SwipeViewPager.class);
         when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
         when(mockViewPager.getCurrentItem()).thenReturn(0);
 
@@ -124,18 +123,6 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         int expectedPageIndex = currentPageIndex + 1;
         int size = subject.viewPager.getAdapter().getCount();
         assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex < size ? expectedPageIndex : size);
-    }
-
-    @Test
-    public void setHeaderView_호출시__상단_헤더뷰를_셋팅한다() {
-         launchActivity();
-
-         subject.setHeaderView(R.string.provision_user_info_title, R.string.provision_user_info_subtitle);
-
-         assertThat(((TextView) subject.findViewById(R.id.provision_title_textview)).getText())
-                 .contains("알려주세요");
-         assertThat(((TextView) subject.findViewById(R.id.provision_subtitle_textview)).getText())
-                 .contains("분석을");
     }
 
     @Test
@@ -188,7 +175,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         ProvisioningActivity.ProvisioningPagerAdapter mockPagerAdapter = mock(ProvisioningActivity.ProvisioningPagerAdapter.class);
         when(mockPagerAdapter.getItem(2)).thenReturn(mockFragment);
 
-        ViewPager mockViewPager = mock(ViewPager.class);
+        SwipeViewPager mockViewPager = mock(SwipeViewPager.class);
         when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
         when(mockViewPager.getCurrentItem()).thenReturn(0);
 

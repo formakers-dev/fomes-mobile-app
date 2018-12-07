@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.formakers.fomes.R;
@@ -33,7 +34,8 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
 
     public static final String TAG = ProvisioningUserInfoFragment.class.getSimpleName();
 
-    @BindView(R.id.provision_life_game_content_edittext) EditText lifeGameEditText;
+    @BindView(R.id.provision_title_textview)                TextView titleTextView;
+    @BindView(R.id.provision_life_game_content_edittext)    EditText lifeGameEditText;
     @BindView(R.id.provision_user_info_birth_spinner)       Spinner birthSpinner;
     @BindView(R.id.provision_user_info_job_spinner)         Spinner jobSpinner;
     @BindView(R.id.provision_user_info_gender_radiogroup)   RadioGroup genderRadioGroup;
@@ -72,8 +74,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
-            this.presenter.emitUpdateHeaderViewEvent(getString(R.string.provision_user_info_title, presenter.getUserNickName()),
-                    getString(R.string.provision_user_info_subtitle));
+            titleTextView.setText(getString(R.string.provision_user_info_title, presenter.getUserNickName()));
             emitFilledUpEvent();
         }
     }
