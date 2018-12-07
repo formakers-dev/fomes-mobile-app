@@ -11,7 +11,9 @@ import android.support.v4.app.NotificationCompat;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.view.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -20,11 +22,15 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+
 public class MessagingService extends FirebaseMessagingService {
     private final static String TAG = "MessagingService";
 
     @Inject Context context;
     @Inject ChannelManager channelManager;
+    @Inject SharedPreferencesHelper sharedPreferencesHelper;
+    @Inject UserService userService;
 
     @Override
     public void onCreate() {
@@ -34,9 +40,11 @@ public class MessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, this.toString());
+        Log.d(TAG, String.valueOf(this) + "onMessageReceived) " + (remoteMessage != null ? remoteMessage.toString() : ""));
 
-        Log.d(TAG, "onMessageReceived) " + (remoteMessage != null ? remoteMessage.toString() : ""));
+        if (remoteMessage == null) {
+            return;
+        }
 
         // Foreground에 앱이 떠 있을 경우 메시지 수신 처리
         Log.d(TAG, "From: " + remoteMessage.getFrom());
@@ -76,6 +84,20 @@ public class MessagingService extends FirebaseMessagingService {
         }
     }
 
+    @Override
+    public void onNewToken(String newToken) {
+        super.onNewToken(newToken);
+
+        Log.d(TAG, "Token refreshed: " + newToken);
+
+        sharedPreferencesHelper.setRegistrationToken(newToken);
+
+        if (sharedPreferencesHelper.hasAccessToken()) {
+            userService.updateRegistrationToken(sharedPreferencesHelper.getRegistrationToken())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Log.d(TAG, "Token Refresh is Completed!"));
+        }
+    }
 //    @Override
 //    public void handleIntent(Intent intent) {
 //        super.handleIntent(intent);

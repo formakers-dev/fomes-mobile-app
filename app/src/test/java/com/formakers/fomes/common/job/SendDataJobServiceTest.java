@@ -4,13 +4,12 @@ import android.app.job.JobParameters;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.common.network.UserService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -26,7 +25,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Completable;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -47,7 +45,6 @@ public class SendDataJobServiceTest {
     @Inject
     AndroidNativeHelper mockAndroidNativeHelper;
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
-    @Inject MessagingHelper mockMessagingHelper;
     @Inject UserService mockUserService;
     @Inject AppStatService mockAppStatService;
 
@@ -59,35 +56,20 @@ public class SendDataJobServiceTest {
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(true);
+        when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
         when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
-        when(mockMessagingHelper.getMessagingToken()).thenReturn("myRegistrationToken");
 
         subject = Robolectric.setupService(SendDataJobService.class);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         RxJavaHooks.reset();
     }
 
     @Test
-    public void onStartJob_실행시_노티토큰이_업데이트되어있지않을경우_서버로_노티토큰_정보를_전송한다() throws Exception {
-        when(mockMessagingHelper.getMessagingToken()).thenReturn("newRegistrationToken");
-        when(mockUserService.updateRegistrationToken(eq("newRegistrationToken"))).thenReturn(Completable.complete());
-
-        JobParameters jobParameters = mock(JobParameters.class);
-        when(jobParameters.getJobId()).thenReturn(1);
-        when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
-
-        subject.onStartJob(jobParameters);
-
-        verify(mockUserService).updateRegistrationToken(eq("newRegistrationToken"));
-    }
-
-    @Test
-    public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() throws Exception {
+    public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() {
         List<AppUsage> appUsages = new ArrayList<>();
         appUsages.add(new AppUsage("packageName1", 1000));
         appUsages.add(new AppUsage("packageName2", 2000));
@@ -105,7 +87,7 @@ public class SendDataJobServiceTest {
     }
 
     @Test
-    public void onStartJob_실행시_권한이없으면_아무것도하지않는다() throws Exception {
+    public void onStartJob_실행시_권한이없으면_아무것도하지않는다() {
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
         JobParameters jobParameters = mock(JobParameters.class);
@@ -120,7 +102,7 @@ public class SendDataJobServiceTest {
 
 //    @Test
 //    public void onStartJob_실행시_로그인상태가_아니면_아무것도하지않는다() throws Exception {
-//        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(false);
+//        when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(false);
 //
 //        JobParameters jobParameters = mock(JobParameters.class);
 //        when(jobParameters.getJobId()).thenReturn(1);

@@ -4,18 +4,16 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 
 import com.formakers.fomes.FomesApplication;
-import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.AndroidNativeHelper;
+import com.formakers.fomes.helper.AppUsageDataHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class SendDataJobService extends JobService {
@@ -26,7 +24,6 @@ public class SendDataJobService extends JobService {
     @Inject
     AndroidNativeHelper androidNativeHelper;
     @Inject AppUsageDataHelper appUsageDataHelper;
-    @Inject MessagingHelper messagingHelper;
     @Inject UserService userService;
     @Inject AppStatService appStatService;
 
@@ -49,17 +46,6 @@ public class SendDataJobService extends JobService {
 
         if (androidNativeHelper.hasUsageStatsPermission()) {
             Log.d(TAG, "Start to update data!");
-
-            // 노티 토큰 업데이트 로직 추가 - onRefreshToken 에서 에러난 경우에 대한 대비책
-            final String refreshedToken = messagingHelper.getMessagingToken();
-            if (!SharedPreferencesHelper.getRegistrationToken().equals(refreshedToken)) {
-                userService.updateRegistrationToken(refreshedToken)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                            Log.d(TAG, "Token Refresh is Completed!");
-                            SharedPreferencesHelper.setRegistrationToken(refreshedToken);
-                        }, (throwable) -> Log.e(TAG, throwable.toString()));
-            }
 
             Completable.merge(appUsageDataHelper.sendShortTermStats()
                     , appStatService.sendAppUsages(appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS)))

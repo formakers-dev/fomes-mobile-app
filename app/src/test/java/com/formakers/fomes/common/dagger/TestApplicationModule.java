@@ -12,7 +12,6 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.MessagingHelper;
 import com.formakers.fomes.helper.ResourceHelper;
 import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.common.network.AppStatService;
@@ -164,12 +163,6 @@ public class TestApplicationModule {
     @Provides
     GoogleSignInAPIHelper googleSignInAPIHelper() {
         return mock(GoogleSignInAPIHelper.class);
-    }
-
-    @Singleton
-    @Provides
-    MessagingHelper messagingHelper() {
-        return mock(MessagingHelper.class);
     }
 
     /**

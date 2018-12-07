@@ -120,7 +120,7 @@ public class SharedPreferencesHelper {
         putString(KEY_INVITATION_CODE, code);
     }
 
-    public boolean isLoggedIn() {
+    public boolean hasAccessToken() {
         return !TextUtils.isEmpty(getAccessToken());
     }
 

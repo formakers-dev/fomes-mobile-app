@@ -16,7 +16,6 @@ import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
-import com.formakers.fomes.common.noti.MessagingTokenService;
 import com.formakers.fomes.wishList.presenter.WishListPresenter;
 
 import javax.inject.Singleton;
@@ -39,7 +38,6 @@ public interface ApplicationComponent {
     RequestManager requestManager();
 
     void inject(MessagingService messagingService);
-    void inject(MessagingTokenService messagingTokenService);
     void inject(SendDataJobService sendDataJobService);
 
     // fomes
