@@ -107,8 +107,8 @@ public class RecommendAppItemView extends ConstraintLayout {
         setNameText(appInfo.getAppName());
         setCategoryDeveloperText(appInfo.getCategoryName(), appInfo.getDeveloper());
 
-        // verbose 체크해서 그릴까? setVerbose 하면 리프레쉬 시키고
         setVerboseGroup(appInfo.getStar(), appInfo.getInstallsMin(), appInfo.getContentsRating());
+
         if (appInfo.getImageUrls() != null) {
             imageViewPager.setAdapter(new NetworkImagePagerAdapter(appInfo.getImageUrls()));
         }
@@ -117,11 +117,13 @@ public class RecommendAppItemView extends ConstraintLayout {
     }
 
     private void setVerboseGroup(Double star, Long installsMin, String contentsRating) {
-        reviewScoreTextView.setText(String.format(getContext().getString(R.string.format_app_info_star_score),
-                (float) Math.round(star * 10) / 10));
-        downloadCountTextView.setText(String.format(getContext().getString(R.string.format_app_info_download_count),
-                installsMin));
-        ageLimitTextView.setText(contentsRating);
+        if (isVerbose()) {
+            reviewScoreTextView.setText(String.format(getContext().getString(R.string.format_app_info_star_score),
+                    (float) Math.round(star * 10) / 10));
+            downloadCountTextView.setText(String.format(getContext().getString(R.string.format_app_info_download_count),
+                    installsMin));
+            ageLimitTextView.setText(contentsRating);
+        }
     }
 
     public void setIconImageDrawable(Drawable iconDrawable) {
@@ -150,6 +152,10 @@ public class RecommendAppItemView extends ConstraintLayout {
 
     public void setVerbose(boolean isVerbose) {
         verboseGroup.setVisibility(isVerbose ? View.VISIBLE : View.GONE);
+    }
+
+    public boolean isVerbose() {
+        return verboseGroup.getVisibility() == View.VISIBLE;
     }
 
     public void setDownloadable(boolean isDownloadable) {
