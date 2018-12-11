@@ -29,6 +29,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -113,10 +114,7 @@ public class RecommendPresenterTest {
 
         subject.loadRecommendApps("GAME");
 
-        ArgumentCaptor<List<RecommendApp>> captor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindRecommendList(captor.capture());
-        assertThat(captor.getValue().get(0).getAppInfo().getPackageName()).isEqualTo("com.test1");
-        assertThat(captor.getValue().get(0).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
+        verify(mockView).refreshRecommendList();
     }
 
     @Test
@@ -136,16 +134,7 @@ public class RecommendPresenterTest {
 
         subject.loadRecommendApps("GAME");
 
-        ArgumentCaptor<List<RecommendApp>> captor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindRecommendList(captor.capture());
-
-        List<RecommendApp> recommendApps = captor.getValue();
-        assertThat(recommendApps.get(0).getAppInfo().getPackageName()).isEqualTo("com.test1");
-        assertThat(recommendApps.get(0).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
-        assertThat(recommendApps.get(1).getAppInfo().getPackageName()).isEqualTo("com.test2");
-        assertThat(recommendApps.get(1).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
-        assertThat(recommendApps.get(2).getAppInfo().getPackageName()).isEqualTo("com.test3");
-        assertThat(recommendApps.get(2).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_FAVORITE_APP);
+        verify(mockView).refreshRecommendList();
     }
 
     @Test
@@ -209,14 +198,7 @@ public class RecommendPresenterTest {
 
         subject.loadRecommendApps("GAME");
 
-        ArgumentCaptor<List<RecommendApp>> captor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindRecommendList(captor.capture());
-
-        List<RecommendApp> recommendApps = captor.getValue();
-        assertThat(recommendApps.get(0).getAppInfo().getPackageName()).isEqualTo("com.test1");
-        assertThat(recommendApps.get(0).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC);
-        assertThat(recommendApps.get(1).getAppInfo().getPackageName()).isEqualTo("com.test3");
-        assertThat(recommendApps.get(1).getRecommendType()).isEqualTo(RecommendApp.RECOMMEND_TYPE_FAVORITE_APP);
+        verify(mockView).refreshRecommendList();
     }
 
     @Test
@@ -251,5 +233,12 @@ public class RecommendPresenterTest {
         subject.requestRemoveFromWishList("com.test");
 
         verify(mockUserService).requestRemoveAppFromWishList("com.test");
+    }
+
+    @Test
+    public void updateWishedStatus_호출시__해당_앱의_위시리스트_포함여부를_업데이트한다() {
+        subject.updateWishedStatus("com.test.pkg", true);
+
+        verify(mockAdapterModel).updateWishedStatus(eq("com.test.pkg"), eq(true));
     }
 }

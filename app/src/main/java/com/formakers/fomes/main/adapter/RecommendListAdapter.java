@@ -33,6 +33,10 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecommendListAdapter() {
     }
 
+    /**
+     * View
+     */
+
     @Override
     public void setPresenter(RecommendContract.Presenter presenter) {
         this.presenter = presenter;
@@ -62,10 +66,19 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
             Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);
 
             requestUpdateWishList .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> updateWishedByMe(position, isChecked)
+                    .subscribe(() -> updateWishedStatus(packageName, isChecked)
                             , e -> Toast.makeText(context, "위시리스트 " + (isChecked ? "등록" : "삭제") + "에 실패하였습니다.", Toast.LENGTH_LONG).show());
         });
     }
+
+    @Override
+    public void notifyItemChanged(String pacakgeName) {
+        this.notifyItemChanged(getPosition(getItem(pacakgeName)));
+    }
+
+    /**
+     * Model
+     */
 
     @Override
     public int getItemCount() {
@@ -97,18 +110,23 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
         return recommendApps;
     }
 
-    public void updateWishedByMe(String packageName, boolean wishedByMe) {
-        for(int position=0; position<getItemCount(); position++) {
-            if (packageName.equals(recommendApps.get(position).getAppInfo().getPackageName())) {
-                updateWishedByMe(position, wishedByMe);
-                break;
-            }
-        }
+    public int getPosition(RecommendApp app) {
+        return recommendApps.indexOf(app);
     }
 
-    private void updateWishedByMe(int position, boolean wishedByMe) {
-        getItem(position).getAppInfo().setWishedByMe(wishedByMe);
-        notifyItemChanged(position);
+    @Override
+    public void updateWishedStatus(String packgeName, boolean wishedByMe) {
+        getItem(packgeName).getAppInfo().setWishedByMe(wishedByMe);
+    }
+
+    private RecommendApp getItem(String packageName) {
+        for (RecommendApp app : recommendApps) {
+            if (packageName.equals(app.getAppInfo().getPackageName())) {
+                return app;
+            }
+        }
+
+        throw new IllegalArgumentException("There isn't any item with the packageName=" + packageName);
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {

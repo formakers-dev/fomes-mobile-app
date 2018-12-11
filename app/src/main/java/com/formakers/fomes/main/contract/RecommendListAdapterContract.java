@@ -7,6 +7,9 @@ import java.util.List;
 public interface RecommendListAdapterContract {
     interface View {
         void setPresenter(RecommendContract.Presenter presenter);
+
+        void notifyItemChanged(String pacakgeName);
+        void notifyDataSetChanged();
     }
 
     interface Model {
@@ -16,5 +19,8 @@ public interface RecommendListAdapterContract {
         void add(RecommendApp item);
         void addAll(List<RecommendApp> items);
         void clear();
+
+        // RecommendListAdapter
+        void updateWishedStatus(String packgeName, boolean wishedByMe);
     }
 }

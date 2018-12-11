@@ -59,7 +59,8 @@ public class RecommendPresenter implements RecommendContract.Presenter {
                                 throw new IllegalArgumentException("Empty List");
                             }
 
-                            this.view.bindRecommendList(removeDuplicatedRecommendApps(recommendApps));
+                            this.adapterModel.addAll(removeDuplicatedRecommendApps(recommendApps));
+                            this.view.refreshRecommendList();
                         }, e -> {
                             Log.e(TAG, e.toString());
                             if (adapterModel.getItemCount() <= 0) {
@@ -83,10 +84,8 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
-    public void emitRefreshWishedByMe(String packageName, boolean wishedByMe) {
-        // TODO : adapterModel 에서 데이터 셋
-        // TODO : view 에서 refresh
-//        this.view.refreshWishedByMe(packageName, wishedByMe);
+    public void updateWishedStatus(String packageName, boolean wishedByMe) {
+        this.adapterModel.updateWishedStatus(packageName, wishedByMe);
     }
 
     @Override

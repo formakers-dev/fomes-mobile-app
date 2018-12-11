@@ -101,7 +101,7 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
             Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);
 
             requestUpdateWishList .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> this.communicator.emitRefreshWished(packageName, isChecked)
+                    .subscribe(() -> this.communicator.emitUpdateWishedStatusEvent(packageName, isChecked)
                             , e -> Toast.makeText(this.getActivity(), "위시리스트 " + (isChecked ? "등록" : "삭제") + "에 실패하였습니다.", Toast.LENGTH_LONG).show());
         });
 
@@ -123,6 +123,6 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
 
     // TODO : 네이밍 고민
     interface Communicator {
-        void emitRefreshWished(String packageName, boolean isWished);
+        void emitUpdateWishedStatusEvent(String packageName, boolean isWished);
     }
 }

@@ -3,8 +3,6 @@ package com.formakers.fomes.main.contract;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 
-import java.util.List;
-
 import rx.Completable;
 
 public interface RecommendContract {
@@ -15,7 +13,7 @@ public interface RecommendContract {
 
         Completable requestSaveToWishList(String packageName);
         Completable requestRemoveFromWishList(String packageName);
-        void emitRefreshWishedByMe(String packageName, boolean wishedByMe);
+        void updateWishedStatus(String packageName, boolean wishedByMe);
         void unsubscribe();
     }
 
@@ -25,6 +23,6 @@ public interface RecommendContract {
         void hideLoading();
         void showRecommendList();
         void showErrorPage();
-        void bindRecommendList(List<RecommendApp> recommendApps);
+        void refreshRecommendList();
     }
 }

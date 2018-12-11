@@ -22,11 +22,10 @@ import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.event.EventActivity;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
+import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
 import com.formakers.fomes.main.dagger.RecommendFragmentModule;
 import com.google.common.collect.Lists;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,9 +39,9 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @BindView(R.id.recommend_event_banner_background) ImageView recommendEventImageView;
     @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
 
-    RecommendListAdapter recommendListAdapter;
-
     @Inject RecommendContract.Presenter presenter;
+
+    RecommendListAdapterContract.View recommendListAdapterView;
 
     @Override
     public void setPresenter(RecommendContract.Presenter presenter) {
@@ -75,10 +74,11 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_RecommendDivider).getTheme()));
         recommendRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        recommendListAdapter = new RecommendListAdapter();
+        RecommendListAdapter recommendListAdapter = new RecommendListAdapter();
         recommendListAdapter.setPresenter(presenter);
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
+        recommendListAdapterView = recommendListAdapter;
 
         recommendEventImageView.setOnClickListener(v -> startActivity(new Intent(this.getContext(), EventActivity.class)));
 
@@ -143,13 +143,13 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     }
 
     @Override
-    public void bindRecommendList(List<RecommendApp> recommendApps) {
-        recommendListAdapter.addAll(recommendApps);
-        recommendListAdapter.notifyDataSetChanged();
+    public void refreshRecommendList() {
+        recommendListAdapterView.notifyDataSetChanged();
     }
 
     @Override
-    public void emitRefreshWished(String packageName, boolean isWished) {
-        recommendListAdapter.updateWishedByMe(packageName, isWished);
+    public void emitUpdateWishedStatusEvent(String packageName, boolean isWished) {
+        this.presenter.updateWishedStatus(packageName, isWished);
+        this.recommendListAdapterView.notifyItemChanged(packageName);
     }
 }
