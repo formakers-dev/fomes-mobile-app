@@ -3,6 +3,7 @@ package com.formakers.fomes.common.dagger;
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.job.SendDataJobService;
+import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.network.ProjectService;
@@ -30,6 +31,7 @@ public interface ApplicationComponent {
     ProjectService projectService();
     ConfigService configService();
     RecommendService recommendService();
+    AppService appService();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();
