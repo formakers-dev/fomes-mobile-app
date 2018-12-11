@@ -12,6 +12,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -37,7 +38,7 @@ public class RecommendAppItemView extends ConstraintLayout {
     private TextView downloadCountTextView;
     private TextView ageLimitTextView;
     private ViewPager imageViewPager;
-    private ToggleButton wishListButton;
+    private ToggleButton wishListToggle;
     private Button downloadButton;
 
     private int recommendType;
@@ -74,7 +75,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         downloadCountTextView = findViewById(R.id.item_app_download_count);
         ageLimitTextView = findViewById(R.id.item_app_age_limit);
         imageViewPager = findViewById(R.id.item_app_image_viewpager);
-        wishListButton = findViewById(R.id.app_info_wishlist_button);
+        wishListToggle = findViewById(R.id.app_info_wishlist_button);
         downloadButton = findViewById(R.id.app_info_download_button);
 
         baseAppIconSize = iconImageView.getLayoutParams().width;
@@ -176,14 +177,14 @@ public class RecommendAppItemView extends ConstraintLayout {
     }
 
     public void setWishListChecked(boolean wishedByMe) {
-        wishListButton.setChecked(wishedByMe);
+        wishListToggle.setChecked(wishedByMe);
     }
 
-    public void setOnWishListToggleButtonListener(OnClickListener onClickListener) {
-        wishListButton.setOnClickListener(onClickListener);
+    public void setOnWishListCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        wishListToggle.setOnCheckedChangeListener(listener);
     }
 
-    public void setOnDownloadButtonListener(OnClickListener onClickListener) {
+    public void setOnDownloadButtonClickListener(OnClickListener onClickListener) {
         downloadButton.setOnClickListener(onClickListener);
     }
 

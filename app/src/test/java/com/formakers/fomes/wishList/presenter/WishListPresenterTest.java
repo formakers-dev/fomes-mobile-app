@@ -22,7 +22,7 @@ public class WishListPresenterTest {
 
 //    @Test
 //    public void emitRemoveFromWishList_호출시__특정앱을_위시리스트에서_삭제해줄것을_서버에_요청한다() {
-//        subject.emitRemoveFromWishList("com.test");
+//        subject.requestRemoveFromWishList("com.test");
 //        verify(mockUserService).requestRemoveAppFromWishList("com.test");
 //    }
 //
@@ -32,7 +32,7 @@ public class WishListPresenterTest {
 //        when(mockUserService.requestRemoveAppFromWishList(anyString())).thenReturn(Completable.complete());
 //
 //        //When
-//        subject.emitRemoveFromWishList("com.test");
+//        subject.requestRemoveFromWishList("com.test");
 //
 //        //Then
 //        verify()

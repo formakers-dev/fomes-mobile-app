@@ -10,25 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.custom.RecommendAppItemView;
-import com.formakers.fomes.main.contract.RecommendContract;
+import com.formakers.fomes.main.contract.AppInfoDetailContract;
+import com.formakers.fomes.main.dagger.AppInfoDetailFragmentModule;
+import com.formakers.fomes.main.dagger.DaggerAppInfoDetailFragmentComponent;
 import com.formakers.fomes.model.AppInfo;
 import com.google.common.base.Joiner;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Completable;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment implements BaseView<RecommendContract.Presenter> {
+public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment implements AppInfoDetailContract.View {
 
     public static final String TAG = AppInfoDetailDialogFragment.class.getSimpleName();
 
@@ -37,14 +41,19 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
 
     Unbinder unbinder;
 
-    private RecommendContract.Presenter presenter;
-
-    @Override
-    public void setPresenter(RecommendContract.Presenter presenter) {
-        this.presenter = presenter;
-    }
+    @Inject AppInfoDetailContract.Presenter presenter;
+    private Communicator communicator;
 
     public AppInfoDetailDialogFragment() {
+    }
+
+    public void setCommunicator(Communicator communicator) {
+        this.communicator = communicator;
+    }
+
+    @Override
+    public void setPresenter(AppInfoDetailContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     @Override
@@ -56,6 +65,12 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        DaggerAppInfoDetailFragmentComponent.builder()
+                .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
+                .appInfoDetailFragmentModule(new AppInfoDetailFragmentModule(this))
+                .build()
+                .inject(this);
+
         View view = inflater.inflate(R.layout.fragment_dialog_appinfo_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -75,30 +90,19 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
         int recommendType = bundle.getInt(FomesConstants.EXTRA.RECOMMEND_TYPE);
         List<String> recommendCriteria = bundle.getStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA);
 
+        String packageName = appInfo.getPackageName();
+
         Log.v(TAG, String.valueOf(appInfo));
 
         appDetailView.bindAppInfo(appInfo);
         appDetailView.setRecommendType(recommendType);
         appDetailView.setLabelText(Joiner.on(" ").join(recommendCriteria.toArray()));
-        appDetailView.setOnWishListToggleButtonListener(v -> {
-            if (!((ToggleButton) v).isChecked()) {
-                this.presenter.emitRemoveFromWishList(appInfo.getPackageName())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                                    ((ToggleButton) v).setChecked(false);
-                                    this.presenter.emitRefreshWishedByMe(appInfo.getPackageName(), false);
-                                },
-                                e -> Toast.makeText(this.getActivity(), "위시리스트 삭제에 실패하였습니다.", Toast.LENGTH_LONG).show());
-            } else {
-                this.presenter.emitSaveToWishList(appInfo.getPackageName())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                                    ((ToggleButton) v).setChecked(true);
-                                    this.presenter.emitRefreshWishedByMe(appInfo.getPackageName(), true);
+        appDetailView.setOnWishListCheckedChangeListener((v, isChecked) -> {
+            Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);
 
-                                },
-                                e -> Toast.makeText(this.getActivity(), "위시리스트 등록에 실패하였습니다.", Toast.LENGTH_LONG).show());
-            }
+            requestUpdateWishList .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> this.communicator.emitRefreshWished(packageName, isChecked)
+                            , e -> Toast.makeText(this.getActivity(), "위시리스트 " + (isChecked ? "등록" : "삭제") + "에 실패하였습니다.", Toast.LENGTH_LONG).show());
         });
 
         downloadButton.setOnClickListener(v -> {
@@ -115,5 +119,10 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
         }
 
         super.onDestroyView();
+    }
+
+    // TODO : 네이밍 고민
+    interface Communicator {
+        void emitRefreshWished(String packageName, boolean isWished);
     }
 }

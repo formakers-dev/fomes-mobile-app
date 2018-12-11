@@ -73,18 +73,20 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
-    public Completable emitSaveToWishList(String packageName) {
+    public Completable requestSaveToWishList(String packageName) {
         return userService.requestSaveAppToWishList(packageName);
     }
 
     @Override
-    public Completable emitRemoveFromWishList(String packageName) {
+    public Completable requestRemoveFromWishList(String packageName) {
         return userService.requestRemoveAppFromWishList(packageName);
     }
 
     @Override
     public void emitRefreshWishedByMe(String packageName, boolean wishedByMe) {
-        this.view.refreshWishedByMe(packageName, wishedByMe);
+        // TODO : adapterModel 에서 데이터 셋
+        // TODO : view 에서 refresh
+//        this.view.refreshWishedByMe(packageName, wishedByMe);
     }
 
     @Override

@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class RecommendFragment extends BaseFragment implements RecommendContract.View {
+public class RecommendFragment extends BaseFragment implements RecommendContract.View, AppInfoDetailDialogFragment.Communicator {
 
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
     @BindView(R.id.recommend_contents_layout) ViewGroup recommendContentsLayout;
@@ -87,6 +87,13 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         presenter.loadRecommendApps("GAME");
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        this.presenter.unsubscribe();
+    }
+
     private void setNestedScrollViewOnScrollChangeListener(NestedScrollView view) {
         view.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             View lastChildView = nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
@@ -102,8 +109,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void onShowDetailEvent(RecommendApp recommendApp) {
         AppInfoDetailDialogFragment appInfoDetailDialogFragment = new AppInfoDetailDialogFragment();
-
-        appInfoDetailDialogFragment.setPresenter(this.presenter);
+        appInfoDetailDialogFragment.setCommunicator(this);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(FomesConstants.EXTRA.APPINFO, recommendApp.getAppInfo());
@@ -112,11 +118,6 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         appInfoDetailDialogFragment.setArguments(bundle);
 
         appInfoDetailDialogFragment.show(getChildFragmentManager(), AppInfoDetailDialogFragment.TAG);
-    }
-
-    @Override
-    public void refreshWishedByMe(String packageName, boolean wishedByMe) {
-        recommendListAdapter.updateWishedByMe(packageName, wishedByMe);
     }
 
     @Override
@@ -148,9 +149,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        this.presenter.unsubscribe();
+    public void emitRefreshWished(String packageName, boolean isWished) {
+        recommendListAdapter.updateWishedByMe(packageName, isWished);
     }
 }

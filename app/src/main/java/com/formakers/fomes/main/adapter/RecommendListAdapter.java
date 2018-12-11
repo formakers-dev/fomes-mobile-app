@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -18,6 +17,7 @@ import com.google.common.base.Joiner;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Completable;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -56,18 +56,14 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp));
 
-        viewHolder.recommendAppItemView.setOnWishListToggleButtonListener(v -> {
-            if (!((ToggleButton) v).isChecked()) {
-                this.presenter.emitRemoveFromWishList(recommendApp.getAppInfo().getPackageName())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> updateWishedByMe(position, false),
-                                e -> Toast.makeText(this.context, "위시리스트 삭제에 실패하였습니다.", Toast.LENGTH_LONG).show());
-            } else {
-                this.presenter.emitSaveToWishList(recommendApp.getAppInfo().getPackageName())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> updateWishedByMe(position, true),
-                                e -> Toast.makeText(this.context, "위시리스트 등록에 실패하였습니다.", Toast.LENGTH_LONG).show());
-            }
+        viewHolder.recommendAppItemView.setOnWishListCheckedChangeListener((v, isChecked) -> {
+            String packageName = recommendApp.getAppInfo().getPackageName();
+
+            Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);
+
+            requestUpdateWishList .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> updateWishedByMe(position, isChecked)
+                            , e -> Toast.makeText(context, "위시리스트 " + (isChecked ? "등록" : "삭제") + "에 실패하였습니다.", Toast.LENGTH_LONG).show());
         });
     }
 

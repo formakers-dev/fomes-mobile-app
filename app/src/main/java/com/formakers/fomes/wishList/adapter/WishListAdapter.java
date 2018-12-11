@@ -39,10 +39,11 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
         viewHolder.wishListAppItemView.bindAppInfo(wishListApp);
-        viewHolder.wishListAppItemView.setOnWishListToggleButtonListener(v -> {
+        viewHolder.wishListAppItemView.setOnWishListCheckedChangeListener((v, isChecked) -> {
+            // 이 경우 wish button이 삭제 버튼의 역할을 하기 떄문
             this.presenter.emitRemoveFromWishList(wishListApp.getPackageName());
         });
-        viewHolder.wishListAppItemView.setOnDownloadButtonListener(v -> {
+        viewHolder.wishListAppItemView.setOnDownloadButtonClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("market://details?id=" + wishListApp.getPackageName()));
             context.startActivity(intent);

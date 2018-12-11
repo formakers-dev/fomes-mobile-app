@@ -240,23 +240,16 @@ public class RecommendPresenterTest {
     }
 
     @Test
-    public void emitSaveToWishList_호출시__앱을_위시리스트에_추가하도록_서버에_요청한다() {
-        subject.emitSaveToWishList("com.test");
+    public void requestSaveToWishList_호출시__앱을_위시리스트에_추가하도록_서버에_요청한다() {
+        subject.requestSaveToWishList("com.test");
 
         verify(mockUserService).requestSaveAppToWishList("com.test");
     }
 
     @Test
-    public void emitRemoveFromWishList_호출시__앱을_위시리스트에서_삭제하도록_서버에_요청한다() {
-        subject.emitRemoveFromWishList("com.test");
+    public void requestRemoveFromWishList_호출시__앱을_위시리스트에서_삭제하도록_서버에_요청한다() {
+        subject.requestRemoveFromWishList("com.test");
 
         verify(mockUserService).requestRemoveAppFromWishList("com.test");
-    }
-
-    @Test
-    public void emitRefreshWishedByMe_호출시__특정_앱의_위시리스트_아이콘을_변경한다() {
-        subject.emitRefreshWishedByMe("com.test", true);
-
-        verify(mockView).refreshWishedByMe("com.test", true);
     }
 }

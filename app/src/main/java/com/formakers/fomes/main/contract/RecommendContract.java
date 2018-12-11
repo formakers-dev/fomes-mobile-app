@@ -13,15 +13,14 @@ public interface RecommendContract {
         void emitShowDetailEvent(RecommendApp recommendApp);
         void loadRecommendApps(String categoryId);
 
-        Completable emitSaveToWishList(String packageName);
-        Completable emitRemoveFromWishList(String packageName);
+        Completable requestSaveToWishList(String packageName);
+        Completable requestRemoveFromWishList(String packageName);
         void emitRefreshWishedByMe(String packageName, boolean wishedByMe);
         void unsubscribe();
     }
 
     interface View extends BaseView<Presenter> {
         void onShowDetailEvent(RecommendApp recommendApp);
-        void refreshWishedByMe(String packageName, boolean wishedByMe);
         void showLoading();
         void hideLoading();
         void showRecommendList();
