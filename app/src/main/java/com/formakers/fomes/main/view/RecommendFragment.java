@@ -112,7 +112,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         appInfoDetailDialogFragment.setCommunicator(this);
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(FomesConstants.EXTRA.APPINFO, recommendApp.getAppInfo());
+        bundle.putString(FomesConstants.EXTRA.PACKAGE_NAME, recommendApp.getAppInfo().getPackageName());
         bundle.putInt(FomesConstants.EXTRA.RECOMMEND_TYPE, recommendApp.getRecommendType());
         bundle.putStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA, Lists.newArrayList(recommendApp.getCriteria()));
         appInfoDetailDialogFragment.setArguments(bundle);

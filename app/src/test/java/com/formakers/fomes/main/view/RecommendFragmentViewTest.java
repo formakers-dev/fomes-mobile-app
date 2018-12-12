@@ -51,12 +51,11 @@ public class RecommendFragmentViewTest {
         subject.onShowDetailEvent(recommendApp);
 
         Fragment fragment = subject.getChildFragmentManager().findFragmentByTag(AppInfoDetailDialogFragment.TAG);
-        AppInfo actualAppInfo = fragment.getArguments().getParcelable(FomesConstants.EXTRA.APPINFO);
+        String packageName = fragment.getArguments().getString(FomesConstants.EXTRA.PACKAGE_NAME);
         int recommendType = fragment.getArguments().getInt(FomesConstants.EXTRA.RECOMMEND_TYPE);
         List<String> recommendCriteria = fragment.getArguments().getStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA);
 
-        assertThat(actualAppInfo).isNotNull();
-        assertThat(actualAppInfo.getPackageName()).isEqualTo("com.formakers.fomes");
+        assertThat(packageName).isEqualTo("com.formakers.fomes");
         assertThat(recommendType).isEqualTo(4);
         assertThat(recommendCriteria.get(0)).isEqualTo("reason1");
         assertThat(recommendCriteria.get(1)).isEqualTo("reason2");

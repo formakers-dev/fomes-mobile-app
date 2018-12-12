@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -136,7 +137,7 @@ public class RecommendAppItemView extends ConstraintLayout {
     }
 
     public void setCategoryDeveloperText(String category, String developer) {
-        categoryDeveloperTextView.setText(String.format("%s / %s", category, developer));
+        categoryDeveloperTextView.setText(String.format("%s / %s", TextUtils.isEmpty(category) ? "" : category, TextUtils.isEmpty(developer) ? "" : developer));
     }
 
     public void setLabelText(String recommendReason) {

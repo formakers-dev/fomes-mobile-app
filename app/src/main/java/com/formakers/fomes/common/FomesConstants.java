@@ -4,6 +4,7 @@ public interface FomesConstants {
     interface EXTRA {
         String START_FRAGMENT_NAME = "EXTRA_FRAGEMENT_NAME";
         String APPINFO="EXTRA_APPINFO";
+        String PACKAGE_NAME="EXTRA_PACKAGE_NAME";
         String RECOMMEND_TYPE = "EXTRA_RECOMMEND_TYPE";
         String RECOMMEND_CRITERIA = "EXTRA_RECOMMEND_CRITERIA";
 

@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.UserService;
 
 import org.junit.Before;
@@ -17,8 +18,8 @@ import static org.mockito.Mockito.verify;
 
 public class AppInfoDetailPresenterTest {
 
-    @Mock
-    private UserService mockUserService;
+    @Mock private UserService mockUserService;
+    @Mock private AppService mockAppService;
 
     private AppInfoDetailPresenter subject;
 
@@ -40,7 +41,7 @@ public class AppInfoDetailPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new AppInfoDetailPresenter(mockUserService);
+        subject = new AppInfoDetailPresenter(mockUserService, mockAppService);
     }
 
     @Test
@@ -55,5 +56,12 @@ public class AppInfoDetailPresenterTest {
         subject.requestRemoveFromWishList("com.test");
 
         verify(mockUserService).requestRemoveAppFromWishList("com.test");
+    }
+
+    @Test
+    public void requestAppInfo_호출시__서버에_앱_정보를_요청한다() {
+        subject.requestAppInfo("com.test.com");
+
+        verify(mockAppService).requestAppInfo("com.test.com");
     }
 }

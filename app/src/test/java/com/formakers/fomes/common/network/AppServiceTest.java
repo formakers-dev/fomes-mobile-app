@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import rx.Observable;
+import rx.observers.TestSubscriber;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -36,7 +37,7 @@ public class AppServiceTest extends AbstractServiceTest {
     public void getAppInfo_호출시__해당_패키지명의_앱_정보를_요청한다() {
         when(mockAppAPI.getAppInfo(anyString(), anyString())).thenReturn(Observable.just(mock(AppInfo.class)));
 
-        subject.requestAppInfo("test.com.test");
+        subject.requestAppInfo("test.com.test").subscribe(new TestSubscriber<>());
 
         verify(mockAppAPI).getAppInfo(eq("TEST_ACCESS_TOKEN"), eq("test.com.test"));
     }

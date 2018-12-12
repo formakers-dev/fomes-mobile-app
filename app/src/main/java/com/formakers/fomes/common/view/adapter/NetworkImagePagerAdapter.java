@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.formakers.fomes.R;
 
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class NetworkImagePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imageView = new ImageView(container.getContext());
         Glide.with(container.getContext()).load(imageUrlList.get(position))
-                .apply(new RequestOptions().override(100, 160).centerCrop())
+                .apply(new RequestOptions().override(100, 160).centerCrop()
+                        .placeholder(R.drawable.fomes_face_cry))
                 .into(imageView);
         container.addView(imageView);
         return imageView;

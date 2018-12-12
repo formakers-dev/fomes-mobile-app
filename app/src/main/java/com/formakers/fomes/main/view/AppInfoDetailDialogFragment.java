@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
@@ -19,7 +20,6 @@ import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.main.contract.AppInfoDetailContract;
 import com.formakers.fomes.main.dagger.AppInfoDetailFragmentModule;
 import com.formakers.fomes.main.dagger.DaggerAppInfoDetailFragmentComponent;
-import com.formakers.fomes.model.AppInfo;
 import com.google.common.base.Joiner;
 
 import java.util.List;
@@ -36,12 +36,14 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
 
     public static final String TAG = AppInfoDetailDialogFragment.class.getSimpleName();
 
+    @BindView(R.id.detail_progress_bar) ProgressBar loadingBar;
     @BindView(R.id.app_detail_view) RecommendAppItemView appDetailView;
     @BindView(R.id.download_button) Button downloadButton;
 
     Unbinder unbinder;
 
     @Inject AppInfoDetailContract.Presenter presenter;
+
     private Communicator communicator;
 
     public AppInfoDetailDialogFragment() {
@@ -86,15 +88,21 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
             return;
         }
 
-        AppInfo appInfo = bundle.getParcelable(FomesConstants.EXTRA.APPINFO);
+        final String packageName = bundle.getString(FomesConstants.EXTRA.PACKAGE_NAME);
         int recommendType = bundle.getInt(FomesConstants.EXTRA.RECOMMEND_TYPE);
         List<String> recommendCriteria = bundle.getStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA);
 
-        String packageName = appInfo.getPackageName();
+        Log.v(TAG, String.valueOf(packageName));
 
-        Log.v(TAG, String.valueOf(appInfo));
+        presenter.requestAppInfo(packageName)
+                .doOnSubscribe(() -> loadingBar.setVisibility(View.VISIBLE))
+                .doAfterTerminate(() -> loadingBar.setVisibility(View.INVISIBLE))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(appInfo -> {
+                    Log.d(TAG, String.valueOf(appInfo));
+                    appDetailView.bindAppInfo(appInfo);
+                }, e -> Toast.makeText(this.getContext(), "앱 정보 조회를 실패하였습니다. 재시도 부탁드립니다.", Toast.LENGTH_SHORT).show());
 
-        appDetailView.bindAppInfo(appInfo);
         appDetailView.setRecommendType(recommendType);
         appDetailView.setLabelText(Joiner.on(" ").join(recommendCriteria.toArray()));
         appDetailView.setOnWishListCheckedChangeListener((v, isChecked) -> {
@@ -107,7 +115,7 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
 
         downloadButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("market://details?id=" + appInfo.getPackageName()));
+            intent.setData(Uri.parse("market://details?id=" + packageName));
             startActivity(intent);
         });
     }
