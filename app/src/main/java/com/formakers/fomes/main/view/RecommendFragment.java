@@ -17,6 +17,7 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.RecommendApp;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.event.EventActivity;
@@ -32,6 +33,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class RecommendFragment extends BaseFragment implements RecommendContract.View, AppInfoDetailDialogFragment.Communicator {
+
+    public static final String TAG = "RecommendFragment";
 
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
     @BindView(R.id.recommend_contents_layout) ViewGroup recommendContentsLayout;
@@ -85,6 +88,12 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         setNestedScrollViewOnScrollChangeListener((NestedScrollView) recommendContentsLayout);
 
         presenter.loadRecommendApps("GAME");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
     }
 
     @Override

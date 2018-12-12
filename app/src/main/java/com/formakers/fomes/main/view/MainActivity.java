@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -103,11 +104,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
 
+        // TODO : MAIN_RECOMMEND 피쳐 제거하기
         if (Feature.MAIN_RECOMMEND) {
-            contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
-            contentsPagerAdapter.addFragment(new BetatestFragment(), getString(R.string.main_tab_betatest));
+            contentsPagerAdapter.addFragment("RECOMMEND", new RecommendFragment(), getString(R.string.main_tab_recommend));
+            contentsPagerAdapter.addFragment("BETATEST", new BetatestFragment(), getString(R.string.main_tab_betatest));
         } else {
-            contentsPagerAdapter.addFragment(new EventFragment(), getString(R.string.main_tab_event));
+            contentsPagerAdapter.addFragment("EVENT", new EventFragment(), getString(R.string.main_tab_event));
             this.tabLayout.setVisibility(View.GONE);
         }
 
@@ -160,7 +162,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 break;
             }
             case R.id.my_wish_list: {
-                startActivity(new Intent(this, WishListActivity.class));
+                startActivityForResult(new Intent(this, WishListActivity.class), 1234);
                 break;
             }
             case R.id.settings: {
@@ -171,6 +173,18 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1234) {
+            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem("RECOMMEND");
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 
     @Override

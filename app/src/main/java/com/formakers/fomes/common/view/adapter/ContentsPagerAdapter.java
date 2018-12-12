@@ -7,33 +7,37 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.formakers.fomes.common.view.BaseFragment;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 public class ContentsPagerAdapter extends FragmentPagerAdapter {
 
-    private List<ContentsFragment> contentsFragmentList = new ArrayList<>();
+    private LinkedHashMap<String, ContentsFragment> contentsMap = new LinkedHashMap<>();
 
     public ContentsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public void addFragment(BaseFragment fragment, String title) {
-        contentsFragmentList.add(new ContentsFragment(fragment, title));
+    public void addFragment(String tag, BaseFragment fragment, String title) {
+        contentsMap.put(tag, new ContentsFragment(fragment, title));
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return contentsFragmentList.get(position).title;
+        return new ArrayList<>(contentsMap.values()).get(position).title;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return contentsFragmentList.get(position).fragment;
+        return new ArrayList<>(contentsMap.values()).get(position).fragment;
+    }
+
+    public Fragment getItem(String tag) {
+        return contentsMap.get(tag).fragment;
     }
 
     @Override
     public int getCount() {
-        return contentsFragmentList.size();
+        return contentsMap.values().size();
     }
 
     private class ContentsFragment {
