@@ -34,7 +34,7 @@ public class NetworkImagePagerAdapter extends PagerAdapter {
         ImageView imageView = new ImageView(container.getContext());
         Glide.with(container.getContext()).load(imageUrlList.get(position))
                 .apply(new RequestOptions().override(100, 160).centerCrop()
-                        .placeholder(R.drawable.fomes_face_cry))
+                        .placeholder(R.drawable.screenshot_placeholder))
                 .into(imageView);
         container.addView(imageView);
         return imageView;

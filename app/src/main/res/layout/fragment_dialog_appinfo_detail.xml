@@ -21,7 +21,8 @@
         app:layout_constraintTop_toTopOf="@id/detail_view"
         app:layout_constraintBottom_toBottomOf="@id/detail_view"
         app:layout_constraintStart_toStartOf="@id/detail_view"
-        app:layout_constraintEnd_toEndOf="@id/detail_view" />
+        app:layout_constraintEnd_toEndOf="@id/detail_view"
+        app:layout_constraintVertical_bias="0.6"/>
 
     <com.formakers.fomes.common.view.custom.RecommendAppItemView
         android:id="@+id/app_detail_view"
