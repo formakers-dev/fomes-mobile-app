@@ -13,13 +13,17 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class WishListPresenter implements WishListContract.Presenter {
 
-    @Inject UserService userService;
-
     private WishListContract.View view;
+    @Inject UserService userService;
 
     public WishListPresenter(WishListContract.View view) {
         this.view = view;
         this.view.getApplicationComponent().inject(this);
+    }
+
+    public WishListPresenter(WishListContract.View view, UserService userService) {
+        this.view = view;
+        this.userService = userService;
     }
 
     @Override
@@ -28,14 +32,14 @@ public class WishListPresenter implements WishListContract.Presenter {
     }
 
     @Override
-    public void emitRemoveFromWishList(String packageName) {
+    public void requestRemoveFromWishList(String packageName) {
         userService.requestRemoveAppFromWishList(packageName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> view.removeApp(packageName), e -> view.showToast("위시리스트 삭제에 실패하였습니다."));
     }
 
     @Override
-    public Observable<List<AppInfo>> emitRequestWishList() {
+    public Observable<List<AppInfo>> requestWishList() {
         return userService.requestWishList();
     }
 }

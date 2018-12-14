@@ -11,8 +11,8 @@ import rx.Observable;
 public interface WishListContract {
     interface Presenter {
         void emitShowEmptyList();
-        void emitRemoveFromWishList(String packageName);
-        Observable<List<AppInfo>> emitRequestWishList();
+        void requestRemoveFromWishList(String packageName);
+        Observable<List<AppInfo>> requestWishList();
     }
 
     interface View extends BaseView<Presenter> {

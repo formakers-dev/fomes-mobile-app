@@ -56,7 +56,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".settings.SettingsActivity"/>
-        <activity android:name=".wishList.WishListActivity"/>
+        <activity android:name=".wishList.view.WishListActivity"/>
         <activity android:name=".event.EventActivity"/>
     </application>
 

@@ -1,4 +1,4 @@
-package com.formakers.fomes.wishList;
+package com.formakers.fomes.wishList.view;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -58,7 +58,7 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
 
     private void loadWishList() {
         addToCompositeSubscription(
-                presenter.emitRequestWishList()
+                presenter.requestWishList()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(appInfoList -> {
                             if (appInfoList.size() == 0) {

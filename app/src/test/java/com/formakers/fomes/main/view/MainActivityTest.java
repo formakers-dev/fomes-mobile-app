@@ -14,7 +14,7 @@ import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
-import com.formakers.fomes.wishList.WishListActivity;
+import com.formakers.fomes.wishList.view.WishListActivity;
 
 import org.junit.After;
 import org.junit.Before;
