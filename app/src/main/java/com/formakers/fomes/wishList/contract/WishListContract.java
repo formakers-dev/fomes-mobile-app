@@ -4,6 +4,7 @@ import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.model.AppInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -13,6 +14,7 @@ public interface WishListContract {
         void emitShowEmptyList();
         void requestRemoveFromWishList(String packageName);
         Observable<List<AppInfo>> requestWishList();
+        ArrayList<String> getRemovedPackageNames();
     }
 
     interface View extends BaseView<Presenter> {

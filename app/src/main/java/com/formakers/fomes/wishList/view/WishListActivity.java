@@ -1,6 +1,6 @@
 package com.formakers.fomes.wishList.view;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +11,15 @@ import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.wishList.adapter.WishListAdapter;
 import com.formakers.fomes.wishList.contract.WishListContract;
 import com.formakers.fomes.wishList.presenter.WishListPresenter;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -54,6 +57,20 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
         wishListRecyclerView.addItemDecoration(dividerItemDecoration);
 
         loadWishList();
+    }
+
+    @Override
+    public void finish() {
+        ArrayList<String> removedPackageNames = presenter.getRemovedPackageNames();
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(FomesConstants.EXTRA.PACKAGE_NAMES, removedPackageNames);
+
+        Intent intent = new Intent();
+        intent.putExtra(FomesConstants.EXTRA.UNWISHED_APPS, bundle);
+
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 
     private void loadWishList() {

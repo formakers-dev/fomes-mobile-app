@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,8 @@ import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
 import com.formakers.fomes.main.dagger.RecommendFragmentModule;
 import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -94,6 +97,19 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            Bundle bundle = data.getBundleExtra(FomesConstants.EXTRA.UNWISHED_APPS);
+            ArrayList<String> unwishedPackageNames = bundle.getStringArrayList(FomesConstants.EXTRA.PACKAGE_NAMES);
+
+            for (String packageName : unwishedPackageNames) {
+                try {
+                    this.presenter.updateWishedStatus(packageName, false);
+                    this.recommendListAdapterView.notifyItemChanged(packageName);
+                } catch (IllegalArgumentException e) {
+                }
+            }
+        }
     }
 
     @Override

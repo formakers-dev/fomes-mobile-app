@@ -45,6 +45,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     private static final String TAG = "MainActivity";
 
+    public static final int SHOW_WISHLIST_REQUEST = 1;
+
+    public static final String RECOMMEND_FRAGMENT_TAG = "RECOMMEND";
+    public static final String BETATEST_FRAGMENT_TAG = "BETATEST";
+    public static final String EVENT_FRAGMENT_TAG = "EVENT";
+
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
@@ -106,10 +112,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         // TODO : MAIN_RECOMMEND 피쳐 제거하기
         if (Feature.MAIN_RECOMMEND) {
-            contentsPagerAdapter.addFragment("RECOMMEND", new RecommendFragment(), getString(R.string.main_tab_recommend));
-            contentsPagerAdapter.addFragment("BETATEST", new BetatestFragment(), getString(R.string.main_tab_betatest));
+            contentsPagerAdapter.addFragment(RECOMMEND_FRAGMENT_TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+            contentsPagerAdapter.addFragment(BETATEST_FRAGMENT_TAG, new BetatestFragment(), getString(R.string.main_tab_betatest));
         } else {
-            contentsPagerAdapter.addFragment("EVENT", new EventFragment(), getString(R.string.main_tab_event));
+            contentsPagerAdapter.addFragment(EVENT_FRAGMENT_TAG, new EventFragment(), getString(R.string.main_tab_event));
             this.tabLayout.setVisibility(View.GONE);
         }
 
@@ -162,7 +168,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 break;
             }
             case R.id.my_wish_list: {
-                startActivityForResult(new Intent(this, WishListActivity.class), 1234);
+                startActivityForResult(new Intent(this, WishListActivity.class), SHOW_WISHLIST_REQUEST);
                 break;
             }
             case R.id.settings: {
@@ -179,8 +185,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1234) {
-            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem("RECOMMEND");
+        if (requestCode == SHOW_WISHLIST_REQUEST) {
+            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem(RECOMMEND_FRAGMENT_TAG);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);
             }
