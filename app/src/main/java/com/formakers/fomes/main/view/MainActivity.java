@@ -44,10 +44,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     private static final String TAG = "MainActivity";
 
-    public static final int SHOW_WISHLIST_REQUEST = 1;
-
-    public static final String RECOMMEND_FRAGMENT_TAG = "RECOMMEND";
-    public static final String BETATEST_FRAGMENT_TAG = "BETATEST";
+    public static final int REQUEST_CODE_WISHLIST = 1;
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
@@ -104,8 +101,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
 
-        contentsPagerAdapter.addFragment(RECOMMEND_FRAGMENT_TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
-        contentsPagerAdapter.addFragment(BETATEST_FRAGMENT_TAG, new BetatestFragment(), getString(R.string.main_tab_betatest));
+        contentsPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        contentsPagerAdapter.addFragment(BetatestFragment.TAG, new BetatestFragment(), getString(R.string.main_tab_betatest));
 
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
@@ -151,7 +148,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 break;
             }
             case R.id.my_wish_list: {
-                startActivityForResult(new Intent(this, WishListActivity.class), SHOW_WISHLIST_REQUEST);
+                startActivityForResult(new Intent(this, WishListActivity.class), REQUEST_CODE_WISHLIST);
                 break;
             }
             case R.id.settings: {
@@ -168,8 +165,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == SHOW_WISHLIST_REQUEST) {
-            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem(RECOMMEND_FRAGMENT_TAG);
+        if (requestCode == REQUEST_CODE_WISHLIST) {
+            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);
             }

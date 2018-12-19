@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="vertical"
+    android:scrollbarStyle="insideOverlay"
+    android:fillViewport="true"
     android:background="@color/fomes_content_background">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants">
 
         <android.support.constraint.Group
             android:id="@+id/wish_list_group"
@@ -26,7 +30,9 @@
             android:paddingBottom="15dp"
             android:text="@string/wish_list_description"
             android:textColor="@color/fomes_warm_gray"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/wish_list_recyclerview"
@@ -47,12 +53,12 @@
             android:id="@+id/wish_list_empty_icon_imageview"
             android:layout_width="67dp"
             android:layout_height="73dp"
-            android:layout_marginTop="150dp"
             android:src="@drawable/fomes_face_cry"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toTopOf="@+id/wish_list_empty_textview"/>
 
         <TextView
             android:id="@+id/wish_list_empty_textview"
@@ -66,7 +72,8 @@
             app:layout_constraintTop_toBottomOf="@+id/wish_list_empty_icon_imageview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:text="@string/wish_list_empty_description"/>
 
     </android.support.constraint.ConstraintLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

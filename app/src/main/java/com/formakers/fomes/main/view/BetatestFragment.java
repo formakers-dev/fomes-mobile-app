@@ -12,7 +12,7 @@ import com.formakers.fomes.common.view.BaseFragment;
 
 public class BetatestFragment extends BaseFragment {
 
-    private static final String TAG = BetatestFragment.class.getSimpleName();
+    public static final String TAG = "BetatestFragment";
 
     @Nullable
     @Override
