@@ -17,7 +17,7 @@
             android:layout_width="38dp"
             android:layout_height="42dp"
             android:layout_marginTop="@dimen/provision_image_margin_top"
-            android:src="@drawable/fomes_face"
+            android:src="@drawable/fomes_face_smile"
             app:layout_constraintBottom_toTopOf="@+id/provision_title_textview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
