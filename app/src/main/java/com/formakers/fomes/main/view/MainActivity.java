@@ -25,7 +25,6 @@ import android.widget.TextView;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -49,7 +48,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     public static final String RECOMMEND_FRAGMENT_TAG = "RECOMMEND";
     public static final String BETATEST_FRAGMENT_TAG = "BETATEST";
-    public static final String EVENT_FRAGMENT_TAG = "EVENT";
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
@@ -91,11 +89,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
 
-        if (Feature.MAIN_RECOMMEND) {
-            navigationView.inflateMenu(R.menu.main_nav);
-        } else {
-            navigationView.inflateMenu(R.menu.main_nav_old);
-        }
+        navigationView.inflateMenu(R.menu.main_nav);
 
         addToCompositeSubscription(
             presenter.requestUserInfo()
@@ -110,14 +104,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
 
-        // TODO : MAIN_RECOMMEND 피쳐 제거하기
-        if (Feature.MAIN_RECOMMEND) {
-            contentsPagerAdapter.addFragment(RECOMMEND_FRAGMENT_TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
-            contentsPagerAdapter.addFragment(BETATEST_FRAGMENT_TAG, new BetatestFragment(), getString(R.string.main_tab_betatest));
-        } else {
-            contentsPagerAdapter.addFragment(EVENT_FRAGMENT_TAG, new EventFragment(), getString(R.string.main_tab_event));
-            this.tabLayout.setVisibility(View.GONE);
-        }
+        contentsPagerAdapter.addFragment(RECOMMEND_FRAGMENT_TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        contentsPagerAdapter.addFragment(BETATEST_FRAGMENT_TAG, new BetatestFragment(), getString(R.string.main_tab_betatest));
 
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
@@ -143,15 +131,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (Feature.MAIN_RECOMMEND) {
-            menu.findItem(R.id.my_wish_list).setVisible(true);
-            menu.findItem(R.id.my_recent_analysis).setVisible(false);
-            menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
-        } else {
-            menu.findItem(R.id.my_wish_list).setVisible(false);
-            menu.findItem(R.id.my_recent_analysis).setVisible(true);
-            menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
-        }
+        menu.findItem(R.id.my_wish_list).setVisible(true);
+        menu.findItem(R.id.my_recent_analysis).setVisible(false);
+        menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+
         return true;
     }
 
