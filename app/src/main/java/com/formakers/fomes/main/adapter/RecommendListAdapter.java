@@ -116,7 +116,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void updateWishedStatus(String packgeName, boolean wishedByMe) {
-        getItem(packgeName).getAppInfo().setWishedByMe(wishedByMe);
+        getItem(packgeName).getAppInfo().setWished(wishedByMe);
     }
 
     private RecommendApp getItem(String packageName) {

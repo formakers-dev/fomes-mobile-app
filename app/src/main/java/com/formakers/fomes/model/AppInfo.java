@@ -22,7 +22,7 @@ public class AppInfo implements Parcelable {
     private String contentsRating;
     private Long totalUsedTime;
     private List<String> imageUrls;
-    private Boolean wishedByMe;
+    private Boolean isWished;
 
     public AppInfo(String packageName) {
         this.packageName = packageName;
@@ -199,12 +199,12 @@ public class AppInfo implements Parcelable {
         return this;
     }
 
-    public Boolean getWishedByMe() {
-        return wishedByMe;
+    public Boolean getWished() {
+        return isWished;
     }
 
-    public AppInfo setWishedByMe(Boolean wishedByMe) {
-        this.wishedByMe = wishedByMe;
+    public AppInfo setWished(Boolean wished) {
+        isWished = wished;
         return this;
     }
 
@@ -227,7 +227,7 @@ public class AppInfo implements Parcelable {
                 ", contentsRating='" + contentsRating + '\'' +
                 ", totalUsedTime=" + totalUsedTime +
                 ", imageUrls=" + imageUrls +
-                ", wishedByMe=" + wishedByMe +
+                ", isWished=" + isWished +
                 '}';
     }
 
@@ -248,7 +248,7 @@ public class AppInfo implements Parcelable {
         dest.writeString(developer);
         dest.writeString(iconUrl);
         dest.writeLong(totalUsedTime == null ? 0L : totalUsedTime);
-        dest.writeInt(wishedByMe ? 1 : 0);
+        dest.writeInt(isWished ? 1 : 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -263,7 +263,7 @@ public class AppInfo implements Parcelable {
         developer = in.readString();
         iconUrl = in.readString();
         totalUsedTime = in.readLong();
-        wishedByMe = (in.readInt() == 1);
+        isWished = (in.readInt() == 1);
     }
 
     @Override
