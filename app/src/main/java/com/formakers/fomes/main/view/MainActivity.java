@@ -44,7 +44,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     private static final String TAG = "MainActivity";
 
-    public static final int REQUEST_CODE_WISHLIST = 1;
+    public static final int REQUEST_CODE_WISHLIST = 1000;
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;

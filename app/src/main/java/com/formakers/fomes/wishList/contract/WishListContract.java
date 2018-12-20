@@ -2,25 +2,27 @@ package com.formakers.fomes.wishList.contract;
 
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
-import com.formakers.fomes.model.AppInfo;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
 
 public interface WishListContract {
     interface Presenter {
-        void emitShowEmptyList();
-        void requestRemoveFromWishList(String packageName);
-        Observable<List<AppInfo>> requestWishList();
-        ArrayList<String> getRemovedPackageNames();
+        void loadingWishList();
+        void requestRemoveFromWishList(int position);
+
+        String getItemPackageName(int position);
+        List<String> getRemovedPackageNames();
     }
 
     interface View extends BaseView<Presenter> {
         ApplicationComponent getApplicationComponent();
-        void removeApp(String packageName);
+
+        void refresh();
+        void refresh(int position);
+
+        void showWishList(boolean hasData);
         void showToast(String toastMessage);
-        void showEmptyList();
+        void showLoadingBar();
+        void hideLoadingBar();
     }
 }

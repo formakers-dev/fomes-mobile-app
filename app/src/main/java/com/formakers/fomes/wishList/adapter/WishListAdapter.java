@@ -1,29 +1,31 @@
 package com.formakers.fomes.wishList.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.model.AppInfo;
-import com.formakers.fomes.wishList.contract.WishListContract;
+import com.formakers.fomes.wishList.contract.WishListAdapterContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements WishListAdapterContract.View, WishListAdapterContract.Model {
 
-    private List<AppInfo> wishList;
+    private List<AppInfo> wishList = new ArrayList<>();
 
-    private WishListContract.Presenter presenter;
+    private OnRecyclerItemClickListener wishedCheckedListener;
+    private OnRecyclerItemClickListener downloadClickListener;
+
     private Context context;
 
-    public WishListAdapter(List<AppInfo> wishList) {
-        this.wishList = wishList;
+    public WishListAdapter() {
     }
 
     @Override
@@ -40,14 +42,11 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         AppViewHolder viewHolder = (AppViewHolder) holder;
         viewHolder.wishListAppItemView.bindAppInfo(wishListApp);
         viewHolder.wishListAppItemView.setOnWishListCheckedChangeListener((v, isChecked) -> {
-            // 이 경우 wish button이 삭제 버튼의 역할을 하기 떄문
-            this.presenter.requestRemoveFromWishList(wishListApp.getPackageName());
+            if (!isChecked) {
+                wishedCheckedListener.onItemClick(position);
+            }
         });
-        viewHolder.wishListAppItemView.setOnDownloadButtonClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("market://details?id=" + wishListApp.getPackageName()));
-            context.startActivity(intent);
-        });
+        viewHolder.wishListAppItemView.setOnDownloadButtonClickListener(v -> downloadClickListener.onItemClick(position));
     }
 
     @Override
@@ -55,22 +54,56 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return wishList.size();
     }
 
-    public void setPresenter(WishListContract.Presenter presenter) {
-        this.presenter = presenter;
+    @Override
+    public AppInfo getItem(int position) {
+        return wishList.get(position);
     }
 
-    public void removeApp(String packageName) {
-        for (int position = 0; position < getItemCount(); position++) {
-            if (packageName.equals(wishList.get(position).getPackageName())) {
-                wishList.remove(position);
-                notifyDataSetChanged();
-                break;
-            }
-        }
+    @Override
+    public List<AppInfo> getAllItems() {
+        return wishList;
+    }
 
-        if(getItemCount() == 0) {
-            presenter.emitShowEmptyList();
-        }
+    @Override
+    public void add(AppInfo item) {
+        wishList.add(item);
+    }
+
+    @Override
+    public void addAll(List<AppInfo> items) {
+        wishList.addAll(items);
+    }
+
+    @Override
+    public void remove(int position) {
+        wishList.remove(position);
+    }
+
+    @Override
+    public void clear() {
+        wishList.clear();
+    }
+
+    @Override
+    public void refresh() {
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void refresh(int position) {
+        notifyItemRemoved(position);
+//        notifyItemRangeChanged(position, getItemCount() - position);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void setOnWishCheckedChangeListener(OnRecyclerItemClickListener listener) {
+        this.wishedCheckedListener = listener;
+    }
+
+    @Override
+    public void setOnDownloadButtonClickListener(OnRecyclerItemClickListener listener) {
+        this.downloadClickListener = listener;
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {

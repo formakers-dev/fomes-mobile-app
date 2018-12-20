@@ -1,12 +1,15 @@
 package com.formakers.fomes.wishList.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
@@ -16,27 +19,35 @@ import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.wishList.adapter.WishListAdapter;
+import com.formakers.fomes.wishList.contract.WishListAdapterContract;
 import com.formakers.fomes.wishList.contract.WishListContract;
 import com.formakers.fomes.wishList.presenter.WishListPresenter;
+import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class WishListActivity extends FomesBaseActivity implements WishListContract.View {
 
     @BindView(R.id.wish_list_recyclerview) RecyclerView wishListRecyclerView;
-    @BindView(R.id.wish_list_group) View wishListGroup;
-    @BindView(R.id.wish_list_empty_group) View wishListEmptyGroup;
+    @BindView(R.id.wish_list_group) Group wishListGroup;
+    @BindView(R.id.wish_list_empty_group) Group wishListEmptyGroup;
+    @BindView(R.id.loading_bar) ProgressBar loadingBar;
 
     WishListContract.Presenter presenter;
+    WishListAdapterContract.View adapterView;
+
+    @Override
+    public void setPresenter(WishListContract.Presenter presenter) {
+        if (this.presenter == null) {
+            this.presenter = presenter;
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setPresenter(new WishListPresenter(this));
 
         setContentView(R.layout.activity_wish_list);
 
@@ -56,43 +67,55 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_RecommendDivider).getTheme()));
         wishListRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        loadWishList();
+        WishListAdapter wishListAdapter = new WishListAdapter();
+
+        wishListAdapter.setOnWishCheckedChangeListener(position -> {
+            // 이 경우 wish button이 삭제 버튼의 역할을 하기 떄문
+            presenter.requestRemoveFromWishList(position);
+        });
+
+        wishListAdapter.setOnDownloadButtonClickListener(position -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + presenter.getItemPackageName(position)));
+            startActivity(intent);
+        });
+
+        wishListRecyclerView.setAdapter(wishListAdapter);
+        adapterView = wishListAdapter;
+
+        setPresenter(new WishListPresenter(this, wishListAdapter));
+
+        presenter.loadingWishList();
     }
 
     @Override
     public void finish() {
-        ArrayList<String> removedPackageNames = presenter.getRemovedPackageNames();
+        List<String> removedPackageNames = presenter.getRemovedPackageNames();
 
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(FomesConstants.EXTRA.PACKAGE_NAMES, removedPackageNames);
+        bundle.putStringArrayList(FomesConstants.EXTRA.UNWISHED_APPS, Lists.newArrayList(removedPackageNames));
 
         Intent intent = new Intent();
-        intent.putExtra(FomesConstants.EXTRA.UNWISHED_APPS, bundle);
+        intent.putExtras(bundle);
 
         setResult(RESULT_OK, intent);
         super.finish();
     }
 
-    private void loadWishList() {
-        addToCompositeSubscription(
-                presenter.requestWishList()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(appInfoList -> {
-                            if (appInfoList.size() == 0) {
-                                showWishListUI(false);
-                            } else {
-                                showWishListUI(true);
-                                WishListAdapter wishListAdapter = new WishListAdapter(appInfoList);
-                                wishListAdapter.setPresenter(presenter);
-                                wishListRecyclerView.setAdapter(wishListAdapter);
-                            }
-                        })
-        );
+    @Override
+    public void showWishList(boolean hasData) {
+        wishListGroup.setVisibility(hasData ? View.VISIBLE : View.GONE);
+        wishListEmptyGroup.setVisibility(hasData ? View.GONE : View.VISIBLE);
     }
 
-    private void showWishListUI(boolean visible) {
-        wishListGroup.setVisibility(visible? View.VISIBLE : View.GONE);
-        wishListEmptyGroup.setVisibility(visible? View.GONE : View.VISIBLE);
+    @Override
+    public void refresh() {
+        adapterView.refresh();
+    }
+
+    @Override
+    public void refresh(int position) {
+        adapterView.refresh(position);
     }
 
     @Override
@@ -101,25 +124,17 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
     }
 
     @Override
-    public void removeApp(String packageName) {
-        final WishListAdapter adapter = (WishListAdapter) wishListRecyclerView.getAdapter();
-        adapter.removeApp(packageName);
-    }
-
-    @Override
     public void showToast(String toastMessage) {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void showEmptyList() {
-        showWishListUI(false);
+    public void showLoadingBar() {
+        loadingBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void setPresenter(WishListContract.Presenter presenter) {
-        if (this.presenter == null) {
-            this.presenter = presenter;
-        }
+    public void hideLoadingBar() {
+        loadingBar.setVisibility(View.GONE);
     }
 }

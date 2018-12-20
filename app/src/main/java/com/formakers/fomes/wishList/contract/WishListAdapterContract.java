@@ -1,26 +1,26 @@
-package com.formakers.fomes.main.contract;
+package com.formakers.fomes.wishList.contract;
 
-import com.formakers.fomes.common.network.vo.RecommendApp;
+import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
+import com.formakers.fomes.model.AppInfo;
 
 import java.util.List;
 
-public interface RecommendListAdapterContract {
+public interface WishListAdapterContract {
     interface View {
-        void setPresenter(RecommendContract.Presenter presenter);
+        void refresh();
+        void refresh(int position);
 
-        void notifyItemChanged(String pacakgeName);
-        void notifyDataSetChanged();
+        void setOnWishCheckedChangeListener(OnRecyclerItemClickListener listener);
+        void setOnDownloadButtonClickListener(OnRecyclerItemClickListener listener);
     }
 
     interface Model {
         int getItemCount();
-        Object getItem(int position);
-        List<RecommendApp> getAllItems();
-        void add(RecommendApp item);
-        void addAll(List<RecommendApp> items);
+        AppInfo getItem(int position);
+        List<AppInfo> getAllItems();
+        void add(AppInfo item);
+        void addAll(List<AppInfo> items);
+        void remove(int positon);
         void clear();
-
-        // RecommendListAdapter
-        void updateWishedStatus(String packgeName, boolean wishedByMe);
     }
 }

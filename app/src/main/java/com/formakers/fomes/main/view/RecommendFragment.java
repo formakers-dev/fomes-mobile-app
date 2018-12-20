@@ -99,8 +99,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         Log.d(TAG, "onActivityResult requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
 
         if (resultCode == Activity.RESULT_OK) {
-            Bundle bundle = data.getBundleExtra(FomesConstants.EXTRA.UNWISHED_APPS);
-            ArrayList<String> unwishedPackageNames = bundle.getStringArrayList(FomesConstants.EXTRA.PACKAGE_NAMES);
+            ArrayList<String> unwishedPackageNames = data.getExtras().getStringArrayList(FomesConstants.EXTRA.UNWISHED_APPS);
 
             for (String packageName : unwishedPackageNames) {
                 try {
