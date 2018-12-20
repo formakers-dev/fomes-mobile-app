@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -103,7 +104,9 @@ public class RecommendAppItemView extends ConstraintLayout {
         Log.d(TAG, "bindAppInfo - appInfo=" + appInfo);
 
         Glide.with(getContext()).load(appInfo.getIconUrl())
-                .apply(new RequestOptions().override(70, 70).centerCrop())
+                .apply(new RequestOptions().override(70, 70)
+                        .centerCrop()
+                        .transform(new RoundedCorners(10)))
                 .into(iconImageView);
 
         setNameText(appInfo.getAppName());

@@ -420,28 +420,28 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         if (size <= 0) {
             myGamesItem1.setTitleText(R.string.analysis_cannot_know_yet);
             myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, 0f));
-            presenter.getImageLoader().load(R.drawable.fomes_crying_app_icon).into(myGamesItem1.getIconImageView());
+            myGamesItem1.setIconImageDrawable(R.drawable.fomes_crying_app_icon);
             myGamesItem1.setVisibility(View.VISIBLE);
         }
 
         if (size > 0) {
             myGamesItem1.setTitleText(myAppUsages.get(0).getName());
             myGamesItem1.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(0).getTotalUsedTime())));
-            presenter.getImageLoader().load(myAppUsages.get(0).getAppInfos().get(0).getIconUrl()).into(myGamesItem1.getIconImageView());
+            myGamesItem1.setIconImageUrl(myAppUsages.get(0).getAppInfos().get(0).getIconUrl());
             myGamesItem1.setVisibility(View.VISIBLE);
         }
 
         if (size > 1) {
             myGamesItem2.setTitleText(myAppUsages.get(1).getName());
             myGamesItem2.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(1).getTotalUsedTime())));
-            presenter.getImageLoader().load(myAppUsages.get(1).getAppInfos().get(0).getIconUrl()).into(myGamesItem2.getIconImageView());
+            myGamesItem2.setIconImageUrl(myAppUsages.get(1).getAppInfos().get(0).getIconUrl());
             myGamesItem2.setVisibility(View.VISIBLE);
         }
 
         if (size > 2) {
             myGamesItem3.setTitleText(myAppUsages.get(2).getName());
             myGamesItem3.setDescriptionText(getString(R.string.analysis_my_games_description, presenter.getHour(myAppUsages.get(2).getTotalUsedTime())));
-            presenter.getImageLoader().load(myAppUsages.get(2).getAppInfos().get(0).getIconUrl()).into(myGamesItem3.getIconImageView());
+            myGamesItem3.setIconImageUrl(myAppUsages.get(2).getAppInfos().get(0).getIconUrl());
             myGamesItem3.setVisibility(View.VISIBLE);
         }
 

@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 
 public class RankAppItemView extends ConstraintLayout {
@@ -80,6 +83,14 @@ public class RankAppItemView extends ConstraintLayout {
 
     public void setIconImageDrawable(@DrawableRes int resId) {
         iconImageView.setImageResource(resId);
+    }
+
+    public void setIconImageUrl(String imageUrl) {
+        Glide.with(this.getContext()).load(imageUrl)
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .transform(new RoundedCorners(10)))
+                .into(iconImageView);
     }
 
     public String getTitleText() {

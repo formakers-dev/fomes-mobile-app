@@ -322,20 +322,14 @@ public class RecentAnalysisReportFragmentTest {
         RankAppItemView game1 = subject.getView().findViewById(R.id.analysis_my_games_1);
         assertThat(game1.getTitleText()).isEqualTo("롤플레잉게임명");
         assertThat(game1.getDescriptionText()).isEqualTo("2.8시간 플레이");
-        verify(mockRequestManager).load("rpgIconUrl");
-        verify(mockRequestBuilder).into(eq(game1.getIconImageView()));
 
         RankAppItemView game2 = subject.getView().findViewById(R.id.analysis_my_games_2);
         assertThat(game2.getTitleText()).isEqualTo("퍼즐게임명");
         assertThat(game2.getDescriptionText()).isEqualTo("1.4시간 플레이");
-        verify(mockRequestManager).load("puzzleIconUrl");
-        verify(mockRequestBuilder).into(eq(game2.getIconImageView()));
 
         RankAppItemView game3 = subject.getView().findViewById(R.id.analysis_my_games_3);
         assertThat(game3.getTitleText()).isEqualTo("시뮬레이션게임명");
         assertThat(game3.getDescriptionText()).isEqualTo("0.3시간 플레이");
-        verify(mockRequestManager).load("simulIconUrl");
-        verify(mockRequestBuilder).into(eq(game3.getIconImageView()));
     }
 
     @Test
