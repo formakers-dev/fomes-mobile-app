@@ -23,7 +23,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.RecommendApp;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.adapter.NetworkImagePagerAdapter;
 import com.formakers.fomes.model.AppInfo;
 
@@ -31,6 +30,7 @@ public class RecommendAppItemView extends ConstraintLayout {
 
     public static final String TAG = RecommendAppItemView.class.getSimpleName();
 
+    private TextView installedTextView;
     private ImageView iconImageView;
     private TextView nameTextView;
     private TextView categoryDeveloperTextView;
@@ -68,6 +68,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         View view = layoutInflater.inflate(R.layout.layout_app_info, this, false);
         addView(view);
 
+        installedTextView = findViewById(R.id.item_app_installed_textview);
         iconImageView = findViewById(R.id.item_app_icon_imageview);
         nameTextView = findViewById(R.id.item_app_name_textview);
         categoryDeveloperTextView = findViewById(R.id.item_app_genre_developer_textview);
@@ -101,8 +102,6 @@ public class RecommendAppItemView extends ConstraintLayout {
     }
 
     public void bindAppInfo(AppInfo appInfo) {
-        Log.d(TAG, "bindAppInfo - appInfo=" + appInfo);
-
         Glide.with(getContext()).load(appInfo.getIconUrl())
                 .apply(new RequestOptions().override(70, 70)
                         .centerCrop()
@@ -119,6 +118,8 @@ public class RecommendAppItemView extends ConstraintLayout {
         }
 
         setWishListChecked(appInfo.getWished());
+
+        setVisibilityInstalledTextView(appInfo.getInstalled() ? View.VISIBLE : View.GONE);
     }
 
     private void setVerboseGroup(Double star, Long installsMin, String contentsRating) {
@@ -173,6 +174,10 @@ public class RecommendAppItemView extends ConstraintLayout {
             labelTextView.setVisibility(VISIBLE);
             resizeIconImageView(baseAppIconSize);
         }
+    }
+
+    public void setVisibilityInstalledTextView(int visibility) {
+        installedTextView.setVisibility(visibility);
     }
 
     private void resizeIconImageView(int size) {

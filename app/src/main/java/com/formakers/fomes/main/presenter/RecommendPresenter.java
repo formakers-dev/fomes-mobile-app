@@ -4,10 +4,11 @@ import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 import com.formakers.fomes.main.dagger.scope.RecommendFragmentScope;
-import com.google.common.collect.Iterators;
+import com.formakers.fomes.model.NativeAppInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 
 import rx.Completable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 @RecommendFragmentScope
@@ -25,17 +27,22 @@ public class RecommendPresenter implements RecommendContract.Presenter {
 
     private RecommendListAdapterContract.Model adapterModel;
     private RecommendContract.View view;
+
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+
     private RecommendService recommendService;
     private UserService userService;
-    private CompositeSubscription compositeSubscription;
+    private AndroidNativeHelper androidNativeHelper;
+
     private int currentPage;
+    private List<String> installedApps = new ArrayList<>();
 
     @Inject
-    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService) {
+    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, AndroidNativeHelper androidNativeHelper) {
         this.view = view;
         this.recommendService = recommendService;
         this.userService = userService;
-        this.compositeSubscription = new CompositeSubscription();
+        this.androidNativeHelper = androidNativeHelper;
     }
 
     @Override
@@ -48,31 +55,57 @@ public class RecommendPresenter implements RecommendContract.Presenter {
         this.view.onShowDetailEvent(recommendApp);
     }
 
+    private void refreshInstalledApps() {
+        for (RecommendApp app : adapterModel.getAllItems()) {
+            app.getAppInfo().setInstalled(installedApps.contains(app.getAppInfo().getPackageName()));
+        }
+    }
+
     @Override
     public void loadRecommendApps(String categoryId) {
         final int nextPage = getCurrentPage() + 1;
 
-        compositeSubscription.add(
-                recommendService.requestRecommendApps(categoryId, nextPage)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(() -> this.view.showLoading())
-                        .doOnTerminate(() -> this.view.hideLoading())
-                        .subscribe(recommendApps -> {
-                            if (recommendApps.size() <= 0) {
-                                throw new IllegalArgumentException("Empty List");
-                            }
+        if (installedApps.isEmpty()) {
+            compositeSubscription.add(
+                androidNativeHelper.getInstalledLaunchableApps()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .map(NativeAppInfo::getPackageName)
+                    .doOnNext(packageName -> installedApps.add(packageName))
+                    .doOnCompleted(() -> refreshInstalledApps())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnCompleted(() -> this.view.refreshRecommendList())
+                    .subscribe(packageName -> { })
+            );
+        }
 
-                            this.adapterModel.addAll(removeDuplicatedRecommendApps(recommendApps));
-                            this.view.refreshRecommendList();
-                        }, e -> {
-                            Log.e(TAG, e.toString());
-                            if (adapterModel.getItemCount() <= 0) {
-                                this.view.showErrorPage();
-                            }
-                        }, () -> {
+        compositeSubscription.add(
+            recommendService.requestRecommendApps(categoryId, nextPage)
+                .observeOn(Schedulers.io())
+                .concatMapIterable(i -> i)
+                .filter(app -> !adapterModel.contains(app.getAppInfo().getPackageName()))
+                .map(app -> {
+                    app.getAppInfo().setInstalled(installedApps.contains(app.getAppInfo().getPackageName()));
+                    return app;
+                })
+                .doOnNext(app -> adapterModel.add(app))
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> this.view.showLoading())
+                .doOnTerminate(() -> {
+                    this.view.hideLoading();
+
+                    if (adapterModel.getItemCount() <= 0) {
+                        this.view.showErrorPage();
+                    } else {
+                        this.view.showRecommendList();
+                    }
+                })
+                .subscribe(recommendApp -> Log.v(TAG, "recommend=" + recommendApp),
+                        e -> Log.e(TAG, e.toString()),
+                        () -> {
                             setCurrentPage(nextPage);
-                            this.view.showRecommendList();
-                        })
+                            this.view.refreshRecommendList();
+                })
         );
     }
 
@@ -96,28 +129,6 @@ public class RecommendPresenter implements RecommendContract.Presenter {
         if (compositeSubscription != null) {
             compositeSubscription.clear();
         }
-    }
-
-    private List<RecommendApp> removeDuplicatedRecommendApps(List<RecommendApp> recommendApps) {
-        List<RecommendApp> tempList = new ArrayList<>(adapterModel.getAllItems());
-        int startIndex = tempList.size() <= 0 ? 0 : tempList.size();
-
-        tempList.addAll(recommendApps);
-
-        final List<String> packageNames = new ArrayList<>();
-
-        for (int i = 0; i < tempList.size(); ) {
-            final String packageName = tempList.get(i).getAppInfo().getPackageName();
-
-            if (packageNames.contains(packageName)) {
-                tempList.remove(i);
-            } else {
-                packageNames.add(packageName);
-                i++;
-            }
-        }
-
-        return tempList.subList(startIndex, tempList.size());
     }
 
     public int getCurrentPage() {

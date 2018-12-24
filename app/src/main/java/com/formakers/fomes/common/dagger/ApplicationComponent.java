@@ -13,6 +13,7 @@ import com.formakers.fomes.common.noti.MessagingService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.presenter.MainPresenter;
@@ -35,6 +36,7 @@ public interface ApplicationComponent {
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();
+    AndroidNativeHelper androidNativeHelper();
 
     UserDAO userDAO();
     RequestManager requestManager();

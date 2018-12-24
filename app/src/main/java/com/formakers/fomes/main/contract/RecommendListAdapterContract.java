@@ -21,6 +21,7 @@ public interface RecommendListAdapterContract {
         void clear();
 
         // RecommendListAdapter
+        boolean contains(String packageName);
         void updateWishedStatus(String packgeName, boolean wishedByMe);
     }
 }

@@ -101,6 +101,17 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
+    public boolean contains(String packageName) {
+        for (RecommendApp app : recommendApps) {
+            if (app.getAppInfo().getPackageName().equals(packageName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public RecommendApp getItem(int position) {
         return recommendApps.get(position);
     }

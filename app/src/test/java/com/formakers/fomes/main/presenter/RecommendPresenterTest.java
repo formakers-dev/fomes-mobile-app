@@ -4,9 +4,11 @@ package com.formakers.fomes.main.presenter;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.model.NativeAppInfo;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -30,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,9 +40,10 @@ import static org.mockito.Mockito.when;
 public class RecommendPresenterTest {
 
     @Mock private RecommendContract.View mockView;
+    @Mock private RecommendListAdapterContract.Model mockAdapterModel;
     @Mock private RecommendService mockRecommendService;
     @Mock private UserService mockUserService;
-    @Mock private RecommendListAdapterContract.Model mockAdapterModel;
+    @Mock private AndroidNativeHelper mockAndroidNativeHelper;
 
     private RecommendPresenter subject;
 
@@ -60,7 +64,10 @@ public class RecommendPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService);
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+        when(mockAndroidNativeHelper.getInstalledLaunchableApps()).thenReturn(Observable.from(new ArrayList<>()));
+
+        subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService, mockAndroidNativeHelper);
         subject.setAdapterModel(mockAdapterModel);
     }
 
@@ -76,9 +83,14 @@ public class RecommendPresenterTest {
     }
 
     @Test
-    public void loadRecommendApps__호출시__로딩화면_표시를_요청한다() {
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+    public void loadRecommendApps__호출시__설치한_앱_리스트를_요청한다() {
+        subject.loadRecommendApps("GAME");
 
+        verify(mockAndroidNativeHelper).getInstalledLaunchableApps();
+    }
+
+    @Test
+    public void loadRecommendApps__호출시__로딩화면_표시를_요청한다() {
         subject.loadRecommendApps("GAME");
 
         verify(mockView).showLoading();
@@ -104,37 +116,32 @@ public class RecommendPresenterTest {
     }
 
     @Test
-    public void loadRecommendApps_호출결과목록이_있으면__추천앱_목록을_화면에_표시한다() {
+    public void loadRecommendApps_성공시__중복제거_및_설치됨처리_후_추천앱_목록을_화면에_표시한다() {
+        when(mockAdapterModel.contains("com.test1")).thenReturn(true);
+
         List<RecommendApp> items = new ArrayList<>();
-
-        items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
-                .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
-
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(items));
-
-        subject.loadRecommendApps("GAME");
-
-        verify(mockView).refreshRecommendList();
-    }
-
-    @Test
-    public void loadRecommendApps_호출결과_중복목록이_있으면__중복된_앱_제거후_추천앱_목록을_화면에_표시한다() {
-        List<RecommendApp> items = new ArrayList<>();
-
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
                 .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test2"))
                 .setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC));
-        items.add(new RecommendApp().setAppInfo(new AppInfo("com.test1"))
-                .setRecommendType(RecommendApp.RECOMMEND_TYPE_FAVORITE_DEVELOPER));
         items.add(new RecommendApp().setAppInfo(new AppInfo("com.test3"))
                 .setRecommendType(RecommendApp.RECOMMEND_TYPE_FAVORITE_APP));
-
         when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(items));
+
+        List<NativeAppInfo> installedApps = new ArrayList<>();
+        installedApps.add(new NativeAppInfo("com.test1", "테스트1"));
+        installedApps.add(new NativeAppInfo("com.test3", "테스트3"));
+        when(mockAndroidNativeHelper.getInstalledLaunchableApps()).thenReturn(Observable.from(installedApps));
 
         subject.loadRecommendApps("GAME");
 
-        verify(mockView).refreshRecommendList();
+        ArgumentCaptor<RecommendApp> captor = ArgumentCaptor.forClass(RecommendApp.class);
+        verify(mockAdapterModel, atLeast(1)).add(captor.capture());
+        assertThat(captor.getAllValues().get(0).getAppInfo().getPackageName()).isEqualTo("com.test2");
+        assertThat(captor.getAllValues().get(0).getAppInfo().getInstalled()).isEqualTo(false);
+        assertThat(captor.getAllValues().get(1).getAppInfo().getPackageName()).isEqualTo("com.test3");
+        assertThat(captor.getAllValues().get(1).getAppInfo().getInstalled()).isEqualTo(true);
+        verify(mockView, atLeast(1)).refreshRecommendList();
     }
 
     @Test
@@ -160,6 +167,7 @@ public class RecommendPresenterTest {
     @Test
     public void loadRecommendApps__호출결과_추천앱_목록이_없는_경우__에러페이지를_표시한다() {
         when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+        when(mockAdapterModel.getItemCount()).thenReturn(0);
 
         subject.loadRecommendApps("GAME");
 
@@ -198,7 +206,7 @@ public class RecommendPresenterTest {
 
         subject.loadRecommendApps("GAME");
 
-        verify(mockView).refreshRecommendList();
+        verify(mockView, atLeast(1)).refreshRecommendList();
     }
 
     @Test

@@ -16,23 +16,26 @@ public class NativeAppInfo {
         return packageName;
     }
 
-    public void setPackageName(String packageName) {
+    public NativeAppInfo setPackageName(String packageName) {
         this.packageName = packageName;
+        return this;
     }
 
     public String getAppName() {
         return appName;
     }
 
-    public void setAppName(String appName) {
+    public NativeAppInfo setAppName(String appName) {
         this.appName = appName;
+        return this;
     }
 
     public Drawable getIcon() {
         return icon;
     }
 
-    public void setIcon(Drawable icon) {
+    public NativeAppInfo setIcon(Drawable icon) {
         this.icon = icon;
+        return this;
     }
 }
