@@ -10,6 +10,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.provisioning.dagger.scope.LoginActivityScope;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import rx.Single;
 import rx.schedulers.Schedulers;
 
+@LoginActivityScope
 public class LoginPresenter implements LoginContract.Presenter {
 
     private static final String TAG = LoginPresenter.class.getSimpleName();

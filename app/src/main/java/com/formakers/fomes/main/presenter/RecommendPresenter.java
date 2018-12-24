@@ -6,6 +6,8 @@ import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
+import com.formakers.fomes.main.dagger.scope.RecommendFragmentScope;
+import com.google.common.collect.Iterators;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import rx.Completable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
+@RecommendFragmentScope
 public class RecommendPresenter implements RecommendContract.Presenter {
 
     public final static String TAG = "RecommendPresenter";
