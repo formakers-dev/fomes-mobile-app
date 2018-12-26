@@ -27,13 +27,20 @@ public class NetworkModule {
     @Singleton
     @Provides
     OkHttpClient okHttpClient() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        if (BuildConfig.DEBUG) {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        } else {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        }
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(interceptor);
         builder.connectTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
         builder.writeTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
         builder.readTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS);
+
         return builder.build();
     }
 
