@@ -80,8 +80,8 @@ public class User {
     private String name;
     private String nickName;
     private String email;
-    private Integer birthday;
-    private Integer job;
+    private int birthday;
+    private int job;
     private String gender;
     private String registrationToken;
     private List<String> lifeApps;
@@ -126,20 +126,20 @@ public class User {
         return this;
     }
 
-    public Integer getBirthday() {
+    public int getBirthday() {
         return birthday;
     }
 
-    public User setBirthday(Integer birthday) {
+    public User setBirthday(int birthday) {
         this.birthday = birthday;
         return this;
     }
 
-    public Integer getJob() {
+    public int getJob() {
         return job;
     }
 
-    public User setJob(Integer job) {
+    public User setJob(int job) {
         this.job = job;
         return this;
     }

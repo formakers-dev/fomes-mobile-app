@@ -98,17 +98,16 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
                 .doOnSubscribe(() -> loadingBar.setVisibility(View.VISIBLE))
                 .doAfterTerminate(() -> loadingBar.setVisibility(View.INVISIBLE))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(appInfo -> {
-                    Log.d(TAG, String.valueOf(appInfo));
-                    appDetailView.bindAppInfo(appInfo);
-                }, e -> Toast.makeText(this.getContext(), "앱 정보 조회를 실패하였습니다. 재시도 부탁드립니다.", Toast.LENGTH_SHORT).show());
+                .subscribe(appInfo -> appDetailView.bindAppInfo(appInfo)
+                        , e -> Toast.makeText(this.getContext(), "앱 정보 조회를 실패하였습니다. 재시도 부탁드립니다.", Toast.LENGTH_SHORT).show());
 
         appDetailView.setRecommendType(recommendType);
         appDetailView.setLabelText(Joiner.on(" ").join(recommendCriteria.toArray()));
         appDetailView.setOnWishListCheckedChangeListener((v, isChecked) -> {
             Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);
 
-            requestUpdateWishList .observeOn(AndroidSchedulers.mainThread())
+            requestUpdateWishList
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> this.communicator.emitUpdateWishedStatusEvent(packageName, isChecked)
                             , e -> Toast.makeText(this.getActivity(), "위시리스트 " + (isChecked ? "등록" : "삭제") + "에 실패하였습니다.", Toast.LENGTH_LONG).show());
         });

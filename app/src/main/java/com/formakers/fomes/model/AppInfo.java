@@ -16,14 +16,14 @@ public class AppInfo implements Parcelable {
     private String categoryName;
     private String developer;
     private String iconUrl;
-    private Double star;
-    private Long installsMin;
-    private Long installsMax;
+    private double star;
+    private long installsMin;
+    private long installsMax;
     private String contentsRating;
-    private Long totalUsedTime;
+    private long totalUsedTime;
     private List<String> imageUrls;
-    private Boolean isWished;
-    private Boolean isInstalled;
+    private boolean isWished;
+    private boolean isInstalled;
 
     public AppInfo(String packageName) {
         this.packageName = packageName;
@@ -146,39 +146,12 @@ public class AppInfo implements Parcelable {
         return this;
     }
 
-    public Long getTotalUsedTime() {
-        return totalUsedTime;
-    }
-
-    public AppInfo setTotalUsedTime(Long totalUsedTime) {
-        this.totalUsedTime = totalUsedTime;
-        return this;
-    }
-
-    public Double getStar() {
-        return star;
-    }
-
-    public AppInfo setStar(Double star) {
-        this.star = star;
-        return this;
-    }
-
     public Long getInstallsMin() {
         return installsMin;
     }
 
     public AppInfo setInstallsMin(Long installsMin) {
         this.installsMin = installsMin;
-        return this;
-    }
-
-    public Long getInstallsMax() {
-        return installsMax;
-    }
-
-    public AppInfo setInstallsMax(Long installsMax) {
-        this.installsMax = installsMax;
         return this;
     }
 
@@ -200,20 +173,52 @@ public class AppInfo implements Parcelable {
         return this;
     }
 
-    public Boolean getWished() {
+    public double getStar() {
+        return star;
+    }
+
+    public AppInfo setStar(double star) {
+        this.star = star;
+        return this;
+    }
+
+    public AppInfo setInstallsMin(long installsMin) {
+        this.installsMin = installsMin;
+        return this;
+    }
+
+    public long getInstallsMax() {
+        return installsMax;
+    }
+
+    public AppInfo setInstallsMax(long installsMax) {
+        this.installsMax = installsMax;
+        return this;
+    }
+
+    public long getTotalUsedTime() {
+        return totalUsedTime;
+    }
+
+    public AppInfo setTotalUsedTime(long totalUsedTime) {
+        this.totalUsedTime = totalUsedTime;
+        return this;
+    }
+
+    public boolean isWished() {
         return isWished;
     }
 
-    public AppInfo setWished(Boolean wished) {
+    public AppInfo setWished(boolean wished) {
         isWished = wished;
         return this;
     }
 
-    public Boolean getInstalled() {
+    public boolean isInstalled() {
         return isInstalled;
     }
 
-    public AppInfo setInstalled(Boolean installed) {
+    public AppInfo setInstalled(boolean installed) {
         isInstalled = installed;
         return this;
     }
@@ -258,7 +263,7 @@ public class AppInfo implements Parcelable {
         dest.writeString(categoryName);
         dest.writeString(developer);
         dest.writeString(iconUrl);
-        dest.writeLong(totalUsedTime == null ? 0L : totalUsedTime);
+        dest.writeLong(totalUsedTime);
         dest.writeInt(isWished ? 1 : 0);
         dest.writeInt(isInstalled ? 1 : 0);
     }

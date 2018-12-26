@@ -138,9 +138,9 @@ public class RecommendPresenterTest {
         ArgumentCaptor<RecommendApp> captor = ArgumentCaptor.forClass(RecommendApp.class);
         verify(mockAdapterModel, atLeast(1)).add(captor.capture());
         assertThat(captor.getAllValues().get(0).getAppInfo().getPackageName()).isEqualTo("com.test2");
-        assertThat(captor.getAllValues().get(0).getAppInfo().getInstalled()).isEqualTo(false);
+        assertThat(captor.getAllValues().get(0).getAppInfo().isInstalled()).isEqualTo(false);
         assertThat(captor.getAllValues().get(1).getAppInfo().getPackageName()).isEqualTo("com.test3");
-        assertThat(captor.getAllValues().get(1).getAppInfo().getInstalled()).isEqualTo(true);
+        assertThat(captor.getAllValues().get(1).getAppInfo().isInstalled()).isEqualTo(true);
         verify(mockView, atLeast(1)).refreshRecommendList();
     }
 

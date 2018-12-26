@@ -78,7 +78,6 @@ public class UserServiceTest extends AbstractServiceTest {
         assertThat(userArgument.getUserId()).isNull();
         assertThat(userArgument.getEmail()).isNull();
         assertThat(userArgument.getGender()).isNull();
-        assertThat(userArgument.getBirthday()).isNull();
     }
 
     @Test

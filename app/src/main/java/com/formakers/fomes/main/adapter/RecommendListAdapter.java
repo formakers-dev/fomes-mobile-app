@@ -65,7 +65,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);
 
-            requestUpdateWishList .observeOn(AndroidSchedulers.mainThread())
+            requestUpdateWishList.observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> updateWishedStatus(packageName, isChecked)
                             , e -> Toast.makeText(context, "위시리스트 " + (isChecked ? "등록" : "삭제") + "에 실패하였습니다.", Toast.LENGTH_LONG).show());
         });

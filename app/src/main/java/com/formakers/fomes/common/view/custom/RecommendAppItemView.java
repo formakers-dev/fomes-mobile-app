@@ -117,9 +117,9 @@ public class RecommendAppItemView extends ConstraintLayout {
             imageViewPager.setAdapter(new NetworkImagePagerAdapter(appInfo.getImageUrls()));
         }
 
-        setWishListChecked(appInfo.getWished());
+        setWishListChecked(appInfo.isWished());
 
-        setVisibilityInstalledTextView(appInfo.getInstalled() ? View.VISIBLE : View.GONE);
+        setVisibilityInstalledTextView(appInfo.isInstalled() ? View.VISIBLE : View.GONE);
     }
 
     private void setVerboseGroup(Double star, Long installsMin, String contentsRating) {
