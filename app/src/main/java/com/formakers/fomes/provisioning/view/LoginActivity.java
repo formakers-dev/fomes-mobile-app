@@ -109,7 +109,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     private void signIn(GoogleSignInResult googleSignInResult) {
-        this.presenter.requestSignUpBy(googleSignInResult)
+        addToCompositeSubscription(
+            this.presenter.requestSignUpBy(googleSignInResult)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(fomesToken -> {
                     Log.d(TAG, "signin");
@@ -118,7 +119,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                     } else {
                         startActivityAndFinish(MainActivity.class);
                     }
-                }, e -> showToast("가입에 실패하였습니다. 재시도 고고"));
+                }, e -> showToast("가입에 실패하였습니다. 재시도 고고"))
+        );
     }
 
     @OnClick(R.id.login_google_button)
