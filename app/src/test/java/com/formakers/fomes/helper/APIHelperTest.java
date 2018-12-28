@@ -1,8 +1,8 @@
 package com.formakers.fomes.helper;
 
-import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.network.api.ProjectAPI;
+import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -38,10 +38,10 @@ public class APIHelperTest {
     private UserAPI mockUserAPI;
 
     @Mock
-    private SharedPreferencesHelper mockSharedPreferencesHelper;
+    private AppAPI mockAppAPI;
 
     @Mock
-    private ProjectAPI mockProjectAPI;  // for test
+    private SharedPreferencesHelper mockSharedPreferencesHelper;
 
     private APIHelper subject;
 
@@ -74,16 +74,16 @@ public class APIHelperTest {
     public void API조회시_401에러코드를_받은_경우_새로운_토큰을_발급받아_갱신하고_재요청한다() throws Exception {
         setupTokenException(401);
 
-        Observable.defer(() -> mockProjectAPI.getProject(any(), any()))
+        Observable.defer(() -> mockAppAPI.getAppInfo(any(), any()))
                 .compose(subject.refreshExpiredToken())
                 .toList().toBlocking().single();
 
-        verify(mockProjectAPI, times(2)).getProject(any(), any());
+        verify(mockAppAPI, times(2)).getAppInfo(any(), any());
         verifyRefreshToken();
     }
 
     private void setupTokenException(int errorCode) {
-        when(mockProjectAPI.getProject(any(), any()))
+        when(mockAppAPI.getAppInfo(any(), any()))
                 .thenReturn(Observable.error(new HttpException(Response.error(errorCode, ResponseBody.create(null, "")))))
                 .thenReturn(Completable.complete().toObservable());
     }

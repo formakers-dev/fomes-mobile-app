@@ -6,8 +6,8 @@ import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.ConfigService;
-import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.common.network.RecommendService;
+import com.formakers.fomes.common.network.RequestService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.MessagingService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -29,10 +29,10 @@ import dagger.Component;
 public interface ApplicationComponent {
     AppStatService appStatService();
     UserService userService();
-    ProjectService projectService();
     ConfigService configService();
     RecommendService recommendService();
     AppService appService();
+    RequestService requestService();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();

@@ -8,13 +8,13 @@ import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.ConfigService;
-import com.formakers.fomes.common.network.ProjectService;
 import com.formakers.fomes.common.network.RecommendService;
+import com.formakers.fomes.common.network.RequestService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.ConfigAPI;
-import com.formakers.fomes.common.network.api.ProjectAPI;
 import com.formakers.fomes.common.network.api.RecommendAPI;
+import com.formakers.fomes.common.network.api.RequestAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -66,12 +66,6 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    ProjectAPI projectAPI() {
-        return mock(ProjectAPI.class);
-    }
-
-    @Singleton
-    @Provides
     ConfigAPI configAPI() {
         return mock(ConfigAPI.class);
     }
@@ -86,6 +80,12 @@ public class TestApplicationModule {
     @Provides
     AppAPI appAPI() {
         return mock(AppAPI.class);
+    }
+
+    @Singleton
+    @Provides
+    RequestAPI requestAPI() {
+        return mock(RequestAPI.class);
     }
 
     /**
@@ -105,12 +105,6 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    ProjectService projectService() {
-        return mock(ProjectService.class);
-    }
-
-    @Singleton
-    @Provides
     ConfigService configService() {
         return mock(ConfigService.class);
     }
@@ -125,6 +119,12 @@ public class TestApplicationModule {
     @Provides
     AppService appService() {
         return mock(AppService.class);
+    }
+
+    @Singleton
+    @Provides
+    RequestService requestService() {
+        return mock(RequestService.class);
     }
 
     /**
