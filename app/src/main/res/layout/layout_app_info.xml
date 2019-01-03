@@ -6,12 +6,6 @@
     android:paddingTop="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView android:id="@+id/item_app_installed_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="설치됨"/>
-
     <ImageView
         android:id="@+id/item_app_icon_imageview"
         android:layout_width="@dimen/item_app_icon_width_height"
@@ -22,6 +16,14 @@
         app:layout_constraintBottom_toTopOf="@+id/verbose_group"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View android:id="@+id/item_app_installed_label"
+        android:layout_width="35dp"
+        android:layout_height="17dp"
+        android:background="@drawable/label_installed"
+        app:layout_constraintBottom_toBottomOf="@id/item_app_icon_imageview"
+        app:layout_constraintEnd_toEndOf="@id/item_app_icon_imageview"
+        android:visibility="gone"/>
 
     <ToggleButton android:id="@+id/app_info_wishlist_button"
         android:layout_width="24dp"

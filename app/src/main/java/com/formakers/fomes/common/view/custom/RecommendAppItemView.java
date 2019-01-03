@@ -30,7 +30,7 @@ public class RecommendAppItemView extends ConstraintLayout {
 
     public static final String TAG = RecommendAppItemView.class.getSimpleName();
 
-    private TextView installedTextView;
+    private View installedLabelView;
     private ImageView iconImageView;
     private TextView nameTextView;
     private TextView categoryDeveloperTextView;
@@ -68,7 +68,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         View view = layoutInflater.inflate(R.layout.layout_app_info, this, false);
         addView(view);
 
-        installedTextView = findViewById(R.id.item_app_installed_textview);
+        installedLabelView = findViewById(R.id.item_app_installed_label);
         iconImageView = findViewById(R.id.item_app_icon_imageview);
         nameTextView = findViewById(R.id.item_app_name_textview);
         categoryDeveloperTextView = findViewById(R.id.item_app_genre_developer_textview);
@@ -177,7 +177,7 @@ public class RecommendAppItemView extends ConstraintLayout {
     }
 
     public void setVisibilityInstalledTextView(int visibility) {
-        installedTextView.setVisibility(visibility);
+        installedLabelView.setVisibility(visibility);
     }
 
     private void resizeIconImageView(int size) {
