@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.common.network.api.RequestAPI;
+import com.formakers.fomes.common.network.api.BetaTestRequestAPI;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import org.junit.Before;
@@ -15,7 +15,8 @@ import static org.mockito.Mockito.when;
 
 public class RequestServiceTest extends AbstractServiceTest {
 
-    @Mock RequestAPI mockRequestAPI;
+    @Mock
+    BetaTestRequestAPI mockBetaTestRequestAPI;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
 
     RequestService subject;
@@ -25,7 +26,7 @@ public class RequestServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new RequestService(mockRequestAPI, mockSharedPreferencesHelper);
+        subject = new RequestService(mockBetaTestRequestAPI, mockSharedPreferencesHelper);
 
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
@@ -34,6 +35,6 @@ public class RequestServiceTest extends AbstractServiceTest {
     public void getFeedbackRequest_호출시__참여가능한_리스트를_요청한다() {
         subject.getFeedbackRequest().subscribe(new TestSubscriber<>());
 
-        verify(mockRequestAPI).getRequests(eq("TEST_ACCESS_TOKEN"));
+        verify(mockBetaTestRequestAPI).getRequests(eq("TEST_ACCESS_TOKEN"));
     }
 }

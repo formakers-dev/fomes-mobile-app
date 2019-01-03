@@ -12,9 +12,9 @@ import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.RequestService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.api.AppAPI;
+import com.formakers.fomes.common.network.api.BetaTestRequestAPI;
 import com.formakers.fomes.common.network.api.ConfigAPI;
 import com.formakers.fomes.common.network.api.RecommendAPI;
-import com.formakers.fomes.common.network.api.RequestAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -84,8 +84,8 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    RequestAPI requestAPI() {
-        return mock(RequestAPI.class);
+    BetaTestRequestAPI requestAPI() {
+        return mock(BetaTestRequestAPI.class);
     }
 
     /**

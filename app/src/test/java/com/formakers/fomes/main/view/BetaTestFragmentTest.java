@@ -18,15 +18,15 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class BetatestFragmentTest {
-    BetatestFragment subject;
-    SupportFragmentController<BetatestFragment> controller;
+public class BetaTestFragmentTest {
+    BetaTestFragment subject;
+    SupportFragmentController<BetaTestFragment> controller;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        subject = new BetatestFragment();
+        subject = new BetaTestFragment();
         controller = SupportFragmentController.of(subject);
 
         controller.create().start().resume().visible();

@@ -102,7 +102,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
 
         contentsPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
-        contentsPagerAdapter.addFragment(BetatestFragment.TAG, new BetatestFragment(), getString(R.string.main_tab_betatest));
+        contentsPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
 
         contentsViewPager.setAdapter(contentsPagerAdapter);
 

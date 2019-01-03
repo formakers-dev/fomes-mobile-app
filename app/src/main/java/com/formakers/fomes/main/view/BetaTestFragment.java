@@ -10,9 +10,9 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 
-public class BetatestFragment extends BaseFragment {
+public class BetaTestFragment extends BaseFragment {
 
-    public static final String TAG = "BetatestFragment";
+    public static final String TAG = "BetaTestFragment";
 
     @Nullable
     @Override

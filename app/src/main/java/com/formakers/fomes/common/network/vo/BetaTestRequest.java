@@ -3,7 +3,7 @@ package com.formakers.fomes.common.network.vo;
 import java.util.Date;
 import java.util.List;
 
-public class FeedbackRequest {
+public class BetaTestRequest {
     String title;
     String subTitle;
 
@@ -18,14 +18,17 @@ public class FeedbackRequest {
     String actionType;
     String action;
 
-    public FeedbackRequest() {
+    boolean isOpened;
+    boolean isRegistered;
+
+    public BetaTestRequest() {
     }
 
     public String getTitle() {
         return title;
     }
 
-    public FeedbackRequest setTitle(String title) {
+    public BetaTestRequest setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -34,7 +37,7 @@ public class FeedbackRequest {
         return subTitle;
     }
 
-    public FeedbackRequest setSubTitle(String subTitle) {
+    public BetaTestRequest setSubTitle(String subTitle) {
         this.subTitle = subTitle;
         return this;
     }
@@ -43,7 +46,7 @@ public class FeedbackRequest {
         return type;
     }
 
-    public FeedbackRequest setType(String type) {
+    public BetaTestRequest setType(String type) {
         this.type = type;
         return this;
     }
@@ -52,7 +55,7 @@ public class FeedbackRequest {
         return typeTags;
     }
 
-    public FeedbackRequest setTypeTags(List<String> typeTags) {
+    public BetaTestRequest setTypeTags(List<String> typeTags) {
         this.typeTags = typeTags;
         return this;
     }
@@ -61,7 +64,7 @@ public class FeedbackRequest {
         return openDate;
     }
 
-    public FeedbackRequest setOpenDate(Date openDate) {
+    public BetaTestRequest setOpenDate(Date openDate) {
         this.openDate = openDate;
         return this;
     }
@@ -70,7 +73,7 @@ public class FeedbackRequest {
         return closeDate;
     }
 
-    public FeedbackRequest setCloseDate(Date closeDate) {
+    public BetaTestRequest setCloseDate(Date closeDate) {
         this.closeDate = closeDate;
         return this;
     }
@@ -79,7 +82,7 @@ public class FeedbackRequest {
         return apps;
     }
 
-    public FeedbackRequest setApps(List<String> apps) {
+    public BetaTestRequest setApps(List<String> apps) {
         this.apps = apps;
         return this;
     }
@@ -88,7 +91,7 @@ public class FeedbackRequest {
         return actionType;
     }
 
-    public FeedbackRequest setActionType(String actionType) {
+    public BetaTestRequest setActionType(String actionType) {
         this.actionType = actionType;
         return this;
     }
@@ -97,14 +100,32 @@ public class FeedbackRequest {
         return action;
     }
 
-    public FeedbackRequest setAction(String action) {
+    public BetaTestRequest setAction(String action) {
         this.action = action;
+        return this;
+    }
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public BetaTestRequest setOpened(boolean opened) {
+        isOpened = opened;
+        return this;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
+    }
+
+    public BetaTestRequest setRegistered(boolean registered) {
+        isRegistered = registered;
         return this;
     }
 
     @Override
     public String toString() {
-        return "FeedbackRequest{" +
+        return "BetaTestRequest{" +
                 "title='" + title + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", type='" + type + '\'' +
@@ -114,6 +135,8 @@ public class FeedbackRequest {
                 ", apps=" + apps +
                 ", actionType='" + actionType + '\'' +
                 ", action='" + action + '\'' +
+                ", isOpened=" + isOpened +
+                ", isRegistered=" + isRegistered +
                 '}';
     }
 }

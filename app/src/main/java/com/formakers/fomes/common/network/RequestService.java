@@ -1,7 +1,7 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.common.network.api.RequestAPI;
-import com.formakers.fomes.common.network.vo.FeedbackRequest;
+import com.formakers.fomes.common.network.api.BetaTestRequestAPI;
+import com.formakers.fomes.common.network.vo.BetaTestRequest;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import java.util.List;
@@ -18,12 +18,12 @@ public class RequestService extends AbstractService {
 
     private static final String TAG = "RequestService";
 
-    private final RequestAPI requestAPI;
+    private final BetaTestRequestAPI betaTestRequestAPI;
     private final SharedPreferencesHelper sharedPreferencesHelper;
 
     @Inject
-    public RequestService(RequestAPI requestAPI, SharedPreferencesHelper sharedPreferencesHelper) {
-        this.requestAPI = requestAPI;
+    public RequestService(BetaTestRequestAPI betaTestRequestAPI, SharedPreferencesHelper sharedPreferencesHelper) {
+        this.betaTestRequestAPI = betaTestRequestAPI;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
     }
 
@@ -32,8 +32,8 @@ public class RequestService extends AbstractService {
         return TAG;
     }
 
-    public Single<List<FeedbackRequest>> getFeedbackRequest() {
-        return Observable.defer(() -> requestAPI.getRequests(sharedPreferencesHelper.getAccessToken()))
+    public Single<List<BetaTestRequest>> getFeedbackRequest() {
+        return Observable.defer(() -> betaTestRequestAPI.getRequests(sharedPreferencesHelper.getAccessToken()))
         .subscribeOn(Schedulers.io())
         .toSingle();
     }

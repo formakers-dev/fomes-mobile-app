@@ -4,7 +4,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.ConfigAPI;
 import com.formakers.fomes.common.network.api.RecommendAPI;
-import com.formakers.fomes.common.network.api.RequestAPI;
+import com.formakers.fomes.common.network.api.BetaTestRequestAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 
@@ -87,7 +87,7 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    RequestAPI requestAPI(Retrofit retrofit) {
-        return retrofit.create(RequestAPI.class);
+    BetaTestRequestAPI requestAPI(Retrofit retrofit) {
+        return retrofit.create(BetaTestRequestAPI.class);
     }
 }
