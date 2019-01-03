@@ -112,7 +112,7 @@ public class RecentAnalysisReportPresenterTest {
         usages.add(new UsageGroup(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER, Lists.emptyList(), Lists.emptyList(), Lists.emptyList()));
         usages.add(new UsageGroup(UsageGroup.TYPE_JOB, Lists.emptyList(), Lists.emptyList(), Lists.emptyList()));
 
-        RecentReport report = new RecentReport(totalUsedTimeRank, usages);
+        RecentReport report = new RecentReport().setTotalUsedTimeRank(totalUsedTimeRank).setUsages(usages).setTotalUserCount(999);
 
         when(mockAppStatService.requestRecentReport(eq("GAME"), eq(mockUser))).thenReturn(Observable.just(report));
 
@@ -141,11 +141,13 @@ public class RecentAnalysisReportPresenterTest {
 
         // 사용시간 랭킹 뷰 업데이트
         ArgumentCaptor<List<Rank>> ranksArgumentCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindRankingViews(ranksArgumentCaptor.capture());
+        ArgumentCaptor<Long> ranksArgumentCaptor2 = ArgumentCaptor.forClass(Long.class);
+        verify(mockView).bindRankingViews(ranksArgumentCaptor.capture(), ranksArgumentCaptor2.capture());
         List<Rank> capturedList = ranksArgumentCaptor.getValue();
         assertThat(capturedList.get(0).getRank()).isEqualTo(1);
         assertThat(capturedList.get(1).getRank()).isEqualTo(24);
         assertThat(capturedList.get(2).getRank()).isEqualTo(999);
+        assertThat(ranksArgumentCaptor2.getValue()).isEqualTo(999);
 
         verify(mockView).bindFavoriteDeveloperViews(eq(report.getUsages().get(0).getDeveloperUsages()),
                 eq(report.getUsages().get(1).getDeveloperUsages()),

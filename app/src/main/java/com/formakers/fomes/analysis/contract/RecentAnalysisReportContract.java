@@ -26,7 +26,7 @@ public interface RecentAnalysisReportContract {
         ApplicationComponent getApplicationComponent();
         void bindMyGenreViews(List<Usage> categoryUsages);
         void bindPeopleGenreViews(List<Usage> genderAgeCategoryUsages, List<Usage> jobCategoryUsages);
-        void bindRankingViews(List<Rank> totalUsedTimeRank);
+        void bindRankingViews(List<Rank> totalUsedTimeRank, long totalUserCount);
         void bindFavoriteDeveloperViews(List<Usage> myDeveloperUsages, List<Usage> genderAgeDeveloperUsages, List<Usage> jobDeveloperUsages);
         void bindMyGames(List<Usage> myAppUsages);
         void bindPeopleGamesViews(List<Usage> genderAgeAppUsages, List<Usage> jobAppUsages);

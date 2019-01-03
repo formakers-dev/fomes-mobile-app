@@ -69,6 +69,7 @@
     <string name="provision_permission_subtitle">구글 정책상 직접 선택해서 허용해야 합니다.</string>
 
     <!-- Analysis -->
+    <string name="analysis_total_user_count">/%d명</string>
     <string name="analysis_loading">게임 성향을 분석 중 입니다.</string>
     <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 플레이를 분석했습니다.</string>
     <string name="analysis_my_genre_title">나의 게임 장르</string>
@@ -76,7 +77,7 @@
     <string name="analysis_my_genre_used_time_format">총 시간의 %d%%</string>
     <string name="analysis_people_genre_title">나와 비슷한 사람들의 게임 장르</string>
     <string name="analysis_people_genre_subtitle">나이/성별/직업 기준 7일간 모바일 게임 장르별 플레이 시간 집계</string>
-    <string name="analysis_my_playtime_rank_title">나의 플레이 등수</string>
+    <string name="analysis_my_playtime_rank_title">나의 게임 플레이 시간 등수</string>
     <string name="analysis_my_playtime_rank_subtitle">나의 7일간 게임 플레이 시간 집계</string>
     <string name="analysis_my_playtime_rank_summary">총 %.1f시간 게임 플레이</string>
     <string name="analysis_my_playtime_rank_description_title">나는 %s인데 너는 몇 등이니?</string>

@@ -69,7 +69,7 @@
             android:layout_width="297dp"
             android:layout_height="185dp"
             android:layout_marginTop="19dp"
-            android:src="@drawable/analysis_rank_medal"
+            android:background="@drawable/analysis_rank_medal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/analysis_my_playtime_rank_subtitle"/>
@@ -78,14 +78,28 @@
             android:id="@+id/analysis_my_playtime_rank_medal_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:textSize="39dp"
             android:textColor="@color/fomes_squash"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/analysis_my_playtime_rank_medal"
+            android:lineSpacingExtra="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/analysis_my_playtime_rank_medal_sub_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="5등"/>
+
+        <TextView
+            android:id="@+id/analysis_my_playtime_rank_medal_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="75dp"
+            android:textSize="14dp"
+            android:textColor="@color/fomes_squash"
+            android:lineSpacingExtra="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/analysis_my_playtime_rank_medal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="/2000명"/>
 
         <TextView
             android:id="@+id/analysis_my_playtime_rank_summary"

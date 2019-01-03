@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
+import com.formakers.fomes.common.util.DisplayUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView;
@@ -78,6 +81,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_people_games_gender_age) ViewGroup genderAgeGames;
     @BindView(R.id.analysis_people_games_job) ViewGroup jobGames;
     @BindView(R.id.analysis_my_playtime_rank_medal_text) TextView myPlaytimeRankMedalTextView;
+    @BindView(R.id.analysis_my_playtime_rank_medal_sub_text) TextView myPlaytimeRankMedalTotalUserCountTextView;
     @BindView(R.id.analysis_my_playtime_rank_summary) TextView myPlaytimeRankSummaryTextView;
     @BindView(R.id.analysis_my_playtime_rank_description_title) TextView myPlaytimeRankDescriptionTitleTextView;
     @BindView(R.id.analysis_my_playtime_rank_description_content) TextView myPlaytimeRankDescriptionContentTextView;
@@ -289,7 +293,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     }
 
     @Override
-    public void bindRankingViews(List<Rank> totalUsedTimeRank) {
+    public void bindRankingViews(List<Rank> totalUsedTimeRank, long totalUserCount) {
         Log.d(TAG, String.valueOf(totalUsedTimeRank));
 
         Rank bestRank = totalUsedTimeRank.get(0);
@@ -310,7 +314,12 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         // 나의 플레이 등수 관련 세팅
         myPlaytimeRankMedalTextView.setText(myRankText);
+        myPlaytimeRankMedalTotalUserCountTextView.setText(String.format(getString(R.string.analysis_total_user_count), totalUserCount));
         myPlaytimeRankSummaryTextView.setText(String.format(getString(R.string.analysis_my_playtime_rank_summary), myHour));
+
+        if (myRank.getRank() >= 1000) {
+            this.myPlaytimeRankMedalTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 27);
+        }
 
         if (myRank.isValid()) {
             myPlaytimeRankDescriptionTitleTextView.setText(String.format(res.getString(R.string.analysis_my_playtime_rank_description_title), myRankText));

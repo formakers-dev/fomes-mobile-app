@@ -235,13 +235,15 @@ public class RecentAnalysisReportFragmentTest {
         rankList.add(new Rank("myUserId", 4, 5000000L));
         rankList.add(new Rank("worstUserId", 100, 1000000L));
 
+        long totalUserCount = 100;
+
         when(mockPresenter.getHour(10000000L)).thenReturn(2.8f);
         when(mockPresenter.getHour(5000000L)).thenReturn(1.4f);
         when(mockPresenter.getHour(1000000L)).thenReturn(0.3f);
 
         controller.create().start().resume().visible();
 
-        subject.bindRankingViews(rankList);
+        subject.bindRankingViews(rankList, totalUserCount);
     }
 
     @Test
