@@ -169,7 +169,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 사이드메뉴의_위시리스트_클릭시__위시리스트화면으로_이동한다() {
+    public void 사이드메뉴의_즐겨찾기_클릭시__즐겨찾기화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.my_wish_list);
 
@@ -181,7 +181,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 옵선아이템의_위시리스트_클릭시__위시리스트화면으로_이동한다() {
+    public void 옵선아이템의_즐겨찾기_클릭시__즐겨찾기화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.my_wish_list);
 

@@ -109,7 +109,7 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
             requestUpdateWishList
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> this.communicator.emitUpdateWishedStatusEvent(packageName, isChecked)
-                            , e -> Toast.makeText(this.getActivity(), "위시리스트 " + (isChecked ? "등록" : "삭제") + "에 실패하였습니다.", Toast.LENGTH_LONG).show());
+                            , e -> Toast.makeText(this.getActivity(), (isChecked ? R.string.wish_list_add_fail : R.string.wish_list_remove_fail), Toast.LENGTH_LONG).show());
         });
 
         downloadButton.setOnClickListener(v -> {

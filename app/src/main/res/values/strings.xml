@@ -116,7 +116,7 @@
     <string name="main_tab_recommend">게임 추천</string>
     <string name="main_tab_betatest">테스트 참여 존</string>
     <string name="main_tab_event">이벤트</string>
-    <string name="main_menu_my_wish_list">위시리스트</string>
+    <string name="main_menu_my_wish_list">즐겨찾기</string>
     <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
@@ -136,7 +136,6 @@
     <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인, 싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
 
     <!-- Recommend -->
-    <string name="save_wish_list">위시리스트에 저장</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
     <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
     <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>
@@ -150,9 +149,12 @@
 
     <!-- Wish List -->
     <string name="download">다운로드</string>
-    <string name="wish_list">위시리스트</string>
+    <string name="wish_list">즐겨찾기</string>
     <string name="wish_list_description">지금 다운로드 가능한 게임들입니다.</string>
-    <string name="wish_list_empty_description">아직 컬렉션에 저장한 게임이 없으시네요.\n추천된 게임 중에서 맘에드는 게임이 있을 때\n‘위시리스트에 저장’ 버튼을 누르시면 됩니다.</string>
+    <string name="wish_list_empty_description">아직 즐겨찾기에 저장한 게임이 없으시네요.</string>
+    <string name="wish_list_add_fail">즐겨찾기 등록에 실패하였습니다.</string>
+    <string name="wish_list_remove_fail">즐겨찾기 삭제에 실패하였습니다.</string>
+
 
     <!-- Event -->
     <string name="event_banner_title">포메스의 감사 EVENT</string>

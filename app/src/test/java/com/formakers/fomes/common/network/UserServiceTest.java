@@ -86,7 +86,7 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void requestSaveAppToWishList_호출시__앱을_위시리스트에_추가하는_요청을_한다() {
+    public void requestSaveAppToWishList_호출시__앱을_즐겨찾기에_추가하는_요청을_한다() {
         when(mockUserAPI.postWishList(anyString(), any(HashMap.class))).thenReturn(mock(Observable.class));
 
         subject.requestSaveAppToWishList("com.test.app1").subscribe(new TestSubscriber<>());
@@ -100,7 +100,7 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void requestRemoveAppFromWishList_호출시__앱을_위시리스트에서_삭제하는_요청을_한다() {
+    public void requestRemoveAppFromWishList_호출시__앱을_즐겨찾기에서_삭제하는_요청을_한다() {
         when(mockUserAPI.deleteWishList(anyString(), anyString())).thenReturn(mock(Observable.class));
 
         subject.requestRemoveAppFromWishList("com.test.app").subscribe(new TestSubscriber<>());

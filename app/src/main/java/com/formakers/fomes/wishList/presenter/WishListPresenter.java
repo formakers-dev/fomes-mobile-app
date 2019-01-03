@@ -1,5 +1,6 @@
 package com.formakers.fomes.wishList.presenter;
 
+import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.wishList.contract.WishListAdapterContract;
@@ -63,7 +64,7 @@ public class WishListPresenter implements WishListContract.Presenter {
                     view.showWishList(adapterModel.getItemCount() > 0);
 
                     removedPackageNames.add(packageName);
-                }, e -> view.showToast("위시리스트 삭제에 실패하였습니다."));
+                }, e -> view.showToast(R.string.wish_list_remove_fail));
     }
 
     @Override

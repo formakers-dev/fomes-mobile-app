@@ -129,6 +129,11 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
     }
 
     @Override
+    public void showToast(int toastMessageResId) {
+        Toast.makeText(this, toastMessageResId, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void showLoadingBar() {
         loadingBar.setVisibility(View.VISIBLE);
     }

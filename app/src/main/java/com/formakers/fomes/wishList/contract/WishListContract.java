@@ -1,5 +1,7 @@
 package com.formakers.fomes.wishList.contract;
 
+import android.support.annotation.StringRes;
+
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
 
@@ -22,6 +24,7 @@ public interface WishListContract {
 
         void showWishList(boolean hasData);
         void showToast(String toastMessage);
+        void showToast(@StringRes int toastMessageResId);
         void showLoadingBar();
         void hideLoadingBar();
     }

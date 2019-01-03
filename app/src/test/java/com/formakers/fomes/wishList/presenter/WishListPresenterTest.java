@@ -23,6 +23,7 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -68,7 +69,7 @@ public class WishListPresenterTest {
     }
 
     @Test
-    public void requestWishList__호출시_위시리스트를_서버에_요청한다() {
+    public void requestWishList__호출시_즐겨찾기를_서버에_요청한다() {
         subject.loadingWishList();
 
         verify(mockUserService).requestWishList();
@@ -100,7 +101,7 @@ public class WishListPresenterTest {
     }
 
     @Test
-    public void requestRemoveFromWishList_호출시__특정앱을_위시리스트에서_제거해줄것을_서버에_요청한다() {
+    public void requestRemoveFromWishList_호출시__특정앱을_즐겨찾기에서_제거해줄것을_서버에_요청한다() {
         subject.requestRemoveFromWishList(0);
 
         verify(mockUserService).requestRemoveAppFromWishList(eq("com.test.1"));
@@ -124,11 +125,11 @@ public class WishListPresenterTest {
 
         subject.requestRemoveFromWishList(0);
 
-        verify(mockView).showToast(anyString());
+        verify(mockView).showToast(anyInt());
     }
 
     @Test
-    public void getRemovedPackageNames_호출시__위시리스트에서_제거된_앱들의_packageName을_반환한다() {
+    public void getRemovedPackageNames_호출시__즐겨찾기에서_제거된_앱들의_packageName을_반환한다() {
         subject.requestRemoveFromWishList(0);
         subject.requestRemoveFromWishList(1);
         subject.requestRemoveFromWishList(2);

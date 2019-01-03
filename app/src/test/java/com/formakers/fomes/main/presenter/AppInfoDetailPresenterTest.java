@@ -45,14 +45,14 @@ public class AppInfoDetailPresenterTest {
     }
 
     @Test
-    public void emitSaveToWishList_호출시__앱을_위시리스트에_추가하도록_서버에_요청한다() {
+    public void emitSaveToWishList_호출시__앱을_즐겨찾기에_추가하도록_서버에_요청한다() {
         subject.requestSaveToWishList("com.test");
 
         verify(mockUserService).requestSaveAppToWishList("com.test");
     }
 
     @Test
-    public void emitRemoveFromWishList_호출시__앱을_위시리스트에서_삭제하도록_서버에_요청한다() {
+    public void emitRemoveFromWishList_호출시__앱을_즐겨찾기에서_삭제하도록_서버에_요청한다() {
         subject.requestRemoveFromWishList("com.test");
 
         verify(mockUserService).requestRemoveAppFromWishList("com.test");
