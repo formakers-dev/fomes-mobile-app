@@ -122,10 +122,10 @@
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
 
     <!-- Beta Test -->
-    <string name="betatest_coming_soon">2018년 연말 오픈각</string>
-    <string name="betatest_title">품격있는 게이머들의\n소소한 겜테크 취미생활</string>
-    <string name="betatest_subtitle">플레이하고, 피드백주고, 리워드 받고!</string>
-    <string name="betatest_description">나의 피드백으로 만드는\n개성넘치는 한국 모바일 게임 시장</string>
+    <string name="betatest_coming_soon">테스트 참여 존 오픈 임박!</string>
+    <string name="betatest_title">테스트에 참여 할수록\n쌓여가는 나의 경험치!</string>
+    <string name="betatest_subtitle">경험치를 쌓아 리워드를 받아가세요.</string>
+    <string name="betatest_description">포메스는 게임관련 테스트나 설문에 참여하고\n리워드를 받을 수 있는 게임 테스트 플랫폼입니다.</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>
