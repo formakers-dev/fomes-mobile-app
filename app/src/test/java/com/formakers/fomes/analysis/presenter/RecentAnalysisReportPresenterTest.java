@@ -82,6 +82,7 @@ public class RecentAnalysisReportPresenterTest {
 
         when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(new ArrayList<>());
         when(mockUser.getUserId()).thenReturn("mockUserId");
+        when(mockUser.getNickName()).thenReturn("mockUserNickName");
         when(mockUser.getGender()).thenReturn("male");
         when(mockUser.getBirthday()).thenReturn(1989);
         when(mockUser.getJob()).thenReturn(3);
@@ -133,7 +134,7 @@ public class RecentAnalysisReportPresenterTest {
         assertThat(argumentCaptor.getValue().getJob()).isEqualTo(3);
 
         // 나의 장르 뷰 업데이트
-        verify(mockView).bindMyGenreViews(eq(report.getUsages().get(0).getCategoryUsages()));
+        verify(mockView).bindMyGenreViews(eq(report.getUsages().get(0).getCategoryUsages()), eq("mockUserNickName"));
 
         // 사람들의 장르 뷰 업데이트
         verify(mockView).bindPeopleGenreViews(eq(report.getUsages().get(1).getCategoryUsages()),

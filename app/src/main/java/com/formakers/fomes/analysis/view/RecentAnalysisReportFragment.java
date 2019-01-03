@@ -65,6 +65,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_title_textview) TextView titleTextView;
     @BindView(R.id.analysis_subtitle_textview) TextView subtitleTextView;
     @BindView(R.id.analysis_my_genre_chart) PieChart myGenrePieChart;
+    @BindView(R.id.analysis_my_genre_chart_text) TextView myGenrePieChartTextView;
     @BindView(R.id.analysis_my_genre_1) RankAppItemView myGenreItem1;
     @BindView(R.id.analysis_my_genre_2) RankAppItemView myGenreItem2;
     @BindView(R.id.analysis_my_genre_3) RankAppItemView myGenreItem3;
@@ -164,8 +165,10 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     }
 
     @Override
-    public void bindMyGenreViews(List<Usage> categoryUsages) {
+    public void bindMyGenreViews(List<Usage> categoryUsages, String nickName) {
         int size = categoryUsages.size();
+
+        myGenrePieChartTextView.setText(String.format(getString(R.string.analysis_my_genre_chart_text), nickName));
 
         List<Pair<Usage, Integer>> usagePercentagePair = this.presenter.getPercentage(categoryUsages, 0,
                 size > 3 ? 3 : size);

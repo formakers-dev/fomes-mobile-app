@@ -146,7 +146,7 @@ public class RecentAnalysisReportFragmentTest {
 
         controller.create().start().resume().visible();
 
-        subject.bindMyGenreViews(categoryUsages);
+        subject.bindMyGenreViews(categoryUsages, "nickName");
 
         // 상위 3개만 계산해온다
         verify(mockPresenter).getPercentage(eq(categoryUsages), eq(0), eq(3));
@@ -165,6 +165,9 @@ public class RecentAnalysisReportFragmentTest {
                 .isEqualTo("시뮬레이션");
         assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_3)).getDescriptionText())
                 .isEqualTo("총 시간의 16%");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_chart_text)).getText())
+                .contains("nickName");
     }
 
     @Test
