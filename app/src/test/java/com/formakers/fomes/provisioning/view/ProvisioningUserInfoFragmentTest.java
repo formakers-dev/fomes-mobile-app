@@ -90,7 +90,7 @@ public class ProvisioningUserInfoFragmentTest {
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).updateUserInfo(eq("인생게임"), eq(2010), eq(2001), eq("female"));
+        verify(mockPresenter).updateUserInfo(eq("인생게임"), eq(2015), eq(2001), eq("female"));
         verify(mockPresenter).requestUpdateUser();
     }
 

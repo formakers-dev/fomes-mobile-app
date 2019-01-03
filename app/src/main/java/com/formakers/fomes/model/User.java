@@ -21,6 +21,7 @@ public class User {
         SERVICE("서비스 종사자", 4000, true),
 
         STUDENT("학생", 5000, false),
+        ELEMENTARY_STUDENT("초등학생", STUDENT.getCode() + 3, true),
         MIDDLE_AND_HIGH_SCHOOL_STUDENT("중고등학생", STUDENT.getCode() + 1, true),
         UNIVERSITY_STUDENT("대학생", STUDENT.getCode() + 2, true),
 
