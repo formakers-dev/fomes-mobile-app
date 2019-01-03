@@ -114,32 +114,12 @@
 
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>
-    <string name="main_tab_betatest">피드백 존</string>
+    <string name="main_tab_betatest">테스트 참여 존</string>
     <string name="main_tab_event">이벤트</string>
     <string name="main_menu_my_wish_list">위시리스트</string>
-    <string name="main_menu_my_hope_games">추천게임 컬렉션 (2차오픈)</string>
     <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
-    <string name="main_menu_my_betatest">피드백 존 (3차오픈)</string>
-    <string name="main_menu_my_feedback_zone">피드백 존 (준비중)</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
-
-    <!-- Temp -->
-    <string name="temp_event_notice">현재 버전에서는 게임 분석만 가능합니다.</string>
-    <string name="temp_event_title">&lt; 그 대신 준비한 이벤트 &gt;\n앱 유지만 하면 선물을 드려요!</string>
-    <string name="temp_event_who_desc">9월 29~30에 포메스 앱을 설치한 유저들 중에서 3단계 오픈까지 포메스 앱을 삭제하지 않은 유저</string>
-    <string name="temp_event_how_desc">3단계 오픈까지 유지 후 인증. 추후 앱을 통해 대상자에게 공지 &amp; 인증방법 안내예정</string>
-    <string name="temp_event_gift_desc">문화상품권 부터 모바일 게임 패드까지 게이머를 위한 다양한 선물</string>
-    <string name="temp_event_progress_1_title">게임 분석 : 오픈 완료!!</string>
-    <string name="temp_event_progress_1_subtitle">데이터로 분석하는 게임취향</string>
-    <string name="temp_event_progress_1_description">대쪽같은 나의 취향, 데이터로 보면 과연?!\n다른사람들과 비교해보는 내 게임 취향!!</string>
-    <string name="temp_event_progress_2_title">게임 추천 : 10월 말 오픈</string>
-    <string name="temp_event_progress_2_subtitle">심플하게 게임추천 &amp; 보관</string>
-    <string name="temp_event_progress_2_description">관심 있으면 컬렉션 보관, 아니면 제거!\n나이/성별/최애게임 데이터 기반 추천!</string>
-    <string name="temp_event_progress_3_title">피드백존 : 올해 연말 오픈</string>
-    <string name="temp_event_progress_3_subtitle">게임 피드백 주고 리워드 받고</string>
-    <string name="temp_event_progress_3_description">먼저 게임해보고 피드백 주면 리워드 지급!\n게임사 : 조언주실 게임 고수님 모십니다!!</string>
-
 
     <!-- Beta Test -->
     <string name="betatest_coming_soon">2018년 연말 오픈각</string>

@@ -18,7 +18,7 @@
         android:enabled="false">
         <item
             android:id="@+id/my_betatest"
-            android:title="@string/main_menu_my_feedback_zone"
+            android:title="@string/main_tab_betatest"
             android:icon="@drawable/icon_my_betatest"/>
     </group>
 
