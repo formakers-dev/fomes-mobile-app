@@ -171,5 +171,6 @@
     <string name="event_gold_prize">금상 ㅣ 문화상품권 1만원 ( 5명 추첨 )</string>
     <string name="event_silver_prize">은상 ㅣ 문화상품권 5천원 ( 14명 추첨 )</string>
     <string name="event_bronze_prize">동상 ㅣ 문화상품권 1천원 ( 80명 추첨 )</string>
+    <string name="show_detail"><u>자세히보기</u></string>
 
 </resources>
