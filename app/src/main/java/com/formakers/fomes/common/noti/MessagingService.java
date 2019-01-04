@@ -56,26 +56,10 @@ public class MessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
             // 여기서 노티 띄우기
-            NotificationCompat.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                builder = channelManager.getNotificationBuilder(ChannelManager.Channel.ANNOUNCE, NotificationManager.IMPORTANCE_MAX);
-            } else {
-                builder = channelManager.getNotificationBuilder();
-            }
-
             Intent notificationIntent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-            Notification notification = builder.setContentIntent(pendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .setSmallIcon(R.drawable.ic_noti)
-                    .setColor(context.getResources().getColor(R.color.colorPrimary))
-                    .setSubText("공지사항")
-                    .setContentTitle(dataMap.get(FomesConstants.Notification.TITLE))
-                    .setContentText(dataMap.get(FomesConstants.Notification.MESSAGE))
-                    .build();
-
-            channelManager.sendNotification(1, notification);
+            channelManager.sendNotification(dataMap, pendingIntent);
         }
 
         // Check if message contains a notification payload.

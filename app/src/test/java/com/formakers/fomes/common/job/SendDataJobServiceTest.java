@@ -6,6 +6,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
@@ -42,11 +43,11 @@ public class SendDataJobServiceTest {
     private SendDataJobService subject;
 
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
-    @Inject
-    AndroidNativeHelper mockAndroidNativeHelper;
+    @Inject AndroidNativeHelper mockAndroidNativeHelper;
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
     @Inject UserService mockUserService;
     @Inject AppStatService mockAppStatService;
+    @Inject ChannelManager mockChannelManager;
 
     @Before
     public void setUp() throws Exception {
@@ -84,6 +85,7 @@ public class SendDataJobServiceTest {
         verify(mockAppUsageDataHelper).sendShortTermStats();
         verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
+        verify(mockChannelManager).subscribePublicTopic();
     }
 
     @Test
@@ -97,7 +99,8 @@ public class SendDataJobServiceTest {
 
         verify(mockUserService, never()).updateRegistrationToken(any());
         verify(mockAppUsageDataHelper, never()).sendShortTermStats();
-        verify(mockAppUsageDataHelper, never()).sendAppUsages();
+        verify(mockAppStatService, never()).sendAppUsages(any());
+        verify(mockChannelManager).subscribePublicTopic();
     }
 
 //    @Test

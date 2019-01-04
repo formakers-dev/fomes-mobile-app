@@ -30,6 +30,7 @@ public interface ProvisioningContract {
         boolean isProvisiongProgress();
 
         int registerSendDataJob();
+        void registerPublicNotificationTopic();
     }
 
     interface View extends BaseView<Presenter> {

@@ -39,7 +39,14 @@ public interface FomesConstants {
     }
 
     interface Notification {
+        String TOPIC_NOTICE_ALL = "notice-all";
+
+        // Request Body Key
+        String CHANNEL = "channel";
         String TITLE = "title";
         String MESSAGE = "message";
+        String IS_SUMMARY = "isSummary";
+        String SUMMARY_SUB_TEXT = "summarySubText";
+        String SUB_TITLE = "subTitle";
     }
 }

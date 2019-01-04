@@ -6,26 +6,30 @@ import android.app.job.JobService;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import javax.inject.Inject;
 
 import rx.Completable;
 import rx.schedulers.Schedulers;
 
+import static com.formakers.fomes.common.FomesConstants.Notification.TOPIC_NOTICE_ALL;
+
 public class SendDataJobService extends JobService {
 
     private static String TAG = SendDataJobService.class.getSimpleName();
 
     @Inject SharedPreferencesHelper SharedPreferencesHelper;
-    @Inject
-    AndroidNativeHelper androidNativeHelper;
+    @Inject AndroidNativeHelper androidNativeHelper;
     @Inject AppUsageDataHelper appUsageDataHelper;
     @Inject UserService userService;
     @Inject AppStatService appStatService;
+    @Inject ChannelManager channelManager;
 
     @Override
     public void onCreate() {
@@ -54,6 +58,8 @@ public class SendDataJobService extends JobService {
                     .doAfterTerminate(() -> this.jobFinished(params, true))
                     .subscribe(() -> Log.d(TAG, "Send Data Success"), e -> Log.e(TAG, "Send Data Fail : " + e));
         }
+
+        channelManager.subscribePublicTopic();
 
         return true;
     }

@@ -84,10 +84,11 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
 
         if (!this.presenter.isProvisiongProgress()) {
             getActivity().finish();
-            return;
-        }
+        } else {
+            this.presenter.registerPublicNotificationTopic();
 
-        this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-        this.presenter.emitStartActivityAndFinishEvent(RecentAnalysisReportActivity.class);
+            this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+            this.presenter.emitStartActivityAndFinishEvent(RecentAnalysisReportActivity.class);
+        }
     }
 }
