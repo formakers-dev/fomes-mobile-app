@@ -104,6 +104,7 @@ public class ChannelManager {
                 .setSmallIcon(R.drawable.ic_noti)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_app))
                 .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentText(subTitle)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
