@@ -139,7 +139,7 @@
 -dontwarn com.formakers.fomes.common.repository.model.**
 
 # Constants
--keepattributes InnerClasses;
+-keepattributes InnerClasses
 -keep class com.formakers.fomes.common.FomesConstants.** { *; }
 -keep class com.formakers.fomes.common.FomesConstants.$* { *; }
 -dontwarn com.formakers.fomes.common.FomesConstants.**
