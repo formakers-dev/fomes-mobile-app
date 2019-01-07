@@ -10,7 +10,7 @@ echo $VERSION
 VERSION=${VERSION#*####}
 echo $VERSION
 
-APK_NAME="Fomes-*-$1.apk"
+APK_NAME="Fomes-$VERSION-$1.apk"
 echo $APK_NAME
 
 curl -F file=@app/build/outputs/apk/$1/$APK_NAME \
