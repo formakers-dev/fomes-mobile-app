@@ -37,7 +37,7 @@ public class APIHelper {
                                 }
 
                                 int errorCode = ((HttpException) error).code();
-                                if (errorCode == 401 || errorCode == 403) {
+                                if (errorCode == 401) {
                                     return googleSignInAPIHelper.requestSilentSignInResult();
                                 } else {
                                     return Observable.error(error);

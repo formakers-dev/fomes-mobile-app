@@ -1,6 +1,5 @@
 package com.formakers.fomes.analysis.presenter;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.bumptech.glide.RequestManager;
@@ -14,7 +13,8 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.util.DateUtil;
+import com.formakers.fomes.common.util.DateUtil;
+import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,12 +121,9 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
                     UsageGroup genderAgeUsages = usageGroupMap.get(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER);
                     UsageGroup jobUsages = usageGroupMap.get(UsageGroup.TYPE_JOB);
 
-                    if (myUsages.getCategoryUsages().size() <= 0) {
-                        view.bindErrorHeaderView();
-                    }
-                    view.bindMyGenreViews(myUsages.getCategoryUsages());
+                    view.bindMyGenreViews(myUsages.getCategoryUsages(), user.getNickName());
                     view.bindPeopleGenreViews(genderAgeUsages.getCategoryUsages(), jobUsages.getCategoryUsages());
-                    view.bindRankingViews(recentReport.getTotalUsedTimeRank());
+                    view.bindRankingViews(recentReport.getTotalUsedTimeRank(), recentReport.getTotalUserCount());
                     view.bindFavoriteDeveloperViews(myUsages.getDeveloperUsages(), genderAgeUsages.getDeveloperUsages(), jobUsages.getDeveloperUsages());
                     view.bindMyGames(myUsages.getAppUsages());
                     view.bindPeopleGamesViews(genderAgeUsages.getAppUsages(), jobUsages.getAppUsages());

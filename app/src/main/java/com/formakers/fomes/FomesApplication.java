@@ -1,11 +1,11 @@
 package com.formakers.fomes;
 
+import android.app.Activity;
 import android.app.Application;
 
-import com.formakers.fomes.dagger.ApplicationComponent;
-import com.formakers.fomes.dagger.ApplicationModule;
-import com.formakers.fomes.dagger.DaggerApplicationComponent;
-import com.formakers.fomes.dagger.NetworkModule;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.dagger.ApplicationModule;
+import com.formakers.fomes.common.dagger.DaggerApplicationComponent;
 import com.tsengvn.typekit.Typekit;
 
 import io.realm.Realm;
@@ -24,7 +24,6 @@ public class FomesApplication extends Application {
         applicationComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(this))
-                .networkModule(new NetworkModule())
                 .build();
     }
 
@@ -53,5 +52,9 @@ public class FomesApplication extends Application {
 
     public ApplicationComponent getComponent() {
         return applicationComponent;
+    }
+
+    public static FomesApplication get(Activity activity) {
+        return (FomesApplication) activity.getApplication();
     }
 }

@@ -4,7 +4,6 @@ import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.CategoryUsage;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.model.User;
@@ -12,11 +11,13 @@ import com.formakers.fomes.model.User;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+@Singleton
 public class AppStatService extends AbstractService {
     private static final String TAG = "AppStatService";
     private final StatAPI statAPI;
@@ -52,30 +53,6 @@ public class AppStatService extends AbstractService {
                 .observeOn(Schedulers.io())
                 .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
-    }
-
-    public Observable<List<AppUsage>> requestAppUsageByCategory(String categoryId) {
-        return  Observable.defer(() -> statAPI.getAppUsageByCategory(SharedPreferencesHelper.getAccessToken(), categoryId))
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken());
-    }
-
-    public Observable<List<CategoryUsage>> requestCategoryUsage() {
-        return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken()))
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken());
-    }
-
-    public Observable<List<CategoryUsage>> requestPeopleCategoryUsage(final int peopleGroupFilter) {
-        return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken(), peopleGroupFilter))
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken());
     }
 
     public Observable<RecentReport> requestRecentReport(String categoryId, User user) {

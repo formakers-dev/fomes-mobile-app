@@ -3,32 +3,39 @@ package com.formakers.fomes.provisioning.view;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.util.FomesConstants;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnItemSelected;
+import butterknife.OnTextChanged;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class ProvisioningUserInfoFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
     public static final String TAG = ProvisioningUserInfoFragment.class.getSimpleName();
 
+    @BindView(R.id.provision_title_textview)                TextView titleTextView;
+    @BindView(R.id.provision_life_game_content_edittext)    EditText lifeGameEditText;
     @BindView(R.id.provision_user_info_birth_spinner)       Spinner birthSpinner;
     @BindView(R.id.provision_user_info_job_spinner)         Spinner jobSpinner;
     @BindView(R.id.provision_user_info_gender_radiogroup)   RadioGroup genderRadioGroup;
@@ -49,7 +56,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
         super.onViewCreated(view, savedInstanceState);
 
         ArrayList<String> items = new ArrayList<>();
-        items.add(getResources().getString(R.string.common_spinner_hint));
+        items.add(getResources().getString(R.string.job_spinner_hint));
         for (User.JobCategory job : User.JobCategory.values()) {
             if (job.getSelectable())
                 items.add(job.getName());
@@ -67,6 +74,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
         if (getView() != null && this.isVisible()) {
+            titleTextView.setText(getString(R.string.provision_user_info_title, presenter.getUserNickName()));
             emitFilledUpEvent();
         }
     }
@@ -78,13 +86,27 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
             return;
         }
 
+        String game = lifeGameEditText.getText().toString();
         int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
         User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
         int job = jobCategory != null ? jobCategory.getCode() : 0;
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.provision_user_info_male_radiobutton ? "male" : "female";
 
-        this.presenter.updateDemographicsToUser(birth, job, gender);
-        this.presenter.emitNextPageEvent();
+        this.presenter.updateUserInfo(game, birth, job, gender);
+        addCompositeSubscription(
+                this.presenter.requestUpdateUser()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> this.presenter.emitNextPageEvent(), e -> {
+                            Log.e(TAG, String.valueOf(e));
+                            Toast.makeText(this.getContext(), "유저 정보 업데이트 시 오류가 발생하였습니다. 재시도 부탁드립니다.", Toast.LENGTH_LONG).show();
+                        })
+        );
+    }
+
+    @OnTextChanged(value = R.id.provision_life_game_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onLifeGameTextChanged(CharSequence text, int start, int before, int count) {
+        Log.v(TAG, "onLifeGameTextChanged) " + text + " start=" + start + ", before=" + before + ", count=" + count);
+        emitFilledUpEvent();
     }
 
     @OnItemSelected(R.id.provision_user_info_birth_spinner)
@@ -108,7 +130,8 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
 
     @SuppressLint("ResourceType")
     private void emitFilledUpEvent() {
-        if (birthSpinner.getSelectedItemPosition() > 0
+        if (lifeGameEditText.getText().length() > 0
+                && birthSpinner.getSelectedItemPosition() > 0
                 && jobSpinner.getSelectedItemPosition() > 0
                 && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
             this.presenter.emitFilledUpEvent(this, true);

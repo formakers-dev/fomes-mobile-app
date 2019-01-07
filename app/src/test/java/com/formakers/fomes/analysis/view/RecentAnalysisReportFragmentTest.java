@@ -146,7 +146,7 @@ public class RecentAnalysisReportFragmentTest {
 
         controller.create().start().resume().visible();
 
-        subject.bindMyGenreViews(categoryUsages);
+        subject.bindMyGenreViews(categoryUsages, "nickName");
 
         // 상위 3개만 계산해온다
         verify(mockPresenter).getPercentage(eq(categoryUsages), eq(0), eq(3));
@@ -165,6 +165,9 @@ public class RecentAnalysisReportFragmentTest {
                 .isEqualTo("시뮬레이션");
         assertThat(((RankAppItemView) subject.getView().findViewById(R.id.analysis_my_genre_3)).getDescriptionText())
                 .isEqualTo("총 시간의 16%");
+
+        assertThat(((TextView) subject.getView().findViewById(R.id.analysis_my_genre_chart_text)).getText())
+                .contains("nickName");
     }
 
     @Test
@@ -235,13 +238,15 @@ public class RecentAnalysisReportFragmentTest {
         rankList.add(new Rank("myUserId", 4, 5000000L));
         rankList.add(new Rank("worstUserId", 100, 1000000L));
 
+        long totalUserCount = 100;
+
         when(mockPresenter.getHour(10000000L)).thenReturn(2.8f);
         when(mockPresenter.getHour(5000000L)).thenReturn(1.4f);
         when(mockPresenter.getHour(1000000L)).thenReturn(0.3f);
 
         controller.create().start().resume().visible();
 
-        subject.bindRankingViews(rankList);
+        subject.bindRankingViews(rankList, totalUserCount);
     }
 
     @Test
@@ -322,20 +327,14 @@ public class RecentAnalysisReportFragmentTest {
         RankAppItemView game1 = subject.getView().findViewById(R.id.analysis_my_games_1);
         assertThat(game1.getTitleText()).isEqualTo("롤플레잉게임명");
         assertThat(game1.getDescriptionText()).isEqualTo("2.8시간 플레이");
-        verify(mockRequestManager).load("rpgIconUrl");
-        verify(mockRequestBuilder).into(eq(game1.getIconImageView()));
 
         RankAppItemView game2 = subject.getView().findViewById(R.id.analysis_my_games_2);
         assertThat(game2.getTitleText()).isEqualTo("퍼즐게임명");
         assertThat(game2.getDescriptionText()).isEqualTo("1.4시간 플레이");
-        verify(mockRequestManager).load("puzzleIconUrl");
-        verify(mockRequestBuilder).into(eq(game2.getIconImageView()));
 
         RankAppItemView game3 = subject.getView().findViewById(R.id.analysis_my_games_3);
         assertThat(game3.getTitleText()).isEqualTo("시뮬레이션게임명");
         assertThat(game3.getDescriptionText()).isEqualTo("0.3시간 플레이");
-        verify(mockRequestManager).load("simulIconUrl");
-        verify(mockRequestBuilder).into(eq(game3.getIconImageView()));
     }
 
     @Test

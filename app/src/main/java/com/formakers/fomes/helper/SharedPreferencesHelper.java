@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -120,7 +120,7 @@ public class SharedPreferencesHelper {
         putString(KEY_INVITATION_CODE, code);
     }
 
-    public boolean isLoggedIn() {
+    public boolean hasAccessToken() {
         return !TextUtils.isEmpty(getAccessToken());
     }
 

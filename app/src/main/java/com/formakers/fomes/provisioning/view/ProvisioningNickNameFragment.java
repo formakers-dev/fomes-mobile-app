@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
@@ -56,23 +56,23 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
 
     @Override
     public void onNextButtonClick() {
-        this.presenter.updateNickNameToUser(nickNameEditText.getText().toString());
+        String nickName = nickNameEditText.getText().toString();
 
         addCompositeSubscription(
-            this.presenter.requestUpdateUser()
+            this.presenter.requestVerifyUserNickName(nickName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
+                        this.presenter.updateNickNameToUser(nickName);
                         this.presenter.emitNextPageEvent();
-                    },
-                    e -> {
-                        if (e instanceof HttpException) {
-                            if (((HttpException) e).code() == 409) {
-                                warning(true, R.string.provision_nickname_already_exist_warning);
-                            }
-                        } else {
-                            Toast.makeText(this.getContext(), "유저 정보 업데이트를 실패하였습니다.", Toast.LENGTH_LONG).show();
+                    }, e -> {
+                    if (e instanceof HttpException) {
+                        if (((HttpException) e).code() == 409) {
+                            setVisibilityWarningView(true, R.string.provision_nickname_already_exist_warning);
                         }
-                    })
+                    } else {
+                        Toast.makeText(this.getContext(), "오류가 발생하였습니다. 재시도 부탁드립니다.", Toast.LENGTH_LONG).show();
+                    }
+                })
         );
     }
 
@@ -81,20 +81,17 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
         Log.v(TAG, text + " start=" + start + ", before=" + before + ", count=" + count);
 
         boolean isMatched = Pattern.matches(NICKNAME_REGEX, text);
-        warning(!isMatched, R.string.provision_nickname_format_warning);
+        setVisibilityWarningView(!isMatched, R.string.provision_nickname_format_warning);
     }
 
-    private void warning(boolean isWarn, @StringRes int stringResId) {
-        Resources res = getResources();
-        if (isWarn) {
-            nickNameWarningTextView.setText(res.getString(stringResId));
+    private void setVisibilityWarningView(boolean isVisible, @StringRes int stringResId) {
+        if (isVisible) {
+            nickNameWarningTextView.setText(getString(stringResId));
             nickNameWarningTextView.setVisibility(View.VISIBLE);
-            nickNameEditText.getBackground().setTint(res.getColor(R.color.fomes_red));
         } else {
             nickNameWarningTextView.setVisibility(View.GONE);
-            nickNameEditText.getBackground().setTint(res.getColor(R.color.colorPrimary));
         }
 
-        this.presenter.emitFilledUpEvent(this, !isWarn);
+        this.presenter.emitFilledUpEvent(this, !isVisible);
     }
 }

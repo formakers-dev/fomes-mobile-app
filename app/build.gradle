@@ -14,13 +14,13 @@ try {
 
 project.ext.set("packageID", "Fomes")
 
-def majorVersion = 0
-def minorVersion = 0
-def patchVersion = 5
+def majorVersion = 9
+def minorVersion = 9
+def patchVersion = 99
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.formakers.fomes"
         minSdkVersion 22
@@ -31,6 +31,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
+        debug {
+            storeFile file('./debug.keystore')
+        }
         release {
             keyAlias System.getenv("FOMES_KEY_ALIAS")
             keyPassword System.getenv("FOMES_KEY_PASSWORD")
@@ -44,6 +47,7 @@ android {
             testCoverageEnabled true
             buildConfigField 'String', 'SERVER_BASE_URL', "\"http://${localhostAddress}:8080/\""
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
+            signingConfig signingConfigs.debug
         }
         // DEV
         development {
@@ -66,7 +70,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'SERVER_BASE_URL', '"http://fomesserver-env.r8pnvsnw5y.us-east-1.elasticbeanstalk.com/"'
+            buildConfigField 'String', 'SERVER_BASE_URL', '"http://fomesserver-env.wapcx7p5ip.ap-northeast-2.elasticbeanstalk.com/"'
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
         }
@@ -166,7 +170,6 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-
     // test
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.7.22'

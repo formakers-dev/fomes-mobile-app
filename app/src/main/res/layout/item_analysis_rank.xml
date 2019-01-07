@@ -7,7 +7,7 @@
 
     <View android:id="@+id/line_view"
         android:layout_width="@dimen/analysis_line_width"
-        android:layout_height="@dimen/analysis_line_default_hieght"
+        android:layout_height="@dimen/analysis_line_default_height"
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

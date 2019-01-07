@@ -8,8 +8,9 @@ import android.widget.Button;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.view.BaseActivityTest;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity.ProvisioningPagerAdapter;
 
 import org.junit.After;
@@ -54,27 +55,25 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
     public void ProvisioningActivity_시작시__프로비저닝화면이_나타난다() {
         launchActivity();
 
-        assertThat(subject.findViewById(R.id.provision_icon_imageview).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.provision_viewpager).getVisibility()).isEqualTo(View.VISIBLE);
         assertThat(subject.findViewById(R.id.next_button).getVisibility()).isEqualTo(View.GONE);
 
         List<Fragment> fragmentList = ((ProvisioningActivity.ProvisioningPagerAdapter) ((ViewPager) subject.findViewById(R.id.provision_viewpager)).getAdapter()).getFragmentList();
-        assertThat(fragmentList.size()).isEqualTo(4);
-        assertThat(fragmentList.get(0).getClass()).isEqualTo(ProvisioningUserInfoFragment.class);
-        assertThat(fragmentList.get(1).getClass()).isEqualTo(ProvisioningLifeGameFragment.class);
-        assertThat(fragmentList.get(2).getClass()).isEqualTo(ProvisioningNickNameFragment.class);
-        assertThat(fragmentList.get(3).getClass()).isEqualTo(ProvisioningPermissionFragment.class);
+        assertThat(fragmentList.size()).isEqualTo(3);
+        assertThat(fragmentList.get(0).getClass()).isEqualTo(ProvisioningNickNameFragment.class);
+        assertThat(fragmentList.get(1).getClass()).isEqualTo(ProvisioningUserInfoFragment.class);
+        assertThat(fragmentList.get(2).getClass()).isEqualTo(ProvisioningPermissionFragment.class);
     }
 
     @Test
     public void ProvisioningActivity_시작시__미리_선택된_프래그먼트가_존재한다면__그_프래그먼트를_보여준다() {
         Intent intent = new Intent();
-        intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningLifeGameFragment.TAG);
+        intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningNickNameFragment.TAG);
         subject = getActivity(intent);
 
         ViewPager viewPager = subject.findViewById(R.id.provision_viewpager);
         ProvisioningPagerAdapter adapter = (ProvisioningPagerAdapter) viewPager.getAdapter();
-        assertThat(adapter.getFragmentList().get(viewPager.getCurrentItem())).isInstanceOf(ProvisioningLifeGameFragment.class);
+        assertThat(adapter.getFragmentList().get(viewPager.getCurrentItem())).isInstanceOf(ProvisioningNickNameFragment.class);
     }
 
     @Test
@@ -95,7 +94,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         ProvisioningActivity.ProvisioningPagerAdapter mockPagerAdapter = mock(ProvisioningActivity.ProvisioningPagerAdapter.class);
         when(mockPagerAdapter.getItem(anyInt())).thenReturn(mockFragment);
 
-        ViewPager mockViewPager = mock(ViewPager.class);
+        SwipeViewPager mockViewPager = mock(SwipeViewPager.class);
         when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
         when(mockViewPager.getCurrentItem()).thenReturn(0);
 
@@ -124,15 +123,6 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         int expectedPageIndex = currentPageIndex + 1;
         int size = subject.viewPager.getAdapter().getCount();
         assertThat(subject.viewPager.getCurrentItem()).isEqualTo(expectedPageIndex < size ? expectedPageIndex : size);
-    }
-
-    @Ignore
-    @Test
-    public void setIconImage_호출시__상단_아이콘_이미지를_변경한다() {
-         launchActivity();
-
-         int newImageRedId = 1234;
-         subject.setIconImage(newImageRedId);
     }
 
     @Test
@@ -185,7 +175,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
         ProvisioningActivity.ProvisioningPagerAdapter mockPagerAdapter = mock(ProvisioningActivity.ProvisioningPagerAdapter.class);
         when(mockPagerAdapter.getItem(2)).thenReturn(mockFragment);
 
-        ViewPager mockViewPager = mock(ViewPager.class);
+        SwipeViewPager mockViewPager = mock(SwipeViewPager.class);
         when(mockViewPager.getAdapter()).thenReturn(mockPagerAdapter);
         when(mockViewPager.getCurrentItem()).thenReturn(0);
 

@@ -2,52 +2,42 @@ package com.formakers.fomes.provisioning.presenter;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.LoginContract;
-import com.formakers.fomes.util.FomesConstants;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.provisioning.dagger.scope.LoginActivityScope;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import javax.inject.Inject;
 
 import rx.Single;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+@LoginActivityScope
 public class LoginPresenter implements LoginContract.Presenter {
 
     private static final String TAG = LoginPresenter.class.getSimpleName();
 
-    @Inject GoogleSignInAPIHelper googleSignInAPIHelper;
-    @Inject UserService userService;
-    @Inject SharedPreferencesHelper sharedPreferencesHelper;
-    @Inject UserDAO userDAO;
-    @Inject JobManager jobManaer;
+    private GoogleSignInAPIHelper googleSignInAPIHelper;
+    private UserService userService;
+    private SharedPreferencesHelper sharedPreferencesHelper;
+    private UserDAO userDAO;
 
     private LoginContract.View view;
 
-    public LoginPresenter(LoginContract.View view) {
-        this.view = view;
-        this.view.getApplicationComponent().inject(this);
-    }
-
-    // TODO : ActivityComponent로 변환후 변경 필요
-    // temporary code for test
+    @Inject
     LoginPresenter(LoginContract.View view, GoogleSignInAPIHelper googleSignInAPIHelper, UserService userService, SharedPreferencesHelper SharedPreferencesHelper, UserDAO userDAO) {
         this.view = view;
         this.googleSignInAPIHelper = googleSignInAPIHelper;
         this.userService = userService;
         this.sharedPreferencesHelper = SharedPreferencesHelper;
         this.userDAO = userDAO;
-        this.jobManaer = jobManaer;
     }
 
     @Override

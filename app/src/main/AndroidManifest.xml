@@ -20,23 +20,17 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/noti_icon"/>
+            android:resource="@drawable/ic_noti"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/fomes_yellow" />
+            android:resource="@color/colorPrimary" />
 
         <!-- 백그라운드 앱의 알림 수신 -->
-        <service android:name=".service.MessagingService"
+        <service android:name=".common.noti.MessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <!-- 등록토큰의 생성, 순환 업데이트 처리 -->
-        <service android:name=".service.MessagingTokenService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
@@ -62,6 +56,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".wishList.view.WishListActivity"/>
+        <activity android:name=".event.EventActivity"/>
     </application>
 
 </manifest>

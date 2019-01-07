@@ -6,7 +6,7 @@ import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
-import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.model.User;
 
 import java.util.List;
@@ -24,10 +24,9 @@ public interface RecentAnalysisReportContract {
 
     interface View extends BaseView<Presenter> {
         ApplicationComponent getApplicationComponent();
-        void bindErrorHeaderView();
-        void bindMyGenreViews(List<Usage> categoryUsages);
+        void bindMyGenreViews(List<Usage> categoryUsages, String nickName);
         void bindPeopleGenreViews(List<Usage> genderAgeCategoryUsages, List<Usage> jobCategoryUsages);
-        void bindRankingViews(List<Rank> totalUsedTimeRank);
+        void bindRankingViews(List<Rank> totalUsedTimeRank, long totalUserCount);
         void bindFavoriteDeveloperViews(List<Usage> myDeveloperUsages, List<Usage> genderAgeDeveloperUsages, List<Usage> jobDeveloperUsages);
         void bindMyGames(List<Usage> myAppUsages);
         void bindPeopleGamesViews(List<Usage> genderAgeAppUsages, List<Usage> jobAppUsages);

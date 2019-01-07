@@ -1,23 +1,25 @@
 package com.formakers.fomes.provisioning.presenter;
 
-import android.util.Log;
-
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
+import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.util.FomesConstants;
-
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import javax.inject.Inject;
 
 import rx.Completable;
+
+import static com.formakers.fomes.common.FomesConstants.Notification.TOPIC_NOTICE_ALL;
 
 public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
@@ -27,6 +29,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserDAO userDAO;
     @Inject JobManager jobManager;
+    @Inject ChannelManager channelManager;
 
     private ProvisioningContract.View view;
     private User user = new User();
@@ -47,19 +50,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void updateDemographicsToUser(Integer birth, Integer job, String gender) {
+    public void updateUserInfo(String game, Integer birth, Integer job, String gender) {
+        this.user.setLifeApps(Lists.newArrayList(game));
         this.user.setBirthday(birth);
         this.user.setJob(job);
         this.user.setGender(gender);
-        Log.d(TAG, user.toString());
-    }
-
-    @Override
-    public void updateLifeGameToUser(String game) {
-        ArrayList<String> lifeGames = new ArrayList<>();
-        lifeGames.add(game);
-        
-        this.user.setLifeApps(lifeGames);
         Log.d(TAG, user.toString());
     }
 
@@ -72,6 +67,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public void setProvisioningProgressStatus(int status) {
         this.sharedPreferencesHelper.setProvisioningProgressStatus(status);
+    }
+
+    @Override
+    public String getUserNickName() {
+        return user.getNickName();
     }
 
     @Override
@@ -103,6 +103,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
+    public Completable requestVerifyUserNickName(String nickName) {
+        return this.userService.verifyNickName(nickName);
+    }
+
+    @Override
     public Completable requestUpdateUser() {
         userDAO.updateUserInfo(this.user);
         return this.userService.updateUser(this.user);
@@ -127,6 +132,11 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public int registerSendDataJob() {
         return this.jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
+    }
+
+    @Override
+    public void registerPublicNotificationTopic() {
+        channelManager.subscribePublicTopic();
     }
 
 }

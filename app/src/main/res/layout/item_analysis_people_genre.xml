@@ -37,6 +37,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="12dp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chart" />
 
@@ -49,6 +50,7 @@
         android:textColor="@color/fomes_warm_gray"
         android:textSize="11dp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBaseline_toBaselineOf="@id/number_1"
         app:layout_constraintStart_toEndOf="@id/number_1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,6 +67,7 @@
         android:textColor="@color/fomes_squash"
         android:textSize="12dp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_1" />
 
@@ -77,6 +80,7 @@
         android:textColor="@color/fomes_warm_gray"
         android:textSize="11dp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBaseline_toBaselineOf="@id/number_2"
         app:layout_constraintStart_toEndOf="@id/number_2"
         tools:text="액션" />
@@ -92,6 +96,7 @@
         android:textColor="@color/fomes_blush_pink"
         android:textSize="12dp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_2"/>
 
@@ -104,6 +109,7 @@
         android:textColor="@color/fomes_warm_gray"
         android:textSize="11dp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBaseline_toBaselineOf="@id/number_3"
         app:layout_constraintStart_toEndOf="@id/number_3"
         app:layout_constraintEnd_toEndOf="parent"

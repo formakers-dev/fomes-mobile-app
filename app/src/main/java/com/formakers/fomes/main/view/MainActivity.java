@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -20,19 +21,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
-import com.formakers.fomes.common.constant.Feature;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
-import com.formakers.fomes.dagger.ApplicationComponent;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
+import com.formakers.fomes.wishList.view.WishListActivity;
 
 import butterknife.BindView;
 import retrofit2.adapter.rxjava.HttpException;
@@ -40,6 +41,10 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
         NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener, TabLayout.OnTabSelectedListener {
+
+    private static final String TAG = "MainActivity";
+
+    public static final int REQUEST_CODE_WISHLIST = 1000;
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
@@ -79,6 +84,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         drawerToggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().clear();
+
+        navigationView.inflateMenu(R.menu.main_nav);
 
         addToCompositeSubscription(
             presenter.requestUserInfo()
@@ -93,13 +101,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
 
-        if (Feature.MAIN_RECOMMEND) {
-            contentsPagerAdapter.addFragment(new RecommendFragment(), getString(R.string.main_tab_recommend));
-            contentsPagerAdapter.addFragment(new BetatestFragment(), getString(R.string.main_tab_betatest));
-        } else {
-            contentsPagerAdapter.addFragment(new EventFragment(), getString(R.string.main_tab_event));
-            this.tabLayout.setVisibility(View.GONE);
-        }
+        contentsPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        contentsPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
 
         contentsViewPager.setAdapter(contentsPagerAdapter);
 
@@ -125,7 +128,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.my_recent_analysis).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+        menu.findItem(R.id.my_wish_list).setVisible(true);
+        menu.findItem(R.id.my_recent_analysis).setVisible(false);
+        menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
+
         return true;
     }
 
@@ -141,6 +147,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
                 break;
             }
+            case R.id.my_wish_list: {
+                startActivityForResult(new Intent(this, WishListActivity.class), REQUEST_CODE_WISHLIST);
+                break;
+            }
             case R.id.settings: {
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
@@ -149,6 +159,18 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_WISHLIST) {
+            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 
     @Override
@@ -200,18 +222,20 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             presenter.requestVerifyAccessToken()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {}, e -> {
-                    // TODO : 이거 넘나 공통화 시키고 싶다
                     if (e instanceof HttpException) {
                         int code = ((HttpException) e).code();
+
+                        // 401 : 토큰이 만료되었으므로 재발급을 위해 로그인 화면으로 보낸다.
+                        // 403 : 만료 외 토큰 인증 실패이므로 메인화면에 진입할 수 없어야한다. -> 아무 권한 없이도 볼 수 있는 화면으로 보낸다. (로그인 화면)
                         if (code == 401 || code == 403) {
-                            Toast.makeText(this, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.");
                             startActivity(LoginActivity.class);
                             finish();
                             return;
                         }
                     }
 
-                    Toast.makeText(this, "예상치 못한 에러가 발생하였습니다. e=" + String.valueOf(e), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "예상치 못한 에러가 발생하였습니다. e=" + String.valueOf(e));
                 })
         );
     }

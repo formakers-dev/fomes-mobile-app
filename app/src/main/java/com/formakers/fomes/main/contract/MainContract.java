@@ -1,7 +1,7 @@
 package com.formakers.fomes.main.contract;
 
 import com.formakers.fomes.common.mvp.BaseView;
-import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.model.User;
 
 import rx.Completable;

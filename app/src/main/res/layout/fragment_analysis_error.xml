@@ -47,7 +47,6 @@
             android:textSize="@dimen/provision_bottom_button_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/analysis_announce_layout"
             tools:ignore="MissingConstraints" />
 
     </android.support.constraint.ConstraintLayout>

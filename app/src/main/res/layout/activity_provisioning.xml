@@ -1,55 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/fomes_white">
+    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <com.formakers.fomes.common.view.custom.SwipeViewPager
+        android:id="@+id/provision_viewpager"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
-        <ImageView
-            android:id="@+id/provision_icon_imageview"
-            android:layout_width="67dp"
-            android:layout_height="73dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="37dp"
-            android:src="@drawable/fomes_face"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/provision_viewpager"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="15dp"
-            android:overScrollMode="never"
-            android:paddingEnd="@dimen/provision_padding_start_end"
-            android:paddingStart="@dimen/provision_padding_start_end"
-            app:layout_constraintBottom_toBottomOf="@+id/next_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/provision_icon_imageview"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/next_button"
-            android:layout_width="0dp"
-            android:layout_height="68dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/common_next_button"
-            android:textColor="@color/fomes_white"
-            android:textSize="@dimen/provision_bottom_button_text_size"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            tools:ignore="MissingConstraints" />
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/common_next_button"
+        android:textColor="@color/fomes_white"
+        android:textSize="@dimen/provision_bottom_button_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/provision_viewpager"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints" />
+</android.support.constraint.ConstraintLayout>

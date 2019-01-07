@@ -5,39 +5,37 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.network.vo.RecommendApp;
+import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
-import com.formakers.fomes.model.AppInfo;
+import com.google.common.base.Joiner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Completable;
+import rx.android.schedulers.AndroidSchedulers;
+
 public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-    implements RecommendListAdapterContract.View, RecommendListAdapterContract.Model {
+        implements RecommendListAdapterContract.View, RecommendListAdapterContract.Model {
+
+    private static final String TAG = "RecommendListAdapter";
 
     private Context context;
-    private final List<AppInfo> appList = new ArrayList<>();
+    private final List<RecommendApp> recommendApps = new ArrayList<>();
 
     private RecommendContract.Presenter presenter;
-//    private RecommendContract.View view;
 
     public RecommendListAdapter() {
-        // start of temporary code
-        AppInfo testAppInfo = new AppInfo("com.formakers.fomes", "포메스", "카테고리ID", "카테고리", "카테고리ID2", "카테고리2", "https://lh3.googleusercontent.com/AHQJwkSC1J602KgQq0d3oMB-waafBrbaw9wAS80HGXQSSaEem4-zMowrGpbHIUuyyw=s360-rw");
-        testAppInfo.setDeveloper("포메스");
-        appList.add(testAppInfo);
-        AppInfo testAppInfo2 = new AppInfo("com.appbeemobile.appbee", "앱비", "카테고리ID", "카테고리", "카테고리ID2", "카테고리2", "https://lh3.googleusercontent.com/AHQJwkSC1J602KgQq0d3oMB-waafBrbaw9wAS80HGXQSSaEem4-zMowrGpbHIUuyyw=s360-rw");
-        testAppInfo2.setDeveloper("앱비");
-        appList.add(testAppInfo2);
-        // end of temporary code
     }
+
+    /**
+     * View
+     */
 
     @Override
     public void setPresenter(RecommendContract.Presenter presenter) {
@@ -47,69 +45,107 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recommend_app_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recommend_app, parent, false);
         return new AppViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final AppInfo appInfo = appList.get(position);
+        final RecommendApp recommendApp = recommendApps.get(position);
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
+        viewHolder.recommendAppItemView.bindAppInfo(recommendApp.getAppInfo());
+        viewHolder.recommendAppItemView.setRecommendType(recommendApp.getRecommendType());
+        viewHolder.recommendAppItemView.setLabelText(Joiner.on(" ").join(recommendApp.getCriteria()));
 
-        // TODO : Glide Dagger로 빼기
-        Glide.with(context).load(appInfo.getIconUrl())
-                .apply(new RequestOptions().override(70, 70).centerCrop())
-                .into(viewHolder.iconImageView);
-        viewHolder.appNameTextView.setText(appInfo.getAppName());
-        viewHolder.genreDeveloperTextView.setText(String.format("%s / %s", appInfo.getCategoryName1(), appInfo.getDeveloper()));
-        viewHolder.moreButton.setOnClickListener(v -> this.presenter.emitShowDetailEvent(appInfo));
+        viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp));
+
+        viewHolder.recommendAppItemView.setOnWishListCheckedChangeListener((v, isChecked) -> {
+            String packageName = recommendApp.getAppInfo().getPackageName();
+
+            Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);
+
+            requestUpdateWishList.observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> updateWishedStatus(packageName, isChecked)
+                            , e -> Toast.makeText(context, (isChecked ? R.string.wish_list_add_fail : R.string.wish_list_remove_fail), Toast.LENGTH_LONG).show());
+        });
     }
+
+    @Override
+    public void notifyItemChanged(String pacakgeName) {
+        this.notifyItemChanged(getPosition(getItem(pacakgeName)));
+    }
+
+    /**
+     * Model
+     */
 
     @Override
     public int getItemCount() {
-        return this.appList.size();
+        return this.recommendApps.size();
     }
 
     @Override
-    public void add(AppInfo appInfo) {
-        appList.add(appInfo);
+    public void add(RecommendApp item) {
+        recommendApps.add(item);
     }
 
     @Override
-    public void addAll(List<AppInfo> appInfos) {
-        appList.addAll(appInfos);
+    public void addAll(List<RecommendApp> items) {
+        recommendApps.addAll(items);
     }
 
     @Override
     public void clear() {
-        appList.clear();
+        recommendApps.clear();
     }
 
     @Override
-    public AppInfo getItem(int position) {
-        if (position == 0) {
-            throw new IllegalArgumentException("this is a header!");
+    public boolean contains(String packageName) {
+        for (RecommendApp app : recommendApps) {
+            if (app.getAppInfo().getPackageName().equals(packageName)) {
+                return true;
+            }
         }
 
-        return appList.get(position);
+        return false;
+    }
+
+    @Override
+    public RecommendApp getItem(int position) {
+        return recommendApps.get(position);
+    }
+
+    @Override
+    public List<RecommendApp> getAllItems() {
+        return recommendApps;
+    }
+
+    public int getPosition(RecommendApp app) {
+        return recommendApps.indexOf(app);
+    }
+
+    @Override
+    public void updateWishedStatus(String packgeName, boolean wishedByMe) {
+        getItem(packgeName).getAppInfo().setWished(wishedByMe);
+    }
+
+    private RecommendApp getItem(String packageName) {
+        for (RecommendApp app : recommendApps) {
+            if (packageName.equals(app.getAppInfo().getPackageName())) {
+                return app;
+            }
+        }
+
+        throw new IllegalArgumentException("There isn't any item with the packageName=" + packageName);
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {
-        ImageView iconImageView;
-        TextView appNameTextView;
-        TextView genreDeveloperTextView;
-        TextView labelTextView;
-        Button moreButton;
+        RecommendAppItemView recommendAppItemView;
 
         public AppViewHolder(View itemView) {
             super(itemView);
-
-            iconImageView = itemView.findViewById(R.id.item_app_icon_imageview);
-            appNameTextView = itemView.findViewById(R.id.item_app_name_textview);
-            genreDeveloperTextView = itemView.findViewById(R.id.item_app_genre_developer_textview);
-            labelTextView = itemView.findViewById(R.id.item_app_label_textview);
-            moreButton = itemView.findViewById(R.id.item_app_more_button);
+            recommendAppItemView = itemView.findViewById(R.id.recommend_app_item_view);
         }
     }
 }

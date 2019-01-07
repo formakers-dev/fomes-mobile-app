@@ -1,0 +1,55 @@
+package com.formakers.fomes.common.dagger;
+
+import com.bumptech.glide.RequestManager;
+import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.job.SendDataJobService;
+import com.formakers.fomes.common.network.AppService;
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.ConfigService;
+import com.formakers.fomes.common.network.RecommendService;
+import com.formakers.fomes.common.network.RequestService;
+import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.MessagingService;
+import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.common.view.BaseActivity;
+import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.helper.AndroidNativeHelper;
+import com.formakers.fomes.helper.GoogleSignInAPIHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.main.presenter.MainPresenter;
+import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
+import com.formakers.fomes.wishList.presenter.WishListPresenter;
+
+import javax.inject.Singleton;
+
+import dagger.Component;
+
+@Singleton
+@Component(modules = { NetworkModule.class, GlideModule.class })
+public interface ApplicationComponent {
+    AppStatService appStatService();
+    UserService userService();
+    ConfigService configService();
+    RecommendService recommendService();
+    AppService appService();
+    RequestService requestService();
+
+    GoogleSignInAPIHelper googleSignInAPIHelper();
+    SharedPreferencesHelper sharedPreferencesHelper();
+    AndroidNativeHelper androidNativeHelper();
+
+    UserDAO userDAO();
+    RequestManager requestManager();
+
+    void inject(MessagingService messagingService);
+    void inject(SendDataJobService sendDataJobService);
+
+    // fomes
+    void inject(ProvisioningPresenter provisioningPresenter);
+    void inject(RecentAnalysisReportPresenter reportPresenter);
+    void inject(MainPresenter presenter);
+    void inject(WishListPresenter presenter);
+
+    void inject(FomesBaseActivity activity);
+    void inject(BaseActivity activity);
+}

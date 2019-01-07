@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:topLeftRadius="4dp" android:topRightRadius="4dp"/>
+    <corners
+        android:topLeftRadius="?attr/item_background_radius"
+        android:topRightRadius="?attr/item_background_radius" />
     <solid android:color="?attr/item_color"/>
 </shape>

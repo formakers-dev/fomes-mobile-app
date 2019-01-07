@@ -28,7 +28,6 @@
     <string name="common_next_button">다음으로</string>
     <string name="common_go_to_grant">허용하러 가기</string>
     <string name="common_confirm">확인</string>
-    <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
     <string name="common_age">%d대</string>
     <string name="common_male">남성</string>
     <string name="common_female">여성</string>
@@ -49,35 +48,46 @@
     <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing">사용약관</a>]]> 및 <![CDATA[<a href="https://docs.google.com/document/d/1QxWuv2zlKYsGYglUTiP5d5IFxZUy6HwKGObXC8x0034/edit?usp=sharing">개인정보 취급방침</a>]]>에 동의됩니다.</string>
 
     <!-- Provisioning -->
-    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다.\n몇 가지 궁금한 점이 있습니다.</string>
-    <string name="provision_user_info_subtitle">알려주신 정보는 분석으로만 사용됩니다.</string>
+    <string name="provision_user_info_title">%s님! 당신에 대해 알려주세요.\n게임 성향 분석을 해드릴게요!</string>
+    <string name="provision_user_info_subtitle">알려주신 정보는 분석을 위해 사용됩니다.</string>
     <string name="provision_user_info_birth_title">출생연도</string>
     <string name="provision_user_info_job_title">직업</string>
     <string name="provision_user_info_gender_title">성별</string>
-    <string name="provision_life_game_title">분석과 추천을 위해\n인생게임 1개를 입력해주세요.</string>
-    <string name="provision_life_game_subtitle">콘솔 / PC / 모바일 / 오래전 게임도 좋아요.</string>
+    <string name="provision_user_info_gender_male">남자</string>
+    <string name="provision_user_info_gender_female">여자</string>
     <string name="provision_life_game_content_title">인생게임</string>
-    <string name="provision_life_game_content_hint">예) 마비노기</string>
-    <string name="provision_nickname_title">포메스 앱에서 사용할\n닉네임을 입력해주세요.</string>
+    <string name="provision_life_game_content_hint">가장 기억에 남았던 게임을 적어주세요.</string>
+    <string name="birth_spinner_hint">태어난 연도를 선택해주세요.</string>
+    <string name="job_spinner_hint">당신의 직업을 선택해주세요..</string>
+    <string name="provision_nickname_title">반가워요! 포메스가 앞으로 당신을 어떻게 부르면 될까요?</string>
     <string name="provision_nickname_subtitle">닉네임은 2글자에서 10글자 사이로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
     <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.</string>
     <string name="provision_nickname_already_exist_warning">* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.</string>
-    <string name="provision_permission_title">정확한 분석을 위해\n아래의 권한 허용이 필요합니다.</string>
-    <string name="provision_permission_subtitle">게임 앱 사용시간 데이터를 기반으로 분석합니다.</string>
+    <string name="provision_permission_title">데이터 기반 분석을 위해\n포메스를 찾아서 허용해주세요.</string>
+    <string name="provision_permission_subtitle">구글 정책상 직접 선택해서 허용해야 합니다.</string>
 
     <!-- Analysis -->
+    <string name="analysis_total_user_count">/%d명</string>
     <string name="analysis_loading">게임 성향을 분석 중 입니다.</string>
-    <string name="current_analysis_title">당신의 게임 성향 분석 완료!\n분석은 할 때마다 업데이트됩니다.</string>
-    <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 성향을 분석했습니다.</string>
+    <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 플레이를 분석했습니다.</string>
     <string name="analysis_my_genre_title">나의 게임 장르</string>
     <string name="analysis_my_genre_subtitle">나의 7일간 모바일 게임 장르별 플레이 시간 집계</string>
+    <string name="analysis_my_genre_chart_text">%s의\n장르</string>
     <string name="analysis_my_genre_used_time_format">총 시간의 %d%%</string>
-    <string name="analysis_people_genre_title">사람들의 게임 장르</string>
+    <string name="analysis_people_genre_title">나와 비슷한 사람들의 게임 장르</string>
     <string name="analysis_people_genre_subtitle">나이/성별/직업 기준 7일간 모바일 게임 장르별 플레이 시간 집계</string>
-    <string name="analysis_playtime_rank_title">플레이 시간 순위</string>
-    <string name="analysis_playtime_rank_subtitle">유저들의 7일간 게임 플레이 시간 집계</string>
+    <string name="analysis_my_playtime_rank_title">나의 게임 플레이 시간 등수</string>
+    <string name="analysis_my_playtime_rank_subtitle">나의 7일간 게임 플레이 시간 집계</string>
+    <string name="analysis_my_playtime_rank_summary">총 %.1f시간 게임 플레이</string>
+    <string name="analysis_my_playtime_rank_description_title">나는 %s인데 너는 몇 등이니?</string>
+    <string name="analysis_my_playtime_rank_description_content">함께 게임을 즐기는 친구들과 게임 앱 분석결과를 공유하고,\n게임 플레이시간 / 장르 / 게임을 비교해보세요.</string>
+    <string name="analysis_my_playtime_rank_no_data_title">등수 산정을 위한 게임 정보가 부족해요.</string>
+    <string name="analysis_my_playtime_rank_no_data_content">스마트폰으로 게임을 플레이 하신 후 다시 도전해 보세요.\n플레이 데이터가 쌓이면 나의 등수를 확인할 수 있습니다.</string>
+
+    <string name="analysis_playtime_rank_title">플레이 시간 비교</string>
+    <string name="analysis_playtime_rank_subtitle">나와 유저들의 7일간 게임 플레이 시간 집계</string>
     <string name="analysis_playtime_rank_number">%d등</string>
     <string name="analysis_playtime_rank_number_string">%s등</string>
     <string name="analysis_playtime_my_rank_number">나(%s)</string>
@@ -88,11 +98,11 @@
     <string name="analysis_favorite_developer_group_mine">나의 1위</string>
     <string name="analysis_favorite_developer_group">%s 1위</string>
     <string name="analysis_favorite_developer_description_title">대표게임</string>
-    <string name="analysis_my_games_title">나의 게임 1/2/3위</string>
+    <string name="analysis_my_games_title">나의 최애 게임들</string>
     <string name="analysis_my_games_subtitle">나의 7일간 모바일 게임별 플레이 시간 집계</string>
     <string name="analysis_my_games_description">%.1f시간 플레이</string>
     <string name="analysis_my_genre_cannot_know_genre">나의 게임 장르를 알수 없어요.</string>
-    <string name="analysis_people_games_title">사람들의 게임 1/2/3위</string>
+    <string name="analysis_people_games_title">나와 비슷한 사람들의 최애 게임들</string>
     <string name="analysis_people_games_subtitle">나이/성별/직업 기준 7일간 모바일 게임별 플레이 시간 집계</string>
     <string name="analysis_q_lifegame">Q. 인생게임에 대한 분석은 왜 없나요?</string>
     <string name="analysis_a_lifegame">A. 더 정확한 분석을 위해 데이터를 수집 중입니다.\n충분한 데이터가 모이면 최대한 빠르게 인생게임에 대한 분석 &amp; 추천을 오픈하고 알려드리겠습니다! :-)</string>
@@ -102,40 +112,21 @@
     <string name="analysis_game_suggestion_without_1_2_3">앗! 아직 1/2/3위가 없으시네요. 오늘 모바일 게임 한판 어때요?</string>
     <string name="analysis_game_suggestion_without_2_3">앗! 아직 2/3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
     <string name="analysis_game_suggestion_without_3">앗! 아직 3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
-    <string name="analysis_error_header_not_enough_data_title">분석을 위한 게임 정보가 부족해요. 사람들의 분석만 보여집니다.</string>
-    <string name="analysis_error_header_not_enough_data_subtitle">7일간의 게임 플레이 데이터가 쌓이면 내 분석이 가능합니다.</string>
 
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>
-    <string name="main_tab_betatest">베타테스트</string>
+    <string name="main_tab_betatest">테스트 참여 존</string>
     <string name="main_tab_event">이벤트</string>
-    <string name="main_menu_my_hope_games">추천게임 컬렉션 (2차오픈)</string>
+    <string name="main_menu_my_wish_list">즐겨찾기</string>
     <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
-    <string name="main_menu_my_betatest">피드백 존 (3차오픈)</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
 
-    <!-- Temp -->
-    <string name="temp_event_notice">현재 버전에서는 게임 분석만 가능합니다.</string>
-    <string name="temp_event_title">&lt; 그 대신 준비한 이벤트 &gt;\n앱 유지만 하면 선물을 드려요!</string>
-    <string name="temp_event_who_desc">9월 29~30에 포메스 앱을 설치한 유저들 중에서 3단계 오픈까지 포메스 앱을 삭제하지 않은 유저</string>
-    <string name="temp_event_how_desc">3단계 오픈까지 유지 후 인증. 추후 앱을 통해 대상자에게 공지 &amp; 인증방법 안내예정</string>
-    <string name="temp_event_gift_desc">문화상품권 부터 모바일 게임 패드까지 게이머를 위한 다양한 선물</string>
-    <string name="temp_event_progress_1_title">게임 분석 : 오픈 완료!!</string>
-    <string name="temp_event_progress_1_subtitle">데이터로 분석하는 게임취향</string>
-    <string name="temp_event_progress_1_description">대쪽같은 나의 취향, 데이터로 보면 과연?!\n다른사람들과 비교해보는 내 게임 취향!!</string>
-    <string name="temp_event_progress_2_title">게임 추천 : 10월 말 오픈</string>
-    <string name="temp_event_progress_2_subtitle">심플하게 게임추천 &amp; 보관</string>
-    <string name="temp_event_progress_2_description">관심 있으면 컬렉션 보관, 아니면 제거!\n나이/성별/최애게임 데이터 기반 추천!</string>
-    <string name="temp_event_progress_3_title">피드백존 : 올해 연말 오픈</string>
-    <string name="temp_event_progress_3_subtitle">게임 피드백 주고 리워드 받고</string>
-    <string name="temp_event_progress_3_description">먼저 게임해보고 피드백 주면 리워드 지급!\n게임사 : 조언주실 게임 고수님 모십니다!!</string>
-
-
     <!-- Beta Test -->
-    <string name="coming_soon">Coming Soon</string>
-    <string name="betatest_title">누구보다 먼저, 누구보다 솔직하게\n게임 고수인 당신의 의견을 전하세요!</string>
-    <string name="betatest_subtitle">게임 좀 하시는 고수들을 모십니다.\n분석된 취향에 맞는 뉴비 게임을 보내드립니다.\n누구보다 먼저 써보고 가치있는 피드백을 주세요.\n( 각종 아이템 &amp; 리워드를 드립니다. )</string>
+    <string name="betatest_coming_soon">테스트 참여 존 오픈 임박!</string>
+    <string name="betatest_title">테스트에 참여 할수록\n쌓여가는 나의 경험치!</string>
+    <string name="betatest_subtitle">경험치를 쌓아 리워드를 받아가세요.</string>
+    <string name="betatest_description">포메스는 게임관련 테스트나 설문에 참여하고\n리워드를 받을 수 있는 게임 테스트 플랫폼입니다.</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>
@@ -143,5 +134,44 @@
     <string name="settings_menu_private">개인정보 취급 방침</string>
     <string name="settings_menu_contact_us">이메일로 문의하기</string>
     <string name="thanks_to_title">Special thanks to</string>
-    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 제이슨, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인,  싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
+    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인, 싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
+
+    <!-- Recommend -->
+    <string name="download_to_googleplay">구글플레이 다운로드</string>
+    <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
+    <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>
+    <string name="recommend_label_format_favorite_category">포메스 픽! %s 장르 랜덤 추천 게임</string>
+    <string name="recommend_label_format_similar_demographic">나와 같은 %s들이 즐겨하는 게임</string>
+    <string name="format_app_info_star_score">%.1f 점</string>
+    <string name="format_app_info_download_count">설치수 %d+</string>
+    <string name="shorten_symbol">…</string>
+    <string name="recommend_error_title">Sorry!</string>
+    <string name="recommend_error_description">게임을 추천할\n데이터가 부족합니다.</string>
+
+    <!-- Wish List -->
+    <string name="download">다운로드</string>
+    <string name="wish_list">즐겨찾기</string>
+    <string name="wish_list_description">지금 다운로드 가능한 게임들입니다.</string>
+    <string name="wish_list_empty_description">아직 즐겨찾기에 저장한 게임이 없으시네요.</string>
+    <string name="wish_list_add_fail">즐겨찾기 등록에 실패하였습니다.</string>
+    <string name="wish_list_remove_fail">즐겨찾기 삭제에 실패하였습니다.</string>
+
+
+    <!-- Event -->
+    <string name="event_banner_title">포메스의 감사 EVENT</string>
+    <string name="event_banner_subtitle">1월까지 앱을 유지하면,\n100분께 문상을 드려요.</string>
+    <string name="event_description">포메스가 열정 게이머를 위해 준비한 이벤트입니다!</string>
+    <string name="event_condition_title">이벤트 대상</string>
+    <string name="event_condition_1">2019년 1월 31일까지 포메스 앱 유지</string>
+    <string name="event_condition_2">모바일 게임을 주 3시간 이상 플레이 한 게이머</string>
+    <string name="event_process_title">진행 방법</string>
+    <string name="event_process_1">대상자 중 100명을 추첨하여 공지 (2019년 2월)</string>
+    <string name="event_process_2">경품 수령 안내는 당첨자에게 별도 연락</string>
+    <string name="event_reward_title">당첨 리워드</string>
+    <string name="event_special_prize">특상 ㅣ 문화상품권 5만원 ( 1명 추첨 )</string>
+    <string name="event_gold_prize">금상 ㅣ 문화상품권 1만원 ( 5명 추첨 )</string>
+    <string name="event_silver_prize">은상 ㅣ 문화상품권 5천원 ( 14명 추첨 )</string>
+    <string name="event_bronze_prize">동상 ㅣ 문화상품권 1천원 ( 80명 추첨 )</string>
+    <string name="show_detail"><u>자세히보기</u></string>
+
 </resources>

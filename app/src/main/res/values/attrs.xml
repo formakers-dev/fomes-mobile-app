@@ -15,7 +15,7 @@
         <enum name="wrap_content" value="-2" />
     </attr>
     <attr name="divider_color" format="color"/>
-    <attr name="item_backgorund_round" format="reference|dimension"/>
+    <attr name="item_background_radius" format="reference|dimension"/>
     <attr name="item_color" format="reference|color"/>
     <attr name="item_number" format="reference|string"/>
 
@@ -38,6 +38,21 @@
         <attr name="rank_item_title" format="reference|string" />
         <attr name="rank_item_description" format="reference|string" />
         <attr name="rank_item_content_isTop" format="reference|boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="RecommendAppItemView">
+        <attr name="app_iconDrawable" format="reference|integer" />
+        <attr name="app_nameText" format="reference|string" />
+        <attr name="app_categoryText" format="reference|string" />
+        <attr name="app_developerText" format="reference|string" />
+        <attr name="app_recommendType" format="reference|integer">
+            <enum name="favorite_game" value="1" />
+            <enum name="favorite_developer" value="2" />
+            <enum name="favorite_category" value="3" />
+            <enum name="similar_demographic" value="4" />
+        </attr>
+        <attr name="app_verbose" format="reference|boolean"/>
+        <attr name="app_downloadable" format="reference|boolean"/>
     </declare-styleable>
 
 </resources>

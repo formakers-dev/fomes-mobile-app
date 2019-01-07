@@ -21,6 +21,7 @@ public class User {
         SERVICE("서비스 종사자", 4000, true),
 
         STUDENT("학생", 5000, false),
+        ELEMENTARY_STUDENT("초등학생", STUDENT.getCode() + 3, true),
         MIDDLE_AND_HIGH_SCHOOL_STUDENT("중고등학생", STUDENT.getCode() + 1, true),
         UNIVERSITY_STUDENT("대학생", STUDENT.getCode() + 2, true),
 
@@ -80,8 +81,8 @@ public class User {
     private String name;
     private String nickName;
     private String email;
-    private Integer birthday;
-    private Integer job;
+    private int birthday;
+    private int job;
     private String gender;
     private String registrationToken;
     private List<String> lifeApps;
@@ -126,20 +127,20 @@ public class User {
         return this;
     }
 
-    public Integer getBirthday() {
+    public int getBirthday() {
         return birthday;
     }
 
-    public User setBirthday(Integer birthday) {
+    public User setBirthday(int birthday) {
         this.birthday = birthday;
         return this;
     }
 
-    public Integer getJob() {
+    public int getJob() {
         return job;
     }
 
-    public User setJob(Integer job) {
+    public User setJob(int job) {
         this.job = job;
         return this;
     }

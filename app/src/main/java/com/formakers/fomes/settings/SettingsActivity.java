@@ -13,7 +13,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.settings.adapter.SettingsListAdapter;
 import com.formakers.fomes.settings.model.SettingsItem;
-import com.formakers.fomes.util.FomesConstants.Settings.*;
+import com.formakers.fomes.common.FomesConstants.Settings.*;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 
 import java.util.ArrayList;

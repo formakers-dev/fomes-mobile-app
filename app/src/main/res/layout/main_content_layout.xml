@@ -24,7 +24,7 @@
                 <!--android:layout_height="wrap_content"-->
                 <!--android:layout_marginTop="?attr/actionBarSize"-->
                 <!--android:scaleType="centerCrop"-->
-                <!--android:src="@drawable/main_title"-->
+                <!--android:src="@drawable/event_banner_background"-->
                 <!--app:layout_collapseMode="parallax" />-->
 
             <android.support.v7.widget.Toolbar
@@ -34,6 +34,16 @@
                 android:background="@drawable/actionbar_background"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/PopupOverlay" />
+
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="7dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/label_beta"
+                app:layout_collapseMode="pin" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

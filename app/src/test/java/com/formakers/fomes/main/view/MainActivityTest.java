@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.formakers.fomes.R;
@@ -15,6 +14,7 @@ import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
+import com.formakers.fomes.wishList.view.WishListActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,8 +24,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 
 import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
 import rx.Scheduler;
 import rx.Single;
@@ -68,7 +68,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
             @Override
             public Scheduler getMainThreadScheduler() {
                 return Schedulers.immediate();
-
             }
         });
 
@@ -96,7 +95,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void MainActivity_진입시__토큰검증_만료시__로그인화면으로_이동하고_종료한다() {
+    public void MainActivity_진입시__토큰_만료_오류_발생시__로그인화면으로_이동하고_종료한다() {
         when(mockPresenter.requestVerifyAccessToken())
                 .thenReturn(Completable.error(new HttpException(Response.error(401, ResponseBody.create(null, "")))));
 
@@ -108,21 +107,15 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void MainActivity_시작시_메인화면이_나타난다() throws Exception  {
+    public void MainActivity_진입시__토큰_만료_외_오류_발생시__로그인화면으로_이동하고_종료한다() {
+        when(mockPresenter.requestVerifyAccessToken())
+                .thenReturn(Completable.error(new HttpException(Response.error(403, ResponseBody.create(null, "")))));
+
         launchActivity();
 
-        assertThat(((ViewGroup) subject.findViewById(R.id.main_side_bar_layout))).isNotNull();
-        assertThat(subject.findViewById(R.id.main_content_layout).getVisibility()).isEqualTo(View.VISIBLE);
-    }
-
-    @Test
-    public void MainActivity_시작시__2개의_탭과_페이저가_나타난다() throws Exception {
-        launchActivity();
-
-        assertThat(subject.contentsViewPager.getAdapter().getCount()).isEqualTo(1);
-        assertThat(subject.tabLayout.getTabCount()).isEqualTo(1);
-//        assertThat(subject.tabLayout.getTabAt(0).getText()).isEqualTo("게임 추천");
-//        assertThat(subject.tabLayout.getTabAt(1).getText()).isEqualTo("베타테스트");
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(LoginActivity.class.getSimpleName());
+        assertThat(subject.isFinishing()).isTrue();
     }
 
     @Test
@@ -138,16 +131,8 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
                 .isEqualTo("test@email.com");
     }
 
-    //    @Test
-//    public void 액션바의_왼쪽상단메뉴_클릭시__사이드메뉴가_열린다() {
-//        subject = getActivity(LIFECYCLE_TYPE_POST_CREATE);
-//        subject.toolbar.getChildAt(0).performClick();
-//
-//        assertThat(subject.drawerLayout.isDrawerOpen(GravityCompat.START)).isTrue();
-//    }
-
     @Test
-    public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫는다() throws Exception {
+    public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫는다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getTitle()).thenReturn("사이드메뉴아이템1");
 
@@ -158,7 +143,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() throws Exception {
+    public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.my_recent_analysis);
         when(item.getTitle()).thenReturn("내 분석 다시보기");
@@ -171,7 +156,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 사이드메뉴의_설정화면_클릭시__설정화면으로_이동한다() throws Exception {
+    public void 사이드메뉴의_설정화면_클릭시__설정화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.settings);
         when(item.getTitle()).thenReturn("설정");
@@ -181,6 +166,30 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(SettingsActivity.class.getSimpleName());
+    }
+
+    @Test
+    public void 사이드메뉴의_즐겨찾기_클릭시__즐겨찾기화면으로_이동한다() {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.my_wish_list);
+
+        launchActivity();
+        subject.onNavigationItemSelected(item);
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(WishListActivity.class.getSimpleName());
+    }
+
+    @Test
+    public void 옵선아이템의_즐겨찾기_클릭시__즐겨찾기화면으로_이동한다() {
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.my_wish_list);
+
+        launchActivity();
+        subject.onOptionsItemSelected(item);
+
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        assertThat(intent.getComponent().getClassName()).contains(WishListActivity.class.getSimpleName());
     }
 
     @Test

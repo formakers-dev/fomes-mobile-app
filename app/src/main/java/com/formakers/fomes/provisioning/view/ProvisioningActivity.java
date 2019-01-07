@@ -2,28 +2,26 @@ package com.formakers.fomes.provisioning.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.dagger.ApplicationComponent;
+import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
-import com.formakers.fomes.util.FomesConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +35,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
 
     private static final String TAG = ProvisioningActivity.class.getSimpleName();
 
-    @BindView(R.id.provision_icon_imageview) ImageView iconImageView;
-    @BindView(R.id.provision_viewpager) ViewPager viewPager;
+    @BindView(R.id.provision_viewpager) SwipeViewPager viewPager;
     @BindView(R.id.next_button) Button nextButton;
 
     private ProvisioningContract.Presenter presenter;
@@ -57,19 +54,17 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         super.onPostCreate(savedInstanceState);
 
         fragmentMap.put(ProvisioningUserInfoFragment.TAG, new ProvisioningUserInfoFragment().setPresenter(this.presenter));
-        fragmentMap.put(ProvisioningLifeGameFragment.TAG, new ProvisioningLifeGameFragment().setPresenter(this.presenter));
         fragmentMap.put(ProvisioningNickNameFragment.TAG, new ProvisioningNickNameFragment().setPresenter(this.presenter));
         fragmentMap.put(ProvisioningPermissionFragment.TAG, new ProvisioningPermissionFragment().setPresenter(this.presenter));
 
         ProvisioningPagerAdapter provisioningPagerAdapter = new ProvisioningPagerAdapter(getSupportFragmentManager());
-        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningUserInfoFragment.TAG));
-        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningLifeGameFragment.TAG));
         provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningNickNameFragment.TAG));
+        provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningUserInfoFragment.TAG));
         provisioningPagerAdapter.addFragment(fragmentMap.get(ProvisioningPermissionFragment.TAG));
 
         viewPager.setAdapter(provisioningPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
-        viewPager.beginFakeDrag();
+        viewPager.setEnableSwipe(false);
 
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
@@ -106,11 +101,6 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @Override
     public void nextPage() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-    }
-
-    @Override
-    public void setIconImage(@DrawableRes int drawableResId) {
-        iconImageView.setImageResource(drawableResId);
     }
 
     @Override
