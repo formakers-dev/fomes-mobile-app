@@ -109,15 +109,6 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void verifyRegistrationCode호출시_코드확인_요청을_한다() {
-        when(mockUserAPI.verifyInvitationCode(anyString())).thenReturn(mock(Observable.class));
-
-        subject.verifyInvitationCode("REGISTRATION_CODE");
-
-        verify(mockUserAPI).verifyInvitationCode(eq("REGISTRATION_CODE"));
-    }
-
-    @Test
     public void verifyToken호출시_토큰확인_요청을_한다() {
         when(mockUserAPI.verifyToken(anyString())).thenReturn(mock(Observable.class));
 
