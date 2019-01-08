@@ -32,9 +32,6 @@ public class SharedPreferencesHelper {
 
     private static final String KEY_PROVISIONING_PROGRESS_STATUS = "PROVISIONING_PROGRESS_STATUS";
 
-    @Deprecated
-    private static final String KEY_INVITATION_CODE = "INVITATION_CODE";
-
     private SharedPreferences sharedPreferences;
 
     @Inject
@@ -107,17 +104,6 @@ public class SharedPreferencesHelper {
 
     public void setLastUpdateShortTermStatTimestamp(long timestamp) {
         putLong(KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP, timestamp);
-    }
-
-    @Deprecated
-    @NonNull
-    public String getInvitationCode() {
-        return getString(KEY_INVITATION_CODE, EMPTY_STRING);
-    }
-
-    @Deprecated
-    public void setInvitationCode(String code) {
-        putString(KEY_INVITATION_CODE, code);
     }
 
     public boolean hasAccessToken() {

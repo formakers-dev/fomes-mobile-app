@@ -31,10 +31,6 @@ public interface UserAPI {
     @POST("/user/wishlist")
     Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body HashMap<String, Object> wishListMap);
 
-    @Deprecated
-    @GET("/user/verifyInvitationCode/{code}")
-    Observable<Void> verifyInvitationCode(@Path("code") String code);
-
     @GET("/user/verifyToken")
     Observable<Void> verifyToken(@Header("x-access-token") String accessToken);
 

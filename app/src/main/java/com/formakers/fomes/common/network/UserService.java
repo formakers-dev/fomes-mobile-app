@@ -95,14 +95,6 @@ public class UserService extends AbstractService {
                 .compose(APIHelper.refreshExpiredToken());
     }
 
-    @Deprecated
-    public Completable verifyInvitationCode(String code) {
-        return userAPI.verifyInvitationCode(code)
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .toCompletable();
-    }
-
     public Completable verifyToken() {
         return userAPI.verifyToken(SharedPreferencesHelper.getAccessToken())
                 .doOnError(this::logError)
