@@ -3,7 +3,9 @@ package com.formakers.fomes.common.noti;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.model.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +18,11 @@ import org.robolectric.annotation.Config;
 import javax.inject.Inject;
 
 import rx.Completable;
+import rx.Single;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +34,9 @@ public class MessagingServiceTest {
 
     @Inject SharedPreferencesHelper mockSharedPreferenceHelper;
     @Inject UserService mockUserService;
+    @Inject UserDAO mockUserDAO;
+
+    User mockUser = mock(User.class);
 
     @Before
     public void setUp() throws Exception {
@@ -36,7 +44,8 @@ public class MessagingServiceTest {
 
         when(mockSharedPreferenceHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferenceHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");
-        when(mockUserService.updateRegistrationToken(anyString())).thenReturn(Completable.complete());
+        when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
+        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
 
         subject = Robolectric.setupService(MessagingService.class);
     }
@@ -48,7 +57,7 @@ public class MessagingServiceTest {
         subject.onNewToken("NEW_TOKEN");
 
         verify(mockSharedPreferenceHelper).setRegistrationToken("NEW_TOKEN");
-        verify(mockUserService).updateRegistrationToken("NEW_TOKEN");
+        verify(mockUserService).updateUser(eq(mockUser));
     }
 
     @Test
@@ -59,6 +68,6 @@ public class MessagingServiceTest {
         subject.onNewToken("NEW_TOKEN");
 
         verify(mockSharedPreferenceHelper).setRegistrationToken("NEW_TOKEN");
-        verify(mockUserService, never()).updateRegistrationToken(anyString());
+        verify(mockUserService, never()).updateUser(any());
     }
 }

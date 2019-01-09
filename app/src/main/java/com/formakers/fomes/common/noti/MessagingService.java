@@ -1,17 +1,12 @@
 package com.formakers.fomes.common.noti;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 
 import com.formakers.fomes.FomesApplication;
-import com.formakers.fomes.R;
-import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.view.MainActivity;
@@ -31,6 +26,7 @@ public class MessagingService extends FirebaseMessagingService {
     @Inject ChannelManager channelManager;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserService userService;
+    @Inject UserDAO userDAO;
 
     @Override
     public void onCreate() {
@@ -77,9 +73,14 @@ public class MessagingService extends FirebaseMessagingService {
         sharedPreferencesHelper.setRegistrationToken(newToken);
 
         if (sharedPreferencesHelper.hasAccessToken()) {
-            userService.updateRegistrationToken(sharedPreferencesHelper.getRegistrationToken())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> Log.d(TAG, "Token Refresh is Completed!"));
+            userDAO.getUserInfo()
+                    .subscribe(user -> {
+                        user.setRegistrationToken(newToken);
+
+                        userService.updateUser(user)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(() -> Log.d(TAG, "Token Refresh is Completed!"));
+                    }, e -> Log.e(TAG, String.valueOf(e)));
         }
     }
 //    @Override
