@@ -1,7 +1,6 @@
 package com.formakers.fomes.helper;
 
 import com.formakers.fomes.common.network.api.UserAPI;
-import com.formakers.fomes.model.User;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,35 +27,33 @@ public class APIHelper {
 
     //TODO : 토큰 재발행 로직 점검 필요 - 현재는 userService그대로 쓰고 있음
     public <T> Observable.Transformer<T, T> refreshExpiredToken() {
-        return observable -> observable.retryWhen(errors -> {
-                    return errors.observeOn(Schedulers.io())
-                            .take(2)
-                            .flatMap(error -> {
-                                if (!(error instanceof HttpException)) {
-                                    return Observable.error(error);
-                                }
+        return observable -> {
+            return observable.retryWhen(errors -> {
+                        return errors.observeOn(Schedulers.io())
+                                .take(2)
+                                .flatMap(error -> {
+                                    if (!(error instanceof HttpException)) {
+                                        return Observable.error(error);
+                                    }
 
-                                int errorCode = ((HttpException) error).code();
-                                if (errorCode == 401) {
-                                    return googleSignInAPIHelper.requestSilentSignInResult();
-                                } else {
-                                    return Observable.error(error);
-                                }
-                            })
-                            .filter(googleSignInResult -> googleSignInResult != null && googleSignInResult.isSuccess() && googleSignInResult.getSignInAccount() != null)
-                            .flatMap(googleSignInResult -> Observable.just(googleSignInResult.getSignInAccount()))
-                            .filter(account -> account != null)
-                            .flatMap(account -> {
-                                User user = new User();
-                                user.setUserId(account.getId());
-                                return userAPI.signIn(account.getIdToken(), user);
-                            })
-                            .filter(accessToken -> accessToken != null && !accessToken.isEmpty())
-                            .flatMap(accessToken -> {
-                                SharedPreferencesHelper.setAccessToken(accessToken);
-                                return Observable.timer(1, TimeUnit.SECONDS);
-                            });
-                }
-        );
+                                    int errorCode = ((HttpException) error).code();
+                                    if (errorCode == 401) {
+                                        return googleSignInAPIHelper.requestSilentSignInResult();
+                                    } else {
+                                        return Observable.error(error);
+                                    }
+                                })
+                                .filter(googleSignInResult -> googleSignInResult != null && googleSignInResult.isSuccess() && googleSignInResult.getSignInAccount() != null)
+                                .flatMap(googleSignInResult -> Observable.just(googleSignInResult.getSignInAccount()))
+                                .filter(account -> account != null)
+                                .flatMap(account -> userAPI.signIn(account.getIdToken()))
+                                .filter(accessToken -> accessToken != null && !accessToken.isEmpty())
+                                .flatMap(accessToken -> {
+                                    SharedPreferencesHelper.setAccessToken(accessToken);
+                                    return Observable.timer(1, TimeUnit.SECONDS);
+                                });
+                    }
+            );
+        };
     }
 }

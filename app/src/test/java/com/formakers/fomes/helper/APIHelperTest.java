@@ -2,7 +2,6 @@ package com.formakers.fomes.helper;
 
 import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
-import com.formakers.fomes.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -62,7 +61,7 @@ public class APIHelperTest {
         GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
         when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockGoogleSignInAccount);
         when(mockGoogleSignInAccount.getIdToken()).thenReturn("idToken");
-        when(mockUserAPI.signIn(eq("idToken"), any(User.class))).thenReturn(Observable.just("appbeeToken"));
+        when(mockUserAPI.signIn(eq("idToken"))).thenReturn(Observable.just("appbeeToken"));
     }
 
     @After
@@ -89,7 +88,7 @@ public class APIHelperTest {
     }
 
     private void verifyRefreshToken() {
-        verify(mockUserAPI).signIn(eq("idToken"), any(User.class));
+        verify(mockUserAPI).signIn(eq("idToken"));
         verify(mockSharedPreferencesHelper).setAccessToken(eq("appbeeToken"));
     }
 }

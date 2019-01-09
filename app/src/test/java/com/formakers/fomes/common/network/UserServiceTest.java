@@ -55,12 +55,11 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     public void signIn호출시_로그인_요청을_서버에_전송한다() {
-        when(mockUserAPI.signIn(anyString(), any(User.class))).thenReturn(mock(Observable.class));
+        when(mockUserAPI.signIn(anyString())).thenReturn(mock(Observable.class));
 
-        User mockUser = mock(User.class);
-        subject.signIn("GOOGLE_TOKEN", mockUser);
+        subject.signIn("GOOGLE_TOKEN");
 
-        verify(mockUserAPI).signIn("GOOGLE_TOKEN", mockUser);
+        verify(mockUserAPI).signIn("GOOGLE_TOKEN");
     }
 
     @Test
