@@ -105,7 +105,6 @@ public class LoginPresenterTest {
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserService).signUp(eq("testIdToken"), userCaptor.capture());
-        assertThat(userCaptor.getValue().getUserId()).isEqualTo("testId");
         assertThat(userCaptor.getValue().getEmail()).isEqualTo("testEmail");
         assertThat(userCaptor.getValue().getRegistrationToken()).isEqualTo("testRegistrationToken");
     }
@@ -134,7 +133,6 @@ public class LoginPresenterTest {
         verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
 
         User user = userArgumentCaptor.getValue();
-        assertThat(user.getUserId()).isEqualTo("testId");
         assertThat(user.getName()).isEqualTo("testName");
         assertThat(user.getEmail()).isEqualTo("testEmail");
         assertThat(user.getRegistrationToken()).isEqualTo("testRegistrationToken");

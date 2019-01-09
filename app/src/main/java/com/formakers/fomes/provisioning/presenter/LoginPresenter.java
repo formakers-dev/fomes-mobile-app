@@ -44,7 +44,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public Single<String> requestSignUpBy(@NonNull GoogleSignInResult googleSignInResult) {
         GoogleSignInAccount account = googleSignInResult.getSignInAccount();
 
-        User userInfo = new User().setUserId(account.getId())
+        User userInfo = new User()
                 .setName(account.getDisplayName())
                 .setEmail(account.getEmail())
                 .setRegistrationToken(sharedPreferencesHelper.getRegistrationToken());

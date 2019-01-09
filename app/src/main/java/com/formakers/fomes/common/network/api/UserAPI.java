@@ -23,7 +23,7 @@ public interface UserAPI {
 
     // Return : FomesToken
     @POST("/user/signIn")
-    Observable<String> signIn(@Header("x-id-token") String googleIdToken, @Body User user);
+    Observable<String> signIn(@Header("x-id-token") String googleIdToken);
 
     @POST("/user")
     Observable<Void> update(@Header("x-access-token") String accessToken, @Body User user);

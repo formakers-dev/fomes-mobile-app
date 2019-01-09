@@ -41,8 +41,8 @@ public class UserService extends AbstractService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<String> signIn(@NonNull String googleIdToken, @NonNull User user) {
-        return userAPI.signIn(googleIdToken, user)
+    public Observable<String> signIn(@NonNull String googleIdToken) {
+        return userAPI.signIn(googleIdToken)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
