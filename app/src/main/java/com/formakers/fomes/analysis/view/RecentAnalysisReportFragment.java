@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
-import com.formakers.fomes.common.util.DisplayUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.FavoriteDeveloperItemView;
@@ -216,10 +214,17 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     public void bindPeopleGenreViews(List<Usage> genderAgeCategoryUsages, List<Usage> jobCategoryUsages) {
         User userInfo = this.presenter.getUserInfo();
 
-        // 동일 성별/나이
-        ((TextView) peopleGenreGenderAge.findViewById(R.id.group))
-                .setText(String.format(getString(R.string.common_age) + getString(R.string.common_new_line) + getString(R.string.common_string),
-                        userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
+        int age = userInfo.getAge();
+
+        if (age <= 0) {
+            ((TextView) peopleGenreGenderAge.findViewById(R.id.group))
+                    .setText(String.format(getString(R.string.common_age_under_teenager) + getString(R.string.common_new_line) + getString(R.string.common_string), getString(userInfo.getGenderToStringResId())));
+        } else {
+            // 동일 성별/나이
+            ((TextView) peopleGenreGenderAge.findViewById(R.id.group))
+                    .setText(String.format(getString(R.string.common_age) + getString(R.string.common_new_line) + getString(R.string.common_string),
+                            userInfo.getAge(), getString(userInfo.getGenderToStringResId())));
+        }
 
         List<Pair<Usage, Integer>> genderAgeUsagePercentagePair
                 = this.presenter.getPercentage(genderAgeCategoryUsages, 0, 3);

@@ -29,6 +29,7 @@
     <string name="common_go_to_grant">허용하러 가기</string>
     <string name="common_confirm">확인</string>
     <string name="common_age">%d대</string>
+    <string name="common_age_under_teenager">10대 미만</string>
     <string name="common_male">남성</string>
     <string name="common_female">여성</string>
     <string name="common_new_line">\n</string>
