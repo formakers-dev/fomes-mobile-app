@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
@@ -30,6 +31,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     public static final String TAG = "BetaTestFragment";
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
+    @BindView(R.id.loading) ProgressBar loadingBar;
 
     @Inject BetaTestContract.Presenter presenter;
     BetaTestListAdapterContract.View betaTestListAdapterView;
@@ -73,12 +75,38 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             betaTestListAdapter.setPresenter(presenter);
             recyclerView.setAdapter(betaTestListAdapter);
             presenter.setAdapterModel(betaTestListAdapter);
-            betaTestListAdapterView = betaTestListAdapter;
+            this.setAdapterView(betaTestListAdapter);
+
+            betaTestListAdapterView.setOnItemClickListener(position -> {
+                Log.d(TAG, "clicked " + position);
+            });
+
+            presenter.load();
         }
     }
 
     @Override
     public void setPresenter(BetaTestContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void setAdapterView(BetaTestListAdapterContract.View adapterView) {
+        this.betaTestListAdapterView = adapterView;
+    }
+
+    @Override
+    public void showLoading() {
+        loadingBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void refreshBetaTestList() {
+        betaTestListAdapterView.notifyDataSetChanged();
     }
 }
