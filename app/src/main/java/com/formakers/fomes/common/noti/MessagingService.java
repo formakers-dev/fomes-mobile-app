@@ -74,13 +74,11 @@ public class MessagingService extends FirebaseMessagingService {
 
         if (sharedPreferencesHelper.hasAccessToken()) {
             userDAO.getUserInfo()
-                    .subscribe(user -> {
+                    .flatMapCompletable(user -> {
                         user.setRegistrationToken(newToken);
-
-                        userService.updateUser(user)
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(() -> Log.d(TAG, "Token Refresh is Completed!"));
-                    }, e -> Log.e(TAG, String.valueOf(e)));
+                        return userService.updateUser(user);
+                    })
+                    .subscribe(() -> Log.d(TAG, "Token Refresh is Completed!"), e -> Log.e(TAG, String.valueOf(e)));
         }
     }
 //    @Override

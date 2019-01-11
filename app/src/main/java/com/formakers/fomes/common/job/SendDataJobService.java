@@ -7,18 +7,16 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import javax.inject.Inject;
 
 import rx.Completable;
 import rx.schedulers.Schedulers;
-
-import static com.formakers.fomes.common.FomesConstants.Notification.TOPIC_NOTICE_ALL;
 
 public class SendDataJobService extends JobService {
 
@@ -30,6 +28,7 @@ public class SendDataJobService extends JobService {
     @Inject UserService userService;
     @Inject AppStatService appStatService;
     @Inject ChannelManager channelManager;
+    @Inject UserDAO userDAO;
 
     @Override
     public void onCreate() {
@@ -58,6 +57,11 @@ public class SendDataJobService extends JobService {
                     .doAfterTerminate(() -> this.jobFinished(params, true))
                     .subscribe(() -> Log.d(TAG, "Send Data Success"), e -> Log.e(TAG, "Send Data Fail : " + e));
         }
+
+        userDAO.getUserInfo()
+                .observeOn(Schedulers.io())
+                .flatMapCompletable(user -> userService.updateUser(user))
+                .subscribe(() -> Log.d(TAG, "Send UserInfo Success"), e -> Log.d(TAG, "Send UserInfo Fail : " + e));
 
         channelManager.subscribePublicTopic();
 

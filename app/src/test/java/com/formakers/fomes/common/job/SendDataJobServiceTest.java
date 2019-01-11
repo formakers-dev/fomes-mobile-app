@@ -7,10 +7,12 @@ import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
+import com.formakers.fomes.model.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Single;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -48,6 +51,9 @@ public class SendDataJobServiceTest {
     @Inject UserService mockUserService;
     @Inject AppStatService mockAppStatService;
     @Inject ChannelManager mockChannelManager;
+    @Inject UserDAO mockUserDAO;
+
+    User mockUser = mock(User.class);
 
     @Before
     public void setUp() throws Exception {
@@ -60,6 +66,7 @@ public class SendDataJobServiceTest {
         when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
         when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
+        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
 
         subject = Robolectric.setupService(SendDataJobService.class);
     }
@@ -85,6 +92,7 @@ public class SendDataJobServiceTest {
         verify(mockAppUsageDataHelper).sendShortTermStats();
         verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
+        verify(mockUserService).updateUser(eq(mockUser));
         verify(mockChannelManager).subscribePublicTopic();
     }
 
@@ -95,11 +103,13 @@ public class SendDataJobServiceTest {
         JobParameters jobParameters = mock(JobParameters.class);
         when(jobParameters.getJobId()).thenReturn(1);
         when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
+
         subject.onStartJob(jobParameters);
 
         verify(mockUserService, never()).updateRegistrationToken(any());
         verify(mockAppUsageDataHelper, never()).sendShortTermStats();
         verify(mockAppStatService, never()).sendAppUsages(any());
+        verify(mockUserService).updateUser(eq(mockUser));
         verify(mockChannelManager).subscribePublicTopic();
     }
 
