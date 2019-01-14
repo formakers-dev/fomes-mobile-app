@@ -1,5 +1,7 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,7 +80,11 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             this.setAdapterView(betaTestListAdapter);
 
             betaTestListAdapterView.setOnItemClickListener(position -> {
-                Log.d(TAG, "clicked " + position);
+                String url = presenter.getSurveyURL(position);
+
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             });
 
             presenter.load();

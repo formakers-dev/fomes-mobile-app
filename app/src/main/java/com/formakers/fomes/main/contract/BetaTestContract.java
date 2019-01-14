@@ -8,6 +8,7 @@ public interface BetaTestContract {
         void setAdapterModel(BetaTestListAdapterContract.Model adapterModel);
 
         void load();
+        String getSurveyURL(int position);
     }
 
     interface View extends BaseView<Presenter> {
