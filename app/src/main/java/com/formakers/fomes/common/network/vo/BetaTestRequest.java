@@ -19,7 +19,7 @@ public class BetaTestRequest {
     String action;
 
     boolean isOpened;
-    boolean isRegistered;
+    boolean isCompleted;
 
     public BetaTestRequest() {
     }
@@ -114,12 +114,12 @@ public class BetaTestRequest {
         return this;
     }
 
-    public boolean isRegistered() {
-        return isRegistered;
+    public boolean isCompleted() {
+        return isCompleted;
     }
 
-    public BetaTestRequest setRegistered(boolean registered) {
-        isRegistered = registered;
+    public BetaTestRequest setCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
         return this;
     }
 
@@ -136,7 +136,7 @@ public class BetaTestRequest {
                 ", actionType='" + actionType + '\'' +
                 ", action='" + action + '\'' +
                 ", isOpened=" + isOpened +
-                ", isRegistered=" + isRegistered +
+                ", isCompleted=" + isCompleted +
                 '}';
     }
 }
