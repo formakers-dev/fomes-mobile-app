@@ -2,6 +2,7 @@ package com.formakers.fomes.common.dagger;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
@@ -40,6 +41,7 @@ public interface ApplicationComponent {
 
     UserDAO userDAO();
     RequestManager requestManager();
+    JobManager jobManager();
 
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);

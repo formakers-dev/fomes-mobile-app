@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 
 import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -13,6 +14,7 @@ import javax.inject.Singleton;
 @Singleton
 public class JobManager {
 
+    public static String TAG = "JobManager";
     public static int JOB_ID_SEND_DATA = 1001;
 
     private Context context;
@@ -36,5 +38,18 @@ public class JobManager {
 
     public void cancelJob(int jobId) {
         jobScheduler.cancel(jobId);
+    }
+
+    public boolean isRegisteredJob(int jobId) {
+        Log.v(TAG, "isRegisteredJob(" + jobId + ")");
+
+        for (JobInfo jobInfo : jobScheduler.getAllPendingJobs()) {
+            if (jobInfo.getId() == jobId) {
+                Log.i(TAG, String.valueOf(jobInfo));
+                return true;
+            }
+        }
+
+        return false;
     }
 }

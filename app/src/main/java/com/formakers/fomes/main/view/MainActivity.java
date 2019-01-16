@@ -75,6 +75,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        Log.i(TAG, "isRegisteredSendDataJob=" + presenter.checkRegisteredSendDataJob());
+
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(

@@ -29,6 +29,7 @@ public class SendDataJobService extends JobService {
     @Inject AppStatService appStatService;
     @Inject ChannelManager channelManager;
     @Inject UserDAO userDAO;
+    @Inject JobManager jobManager;
 
     @Override
     public void onCreate() {
@@ -74,6 +75,7 @@ public class SendDataJobService extends JobService {
 
         // Job 실행 도중 실행 조건이 해제되었을 경우, onStopJob()이 호출됨.
         // 예외처리 필요
+        jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
 
         return true;
     }

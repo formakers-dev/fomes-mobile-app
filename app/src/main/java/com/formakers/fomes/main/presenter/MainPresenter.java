@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
@@ -14,6 +15,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Inject UserDAO userDAO;
     @Inject UserService userService;
+    @Inject JobManager jobManager;
 
     MainContract.View view;
 
@@ -23,10 +25,11 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     // temporary code for test
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService) {
+    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, JobManager jobManager) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
+        this.jobManager = jobManager;
     }
 
     @Override
@@ -37,5 +40,10 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public Completable requestVerifyAccessToken() {
         return userService.verifyToken();
+    }
+
+    @Override
+    public boolean checkRegisteredSendDataJob() {
+        return jobManager.isRegisteredJob(JobManager.JOB_ID_SEND_DATA);
     }
 }
