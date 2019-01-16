@@ -3,7 +3,7 @@ package com.formakers.fomes.common.network.vo;
 import java.util.Date;
 import java.util.List;
 
-public class BetaTestRequest {
+public class BetaTest {
     String title;
     String subTitle;
 
@@ -21,14 +21,14 @@ public class BetaTestRequest {
     boolean isOpened;
     boolean isCompleted;
 
-    public BetaTestRequest() {
+    public BetaTest() {
     }
 
     public String getTitle() {
         return title;
     }
 
-    public BetaTestRequest setTitle(String title) {
+    public BetaTest setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -37,7 +37,7 @@ public class BetaTestRequest {
         return subTitle;
     }
 
-    public BetaTestRequest setSubTitle(String subTitle) {
+    public BetaTest setSubTitle(String subTitle) {
         this.subTitle = subTitle;
         return this;
     }
@@ -46,7 +46,7 @@ public class BetaTestRequest {
         return type;
     }
 
-    public BetaTestRequest setType(String type) {
+    public BetaTest setType(String type) {
         this.type = type;
         return this;
     }
@@ -55,7 +55,7 @@ public class BetaTestRequest {
         return typeTags;
     }
 
-    public BetaTestRequest setTypeTags(List<String> typeTags) {
+    public BetaTest setTypeTags(List<String> typeTags) {
         this.typeTags = typeTags;
         return this;
     }
@@ -64,7 +64,7 @@ public class BetaTestRequest {
         return openDate;
     }
 
-    public BetaTestRequest setOpenDate(Date openDate) {
+    public BetaTest setOpenDate(Date openDate) {
         this.openDate = openDate;
         return this;
     }
@@ -73,7 +73,7 @@ public class BetaTestRequest {
         return closeDate;
     }
 
-    public BetaTestRequest setCloseDate(Date closeDate) {
+    public BetaTest setCloseDate(Date closeDate) {
         this.closeDate = closeDate;
         return this;
     }
@@ -82,7 +82,7 @@ public class BetaTestRequest {
         return apps;
     }
 
-    public BetaTestRequest setApps(List<String> apps) {
+    public BetaTest setApps(List<String> apps) {
         this.apps = apps;
         return this;
     }
@@ -91,7 +91,7 @@ public class BetaTestRequest {
         return actionType;
     }
 
-    public BetaTestRequest setActionType(String actionType) {
+    public BetaTest setActionType(String actionType) {
         this.actionType = actionType;
         return this;
     }
@@ -100,7 +100,7 @@ public class BetaTestRequest {
         return action;
     }
 
-    public BetaTestRequest setAction(String action) {
+    public BetaTest setAction(String action) {
         this.action = action;
         return this;
     }
@@ -109,7 +109,7 @@ public class BetaTestRequest {
         return isOpened;
     }
 
-    public BetaTestRequest setOpened(boolean opened) {
+    public BetaTest setOpened(boolean opened) {
         isOpened = opened;
         return this;
     }
@@ -118,14 +118,14 @@ public class BetaTestRequest {
         return isCompleted;
     }
 
-    public BetaTestRequest setCompleted(boolean isCompleted) {
+    public BetaTest setCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
         return this;
     }
 
     @Override
     public String toString() {
-        return "BetaTestRequest{" +
+        return "BetaTest{" +
                 "title='" + title + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", type='" + type + '\'' +

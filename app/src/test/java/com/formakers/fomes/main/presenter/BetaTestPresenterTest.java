@@ -1,7 +1,7 @@
 package com.formakers.fomes.main.presenter;
 
-import com.formakers.fomes.common.network.RequestService;
-import com.formakers.fomes.common.network.vo.BetaTestRequest;
+import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.main.adapter.BetaTestListAdapter;
 import com.formakers.fomes.main.contract.BetaTestContract;
@@ -31,7 +31,7 @@ public class BetaTestPresenterTest {
 
     @Mock private BetaTestContract.View mockView;
     @Mock private BetaTestListAdapter mockAdapterModel;
-    @Mock private RequestService mockRequestservice;
+    @Mock private BetaTestService mockRequestservice;
     @Mock private UserDAO mockUserDAO;
 
     private User dummyUser;
@@ -63,20 +63,20 @@ public class BetaTestPresenterTest {
 
     @Test
     public void load__호출시__테스트존_리스트를_요청하고_유저정보를_가져온다() {
-        List<BetaTestRequest> betaTestRequests = new ArrayList<>();
-        when(mockRequestservice.getFeedbackRequest()).thenReturn(Single.just(betaTestRequests));
+        List<BetaTest> betaTests = new ArrayList<>();
+        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(betaTests));
 
         subject.load();
 
         verify(mockUserDAO).getUserInfo();
-        verify(mockRequestservice).getFeedbackRequest();
-        verify(mockAdapterModel).addAll(eq(betaTestRequests));
+        verify(mockRequestservice).getBetaTestList();
+        verify(mockAdapterModel).addAll(eq(betaTests));
         verify(mockView).refreshBetaTestList();
     }
 
     @Test
     public void getURL__호출시__해당_테스트의_URL정보와_유저의_이메일을_붙인다() {
-        BetaTestRequest request = new BetaTestRequest()
+        BetaTest request = new BetaTest()
                 .setAction("google.com?link=")
                 .setActionType("link");
 

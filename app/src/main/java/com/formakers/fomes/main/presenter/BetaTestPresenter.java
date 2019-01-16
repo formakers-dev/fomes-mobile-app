@@ -1,7 +1,7 @@
 package com.formakers.fomes.main.presenter;
 
-import com.formakers.fomes.common.network.RequestService;
-import com.formakers.fomes.common.network.vo.BetaTestRequest;
+import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestContract;
@@ -22,14 +22,14 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private BetaTestListAdapterContract.Model betaTestListAdapterModel;
 
     private BetaTestContract.View view;
-    private RequestService requestService;
+    private BetaTestService betaTestService;
     private UserDAO userDAO;
     private User user;
 
     @Inject
-    public BetaTestPresenter(BetaTestContract.View view, RequestService requestService, UserDAO userDAO) {
+    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, UserDAO userDAO) {
         this.view = view;
-        this.requestService = requestService;
+        this.betaTestService = betaTestService;
         this.userDAO = userDAO;
     }
 
@@ -44,20 +44,20 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                 .observeOn(Schedulers.io())
                 .flatMap(user -> {
                     this.user = user;
-                    return requestService.getFeedbackRequest();
+                    return betaTestService.getBetaTestList();
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> view.showLoading())
                 .doAfterTerminate(() -> view.hideLoading())
-                .subscribe(requests -> {
-                    betaTestListAdapterModel.addAll(requests);
+                .subscribe(betaTests -> {
+                    betaTestListAdapterModel.addAll(betaTests);
                     view.refreshBetaTestList();
                 }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override
     public String getSurveyURL(int position) {
-        return ((BetaTestRequest) betaTestListAdapterModel.getItem(position)).getAction()
+        return ((BetaTest) betaTestListAdapterModel.getItem(position)).getAction()
                 + user.getEmail();
     }
 

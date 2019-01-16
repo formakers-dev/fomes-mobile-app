@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.network.vo.BetaTestRequest;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
@@ -24,7 +24,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context context;
     private OnRecyclerItemClickListener itemClickListener;
 
-    private List<BetaTestRequest> betaTestRequests = new ArrayList<>();
+    private List<BetaTest> betaTests = new ArrayList<>();
 
     private BetaTestContract.Presenter presenter;
 
@@ -46,7 +46,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        BetaTestRequest item = betaTestRequests.get(position);
+        BetaTest item = betaTests.get(position);
 
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.tempTextView.setText(String.valueOf(item));
@@ -64,32 +64,32 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return betaTestRequests.size();
+        return betaTests.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return betaTestRequests.get(position);
+        return betaTests.get(position);
     }
 
     @Override
-    public List<BetaTestRequest> getAllItems() {
-        return betaTestRequests;
+    public List<BetaTest> getAllItems() {
+        return betaTests;
     }
 
     @Override
-    public void add(BetaTestRequest item) {
-        betaTestRequests.add(item);
+    public void add(BetaTest item) {
+        betaTests.add(item);
     }
 
     @Override
-    public void addAll(List<BetaTestRequest> items) {
-        betaTestRequests.addAll(items);
+    public void addAll(List<BetaTest> items) {
+        betaTests.addAll(items);
     }
 
     @Override
     public void clear() {
-        betaTestRequests.clear();
+        betaTests.clear();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

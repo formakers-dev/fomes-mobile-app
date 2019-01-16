@@ -7,12 +7,12 @@ import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.network.RecommendService;
-import com.formakers.fomes.common.network.RequestService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.api.AppAPI;
-import com.formakers.fomes.common.network.api.BetaTestRequestAPI;
+import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.api.ConfigAPI;
 import com.formakers.fomes.common.network.api.RecommendAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
@@ -85,8 +85,8 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    BetaTestRequestAPI requestAPI() {
-        return mock(BetaTestRequestAPI.class);
+    BetaTestAPI requestAPI() {
+        return mock(BetaTestAPI.class);
     }
 
     /**
@@ -124,8 +124,8 @@ public class TestApplicationModule {
 
     @Singleton
     @Provides
-    RequestService requestService() {
-        return mock(RequestService.class);
+    BetaTestService requestService() {
+        return mock(BetaTestService.class);
     }
 
     /**

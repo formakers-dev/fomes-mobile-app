@@ -7,7 +7,7 @@ import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.network.RecommendService;
-import com.formakers.fomes.common.network.RequestService;
+import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.MessagingService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -32,7 +32,7 @@ public interface ApplicationComponent {
     ConfigService configService();
     RecommendService recommendService();
     AppService appService();
-    RequestService requestService();
+    BetaTestService requestService();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();
