@@ -30,7 +30,6 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
-import com.formakers.fomes.event.EventActivity;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
@@ -117,8 +116,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         eventViewPager.setAdapter(eventPagerAdapter);
 
+        View betaTestBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_beta_test, null);
         View eventBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_event, null);
-        eventPagerAdapter.addView(eventBanner, EventActivity.class);
+
+        eventPagerAdapter.addView(betaTestBanner, R.layout.activity_event_beta_test_open);
+        eventPagerAdapter.addView(eventBanner, R.layout.activity_event_keeping_app);
 
         eventPagerAdapter.notifyDataSetChanged();
     }
