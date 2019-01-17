@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -59,7 +60,8 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Glide.with(context).load(item.getOverviewImageUrl())
                 .apply(new RequestOptions().override(76, 76)
                         .centerCrop()
-                        .transform(new RoundedCorners(4)))
+                        .transform(new RoundedCorners(4))
+                        .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
                 .into(viewHolder.overviewImageView);
 
         viewHolder.titleTextView.setText(item.getTitle());

@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -67,7 +68,8 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
         Glide.with(view.getContext()).load(betaTest.getOverviewImageUrl())
                 .apply(new RequestOptions().override(219, 219)
                         .centerCrop()
-                        .transform(new RoundedCorners(10)))
+                        .transform(new RoundedCorners(10))
+                        .placeholder(new ColorDrawable(view.getResources().getColor(R.color.fomes_deep_gray))))
                 .into(overviewImageView);
 
         titleTextView.setText(betaTest.getTitle());
