@@ -125,11 +125,15 @@
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
 
     <!-- Beta Test -->
-    <string name="go_to_join_beta_test">참여 하러 가기</string>
+    <string name="go_to_join_beta_test">참여하러 가기</string>
     <string name="betatest_target_format">%s 앱 유저 대상</string>
     <string name="betatest_project_status_format">종료 %d일 전</string>
     <string name="betatest_required_time_format">약 %d분</string>
     <string name="betatest_reward_none">보상 없음</string>
+    <string name="beta_test_completed_label_sub_title">Good! 멋져요! 최고에요!</string>
+    <string name="beta_test_completed_label_title">완료한 테스트</string>
+    <string name="beta_test_closed_label_sub_title">아쉬워요…흑흑</string>
+    <string name="beta_test_closed_label_title">종료된 테스트</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>

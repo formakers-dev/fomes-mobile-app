@@ -19,6 +19,7 @@
     <attr name="item_color" format="reference|color"/>
     <attr name="item_number" format="reference|string"/>
     <attr name="item_stroke_color" format="reference|color"/>
+    <attr name="item_stroke_width" format="reference|dimension"/>
     <attr name="item_solid_color" format="reference|color"/>
 
     <declare-styleable name="RankAppItemView">

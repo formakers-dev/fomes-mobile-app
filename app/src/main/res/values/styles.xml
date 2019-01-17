@@ -177,12 +177,14 @@
         <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/fomes_content_card_background</item>
         <item name="item_stroke_color">@color/item_inner_divider</item>
+        <item name="item_stroke_width">1dp</item>
     </style>
 
     <style name="BetaTestTheme.DetailDialog">
         <item name="item_background_radius">0dp</item>
         <item name="item_solid_color">@color/fomes_content_card_background</item>
         <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
     </style>
 
     <style name="BetaTestTheme.TagBackground">
@@ -193,11 +195,25 @@
         <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/label_background_dark</item>
         <item name="item_stroke_color">@android:color/transparent</item>
+        <item name="item_stroke_width">1dp</item>
     </style>
 
     <style name="BetaTestTheme.InfoBackground">
         <item name="item_solid_color">@android:color/transparent</item>
         <item name="item_stroke_color">@color/fomes_light_gray</item>
+    </style>
+
+    <style name="BetaTestTheme.DisableBackground">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_content_disable_card_background</item>
+        <item name="item_stroke_color">@color/item_inner_divider</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.CompletedLabelBackground">
+        <item name="item_solid_color">@color/beta_test_label_disable_background</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">4dp</item>
     </style>
 
 </resources>

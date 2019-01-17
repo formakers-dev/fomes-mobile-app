@@ -8,6 +8,7 @@
     android:paddingStart="7dp">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/betatest_cardview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:foreground="@drawable/ripple"
@@ -163,5 +164,87 @@
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
+
+    <View android:id="@+id/betatest_disable_background"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="@dimen/match_constraint"
+        android:background="@drawable/item_rect_rounded_corner_background"
+        android:theme="@style/BetaTestTheme.DisableBackground"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/betatest_cardview"
+        app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"
+        app:layout_constraintStart_toStartOf="@id/betatest_cardview"
+        app:layout_constraintEnd_toEndOf="@id/betatest_cardview"/>
+
+    <LinearLayout android:id="@+id/betatest_completed_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@drawable/item_rect_rounded_corner_background"
+        android:theme="@style/BetaTestTheme.CompletedLabelBackground"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/betatest_cardview"
+        app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"
+        app:layout_constraintEnd_toEndOf="@id/betatest_cardview"
+        app:layout_constraintStart_toStartOf="@id/betatest_cardview">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/beta_test_completed_label_sub_title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/beta_test_completed_label_title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/betatest_colosed_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@color/beta_test_label_disable_background"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/betatest_cardview"
+        app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"
+        app:layout_constraintEnd_toEndOf="@id/betatest_cardview"
+        app:layout_constraintStart_toStartOf="@id/betatest_cardview">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/beta_test_closed_label_sub_title"
+            android:textColor="@color/fomes_warm_gray"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/beta_test_closed_label_title"
+            android:textColor="@color/fomes_warm_gray"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
