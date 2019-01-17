@@ -25,6 +25,7 @@
     <!-- end of AppBee's strings -->
 
     <!-- Fomes - common strings -->
+    <string name="common_empty_string"/>
     <string name="common_next_button">다음으로</string>
     <string name="common_go_to_grant">허용하러 가기</string>
     <string name="common_confirm">확인</string>

@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,7 +29,9 @@ import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
-import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
+import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
+import com.formakers.fomes.main.adapter.EventPagerAdapter;
+import com.formakers.fomes.event.EventActivity;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
@@ -48,6 +51,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
+    @BindView(R.id.main_event_view_pager)       ViewPager eventViewPager;
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
@@ -64,6 +68,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setTitle(R.string.common_empty_string);
         this.setContentView(R.layout.activity_main);
         setPresenter(new MainPresenter(this));
 
@@ -99,15 +104,32 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 })
         );
 
-        ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
-        contentsPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
-        contentsPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
+        fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
 
-        contentsViewPager.setAdapter(contentsPagerAdapter);
+        contentsViewPager.setAdapter(fragmentPagerAdapter);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
+
+        View view = new View(this);
+        view.setBackgroundColor(Color.BLACK);
+        View view2 = new View(this);
+        view2.setBackgroundColor(Color.RED);
+        View view3 = new View(this);
+        view3.setBackgroundColor(Color.BLUE);
+
+        EventPagerAdapter eventPagerAdapter = new EventPagerAdapter();
+
+        eventViewPager.setAdapter(eventPagerAdapter);
+
+        eventPagerAdapter.addView(view, EventActivity.class);
+        eventPagerAdapter.addView(view2, SettingsActivity.class);
+        eventPagerAdapter.addView(view3, WishListActivity.class);
+
+        eventPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -166,7 +188,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE_WISHLIST) {
-            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
+            Fragment fragment = ((FragmentPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);
             }
