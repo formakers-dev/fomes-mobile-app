@@ -1,7 +1,6 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -114,20 +113,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
 
-        View view = new View(this);
-        view.setBackgroundColor(Color.BLACK);
-        View view2 = new View(this);
-        view2.setBackgroundColor(Color.RED);
-        View view3 = new View(this);
-        view3.setBackgroundColor(Color.BLUE);
-
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter();
 
         eventViewPager.setAdapter(eventPagerAdapter);
 
-        eventPagerAdapter.addView(view, EventActivity.class);
-        eventPagerAdapter.addView(view2, SettingsActivity.class);
-        eventPagerAdapter.addView(view3, WishListActivity.class);
+        View eventBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_event, null);
+        eventPagerAdapter.addView(eventBanner, EventActivity.class);
 
         eventPagerAdapter.notifyDataSetChanged();
     }

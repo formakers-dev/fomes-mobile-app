@@ -11,7 +11,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.formakers.fomes.FomesApplication;
@@ -21,7 +20,6 @@ import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
-import com.formakers.fomes.event.EventActivity;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
@@ -42,7 +40,6 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
     @BindView(R.id.recommend_contents_layout) ViewGroup recommendContentsLayout;
     @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
-    @BindView(R.id.recommend_event_banner_background) ImageView recommendEventImageView;
     @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
 
     @Inject RecommendContract.Presenter presenter;
@@ -85,8 +82,6 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendRecyclerView.setAdapter(recommendListAdapter);
         presenter.setAdapterModel(recommendListAdapter);
         recommendListAdapterView = recommendListAdapter;
-
-        recommendEventImageView.setOnClickListener(v -> startActivity(new Intent(this.getContext(), EventActivity.class)));
 
         setNestedScrollViewOnScrollChangeListener((NestedScrollView) recommendContentsLayout);
 

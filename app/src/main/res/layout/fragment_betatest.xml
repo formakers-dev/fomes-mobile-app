@@ -14,53 +14,14 @@
         android:background="@color/fomes_content_background_dark"
         android:descendantFocusability="blocksDescendants">
 
-        <ImageView
-            android:id="@+id/event_banner_background"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:src="@drawable/event_banner_background"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintDimensionRatio="12:5"/>
-
-        <TextView
-            android:id="@+id/event_banner_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:padding="5dp"
-            android:text="테스트하고 리워드받자"
-            android:textColor="@color/fomes_white"
-            android:textSize="10dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/event_banner_background"
-            app:layout_constraintEnd_toEndOf="@+id/event_banner_background"
-            app:layout_constraintStart_toStartOf="@+id/event_banner_background"
-            app:layout_constraintTop_toTopOf="@+id/event_banner_background"
-            app:layout_constraintVertical_bias="0.20" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="3dp"
-            android:text="내가 즐기는 게임과 유사한\n게임테스트를 추천드려요."
-            android:textAlignment="center"
-            android:textColor="@color/fomes_white"
-            android:textSize="21dp"
-            app:layout_constraintBottom_toBottomOf="@id/event_banner_background"
-            app:layout_constraintEnd_toEndOf="@+id/event_banner_background"
-            app:layout_constraintStart_toStartOf="@+id/event_banner_background"
-            app:layout_constraintTop_toBottomOf="@+id/event_banner_title"
-            app:layout_constraintVertical_bias="0.25" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/feedback_recyclerview"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_banner_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:nestedScrollingEnabled="false"/>
 
         <ProgressBar android:id="@+id/loading"
