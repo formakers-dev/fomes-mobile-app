@@ -34,7 +34,7 @@
         app:layout_goneMarginBottom="40dp"
         android:layout_marginEnd="@dimen/item_app_content_margin_end"
         app:layout_goneMarginEnd="@dimen/item_app_content_margin_end"
-        android:background="@drawable/wishlist_togglebutton_dark"
+        android:background="@drawable/wishlist_togglebutton"
         android:textOn=""
         android:textOff=""
         app:layout_constraintEnd_toStartOf="@+id/app_info_download_button"
