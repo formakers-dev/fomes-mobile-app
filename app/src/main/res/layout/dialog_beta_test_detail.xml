@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/join_button"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@drawable/item_rect_rounded_corner_background"
+                android:theme="@style/BetaTestTheme.DetailDialog"
+                android:descendantFocusability="blocksDescendants">
+
+                <ImageView android:id="@+id/betatest_detail_imageview"
+                    android:layout_width="219dp"
+                    android:layout_height="219dp"
+                    android:layout_marginTop="23dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/not_found_app_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/betatest_detail_target"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:textColor="@color/fomes_white"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:theme="@style/BetaTestTheme.TagBackground"
+                    app:layout_constraintTop_toBottomOf="@id/betatest_detail_imageview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/betatest_detail_test_type"
+                    tools:text="포메스 앱 유저 대상" />
+
+                <TextView
+                    android:id="@+id/betatest_detail_test_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:textColor="@color/fomes_white"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:theme="@style/BetaTestTheme.TagBackground"
+                    app:layout_constraintTop_toTopOf="@id/betatest_detail_target"
+                    app:layout_constraintStart_toEndOf="@id/betatest_detail_target"
+                    app:layout_constraintEnd_toStartOf="@+id/betatest_detail_project_status"
+                    app:layout_constraintBottom_toBottomOf="@id/betatest_detail_target"
+                    tools:text="설문" />
+
+                <TextView
+                    android:id="@+id/betatest_detail_project_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:textColor="@color/fomes_white"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:theme="@style/BetaTestTheme.TagBackground"
+                    app:layout_constraintTop_toTopOf="@id/betatest_detail_target"
+                    app:layout_constraintStart_toEndOf="@id/betatest_detail_test_type"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/betatest_detail_target"
+                    tools:text="종료 1일 전" />
+
+                <TextView
+                    android:id="@+id/betatest_detail_title_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:textSize="17dp"
+                    android:textColor="@color/fomes_white"
+                    app:layout_constraintTop_toBottomOf="@id/betatest_detail_target"
+                    tools:text="지하실에서 발견한 낡은 설문지" />
+
+                <TextView
+                    android:id="@+id/betatest_detail_required_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginBottom="25dp"
+                    android:gravity="center"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/betatest_detail_title_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/betatest_detail_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:text="약 3분" />
+
+                <TextView
+                    android:id="@+id/betatest_detail_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="9 문항"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintTop_toTopOf="@id/betatest_detail_required_time"
+                    app:layout_constraintStart_toEndOf="@id/betatest_detail_required_time"
+                    app:layout_constraintEnd_toStartOf="@+id/betatest_detail_reward"
+                    app:layout_constraintBottom_toBottomOf="@id/betatest_detail_required_time"
+                    tools:text="9 문항" />
+
+                <TextView
+                    android:id="@+id/betatest_detail_reward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintTop_toTopOf="@id/betatest_detail_required_time"
+                    app:layout_constraintStart_toEndOf="@id/betatest_detail_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/betatest_detail_required_time"
+                    tools:text="보상 없음" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/join_button"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="56dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/go_to_join_beta_test"
+            android:textColor="@color/fomes_white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>

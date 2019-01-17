@@ -56,10 +56,12 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
-    public String getSurveyURL(int position) {
-        return ((BetaTest) betaTestListAdapterModel.getItem(position)).getAction()
-                + user.getEmail();
+    public BetaTest getBetaTestItem(int position) {
+        return (BetaTest) this.betaTestListAdapterModel.getItem(position);
     }
 
-
+    @Override
+    public String getUserEmail() {
+        return this.user.getEmail();
+    }
 }

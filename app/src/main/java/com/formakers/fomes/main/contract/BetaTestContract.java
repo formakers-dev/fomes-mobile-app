@@ -2,13 +2,15 @@ package com.formakers.fomes.main.contract;
 
 
 import com.formakers.fomes.common.mvp.BaseView;
+import com.formakers.fomes.common.network.vo.BetaTest;
 
 public interface BetaTestContract {
     interface Presenter {
         void setAdapterModel(BetaTestListAdapterContract.Model adapterModel);
 
         void load();
-        String getSurveyURL(int position);
+        BetaTest getBetaTestItem(int position);
+        String getUserEmail();
     }
 
     interface View extends BaseView<Presenter> {

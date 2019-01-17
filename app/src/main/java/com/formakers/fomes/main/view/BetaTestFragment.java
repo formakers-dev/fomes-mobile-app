@@ -1,7 +1,5 @@
 package com.formakers.fomes.main.view;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -80,11 +79,13 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             this.setAdapterView(betaTestListAdapter);
 
             betaTestListAdapterView.setOnItemClickListener(position -> {
-                String url = presenter.getSurveyURL(position);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, this.presenter.getBetaTestItem(position));
+                bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
 
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
+                betaTestDetailAlertDialog.setArguments(bundle);
+                betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
             });
 
             presenter.load();

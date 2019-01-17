@@ -35,6 +35,7 @@ public class BetaTestPresenterTest {
     @Mock private UserDAO mockUserDAO;
 
     private User dummyUser;
+    private List<BetaTest> betaTests = new ArrayList<>();
     private BetaTestPresenter subject;
 
     @Before
@@ -57,15 +58,19 @@ public class BetaTestPresenterTest {
         dummyUser = new User().setEmail("user@gmail.com");
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(dummyUser));
 
+        betaTests.add(new BetaTest().setTitle("베타테스트1"));
+        betaTests.add(new BetaTest().setTitle("베타테스트2"));
+        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(betaTests));
+
+        when(mockAdapterModel.getItem(0)).thenReturn(betaTests.get(0));
+        when(mockAdapterModel.getItem(1)).thenReturn(betaTests.get(1));
+
         subject = new BetaTestPresenter(mockView, mockRequestservice, mockUserDAO);
         subject.setAdapterModel(mockAdapterModel);
     }
 
     @Test
     public void load__호출시__테스트존_리스트를_요청하고_유저정보를_가져온다() {
-        List<BetaTest> betaTests = new ArrayList<>();
-        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(betaTests));
-
         subject.load();
 
         verify(mockUserDAO).getUserInfo();
@@ -75,16 +80,18 @@ public class BetaTestPresenterTest {
     }
 
     @Test
-    public void getURL__호출시__해당_테스트의_URL정보와_유저의_이메일을_붙인다() {
-        BetaTest request = new BetaTest()
-                .setAction("google.com?link=")
-                .setActionType("link");
-
-        when(mockAdapterModel.getItem(0)).thenReturn(request);
-
+    public void getBetaTestItem__호출시__해당_위치의_베타테스트를_리턴한다() {
         subject.load();
-        String url = subject.getSurveyURL(0);
+        BetaTest betaTest = subject.getBetaTestItem(0);
 
-        assertThat(url).isEqualTo("google.com?link=" + "user@gmail.com");
+        assertThat(betaTest.getTitle()).isEqualTo("베타테스트1");
+    }
+
+    @Test
+    public void getUserEmail__호출시__유저의_이메일을_리턴한다() {
+        subject.load();
+        String userEmail = subject.getUserEmail();
+
+        assertThat(userEmail).isEqualTo("user@gmail.com");
     }
 }

@@ -20,6 +20,11 @@ public interface FomesConstants {
         }
     }
 
+    interface BetaTest {
+        String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
+        String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
+    }
+
     interface Settings {
         interface Menu {
             int VERSION = 1;

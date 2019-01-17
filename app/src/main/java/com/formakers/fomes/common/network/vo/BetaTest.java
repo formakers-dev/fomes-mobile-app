@@ -1,9 +1,15 @@
 package com.formakers.fomes.common.network.vo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 import java.util.List;
 
-public class BetaTest {
+public class BetaTest implements Parcelable {
+    Integer id;
+
+    String overviewImageUrl;
     String title;
     String subTitle;
 
@@ -18,10 +24,34 @@ public class BetaTest {
     String actionType;
     String action;
 
+    String reward;
+
     boolean isOpened;
     boolean isCompleted;
 
     public BetaTest() {
+    }
+
+    public BetaTest(Parcel in) {
+        readFromParcel(in);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public BetaTest setId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getOverviewImageUrl() {
+        return overviewImageUrl;
+    }
+
+    public BetaTest setOverviewImageUrl(String overviewImageUrl) {
+        this.overviewImageUrl = overviewImageUrl;
+        return this;
     }
 
     public String getTitle() {
@@ -105,6 +135,15 @@ public class BetaTest {
         return this;
     }
 
+    public String getReward() {
+        return reward;
+    }
+
+    public BetaTest setReward(String reward) {
+        this.reward = reward;
+        return this;
+    }
+
     public boolean isOpened() {
         return isOpened;
     }
@@ -126,7 +165,9 @@ public class BetaTest {
     @Override
     public String toString() {
         return "BetaTest{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", overviewImageUrl='" + overviewImageUrl + '\'' +
+                ", title='" + title + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", type='" + type + '\'' +
                 ", typeTags=" + typeTags +
@@ -135,8 +176,63 @@ public class BetaTest {
                 ", apps=" + apps +
                 ", actionType='" + actionType + '\'' +
                 ", action='" + action + '\'' +
+                ", reward='" + reward + '\'' +
                 ", isOpened=" + isOpened +
                 ", isCompleted=" + isCompleted +
                 '}';
     }
+
+    /**
+     * for Parcelable
+     */
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(overviewImageUrl);
+        dest.writeString(title);
+        dest.writeString(subTitle);
+        dest.writeString(type);
+        dest.writeStringList(typeTags);
+        dest.writeLong(openDate.getTime());
+        dest.writeLong(closeDate.getTime());
+        dest.writeStringList(apps);
+        dest.writeString(actionType);
+        dest.writeString(action);
+        dest.writeString(reward);
+        dest.writeInt(isOpened ? 1 : 0);
+        dest.writeInt(isCompleted ? 1 : 0);
+    }
+
+    private void readFromParcel(Parcel in) {
+        id = in.readInt();
+        overviewImageUrl = in.readString();
+        title = in.readString();
+        subTitle = in.readString();
+        type = in.readString();
+        in.readStringList(typeTags);
+        openDate = new Date(in.readLong());
+        closeDate = new Date(in.readLong());
+        in.readStringList(apps);
+        actionType = in.readString();
+        action = in.readString();
+        reward = in.readString();
+        isOpened = (in.readInt() == 1);
+        isCompleted = (in.readInt() == 1);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public BetaTest createFromParcel(Parcel in) {
+            return new BetaTest(in);
+        }
+
+        public BetaTest[] newArray(int size) {
+            return new BetaTest[size];
+        }
+    };
 }

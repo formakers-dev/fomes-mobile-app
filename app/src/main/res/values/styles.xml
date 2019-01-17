@@ -154,28 +154,6 @@
         <item name="item_background_radius">6dp</item>
     </style>
 
-    <style name="RecommendTheme.BottomSheetDialog.WishListButtonStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">38dp</item>
-        <item name="android:layout_marginBottom">17dp</item>
-        <item name="android:paddingStart">38dp</item>
-        <item name="android:paddingEnd">38dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/fomes_white</item>
-        <item name="android:textSize">15dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:drawablePadding">5dp</item>
-        <item name="android:background">@drawable/item_rect_rounded_corner_background</item>
-        <item name="android:theme">@style/CollectionButtonBackgroundTheme</item>
-    </style>
-
-    <style name="CollectionButtonBackgroundTheme">
-        <item name="item_color">@color/colorPrimary</item>
-        <item name="item_background_radius">22.5dp</item>
-    </style>
-
     <style name="AppInfoGridItemStyle">
         <item name="android:layout_width">@dimen/match_constraint</item>
         <item name="android:layout_height">wrap_content</item>
@@ -192,4 +170,23 @@
         <item name="item_color">@color/colorPrimary</item>
         <item name="item_background_radius">10dp</item>
     </style>
+
+    <style name="BetaTestTheme"/>
+
+    <style name="BetaTestTheme.DetailDialog">
+        <item name="item_background_radius">0dp</item>
+        <item name="item_solid_color">@color/fomes_content_card_background</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+    </style>
+
+    <style name="BetaTestTheme.TagBackground">
+        <item name="android:paddingStart">7dp</item>
+        <item name="android:paddingEnd">7dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/label_background_dark</item>
+        <item name="item_stroke_color">@android:color/transparent</item>
+    </style>
+
 </resources>
