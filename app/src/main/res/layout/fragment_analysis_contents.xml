@@ -47,7 +47,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="21dp"
             android:text="@string/analysis_my_playtime_rank_title"
-            android:textColor="@color/fomes_gray"
+            android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/analysis_content_title_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/analysis_my_playtime_rank_divider" />
@@ -173,7 +173,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="16dp"
             android:text="@string/analysis_playtime_rank_title"
-            android:textColor="@color/fomes_gray"
+            android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/analysis_content_title_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/playtime_rank_divider" />
@@ -219,7 +219,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="16dp"
             android:text="@string/analysis_my_genre_title"
-            android:textColor="@color/fomes_gray"
+            android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/analysis_content_title_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/my_genre_divider" />
@@ -322,7 +322,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="16dp"
             android:text="@string/analysis_people_genre_title"
-            android:textColor="@color/fomes_gray"
+            android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/analysis_content_title_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/people_genre_divider" />
@@ -380,7 +380,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="16dp"
             android:text="@string/analysis_favorite_developer_title"
-            android:textColor="@color/fomes_gray"
+            android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/analysis_content_title_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/favorite_developer_divider" />
@@ -451,7 +451,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="16dp"
             android:text="@string/analysis_my_games_title"
-            android:textColor="@color/fomes_gray"
+            android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/analysis_content_title_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/my_games_divider" />
@@ -545,7 +545,7 @@
             android:layout_marginStart="@dimen/provision_padding_start_end"
             android:layout_marginTop="16dp"
             android:text="@string/analysis_people_games_title"
-            android:textColor="@color/fomes_gray"
+            android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/analysis_content_title_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/people_games_divider" />

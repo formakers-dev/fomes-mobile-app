@@ -27,7 +27,7 @@
         android:layout_width="@dimen/match_constraint"
         android:layout_height="32dp"
         android:layout_marginTop="6dp"
-        android:textColor="@color/fomes_gray"
+        android:textColor="@color/fomes_greyish_brown"
         android:textSize="18dp"
         android:textStyle="bold"
         android:gravity="center"

@@ -2,10 +2,18 @@ package com.formakers.fomes.wishList.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.common.view.custom.RecommendAppItemView;
@@ -37,16 +45,31 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final AppInfo wishListApp = wishList.get(position);
+        final AppInfo wishApp = wishList.get(position);
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
-        viewHolder.wishListAppItemView.bindAppInfo(wishListApp);
-        viewHolder.wishListAppItemView.setOnWishListCheckedChangeListener((v, isChecked) -> {
+
+        Glide.with(viewHolder.itemView.getContext()).load(wishApp.getIconUrl())
+                .apply(new RequestOptions().override(70, 70)
+                        .centerCrop()
+                        .transform(new RoundedCorners(10)))
+                .into(viewHolder.iconImageView);
+
+        viewHolder.appNameTextView.setText(wishApp.getAppName());
+
+        String genre = wishApp.getCategoryName();
+        String developer = wishApp.getDeveloper();
+        viewHolder.genreDeveloperTextView.setText(String.format("%s / %s", TextUtils.isEmpty(genre) ? "" : genre, TextUtils.isEmpty(developer) ? "" : developer));
+
+        viewHolder.wishListToggleButton.setChecked(wishApp.isWished());
+
+        viewHolder.wishListToggleButton.setOnCheckedChangeListener((v, isChecked) -> {
             if (!isChecked) {
                 wishedCheckedListener.onItemClick(position);
             }
         });
-        viewHolder.wishListAppItemView.setOnDownloadButtonClickListener(v -> downloadClickListener.onItemClick(position));
+
+        viewHolder.downloadButton.setOnClickListener(v -> downloadClickListener.onItemClick(position));
     }
 
     @Override
@@ -107,11 +130,20 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     class AppViewHolder extends RecyclerView.ViewHolder {
-        RecommendAppItemView wishListAppItemView;
+        ImageView iconImageView;
+        ToggleButton wishListToggleButton;
+        Button downloadButton;
+        TextView appNameTextView;
+        TextView genreDeveloperTextView;
 
         AppViewHolder(View itemView) {
             super(itemView);
-            wishListAppItemView = itemView.findViewById(R.id.wish_list_app_item_view);
+
+            iconImageView = itemView.findViewById(R.id.item_app_icon_imageview);
+            wishListToggleButton = itemView.findViewById(R.id.app_info_wishlist_button);
+            downloadButton = itemView.findViewById(R.id.app_info_download_button);
+            appNameTextView = itemView.findViewById(R.id.item_app_name_textview);
+            genreDeveloperTextView = itemView.findViewById(R.id.item_app_genre_developer_textview);
         }
     }
 }

@@ -13,7 +13,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:app_verbose="false"
-        app:app_downloadable="false"/>
+        app:app_verbose="false"/>
 
 </android.support.constraint.ConstraintLayout>

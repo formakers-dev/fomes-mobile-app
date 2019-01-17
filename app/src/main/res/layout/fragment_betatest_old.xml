@@ -38,7 +38,7 @@
         android:gravity="center"
         android:text="@string/betatest_subtitle"
         android:textSize="15dp"
-        android:textColor="@color/fomes_gray"/>
+        android:textColor="@color/fomes_greyish_brown"/>
 
     <ImageView
         android:id="@+id/betatest_imageview"
@@ -50,7 +50,7 @@
     <View
         android:layout_width="231dp"
         android:layout_height="2dp"
-        android:background="@color/fomes_gray" />
+        android:background="@color/fomes_greyish_brown" />
 
     <TextView
         android:id="@+id/betatest_description_textview"

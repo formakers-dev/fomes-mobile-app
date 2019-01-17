@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="18dp"
-        android:textColor="@color/fomes_gray"
+        android:textColor="@color/fomes_greyish_brown"
         android:textAlignment="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/recommend_error_description"

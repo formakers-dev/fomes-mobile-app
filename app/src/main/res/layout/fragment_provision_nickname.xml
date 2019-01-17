@@ -61,7 +61,7 @@
         android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
         android:text="@string/provision_nickname_content_title"
         android:textSize="@dimen/provision_content_title_text_size"
-        android:textColor="@color/fomes_gray"
+        android:textColor="@color/fomes_greyish_brown"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/provision_nickname_content_edittext"
         app:layout_constraintStart_toStartOf="parent"

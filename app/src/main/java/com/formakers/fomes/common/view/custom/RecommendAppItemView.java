@@ -41,7 +41,6 @@ public class RecommendAppItemView extends ConstraintLayout {
     private TextView ageLimitTextView;
     private ViewPager imageViewPager;
     private ToggleButton wishListToggle;
-    private Button downloadButton;
 
     private int recommendType;
     private String recommendReason;
@@ -79,7 +78,6 @@ public class RecommendAppItemView extends ConstraintLayout {
         ageLimitTextView = findViewById(R.id.item_app_age_limit);
         imageViewPager = findViewById(R.id.item_app_image_viewpager);
         wishListToggle = findViewById(R.id.app_info_wishlist_button);
-        downloadButton = findViewById(R.id.app_info_download_button);
 
         baseAppIconSize = iconImageView.getLayoutParams().width;
     }
@@ -96,7 +94,6 @@ public class RecommendAppItemView extends ConstraintLayout {
         setRecommendType(typedArray.getInteger(R.styleable.RecommendAppItemView_app_recommendType, RecommendApp.RECOMMEND_TYPE_FAVORITE_APP));
 
         setVerbose(typedArray.getBoolean(R.styleable.RecommendAppItemView_app_verbose, false));
-        setDownloadable(typedArray.getBoolean(R.styleable.RecommendAppItemView_app_downloadable, false));
 
         typedArray.recycle();
     }
@@ -164,18 +161,6 @@ public class RecommendAppItemView extends ConstraintLayout {
         return verboseGroup.getVisibility() == View.VISIBLE;
     }
 
-    public void setDownloadable(boolean isDownloadable) {
-        if (isDownloadable) {
-            downloadButton.setVisibility(VISIBLE);
-            labelTextView.setVisibility(GONE);
-            resizeIconImageView((int)(baseAppIconSize * 0.63));
-        } else {
-            downloadButton.setVisibility(GONE);
-            labelTextView.setVisibility(VISIBLE);
-            resizeIconImageView(baseAppIconSize);
-        }
-    }
-
     public void setVisibilityInstalledTextView(int visibility) {
         installedLabelView.setVisibility(visibility);
     }
@@ -191,10 +176,6 @@ public class RecommendAppItemView extends ConstraintLayout {
 
     public void setOnWishListCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
         wishListToggle.setOnCheckedChangeListener(listener);
-    }
-
-    public void setOnDownloadButtonClickListener(OnClickListener onClickListener) {
-        downloadButton.setOnClickListener(onClickListener);
     }
 
     // 고민되네 map으로 처리할까...
