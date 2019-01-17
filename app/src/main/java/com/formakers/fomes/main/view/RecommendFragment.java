@@ -77,7 +77,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendRecyclerView.setLayoutManager(linearLayoutManager);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_RecommendDivider).getTheme()));
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_DarkDivider).getTheme()));
         recommendRecyclerView.addItemDecoration(dividerItemDecoration);
 
         RecommendListAdapter recommendListAdapter = new RecommendListAdapter();

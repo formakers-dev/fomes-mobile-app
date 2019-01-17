@@ -40,15 +40,15 @@
     </style>
 
     <style name="FomesMainTabTheme" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabTextAppearance">@style/FomesMainTabTheme.TextAppearance</item>
-        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
     </style>
 
     <style name="FomesMainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14dp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/main_tab_unselected_text_color</item>
         <item name="textAllCaps">true</item>
     </style>
 
@@ -58,10 +58,22 @@
         <!--<item name="android:icon">?attr/iconDrawable</item>-->
     </style>
 
-    <style name="FomesMainTabTheme.RecommendDivider">
+    <style name="FomesMainTabTheme.GrayDivider">
         <item name="divider_width">@dimen/match_constraint</item>
         <item name="divider_height">1dp</item>
         <item name="divider_color">@color/fomes_pale_gray</item>
+    </style>
+
+    <style name="FomesMainTabTheme.DarkDivider">
+        <item name="divider_width">@dimen/match_constraint</item>
+        <item name="divider_height">1dp</item>
+        <item name="divider_color">@color/fomes_dark_gray</item>
+    </style>
+
+    <style name="FomesMainTabTheme.BetaTestDivider">
+        <item name="divider_width">@dimen/match_constraint</item>
+        <item name="divider_height">9dp</item>
+        <item name="divider_color">@android:color/transparent</item>
     </style>
 
     <style name="FomesTheme.TurquoiseItem">
@@ -119,7 +131,7 @@
 
     <style name="AnaylsisTheme.Table.Divider">
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/fomes_light_warm_gray</item>
+        <item name="android:background">@color/fomes_warm_gray_2</item>
     </style>
 
     <style name="ProgressBackground">
@@ -138,7 +150,7 @@
     </style>
 
     <style name="RecommendTheme.BottomSheetDialog.Background">
-        <item name="item_color">@color/fomes_white</item>
+        <item name="item_color">@color/fomes_content_background_dark</item>
         <item name="item_background_radius">6dp</item>
     </style>
 
@@ -171,14 +183,13 @@
         <item name="android:gravity">center</item>
         <item name="android:text">""</item>
         <item name="android:textSize">12dp</item>
-        <item name="android:textColor">@color/fomes_light_warm_gray</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/fomes_light_gray</item>
         <item name="layout_constraintTop_toBottomOf">@+id/divider_top</item>
         <item name="layout_constraintBottom_toTopOf">@+id/divider_bottom</item>
     </style>
 
-    <style name="TurquoiseRoundStrokeBackgroundTheme">
+    <style name="TurquoiseTextLabel">
         <item name="item_color">@color/colorPrimary</item>
-        <item name="item_background_radius">8dp</item>
+        <item name="item_background_radius">10dp</item>
     </style>
 </resources>

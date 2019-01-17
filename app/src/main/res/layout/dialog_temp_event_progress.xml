@@ -40,7 +40,7 @@
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:textColor="@color/fomes_light_warm_gray"
+        android:textColor="@color/fomes_warm_gray_2"
         android:textSize="12dp"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/event_dialog_subtitle_textview"

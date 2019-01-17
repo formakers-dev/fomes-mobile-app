@@ -74,7 +74,7 @@
         android:layout_marginStart="13dp"
         android:inputType="textPersonName"
         android:hint="@string/provision_nickname_content_hint"
-        android:textColorHint="@color/fomes_light_warm_gray"
+        android:textColorHint="@color/fomes_warm_gray_2"
         android:textSize="@dimen/provision_content_title_text_size"
         android:backgroundTint="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"

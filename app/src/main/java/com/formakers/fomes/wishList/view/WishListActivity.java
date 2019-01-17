@@ -64,7 +64,7 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
         wishListRecyclerView.setLayoutManager(linearLayoutManager);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(this, ContentDividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_RecommendDivider).getTheme()));
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_GrayDivider).getTheme()));
         wishListRecyclerView.addItemDecoration(dividerItemDecoration);
 
         WishListAdapter wishListAdapter = new WishListAdapter();

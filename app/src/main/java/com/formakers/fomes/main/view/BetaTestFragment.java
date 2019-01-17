@@ -70,7 +70,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             recyclerView.setLayoutManager(linearLayoutManager);
 
             ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
-            dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_RecommendDivider).getTheme()));
+            dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
             recyclerView.addItemDecoration(dividerItemDecoration);
 
             BetaTestListAdapter betaTestListAdapter = new BetaTestListAdapter();

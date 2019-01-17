@@ -61,6 +61,6 @@
         android:lineSpacingExtra="3dp"
         android:text="@string/betatest_description"
         android:textSize="12dp"
-        android:textColor="@color/fomes_light_warm_gray" />
+        android:textColor="@color/fomes_warm_gray_2" />
 
 </LinearLayout>

@@ -2,8 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/fomes_white">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.formakers.fomes.common.view.custom.RecommendAppItemView
         android:id="@+id/recommend_app_item_view"

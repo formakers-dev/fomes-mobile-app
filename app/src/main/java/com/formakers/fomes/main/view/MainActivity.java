@@ -106,8 +106,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
-        fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
         fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
+        fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
         contentsViewPager.setAdapter(fragmentPagerAdapter);
 
@@ -217,6 +217,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+        Log.d(TAG, "onTabSelected");
         Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
         wordtoSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tab.setText(wordtoSpan);
@@ -224,6 +225,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
+        Log.d(TAG, "onTabUnselected");
         Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
         wordtoSpan.setSpan(new StyleSpan(Typeface.NORMAL), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tab.setText(wordtoSpan);
