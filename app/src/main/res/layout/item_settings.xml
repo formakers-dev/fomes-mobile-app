@@ -11,7 +11,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:background="@color/fomes_white">
 
-    <TextView android:id="@+id/betatest_detail_title_textview"
+    <TextView android:id="@+id/title"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:textSize="16dp"

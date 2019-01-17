@@ -14,13 +14,57 @@
         android:background="@color/fomes_content_background_dark"
         android:descendantFocusability="blocksDescendants">
 
+        <TextView android:id="@+id/betatest_list_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+            android:text="테스트 목록"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/fomes_pale_gray"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/feedback_recyclerview"
+            app:layout_constraintVertical_bias="0.0"/>
+
+        <TextView android:id="@+id/betatest_notice_textview"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textSize="11dp"
+            android:textColor="@color/fomes_light_gray"
+            android:text="테스트 참여 후 1분 내에 '완료'가 표시됩니다."
+            app:layout_constraintStart_toEndOf="@id/betatest_list_textview"
+            app:layout_constraintBottom_toBottomOf="@id/betatest_list_textview" />
+
+        <TextView android:id="@+id/betatest_notice_more_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:paddingStart="6.5dp"
+            android:paddingEnd="6.5dp"
+            android:paddingTop="0.5dp"
+            android:paddingBottom="0.5dp"
+            android:gravity="center"
+            android:textSize="11dp"
+            android:textColor="@color/fomes_light_gray"
+            android:text="i"
+            android:background="@drawable/circle_background"
+            android:theme="@style/BetaTestTheme.InfoBackground"
+            app:layout_constraintStart_toEndOf="@id/betatest_notice_textview"
+            app:layout_constraintTop_toTopOf="@id/betatest_notice_textview"
+            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/feedback_recyclerview"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/betatest_list_textview"
             app:layout_constraintBottom_toBottomOf="parent"
             android:nestedScrollingEnabled="false"/>
 

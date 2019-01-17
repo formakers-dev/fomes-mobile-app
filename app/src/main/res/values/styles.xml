@@ -173,6 +173,12 @@
 
     <style name="BetaTestTheme"/>
 
+    <style name="BetaTestTheme.CardBackground">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_content_card_background</item>
+        <item name="item_stroke_color">@color/item_inner_divider</item>
+    </style>
+
     <style name="BetaTestTheme.DetailDialog">
         <item name="item_background_radius">0dp</item>
         <item name="item_solid_color">@color/fomes_content_card_background</item>
@@ -187,6 +193,11 @@
         <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/label_background_dark</item>
         <item name="item_stroke_color">@android:color/transparent</item>
+    </style>
+
+    <style name="BetaTestTheme.InfoBackground">
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/fomes_light_gray</item>
     </style>
 
 </resources>
