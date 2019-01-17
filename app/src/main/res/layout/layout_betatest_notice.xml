@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/fomes_gray_2"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/beta_test_notice_title"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:textColor="@color/fomes_white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/beta_test_motice_message_1"
+        android:textSize="12dp"
+        android:textColor="@color/fomes_light_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingTop="22dp"
+        android:paddingBottom="22dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/item_rect_rounded_corner_background"
+        android:theme="@style/BetaTestTheme.Notice.InnerBox">
+
+        <LinearLayout android:id="@+id/betatest_completed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:background="@drawable/item_rect_rounded_corner_background"
+            android:theme="@style/BetaTestTheme.CompletedLabelBackground"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@id/betatest_cardview"
+            app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"
+            app:layout_constraintEnd_toEndOf="@id/betatest_cardview"
+            app:layout_constraintStart_toStartOf="@id/betatest_cardview">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/beta_test_completed_label_sub_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="9dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/beta_test_completed_label_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/beta_test_notice_message_2"
+        android:textSize="12dp"
+        android:textColor="@color/fomes_light_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button android:id="@+id/notice_send_mail_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:gravity="center"
+        android:text="@string/contact_to_formakers"
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
+        android:foreground="@drawable/ripple"
+        android:background="@drawable/item_rect_rounded_corner_background"
+        android:theme="@style/BetaTestTheme.Notice.Button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout>

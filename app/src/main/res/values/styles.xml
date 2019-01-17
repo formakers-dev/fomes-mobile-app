@@ -211,9 +211,26 @@
     </style>
 
     <style name="BetaTestTheme.CompletedLabelBackground">
+        <item name="item_background_radius">0dp</item>
         <item name="item_solid_color">@color/beta_test_label_disable_background</item>
         <item name="item_stroke_color">@color/colorPrimary</item>
         <item name="item_stroke_width">4dp</item>
+    </style>
+
+    <style name="BetaTestTheme.Notice"/>
+
+    <style name="BetaTestTheme.Notice.InnerBox">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_30</item>
+        <item name="item_stroke_color">@color/item_inner_divider</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.Notice.Button">
+        <item name="item_background_radius">24dp</item>
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
     </style>
 
 </resources>
