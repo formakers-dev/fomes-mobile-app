@@ -80,13 +80,9 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
     }
 
     private void moveToNextPage() {
-        Log.d(TAG, "job registered result=" + this.presenter.registerSendDataJob());
-
         if (!this.presenter.isProvisiongProgress()) {
             getActivity().finish();
         } else {
-            this.presenter.registerPublicNotificationTopic();
-
             this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
             this.presenter.emitStartActivityAndFinishEvent(RecentAnalysisReportActivity.class);
         }

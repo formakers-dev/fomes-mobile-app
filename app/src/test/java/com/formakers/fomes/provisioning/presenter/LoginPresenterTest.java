@@ -5,13 +5,17 @@ import android.content.Intent;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.LoginContract;
-import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.provisioning.view.ProvisioningActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -41,6 +45,7 @@ import rx.schedulers.Schedulers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -54,7 +59,10 @@ public class LoginPresenterTest {
     @Inject GoogleSignInAPIHelper mockGoogleSignInAPIHelper;
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
     @Inject UserDAO mockUserDAO;
+    @Inject JobManager mockJobManager;
+    @Inject ChannelManager mockChannelManager;
 
+    @Mock GoogleSignInResult mockGoogleSignInResult;
     @Mock LoginContract.View mockView;
 
     LoginPresenter subject;
@@ -77,8 +85,17 @@ public class LoginPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
+        when(mockGoogleSignInResult.isSuccess()).thenReturn(true);
+
+        GoogleSignInAccount mockAccount = mock(GoogleSignInAccount.class);
+        when(mockAccount.getIdToken()).thenReturn("testIdToken");
+        when(mockAccount.getId()).thenReturn("testId");
+        when(mockAccount.getEmail()).thenReturn("testEmail");
+        when(mockAccount.getDisplayName()).thenReturn("testName");
+        when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockAccount);
+
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO);
+        subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO, mockJobManager, mockChannelManager);
     }
 
     @After
@@ -88,20 +105,13 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void requestSignUpBy_호출시__받아온_구글정보로_가입요청을_시도한다() {
-        GoogleSignInResult mockResult = mock(GoogleSignInResult.class);
-        when(mockResult.isSuccess()).thenReturn(true);
-
-        GoogleSignInAccount mockAccount = mock(GoogleSignInAccount.class);
-        when(mockAccount.getIdToken()).thenReturn("testIdToken");
-        when(mockAccount.getId()).thenReturn("testId");
-        when(mockAccount.getEmail()).thenReturn("testEmail");
-        when(mockResult.getSignInAccount()).thenReturn(mockAccount);
+    public void signUpOrSignIn_호출시__프로비저닝_단계면__받아온_구글정보로_가입요청을_시도한다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
         when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("anything"));
 
-        subject.requestSignUpBy(mockResult);
+        subject.signUpOrSignIn(mockGoogleSignInResult);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserService).signUp(eq("testIdToken"), userCaptor.capture());
@@ -110,25 +120,15 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void requestSignUpBy_호출시__가입요청_성공시__FomesToken_및_유저정보을_저장한다() {
-        GoogleSignInResult mockResult = mock(GoogleSignInResult.class);
-        when(mockResult.isSuccess()).thenReturn(true);
-
-        GoogleSignInAccount mockAccount = mock(GoogleSignInAccount.class);
-        when(mockAccount.getIdToken()).thenReturn("testIdToken");
-        when(mockAccount.getId()).thenReturn("testId");
-        when(mockAccount.getEmail()).thenReturn("testEmail");
-        when(mockAccount.getDisplayName()).thenReturn("testName");
-        when(mockResult.getSignInAccount()).thenReturn(mockAccount);
+    public void signUp_성공시__유저정보를_내부_디비에_저장한다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
         when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("testFomesToken"));
 
-        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
-        subject.requestSignUpBy(mockResult).subscribe(testSubscriber);
+        subject.signUpOrSignIn(mockGoogleSignInResult);
 
-        verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
-
+        // 유저정보 내부디비 저장
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
 
@@ -136,6 +136,113 @@ public class LoginPresenterTest {
         assertThat(user.getName()).isEqualTo("testName");
         assertThat(user.getEmail()).isEqualTo("testEmail");
         assertThat(user.getRegistrationToken()).isEqualTo("testRegistrationToken");
+    }
+
+    @Test
+    public void singUp성공시__FomesToken저장_공지채널등록_단기통계데이터작업등록() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
+
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("testFomesToken"));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        // 포메스 토큰 저장
+        verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
+
+        // 공지 채널 등록
+        verify(mockChannelManager).subscribePublicTopic();
+
+        // 단기 통계 데이터 작업 등록
+        verify(mockJobManager).registerSendDataJob(eq(JobManager.JOB_ID_SEND_DATA));
+    }
+
+    @Test
+    public void singUp성공시__프로비저닝_플로우로_넘어가는_요청을_보낸다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
+
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("testFomesToken"));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockView).startActivityAndFinish(eq(ProvisioningActivity.class));
+    }
+
+    @Test
+    public void signUpOrSignIn_호출시__프로비저닝_단계가_아니면__받아온_구글정보로_로그인요청을_시도한다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockUserService).signIn(eq("testIdToken"));
+    }
+
+    @Test
+    public void singIn성공시__프로비저닝_단계를_완료시킨다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockUserService).signIn(eq("testIdToken"));
+
+        // 포메스 토큰 저장
+        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(eq(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED));
+    }
+
+    @Test
+    public void singIn성공시__FomesToken저장_공지채널등록_단기통계데이터작업등록() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockUserService).signIn(eq("testIdToken"));
+
+        // 포메스 토큰 저장
+        verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
+
+        // 공지 채널 등록
+        verify(mockChannelManager).subscribePublicTopic();
+
+        // 단기 통계 데이터 작업 등록
+        verify(mockJobManager).registerSendDataJob(eq(JobManager.JOB_ID_SEND_DATA));
+    }
+
+    @Test
+    public void singIn성공시__메인화면으로_넘어가는_요청을_보낸다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockUserService).signIn(eq("testIdToken"));
+
+        verify(mockView).startActivityAndFinish(eq(MainActivity.class));
+    }
+
+    @Test
+    public void signUpOrSignIn실패시__실패문구를_토스트로_띄우도록_요청한다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+
+        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signIn(anyString())).thenReturn(Observable.error(new Throwable()));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockUserService).signIn(eq("testIdToken"));
+
+        verify(mockView).showToast(contains("실패"));
     }
 
     @Test

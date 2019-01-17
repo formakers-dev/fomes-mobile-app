@@ -28,6 +28,7 @@ public class UserDAO {
     }
 
     public void updateUserInfo(User userInfo) {
+        Log.d(TAG, "updateUserInfo");
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction(realm -> {
                 UserRealmObject userRealmObject = realm.where(UserRealmObject.class).findFirst();

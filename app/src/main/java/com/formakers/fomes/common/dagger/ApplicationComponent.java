@@ -2,6 +2,7 @@ package com.formakers.fomes.common.dagger;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
@@ -9,6 +10,7 @@ import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.noti.MessagingService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
@@ -40,6 +42,8 @@ public interface ApplicationComponent {
 
     UserDAO userDAO();
     RequestManager requestManager();
+    JobManager jobManager();
+    ChannelManager channelManager();
 
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);

@@ -9,13 +9,17 @@ import rx.Single;
 
 public interface LoginContract {
     interface Presenter {
-        Single<String> requestSignUpBy(GoogleSignInResult googleSignInResult);
+        void signUpOrSignIn(GoogleSignInResult googleSignInResult);
         Single<GoogleSignInResult> googleSilentSignIn();
+        int registerSendDataJob();
+        void registerPublicNotificationTopic();
 
         Intent getGoogleSignInIntent();
         GoogleSignInResult convertGoogleSignInResult(Intent googleUserData);
 
         boolean isProvisioningProgress();
+
+        void unsubscribe();
     }
 
     interface View extends BaseView<Presenter> {

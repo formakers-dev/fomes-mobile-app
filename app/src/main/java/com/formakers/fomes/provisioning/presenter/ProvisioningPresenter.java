@@ -128,15 +128,4 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
         return this.sharedPreferencesHelper.getProvisioningProgressStatus()
                 != FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED;
     }
-
-    @Override
-    public int registerSendDataJob() {
-        return this.jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
-    }
-
-    @Override
-    public void registerPublicNotificationTopic() {
-        channelManager.subscribePublicTopic();
-    }
-
 }
