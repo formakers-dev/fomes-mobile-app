@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/fomes_face_cry"
+    android:drawable="@drawable/fomes_watching"
     android:insetTop="65dp"
     android:insetBottom="65dp" />
