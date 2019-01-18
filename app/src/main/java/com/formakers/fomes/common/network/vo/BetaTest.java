@@ -201,7 +201,7 @@ public class BetaTest implements Parcelable {
     }
 
     public long getRemainDays() {
-        return (getCloseDate().getTime() / 1000 - getCurrentDate().getTime() / 1000) / (24 * 60 * 60);
+        return DateUtil.calculateDdays(getCurrentDate().getTime(), getCloseDate().getTime());
     }
 
     @Override

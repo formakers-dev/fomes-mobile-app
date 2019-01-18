@@ -77,7 +77,10 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         viewHolder.testTypeTextView.setText(item.getTypeTags().get(0));
-        viewHolder.projectStatusTextView.setText(String.format(context.getString(R.string.betatest_project_status_format), (item.getCloseDate().getTime()/1000 - new Date().getTime()/1000) / (24*60*60)));
+
+        long remainDays = item.getRemainDays();
+        viewHolder.projectStatusTextView.setText(remainDays > 0 ? String.format(context.getString(R.string.betatest_project_status_format), remainDays) : context.getString(R.string.beta_test_today_close));
+
         viewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
         viewHolder.amountTextView.setText(item.getAmount());
 

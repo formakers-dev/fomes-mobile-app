@@ -135,6 +135,7 @@
     <string name="beta_test_closed_label_sub_title">아쉬워요…흑흑</string>
     <string name="beta_test_closed_label_title">종료된 테스트</string>
     <string name="beta_test_empty_text_format">%s 님께 도착할 테스트를 기다리고 있어요.\n테스트가 도착하면 포메스가 알려드릴게요.</string>
+    <string name="beta_test_today_close">오늘 종료</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>

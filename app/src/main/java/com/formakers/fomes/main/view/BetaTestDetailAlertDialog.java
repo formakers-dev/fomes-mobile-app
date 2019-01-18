@@ -23,7 +23,6 @@ import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
 
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -84,7 +83,10 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
         }
 
         testTypeTextView.setText(betaTest.getTypeTags().get(0));
-        projectStatusTextView.setText(String.format(getString(R.string.betatest_project_status_format), betaTest.getRemainDays()));
+
+        long remainDays = betaTest.getRemainDays();
+        projectStatusTextView.setText(remainDays > 0 ? String.format(getString(R.string.betatest_project_status_format), remainDays) : getString(R.string.beta_test_today_close));
+
         requiredTimeTextView.setText(String.format(getString(R.string.betatest_required_time_format), betaTest.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
         amountTextView.setText(betaTest.getAmount());
 
