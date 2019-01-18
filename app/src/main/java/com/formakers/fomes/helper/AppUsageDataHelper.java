@@ -2,6 +2,7 @@ package com.formakers.fomes.helper;
 
 import android.support.annotation.NonNull;
 
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.model.EventStat;
@@ -13,6 +14,7 @@ import com.formakers.fomes.common.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,7 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 
 @Singleton
 public class AppUsageDataHelper {
+    private static final String TAG = "AppUsageDataHelper";
     public static final int DEFAULT_APP_USAGE_DURATION_DAYS = 7;
 
     private final AndroidNativeHelper androidNativeHelper;
@@ -83,6 +86,7 @@ public class AppUsageDataHelper {
         final long to = timeHelper.getStatBasedCurrentTime();
         final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
 
+        Log.d(TAG, "shortTermStats Size=" + shortTermStatList.size() + " from=" + new Date(from));
         return appStatService.sendShortTermStats(shortTermStatList)
                 .observeOn(Schedulers.io())
                 .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(to));

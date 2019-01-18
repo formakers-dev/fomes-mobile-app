@@ -29,8 +29,7 @@ public class JobManager {
 
     public int registerSendDataJob(int jobId) {
         return jobScheduler.schedule(new JobInfo.Builder(jobId, new ComponentName(context, SendDataJobService.class))
-                .setMinimumLatency(BuildConfig.DEBUG ? 1L : 21600000L)   // 6 hours
-                .setOverrideDeadline(BuildConfig.DEBUG ? 1L :28800000L) // 8 hours
+                .setPeriodic(BuildConfig.DEBUG ? 1L : 21600000L) // 6 hours
                 .setPersisted(true)
                 .setRequiresCharging(true)
                 .build());

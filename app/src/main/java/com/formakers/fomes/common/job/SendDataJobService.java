@@ -13,9 +13,14 @@ import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Completable;
+import rx.Observable;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 public class SendDataJobService extends JobService {
@@ -29,7 +34,8 @@ public class SendDataJobService extends JobService {
     @Inject AppStatService appStatService;
     @Inject ChannelManager channelManager;
     @Inject UserDAO userDAO;
-    @Inject JobManager jobManager;
+
+    private Subscription subscription;
 
     @Override
     public void onCreate() {
@@ -48,25 +54,51 @@ public class SendDataJobService extends JobService {
             Log.d(TAG, "[" + params.getJobId() + "] isOverrideDeadlineExpired!");
         }
 
+        // 1. 공지용 전체 채널 구독시키기
+        channelManager.subscribePublicTopic();
+
+        List<Completable> completableList = new ArrayList<>();
+
+        // 2. 백업용 : 유저정보 서버로 올리기
+        completableList.add(userDAO.getUserInfo()
+                .observeOn(Schedulers.io())
+                .flatMapCompletable(user -> userService.updateUser(user)));
+
+        // 3. 앱 사용 정보 접근 권한이 있을 때 : 앱 사용 데이터를 서버로 보낸다
         if (androidNativeHelper.hasUsageStatsPermission()) {
             Log.d(TAG, "Start to update data!");
 
-            Completable.merge(appUsageDataHelper.sendShortTermStats()
-                    , appStatService.sendAppUsages(appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS)))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .doAfterTerminate(() -> this.jobFinished(params, true))
-                    .subscribe(() -> Log.d(TAG, "Send Data Success"), e -> Log.e(TAG, "Send Data Fail : " + e));
+            completableList.add(appUsageDataHelper.sendShortTermStats()
+                    .doOnSubscribe(a -> Log.i(TAG, "sendShortTermStats) onSubscribe"))
+                    .doOnCompleted(() -> Log.i(TAG, "sendShortTermStats) onCompleted"))
+            );
+            completableList.add(appStatService.sendAppUsages(
+                    appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS)
+            ));
         }
 
-        userDAO.getUserInfo()
+        subscription = Completable.merge(Observable.from(completableList))
+                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMapCompletable(user -> userService.updateUser(user))
-                .subscribe(() -> Log.d(TAG, "Send UserInfo Success"), e -> Log.d(TAG, "Send UserInfo Fail : " + e));
-
-        channelManager.subscribePublicTopic();
+                .doAfterTerminate(() -> {
+                    Log.i(TAG, "doAfterTerminate");
+                    this.jobFinished(params, true);
+                })
+                .subscribe(() -> {
+                            Log.i(TAG, "Success!");
+                        }, e -> Log.e(TAG, "Fail error=" + String.valueOf(e)));
 
         return true;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+
+        subscription.unsubscribe();
+
+        super.onDestroy();
     }
 
     @Override
@@ -75,8 +107,8 @@ public class SendDataJobService extends JobService {
 
         // Job 실행 도중 실행 조건이 해제되었을 경우, onStopJob()이 호출됨.
         // 예외처리 필요
-        jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
 
+        // true를 리턴하면 재스케쥴링 한다.
         return true;
     }
 }
