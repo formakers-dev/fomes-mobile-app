@@ -9,6 +9,8 @@ import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestFragmentScope;
 import com.formakers.fomes.model.User;
 
+import java.util.Collections;
+
 import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -54,10 +56,23 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                         .doOnSubscribe(() -> view.showLoading())
                         .doAfterTerminate(() -> view.hideLoading())
                         .subscribe(betaTests -> {
-                            if (betaTests == null || betaTests.size() <= 0) {
+                            if (betaTests == null || betaTests.isEmpty()) {
                                 view.setUserNickName(user.getNickName());
                                 view.showEmptyView();
                             } else {
+                                // TODO : 정렬 로직이 프레젠터에 있는게 맞을까? 고민되네... 논의후 이동 필요
+                                Collections.sort(betaTests, (betaTest1, betaTest2) -> {
+                                    int compareWithIsOpened = Boolean.compare(betaTest1.isOpened(), betaTest2.isOpened());
+                                    if (compareWithIsOpened != 0)
+                                        return -1 * compareWithIsOpened;
+
+                                    int compareWithIsCompleted = Boolean.compare(betaTest1.isCompleted(), betaTest2.isCompleted());
+                                    if (compareWithIsCompleted != 0)
+                                        return (betaTest1.isOpened() ? 1 : -1) * compareWithIsCompleted;
+
+                                    return betaTest1.getCloseDate().compareTo(betaTest2.getCloseDate());
+                                });
+
                                 betaTestListAdapterModel.addAll(betaTests);
                                 view.refreshBetaTestList();
                                 view.showBetaTestListView();

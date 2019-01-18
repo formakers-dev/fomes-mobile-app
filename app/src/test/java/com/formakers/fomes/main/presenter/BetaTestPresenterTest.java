@@ -10,10 +10,13 @@ import com.formakers.fomes.model.User;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import rx.Scheduler;
@@ -59,8 +62,8 @@ public class BetaTestPresenterTest {
         dummyUser = new User().setEmail("user@gmail.com").setNickName("dummyNickName");
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(dummyUser));
 
-        betaTests.add(new BetaTest().setTitle("베타테스트1"));
-        betaTests.add(new BetaTest().setTitle("베타테스트2"));
+        betaTests.add(new BetaTest().setTitle("베타테스트1").setCloseDate(new Date()));
+        betaTests.add(new BetaTest().setTitle("베타테스트2").setCloseDate(new Date()));
         when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(betaTests));
 
         when(mockAdapterModel.getItem(0)).thenReturn(betaTests.get(0));
@@ -79,6 +82,35 @@ public class BetaTestPresenterTest {
         verify(mockAdapterModel).addAll(eq(betaTests));
         verify(mockView).refreshBetaTestList();
         verify(mockView).showBetaTestListView();
+    }
+
+    @Test
+    public void load__호출시__결과로_받은_테스트존_리스트를_정렬된_순서로_화면에_보여준다() {
+        List<BetaTest> unsortedBetaTestList = new ArrayList();
+        unsortedBetaTestList.add(new BetaTest().setId(3).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(2).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(5).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-01T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(7).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-01T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(4).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(1).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(8).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(6).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
+        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
+
+        subject.load();
+
+        ArgumentCaptor<List<BetaTest>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mockAdapterModel).addAll(captor.capture());
+
+        List<BetaTest> sortedBetaTestList = captor.getValue();
+        assertThat(sortedBetaTestList.get(0).getId()).isEqualTo(1);
+        assertThat(sortedBetaTestList.get(1).getId()).isEqualTo(2);
+        assertThat(sortedBetaTestList.get(2).getId()).isEqualTo(3);
+        assertThat(sortedBetaTestList.get(3).getId()).isEqualTo(4);
+        assertThat(sortedBetaTestList.get(4).getId()).isEqualTo(5);
+        assertThat(sortedBetaTestList.get(5).getId()).isEqualTo(6);
+        assertThat(sortedBetaTestList.get(6).getId()).isEqualTo(7);
+        assertThat(sortedBetaTestList.get(7).getId()).isEqualTo(8);
     }
 
     @Test
