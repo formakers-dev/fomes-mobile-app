@@ -20,6 +20,7 @@ public class BetaTest implements Parcelable {
 
     Date openDate;
     Date closeDate;
+    Date currentDate;
 
     List<String> apps;
 
@@ -113,6 +114,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public BetaTest setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+        return this;
+    }
+
     public List<String> getApps() {
         return apps;
     }
@@ -190,6 +200,10 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public long getRemainDays() {
+        return (getCloseDate().getTime() / 1000 - getCurrentDate().getTime() / 1000) / (24 * 60 * 60);
+    }
+
     @Override
     public String toString() {
         return "BetaTest{" +
@@ -201,6 +215,7 @@ public class BetaTest implements Parcelable {
                 ", typeTags=" + typeTags +
                 ", openDate=" + openDate +
                 ", closeDate=" + closeDate +
+                ", currentDate=" + currentDate +
                 ", apps=" + apps +
                 ", actionType='" + actionType + '\'' +
                 ", action='" + action + '\'' +
@@ -226,6 +241,7 @@ public class BetaTest implements Parcelable {
         dest.writeStringList(typeTags);
         dest.writeLong(openDate.getTime());
         dest.writeLong(closeDate.getTime());
+        dest.writeLong(currentDate.getTime());
         dest.writeStringList(apps);
         dest.writeString(actionType);
         dest.writeString(action);
@@ -245,6 +261,7 @@ public class BetaTest implements Parcelable {
         in.readStringList(typeTags);
         openDate = new Date(in.readLong());
         closeDate = new Date(in.readLong());
+        currentDate = new Date(in.readLong());
         in.readStringList(apps);
         actionType = in.readString();
         action = in.readString();

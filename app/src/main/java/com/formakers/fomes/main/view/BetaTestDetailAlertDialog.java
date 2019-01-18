@@ -84,7 +84,7 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
         }
 
         testTypeTextView.setText(betaTest.getTypeTags().get(0));
-        projectStatusTextView.setText(String.format(getString(R.string.betatest_project_status_format), (betaTest.getCloseDate().getTime()/1000 - new Date().getTime()/1000) / (24*60*60)));
+        projectStatusTextView.setText(String.format(getString(R.string.betatest_project_status_format), betaTest.getRemainDays()));
         requiredTimeTextView.setText(String.format(getString(R.string.betatest_required_time_format), betaTest.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
         amountTextView.setText(betaTest.getAmount());
 
