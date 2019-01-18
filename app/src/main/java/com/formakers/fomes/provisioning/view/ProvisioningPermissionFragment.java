@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
-import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.view.BaseFragment;
+import com.formakers.fomes.main.view.MainActivity;
+import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 public class ProvisioningPermissionFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
@@ -81,6 +81,7 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
 
     private void moveToNextPage() {
         if (!this.presenter.isProvisiongProgress()) {
+            startActivity(new Intent(context, MainActivity.class));
             getActivity().finish();
         } else {
             this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);

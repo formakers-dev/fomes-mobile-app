@@ -1,6 +1,8 @@
 package com.formakers.fomes.common;
 
 public interface FomesConstants {
+    int MIGRATION_VERSION = 1;
+
     interface EXTRA {
         String START_FRAGMENT_NAME = "EXTRA_FRAGEMENT_NAME";
         String APPINFO="EXTRA_APPINFO";

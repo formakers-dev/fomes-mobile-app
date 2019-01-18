@@ -62,6 +62,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG,"onCreate");
+
         this.setTitle(R.string.common_empty_string);
         this.setContentView(R.layout.activity_main);
         setPresenter(new MainPresenter(this));
@@ -73,6 +75,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        Log.v(TAG,"onPostCreate");
 
         Log.i(TAG, "isRegisteredSendDataJob=" + presenter.checkRegisteredSendDataJob());
 
