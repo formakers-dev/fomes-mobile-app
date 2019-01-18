@@ -212,7 +212,7 @@
 
     </LinearLayout>
 
-    <LinearLayout android:id="@+id/betatest_colosed_label"
+    <LinearLayout android:id="@+id/betatest_closed_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"

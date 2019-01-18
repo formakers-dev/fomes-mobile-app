@@ -90,8 +90,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
 
         // Enable 처리
-        viewHolder.itemView.setEnabled(!item.isCompleted());
+        viewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
         viewHolder.completedLabelView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
+        viewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
 
         viewHolder.disableBackgroundView.setVisibility(!viewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
     }
@@ -147,6 +148,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView rewardTextView;
         View disableBackgroundView;
         View completedLabelView;
+        View closedLabelView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -161,6 +163,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             rewardTextView = itemView.findViewById(R.id.betatest_reward);
             disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
             completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
+            closedLabelView = itemView.findViewById(R.id.betatest_closed_label);
         }
     }
 }
