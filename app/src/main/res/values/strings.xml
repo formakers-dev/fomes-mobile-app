@@ -39,6 +39,7 @@
     <string name="common_number_two">2</string>
     <string name="common_number_three">3</string>
     <string name="common_dash">-</string>
+    <string name="common_close">종료</string>
 
     <!-- Fomes - locality strings -->
     <!-- Base -->
