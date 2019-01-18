@@ -115,6 +115,11 @@ public class DateUtil {
                     converted = milliseconds;
             }
 
-            return (float) Math.ceil(converted * (10 * floatPoint) ) / (10 * floatPoint);
+            int temp = 1;
+            if (floatPoint > 0) {
+                temp = 10 * floatPoint;
+            }
+
+            return (float) Math.ceil(converted * temp) / temp;
     }
 }

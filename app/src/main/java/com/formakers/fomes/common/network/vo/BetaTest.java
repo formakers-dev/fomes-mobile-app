@@ -3,6 +3,8 @@ package com.formakers.fomes.common.network.vo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.formakers.fomes.common.util.DateUtil;
+
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class BetaTest implements Parcelable {
     String action;
 
     String reward;
+
+    long requiredTime;
+    String amount;
 
     boolean isOpened;
     boolean isCompleted;
@@ -144,6 +149,29 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    // convertType : DateUtil.CONVERT_TYPE_.*
+    public float getRequiredTime(int convertType) {
+        return DateUtil.convertDurationFromMilliseconds(convertType, requiredTime, 0);
+    }
+
+    public long getRequiredTime() {
+        return requiredTime;
+    }
+
+    public BetaTest setRequiredTime(long requiredTime) {
+        this.requiredTime = requiredTime;
+        return this;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public BetaTest setAmount(String amount) {
+        this.amount = amount;
+        return this;
+    }
+
     public boolean isOpened() {
         return isOpened;
     }
@@ -177,6 +205,8 @@ public class BetaTest implements Parcelable {
                 ", actionType='" + actionType + '\'' +
                 ", action='" + action + '\'' +
                 ", reward='" + reward + '\'' +
+                ", requiredTime=" + requiredTime +
+                ", amount='" + amount + '\'' +
                 ", isOpened=" + isOpened +
                 ", isCompleted=" + isCompleted +
                 '}';
@@ -200,6 +230,8 @@ public class BetaTest implements Parcelable {
         dest.writeString(actionType);
         dest.writeString(action);
         dest.writeString(reward);
+        dest.writeLong(requiredTime);
+        dest.writeString(amount);
         dest.writeInt(isOpened ? 1 : 0);
         dest.writeInt(isCompleted ? 1 : 0);
     }
@@ -217,6 +249,8 @@ public class BetaTest implements Parcelable {
         actionType = in.readString();
         action = in.readString();
         reward = in.readString();
+        requiredTime = in.readLong();
+        amount = in.readString();
         isOpened = (in.readInt() == 1);
         isCompleted = (in.readInt() == 1);
     }

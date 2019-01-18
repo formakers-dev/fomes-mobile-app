@@ -125,13 +125,13 @@
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_size"
+                app:layout_constraintEnd_toStartOf="@+id/betatest_amount"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="약 3분" />
 
             <TextView
-                android:id="@+id/betatest_size"
+                android:id="@+id/betatest_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -157,7 +157,7 @@
                 android:textSize="12dp"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintTop_toTopOf="@id/betatest_required_time"
-                app:layout_constraintStart_toEndOf="@id/betatest_size"
+                app:layout_constraintStart_toEndOf="@id/betatest_amount"
                 app:layout_constraintEnd_toStartOf="@id/betatest_overview_imageview"
                 app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
                 tools:text="보상 없음" />

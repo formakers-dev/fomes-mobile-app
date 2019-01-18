@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.util.DateUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +40,7 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
     @BindView(R.id.betatest_detail_test_type)       TextView testTypeTextView;
     @BindView(R.id.betatest_detail_project_status)  TextView projectStatusTextView;
     @BindView(R.id.betatest_detail_required_time)   TextView requiredTimeTextView;
-    @BindView(R.id.betatest_detail_size)            TextView sizeTextView;
+    @BindView(R.id.betatest_detail_amount)          TextView amountTextView;
     @BindView(R.id.betatest_detail_reward)          TextView rewardTextView;
     @BindView(R.id.join_button)                     Button   joinButton;
 
@@ -84,8 +85,8 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
 
         testTypeTextView.setText(betaTest.getTypeTags().get(0));
         projectStatusTextView.setText(String.format(getString(R.string.betatest_project_status_format), (betaTest.getCloseDate().getTime()/1000 - new Date().getTime()/1000) / (24*60*60)));
-        requiredTimeTextView.setText(String.format(getString(R.string.betatest_required_time_format), 3));
-//        sizeTextView.setText(betaTest.getTestSize());
+        requiredTimeTextView.setText(String.format(getString(R.string.betatest_required_time_format), betaTest.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
+        amountTextView.setText(betaTest.getAmount());
 
         String reward = betaTest.getReward();
         if (TextUtils.isEmpty(reward)) {

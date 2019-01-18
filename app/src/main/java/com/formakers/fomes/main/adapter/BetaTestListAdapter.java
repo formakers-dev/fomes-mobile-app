@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
@@ -77,8 +78,8 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         viewHolder.testTypeTextView.setText(item.getTypeTags().get(0));
         viewHolder.projectStatusTextView.setText(String.format(context.getString(R.string.betatest_project_status_format), (item.getCloseDate().getTime()/1000 - new Date().getTime()/1000) / (24*60*60)));
-        viewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), 3));
-//        sizeTextView.setText(betaTest.getTestSize());
+        viewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
+        viewHolder.amountTextView.setText(item.getAmount());
 
         String reward = item.getReward();
         if (TextUtils.isEmpty(reward)) {
@@ -144,7 +145,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView testTypeTextView;
         TextView projectStatusTextView;
         TextView requiredTimeTextView;
-        TextView sizeTextView;
+        TextView amountTextView;
         TextView rewardTextView;
         View disableBackgroundView;
         View completedLabelView;
@@ -159,7 +160,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
             requiredTimeTextView = itemView.findViewById(R.id.betatest_required_time);
-            sizeTextView = itemView.findViewById(R.id.betatest_size);
+            amountTextView = itemView.findViewById(R.id.betatest_amount);
             rewardTextView = itemView.findViewById(R.id.betatest_reward);
             disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
             completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
