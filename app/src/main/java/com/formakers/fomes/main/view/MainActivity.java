@@ -1,7 +1,6 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -212,18 +208,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        Log.d(TAG, "onTabSelected");
-        Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
-        wordtoSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tab.setText(wordtoSpan);
+
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-        Log.d(TAG, "onTabUnselected");
-        Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
-        wordtoSpan.setSpan(new StyleSpan(Typeface.NORMAL), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tab.setText(wordtoSpan);
+
     }
 
     @Override
