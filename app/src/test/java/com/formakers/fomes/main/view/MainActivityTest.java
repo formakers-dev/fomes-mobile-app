@@ -146,7 +146,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.my_recent_analysis);
-        when(item.getTitle()).thenReturn("내 분석 다시보기");
+        when(item.getTitle()).thenReturn("게임 성향 분석");
 
         launchActivity();
         subject.onNavigationItemSelected(item);

@@ -120,7 +120,7 @@
     <string name="main_tab_betatest">테스트 참여 존</string>
     <string name="main_tab_event">이벤트</string>
     <string name="main_menu_my_wish_list">즐겨찾기</string>
-    <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
+    <string name="main_menu_my_recent_analysis">게임 성향 분석</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
 
