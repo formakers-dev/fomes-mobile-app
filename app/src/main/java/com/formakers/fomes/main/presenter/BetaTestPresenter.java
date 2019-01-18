@@ -54,8 +54,14 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                         .doOnSubscribe(() -> view.showLoading())
                         .doAfterTerminate(() -> view.hideLoading())
                         .subscribe(betaTests -> {
-                            betaTestListAdapterModel.addAll(betaTests);
-                            view.refreshBetaTestList();
+                            if (betaTests == null || betaTests.size() <= 0) {
+                                view.setUserNickName(user.getNickName());
+                                view.showEmptyView();
+                            } else {
+                                betaTestListAdapterModel.addAll(betaTests);
+                                view.refreshBetaTestList();
+                                view.showBetaTestListView();
+                            }
                         }, e -> Log.e(TAG, String.valueOf(e)))
         );
     }

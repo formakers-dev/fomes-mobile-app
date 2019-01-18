@@ -16,9 +16,13 @@ public interface BetaTestContract {
 
     interface View extends BaseView<Presenter> {
         void setAdapterView(BetaTestListAdapterContract.View adapterView);
+        void setUserNickName(String nickName);
 
         void showLoading();
         void hideLoading();
+        void showEmptyView();
+
+        void showBetaTestListView();
 
         void refreshBetaTestList();
     }

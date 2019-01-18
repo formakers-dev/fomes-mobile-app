@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
@@ -36,6 +37,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
+    @BindView(R.id.betatest_empty_view) View emptyView;
+    @BindView(R.id.betatest_empty_textview) TextView emptyTextView;
 
     @Inject BetaTestContract.Presenter presenter;
     BetaTestListAdapterContract.View betaTestListAdapterView;
@@ -106,6 +109,11 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     }
 
     @Override
+    public void setUserNickName(String nickName) {
+        emptyTextView.setText(String.format(getString(R.string.beta_test_empty_text_format), nickName));
+    }
+
+    @Override
     public void showLoading() {
         loadingBar.setVisibility(View.VISIBLE);
     }
@@ -113,6 +121,18 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Override
     public void hideLoading() {
         loadingBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showBetaTestListView() {
+        emptyView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

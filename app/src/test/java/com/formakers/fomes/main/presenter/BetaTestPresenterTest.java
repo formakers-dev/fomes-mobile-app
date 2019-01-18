@@ -7,6 +7,7 @@ import com.formakers.fomes.main.adapter.BetaTestListAdapter;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.model.User;
 
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -55,7 +56,7 @@ public class BetaTestPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        dummyUser = new User().setEmail("user@gmail.com");
+        dummyUser = new User().setEmail("user@gmail.com").setNickName("dummyNickName");
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(dummyUser));
 
         betaTests.add(new BetaTest().setTitle("베타테스트1"));
@@ -77,6 +78,19 @@ public class BetaTestPresenterTest {
         verify(mockRequestservice).getBetaTestList();
         verify(mockAdapterModel).addAll(eq(betaTests));
         verify(mockView).refreshBetaTestList();
+        verify(mockView).showBetaTestListView();
+    }
+
+    @Test
+    public void load__호출시__빈리스트가_올_경우에는_비었다는_내용을_알리는_화면을_보여준다() {
+        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(Lists.emptyList()));
+
+        subject.load();
+
+        verify(mockUserDAO).getUserInfo();
+        verify(mockRequestservice).getBetaTestList();
+        verify(mockView).setUserNickName(eq("dummyNickName"));
+        verify(mockView).showEmptyView();
     }
 
     @Test
