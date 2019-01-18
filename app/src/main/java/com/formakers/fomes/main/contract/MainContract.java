@@ -11,6 +11,7 @@ public interface MainContract {
     interface Presenter {
         Single<User> requestUserInfo();
         Completable requestVerifyAccessToken();
+        boolean checkRegisteredSendDataJob();
     }
 
     interface View extends BaseView<Presenter> {
