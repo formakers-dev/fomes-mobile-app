@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 @BetaTestFragmentScope
 public class BetaTestPresenter implements BetaTestContract.Presenter {
@@ -25,6 +26,8 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private BetaTestService betaTestService;
     private UserDAO userDAO;
     private User user;
+
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
     public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, UserDAO userDAO) {
@@ -40,19 +43,21 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
 
     @Override
     public void load() {
-        userDAO.getUserInfo()
-                .observeOn(Schedulers.io())
-                .flatMap(user -> {
-                    this.user = user;
-                    return betaTestService.getBetaTestList();
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(() -> view.showLoading())
-                .doAfterTerminate(() -> view.hideLoading())
-                .subscribe(betaTests -> {
-                    betaTestListAdapterModel.addAll(betaTests);
-                    view.refreshBetaTestList();
-                }, e -> Log.e(TAG, String.valueOf(e)));
+        compositeSubscription.add(
+                userDAO.getUserInfo()
+                        .observeOn(Schedulers.io())
+                        .flatMap(user -> {
+                            this.user = user;
+                            return betaTestService.getBetaTestList();
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(() -> view.showLoading())
+                        .doAfterTerminate(() -> view.hideLoading())
+                        .subscribe(betaTests -> {
+                            betaTestListAdapterModel.addAll(betaTests);
+                            view.refreshBetaTestList();
+                        }, e -> Log.e(TAG, String.valueOf(e)))
+        );
     }
 
     @Override
@@ -63,5 +68,12 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     @Override
     public String getUserEmail() {
         return this.user.getEmail();
+    }
+
+    @Override
+    public void unsubscribe() {
+        if (compositeSubscription != null) {
+            compositeSubscription.clear();
+        }
     }
 }

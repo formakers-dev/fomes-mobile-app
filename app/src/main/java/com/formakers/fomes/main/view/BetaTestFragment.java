@@ -137,4 +137,13 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 .setView(view)
                 .show();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (this.presenter != null) {
+            this.presenter.unsubscribe();
+        }
+    }
 }

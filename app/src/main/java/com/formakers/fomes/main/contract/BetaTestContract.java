@@ -11,6 +11,7 @@ public interface BetaTestContract {
         void load();
         BetaTest getBetaTestItem(int position);
         String getUserEmail();
+        void unsubscribe();
     }
 
     interface View extends BaseView<Presenter> {
