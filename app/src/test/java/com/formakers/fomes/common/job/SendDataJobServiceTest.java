@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Completable;
 import rx.Single;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
@@ -53,6 +54,7 @@ public class SendDataJobServiceTest {
     @Inject ChannelManager mockChannelManager;
     @Inject UserDAO mockUserDAO;
 
+    List<AppUsage> appUsages = new ArrayList<>();
     User mockUser = mock(User.class);
 
     @Before
@@ -62,6 +64,11 @@ public class SendDataJobServiceTest {
 
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
+        appUsages.add(new AppUsage("packageName1", 1000));
+        appUsages.add(new AppUsage("packageName2", 2000));
+
+        when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(appUsages);
+        when(mockAppUsageDataHelper.sendShortTermStats()).thenReturn(Completable.complete());
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
@@ -78,11 +85,6 @@ public class SendDataJobServiceTest {
 
     @Test
     public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() {
-        List<AppUsage> appUsages = new ArrayList<>();
-        appUsages.add(new AppUsage("packageName1", 1000));
-        appUsages.add(new AppUsage("packageName2", 2000));
-        when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(appUsages);
-
         JobParameters jobParameters = mock(JobParameters.class);
         when(jobParameters.getJobId()).thenReturn(1);
         when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
