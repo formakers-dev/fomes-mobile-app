@@ -127,6 +127,20 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.startEventBannerAutoSlide();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        presenter.stopEventBannerAutoSlide();
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -222,6 +236,16 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public void showNextEventBanner() {
+        if (eventViewPager == null || eventViewPager.getAdapter() == null || eventViewPager.getAdapter().getCount() < 2)
+            return;
+
+        int nextItem = (eventViewPager.getCurrentItem() < eventViewPager.getAdapter().getCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
+
+        eventViewPager.setCurrentItem(nextItem);
     }
 
     @Override

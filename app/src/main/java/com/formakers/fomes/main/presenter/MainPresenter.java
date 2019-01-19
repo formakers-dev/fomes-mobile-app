@@ -6,10 +6,15 @@ import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MainPresenter implements MainContract.Presenter {
 
@@ -18,6 +23,8 @@ public class MainPresenter implements MainContract.Presenter {
     @Inject JobManager jobManager;
 
     MainContract.View view;
+
+    Subscription autoSlideSubscription;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -45,5 +52,19 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public boolean checkRegisteredSendDataJob() {
         return jobManager.isRegisteredJob(JobManager.JOB_ID_SEND_DATA);
+    }
+
+    @Override
+    public void startEventBannerAutoSlide() {
+        autoSlideSubscription = Observable.interval(3000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(seq -> view.showNextEventBanner());
+    }
+
+    @Override
+    public void stopEventBannerAutoSlide() {
+        if(autoSlideSubscription != null && !autoSlideSubscription.isUnsubscribed()) {
+            autoSlideSubscription.unsubscribe();
+        }
     }
 }

@@ -17,10 +17,21 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
+import rx.schedulers.TestScheduler;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,8 +48,25 @@ public class MainPresenterTest {
 
     MainPresenter subject;
 
+    TestScheduler testScheduler;
+
     @Before
     public void setUp() throws Exception {
+        testScheduler = new TestScheduler();
+
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> testScheduler);
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+
         MockitoAnnotations.initMocks(this);
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
         subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockJobManager);
@@ -70,5 +98,19 @@ public class MainPresenterTest {
 
         verify(mockJobManager).isRegisteredJob(eq(JobManager.JOB_ID_SEND_DATA));
         assertThat(isRegistered).isTrue();
+    }
+
+    @Test
+    public void startEventBannerAutoSlide_호출시__3초마다_이벤트배너를_갱신한다() {
+        subject.startEventBannerAutoSlide();
+
+        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+        verify(mockView, never()).showNextEventBanner();
+
+        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+        verify(mockView).showNextEventBanner();
+
+        testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
+        verify(mockView, times(2)).showNextEventBanner();
     }
 }
