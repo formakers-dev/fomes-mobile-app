@@ -1,28 +1,18 @@
 package com.formakers.fomes.common.network.vo;
 
 public class EventLog {
-    String where;
-    String action;
+    String code;
     String ref;
 
     public EventLog() {
     }
 
-    public String getWhere() {
-        return where;
+    public String getCode() {
+        return code;
     }
 
-    public EventLog setWhere(String where) {
-        this.where = where;
-        return this;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public EventLog setAction(String action) {
-        this.action = action;
+    public EventLog setCode(String code) {
+        this.code = code;
         return this;
     }
 
@@ -38,8 +28,7 @@ public class EventLog {
     @Override
     public String toString() {
         return "EventLog{" +
-                "where='" + where + '\'' +
-                ", action='" + action + '\'' +
+                "code='" + code + '\'' +
                 ", ref='" + ref + '\'' +
                 '}';
     }
