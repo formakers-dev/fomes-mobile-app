@@ -7,6 +7,7 @@ import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.ConfigService;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.UserService;
@@ -36,6 +37,7 @@ public interface ApplicationComponent {
     RecommendService recommendService();
     AppService appService();
     BetaTestService requestService();
+    EventLogService eventLogService();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();

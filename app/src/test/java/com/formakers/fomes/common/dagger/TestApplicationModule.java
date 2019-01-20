@@ -9,11 +9,13 @@ import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.ConfigService;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.api.ConfigAPI;
+import com.formakers.fomes.common.network.api.EventLogAPI;
 import com.formakers.fomes.common.network.api.RecommendAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
@@ -89,6 +91,12 @@ public class TestApplicationModule {
         return mock(BetaTestAPI.class);
     }
 
+    @Provides
+    @Singleton
+    EventLogAPI eventLogAPI() {
+        return mock(EventLogAPI.class);
+    }
+
     /**
      * API Service
      */
@@ -126,6 +134,12 @@ public class TestApplicationModule {
     @Provides
     BetaTestService requestService() {
         return mock(BetaTestService.class);
+    }
+
+    @Singleton
+    @Provides
+    EventLogService eventLogService() {
+        return mock(EventLogService.class);
     }
 
     /**
