@@ -54,6 +54,7 @@ public interface FomesConstants {
             String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAP_BETA_TEST";
             String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAP_RECOMMEND";
             String BETA_TEST_FRAGMENT_TAP_ITEM = "BETA_TEST_TAP_ITEM";
+            String BETA_TEST_DETAIL_DIALOG_TAP_CONFIRM = "BETA_TEST_DETAIL_TAP_CONFIRM";
         }
     }
 }

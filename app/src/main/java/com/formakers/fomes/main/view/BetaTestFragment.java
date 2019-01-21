@@ -93,6 +93,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
                 BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
                 betaTestDetailAlertDialog.setArguments(bundle);
+                betaTestDetailAlertDialog.setPresenter(this.presenter);
                 betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
                 this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));

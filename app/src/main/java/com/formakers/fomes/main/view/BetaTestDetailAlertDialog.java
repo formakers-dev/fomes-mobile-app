@@ -22,6 +22,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
+import com.formakers.fomes.main.contract.BetaTestContract;
 
 import java.util.List;
 
@@ -45,6 +46,12 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
 
 
     private Unbinder unbinder;
+
+    private BetaTestContract.Presenter presenter;
+
+    public void setPresenter(BetaTestContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
 
     @Nullable
     @Override
@@ -113,6 +120,8 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+
+                this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_DETAIL_DIALOG_TAP_CONFIRM, String.valueOf(betaTest.getId()));
             });
         }
     }
