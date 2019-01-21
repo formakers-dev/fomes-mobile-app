@@ -126,7 +126,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         eventPagerAdapter.notifyDataSetChanged();
 
-        presenter.sendEventLog(FomesConstants.EventLog.Code.MAIN_ACTIVITY_ENTER);
+        if (getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false)) {
+            presenter.sendEventLog(FomesConstants.EventLog.Code.NOTIFICATION_TAP);
+        } else {
+            presenter.sendEventLog(FomesConstants.EventLog.Code.MAIN_ACTIVITY_ENTER);
+        }
     }
 
     @Override

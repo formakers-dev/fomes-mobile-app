@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.formakers.fomes.FomesApplication;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
@@ -17,8 +20,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
-
 public class MessagingService extends FirebaseMessagingService {
     private final static String TAG = "MessagingService";
 
@@ -26,6 +27,7 @@ public class MessagingService extends FirebaseMessagingService {
     @Inject ChannelManager channelManager;
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserService userService;
+    @Inject EventLogService eventLogService;
     @Inject UserDAO userDAO;
 
     @Override
@@ -53,9 +55,16 @@ public class MessagingService extends FirebaseMessagingService {
 
             // 여기서 노티 띄우기
             Intent notificationIntent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+            notificationIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             channelManager.sendNotification(dataMap, pendingIntent);
+
+            if (sharedPreferencesHelper.hasAccessToken()) {
+                eventLogService.sendEventLog(new EventLog().setCode(FomesConstants.EventLog.Code.NOTIFICATION_RECEIVED))
+                        .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
+                                (e) -> Log.e(TAG, String.valueOf(e)));
+            }
         }
 
         // Check if message contains a notification payload.

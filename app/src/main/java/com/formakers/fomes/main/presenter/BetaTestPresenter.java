@@ -99,8 +99,8 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     public void sendEventLog(String code, String ref) {
         compositeSubscription.add(
                 eventLogService.sendEventLog(new EventLog().setCode(code).setRef(ref))
-                        .subscribe(() -> Log.d(TAG, "sendEventLog"),
-                                (e) -> Log.e(TAG, "sendEventLog Error : " + e.getMessage()))
+                        .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
+                                (e) -> Log.e(TAG, String.valueOf(e)))
         );
     }
 

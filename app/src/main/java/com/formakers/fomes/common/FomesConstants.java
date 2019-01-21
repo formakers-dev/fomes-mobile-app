@@ -5,12 +5,11 @@ public interface FomesConstants {
 
     interface EXTRA {
         String START_FRAGMENT_NAME = "EXTRA_FRAGEMENT_NAME";
-        String APPINFO="EXTRA_APPINFO";
         String PACKAGE_NAME="EXTRA_PACKAGE_NAME";
         String RECOMMEND_TYPE = "EXTRA_RECOMMEND_TYPE";
         String RECOMMEND_CRITERIA = "EXTRA_RECOMMEND_CRITERIA";
         String UNWISHED_APPS = "EXTRA_UNWISHED_APPS";
-        String PACKAGE_NAMES = "EXTRA_PACKAGE_NAMES";
+        String IS_FROM_NOTIFICATION = "EXTRA_IS_FROM_NOTIFICATION";
     }
 
     interface PROVISIONING {
@@ -50,11 +49,13 @@ public interface FomesConstants {
 
     interface EventLog {
         interface Code {
-            String MAIN_ACTIVITY_ENTER = "MAIN_ENTER";
-            String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAP_BETA_TEST";
-            String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAP_RECOMMEND";
-            String BETA_TEST_FRAGMENT_TAP_ITEM = "BETA_TEST_TAP_ITEM";
-            String BETA_TEST_DETAIL_DIALOG_TAP_CONFIRM = "BETA_TEST_DETAIL_TAP_CONFIRM";
+            String MAIN_ACTIVITY_ENTER = "MAIN_ENT";
+            String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAP_BETA";
+            String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAP_RCMD";
+            String BETA_TEST_FRAGMENT_TAP_ITEM = "BETA_TAP_ITEM";
+            String BETA_TEST_DETAIL_DIALOG_TAP_CONFIRM = "BETA_TAP_RGST";
+            String NOTIFICATION_RECEIVED = "NOTI_RCV";
+            String NOTIFICATION_TAP = "NOTI_TAP";
         }
     }
 }

@@ -81,8 +81,8 @@ public class MainPresenter implements MainContract.Presenter {
     public void sendEventLog(String code) {
         compositeSubscription.add(
             eventLogService.sendEventLog(new EventLog().setCode(code))
-                    .subscribe(() -> Log.d(TAG, "sendEventLog"),
-                            (e) -> Log.e(TAG, "sendEventLog Error : " + e.getMessage()))
+                    .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
+                            (e) -> Log.e(TAG, String.valueOf(e)))
         );
     }
 
