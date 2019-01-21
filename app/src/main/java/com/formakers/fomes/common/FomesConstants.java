@@ -51,8 +51,9 @@ public interface FomesConstants {
     interface EventLog {
         interface Code {
             String MAIN_ACTIVITY_ENTER = "MAIN_ENTER";
-            String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAB_BETA_TEST";
-            String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAB_RECOMMEND";
+            String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAP_BETA_TEST";
+            String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAP_RECOMMEND";
+            String BETA_TEST_FRAGMENT_TAP_ITEM = "BETA_TEST_TAP_ITEM";
         }
     }
 }

@@ -17,6 +17,7 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.constant.Feature;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
@@ -86,12 +87,15 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
             betaTestListAdapterView.setOnItemClickListener(position -> {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, this.presenter.getBetaTestItem(position));
+                BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
+                bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
                 bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
 
                 BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
                 betaTestDetailAlertDialog.setArguments(bundle);
                 betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
+
+                this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
             });
 
             presenter.load();

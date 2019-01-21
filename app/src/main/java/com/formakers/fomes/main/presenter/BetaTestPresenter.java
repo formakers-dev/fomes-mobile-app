@@ -1,7 +1,9 @@
 package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestContract;
@@ -28,13 +30,15 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private BetaTestService betaTestService;
     private UserDAO userDAO;
     private User user;
+    private EventLogService eventLogService;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, UserDAO userDAO) {
+    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO) {
         this.view = view;
         this.betaTestService = betaTestService;
+        this.eventLogService = eventLogService;
         this.userDAO = userDAO;
     }
 
@@ -89,6 +93,15 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     @Override
     public String getUserEmail() {
         return this.user.getEmail();
+    }
+
+    @Override
+    public void sendEventLog(String code, String ref) {
+        compositeSubscription.add(
+                eventLogService.sendEventLog(new EventLog().setCode(code).setRef(ref))
+                        .subscribe(() -> Log.d(TAG, "sendEventLog"),
+                                (e) -> Log.e(TAG, "sendEventLog Error : " + e.getMessage()))
+        );
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.main.adapter.BetaTestListAdapter;
 import com.formakers.fomes.main.contract.BetaTestContract;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import rx.Completable;
 import rx.Scheduler;
 import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
@@ -27,6 +30,8 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,8 +40,9 @@ public class BetaTestPresenterTest {
 
     @Mock private BetaTestContract.View mockView;
     @Mock private BetaTestListAdapter mockAdapterModel;
-    @Mock private BetaTestService mockRequestservice;
+    @Mock private BetaTestService mockBetaTestService;
     @Mock private UserDAO mockUserDAO;
+    @Mock private EventLogService mockEventLogService;
 
     private User dummyUser;
     private List<BetaTest> betaTests = new ArrayList<>();
@@ -64,12 +70,12 @@ public class BetaTestPresenterTest {
 
         betaTests.add(new BetaTest().setTitle("베타테스트1").setCloseDate(new Date()));
         betaTests.add(new BetaTest().setTitle("베타테스트2").setCloseDate(new Date()));
-        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(betaTests));
+        when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(betaTests));
 
         when(mockAdapterModel.getItem(0)).thenReturn(betaTests.get(0));
         when(mockAdapterModel.getItem(1)).thenReturn(betaTests.get(1));
 
-        subject = new BetaTestPresenter(mockView, mockRequestservice, mockUserDAO);
+        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO);
         subject.setAdapterModel(mockAdapterModel);
     }
 
@@ -78,7 +84,7 @@ public class BetaTestPresenterTest {
         subject.load();
 
         verify(mockUserDAO).getUserInfo();
-        verify(mockRequestservice).getBetaTestList();
+        verify(mockBetaTestService).getBetaTestList();
         verify(mockAdapterModel).addAll(eq(betaTests));
         verify(mockView).refreshBetaTestList();
         verify(mockView).showBetaTestListView();
@@ -95,7 +101,7 @@ public class BetaTestPresenterTest {
         unsortedBetaTestList.add(new BetaTest().setId(1).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
         unsortedBetaTestList.add(new BetaTest().setId(8).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-30T00:00:00.000Z"))));
         unsortedBetaTestList.add(new BetaTest().setId(6).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
-        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
+        when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
 
         subject.load();
 
@@ -115,12 +121,12 @@ public class BetaTestPresenterTest {
 
     @Test
     public void load__호출시__빈리스트가_올_경우에는_비었다는_내용을_알리는_화면을_보여준다() {
-        when(mockRequestservice.getBetaTestList()).thenReturn(Single.just(Lists.emptyList()));
+        when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(Lists.emptyList()));
 
         subject.load();
 
         verify(mockUserDAO).getUserInfo();
-        verify(mockRequestservice).getBetaTestList();
+        verify(mockBetaTestService).getBetaTestList();
         verify(mockView).setUserNickName(eq("dummyNickName"));
         verify(mockView).showEmptyView();
     }
@@ -139,5 +145,18 @@ public class BetaTestPresenterTest {
         String userEmail = subject.getUserEmail();
 
         assertThat(userEmail).isEqualTo("user@gmail.com");
+    }
+
+    @Test
+    public void sendEventLog_호출시__전달받은_내용에_대한_이벤트로그_저장을_요청한다() {
+        when(mockEventLogService.sendEventLog(any())).thenReturn(Completable.complete());
+
+        subject.sendEventLog("ANY_CODE", "ANY_REF");
+
+        ArgumentCaptor<EventLog> eventLogCaptor = ArgumentCaptor.forClass(EventLog.class);
+
+        verify(mockEventLogService).sendEventLog(eventLogCaptor.capture());
+        assertEquals(eventLogCaptor.getValue().getCode(), "ANY_CODE");
+        assertEquals(eventLogCaptor.getValue().getRef(), "ANY_REF");
     }
 }

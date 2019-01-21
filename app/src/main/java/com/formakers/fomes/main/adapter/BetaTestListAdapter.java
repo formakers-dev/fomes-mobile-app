@@ -21,7 +21,6 @@ import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>

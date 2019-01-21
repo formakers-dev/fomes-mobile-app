@@ -11,6 +11,7 @@ public interface BetaTestContract {
         void load();
         BetaTest getBetaTestItem(int position);
         String getUserEmail();
+        void sendEventLog(String code, String ref);
         void unsubscribe();
     }
 
