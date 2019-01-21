@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import com.formakers.fomes.FomesApplication;
+import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
@@ -19,8 +20,7 @@ import javax.inject.Inject;
 
 public class FomesBaseActivity extends BaseActivity {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
-    @Inject
-    AndroidNativeHelper androidNativeHelper;
+    @Inject AndroidNativeHelper androidNativeHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,10 +32,25 @@ public class FomesBaseActivity extends BaseActivity {
             return;
         }
 
+        if (sharedPreferencesHelper.getOldLatestMigrationVersion() < FomesConstants.MIGRATION_VERSION) {
+            if (!(this instanceof RecentAnalysisReportActivity)) {
+                Intent intent = new Intent(this, NoticeMigrationActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
         if (!androidNativeHelper.hasUsageStatsPermission()) {
             Intent intent = new Intent(this, ProvisioningActivity.class);
             intent.putExtra(FomesConstants.EXTRA.START_FRAGMENT_NAME, ProvisioningPermissionFragment.TAG);
             startActivity(intent);
+            finish();
             return;
         }
     }

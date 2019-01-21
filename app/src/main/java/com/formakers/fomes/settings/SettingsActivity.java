@@ -44,7 +44,7 @@ public class SettingsActivity extends FomesBaseActivity implements SettingsListA
         settingsRecyclerView.setLayoutManager(linearLayoutManager);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(this, ContentDividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_RecommendDivider).getTheme()));
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_GrayDivider).getTheme()));
         settingsRecyclerView.addItemDecoration(dividerItemDecoration);
 
         SettingsListAdapter settingsListAdapter = new SettingsListAdapter(createSettingsList(), this);

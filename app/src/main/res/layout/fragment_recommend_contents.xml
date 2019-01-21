@@ -7,64 +7,11 @@
     android:scrollbars="vertical"
     android:scrollbarStyle="insideOverlay"
     android:fillViewport="true">
-    
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fomes_content_background"
         android:descendantFocusability="blocksDescendants">
-
-        <ImageView
-            android:id="@+id/recommend_event_banner_background"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:src="@drawable/event_banner_background"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintDimensionRatio="12:5"/>
-
-        <TextView
-            android:id="@+id/recommend_event_banner_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:padding="5dp"
-            android:text="@string/event_banner_title"
-            android:textColor="@color/fomes_white"
-            android:textSize="10dp"
-            android:textStyle="bold"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintTop_toTopOf="@+id/recommend_event_banner_background"
-            app:layout_constraintBottom_toTopOf="@id/recommend_event_banner_title"
-            app:layout_constraintEnd_toEndOf="@+id/recommend_event_banner_background"
-            app:layout_constraintStart_toStartOf="@+id/recommend_event_banner_background" />
-
-        <TextView android:id="@+id/recommend_event_banner_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:text="@string/event_banner_subtitle"
-            android:textAlignment="center"
-            android:textColor="@color/fomes_white"
-            android:textSize="21dp"
-            app:layout_constraintTop_toBottomOf="@+id/recommend_event_banner_label"
-            app:layout_constraintBottom_toTopOf="@+id/recommend_event_banner_detail"
-            app:layout_constraintEnd_toEndOf="@+id/recommend_event_banner_label"
-            app:layout_constraintStart_toStartOf="@+id/recommend_event_banner_label"/>
-
-        <TextView android:id="@+id/recommend_event_banner_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:text="@string/show_detail"
-            android:textColor="@color/fomes_white"
-            android:textSize="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/recommend_event_banner_title"
-            app:layout_constraintBottom_toBottomOf="@id/recommend_event_banner_background"
-            app:layout_constraintStart_toStartOf="@+id/recommend_event_banner_label"
-            app:layout_constraintEnd_toEndOf="@+id/recommend_event_banner_label"
-            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recommend_recyclerview"
@@ -72,8 +19,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recommend_event_banner_background"
-            android:nestedScrollingEnabled="false"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintVertical_bias="0.0"/>
 
     </android.support.constraint.ConstraintLayout>
     

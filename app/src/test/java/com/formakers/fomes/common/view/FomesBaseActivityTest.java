@@ -10,6 +10,7 @@ import com.formakers.fomes.provisioning.view.ProvisioningNickNameFragment;
 import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
 import com.formakers.fomes.provisioning.view.ProvisioningUserInfoFragment;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.provisioning.view.RecentAnalysisReportActivityTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +46,8 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
 
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+        when(mockSharedPreferencesHelper.getOldLatestMigrationVersion())
+                .thenReturn(FomesConstants.MIGRATION_VERSION);
 
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
     }
@@ -114,6 +117,28 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
     public void 액티비티_진입시__권한이_있으면__현재화면으로_진입한다() {
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
 
+        launchActivity();
+
+        Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedActivity).isNull();
+    }
+
+    @Test
+    public void 액티비티_진입시__마이그레이션_버전이_바뀐_상태면__마이그레이션_화면으로_진입한다() {
+        if (this instanceof RecentAnalysisReportActivityTest) {
+            return;
+        }
+
+        when(mockSharedPreferencesHelper.getOldLatestMigrationVersion()).thenReturn(0);
+
+        launchActivity();
+
+        Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
+        assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(NoticeMigrationActivity.class.getName());
+    }
+
+    @Test
+    public void 액티비티_진입시__마이그레이션_버전이_바뀐_상태가_아니면__현재화면으로_진입한다() {
         launchActivity();
 
         Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();

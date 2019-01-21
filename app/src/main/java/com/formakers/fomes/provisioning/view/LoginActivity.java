@@ -15,7 +15,6 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseActivity;
-import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.provisioning.contract.LoginContract;
 import com.formakers.fomes.provisioning.dagger.DaggerLoginActivityComponent;
 import com.formakers.fomes.provisioning.dagger.LoginActivityModule;
@@ -97,6 +96,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     @Override
+    protected void onDestroy() {
+        presenter.unsubscribe();
+        super.onDestroy();
+    }
+
+    @Override
     public void showToast(String toastMessage) {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
@@ -109,18 +114,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     private void signIn(GoogleSignInResult googleSignInResult) {
-        addToCompositeSubscription(
-            this.presenter.requestSignUpBy(googleSignInResult)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(fomesToken -> {
-                    Log.d(TAG, "signin");
-                    if (presenter.isProvisioningProgress()) {
-                        startActivityAndFinish(ProvisioningActivity.class);
-                    } else {
-                        startActivityAndFinish(MainActivity.class);
-                    }
-                }, e -> showToast("가입에 실패하였습니다. 재시도 고고"))
-        );
+        this.presenter.signUpOrSignIn(googleSignInResult);
     }
 
     @OnClick(R.id.login_google_button)

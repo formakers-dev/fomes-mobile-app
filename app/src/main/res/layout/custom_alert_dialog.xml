@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:textSize="24dp"
-        android:textColor="@color/fomes_gray"
+        android:textColor="@color/fomes_greyish_brown"
         android:textStyle="bold"
         android:textAlignment="center"
         tools:text="업데이트 팝업"/>

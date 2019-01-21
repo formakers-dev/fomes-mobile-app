@@ -7,9 +7,17 @@
 
     <!-- Fomes colors -->
     <color name="fomes_black">#000000</color>
-    <color name="fomes_gray">#4a4a4a</color>
+    <color name="fomes_black_alpha_80">#80000000</color>
+    <color name="fomes_black_alpha_30">#4c000000</color>
+
+    <color name="fomes_dark_gray">#202020</color>
+    <color name="fomes_deep_gray">#2e2f30</color>
+    <color name="fomes_gray_2">#454647</color>
+    <color name="fomes_greyish_brown">#4a4a4a</color>
+    <color name="fomes_gray_4">#5a5a5a</color>
+    <color name="fomes_gray_3">#575859</color>
     <color name="fomes_warm_gray">#808080</color>
-    <color name="fomes_light_warm_gray">#9b9b9b</color>
+    <color name="fomes_warm_gray_2">#9b9b9b</color>
     <color name="fomes_light_gray">#d4d4d4</color>
     <color name="fomes_pale_gray">#f0f0f1</color>
 
@@ -23,5 +31,29 @@
     <color name="fomes_red">#d0021b</color>
     <color name="fomes_yellow">#FFCD00</color>
 
+    <!-- for Views -->
+
     <color name="fomes_content_background">@color/fomes_white_2</color>
+    <color name="fomes_text_title">@color/fomes_white</color>
+    <color name="fomes_text_sub_title">@color/fomes_light_gray</color>
+
+    <color name="fomes_content_background_dark">@color/fomes_deep_gray</color>
+    <!--<color name="fomes_content_item_background">@color/fomes_deep_gray</color>-->
+    <color name="fomes_content_card_background">@color/fomes_gray_2</color>
+    <color name="fomes_content_disable_card_background">#d9454647</color>
+
+    <color name="app_label_background">@color/fomes_greyish_brown</color>
+    <color name="item_inner_divider">@color/fomes_gray_3</color>
+
+    <color name="label_background_dark">@color/fomes_gray_4</color>
+
+    <!-- for main -->
+    <color name="main_tab_background">@color/fomes_dark_gray</color>
+    <color name="main_tab_unselected_text_color">@color/fomes_warm_gray_2</color>
+    <color name="main_tab_selected_text_color">@color/colorPrimary</color>
+    <color name="main_tab_indicator_color">@color/colorPrimary</color>
+
+    <!-- for BetaTest -->
+    <color name="beta_test_label_disable_background">@color/fomes_black_alpha_80</color>
+
 </resources>

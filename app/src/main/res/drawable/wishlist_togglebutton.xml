@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:drawable="@drawable/icon_star"/>
-    <item android:drawable="@drawable/icon_empty_star" />
+    <item android:state_checked="true">
+        <bitmap android:src="@drawable/icon_star"/>
+    </item>
+    <item>
+        <bitmap android:src="@drawable/icon_empty_star"/>
+    </item>
 </selector>

@@ -1,7 +1,6 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,10 +21,12 @@ import android.widget.TextView;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
-import com.formakers.fomes.common.view.adapter.ContentsPagerAdapter;
+import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
+import com.formakers.fomes.main.adapter.EventPagerAdapter;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
@@ -48,6 +46,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
+    @BindView(R.id.main_event_view_pager)       ViewPager eventViewPager;
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
@@ -64,6 +63,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG,"onCreate");
+
+        this.setTitle(R.string.common_empty_string);
         this.setContentView(R.layout.activity_main);
         setPresenter(new MainPresenter(this));
 
@@ -74,6 +76,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        Log.v(TAG,"onPostCreate");
+
+        Log.i(TAG, "isRegisteredSendDataJob=" + presenter.checkRegisteredSendDataJob());
 
         setSupportActionBar(toolbar);
 
@@ -99,15 +104,47 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 })
         );
 
-        ContentsPagerAdapter contentsPagerAdapter = new ContentsPagerAdapter(getSupportFragmentManager());
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
-        contentsPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
-        contentsPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
+        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
+        fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
-        contentsViewPager.setAdapter(contentsPagerAdapter);
+        contentsViewPager.setAdapter(fragmentPagerAdapter);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
+
+        EventPagerAdapter eventPagerAdapter = new EventPagerAdapter();
+
+        eventViewPager.setAdapter(eventPagerAdapter);
+
+        View betaTestBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_beta_test, null);
+        View eventBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_event, null);
+
+        eventPagerAdapter.addView(betaTestBanner, R.layout.activity_event_beta_test_open);
+        eventPagerAdapter.addView(eventBanner, R.layout.activity_event_keeping_app);
+
+        eventPagerAdapter.notifyDataSetChanged();
+
+        if (getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false)) {
+            presenter.sendEventLog(FomesConstants.EventLog.Code.NOTIFICATION_TAP);
+        } else {
+            presenter.sendEventLog(FomesConstants.EventLog.Code.MAIN_ACTIVITY_ENTER);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.startEventBannerAutoSlide();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        presenter.stopEventBannerAutoSlide();
     }
 
     @Override
@@ -166,7 +203,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE_WISHLIST) {
-            Fragment fragment = ((ContentsPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
+            Fragment fragment = ((FragmentPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);
             }
@@ -195,21 +232,29 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
-        wordtoSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tab.setText(wordtoSpan);
+        presenter.sendEventLog((tab.getPosition() == 0) ?
+                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST :
+                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-        Spannable wordtoSpan = new SpannableString(String.valueOf(tab.getText()));
-        wordtoSpan.setSpan(new StyleSpan(Typeface.NORMAL), 0, wordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tab.setText(wordtoSpan);
+
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public void showNextEventBanner() {
+        if (eventViewPager == null || eventViewPager.getAdapter() == null || eventViewPager.getAdapter().getCount() < 2)
+            return;
+
+        int nextItem = (eventViewPager.getCurrentItem() < eventViewPager.getAdapter().getCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
+
+        eventViewPager.setCurrentItem(nextItem);
     }
 
     @Override
@@ -243,5 +288,14 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private <T> void startActivity(Class<T> destActivity) {
         Intent intent = new Intent(this, destActivity);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (presenter != null) {
+            presenter.unsubscribe();
+        }
     }
 }

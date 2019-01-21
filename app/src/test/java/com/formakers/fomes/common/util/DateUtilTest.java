@@ -50,7 +50,7 @@ public class DateUtilTest {
     }
 
     @Test
-    public void getContent_호출시__타입에_맞게_변환하고_올림하여_반환한다() {
+    public void convertDurationFromMilliseconds_호출시__타입에_맞게_변환하고_올림하여_반환한다() {
         float day = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_DAYS, 10000000L, 1);
         float hour = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_HOURS, 10000000L, 1);
         float min = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_MINUTES, 10000000L, 1);
@@ -59,6 +59,19 @@ public class DateUtilTest {
         assertThat(day).isEqualTo(0.2f);
         assertThat(hour).isEqualTo(2.8f);
         assertThat(min).isEqualTo(166.7f);
+        assertThat(sec).isEqualTo(10000f);
+    }
+
+    @Test
+    public void convertDurationFromMilliseconds_호출시__소수점을_보여주지_않는경우도_정상적으로_반환한다() {
+        float day = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_DAYS, 10000000L, 0);
+        float hour = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_HOURS, 10000000L, 0);
+        float min = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_MINUTES, 10000000L, 0);
+        float sec = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_SECONDS, 10000000L, 0);
+
+        assertThat(day).isEqualTo(1f);
+        assertThat(hour).isEqualTo(3f);
+        assertThat(min).isEqualTo(167f);
         assertThat(sec).isEqualTo(10000f);
     }
 }

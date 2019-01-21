@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/beta_test_banner_background"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            android:src="@drawable/beta_test_banner_background"
+            app:layout_constraintDimensionRatio="12:5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/beta_test_banner_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/fomes_greyish_brown"
+            android:padding="5dp"
+            android:text="@string/beta_test_banner_label"
+            android:textColor="@color/fomes_white"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/beta_test_banner_background"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_banner_background"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_banner_background"
+            app:layout_constraintTop_toTopOf="@+id/beta_test_banner_background"
+            app:layout_constraintVertical_bias="0.28" />
+
+        <TextView
+            android:id="@+id/beta_test_banner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/beta_test_banner_title"
+            android:textAlignment="center"
+            android:textColor="@color/fomes_white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/beta_test_banner_background"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_banner_background"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_banner_background"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_banner_label"
+            app:layout_constraintVertical_bias="0.25" />
+
+
+        <TextView android:id="@+id/beta_test_banner_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/beta_test_banner_subtitle"
+            android:textColor="@color/fomes_white"
+            android:textSize="13dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_banner_title"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_banner_background"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_banner_background"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_contents_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:textSize="16dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:gravity="center_horizontal"
+            android:text="@string/beta_test_open_contents_title"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_banner_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        
+        <View
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_title"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_contents_title"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_contents_title"/>
+
+        <ImageView
+            android:id="@+id/beta_test_open_contents_welcome_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:src="@drawable/beta_test_open_welcome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_title" />
+
+        <TextView
+            android:id="@+id/beta_test_open_contents_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:textSize="15dp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/beta_test_open_contents_subtitle"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_welcome_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/beta_test_open_process_box"
+            android:layout_width="280dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="45dp"
+            android:paddingBottom="26dp"
+            android:background="@drawable/item_rect_rounded_corner_background"
+            android:theme="@style/BetaTestOpenTheme.InnerBox.Process"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/beta_test_open_contents_subtitle"/>
+
+        <ImageView
+            android:layout_width="280dp"
+            android:layout_height="140dp"
+            android:background="@drawable/beta_test_process"
+            app:layout_constraintTop_toTopOf="@+id/beta_test_open_process_box"
+            app:layout_constraintBottom_toBottomOf="@id/beta_test_open_process_box"
+            app:layout_constraintStart_toStartOf="@id/beta_test_open_process_box"
+            app:layout_constraintEnd_toEndOf="@id/beta_test_open_process_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_contents_step_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="49dp"
+            android:textSize="12dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:text="@string/common_number_one"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_process_box"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_process_box"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:text="@string/beta_test_open_contents_step_title_1"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/beta_test_open_contents_step_1"
+            app:layout_constraintStart_toEndOf="@+id/beta_test_open_contents_step_1"
+            app:layout_constraintTop_toTopOf="@+id/beta_test_open_contents_step_1"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/beta_test_open_contents_step_description_1"
+            android:textColor="@color/fomes_warm_gray_2"
+            android:textSize="13dp"
+            app:layout_constraintStart_toEndOf="@+id/beta_test_open_contents_step_1"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_step_1" />
+
+
+        <TextView
+            android:id="@+id/beta_test_open_contents_step_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="53dp"
+            android:textSize="12dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:text="@string/common_number_two"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_step_1"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_contents_step_1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:text="@string/beta_test_open_contents_step_title_2"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/beta_test_open_contents_step_2"
+            app:layout_constraintStart_toEndOf="@+id/beta_test_open_contents_step_2"
+            app:layout_constraintTop_toTopOf="@+id/beta_test_open_contents_step_2"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/beta_test_open_contents_step_description_2"
+            android:textColor="@color/fomes_warm_gray_2"
+            android:textSize="13dp"
+            app:layout_constraintStart_toEndOf="@+id/beta_test_open_contents_step_2"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_step_2" />
+
+
+        <TextView
+            android:id="@+id/beta_test_open_contents_step_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="53dp"
+            android:textSize="12dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:text="@string/common_number_three"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_step_2"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_contents_step_2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:text="@string/beta_test_open_contents_step_title_3"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/beta_test_open_contents_step_3"
+            app:layout_constraintStart_toEndOf="@+id/beta_test_open_contents_step_3"
+            app:layout_constraintTop_toTopOf="@+id/beta_test_open_contents_step_3"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="10dp"
+            android:textSize="13dp"
+            android:textColor="@color/fomes_warm_gray_2"
+            android:text="@string/beta_test_open_contents_step_description_3"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_contents_step_3"
+            app:layout_constraintStart_toEndOf="@+id/beta_test_open_contents_step_3"/>
+
+
+        <!-- FAQ 시작 -->
+        <View
+            android:id="@+id/beta_test_open_faq_background"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            android:layout_marginTop="77dp"
+            android:layout_marginBottom="26dp"
+            android:background="@color/fomes_white_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/beta_test_open_contents_step_3"
+            app:layout_constraintBottom_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:textSize="12dp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/beta_test_open_contents_faq_title"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/beta_test_open_contents_step_3"
+            app:layout_constraintTop_toTopOf="@+id/beta_test_open_faq_background"/>
+
+        <View
+            android:id="@+id/beta_test_open_faq_box"
+            android:layout_width="280dp"
+            android:layout_height="@dimen/match_constraint"
+            android:layout_marginTop="6dp"
+            android:paddingBottom="26dp"
+            android:background="@drawable/item_rect_rounded_corner_background"
+            android:theme="@style/BetaTestOpenTheme.InnerBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/beta_test_open_faq_title"
+            app:layout_constraintBottom_toBottomOf="@+id/beta_test_open_faq_answer_4"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_question_1"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="12dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textStyle="bold"
+            android:text="@string/beta_test_open_faq_question_1"
+            app:layout_constraintTop_toTopOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_answer_1"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="11dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:text="@string/beta_test_open_faq_answer_1"
+            android:lineSpacingExtra="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_question_1"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_question_2"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="12dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textStyle="bold"
+            android:text="@string/beta_test_open_faq_question_2"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_answer_1"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_answer_2"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="11dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:text="@string/beta_test_open_faq_answer_2"
+            android:lineSpacingExtra="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_question_2"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_question_3"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="12dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textStyle="bold"
+            android:text="@string/beta_test_open_faq_question_3"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_answer_2"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_answer_3"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="11dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:text="@string/beta_test_open_faq_answer_3"
+            android:lineSpacingExtra="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_question_3"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_question_4"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="12dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textStyle="bold"
+            android:text="@string/beta_test_open_faq_question_4"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_answer_3"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_faq_answer_4"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingBottom="22dp"
+            android:textSize="11dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:text="@string/beta_test_open_faq_answer_4"
+            android:lineSpacingExtra="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_question_4"
+            app:layout_constraintStart_toStartOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintEnd_toEndOf="@+id/beta_test_open_faq_box"/>
+
+        <TextView
+            android:id="@+id/beta_test_open_closing_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="30dp"
+            android:textSize="15dp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/beta_test_open_closing_description"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/beta_test_open_faq_box"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

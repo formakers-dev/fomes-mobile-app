@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/fomes_content_background">
+
+
+    <TextView
+        android:id="@+id/betatest_comming_soon_textview"
+        android:layout_width="103dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="53dp"
+        android:gravity="center"
+        android:text="@string/betatest_coming_soon"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/fomes_white"
+        android:background="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/betatest_title_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/betatest_title"
+        android:textSize="23dp"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/betatest_subtitle_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/betatest_subtitle"
+        android:textSize="15dp"
+        android:textColor="@color/fomes_greyish_brown"/>
+
+    <ImageView
+        android:id="@+id/betatest_imageview"
+        android:layout_width="177dp"
+        android:layout_height="214dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/event_feedback_capture"/>
+
+    <View
+        android:layout_width="231dp"
+        android:layout_height="2dp"
+        android:background="@color/fomes_greyish_brown" />
+
+    <TextView
+        android:id="@+id/betatest_description_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/betatest_description"
+        android:textSize="12dp"
+        android:textColor="@color/fomes_warm_gray_2" />
+
+</LinearLayout>

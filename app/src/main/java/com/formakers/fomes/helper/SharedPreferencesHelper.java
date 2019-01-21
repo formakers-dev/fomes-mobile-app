@@ -31,6 +31,7 @@ public class SharedPreferencesHelper {
     private static final String KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP = "LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP";
 
     private static final String KEY_PROVISIONING_PROGRESS_STATUS = "PROVISIONING_PROGRESS_STATUS";
+    private static final String KEY_OLD_LATEST_MIGRATION_VERSION = "OLD_LATEST_MIGRATION_VERSION";
 
     private SharedPreferences sharedPreferences;
 
@@ -129,5 +130,13 @@ public class SharedPreferencesHelper {
             Log.e(TAG, "You tried to set older progress status (" + status + ") than " +
                     "current progress status (" + currentStatus +"). It will be not set. Please check it.");
         }
+    }
+
+    public int getOldLatestMigrationVersion() {
+        return getInt(KEY_OLD_LATEST_MIGRATION_VERSION, 0);
+    }
+
+    public void setOldLatestMigrationVersion(int version) {
+        putInt(KEY_OLD_LATEST_MIGRATION_VERSION, version);
     }
 }

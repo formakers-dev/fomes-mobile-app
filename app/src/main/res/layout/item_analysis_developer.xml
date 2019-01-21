@@ -22,7 +22,7 @@
         android:layout_marginStart="@dimen/item_favorite_developer_padding"
         android:layout_marginEnd="@dimen/item_favorite_developer_padding"
         android:gravity="center"
-        android:textColor="@color/fomes_gray"
+        android:textColor="@color/fomes_greyish_brown"
         android:textSize="9dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/item_top_box"

@@ -18,6 +18,9 @@
     <attr name="item_background_radius" format="reference|dimension"/>
     <attr name="item_color" format="reference|color"/>
     <attr name="item_number" format="reference|string"/>
+    <attr name="item_stroke_color" format="reference|color"/>
+    <attr name="item_stroke_width" format="reference|dimension"/>
+    <attr name="item_solid_color" format="reference|color"/>
 
     <declare-styleable name="RankAppItemView">
         <attr name="rank_number" format="reference|string" />
@@ -52,7 +55,6 @@
             <enum name="similar_demographic" value="4" />
         </attr>
         <attr name="app_verbose" format="reference|boolean"/>
-        <attr name="app_downloadable" format="reference|boolean"/>
     </declare-styleable>
 
 </resources>

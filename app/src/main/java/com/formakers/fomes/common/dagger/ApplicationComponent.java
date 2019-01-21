@@ -2,17 +2,21 @@ package com.formakers.fomes.common.dagger;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.ConfigService;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.RecommendService;
-import com.formakers.fomes.common.network.RequestService;
+import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.noti.MessagingService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.NoticeMigrationActivity;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
@@ -32,7 +36,8 @@ public interface ApplicationComponent {
     ConfigService configService();
     RecommendService recommendService();
     AppService appService();
-    RequestService requestService();
+    BetaTestService requestService();
+    EventLogService eventLogService();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();
@@ -40,11 +45,14 @@ public interface ApplicationComponent {
 
     UserDAO userDAO();
     RequestManager requestManager();
+    JobManager jobManager();
+    ChannelManager channelManager();
 
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);
 
     // fomes
+    void inject(NoticeMigrationActivity provisioningPresenter);
     void inject(ProvisioningPresenter provisioningPresenter);
     void inject(RecentAnalysisReportPresenter reportPresenter);
     void inject(MainPresenter presenter);

@@ -15,10 +15,30 @@ public class DateUtil {
     public static final int CONVERT_TYPE_DAYS = 4;
 
 
+    public static int calculateDdays(long fromTimestamp, long toTimestamp) {
+        int dDay = 0;
+
+        try {
+            // 시간 단위 절사를 위함
+            String from = INPUT_DATE_FORMAT.format(fromTimestamp);
+            Date fromDate = INPUT_DATE_FORMAT.parse(from);
+
+            String to = INPUT_DATE_FORMAT.format(toTimestamp);
+            Date toDate = INPUT_DATE_FORMAT.parse(to);
+
+            dDay = (int) ((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dDay;
+    }
+
     public static int calDateDiff(long fromTimestamp, long toTimestamp) {
         int dDay = 0;
 
         try {
+            // 시간 단위 절사를 위함
             String from = INPUT_DATE_FORMAT.format(fromTimestamp);
             Date fromDate = INPUT_DATE_FORMAT.parse(from);
 
@@ -115,6 +135,11 @@ public class DateUtil {
                     converted = milliseconds;
             }
 
-            return (float) Math.ceil(converted * (10 * floatPoint) ) / (10 * floatPoint);
+            int temp = 1;
+            if (floatPoint > 0) {
+                temp = 10 * floatPoint;
+            }
+
+            return (float) Math.ceil(converted * temp) / temp;
     }
 }

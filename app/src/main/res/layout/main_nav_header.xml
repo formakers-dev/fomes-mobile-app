@@ -17,7 +17,7 @@
         android:gravity="center_vertical"
         android:text="닉네임"
         android:textSize="20dp"
-        android:textColor="@color/fomes_gray"
+        android:textColor="@color/fomes_greyish_brown"
         android:textStyle="bold"
         tools:ignore="MissingPrefix"/>
 
@@ -31,7 +31,7 @@
         android:gravity="center_vertical"
         android:text="test@gmail.com"
         android:textSize="12dp"
-        android:textColor="@color/fomes_gray"
+        android:textColor="@color/fomes_greyish_brown"
         tools:ignore="MissingPrefix"/>
 
     <View

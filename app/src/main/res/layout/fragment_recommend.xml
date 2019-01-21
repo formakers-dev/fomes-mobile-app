@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/fomes_content_background_dark">
 
     <include android:id="@+id/recommend_contents_layout"
         layout="@layout/fragment_recommend_contents"

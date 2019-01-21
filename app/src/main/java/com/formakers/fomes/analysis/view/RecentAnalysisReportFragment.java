@@ -147,7 +147,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         Resources res = getResources();
         List<Integer> colors = Arrays.asList(res.getColor(R.color.colorPrimary), res.getColor(R.color.fomes_squash),
-                res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_gray));
+                res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_greyish_brown));
         pieDataSet.setColors(colors);
         pieDataSet.setDrawValues(false);
 
@@ -351,7 +351,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
         BarDataSet barDataSet = new BarDataSet(barEntries, "");
 
         List<Integer> colors = Arrays.asList(res.getColor(R.color.colorPrimary), res.getColor(R.color.fomes_squash),
-                res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_gray));
+                res.getColor(R.color.fomes_blush_pink), res.getColor(R.color.fomes_greyish_brown));
         barDataSet.setColors(colors);
 
         barDataSet.setValueFormatter(new PlaytimeFormatter());

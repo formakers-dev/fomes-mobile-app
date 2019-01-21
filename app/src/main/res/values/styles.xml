@@ -40,15 +40,15 @@
     </style>
 
     <style name="FomesMainTabTheme" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabTextAppearance">@style/FomesMainTabTheme.TextAppearance</item>
-        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
     </style>
 
     <style name="FomesMainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14dp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/main_tab_unselected_text_color</item>
         <item name="textAllCaps">true</item>
     </style>
 
@@ -58,10 +58,22 @@
         <!--<item name="android:icon">?attr/iconDrawable</item>-->
     </style>
 
-    <style name="FomesMainTabTheme.RecommendDivider">
+    <style name="FomesMainTabTheme.GrayDivider">
         <item name="divider_width">@dimen/match_constraint</item>
         <item name="divider_height">1dp</item>
         <item name="divider_color">@color/fomes_pale_gray</item>
+    </style>
+
+    <style name="FomesMainTabTheme.DarkDivider">
+        <item name="divider_width">@dimen/match_constraint</item>
+        <item name="divider_height">1dp</item>
+        <item name="divider_color">@color/fomes_dark_gray</item>
+    </style>
+
+    <style name="FomesMainTabTheme.BetaTestDivider">
+        <item name="divider_width">@dimen/match_constraint</item>
+        <item name="divider_height">9dp</item>
+        <item name="divider_color">@android:color/transparent</item>
     </style>
 
     <style name="FomesTheme.TurquoiseItem">
@@ -119,7 +131,7 @@
 
     <style name="AnaylsisTheme.Table.Divider">
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/fomes_light_warm_gray</item>
+        <item name="android:background">@color/fomes_warm_gray_2</item>
     </style>
 
     <style name="ProgressBackground">
@@ -138,30 +150,8 @@
     </style>
 
     <style name="RecommendTheme.BottomSheetDialog.Background">
-        <item name="item_color">@color/fomes_white</item>
+        <item name="item_color">@color/fomes_content_background_dark</item>
         <item name="item_background_radius">6dp</item>
-    </style>
-
-    <style name="RecommendTheme.BottomSheetDialog.WishListButtonStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">38dp</item>
-        <item name="android:layout_marginBottom">17dp</item>
-        <item name="android:paddingStart">38dp</item>
-        <item name="android:paddingEnd">38dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/fomes_white</item>
-        <item name="android:textSize">15dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:drawablePadding">5dp</item>
-        <item name="android:background">@drawable/item_rect_rounded_corner_background</item>
-        <item name="android:theme">@style/CollectionButtonBackgroundTheme</item>
-    </style>
-
-    <style name="CollectionButtonBackgroundTheme">
-        <item name="item_color">@color/colorPrimary</item>
-        <item name="item_background_radius">22.5dp</item>
     </style>
 
     <style name="AppInfoGridItemStyle">
@@ -171,14 +161,86 @@
         <item name="android:gravity">center</item>
         <item name="android:text">""</item>
         <item name="android:textSize">12dp</item>
-        <item name="android:textColor">@color/fomes_light_warm_gray</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/fomes_light_gray</item>
         <item name="layout_constraintTop_toBottomOf">@+id/divider_top</item>
         <item name="layout_constraintBottom_toTopOf">@+id/divider_bottom</item>
     </style>
 
-    <style name="TurquoiseRoundStrokeBackgroundTheme">
+    <style name="TurquoiseTextLabel">
         <item name="item_color">@color/colorPrimary</item>
-        <item name="item_background_radius">8dp</item>
+        <item name="item_background_radius">10dp</item>
     </style>
+
+    <style name="BetaTestTheme"/>
+
+    <style name="BetaTestTheme.CardBackground">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_content_card_background</item>
+        <item name="item_stroke_color">@color/item_inner_divider</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.DetailDialog">
+        <item name="item_background_radius">0dp</item>
+        <item name="item_solid_color">@color/fomes_content_card_background</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.TagBackground">
+        <item name="android:paddingStart">7dp</item>
+        <item name="android:paddingEnd">7dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/label_background_dark</item>
+        <item name="item_stroke_color">@android:color/transparent</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.InfoBackground">
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/fomes_light_gray</item>
+    </style>
+
+    <style name="BetaTestTheme.DisableBackground">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_content_disable_card_background</item>
+        <item name="item_stroke_color">@color/item_inner_divider</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.CompletedLabelBackground">
+        <item name="item_background_radius">0dp</item>
+        <item name="item_solid_color">@color/beta_test_label_disable_background</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">4dp</item>
+    </style>
+
+    <style name="BetaTestTheme.Notice"/>
+
+    <style name="BetaTestTheme.Notice.InnerBox">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_30</item>
+        <item name="item_stroke_color">@color/item_inner_divider</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.Notice.Button">
+        <item name="item_background_radius">24dp</item>
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestOpenTheme"/>
+    <style name="BetaTestOpenTheme.InnerBox">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+    <style name="BetaTestOpenTheme.InnerBox.Process">
+        <item name="item_solid_color">@color/fomes_white_2</item>
+    </style>
+
 </resources>

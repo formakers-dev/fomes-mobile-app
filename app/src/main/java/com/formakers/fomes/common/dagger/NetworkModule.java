@@ -2,9 +2,10 @@ package com.formakers.fomes.common.dagger;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.common.network.api.AppAPI;
+import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.api.ConfigAPI;
+import com.formakers.fomes.common.network.api.EventLogAPI;
 import com.formakers.fomes.common.network.api.RecommendAPI;
-import com.formakers.fomes.common.network.api.BetaTestRequestAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 
@@ -87,7 +88,13 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    BetaTestRequestAPI requestAPI(Retrofit retrofit) {
-        return retrofit.create(BetaTestRequestAPI.class);
+    BetaTestAPI requestAPI(Retrofit retrofit) {
+        return retrofit.create(BetaTestAPI.class);
+    }
+
+    @Singleton
+    @Provides
+    EventLogAPI eventLogAPI(Retrofit retrofit) {
+        return retrofit.create(EventLogAPI.class);
     }
 }

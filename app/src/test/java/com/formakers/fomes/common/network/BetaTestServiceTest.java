@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.common.network.api.BetaTestRequestAPI;
+import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import org.junit.Before;
@@ -13,28 +13,28 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class RequestServiceTest extends AbstractServiceTest {
+public class BetaTestServiceTest extends AbstractServiceTest {
 
     @Mock
-    BetaTestRequestAPI mockBetaTestRequestAPI;
+    BetaTestAPI mockBetaTestAPI;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
 
-    RequestService subject;
+    BetaTestService subject;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new RequestService(mockBetaTestRequestAPI, mockSharedPreferencesHelper);
+        subject = new BetaTestService(mockBetaTestAPI, mockSharedPreferencesHelper);
 
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
     @Test
-    public void getFeedbackRequest_호출시__참여가능한_리스트를_요청한다() {
-        subject.getFeedbackRequest().subscribe(new TestSubscriber<>());
+    public void getBetaTests_호출시__참여가능한_리스트를_요청한다() {
+        subject.getBetaTestList().subscribe(new TestSubscriber<>());
 
-        verify(mockBetaTestRequestAPI).getRequests(eq("TEST_ACCESS_TOKEN"));
+        verify(mockBetaTestAPI).getBetaTests(eq("TEST_ACCESS_TOKEN"));
     }
 }

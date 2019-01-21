@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingEnd="23dp"
+        android:paddingStart="23dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="60dp"
+            android:textSize="15dp"
+            android:textColor="@color/fomes_warm_gray_2"
+            android:text="Beta"/>
+
+        <ImageView
+            android:layout_width="37dp"
+            android:layout_height="13dp"
+            android:background="@drawable/intercept_background"
+            android:layout_gravity="center"
+            android:layout_marginStart="60dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="26dp"
+            android:textStyle="bold"
+            android:text="테스트 참여 존 오픈" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="8dp"
+            android:textColor="@color/fomes_warm_gray_2"
+            android:textSize="15sp"
+            android:text="포메스가 게임 관련 테스트를 보내드려요!\n지금 베타버전에 참여해보세요 :-)" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:layout_marginStart="-23dp"
+            android:layout_marginEnd="-23dp"
+            android:src="@drawable/beta_test_open_migration"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/fomes_warm_gray_2"
+            android:textSize="13sp"
+            android:text="* 베타기간동안 포메스 앱을 주제로 테스트가 진행됩니다." />
+
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginTop="9dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/common_confirm"
+            android:textColor="@color/fomes_white"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

@@ -1,10 +1,8 @@
 package com.formakers.fomes.provisioning.contract;
 
-import android.support.annotation.StringRes;
-
+import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 
 import rx.Completable;
 
@@ -28,9 +26,6 @@ public interface ProvisioningContract {
         boolean hasUsageStatsPermission();
         boolean isSelected(BaseFragment fragment);
         boolean isProvisiongProgress();
-
-        int registerSendDataJob();
-        void registerPublicNotificationTopic();
     }
 
     interface View extends BaseView<Presenter> {

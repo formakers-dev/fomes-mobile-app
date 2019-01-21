@@ -15,7 +15,7 @@
         android:layout_width="@dimen/item_people_games_group_width"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/fomes_light_warm_gray"
+        android:textColor="@color/fomes_warm_gray_2"
         android:textSize="@dimen/item_people_games_genre_text_size"
         android:textStyle="bold"
         app:layout_constraintHorizontal_chainStyle="spread"
