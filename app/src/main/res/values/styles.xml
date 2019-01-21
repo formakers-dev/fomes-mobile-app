@@ -233,4 +233,14 @@
         <item name="item_stroke_width">1dp</item>
     </style>
 
+    <style name="BetaTestOpenTheme"/>
+    <style name="BetaTestOpenTheme.InnerBox">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+    <style name="BetaTestOpenTheme.InnerBox.Process">
+        <item name="item_solid_color">@color/fomes_white_2</item>
+    </style>
+
 </resources>
