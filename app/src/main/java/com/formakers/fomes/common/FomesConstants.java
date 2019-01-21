@@ -47,4 +47,12 @@ public interface FomesConstants {
         String SUMMARY_SUB_TEXT = "summarySubText";
         String SUB_TITLE = "subTitle";
     }
+
+    interface EventLog {
+        interface Code {
+            String MAIN_ACTIVITY_ENTER = "MAIN_ENTER";
+            String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAB_BETA_TEST";
+            String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAB_RECOMMEND";
+        }
+    }
 }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -124,6 +125,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         eventPagerAdapter.addView(eventBanner, R.layout.activity_event_keeping_app);
 
         eventPagerAdapter.notifyDataSetChanged();
+
+        presenter.sendEventLog(FomesConstants.EventLog.Code.MAIN_ACTIVITY_ENTER);
     }
 
     @Override
@@ -225,7 +228,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-
+        presenter.sendEventLog((tab.getPosition() == 0) ?
+                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST :
+                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
     }
 
     @Override
@@ -279,5 +284,14 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private <T> void startActivity(Class<T> destActivity) {
         Intent intent = new Intent(this, destActivity);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (presenter != null) {
+            presenter.unsubscribe();
+        }
     }
 }

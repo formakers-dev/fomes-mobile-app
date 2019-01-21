@@ -3,14 +3,17 @@ package com.formakers.fomes.main.presenter;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.job.JobManager;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
-import com.formakers.fomes.main.contract.MainContract;
+import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.main.contract.MainContract;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -21,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import rx.Completable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
@@ -29,6 +33,8 @@ import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -42,13 +48,14 @@ public class MainPresenterTest {
     @Inject UserDAO mockUserDAO;
     @Inject UserService mockUserService;
     @Inject JobManager mockJobManager;
+    @Inject EventLogService mockEventLogService;
 
     @Mock
     MainContract.View mockView;
 
-    MainPresenter subject;
+    private MainPresenter subject;
 
-    TestScheduler testScheduler;
+    private TestScheduler testScheduler;
 
     @Before
     public void setUp() throws Exception {
@@ -69,11 +76,11 @@ public class MainPresenterTest {
 
         MockitoAnnotations.initMocks(this);
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
-        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockJobManager);
+        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockEventLogService, mockJobManager);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
     }
 
     @Test
@@ -112,5 +119,17 @@ public class MainPresenterTest {
 
         testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
         verify(mockView, times(2)).showNextEventBanner();
+    }
+
+    @Test
+    public void sendEventLog_호출시__전달받은_내용에_대한_이벤트로그_저장을_요청한다() {
+        when(mockEventLogService.sendEventLog(any())).thenReturn(Completable.complete());
+
+        subject.sendEventLog("ANY_CODE");
+
+        ArgumentCaptor<EventLog> eventLogCaptor = ArgumentCaptor.forClass(EventLog.class);
+
+        verify(mockEventLogService).sendEventLog(eventLogCaptor.capture());
+        assertEquals(eventLogCaptor.getValue().getCode(), "ANY_CODE");
     }
 }

@@ -14,6 +14,8 @@ public interface MainContract {
         void startEventBannerAutoSlide();
         void stopEventBannerAutoSlide();
         boolean checkRegisteredSendDataJob();
+        void sendEventLog(String code);
+        void unsubscribe();
     }
 
     interface View extends BaseView<Presenter> {

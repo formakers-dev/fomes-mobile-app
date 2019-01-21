@@ -1,10 +1,13 @@
 package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.common.job.JobManager;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.network.vo.EventLog;
+import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,16 +18,21 @@ import rx.Observable;
 import rx.Single;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainPresenter implements MainContract.Presenter {
+
+    private static final String TAG = "MainPresenter";
 
     @Inject UserDAO userDAO;
     @Inject UserService userService;
     @Inject JobManager jobManager;
+    @Inject EventLogService eventLogService;
 
-    MainContract.View view;
+    private MainContract.View view;
 
-    Subscription autoSlideSubscription;
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private Subscription autoSlideSubscription;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -32,11 +40,12 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     // temporary code for test
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, JobManager jobManager) {
+    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, EventLogService eventLogService, JobManager jobManager) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
         this.jobManager = jobManager;
+        this.eventLogService = eventLogService;
     }
 
     @Override
@@ -65,6 +74,22 @@ public class MainPresenter implements MainContract.Presenter {
     public void stopEventBannerAutoSlide() {
         if(autoSlideSubscription != null && !autoSlideSubscription.isUnsubscribed()) {
             autoSlideSubscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void sendEventLog(String code) {
+        compositeSubscription.add(
+            eventLogService.sendEventLog(new EventLog().setCode(code))
+                    .subscribe(() -> Log.d(TAG, "sendEventLog"),
+                            (e) -> Log.e(TAG, "sendEventLog Error : " + e.getMessage()))
+        );
+    }
+
+    @Override
+    public void unsubscribe() {
+        if (compositeSubscription != null) {
+            compositeSubscription.clear();
         }
     }
 }
