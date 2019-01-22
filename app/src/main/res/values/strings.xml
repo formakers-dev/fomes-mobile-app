@@ -115,6 +115,8 @@
     <string name="analysis_game_suggestion_without_1_2_3">앗! 아직 1/2/3위가 없으시네요. 오늘 모바일 게임 한판 어때요?</string>
     <string name="analysis_game_suggestion_without_2_3">앗! 아직 2/3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
     <string name="analysis_game_suggestion_without_3">앗! 아직 3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
+    <string name="analysis_not_enough_title">요즘 게임을 많이 안하셨나봐요….</string>
+    <string name="analysis_not_enough_subtitle">괜찮아요! 게임을 플레이하면 다시 분석 해볼 수 있어요.</string>
 
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>

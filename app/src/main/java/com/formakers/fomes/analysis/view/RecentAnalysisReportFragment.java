@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.Group;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -59,6 +60,8 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
     @BindView(R.id.fragment_loading_imageview) ImageView loadingImageView;
 
+    @BindView(R.id.analysis_not_enough_top_layout) Group notEnoughTopLayout;
+    @BindView(R.id.analysis_top_layout) Group topLayout;
     @BindView(R.id.analysis_icon_imageview) ImageView iconImageView;
     @BindView(R.id.analysis_title_textview) TextView titleTextView;
     @BindView(R.id.analysis_subtitle_textview) TextView subtitleTextView;
@@ -331,9 +334,15 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         if (myRank.isValid()) {
             myPlaytimeRankDescriptionTitleTextView.setText(String.format(res.getString(R.string.analysis_my_playtime_rank_description_title), myRankText));
+
+            topLayout.setVisibility(View.VISIBLE);
+            notEnoughTopLayout.setVisibility(View.GONE);
         } else {
             myPlaytimeRankDescriptionTitleTextView.setText(res.getString(R.string.analysis_my_playtime_rank_no_data_title));
             myPlaytimeRankDescriptionContentTextView.setText(res.getString(R.string.analysis_my_playtime_rank_no_data_content));
+
+            topLayout.setVisibility(View.GONE);
+            notEnoughTopLayout.setVisibility(View.VISIBLE);
         }
 
         Map<Float, String> labelMap = new HashMap<>();

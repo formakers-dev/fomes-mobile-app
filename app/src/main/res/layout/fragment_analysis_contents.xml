@@ -11,6 +11,62 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <android.support.constraint.Group
+            android:id="@+id/analysis_not_enough_top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="not_enough_imageview, not_enough_title_textview, not_enough_subtitle_textview"/>
+
+        <ImageView
+            android:id="@+id/not_enough_imageview"
+            android:layout_width="38dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="@dimen/provision_image_margin_top"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:src="@drawable/fomes_face_cry_colored"
+            app:layout_constraintBottom_toTopOf="@+id/not_enough_title_textview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/not_enough_title_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_not_enough_title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/provision_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/not_enough_subtitle_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/not_enough_imageview" />
+
+        <TextView
+            android:id="@+id/not_enough_subtitle_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/provision_subtitle_margin_top"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:text="@string/analysis_not_enough_subtitle"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/provision_subtitle_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/not_enough_title_textview"/>
+
+
+        <android.support.constraint.Group
+            android:id="@+id/analysis_top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="analysis_icon_imageview, analysis_subtitle_textview"/>
+
         <ImageView
             android:id="@+id/analysis_icon_imageview"
             android:layout_width="222dp"
@@ -30,14 +86,20 @@
             android:textColor="@color/colorPrimary"
             android:textSize="13dp"
             android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/analysis_icon_imageview" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_icon_imageview"/>
+        
+        <android.support.constraint.Guideline
+            android:id="@+id/top_layout_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="168dp" />
 
         <!-- start of Playtime My Rank -->
         <View
             android:id="@+id/analysis_my_playtime_rank_divider"
             style="@style/AnaylsisTheme.Divider"
-            android:layout_marginTop="29dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_subtitle_textview" />
+            app:layout_constraintTop_toBottomOf="@id/top_layout_guideline" />
 
         <TextView
             android:id="@+id/analysis_my_playtime_rank_title"
