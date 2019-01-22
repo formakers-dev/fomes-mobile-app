@@ -35,11 +35,11 @@
     
     <Button android:id="@+id/download_button"
         android:layout_width="0dp"
-        android:layout_height="68dp"
+        android:layout_height="60dp"
         android:background="@color/colorPrimary"
         android:text="@string/download_to_googleplay"
         android:textColor="@color/fomes_white"
-        android:textSize="@dimen/provision_bottom_button_text_size"
+        android:textSize="17dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

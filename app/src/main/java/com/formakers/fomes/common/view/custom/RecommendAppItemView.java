@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -199,7 +198,7 @@ public class RecommendAppItemView extends ConstraintLayout {
                 break;
             case RecommendApp.RECOMMEND_TYPE_FAVORITE_CATEGORY:
                 styleResId = R.style.FomesTheme_WarmGrayItem;
-                colorResId = R.color.fomes_warm_gray;
+                colorResId = R.color.fomes_light_gray;
                 format = res.getString(R.string.recommend_label_format_favorite_category);
                 break;
             case RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC:
@@ -224,6 +223,7 @@ public class RecommendAppItemView extends ConstraintLayout {
         switch (recommendType) {
             case RecommendApp.RECOMMEND_TYPE_FAVORITE_APP:
             case RecommendApp.RECOMMEND_TYPE_FAVORITE_DEVELOPER:
+            case RecommendApp.RECOMMEND_TYPE_FAVORITE_CATEGORY:
                 if (recommendReason != null && recommendReason.length() > 10) {
                     return recommendReason.substring(0, 10) + getContext().getResources().getString(R.string.shorten_symbol);
                 }
