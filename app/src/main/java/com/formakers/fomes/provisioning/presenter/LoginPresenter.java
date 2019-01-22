@@ -21,13 +21,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import javax.inject.Inject;
 
 import rx.Single;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 @LoginActivityScope
 public class LoginPresenter implements LoginContract.Presenter {
 
-    private static final String TAG = LoginPresenter.class.getSimpleName();
+    private static final String TAG = "LoginPresenter";
 
     private GoogleSignInAPIHelper googleSignInAPIHelper;
     private UserService userService;
@@ -67,12 +68,14 @@ public class LoginPresenter implements LoginContract.Presenter {
             loginSingle = userService.signUp(account.getIdToken(), userInfo)
                     .observeOn(Schedulers.io())
                     .doOnSuccess(fomesToken -> userDAO.updateUserInfo(userInfo))
-                    .doAfterTerminate(() -> view.startActivityAndFinish(ProvisioningActivity.class))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess(fomesToken -> view.startActivityAndFinish(ProvisioningActivity.class))
                     .doOnError(e -> view.showToast("가입에 실패하였습니다. 재시도 고고"));
         } else {
             loginSingle = userService.signIn(account.getIdToken()).toSingle()
                     .doOnSuccess(fomesToken -> sharedPreferencesHelper.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED))
-                    .doAfterTerminate(() -> view.startActivityAndFinish(MainActivity.class))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess(fomesToken -> view.startActivityAndFinish(MainActivity.class))
                     .doOnError(e -> view.showToast("로그인에 실패하였습니다. 재시도 고고"));
         }
 

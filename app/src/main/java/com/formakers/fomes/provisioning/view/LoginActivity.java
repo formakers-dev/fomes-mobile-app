@@ -28,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
-    public static final String TAG = LoginActivity.class.getSimpleName();
+    public static final String TAG = "LoginActivity";
 
     private static final int REQUEST_CODE_SIGN_IN = 9001;
 
@@ -79,6 +79,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
+
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             if (resultCode != Activity.RESULT_OK) {
                 showToast("구글 로그인이 취소되었습니다.");
