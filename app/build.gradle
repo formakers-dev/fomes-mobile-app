@@ -9,14 +9,14 @@ try {
         localhostAddress = localProperties.getProperty('my.localhost')
     }
 } catch (Exception e) {
-    println("You can't access local.properties file. Your localhost Address is " + localhostAddress)
+    println("You can't access local.properties file. Your localhost Address is " + localhostAddress);
 }
 
 project.ext.set("packageID", "Fomes")
 
 def majorVersion = 0
 def minorVersion = 2
-def patchVersion = 0
+def patchVersion = 1
 
 android {
     compileSdkVersion 27
@@ -26,7 +26,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 14
+        versionCode 15
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
