@@ -150,7 +150,7 @@
     <string name="download_to_googleplay">구글플레이 다운로드</string>
     <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
     <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>
-    <string name="recommend_label_format_favorite_category">포메스 픽! %s 장르 랜덤 추천 게임</string>
+    <string name="recommend_label_format_favorite_category">내가 좋아하는 %s 장르의 추천 게임</string>
     <string name="recommend_label_format_similar_demographic">나와 같은 %s들이 즐겨하는 게임</string>
     <string name="format_app_info_star_score">%.1f 점</string>
     <string name="format_app_info_download_count">설치수 %d+</string>

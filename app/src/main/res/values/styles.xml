@@ -150,7 +150,7 @@
     </style>
 
     <style name="RecommendTheme.BottomSheetDialog.Background">
-        <item name="item_color">@color/fomes_content_background_dark</item>
+        <item name="item_color">@color/fomes_gray_2</item>
         <item name="item_background_radius">6dp</item>
     </style>
 
