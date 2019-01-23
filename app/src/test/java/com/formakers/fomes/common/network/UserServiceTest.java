@@ -63,6 +63,15 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void notifyActivated호출시__활성화시각_업데이트를_서버에_요청한다() {
+        when(mockUserAPI.notifyActivated(anyString())).thenReturn(mock(Observable.class));
+
+        subject.notifyActivated().subscribe(new TestSubscriber<>());
+
+        verify(mockUserAPI).notifyActivated("TEST_ACCESS_TOKEN");
+    }
+
+    @Test
     public void updateRegistrationToken호출시_푸시토큰정보를_서버에_전송한다() {
         when(mockUserAPI.update(anyString(), any(User.class))).thenReturn(mock(Observable.class));
 

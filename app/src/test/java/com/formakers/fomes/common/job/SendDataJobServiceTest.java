@@ -96,10 +96,11 @@ public class SendDataJobServiceTest {
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
         verify(mockUserService).updateUser(eq(mockUser));
         verify(mockChannelManager).subscribePublicTopic();
+        verify(mockUserService).notifyActivated();
     }
 
     @Test
-    public void onStartJob_실행시_권한이없으면_아무것도하지않는다() {
+    public void onStartJob_실행시_권한이없으면_통계데이터는_전송하지않는다() {
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
         JobParameters jobParameters = mock(JobParameters.class);
@@ -108,11 +109,12 @@ public class SendDataJobServiceTest {
 
         subject.onStartJob(jobParameters);
 
-        verify(mockUserService, never()).updateRegistrationToken(any());
         verify(mockAppUsageDataHelper, never()).sendShortTermStats();
         verify(mockAppStatService, never()).sendAppUsages(any());
+
         verify(mockUserService).updateUser(eq(mockUser));
         verify(mockChannelManager).subscribePublicTopic();
+        verify(mockUserService).notifyActivated();
     }
 
 //    @Test

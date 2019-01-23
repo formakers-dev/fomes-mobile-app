@@ -57,6 +57,16 @@ public class UserService extends AbstractService {
                 .toCompletable();
     }
 
+    public Completable notifyActivated() {
+        return Observable.defer(() -> userAPI.notifyActivated(SharedPreferencesHelper.getAccessToken()))
+                .doOnCompleted(() -> Log.d(TAG, "notifyActivated) Completed!"))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(APIHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
     public Completable updateRegistrationToken(String registrationToken) {
         return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), new User(registrationToken)))
                 .doOnError(this::logError)
