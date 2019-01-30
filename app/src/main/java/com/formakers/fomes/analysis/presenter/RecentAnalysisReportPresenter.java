@@ -4,17 +4,17 @@ import android.util.Pair;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
+import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.AppUsageDataHelper;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +78,12 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
 
     @Override
     public Completable loading() {
+
+        appUsageDataHelper.sendShortTermStats()
+                .observeOn(Schedulers.io())
+                .subscribe(() -> Log.d(TAG, "send short term stats success!!!"),
+                        e -> Log.e(TAG, "send short term stats failed!!!! e=" + String.valueOf(e)));
+
         return Completable.concat(
                 this.requestPostUsages(),
                 initData()
