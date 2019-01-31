@@ -26,6 +26,7 @@ import rx.Scheduler;
 import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.observers.TestSubscriber;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -80,18 +81,22 @@ public class BetaTestPresenterTest {
     }
 
     @Test
-    public void load__호출시__테스트존_리스트를_요청하고_유저정보를_가져온다() {
-        subject.load();
+    public void initialize__호출시__유저정보를_가져온다() {
+        subject.initialize();
 
         verify(mockUserDAO).getUserInfo();
-        verify(mockBetaTestService).getBetaTestList();
-        verify(mockAdapterModel).addAll(eq(betaTests));
-        verify(mockView).refreshBetaTestList();
-        verify(mockView).showBetaTestListView();
+        verify(mockView).setUserNickName(eq("dummyNickName"));
     }
 
     @Test
-    public void load__호출시__결과로_받은_테스트존_리스트를_정렬된_순서로_화면에_보여준다() {
+    public void loadToBetaTestList__호출시__테스트존_리스트를_요청한다() {
+        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
+
+        verify(mockBetaTestService).getBetaTestList();
+    }
+
+    @Test
+    public void loadToBetaTestList__호출시__결과로_받은_테스트존_리스트를_정렬된_순서로_화면에_보여준다() {
         List<BetaTest> unsortedBetaTestList = new ArrayList();
         unsortedBetaTestList.add(new BetaTest().setId(3).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
         unsortedBetaTestList.add(new BetaTest().setId(2).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
@@ -103,7 +108,7 @@ public class BetaTestPresenterTest {
         unsortedBetaTestList.add(new BetaTest().setId(6).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
 
-        subject.load();
+        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<List<BetaTest>> captor = ArgumentCaptor.forClass(List.class);
         verify(mockAdapterModel).addAll(captor.capture());
@@ -117,23 +122,35 @@ public class BetaTestPresenterTest {
         assertThat(sortedBetaTestList.get(5).getId()).isEqualTo(6);
         assertThat(sortedBetaTestList.get(6).getId()).isEqualTo(7);
         assertThat(sortedBetaTestList.get(7).getId()).isEqualTo(8);
+
+        verify(mockView).refreshBetaTestList();
+        verify(mockView).showBetaTestListView();
     }
 
     @Test
-    public void load__호출시__빈리스트가_올_경우에는_비었다는_내용을_알리는_화면을_보여준다() {
+    public void loadToBetaTestList__호출시__빈리스트가_올_경우에는__비었다는_내용을_알리는_화면을_보여준다() {
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(Lists.emptyList()));
 
-        subject.load();
+        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
 
-        verify(mockUserDAO).getUserInfo();
         verify(mockBetaTestService).getBetaTestList();
-        verify(mockView).setUserNickName(eq("dummyNickName"));
         verify(mockView).showEmptyView();
     }
 
     @Test
+    public void loadToBetaTestList__호출시__에러일_경우__비었다는_내용을_알리는_화면을_보여준다() {
+        when(mockBetaTestService.getBetaTestList()).thenReturn(Single.error(new Throwable()));
+
+        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
+
+        verify(mockBetaTestService).getBetaTestList();
+        verify(mockView).showEmptyView();
+    }
+
+
+    @Test
     public void getBetaTestItem__호출시__해당_위치의_베타테스트를_리턴한다() {
-        subject.load();
+        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
         BetaTest betaTest = subject.getBetaTestItem(0);
 
         assertThat(betaTest.getTitle()).isEqualTo("베타테스트1");
@@ -141,7 +158,7 @@ public class BetaTestPresenterTest {
 
     @Test
     public void getUserEmail__호출시__유저의_이메일을_리턴한다() {
-        subject.load();
+        subject.initialize();
         String userEmail = subject.getUserEmail();
 
         assertThat(userEmail).isEqualTo("user@gmail.com");

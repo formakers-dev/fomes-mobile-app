@@ -99,7 +99,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
             });
 
-            presenter.load();
+            presenter.initialize();
         }
     }
 
