@@ -89,6 +89,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                         return betaTest1.getCloseDate().compareTo(betaTest2.getCloseDate());
                     });
 
+                    betaTestListAdapterModel.clear();
                     betaTestListAdapterModel.addAll(betaTests);
                     view.refreshBetaTestList();
                     view.showBetaTestListView();

@@ -2,6 +2,7 @@ package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import java.util.List;
@@ -20,11 +21,13 @@ public class BetaTestService extends AbstractService {
 
     private final BetaTestAPI betaTestAPI;
     private final SharedPreferencesHelper sharedPreferencesHelper;
+    private final APIHelper apiHelper;
 
     @Inject
-    public BetaTestService(BetaTestAPI betaTestAPI, SharedPreferencesHelper sharedPreferencesHelper) {
+    public BetaTestService(BetaTestAPI betaTestAPI, SharedPreferencesHelper sharedPreferencesHelper, APIHelper apiHelper) {
         this.betaTestAPI = betaTestAPI;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
+        this.apiHelper = apiHelper;
     }
 
     @Override
@@ -34,7 +37,8 @@ public class BetaTestService extends AbstractService {
 
     public Single<List<BetaTest>> getBetaTestList() {
         return Observable.defer(() -> betaTestAPI.getBetaTests(sharedPreferencesHelper.getAccessToken()))
-        .subscribeOn(Schedulers.io())
-        .toSingle();
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
     }
 }

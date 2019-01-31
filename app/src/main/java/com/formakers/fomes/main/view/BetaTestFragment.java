@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
@@ -38,6 +39,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
+    @BindView(R.id.betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.betatest_empty_view) View emptyView;
     @BindView(R.id.betatest_empty_textview) TextView emptyTextView;
 
@@ -97,6 +99,14 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
                 this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
+            });
+
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                presenter.loadToBetaTestList()
+                        .toCompletable()
+                        .doOnSubscribe(x -> swipeRefreshLayout.setRefreshing(true))
+                        .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
+                        .subscribe(() -> {}, e -> Log.e(TAG, String.valueOf(e)));
             });
 
             presenter.initialize();

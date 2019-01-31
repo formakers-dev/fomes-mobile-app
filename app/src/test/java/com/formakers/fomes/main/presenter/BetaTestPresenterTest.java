@@ -111,6 +111,7 @@ public class BetaTestPresenterTest {
         subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<List<BetaTest>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mockAdapterModel).clear();
         verify(mockAdapterModel).addAll(captor.capture());
 
         List<BetaTest> sortedBetaTestList = captor.getValue();
