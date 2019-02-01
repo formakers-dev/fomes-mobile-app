@@ -171,8 +171,8 @@
 
     <!-- Event -->
     <string name="event_banner_title">포메스의 감사 EVENT</string>
-    <string name="event_banner_subtitle">1월까지 앱을 유지하면,\n100분께 문상을 드려요.</string>
-    <string name="event_description">포메스가 열정 게이머를 위해 준비한 이벤트입니다!</string>
+    <string name="event_banner_subtitle">[마감] 1/31 앱 유지 이벤트\n참여해주셔서 감사합니다.</string>
+    <string name="event_description">본 이벤트가 마감되었습니다!\n당첨자 추첨 및 발표는 2월 중 진행됩니다.\n두구두구~ 과연 주인공은?!</string>
     <string name="event_condition_title">이벤트 대상</string>
     <string name="event_condition_1">2019년 1월 31일까지 포메스 앱 유지</string>
     <string name="event_condition_2">모바일 게임을 주 3시간 이상 플레이 한 게이머</string>
