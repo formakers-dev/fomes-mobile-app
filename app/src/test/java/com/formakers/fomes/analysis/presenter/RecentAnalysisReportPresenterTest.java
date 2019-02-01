@@ -10,9 +10,9 @@ import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.model.User;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import org.assertj.core.util.Lists;
 import org.junit.After;
@@ -43,7 +43,6 @@ import rx.schedulers.Schedulers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -58,6 +57,8 @@ public class RecentAnalysisReportPresenterTest {
     @Mock RecentAnalysisReportContract.View mockView;
 
     @Mock User mockUser;
+
+    RecentReport report;
 
     RecentAnalysisReportPresenter subject;
 
@@ -97,8 +98,7 @@ public class RecentAnalysisReportPresenterTest {
         RxAndroidPlugins.getInstance().reset();
     }
 
-    @Test
-    public void loading_호출시__게임_분석_로딩_관련_연산을_수행후__뷰를_업데이트한다() {
+    private void initializeForLoadingTest() {
         when(mockAppStatService.sendAppUsages(anyList())).thenReturn(Completable.complete());
 
         List<Rank> totalUsedTimeRank = new ArrayList<>();
@@ -113,9 +113,25 @@ public class RecentAnalysisReportPresenterTest {
         usages.add(new UsageGroup(UsageGroup.TYPE_AGE | UsageGroup.TYPE_GENDER, Lists.emptyList(), Lists.emptyList(), Lists.emptyList()));
         usages.add(new UsageGroup(UsageGroup.TYPE_JOB, Lists.emptyList(), Lists.emptyList(), Lists.emptyList()));
 
-        RecentReport report = new RecentReport().setTotalUsedTimeRank(totalUsedTimeRank).setUsages(usages).setTotalUserCount(999);
+        report = new RecentReport().setTotalUsedTimeRank(totalUsedTimeRank).setUsages(usages).setTotalUserCount(999);
 
         when(mockAppStatService.requestRecentReport(eq("GAME"), eq(mockUser))).thenReturn(Observable.just(report));
+
+        when(mockAppUsageDataHelper.sendShortTermStats()).thenReturn(Completable.complete());
+    }
+
+    @Test
+    public void loading_호출시__단기_통계_데이터를_서버로_전송한다() {
+        initializeForLoadingTest();
+
+        subject.loading().subscribe();
+
+        verify(mockAppUsageDataHelper).sendShortTermStats();
+    }
+
+    @Test
+    public void loading_호출시__게임_분석_로딩_관련_연산을_수행후__뷰를_업데이트한다() {
+        initializeForLoadingTest();
 
         subject.loading().subscribe();
 

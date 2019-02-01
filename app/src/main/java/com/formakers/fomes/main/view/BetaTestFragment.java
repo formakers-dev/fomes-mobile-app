@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
@@ -38,6 +39,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
+    @BindView(R.id.betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.betatest_empty_view) View emptyView;
     @BindView(R.id.betatest_empty_textview) TextView emptyTextView;
 
@@ -55,52 +57,51 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 .build()
                 .inject(this);
 
-        View view;
-
-        if (Feature.BETATEST_ZONE) {
-            view = inflater.inflate(R.layout.fragment_betatest, container, false);
-        } else {
-            view = inflater.inflate(R.layout.fragment_betatest_old, container, false);
-        }
-
-        return view;
+        return inflater.inflate(R.layout.fragment_betatest, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (Feature.BETATEST_ZONE) {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
-            ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
-            dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
-            recyclerView.addItemDecoration(dividerItemDecoration);
+        ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
-            BetaTestListAdapter betaTestListAdapter = new BetaTestListAdapter();
-            betaTestListAdapter.setPresenter(presenter);
-            recyclerView.setAdapter(betaTestListAdapter);
-            presenter.setAdapterModel(betaTestListAdapter);
-            this.setAdapterView(betaTestListAdapter);
+        BetaTestListAdapter betaTestListAdapter = new BetaTestListAdapter();
+        betaTestListAdapter.setPresenter(presenter);
+        recyclerView.setAdapter(betaTestListAdapter);
+        presenter.setAdapterModel(betaTestListAdapter);
+        this.setAdapterView(betaTestListAdapter);
 
-            betaTestListAdapterView.setOnItemClickListener(position -> {
-                Bundle bundle = new Bundle();
-                BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
-                bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
-                bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
+        betaTestListAdapterView.setOnItemClickListener(position -> {
+            Bundle bundle = new Bundle();
+            BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
+            bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
+            bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
 
-                BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
-                betaTestDetailAlertDialog.setArguments(bundle);
-                betaTestDetailAlertDialog.setPresenter(this.presenter);
-                betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
+            BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
+            betaTestDetailAlertDialog.setArguments(bundle);
+            betaTestDetailAlertDialog.setPresenter(this.presenter);
+            betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
-                this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
-            });
+            this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
+        });
 
-            presenter.load();
-        }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            presenter.loadToBetaTestList()
+                    .toCompletable()
+                    .doOnSubscribe(x -> swipeRefreshLayout.setRefreshing(true))
+                    .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
+                    .subscribe(() -> {
+                    }, e -> Log.e(TAG, String.valueOf(e)));
+        });
+
+        presenter.initialize();
     }
 
     @Override

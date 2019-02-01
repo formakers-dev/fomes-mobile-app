@@ -77,6 +77,9 @@ public class SendDataJobService extends JobService {
             ));
         }
 
+        // 4. 활성화 시각 업데이트 요청하기
+        completableList.add(userService.notifyActivated());
+
         subscription = Completable.merge(Observable.from(completableList))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

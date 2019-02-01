@@ -12,9 +12,11 @@ import com.formakers.fomes.main.dagger.scope.BetaTestFragmentScope;
 import com.formakers.fomes.model.User;
 
 import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -48,41 +50,51 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
-    public void load() {
+    public void initialize() {
         compositeSubscription.add(
                 userDAO.getUserInfo()
-                        .observeOn(Schedulers.io())
-                        .flatMap(user -> {
-                            this.user = user;
-                            return betaTestService.getBetaTestList();
-                        })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(() -> view.showLoading())
-                        .doAfterTerminate(() -> view.hideLoading())
-                        .subscribe(betaTests -> {
-                            if (betaTests == null || betaTests.isEmpty()) {
-                                view.setUserNickName(user.getNickName());
-                                view.showEmptyView();
-                            } else {
-                                // TODO : 정렬 로직이 프레젠터에 있는게 맞을까? 고민되네... 논의후 이동 필요
-                                Collections.sort(betaTests, (betaTest1, betaTest2) -> {
-                                    int compareWithIsOpened = Boolean.compare(betaTest1.isOpened(), betaTest2.isOpened());
-                                    if (compareWithIsOpened != 0)
-                                        return -1 * compareWithIsOpened;
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(user -> {
+                    this.user = user;
+                    view.setUserNickName(user.getNickName());
+                })
+                .observeOn(Schedulers.io())
+                .flatMap(user -> loadToBetaTestList())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> view.showLoading())
+                .doAfterTerminate(() -> view.hideLoading())
+                .toCompletable().subscribe(() -> { }, e -> Log.e(TAG, String.valueOf(e))));
+    }
 
-                                    int compareWithIsCompleted = Boolean.compare(betaTest1.isCompleted(), betaTest2.isCompleted());
-                                    if (compareWithIsCompleted != 0)
-                                        return (betaTest1.isOpened() ? 1 : -1) * compareWithIsCompleted;
+    @Override
+    public Single<List<BetaTest>> loadToBetaTestList() {
+        return betaTestService.getBetaTestList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(betaTests -> {
 
-                                    return betaTest1.getCloseDate().compareTo(betaTest2.getCloseDate());
-                                });
+                    if (betaTests == null || betaTests.isEmpty()) {
+                        throw new IllegalStateException("Empty List");
+                    }
 
-                                betaTestListAdapterModel.addAll(betaTests);
-                                view.refreshBetaTestList();
-                                view.showBetaTestListView();
-                            }
-                        }, e -> Log.e(TAG, String.valueOf(e)))
-        );
+                    // TODO : 정렬 로직이 프레젠터에 있는게 맞을까? 고민되네... Service로 이동 필요
+                    Collections.sort(betaTests, (betaTest1, betaTest2) -> {
+                        int compareWithIsOpened = Boolean.compare(betaTest1.isOpened(), betaTest2.isOpened());
+                        if (compareWithIsOpened != 0)
+                            return -1 * compareWithIsOpened;
+
+                        int compareWithIsCompleted = Boolean.compare(betaTest1.isCompleted(), betaTest2.isCompleted());
+                        if (compareWithIsCompleted != 0)
+                            return (betaTest1.isOpened() ? 1 : -1) * compareWithIsCompleted;
+
+                        return betaTest1.getCloseDate().compareTo(betaTest2.getCloseDate());
+                    });
+
+                    betaTestListAdapterModel.clear();
+                    betaTestListAdapterModel.addAll(betaTests);
+                    view.refreshBetaTestList();
+                    view.showBetaTestListView();
+                })
+                .doOnError(e -> view.showEmptyView());
     }
 
     @Override

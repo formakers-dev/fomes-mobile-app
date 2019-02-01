@@ -26,13 +26,13 @@ public class UserService extends AbstractService {
 
     private final UserAPI userAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
-    private final APIHelper APIHelper;
+    private final APIHelper apiHelper;
 
     @Inject
-    public UserService(UserAPI userAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper) {
+    public UserService(UserAPI userAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper apiHelper) {
         this.userAPI = userAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
-        this.APIHelper = APIHelper;
+        this.apiHelper = apiHelper;
     }
 
     public Single<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
@@ -53,7 +53,17 @@ public class UserService extends AbstractService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
+    public Completable notifyActivated() {
+        return Observable.defer(() -> userAPI.notifyActivated(SharedPreferencesHelper.getAccessToken()))
+                .doOnCompleted(() -> Log.d(TAG, "notifyActivated) Completed!"))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
@@ -62,7 +72,7 @@ public class UserService extends AbstractService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken())
+                .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
@@ -74,7 +84,7 @@ public class UserService extends AbstractService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken())
+                .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
@@ -83,7 +93,7 @@ public class UserService extends AbstractService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken())
+                .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
@@ -92,7 +102,7 @@ public class UserService extends AbstractService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken());
+                .compose(apiHelper.refreshExpiredToken());
     }
 
     public Completable verifyToken() {
@@ -106,7 +116,7 @@ public class UserService extends AbstractService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(APIHelper.refreshExpiredToken()))
+                .compose(apiHelper.refreshExpiredToken()))
                 .toCompletable();
     }
 

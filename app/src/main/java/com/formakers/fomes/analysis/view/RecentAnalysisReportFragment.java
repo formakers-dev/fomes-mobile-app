@@ -83,7 +83,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_people_games_gender_age) ViewGroup genderAgeGames;
     @BindView(R.id.analysis_people_games_job) ViewGroup jobGames;
     @BindView(R.id.analysis_my_playtime_rank_medal_text) TextView myPlaytimeRankMedalTextView;
-    @BindView(R.id.analysis_my_playtime_rank_medal_sub_text) TextView myPlaytimeRankMedalTotalUserCountTextView;
+//    @BindView(R.id.analysis_my_playtime_rank_medal_sub_text) TextView myPlaytimeRankMedalTotalUserCountTextView;
     @BindView(R.id.analysis_my_playtime_rank_summary) TextView myPlaytimeRankSummaryTextView;
     @BindView(R.id.analysis_my_playtime_rank_description_title) TextView myPlaytimeRankDescriptionTitleTextView;
     @BindView(R.id.analysis_my_playtime_rank_description_content) TextView myPlaytimeRankDescriptionContentTextView;
@@ -325,7 +325,7 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
 
         // 나의 플레이 등수 관련 세팅
         myPlaytimeRankMedalTextView.setText(myRankText);
-        myPlaytimeRankMedalTotalUserCountTextView.setText(String.format(getString(R.string.analysis_total_user_count), totalUserCount));
+//        myPlaytimeRankMedalTotalUserCountTextView.setText(String.format(getString(R.string.analysis_total_user_count), totalUserCount));
         myPlaytimeRankSummaryTextView.setText(String.format(getString(R.string.analysis_my_playtime_rank_summary), myHour));
 
         if (myRank.getRank() >= 1000) {

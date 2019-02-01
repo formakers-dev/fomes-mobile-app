@@ -11,6 +11,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -27,6 +28,9 @@ public interface UserAPI {
 
     @POST("/user")
     Observable<Void> update(@Header("x-access-token") String accessToken, @Body User user);
+
+    @PUT("/user/activated")
+    Observable<Void> notifyActivated(@Header("x-access-token") String accessToken);
 
     @POST("/user/wishlist")
     Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body HashMap<String, Object> wishListMap);

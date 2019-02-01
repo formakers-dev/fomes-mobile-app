@@ -122,6 +122,8 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
                 startActivity(i);
 
                 this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_DETAIL_DIALOG_TAP_CONFIRM, String.valueOf(betaTest.getId()));
+
+                dismiss();
             });
         }
     }

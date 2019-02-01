@@ -1,6 +1,7 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.BetaTestAPI;
+import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import org.junit.Before;
@@ -15,8 +16,7 @@ import static org.mockito.Mockito.when;
 
 public class BetaTestServiceTest extends AbstractServiceTest {
 
-    @Mock
-    BetaTestAPI mockBetaTestAPI;
+    @Mock BetaTestAPI mockBetaTestAPI;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
 
     BetaTestService subject;
@@ -26,7 +26,7 @@ public class BetaTestServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new BetaTestService(mockBetaTestAPI, mockSharedPreferencesHelper);
+        subject = new BetaTestService(mockBetaTestAPI, mockSharedPreferencesHelper, getMockAPIHelper());
 
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
