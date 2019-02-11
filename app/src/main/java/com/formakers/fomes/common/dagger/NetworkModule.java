@@ -5,6 +5,7 @@ import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.api.ConfigAPI;
 import com.formakers.fomes.common.network.api.EventLogAPI;
+import com.formakers.fomes.common.network.api.PostAPI;
 import com.formakers.fomes.common.network.api.RecommendAPI;
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
@@ -96,5 +97,11 @@ public class NetworkModule {
     @Provides
     EventLogAPI eventLogAPI(Retrofit retrofit) {
         return retrofit.create(EventLogAPI.class);
+    }
+
+    @Singleton
+    @Provides
+    PostAPI postAPI(Retrofit retrofit) {
+        return retrofit.create(PostAPI.class);
     }
 }
