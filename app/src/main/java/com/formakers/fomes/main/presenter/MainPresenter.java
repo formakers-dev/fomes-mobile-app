@@ -2,6 +2,7 @@ package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
+import com.formakers.fomes.common.network.PostService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -26,8 +27,10 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Inject UserDAO userDAO;
     @Inject UserService userService;
-    @Inject JobManager jobManager;
+    @Inject PostService postService;
     @Inject EventLogService eventLogService;
+
+    @Inject JobManager jobManager;
 
     private MainContract.View view;
 
@@ -83,6 +86,16 @@ public class MainPresenter implements MainContract.Presenter {
             eventLogService.sendEventLog(new EventLog().setCode(code))
                     .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
                             (e) -> Log.e(TAG, String.valueOf(e)))
+        );
+    }
+
+    @Override
+    public void requestPromotions() {
+        compositeSubscription.add(
+            postService.getPromotions()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(promotions -> view.setPromotionViews(promotions),
+                        e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 
