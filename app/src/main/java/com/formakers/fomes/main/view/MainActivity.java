@@ -33,8 +33,12 @@ import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.view.WishListActivity;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
@@ -44,6 +48,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     public static final int REQUEST_CODE_WISHLIST = 1000;
 
+    public static final int EVENT_AUTO_SLIDE_MILLISECONDS = 3000;
+
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
     @BindView(R.id.main_event_view_pager)       ViewPager eventViewPager;
@@ -51,7 +57,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
 
-    MainContract.Presenter presenter;
+    private Subscription eventPagerAutoSlideSubscription;
+
+    private MainContract.Presenter presenter;
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
@@ -137,14 +145,29 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     protected void onStart() {
         super.onStart();
 
-        presenter.startEventBannerAutoSlide();
+        // Start Event AutoSlide
+        eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(seq -> showNextEventBanner());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        presenter.stopEventBannerAutoSlide();
+        // Stop Event AutoSlide
+        if (eventPagerAutoSlideSubscription != null && !eventPagerAutoSlideSubscription.isUnsubscribed()) {
+            eventPagerAutoSlideSubscription.unsubscribe();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (presenter != null) {
+            presenter.unsubscribe();
+        }
     }
 
     @Override
@@ -248,6 +271,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     }
 
     @Override
+    public ApplicationComponent getApplicationComponent() {
+        return ((FomesApplication) getApplication()).getComponent();
+    }
+
     public void showNextEventBanner() {
         if (eventViewPager == null || eventViewPager.getAdapter() == null || eventViewPager.getAdapter().getCount() < 2)
             return;
@@ -255,11 +282,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         int nextItem = (eventViewPager.getCurrentItem() < eventViewPager.getAdapter().getCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
 
         eventViewPager.setCurrentItem(nextItem);
-    }
-
-    @Override
-    public ApplicationComponent getApplicationComponent() {
-        return ((FomesApplication) getApplication()).getComponent();
     }
 
     private void verifyAccessToken() {
@@ -288,14 +310,5 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private <T> void startActivity(Class<T> destActivity) {
         Intent intent = new Intent(this, destActivity);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (presenter != null) {
-            presenter.unsubscribe();
-        }
     }
 }

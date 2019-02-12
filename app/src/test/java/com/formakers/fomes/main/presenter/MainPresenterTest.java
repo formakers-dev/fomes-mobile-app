@@ -45,10 +45,14 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class)
 public class MainPresenterTest {
 
-    @Inject UserDAO mockUserDAO;
-    @Inject UserService mockUserService;
-    @Inject JobManager mockJobManager;
-    @Inject EventLogService mockEventLogService;
+    @Inject
+    UserDAO mockUserDAO;
+    @Inject
+    UserService mockUserService;
+    @Inject
+    JobManager mockJobManager;
+    @Inject
+    EventLogService mockEventLogService;
 
     @Mock
     MainContract.View mockView;
@@ -105,20 +109,6 @@ public class MainPresenterTest {
 
         verify(mockJobManager).isRegisteredJob(eq(JobManager.JOB_ID_SEND_DATA));
         assertThat(isRegistered).isTrue();
-    }
-
-    @Test
-    public void startEventBannerAutoSlide_호출시__3초마다_이벤트배너를_갱신한다() {
-        subject.startEventBannerAutoSlide();
-
-        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
-        verify(mockView, never()).showNextEventBanner();
-
-        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
-        verify(mockView).showNextEventBanner();
-
-        testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
-        verify(mockView, times(2)).showNextEventBanner();
     }
 
     @Test

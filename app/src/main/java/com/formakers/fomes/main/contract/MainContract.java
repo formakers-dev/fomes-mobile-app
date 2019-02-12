@@ -11,8 +11,6 @@ public interface MainContract {
     interface Presenter {
         Single<User> requestUserInfo();
         Completable requestVerifyAccessToken();
-        void startEventBannerAutoSlide();
-        void stopEventBannerAutoSlide();
         boolean checkRegisteredSendDataJob();
         void sendEventLog(String code);
         void unsubscribe();
@@ -20,6 +18,5 @@ public interface MainContract {
 
     interface View extends BaseView<Presenter> {
         ApplicationComponent getApplicationComponent();
-        void showNextEventBanner();
     }
 }

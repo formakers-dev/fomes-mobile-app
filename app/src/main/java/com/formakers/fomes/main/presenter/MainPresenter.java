@@ -32,7 +32,6 @@ public class MainPresenter implements MainContract.Presenter {
     private MainContract.View view;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
-    private Subscription autoSlideSubscription;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
@@ -61,20 +60,6 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public boolean checkRegisteredSendDataJob() {
         return jobManager.isRegisteredJob(JobManager.JOB_ID_SEND_DATA);
-    }
-
-    @Override
-    public void startEventBannerAutoSlide() {
-        autoSlideSubscription = Observable.interval(3000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(seq -> view.showNextEventBanner());
-    }
-
-    @Override
-    public void stopEventBannerAutoSlide() {
-        if(autoSlideSubscription != null && !autoSlideSubscription.isUnsubscribed()) {
-            autoSlideSubscription.unsubscribe();
-        }
     }
 
     @Override
