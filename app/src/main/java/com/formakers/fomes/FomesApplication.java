@@ -6,12 +6,17 @@ import android.app.Application;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.dagger.ApplicationModule;
 import com.formakers.fomes.common.dagger.DaggerApplicationComponent;
+import com.formakers.fomes.common.repository.model.UserRealmObject;
+import com.formakers.fomes.common.util.Log;
 import com.tsengvn.typekit.Typekit;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class FomesApplication extends Application {
+
+    public static final String TAG = "FomesApplication";
+
     protected ApplicationComponent applicationComponent;
 
     @Override
@@ -45,9 +50,15 @@ public class FomesApplication extends Application {
 
         RealmConfiguration config = builder
                 .name("appbeeDB")
-                .deleteRealmIfMigrationNeeded()
+                .schemaVersion(1)
+                .migration((realm, oldVersion, newVersion) -> {
+                    UserRealmObject.migration(realm.getSchema(), oldVersion, newVersion);
+                })
                 .build();
+
         Realm.setDefaultConfiguration(config);
+
+        Log.i(TAG, "Realm Schema Version=" + Realm.getDefaultInstance().getVersion());
     }
 
     public ApplicationComponent getComponent() {

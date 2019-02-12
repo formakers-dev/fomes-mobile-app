@@ -82,7 +82,6 @@ public class RecentAnalysisReportPresenterTest {
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
         when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(new ArrayList<>());
-        when(mockUser.getUserId()).thenReturn("mockUserId");
         when(mockUser.getNickName()).thenReturn("mockUserNickName");
         when(mockUser.getGender()).thenReturn("male");
         when(mockUser.getBirthday()).thenReturn(1989);
@@ -144,7 +143,6 @@ public class RecentAnalysisReportPresenterTest {
         // 분석 결과 요청
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockAppStatService).requestRecentReport(eq("GAME"), argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().getUserId()).isEqualTo("mockUserId");
         assertThat(argumentCaptor.getValue().getGender()).isEqualTo("male");
         assertThat(argumentCaptor.getValue().getBirthday()).isEqualTo(1989);
         assertThat(argumentCaptor.getValue().getJob()).isEqualTo(3);

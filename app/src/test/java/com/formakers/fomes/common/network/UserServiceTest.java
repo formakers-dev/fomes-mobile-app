@@ -83,7 +83,6 @@ public class UserServiceTest extends AbstractServiceTest {
         User userArgument = userCaptor.getValue();
         assertThat(userArgument.getRegistrationToken()).isEqualTo("REFRESHED_PUSH_TOKEN");
         assertThat(userArgument.getName()).isNull();
-        assertThat(userArgument.getUserId()).isNull();
         assertThat(userArgument.getEmail()).isNull();
         assertThat(userArgument.getGender()).isNull();
     }

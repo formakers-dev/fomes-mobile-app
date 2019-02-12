@@ -1,11 +1,16 @@
 package com.formakers.fomes.common.repository.model;
 
+import com.formakers.fomes.common.util.Log;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+import io.realm.RealmObjectSchema;
+import io.realm.RealmSchema;
 
 public class UserRealmObject extends RealmObject {
-    @PrimaryKey private String userId;
+
+    public static final String TAG = "UserRealmObject";
+
     private String name;
     private String nickName;
     private String email;
@@ -13,15 +18,6 @@ public class UserRealmObject extends RealmObject {
     private Integer job;
     private String gender;
     private RealmList<String> lifeApps;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public UserRealmObject setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
 
     public String getName() {
         return name;
@@ -86,11 +82,20 @@ public class UserRealmObject extends RealmObject {
         return this;
     }
 
+    public static void migration(RealmSchema realmSchema, long oldVersion, long newVersion) {
+        Log.d(TAG, "migration) oldVersion=" + oldVersion + ", newVersion=" + newVersion);
+
+        RealmObjectSchema schema = realmSchema.get(TAG);
+
+        if (oldVersion <= 0) {
+            schema.removePrimaryKey().removeField("userId");
+        }
+    }
+
     @Override
     public String toString() {
         return "UserRealmObject{" +
-                "userId='" + userId + '\'' +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthday=" + birthday +
