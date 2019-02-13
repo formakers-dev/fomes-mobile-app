@@ -277,7 +277,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             for (Post post : promotions) {
                 ImageView promotionImageView = new ImageView(this);
 
-                Glide.with(this).load(post.getOverviewImageUrl())
+                Glide.with(this).load(post.getCoverImageUrl())
                         .apply(new RequestOptions().centerCrop())
                         .into(promotionImageView);
 

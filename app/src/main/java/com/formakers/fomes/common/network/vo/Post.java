@@ -1,25 +1,47 @@
 package com.formakers.fomes.common.network.vo;
 
+import java.util.Date;
+
 public class Post {
-    Integer index;
-    String overviewImageUrl;
+    Integer order;
+    Date openDate;
+    Date closeDate;
+    String coverImageUrl;
     String contents;
 
-    public Integer getIndex() {
-        return index;
+    public Integer getOrder() {
+        return order;
     }
 
-    public Post setIndex(Integer index) {
-        this.index = index;
+    public Post setOrder(Integer order) {
+        this.order = order;
         return this;
     }
 
-    public String getOverviewImageUrl() {
-        return overviewImageUrl;
+    public Date getOpenDate() {
+        return openDate;
     }
 
-    public Post setOverviewImageUrl(String overviewImageUrl) {
-        this.overviewImageUrl = overviewImageUrl;
+    public Post setOpenDate(Date openDate) {
+        this.openDate = openDate;
+        return this;
+    }
+
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    public Post setCloseDate(Date closeDate) {
+        this.closeDate = closeDate;
+        return this;
+    }
+
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public Post setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
         return this;
     }
 
@@ -35,8 +57,10 @@ public class Post {
     @Override
     public String toString() {
         return "Post{" +
-                "index=" + index +
-                ", overviewImageUrl='" + overviewImageUrl + '\'' +
+                "order=" + order +
+                ", openDate=" + openDate +
+                ", closeDate=" + closeDate +
+                ", coverImageUrl='" + coverImageUrl + '\'' +
                 ", contents='" + contents + '\'' +
                 '}';
     }
