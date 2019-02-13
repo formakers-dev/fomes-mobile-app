@@ -29,7 +29,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Completable;
+import rx.Scheduler;
 import rx.Single;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
@@ -61,6 +64,16 @@ public class SendDataJobServiceTest {
     public void setUp() throws Exception {
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
 
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
@@ -74,6 +87,8 @@ public class SendDataJobServiceTest {
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
         when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
+        when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
+        when(mockUserService.notifyActivated()).thenReturn(Completable.complete());
 
         subject = Robolectric.setupService(SendDataJobService.class);
     }
@@ -94,9 +109,10 @@ public class SendDataJobServiceTest {
         verify(mockAppUsageDataHelper).sendShortTermStats();
         verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
-        verify(mockUserService).updateUser(eq(mockUser));
-        verify(mockChannelManager).subscribePublicTopic();
         verify(mockUserService).notifyActivated();
+        verify(mockChannelManager).subscribePublicTopic();
+        verify(mockUserDAO).getUserInfo();
+        verify(mockUserService).updateUser(eq(mockUser));
     }
 
     @Test
@@ -111,10 +127,10 @@ public class SendDataJobServiceTest {
 
         verify(mockAppUsageDataHelper, never()).sendShortTermStats();
         verify(mockAppStatService, never()).sendAppUsages(any());
-
-        verify(mockUserService).updateUser(eq(mockUser));
-        verify(mockChannelManager).subscribePublicTopic();
         verify(mockUserService).notifyActivated();
+        verify(mockChannelManager).subscribePublicTopic();
+        verify(mockUserDAO).getUserInfo();
+        verify(mockUserService).updateUser(eq(mockUser));
     }
 
 //    @Test
