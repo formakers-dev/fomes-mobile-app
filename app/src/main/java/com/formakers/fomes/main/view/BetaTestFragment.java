@@ -81,6 +81,9 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         betaTestListAdapterView.setOnItemClickListener(position -> {
             Bundle bundle = new Bundle();
             BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
+
+            Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
+
             bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
             bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
 
