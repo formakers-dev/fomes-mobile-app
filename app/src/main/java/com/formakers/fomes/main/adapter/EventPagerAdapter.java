@@ -26,8 +26,8 @@ public class EventPagerAdapter extends PagerAdapter {
         events.add(new Event(view, layoutResId));
     }
 
-    public void addView(View view, String url) {
-        events.add(new Event(view, url));
+    public void addView(View view, String contents) {
+        events.add(new Event(view, contents));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class EventPagerAdapter extends PagerAdapter {
 
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra(WebViewActivity.EXTRA_LINK_URL, event.url);
+                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, event.contents);
                 context.startActivity(intent);
             });
 
@@ -84,7 +84,7 @@ public class EventPagerAdapter extends PagerAdapter {
     class Event {
         View view;
         @Deprecated @LayoutRes int destLayoutResId;
-        String url;
+        String contents;
 
         @Deprecated
         public Event(View view, @LayoutRes int destLayoutResId) {
@@ -92,9 +92,9 @@ public class EventPagerAdapter extends PagerAdapter {
             this.destLayoutResId = destLayoutResId;
         }
 
-        public Event(View view, String url) {
+        public Event(View view, String contents) {
             this.view = view;
-            this.url = url;
+            this.contents = contents;
         }
     }
 }

@@ -12,7 +12,7 @@ import butterknife.BindView;
 
 public class WebViewActivity extends FomesBaseActivity {
 
-    public static final String EXTRA_LINK_URL = "EXTRA_LINK_URL";
+    public static final String EXTRA_CONTENTS = "EXTRA_CONTENTS";
 
     @BindView(R.id.webview) WebView webView;
 
@@ -30,9 +30,9 @@ public class WebViewActivity extends FomesBaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        String url = getIntent().getStringExtra(EXTRA_LINK_URL);
+        String contents = getIntent().getStringExtra(EXTRA_CONTENTS);
 
-        if (TextUtils.isEmpty(url)) {
+        if (TextUtils.isEmpty(contents)) {
             throw new IllegalArgumentException("There aren't any contents");
         }
 
@@ -44,10 +44,10 @@ public class WebViewActivity extends FomesBaseActivity {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        if (url.toLowerCase().startsWith("http")) {
-            webView.loadUrl(url);
+        if (contents.toLowerCase().startsWith("http")) {
+            webView.loadUrl(contents);
         } else {
-            webView.loadData(url, "text/html; charset=UTF-8", null);
+            webView.loadData(contents, "text/html; charset=UTF-8", null);
         }
     }
 }
