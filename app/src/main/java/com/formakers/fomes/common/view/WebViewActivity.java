@@ -2,6 +2,7 @@ package com.formakers.fomes.common.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -31,13 +32,19 @@ public class WebViewActivity extends FomesBaseActivity {
 
         String url = getIntent().getStringExtra(EXTRA_LINK_URL);
 
+        if (TextUtils.isEmpty(url)) {
+            throw new IllegalArgumentException("There aren't any contents");
+        }
+
+        // TODO : 추후 필요에 따라 로딩 프로그래스바가 필요 할 수도 있겠음
+
         webView.setInitialScale(1);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        if (url.contains("http")) {
+        if (url.toLowerCase().startsWith("http")) {
             webView.loadUrl(url);
         } else {
             webView.loadData(url, "text/html; charset=UTF-8", null);
