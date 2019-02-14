@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.android.controller.ActivityController;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,8 +42,6 @@ import rx.schedulers.TestScheduler;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -62,7 +61,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         subject = getActivityController().get();
 //        subject = getActivity(LIFECYCLE_TYPE_CREATE);
         subject.setPresenter(mockPresenter);
-        getActivityController().create().start().postCreate(null).resume();
+        ActivityController<MainActivity> a = getActivityController().create().start().postCreate(null).resume();
     }
 
     @Before
@@ -72,7 +71,8 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         RxJavaHooks.reset();
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
         RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
-        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
+//        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> testScheduler);
 
         RxAndroidPlugins.getInstance().reset();
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
@@ -212,22 +212,22 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         assertThat(subject.drawerLayout.isDrawerOpen(GravityCompat.START)).isFalse();
     }
 
-//    @Test
-//    public void onStart시__이벤트_페이저를_3초간격으로_넘긴다() {
-//        getActivityController().create().start();
-//
-//        ViewPager viewPager = subject.findViewById(R.id.main_event_view_pager);
-//        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
-//        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
-//        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
-//
-//        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
-//        assertThat(viewPager.getCurrentItem()).isEqualTo(0);
-//
-//        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
-//        assertThat(viewPager.getCurrentItem()).isEqualTo(1);
-//
-//        testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
-//        assertThat(viewPager.getCurrentItem()).isEqualTo(2);
-//    }
+    @Test
+    public void onStart시__이벤트_페이저를_3초간격으로_넘긴다() {
+        launchActivity();
+
+        ViewPager viewPager = subject.findViewById(R.id.main_event_view_pager);
+        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
+        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
+        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
+
+        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(0);
+
+        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(1);
+
+        testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(2);
+    }
 }
