@@ -6,10 +6,14 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
+import io.realm.annotations.PrimaryKey;
 
 public class UserRealmObject extends RealmObject {
 
     public static final String TAG = "UserRealmObject";
+
+    // 수정금지
+    @PrimaryKey private Integer id = 1;
 
     private String name;
     private String nickName;
@@ -89,6 +93,7 @@ public class UserRealmObject extends RealmObject {
 
         if (oldVersion <= 0) {
             schema.removePrimaryKey().removeField("userId");
+            schema.addPrimaryKey("id");
         }
     }
 
