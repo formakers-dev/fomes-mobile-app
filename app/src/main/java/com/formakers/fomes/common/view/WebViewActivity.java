@@ -63,6 +63,20 @@ public class WebViewActivity extends FomesBaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        try {
+            if (webView.canGoBack()) {
+                webView.goBack();
+            } else {
+                super.onBackPressed();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Exception) " + e.getClass() + "\nmessage=" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private class FomesWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
