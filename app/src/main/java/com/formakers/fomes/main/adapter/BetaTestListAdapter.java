@@ -114,6 +114,17 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.itemClickListener = listener;
     }
 
+    @Override
+    public int getPositionById(int id) {
+        for (BetaTest betaTest: betaTests) {
+            if (betaTest.getId() == id) {
+                return betaTests.indexOf(betaTest);
+            }
+        }
+
+        return -1;
+    }
+
     /**
      * Model
      */

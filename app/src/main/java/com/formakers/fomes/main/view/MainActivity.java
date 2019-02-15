@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,6 +63,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
+
+    private FragmentPagerAdapter tabPagerAdapter;
 
     private Subscription eventPagerAutoSlideSubscription;
 
@@ -118,12 +121,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 })
         );
 
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
+        tabPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
-        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
-        fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        tabPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
+        tabPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
-        contentsViewPager.setAdapter(fragmentPagerAdapter);
+        contentsViewPager.setAdapter(tabPagerAdapter);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
@@ -149,6 +152,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         } else {
             presenter.sendEventLog(FomesConstants.EventLog.Code.MAIN_ACTIVITY_ENTER);
         }
+
+        handleDeeplink(getIntent().getExtras());
     }
 
     @Override
@@ -159,6 +164,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(seq -> showNextEventBanner());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        handleDeeplink(intent.getExtras());
     }
 
     @Override
@@ -340,5 +352,29 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private <T> void startActivity(Class<T> destActivity) {
         Intent intent = new Intent(this, destActivity);
         startActivity(intent);
+    }
+
+    private void handleDeeplink(Bundle bundle) {
+        if (bundle == null) {
+            Log.d(TAG, "handleDeeplink) bundle is null. maybe it is not from deeplink");
+            return;
+        }
+
+        String selectedTab = bundle.getString("EXTRA_SELECTED_TAB", BetaTestFragment.TAG);
+        String selectedItemId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+
+        if (!TextUtils.isEmpty(selectedTab)) {
+            Fragment selectedFragment = tabPagerAdapter.getItem(selectedTab);
+
+            Bundle arguemnts = new Bundle();
+            arguemnts.putString("EXTRA_SELECTED_ITEM_ID", selectedItemId);
+
+            selectedFragment.setArguments(arguemnts);
+
+            contentsViewPager.postDelayed(() -> {
+                contentsViewPager.setCurrentItem(tabPagerAdapter.getPosition(selectedFragment));
+                contentsViewPager.getAdapter().notifyDataSetChanged();
+            }, 100);
+        }
     }
 }

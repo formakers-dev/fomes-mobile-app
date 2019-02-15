@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.main.view.BetaTestFragment;
 import com.formakers.fomes.main.view.MainActivity;
+import com.formakers.fomes.main.view.RecommendFragment;
 
 public class DeeplinkActivity extends Activity {
 
@@ -55,6 +57,20 @@ public class DeeplinkActivity extends Activity {
             switch (action) {
                 case "main": {
                     destIntent.setClass(this, MainActivity.class);
+                    break;
+                }
+                case "recommend": {
+                    destIntent.setClass(this, MainActivity.class);
+                    destIntent.putExtra("EXTRA_SELECTED_TAB", RecommendFragment.TAG);
+
+                    break;
+                }
+                case "betatest": {
+                    String id = uri.getQueryParameter("id");
+
+                    destIntent.setClass(this, MainActivity.class);
+                    destIntent.putExtra("EXTRA_SELECTED_TAB", BetaTestFragment.TAG);
+                    destIntent.putExtra("EXTRA_SELECTED_ITEM_ID", id);
                     break;
                 }
             }

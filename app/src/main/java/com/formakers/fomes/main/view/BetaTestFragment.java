@@ -7,17 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -105,6 +106,27 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         });
 
         presenter.initialize();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String id = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+
+            if (!TextUtils.isEmpty(id)) {
+                int betaTestId = Integer.parseInt(id);
+                int position = presenter.getBetaTestPostitionById(betaTestId);
+                if (position >= 0) {
+                    recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+                } else {
+                    Toast.makeText(getContext(), "없어용", Toast.LENGTH_SHORT).show();
+                }
+                bundle.remove("EXTRA_SELECTED_ITEM_ID");
+            }
+        }
     }
 
     @Override

@@ -103,6 +103,11 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
+    public int getBetaTestPostitionById(int id) {
+        return this.betaTestListAdapterModel.getPositionById(id);
+    }
+
+    @Override
     public String getUserEmail() {
         return this.user.getEmail();
     }

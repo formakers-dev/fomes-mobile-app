@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.view.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -32,6 +33,18 @@ public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAd
 
     public Fragment getItem(String tag) {
         return contentsMap.get(tag).fragment;
+    }
+
+    public int getPosition(@NonNull Fragment fragment) {
+        ArrayList<ContentsFragment> contents = new ArrayList<>(contentsMap.values());
+
+        for (ContentsFragment content : contents) {
+            if (fragment.equals(content.fragment)) {
+                return contents.indexOf(content);
+            }
+        }
+
+        return -1;
     }
 
     @Override
