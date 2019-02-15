@@ -47,6 +47,7 @@ public class EventPagerAdapter extends PagerAdapter {
 
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.EXTRA_TITLE, "이벤트");
                 intent.putExtra(WebViewActivity.EXTRA_CONTENTS, event.contents);
                 context.startActivity(intent);
             });

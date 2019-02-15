@@ -12,6 +12,7 @@ import butterknife.BindView;
 
 public class WebViewActivity extends FomesBaseActivity {
 
+    public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_CONTENTS = "EXTRA_CONTENTS";
 
     @BindView(R.id.webview) WebView webView;
@@ -22,7 +23,6 @@ public class WebViewActivity extends FomesBaseActivity {
 
         this.setContentView(R.layout.activity_webview);
 
-        getSupportActionBar().setTitle("이벤트");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -30,11 +30,14 @@ public class WebViewActivity extends FomesBaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        String title = getIntent().getStringExtra(EXTRA_TITLE);
         String contents = getIntent().getStringExtra(EXTRA_CONTENTS);
 
         if (TextUtils.isEmpty(contents)) {
             throw new IllegalArgumentException("There aren't any contents");
         }
+
+        getSupportActionBar().setTitle(title);
 
         // TODO : 추후 필요에 따라 로딩 프로그래스바가 필요 할 수도 있겠음
 
