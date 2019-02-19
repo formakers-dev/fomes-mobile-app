@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -18,7 +19,6 @@ import android.text.TextUtils;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.main.view.MainActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
@@ -94,6 +94,7 @@ public class ChannelManager {
         String isSummaryString = dataMap.get(FomesConstants.Notification.IS_SUMMARY);
         boolean isSummary = isSummaryString != null && Boolean.parseBoolean(isSummaryString);
         String summarySubText = dataMap.get(FomesConstants.Notification.SUMMARY_SUB_TEXT);
+        String deeplink = dataMap.get(FomesConstants.Notification.DEEPLINK);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = getNotificationBuilder(channel, NotificationManager.IMPORTANCE_MAX);
@@ -102,8 +103,15 @@ public class ChannelManager {
         }
 
         // 노티 클릭 시 이동할 액티비티 지정
-        Intent notificationIntent = new Intent(context, destActivity);
-        notificationIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
+        Intent notificationIntent;
+
+        if (TextUtils.isEmpty(deeplink)) {
+            notificationIntent = new Intent(context, destActivity);
+            notificationIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
+        } else {
+            notificationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplink));
+        }
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder = builder.setContentIntent(pendingIntent)
