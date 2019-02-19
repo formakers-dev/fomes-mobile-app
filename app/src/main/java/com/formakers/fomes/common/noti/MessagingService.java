@@ -1,15 +1,12 @@
 package com.formakers.fomes.common.noti;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.view.MainActivity;
@@ -28,7 +25,6 @@ public class MessagingService extends FirebaseMessagingService {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserService userService;
     @Inject EventLogService eventLogService;
-    @Inject UserDAO userDAO;
 
     @Override
     public void onCreate() {
@@ -44,27 +40,22 @@ public class MessagingService extends FirebaseMessagingService {
             return;
         }
 
-        // Foreground에 앱이 떠 있을 경우 메시지 수신 처리
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+
+        // 로그인하지 않은 사용자는 노티를 수신하지 못하도록 한다.
+        if (!sharedPreferencesHelper.hasAccessToken()) {
+            return;
+        }
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> dataMap = remoteMessage.getData();
 
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-            // 여기서 노티 띄우기
-            Intent notificationIntent = new Intent(context, MainActivity.class);
-            notificationIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            channelManager.sendNotification(dataMap, pendingIntent);
-
-            if (sharedPreferencesHelper.hasAccessToken()) {
-                eventLogService.sendEventLog(new EventLog().setCode(FomesConstants.EventLog.Code.NOTIFICATION_RECEIVED))
-                        .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
-                                (e) -> Log.e(TAG, String.valueOf(e)));
-            }
+            channelManager.sendNotification(dataMap, MainActivity.class);
+            eventLogService.sendEventLog(new EventLog().setCode(FomesConstants.EventLog.Code.NOTIFICATION_RECEIVED))
+                    .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
+                            (e) -> Log.e(TAG, String.valueOf(e)));
         }
 
         // Check if message contains a notification payload.
@@ -81,18 +72,10 @@ public class MessagingService extends FirebaseMessagingService {
 
         sharedPreferencesHelper.setRegistrationToken(newToken);
 
+        // 로그인한 사용자만 노티 토큰을 서버에 업데이트 시킨다.
         if (sharedPreferencesHelper.hasAccessToken()) {
-            userDAO.getUserInfo()
-                    .flatMapCompletable(user -> {
-                        user.setRegistrationToken(newToken);
-                        return userService.updateUser(user);
-                    })
+            userService.updateRegistrationToken(newToken)
                     .subscribe(() -> Log.d(TAG, "Token Refresh is Completed!"), e -> Log.e(TAG, String.valueOf(e)));
         }
     }
-//    @Override
-//    public void handleIntent(Intent intent) {
-//        super.handleIntent(intent);
-//        Log.d(TAG, "handleIntent) " + (intent != null ? intent.toString() : ""));
-//    }
 }

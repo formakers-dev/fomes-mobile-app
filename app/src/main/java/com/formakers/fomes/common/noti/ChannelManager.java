@@ -7,6 +7,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.text.TextUtils;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.main.view.MainActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
@@ -79,7 +81,7 @@ public class ChannelManager {
         return new NotificationCompat.Builder(context, channel.id);
     }
 
-    public void sendNotification(Map<String, String> dataMap, PendingIntent pendingIntent) {
+    public void sendNotification(Map<String, String> dataMap, Class<?> destActivity) {
         NotificationCompat.Builder builder;
 
         // mandatory
@@ -98,6 +100,11 @@ public class ChannelManager {
         } else {
             builder = getNotificationBuilder();
         }
+
+        // 노티 클릭 시 이동할 액티비티 지정
+        Intent notificationIntent = new Intent(context, destActivity);
+        notificationIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder = builder.setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
