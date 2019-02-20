@@ -2,6 +2,7 @@ package com.formakers.fomes.common.repository.model;
 
 import com.formakers.fomes.common.util.Log;
 
+import io.realm.FieldAttribute;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmObjectSchema;
@@ -93,7 +94,7 @@ public class UserRealmObject extends RealmObject {
 
         if (oldVersion <= 0) {
             schema.removePrimaryKey().removeField("userId");
-            schema.addPrimaryKey("id");
+            schema.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
         }
     }
 
