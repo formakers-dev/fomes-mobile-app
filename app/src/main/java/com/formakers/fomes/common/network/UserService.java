@@ -68,7 +68,7 @@ public class UserService extends AbstractService {
     }
 
     public Completable updateRegistrationToken(String registrationToken) {
-        return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), new User(registrationToken)))
+        return Observable.defer(() -> userAPI.updateNotificationToken(SharedPreferencesHelper.getAccessToken(), new User().setRegistrationToken(registrationToken)))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

@@ -7,7 +7,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -79,7 +81,7 @@ public class ChannelManager {
         return new NotificationCompat.Builder(context, channel.id);
     }
 
-    public void sendNotification(Map<String, String> dataMap, PendingIntent pendingIntent) {
+    public void sendNotification(Map<String, String> dataMap, Class<?> destActivity) {
         NotificationCompat.Builder builder;
 
         // mandatory
@@ -92,12 +94,25 @@ public class ChannelManager {
         String isSummaryString = dataMap.get(FomesConstants.Notification.IS_SUMMARY);
         boolean isSummary = isSummaryString != null && Boolean.parseBoolean(isSummaryString);
         String summarySubText = dataMap.get(FomesConstants.Notification.SUMMARY_SUB_TEXT);
+        String deeplink = dataMap.get(FomesConstants.Notification.DEEPLINK);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = getNotificationBuilder(channel, NotificationManager.IMPORTANCE_MAX);
         } else {
             builder = getNotificationBuilder();
         }
+
+        // 노티 클릭 시 이동할 액티비티 지정
+        Intent notificationIntent;
+
+        if (TextUtils.isEmpty(deeplink)) {
+            notificationIntent = new Intent(context, destActivity);
+            notificationIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
+        } else {
+            notificationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplink));
+        }
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder = builder.setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)

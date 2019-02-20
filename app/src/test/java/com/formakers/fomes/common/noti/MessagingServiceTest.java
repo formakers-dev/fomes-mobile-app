@@ -2,27 +2,35 @@ package com.formakers.fomes.common.noti;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.main.view.MainActivity;
+import com.google.firebase.messaging.RemoteMessage;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.Single;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,8 +43,8 @@ public class MessagingServiceTest {
     @Inject SharedPreferencesHelper mockSharedPreferenceHelper;
     @Inject UserService mockUserService;
     @Inject UserDAO mockUserDAO;
-
-    User mockUser = mock(User.class);
+    @Inject ChannelManager mockChannelManager;
+    @Inject EventLogService mockEventLogService;
 
     @Before
     public void setUp() throws Exception {
@@ -44,10 +52,54 @@ public class MessagingServiceTest {
 
         when(mockSharedPreferenceHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferenceHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");
-        when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
-        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
+        when(mockUserService.updateRegistrationToken(anyString())).thenReturn(Completable.complete());
+        when(mockEventLogService.sendEventLog(any())).thenReturn(Completable.complete());
 
         subject = Robolectric.setupService(MessagingService.class);
+    }
+
+    @Test
+    public void 노티메세지가_전송되었을_경우__로그인한_상태면__알림을_띄우고_이벤토로그를_전송한다() {
+        Map<String, String> dataMap = new HashMap<>();
+        dataMap.put("아무거나키", "아무거나 값");
+        RemoteMessage remoteMessage = new RemoteMessage.Builder("noti")
+                .setData(dataMap)
+                .build();
+
+        subject.onMessageReceived(remoteMessage);
+
+        verify(mockChannelManager).sendNotification(eq(dataMap), eq(MainActivity.class));
+
+        ArgumentCaptor<EventLog> eventLogArgumentCaptor = ArgumentCaptor.forClass(EventLog.class);
+        verify(mockEventLogService).sendEventLog(eventLogArgumentCaptor.capture());
+        assertThat(eventLogArgumentCaptor.getValue().getCode()).isEqualTo(FomesConstants.EventLog.Code.NOTIFICATION_RECEIVED);
+    }
+
+    @Test
+    public void 노티메세지가_전송되었을_경우__메세지가_없으면__아무것도_하지않는다() {
+        RemoteMessage remoteMessage = new RemoteMessage.Builder("noti")
+                .build();
+
+        subject.onMessageReceived(remoteMessage);
+
+        verify(mockChannelManager, never()).sendNotification(any(), any());
+        verify(mockEventLogService, never()).sendEventLog(any());
+    }
+
+    @Test
+    public void 노티메세지가_전송되었을_경우__로그인한_상태가_아니면__아무것도_하지않는다() {
+        when(mockSharedPreferenceHelper.hasAccessToken()).thenReturn(false);
+
+        Map<String, String> dataMap = new HashMap<>();
+        dataMap.put("아무거나키", "아무거나 값");
+        RemoteMessage remoteMessage = new RemoteMessage.Builder("noti")
+                .setData(dataMap)
+                .build();
+
+        subject.onMessageReceived(remoteMessage);
+
+        verify(mockChannelManager, never()).sendNotification(any(), any());
+        verify(mockEventLogService, never()).sendEventLog(any());
     }
 
     @Test
@@ -57,7 +109,7 @@ public class MessagingServiceTest {
         subject.onNewToken("NEW_TOKEN");
 
         verify(mockSharedPreferenceHelper).setRegistrationToken("NEW_TOKEN");
-        verify(mockUserService).updateUser(eq(mockUser));
+        verify(mockUserService).updateRegistrationToken(eq("NEW_TOKEN"));
     }
 
     @Test
@@ -68,6 +120,6 @@ public class MessagingServiceTest {
         subject.onNewToken("NEW_TOKEN");
 
         verify(mockSharedPreferenceHelper).setRegistrationToken("NEW_TOKEN");
-        verify(mockUserService, never()).updateUser(any());
+        verify(mockUserService, never()).updateRegistrationToken(any());
     }
 }

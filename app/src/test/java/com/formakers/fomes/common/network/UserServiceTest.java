@@ -78,14 +78,10 @@ public class UserServiceTest extends AbstractServiceTest {
         subject.updateRegistrationToken("REFRESHED_PUSH_TOKEN").subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(mockUserAPI).update(eq("TEST_ACCESS_TOKEN"), userCaptor.capture());
+        verify(mockUserAPI).updateNotificationToken(eq("TEST_ACCESS_TOKEN"), userCaptor.capture());
 
         User userArgument = userCaptor.getValue();
         assertThat(userArgument.getRegistrationToken()).isEqualTo("REFRESHED_PUSH_TOKEN");
-        assertThat(userArgument.getName()).isNull();
-        assertThat(userArgument.getUserId()).isNull();
-        assertThat(userArgument.getEmail()).isNull();
-        assertThat(userArgument.getGender()).isNull();
     }
 
     @Test

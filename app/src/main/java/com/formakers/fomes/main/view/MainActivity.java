@@ -16,13 +16,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
@@ -33,8 +38,13 @@ import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.view.WishListActivity;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
@@ -44,6 +54,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     public static final int REQUEST_CODE_WISHLIST = 1000;
 
+    public static final int EVENT_AUTO_SLIDE_MILLISECONDS = 3000;
+
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
     @BindView(R.id.main_event_view_pager)       ViewPager eventViewPager;
@@ -51,7 +63,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
 
-    MainContract.Presenter presenter;
+    private Subscription eventPagerAutoSlideSubscription;
+
+    private MainContract.Presenter presenter;
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
@@ -118,13 +132,17 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         eventViewPager.setAdapter(eventPagerAdapter);
 
-        View betaTestBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_beta_test, null);
-        View eventBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_event, null);
+        if (Feature.PROMOTION_URL) {
+            presenter.requestPromotions();
+        } else {
+            View betaTestBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_beta_test, null);
+            View eventBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_event, null);
 
-        eventPagerAdapter.addView(betaTestBanner, R.layout.activity_event_beta_test_open);
-        eventPagerAdapter.addView(eventBanner, R.layout.activity_event_keeping_app);
+            eventPagerAdapter.addView(betaTestBanner, R.layout.activity_event_beta_test_open);
+            eventPagerAdapter.addView(eventBanner, R.layout.activity_event_keeping_app);
 
-        eventPagerAdapter.notifyDataSetChanged();
+            eventPagerAdapter.notifyDataSetChanged();
+        }
 
         if (getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false)) {
             presenter.sendEventLog(FomesConstants.EventLog.Code.NOTIFICATION_TAP);
@@ -137,14 +155,29 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     protected void onStart() {
         super.onStart();
 
-        presenter.startEventBannerAutoSlide();
+        // Start Event AutoSlide
+        eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(seq -> showNextEventBanner());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        presenter.stopEventBannerAutoSlide();
+        // Stop Event AutoSlide
+        if (eventPagerAutoSlideSubscription != null && !eventPagerAutoSlideSubscription.isUnsubscribed()) {
+            eventPagerAutoSlideSubscription.unsubscribe();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (presenter != null) {
+            presenter.unsubscribe();
+        }
     }
 
     @Override
@@ -248,18 +281,37 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     }
 
     @Override
+    public ApplicationComponent getApplicationComponent() {
+        return ((FomesApplication) getApplication()).getComponent();
+    }
+
     public void showNextEventBanner() {
         if (eventViewPager == null || eventViewPager.getAdapter() == null || eventViewPager.getAdapter().getCount() < 2)
             return;
 
         int nextItem = (eventViewPager.getCurrentItem() < eventViewPager.getAdapter().getCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
 
+        Log.v(TAG, "showNextEventBanner) position=" + nextItem);
         eventViewPager.setCurrentItem(nextItem);
     }
 
     @Override
-    public ApplicationComponent getApplicationComponent() {
-        return ((FomesApplication) getApplication()).getComponent();
+    public void setPromotionViews(List<Post> promotions) {
+        if (Feature.PROMOTION_URL) {
+            EventPagerAdapter adapter = (EventPagerAdapter) eventViewPager.getAdapter();
+
+            for (Post post : promotions) {
+                ImageView promotionImageView = new ImageView(this);
+
+                Glide.with(this).load(post.getCoverImageUrl())
+                        .apply(new RequestOptions().centerCrop())
+                        .into(promotionImageView);
+
+                adapter.addView(promotionImageView, post.getContents());
+            }
+
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void verifyAccessToken() {
@@ -288,14 +340,5 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private <T> void startActivity(Class<T> destActivity) {
         Intent intent = new Intent(this, destActivity);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (presenter != null) {
-            presenter.unsubscribe();
-        }
     }
 }

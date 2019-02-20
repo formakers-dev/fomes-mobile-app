@@ -54,10 +54,13 @@ public class SendDataJobService extends JobService {
             Log.d(TAG, "[" + params.getJobId() + "] isOverrideDeadlineExpired!");
         }
 
+        List<Completable> completableList = new ArrayList<>();
+
+        // 0. 활성화 시각 업데이트 요청하기
+        completableList.add(userService.notifyActivated());
+
         // 1. 공지용 전체 채널 구독시키기
         channelManager.subscribePublicTopic();
-
-        List<Completable> completableList = new ArrayList<>();
 
         // 2. 백업용 : 유저정보 서버로 올리기
         completableList.add(userDAO.getUserInfo()
@@ -76,9 +79,6 @@ public class SendDataJobService extends JobService {
                     appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS)
             ));
         }
-
-        // 4. 활성화 시각 업데이트 요청하기
-        completableList.add(userService.notifyActivated());
 
         subscription = Completable.merge(Observable.from(completableList))
                 .subscribeOn(Schedulers.io())
@@ -99,7 +99,9 @@ public class SendDataJobService extends JobService {
     public void onDestroy() {
         Log.i(TAG, "onDestroy");
 
-        subscription.unsubscribe();
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
 
         super.onDestroy();
     }

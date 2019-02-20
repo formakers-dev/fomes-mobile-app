@@ -77,7 +77,6 @@ public class User {
         }
     }
 
-    private String userId;
     private String name;
     private String nickName;
     private String email;
@@ -90,8 +89,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, String email, String registrationToken) {
-        this.userId = userId;
+    public User(String email, String registrationToken) {
         this.email = email;
         this.registrationToken = registrationToken;
     }
@@ -154,15 +152,6 @@ public class User {
         return this;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public User setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getRegistrationToken() {
         return registrationToken;
     }
@@ -195,8 +184,7 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(getUserId(), user.getUserId()) &&
-                Objects.equals(getName(), user.getName()) &&
+        return Objects.equals(getName(), user.getName()) &&
                 Objects.equals(getNickName(), user.getNickName()) &&
                 Objects.equals(getEmail(), user.getEmail()) &&
                 Objects.equals(getBirthday(), user.getBirthday()) &&
@@ -208,14 +196,13 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserId(), getName(), getNickName(), getEmail(), getBirthday(), getJob(), getGender(), getRegistrationToken(), getLifeApps());
+        return Objects.hash(getName(), getNickName(), getEmail(), getBirthday(), getJob(), getGender(), getRegistrationToken(), getLifeApps());
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + userId + '\'' +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthday=" + birthday +

@@ -45,6 +45,7 @@ public interface FomesConstants {
         String IS_SUMMARY = "isSummary";
         String SUMMARY_SUB_TEXT = "summarySubText";
         String SUB_TITLE = "subTitle";
+        String DEEPLINK = "deeplink";
     }
 
     interface EventLog {

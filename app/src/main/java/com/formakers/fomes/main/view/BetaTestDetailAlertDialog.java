@@ -22,6 +22,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestContract;
 
 import java.util.List;
@@ -67,6 +68,9 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
         Bundle bundle = this.getArguments();
         BetaTest betaTest = bundle.getParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST);
         String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL);
+
+        Log.v(TAG, "BetaTest=" + betaTest);
+        Log.v(TAG, "User Email=" + userEmail);
 
         if (betaTest == null) {
             return;
