@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -156,7 +155,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         view.findViewById(R.id.notice_send_mail_button).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("message/rfc822");
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@fomakers.net"});
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@formakers.net"});
             intent.putExtra(Intent.EXTRA_SUBJECT, "테스트 참여 완료 처리 문의 (By " + presenter.getUserEmail() + ")");
             intent.putExtra(Intent.EXTRA_TEXT, "포메스 팀에게 문의해주세요! :-)\n\n======신속한 문의 대응을 위한 유저 정보======\n\n포메스 가입 이메일: " + presenter.getUserEmail() + "\n\n======================================\n\n* 문의 내용 : \n");
             startActivity(intent);
