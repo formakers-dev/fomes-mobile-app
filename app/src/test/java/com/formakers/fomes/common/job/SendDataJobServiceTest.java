@@ -18,6 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -36,10 +37,13 @@ import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -58,7 +62,6 @@ public class SendDataJobServiceTest {
     @Inject UserDAO mockUserDAO;
 
     List<AppUsage> appUsages = new ArrayList<>();
-    User mockUser = mock(User.class);
 
     @Before
     public void setUp() throws Exception {
@@ -86,7 +89,7 @@ public class SendDataJobServiceTest {
         when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
         when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
-        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
+        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User()));
         when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
         when(mockUserService.notifyActivated()).thenReturn(Completable.complete());
 
@@ -99,50 +102,59 @@ public class SendDataJobServiceTest {
     }
 
     @Test
-    public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() {
-        JobParameters jobParameters = mock(JobParameters.class);
-        when(jobParameters.getJobId()).thenReturn(1);
-        when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
+    public void onStartJob_실행시__유저의_활성화시각을_업데이트를_요청한다() {
+        subject_onStartJob();
 
-        subject.onStartJob(jobParameters);
+        verify(mockUserService).notifyActivated();
+    }
+
+    @Test
+    public void onStartJob_실행시__공지용_전체채널을_구독시킨다() {
+        subject_onStartJob();
+
+        verify(mockChannelManager).subscribePublicTopic();
+    }
+
+    @Test
+    public void onStartJob_실행시__유저정보와_유저의_현재앱버전을__서버로_올린다() {
+        subject_onStartJob();
+
+        // 유저정보
+        verify(mockUserDAO).getUserInfo();
+
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(mockUserService).updateUser(userArgumentCaptor.capture());
+
+        // 현재 앱버전 셋팅했는지
+        User requestedUser = userArgumentCaptor.getValue();
+        assertThat(requestedUser.getAppVersion()).isEqualTo(BuildConfig.VERSION_NAME);
+
+    }
+
+    @Test
+    public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() {
+        subject_onStartJob();
 
         verify(mockAppUsageDataHelper).sendShortTermStats();
         verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
-        verify(mockUserService).notifyActivated();
-        verify(mockChannelManager).subscribePublicTopic();
-        verify(mockUserDAO).getUserInfo();
-        verify(mockUserService).updateUser(eq(mockUser));
     }
 
     @Test
     public void onStartJob_실행시_권한이없으면_통계데이터는_전송하지않는다() {
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
+        subject_onStartJob();
+
+        verify(mockAppUsageDataHelper, never()).sendShortTermStats();
+        verify(mockAppStatService, never()).sendAppUsages(any());
+    }
+
+    private void subject_onStartJob() {
         JobParameters jobParameters = mock(JobParameters.class);
         when(jobParameters.getJobId()).thenReturn(1);
         when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
 
         subject.onStartJob(jobParameters);
-
-        verify(mockAppUsageDataHelper, never()).sendShortTermStats();
-        verify(mockAppStatService, never()).sendAppUsages(any());
-        verify(mockUserService).notifyActivated();
-        verify(mockChannelManager).subscribePublicTopic();
-        verify(mockUserDAO).getUserInfo();
-        verify(mockUserService).updateUser(eq(mockUser));
     }
-
-//    @Test
-//    public void onStartJob_실행시_로그인상태가_아니면_아무것도하지않는다() throws Exception {
-//        when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(false);
-//
-//        JobParameters jobParameters = mock(JobParameters.class);
-//        when(jobParameters.getJobId()).thenReturn(1);
-//        when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
-//        subject.onStartJob(jobParameters);
-//
-//        verify(mockAppUsageDataHelper, never()).sendShortTermStats(any());
-//        verify(mockAppUsageDataHelper, never()).sendAppUsages(any());
-//    }
 }

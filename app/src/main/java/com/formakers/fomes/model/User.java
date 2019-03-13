@@ -80,11 +80,12 @@ public class User {
     private String name;
     private String nickName;
     private String email;
-    private int birthday;
-    private int job;
+    private Integer birthday;
+    private Integer job;
     private String gender;
     private String registrationToken;
     private List<String> lifeApps;
+    private String appVersion;
 
     public User() {
     }
@@ -125,20 +126,20 @@ public class User {
         return this;
     }
 
-    public int getBirthday() {
+    public Integer getBirthday() {
         return birthday;
     }
 
-    public User setBirthday(int birthday) {
+    public User setBirthday(Integer birthday) {
         this.birthday = birthday;
         return this;
     }
 
-    public int getJob() {
+    public Integer getJob() {
         return job;
     }
 
-    public User setJob(int job) {
+    public User setJob(Integer job) {
         this.job = job;
         return this;
     }
@@ -167,6 +168,15 @@ public class User {
 
     public User setLifeApps(List<String> lifeApps) {
         this.lifeApps = lifeApps;
+        return this;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public User setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
         return this;
     }
 
