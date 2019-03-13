@@ -16,16 +16,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.util.Log;
@@ -128,21 +124,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
 
-        EventPagerAdapter eventPagerAdapter = new EventPagerAdapter();
+        EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
 
         eventViewPager.setAdapter(eventPagerAdapter);
 
-        if (Feature.PROMOTION_URL) {
-            presenter.requestPromotions();
-        } else {
-            View betaTestBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_beta_test, null);
-            View eventBanner = getLayoutInflater().inflate(R.layout.view_pager_banner_event, null);
-
-            eventPagerAdapter.addView(betaTestBanner, R.layout.activity_event_beta_test_open);
-            eventPagerAdapter.addView(eventBanner, R.layout.activity_event_keeping_app);
-
-            eventPagerAdapter.notifyDataSetChanged();
-        }
+        presenter.requestPromotions();
 
         if (getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false)) {
             presenter.sendEventLog(FomesConstants.EventLog.Code.NOTIFICATION_TAP);
@@ -297,21 +283,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void setPromotionViews(List<Post> promotions) {
-        if (Feature.PROMOTION_URL) {
-            EventPagerAdapter adapter = (EventPagerAdapter) eventViewPager.getAdapter();
+        EventPagerAdapter adapter = (EventPagerAdapter) eventViewPager.getAdapter();
 
-            for (Post post : promotions) {
-                ImageView promotionImageView = new ImageView(this);
-
-                Glide.with(this).load(post.getCoverImageUrl())
-                        .apply(new RequestOptions().centerCrop())
-                        .into(promotionImageView);
-
-                adapter.addView(promotionImageView, post.getContents());
-            }
-
-            adapter.notifyDataSetChanged();
+        for (Post post : promotions) {
+            adapter.addEvent(post);
         }
+
+        adapter.notifyDataSetChanged();
     }
 
     private void verifyAccessToken() {

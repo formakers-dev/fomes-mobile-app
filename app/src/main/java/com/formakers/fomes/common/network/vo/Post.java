@@ -6,8 +6,11 @@ public class Post {
     Integer order;
     Date openDate;
     Date closeDate;
+    String title;
     String coverImageUrl;
+    // 우선순위 : deeplink > contents
     String contents;
+    String deeplink;
 
     public Integer getOrder() {
         return order;
@@ -54,6 +57,24 @@ public class Post {
         return this;
     }
 
+    public String getDeeplink() {
+        return deeplink;
+    }
+
+    public Post setDeeplink(String deeplink) {
+        this.deeplink = deeplink;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Post setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -62,6 +83,8 @@ public class Post {
                 ", closeDate=" + closeDate +
                 ", coverImageUrl='" + coverImageUrl + '\'' +
                 ", contents='" + contents + '\'' +
+                ", deeplink='" + deeplink + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 }

@@ -57,7 +57,6 @@
         </activity>
         <activity android:name=".settings.SettingsActivity"/>
         <activity android:name=".wishList.view.WishListActivity"/>
-        <activity android:name=".main.view.EventDetailActivity"/>
         <activity android:name=".common.view.NoticeMigrationActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".common.view.WebViewActivity"/>
