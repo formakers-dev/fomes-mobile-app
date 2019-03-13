@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
+import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
 import com.formakers.fomes.main.contract.MainContract;
@@ -217,9 +218,9 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         launchActivity();
 
         ViewPager viewPager = subject.findViewById(R.id.main_event_view_pager);
-        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
-        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
-        ((EventPagerAdapter) viewPager.getAdapter()).addView(new View(subject.getBaseContext()), R.layout.layout_app_info);
+        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
+        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
+        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
 
         testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(0);

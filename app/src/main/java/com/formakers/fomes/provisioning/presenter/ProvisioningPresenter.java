@@ -1,5 +1,6 @@
 package com.formakers.fomes.provisioning.presenter;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.job.JobManager;
@@ -110,7 +111,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public Completable requestUpdateUser() {
         userDAO.updateUserInfo(this.user);
-        return this.userService.updateUser(this.user);
+        return this.userService.updateUser(this.user.setAppVersion(BuildConfig.VERSION_NAME));
     }
 
     @Override

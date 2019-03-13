@@ -2,15 +2,18 @@ package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.formakers.fomes.common.constant.Feature;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.WebViewActivity;
-import com.formakers.fomes.main.view.EventDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +22,21 @@ public class EventPagerAdapter extends PagerAdapter {
 
     private static final String TAG = "EventPagerAdapter";
 
-    private List<EventPagerAdapter.Event> events = new ArrayList<>();
+    private Context context;
+    private List<EventPagerAdapter.BannerItem> events = new ArrayList<>();
 
-    @Deprecated
-    public void addView(View view, @LayoutRes int layoutResId) {
-        events.add(new Event(view, layoutResId));
+    public EventPagerAdapter(Context context) {
+        this.context = context;
     }
 
-    public void addView(View view, String contents) {
-        events.add(new Event(view, contents));
+    public void addEvent(Post post) {
+        ImageView promotionImageView = new ImageView(context);
+
+        Glide.with(context).load(post.getCoverImageUrl())
+                .apply(new RequestOptions().centerCrop())
+                .into(promotionImageView);
+
+        events.add(new BannerItem(promotionImageView, post));
     }
 
     @Override
@@ -39,37 +48,35 @@ public class EventPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         Log.v(TAG, "instantiateItem) position=" + position);
 
-        Event event = events.get(position);
-        View view = event.view;
+        BannerItem event = events.get(position);
+        View coverView = event.coverView;
 
-        if (Feature.PROMOTION_URL) {
-            Context context = container.getContext();
+        Context context = container.getContext();
 
-            view.setOnClickListener(v -> {
-                Intent intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra(WebViewActivity.EXTRA_TITLE, "이벤트");
-                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, event.contents);
-                context.startActivity(intent);
-            });
+        coverView.setOnClickListener(v -> {
+            Intent intent;
 
-        } else {
-            view.setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), EventDetailActivity.class);
-                intent.putExtra(EventDetailActivity.EXTRA_LAYOUT_RES_ID, event.destLayoutResId);
-                v.getContext().startActivity(intent);
-            });
-        }
+            if (TextUtils.isEmpty(event.post.getDeeplink())) {
+                intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.EXTRA_TITLE, event.post.getTitle());
+                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, event.post.getContents());
+            } else {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.post.getDeeplink()));
+            }
 
-        container.addView(view);
+            context.startActivity(intent);
+        });
 
-        return view;
+        container.addView(coverView);
+
+        return coverView;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         Log.v(TAG, "destroyItem) position=" + position);
 
-        container.removeView(events.get(position).view);
+        container.removeView(events.get(position).coverView);
     }
 
     @Override
@@ -82,20 +89,13 @@ public class EventPagerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    class Event {
-        View view;
-        @Deprecated @LayoutRes int destLayoutResId;
-        String contents;
+    class BannerItem {
+        View coverView;
+        Post post;
 
-        @Deprecated
-        public Event(View view, @LayoutRes int destLayoutResId) {
-            this.view = view;
-            this.destLayoutResId = destLayoutResId;
-        }
-
-        public Event(View view, String contents) {
-            this.view = view;
-            this.contents = contents;
+        public BannerItem(View coverView, Post post) {
+            this.coverView = coverView;
+            this.post = post;
         }
     }
 }

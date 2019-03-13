@@ -84,6 +84,6 @@ public class SettingsActivityTest extends FomesBaseActivityTest<SettingsActivity
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getAction()).isEqualTo(Intent.ACTION_SEND);
-        assertThat(intent.getStringArrayExtra(Intent.EXTRA_EMAIL)).contains("contact@fomakers.net");
+        assertThat(intent.getStringArrayExtra(Intent.EXTRA_EMAIL)).contains("contact@formakers.net");
     }
 }

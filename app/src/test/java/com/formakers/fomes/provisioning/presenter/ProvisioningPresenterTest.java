@@ -1,5 +1,6 @@
 package com.formakers.fomes.provisioning.presenter;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -37,8 +38,7 @@ public class ProvisioningPresenterTest {
     @Mock ProvisioningContract.View mockView;
     @Mock User mockUser;
     @Mock UserService mockUserService;
-    @Mock
-    AndroidNativeHelper mockAndroidNativeHelper;
+    @Mock AndroidNativeHelper mockAndroidNativeHelper;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
     @Mock UserDAO mockUserDAO;
 
@@ -134,7 +134,8 @@ public class ProvisioningPresenterTest {
         subject.requestUpdateUser();
 
         verify(mockUserDAO).updateUserInfo(eq(mockUser));
-        verify(mockUserService).updateUser(eq(mockUser));
+        verify(mockUser).setAppVersion(eq(BuildConfig.VERSION_NAME));
+//        verify(mockUserService).updateUser(eq(mockUser));
     }
 
     @Test

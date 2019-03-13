@@ -3,6 +3,7 @@ package com.formakers.fomes.common.job;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
@@ -63,7 +64,7 @@ public class SendDataJobService extends JobService {
         channelManager.subscribePublicTopic();
 
         // 2. 백업용 : 유저정보 서버로 올리기
-        completableList.add(userDAO.getUserInfo()
+        completableList.add(userDAO.getUserInfo().map(user -> user.setAppVersion(BuildConfig.VERSION_NAME))
                 .observeOn(Schedulers.io())
                 .flatMapCompletable(user -> userService.updateUser(user)));
 
