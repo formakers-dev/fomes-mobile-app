@@ -24,5 +24,6 @@ public interface RecommendContract {
         void showRecommendList();
         void showErrorPage();
         void refreshRecommendList();
+        boolean isNeedMoreRecommendItems();
     }
 }
