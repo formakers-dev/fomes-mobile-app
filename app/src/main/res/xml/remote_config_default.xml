@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>app_update_message</key>
+        <value>@string/update_dialog_message</value>
+    </entry>
+</defaultsMap>

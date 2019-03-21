@@ -24,6 +24,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
 import com.formakers.fomes.wishList.presenter.WishListPresenter;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import javax.inject.Singleton;
 
@@ -49,6 +50,7 @@ public interface ApplicationComponent {
     RequestManager requestManager();
     JobManager jobManager();
     ChannelManager channelManager();
+    FirebaseRemoteConfig firebaseRemoteConfig();
 
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);
