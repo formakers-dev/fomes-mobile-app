@@ -28,7 +28,7 @@ public class SendDataJobService extends JobService {
 
     private static String TAG = SendDataJobService.class.getSimpleName();
 
-    @Inject SharedPreferencesHelper SharedPreferencesHelper;
+    @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject AndroidNativeHelper androidNativeHelper;
     @Inject AppUsageDataHelper appUsageDataHelper;
     @Inject UserService userService;
@@ -64,9 +64,13 @@ public class SendDataJobService extends JobService {
         channelManager.subscribePublicTopic();
 
         // 2. 백업용 : 유저정보 서버로 올리기
-        completableList.add(userDAO.getUserInfo().map(user -> user.setAppVersion(BuildConfig.VERSION_NAME))
-                .observeOn(Schedulers.io())
-                .flatMapCompletable(user -> userService.updateUser(user)));
+        completableList.add(userDAO.getUserInfo().map(user -> {
+            // 2-1. 버전 정보 올리기
+            user.setAppVersion(BuildConfig.VERSION_NAME);
+            // 2-2. FCM Token 업로드하기
+            user.setRegistrationToken(sharedPreferencesHelper.getRegistrationToken());
+            return user;
+        }).observeOn(Schedulers.io()).flatMapCompletable(user -> userService.updateUser(user)));
 
         // 3. 앱 사용 정보 접근 권한이 있을 때 : 앱 사용 데이터를 서버로 보낸다
         if (androidNativeHelper.hasUsageStatsPermission()) {

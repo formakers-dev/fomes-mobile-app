@@ -116,7 +116,7 @@ public class SendDataJobServiceTest {
     }
 
     @Test
-    public void onStartJob_실행시__유저정보와_유저의_현재앱버전을__서버로_올린다() {
+    public void onStartJob_실행시__유저정보와_유저의_현재앱버전과_FCM토큰을__서버로_올린다() {
         subject_onStartJob();
 
         // 유저정보
@@ -129,6 +129,8 @@ public class SendDataJobServiceTest {
         User requestedUser = userArgumentCaptor.getValue();
         assertThat(requestedUser.getAppVersion()).isEqualTo(BuildConfig.VERSION_NAME);
 
+        // FCM 토큰 셋팅했는지
+        assertThat(requestedUser.getRegistrationToken()).isEqualTo("myRegistrationToken");
     }
 
     @Test

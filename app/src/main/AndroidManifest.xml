@@ -40,7 +40,8 @@
 
         <!-- Fomes -->
         <activity android:name=".provisioning.view.LoginActivity"
-            android:theme="@style/FomesTheme.NoActionBar"/>
+            android:theme="@style/FomesTheme.NoActionBar"
+            android:launchMode="singleTop"/>
         <activity android:name=".provisioning.view.ProvisioningActivity"
             android:theme="@style/ProvisioningTheme"
             android:windowSoftInputMode="adjustPan" />

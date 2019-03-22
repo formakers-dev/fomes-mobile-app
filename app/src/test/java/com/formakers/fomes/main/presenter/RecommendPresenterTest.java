@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.verification.VerificationMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -142,6 +144,16 @@ public class RecommendPresenterTest {
         assertThat(captor.getAllValues().get(1).getAppInfo().getPackageName()).isEqualTo("com.test3");
         assertThat(captor.getAllValues().get(1).getAppInfo().isInstalled()).isEqualTo(true);
         verify(mockView, atLeast(1)).refreshRecommendList();
+    }
+
+    @Test
+    public void loadRecommendApps_성공시__추천앱_로딩이_더_필요하다면__재호출_한다() {
+        when(mockView.isNeedMoreRecommendItems()).thenReturn(true, false);
+        when(mockAdapterModel.contains("com.test1")).thenReturn(true);
+
+        subject.loadRecommendApps("GAME");
+
+        verify(mockRecommendService, times(2)).requestRecommendApps(eq("GAME"), anyInt());
     }
 
     @Test

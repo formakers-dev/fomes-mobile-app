@@ -38,7 +38,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     public static final String TAG = "RecommendFragment";
 
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
-    @BindView(R.id.recommend_contents_layout) ViewGroup recommendContentsLayout;
+    @BindView(R.id.recommend_contents_layout) NestedScrollView recommendContentsLayout;
     @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
     @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
 
@@ -83,7 +83,11 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         presenter.setAdapterModel(recommendListAdapter);
         recommendListAdapterView = recommendListAdapter;
 
-        setNestedScrollViewOnScrollChangeListener((NestedScrollView) recommendContentsLayout);
+        recommendContentsLayout.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (isNeedMoreRecommendItems()) {
+                presenter.loadRecommendApps("GAME");
+            }
+        });
 
         presenter.loadRecommendApps("GAME");
     }
@@ -113,16 +117,9 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         this.presenter.unsubscribe();
     }
 
-    private void setNestedScrollViewOnScrollChangeListener(NestedScrollView view) {
-        view.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            View lastChildView = nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
-
-            boolean isBottom = (lastChildView.getBottom() - (nestedScrollView.getHeight() + scrollY)) == 0;
-
-            if (isBottom) {
-                presenter.loadRecommendApps("GAME");
-            }
-        });
+    @Override
+    public boolean isNeedMoreRecommendItems() {
+        return !this.recommendContentsLayout.canScrollVertically(1);
     }
 
     @Override

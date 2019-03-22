@@ -100,12 +100,16 @@ public class RecommendPresenter implements RecommendContract.Presenter {
                         this.view.showRecommendList();
                     }
                 })
-                .subscribe(recommendApp -> Log.v(TAG, "recommend=" + recommendApp),
-                        e -> Log.e(TAG, e.toString()),
-                        () -> {
-                            setCurrentPage(nextPage);
-                            this.view.refreshRecommendList();
+                .doOnCompleted(() -> {
+                    setCurrentPage(nextPage);
+                    this.view.refreshRecommendList();
+
+                    if (this.view.isNeedMoreRecommendItems()) {
+                        this.loadRecommendApps("GAME");
+                    }
                 })
+                .subscribe(recommendApp -> Log.v(TAG, "recommend=" + recommendApp),
+                        e -> Log.e(TAG, e.toString()))
         );
     }
 
