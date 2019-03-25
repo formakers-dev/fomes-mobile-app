@@ -103,8 +103,14 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         // Enable 처리
         viewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
-        viewHolder.completedLabelView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
-        viewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
+
+        if (item.isGroup()) {
+            viewHolder.stampImageView.setVisibility(View.VISIBLE);
+            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.stamp_attend : R.drawable.stamp_absent);
+        } else {
+            viewHolder.completedLabelView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
+            viewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
+        }
 
         viewHolder.disableBackgroundView.setVisibility(!viewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
     }
@@ -161,6 +167,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         View disableBackgroundView;
         View completedLabelView;
         View closedLabelView;
+        ImageView stampImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -176,6 +183,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
             completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
             closedLabelView = itemView.findViewById(R.id.betatest_closed_label);
+            stampImageView = itemView.findViewById(R.id.betatest_stamp);
         }
     }
 }
