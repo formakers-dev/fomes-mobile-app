@@ -93,7 +93,7 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
             targetTextView.setText(String.format(getString(R.string.betatest_target_format), targetApps.get(0)));
         }
 
-        testTypeTextView.setText(betaTest.getTypeTags().get(0));
+        testTypeTextView.setText(betaTest.getTags().get(0));
 
         long remainDays = betaTest.getRemainDays();
         String projectStatus;

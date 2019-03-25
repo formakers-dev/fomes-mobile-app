@@ -75,7 +75,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             viewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), targetApps.get(0)));
         }
 
-        viewHolder.testTypeTextView.setText(item.getTypeTags().get(0));
+        viewHolder.testTypeTextView.setText(item.getTags().get(0));
 
         long remainDays = item.getRemainDays();
 

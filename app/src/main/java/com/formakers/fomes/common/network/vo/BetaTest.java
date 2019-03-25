@@ -15,8 +15,7 @@ public class BetaTest implements Parcelable {
     String title;
     String subTitle;
 
-    String type;
-    List<String> typeTags;
+    List<String> tags;
 
     Date openDate;
     Date closeDate;
@@ -34,6 +33,8 @@ public class BetaTest implements Parcelable {
 
     boolean isOpened;
     boolean isCompleted;
+
+    boolean isGroup;
 
     public BetaTest() {
     }
@@ -78,21 +79,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public String getType() {
-        return type;
+    public List<String> getTags() {
+        return tags;
     }
 
-    public BetaTest setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    public List<String> getTypeTags() {
-        return typeTags;
-    }
-
-    public BetaTest setTypeTags(List<String> typeTags) {
-        this.typeTags = typeTags;
+    public BetaTest setTags(List<String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -200,6 +192,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public boolean isGroup() {
+        return isGroup;
+    }
+
+    public BetaTest setGroup(boolean group) {
+        isGroup = group;
+        return this;
+    }
+
     public long getRemainDays() {
         return DateUtil.calculateDdays(getCurrentDate().getTime(), getCloseDate().getTime());
     }
@@ -211,8 +212,7 @@ public class BetaTest implements Parcelable {
                 ", overviewImageUrl='" + overviewImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", subTitle='" + subTitle + '\'' +
-                ", type='" + type + '\'' +
-                ", typeTags=" + typeTags +
+                ", tags=" + tags +
                 ", openDate=" + openDate +
                 ", closeDate=" + closeDate +
                 ", currentDate=" + currentDate +
@@ -224,6 +224,7 @@ public class BetaTest implements Parcelable {
                 ", amount='" + amount + '\'' +
                 ", isOpened=" + isOpened +
                 ", isCompleted=" + isCompleted +
+                ", isGroup=" + isGroup +
                 '}';
     }
 
@@ -237,8 +238,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(overviewImageUrl);
         dest.writeString(title);
         dest.writeString(subTitle);
-        dest.writeString(type);
-        dest.writeStringList(typeTags);
+        dest.writeStringList(tags);
         dest.writeLong(openDate.getTime());
         dest.writeLong(closeDate.getTime());
         dest.writeLong(currentDate.getTime());
@@ -250,6 +250,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(amount);
         dest.writeInt(isOpened ? 1 : 0);
         dest.writeInt(isCompleted ? 1 : 0);
+        dest.writeInt(isGroup ? 1 : 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -257,8 +258,7 @@ public class BetaTest implements Parcelable {
         overviewImageUrl = in.readString();
         title = in.readString();
         subTitle = in.readString();
-        type = in.readString();
-        in.readStringList(typeTags);
+        in.readStringList(tags);
         openDate = new Date(in.readLong());
         closeDate = new Date(in.readLong());
         currentDate = new Date(in.readLong());
@@ -270,6 +270,7 @@ public class BetaTest implements Parcelable {
         amount = in.readString();
         isOpened = (in.readInt() == 1);
         isCompleted = (in.readInt() == 1);
+        isGroup = (in.readInt() == 1);
     }
 
     @Override
