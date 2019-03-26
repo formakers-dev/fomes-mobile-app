@@ -215,6 +215,13 @@
         <item name="item_stroke_width">0dp</item>
     </style>
 
+    <style name="BetaTestTheme.EpilogueButtonBackground">
+        <item name="item_background_radius">4dp</item>
+        <item name="item_solid_color">@color/beta_test_finished_group_block_background</item>
+        <item name="item_stroke_width">1dp</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+    </style>
+
     <style name="BetaTestTheme.LegacyDisableBackground">
         <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/fomes_content_disable_card_background</item>

@@ -125,7 +125,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/betatest_finished_epilogue_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-                <TextView android:id="@+id/betatest_finished_my_feedback_title"
+                <TextView android:id="@+id/betatest_finished_progress_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -136,8 +136,8 @@
                     android:gravity="center"
                     android:textSize="16dp"
                     android:textColor="@color/fomes_white"
-                    android:text="나의 의견 제출 완료" />
-                <TextView android:id="@+id/betatest_finished_my_feedback_subtitle"
+                    android:text="@string/betatest_submitted_my_feedback" />
+                <TextView android:id="@+id/betatest_finished_progress_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -146,19 +146,24 @@
                     android:gravity="center"
                     android:textSize="13dp"
                     android:textColor="@color/fomes_warm_gray_2"
-                    android:text="다른 참여자들의 결과를 취합 중입니다." />
+                    android:text="@string/betatest_collecting_results" />
             </LinearLayout>
 
-            <View android:id="@+id/betatest_finished_epilogue_button"
+            <Button android:id="@+id/betatest_finished_epilogue_button"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.FinishedGroupBlockBackground"
+                android:enabled="false"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/epilogue_button_selector"
+                android:theme="@style/BetaTestTheme.EpilogueButtonBackground"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/betatest_finished_my_feedback"
-                app:layout_constraintBottom_toTopOf="@+id/betatest_finished_company_says" />
+                app:layout_constraintBottom_toTopOf="@+id/betatest_finished_company_says"
+                tools:visibility="invisible"/>
 
             <ImageView android:id="@+id/betatest_finished_epilogue_button_icon"
                 android:layout_width="14dp"
@@ -176,7 +181,7 @@
                 android:textSize="14dp"
                 android:textStyle="bold"
                 android:textColor="@color/fomes_warm_gray"
-                android:text="테스트 에필로그 (커밍 순)"
+                android:text="@string/betatest_epilogue_coming_soon"
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="@id/betatest_finished_epilogue_button"
                 app:layout_constraintBottom_toBottomOf="@id/betatest_finished_epilogue_button"

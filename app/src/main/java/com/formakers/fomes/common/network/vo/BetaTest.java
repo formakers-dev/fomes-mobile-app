@@ -36,6 +36,75 @@ public class BetaTest implements Parcelable {
 
     boolean isGroup;
 
+    AfterService afterService;
+
+    public static class AfterService implements Parcelable {
+        String epilogue;
+        String companySays;
+
+        public AfterService() {}
+
+        public AfterService(Parcel in) {
+            readFromParcel(in);
+        }
+
+        public String getEpilogue() {
+            return epilogue;
+        }
+
+        public AfterService setEpilogue(String epilogue) {
+            this.epilogue = epilogue;
+            return this;
+        }
+
+        public String getCompanySays() {
+            return companySays;
+        }
+
+        public AfterService setCompanySays(String companySays) {
+            this.companySays = companySays;
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return "AfterService{" +
+                    "epilogue='" + epilogue + '\'' +
+                    ", companySays='" + companySays + '\'' +
+                    '}';
+        }
+
+        /**
+         * for Parcelable
+         */
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(epilogue);
+            dest.writeString(companySays);
+        }
+
+        private void readFromParcel(Parcel in) {
+            epilogue = in.readString();
+            companySays = in.readString();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public AfterService createFromParcel(Parcel in) {
+                return new AfterService(in);
+            }
+
+            public AfterService[] newArray(int size) {
+                return new AfterService[size];
+            }
+        };
+    }
+
     public BetaTest() {
     }
 
@@ -201,6 +270,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public AfterService getAfterService() {
+        return afterService;
+    }
+
+    public BetaTest setAfterService(AfterService afterService) {
+        this.afterService = afterService;
+        return this;
+    }
+
     public long getRemainDays() {
         return DateUtil.calculateDdays(getCurrentDate().getTime(), getCloseDate().getTime());
     }
@@ -225,6 +303,7 @@ public class BetaTest implements Parcelable {
                 ", isOpened=" + isOpened +
                 ", isCompleted=" + isCompleted +
                 ", isGroup=" + isGroup +
+                ", afterService=" + afterService +
                 '}';
     }
 
@@ -251,6 +330,7 @@ public class BetaTest implements Parcelable {
         dest.writeInt(isOpened ? 1 : 0);
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isGroup ? 1 : 0);
+        dest.writeParcelable(afterService, 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -271,6 +351,7 @@ public class BetaTest implements Parcelable {
         isOpened = (in.readInt() == 1);
         isCompleted = (in.readInt() == 1);
         isGroup = (in.readInt() == 1);
+        afterService = in.readParcelable(null);
     }
 
     @Override

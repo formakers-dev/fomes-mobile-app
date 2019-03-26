@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
@@ -61,6 +63,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         BetaTest item = betaTests.get(position);
+        Log.i(TAG, item.toString());
 
         int viewType = holder.getItemViewType();
         BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
@@ -100,6 +103,29 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
             viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.stamp_attend : R.drawable.stamp_absent);
+
+            if (item.getAfterService() != null) {
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed_flag, 0, R.drawable.icon_completed_flag_reverse, 0);
+
+                viewHolder.progressTitleTextView.setText(R.string.betatest_delivered_my_feedback);
+                viewHolder.progressSubTitleTextView.setText(R.string.betatest_delivered_all_results);
+                viewHolder.epilogueButton.setText(R.string.betatest_epilogue_opened);
+
+                viewHolder.epilogueButtonTextView.setVisibility(View.GONE);
+                viewHolder.epilogueButtonIcon.setVisibility(View.GONE);
+                viewHolder.epilogueButton.setEnabled(true);
+                viewHolder.companySaysTextView.setText(String.format(context.getString(R.string.betatest_company_says), item.getAfterService().getCompanySays()));
+            }
+
+            if (!item.isCompleted()) {
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
+                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+
+                viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
+
+                viewHolder.companySaysTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+            }
         } else {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
@@ -215,10 +241,22 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     class GroupViewHolder extends BaseViewHolder {
         ImageView stampImageView;
+        TextView progressTitleTextView;
+        TextView progressSubTitleTextView;
+        Button epilogueButton;
+        ImageView epilogueButtonIcon;
+        TextView epilogueButtonTextView;
+        TextView companySaysTextView;
 
         public GroupViewHolder(View itemView) {
             super(itemView);
             stampImageView = itemView.findViewById(R.id.betatest_stamp);
+            progressTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_title);
+            progressSubTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_subtitle);
+            epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
+            epilogueButtonIcon = itemView.findViewById(R.id.betatest_finished_epilogue_button_icon);
+            epilogueButtonTextView = itemView.findViewById(R.id.betatest_finished_epilogue_button_text);
+            companySaysTextView = itemView.findViewById(R.id.betatest_finished_company_says);
         }
     }
 }
