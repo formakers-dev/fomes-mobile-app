@@ -84,7 +84,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         recommendListAdapterView = recommendListAdapter;
 
         recommendContentsLayout.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (isNeedMoreRecommendItems()) {
+            if (isEndOfRecommendList()) {
                 presenter.loadRecommendApps("GAME");
             }
         });
@@ -118,7 +118,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     }
 
     @Override
-    public boolean isNeedMoreRecommendItems() {
+    public boolean isEndOfRecommendList() {
         return !this.recommendContentsLayout.canScrollVertically(1);
     }
 

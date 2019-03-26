@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.verification.VerificationMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +63,14 @@ public class RecommendPresenterTest {
             }
         });
 
+
         MockitoAnnotations.initMocks(this);
 
-        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(new ArrayList<>()));
+        List<RecommendApp> list = new ArrayList<>();
+        list.add(new RecommendApp().setAppInfo(new AppInfo("com.test1")));
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(list));
         when(mockAndroidNativeHelper.getInstalledLaunchableApps()).thenReturn(Observable.from(new ArrayList<>()));
+        when(mockView.isEndOfRecommendList()).thenReturn(false);
 
         subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService, mockAndroidNativeHelper);
         subject.setAdapterModel(mockAdapterModel);
@@ -148,7 +151,7 @@ public class RecommendPresenterTest {
 
     @Test
     public void loadRecommendApps_성공시__추천앱_로딩이_더_필요하다면__재호출_한다() {
-        when(mockView.isNeedMoreRecommendItems()).thenReturn(true, false);
+        when(mockView.isEndOfRecommendList()).thenReturn(true, false);
         when(mockAdapterModel.contains("com.test1")).thenReturn(true);
 
         subject.loadRecommendApps("GAME");
