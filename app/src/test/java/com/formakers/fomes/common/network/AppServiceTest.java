@@ -30,7 +30,7 @@ public class AppServiceTest extends AbstractServiceTest {
 
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
 
-        this.subject = new AppService(mockAppAPI, mockSharedPreferencesHelper);
+        this.subject = new AppService(mockAppAPI, mockSharedPreferencesHelper, getMockAPIHelper());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.AppAPI;
+import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppInfo;
 
@@ -16,16 +17,19 @@ public class AppService {
 
     private AppAPI appAPI;
     private SharedPreferencesHelper sharedPreferencesHelper;
+    private APIHelper apiHelper;
 
     @Inject
-    public AppService(AppAPI appAPI, SharedPreferencesHelper sharedPreferencesHelper) {
+    public AppService(AppAPI appAPI, SharedPreferencesHelper sharedPreferencesHelper, APIHelper apiHelper) {
         this.appAPI = appAPI;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
+        this.apiHelper = apiHelper;
     }
 
     public Single<AppInfo> requestAppInfo(String packageName) {
         return Observable.defer(() -> appAPI.getAppInfo(sharedPreferencesHelper.getAccessToken(), packageName)
                 .subscribeOn(Schedulers.io()))
+                .compose(apiHelper.refreshExpiredToken())
                 .toSingle();
     }
 
