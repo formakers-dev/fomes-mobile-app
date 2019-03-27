@@ -221,6 +221,6 @@
     <string name="betatest_delivered_all_results">모든 결과가 게임사에게 전달되었습니다.</string>
     <string name="betatest_epilogue_coming_soon">테스트 에필로그 (커밍 순)</string>
     <string name="betatest_epilogue_opened">테스트 에필로그 보기</string>
+    <string name="betatest_company_says_not_collected">게임사 소감 : \?\?\? (모든 결과 취합 시 표시됩니다)</string>
     <string name="betatest_company_says">게임사 소감 : %s</string>
-    <string name="betatest_company_says_not_collected">\?\?\? (모든 결과 취합 시 표시됩니다)</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -104,10 +106,22 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
             viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.stamp_attend : R.drawable.stamp_absent);
 
-            if (item.getAfterService() != null) {
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed_flag, 0, R.drawable.icon_completed_flag_reverse, 0);
+            if (item.isCompleted()) {
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
+                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
+                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
 
-                viewHolder.progressTitleTextView.setText(R.string.betatest_delivered_my_feedback);
+                viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
+
+                viewHolder.companySaysTextView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            }
+
+            if (item.getAfterService() != null) {
+                if (item.isCompleted()) {
+                    viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed_flag, 0, R.drawable.icon_completed_flag_reverse, 0);
+                    viewHolder.progressTitleTextView.setText(R.string.betatest_delivered_my_feedback);
+                }
+
                 viewHolder.progressSubTitleTextView.setText(R.string.betatest_delivered_all_results);
                 viewHolder.epilogueButton.setText(R.string.betatest_epilogue_opened);
 
@@ -115,16 +129,13 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 viewHolder.epilogueButtonIcon.setVisibility(View.GONE);
                 viewHolder.epilogueButton.setEnabled(true);
                 viewHolder.companySaysTextView.setText(String.format(context.getString(R.string.betatest_company_says), item.getAfterService().getCompanySays()));
-            }
 
-            if (!item.isCompleted()) {
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
-                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                viewHolder.epilogueButton.setOnClickListener(v -> {
+                   Uri uri = Uri.parse(item.getAfterService().getEpilogue());
 
-                viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
-
-                viewHolder.companySaysTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                   Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                   context.startActivity(intent);
+                });
             }
         } else {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;

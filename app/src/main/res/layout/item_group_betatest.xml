@@ -131,12 +131,12 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="15dp"
                     android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/icon_racing_flag"
-                    android:drawableEnd="@drawable/icon_racing_flag_reverse"
+                    android:drawableStart="@drawable/icon_grey_flag"
+                    android:drawableEnd="@drawable/icon_grey_flag_reverse"
                     android:gravity="center"
                     android:textSize="16dp"
-                    android:textColor="@color/fomes_white"
-                    android:text="@string/betatest_submitted_my_feedback" />
+                    android:textColor="@color/fomes_warm_gray"
+                    android:text="@string/betatest_not_submitted_my_feedback" />
                 <TextView android:id="@+id/betatest_finished_progress_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                     android:layout_marginBottom="15dp"
                     android:gravity="center"
                     android:textSize="13dp"
-                    android:textColor="@color/fomes_warm_gray_2"
+                    android:textColor="@color/fomes_warm_gray"
                     android:text="@string/betatest_collecting_results" />
             </LinearLayout>
 
@@ -158,6 +158,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:background="@drawable/epilogue_button_selector"
+                android:foreground="@drawable/ripple"
                 android:theme="@style/BetaTestTheme.EpilogueButtonBackground"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -193,8 +194,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="12dp"
-                android:textColor="@color/colorPrimary"
-                android:text="게임사 소감 : ??? (모든 결과 취합 시 표시됩니다)"
+                android:textColor="@color/fomes_warm_gray"
+                android:text="@string/betatest_company_says_not_collected"
                 app:layout_constraintTop_toBottomOf="@id/betatest_finished_epilogue_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
