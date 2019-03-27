@@ -104,7 +104,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             GroupViewHolder viewHolder = (GroupViewHolder) holder;
 
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
-            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.stamp_attend : R.drawable.stamp_absent);
+            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
 
             if (item.isCompleted()) {
                 viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
@@ -261,7 +261,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public GroupViewHolder(View itemView) {
             super(itemView);
-            stampImageView = itemView.findViewById(R.id.betatest_stamp);
+            stampImageView = itemView.findViewById(R.id.betatest_label);
             progressTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_title);
             progressSubTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_subtitle);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
