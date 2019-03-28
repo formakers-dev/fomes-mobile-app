@@ -27,6 +27,8 @@ import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
 import com.formakers.fomes.main.dagger.BetaTestFragmentModule;
 import com.formakers.fomes.main.dagger.DaggerBetaTestFragmentComponent;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -95,7 +97,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         });
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            presenter.loadToBetaTestList()
+            presenter.loadToBetaTestList(new Date())
                     .toCompletable()
                     .doOnSubscribe(x -> swipeRefreshLayout.setRefreshing(true))
                     .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))

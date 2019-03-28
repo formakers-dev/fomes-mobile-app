@@ -19,7 +19,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
@@ -65,7 +64,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         BetaTest item = betaTests.get(position);
-        Log.i(TAG, item.toString());
 
         int viewType = holder.getItemViewType();
         BaseViewHolder baseViewHolder = (BaseViewHolder) holder;

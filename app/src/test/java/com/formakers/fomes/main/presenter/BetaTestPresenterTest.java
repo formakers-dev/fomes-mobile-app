@@ -34,6 +34,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -90,7 +91,7 @@ public class BetaTestPresenterTest {
 
     @Test
     public void loadToBetaTestList__호출시__테스트존_리스트를_요청한다() {
-        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
+        subject.loadToBetaTestList(new Date()).subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestService).getBetaTestList();
     }
@@ -98,23 +99,39 @@ public class BetaTestPresenterTest {
     @Test
     public void loadToBetaTestList__호출시__결과로_받은_테스트존_리스트를_정렬된_순서로_화면에_보여준다() {
         List<BetaTest> unsortedBetaTestList = new ArrayList();
-        unsortedBetaTestList.add(new BetaTest().setId(3).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(2).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(5).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-01T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(7).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-01T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(4).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
+        // 참여가능
         unsortedBetaTestList.add(new BetaTest().setId(1).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(8).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-30T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(6).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(2).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
+
+        // 참여 완료 - 미종료
+        unsortedBetaTestList.add(new BetaTest().setId(3).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(4).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
+
+        // 참여 완료 - 종료
+        unsortedBetaTestList.add(new BetaTest().setId(5).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(6).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-01T00:00:00.000Z"))));
+
+        // 참여 안함 - 종료
+        unsortedBetaTestList.add(new BetaTest().setId(7).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(8).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-01T00:00:00.000Z"))));
+
+        // 그룹 결과 카드
+        unsortedBetaTestList.add(new BetaTest().setId(9).setGroup(true).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-31T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId(10).setGroup(true).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
+
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
 
-        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
+        subject.loadToBetaTestList(Date.from(Instant.parse("2018-12-01T00:00:00.000Z"))).subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<List<BetaTest>> captor = ArgumentCaptor.forClass(List.class);
         verify(mockAdapterModel).clear();
-        verify(mockAdapterModel).addAll(captor.capture());
+        verify(mockAdapterModel, times(5)).addAll(captor.capture());
+        List<BetaTest> sortedBetaTestList = captor.getAllValues().get(0);
+        sortedBetaTestList.addAll(captor.getAllValues().get(1));
+        sortedBetaTestList.addAll(captor.getAllValues().get(2));
+        sortedBetaTestList.addAll(captor.getAllValues().get(3));
+        sortedBetaTestList.addAll(captor.getAllValues().get(4));
 
-        List<BetaTest> sortedBetaTestList = captor.getValue();
         assertThat(sortedBetaTestList.get(0).getId()).isEqualTo(1);
         assertThat(sortedBetaTestList.get(1).getId()).isEqualTo(2);
         assertThat(sortedBetaTestList.get(2).getId()).isEqualTo(3);
@@ -123,6 +140,8 @@ public class BetaTestPresenterTest {
         assertThat(sortedBetaTestList.get(5).getId()).isEqualTo(6);
         assertThat(sortedBetaTestList.get(6).getId()).isEqualTo(7);
         assertThat(sortedBetaTestList.get(7).getId()).isEqualTo(8);
+        assertThat(sortedBetaTestList.get(8).getId()).isEqualTo(9);
+        assertThat(sortedBetaTestList.get(9).getId()).isEqualTo(10);
 
         verify(mockView).refreshBetaTestList();
         verify(mockView).showBetaTestListView();
@@ -132,7 +151,7 @@ public class BetaTestPresenterTest {
     public void loadToBetaTestList__호출시__빈리스트가_올_경우에는__비었다는_내용을_알리는_화면을_보여준다() {
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(Lists.emptyList()));
 
-        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
+        subject.loadToBetaTestList(new Date()).subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestService).getBetaTestList();
         verify(mockView).showEmptyView();
@@ -142,7 +161,7 @@ public class BetaTestPresenterTest {
     public void loadToBetaTestList__호출시__에러일_경우__비었다는_내용을_알리는_화면을_보여준다() {
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.error(new Throwable()));
 
-        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
+        subject.loadToBetaTestList(new Date()).subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestService).getBetaTestList();
         verify(mockView).showEmptyView();
@@ -151,7 +170,7 @@ public class BetaTestPresenterTest {
 
     @Test
     public void getBetaTestItem__호출시__해당_위치의_베타테스트를_리턴한다() {
-        subject.loadToBetaTestList().subscribe(new TestSubscriber<>());
+        subject.loadToBetaTestList(new Date()).subscribe(new TestSubscriber<>());
         BetaTest betaTest = subject.getBetaTestItem(0);
 
         assertThat(betaTest.getTitle()).isEqualTo("베타테스트1");
