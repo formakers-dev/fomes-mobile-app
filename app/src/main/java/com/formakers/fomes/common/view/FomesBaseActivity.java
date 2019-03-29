@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import com.formakers.fomes.FomesApplication;
-import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
@@ -32,14 +31,15 @@ public class FomesBaseActivity extends BaseActivity {
             return;
         }
 
-        if (sharedPreferencesHelper.getOldLatestMigrationVersion() < FomesConstants.MIGRATION_VERSION) {
-            if (!(this instanceof RecentAnalysisReportActivity)) {
-                Intent intent = new Intent(this, NoticeMigrationActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
-        }
+        // 마이그레이션 팝업이 필요해지면 FomesConstants.MIGRATION_VERSION 를 +1 하고 이 주석을 풀면 된다! => 나중에 리모트컨피그로 관리 할 수 있는 포인트 일 것 같다!
+//        if (sharedPreferencesHelper.getOldLatestMigrationVersion() < FomesConstants.MIGRATION_VERSION) {
+//            if (!(this instanceof RecentAnalysisReportActivity)) {
+//                Intent intent = new Intent(this, NoticeMigrationActivity.class);
+//                startActivity(intent);
+//                finish();
+//                return;
+//            }
+//        }
     }
 
     @Override
