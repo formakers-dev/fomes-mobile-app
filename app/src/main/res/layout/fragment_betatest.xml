@@ -42,27 +42,9 @@
             android:layout_marginStart="6dp"
             android:textSize="11dp"
             android:textColor="@color/fomes_light_gray"
-            android:text="테스트 참여 후 1분 내에 '완료'가 표시됩니다."
+            android:text="게임 관련 테스트가 표시됩니다."
             app:layout_constraintStart_toEndOf="@id/betatest_list_textview"
             app:layout_constraintBottom_toBottomOf="@id/betatest_list_textview" />
-
-        <TextView android:id="@+id/betatest_notice_more_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:paddingStart="6.5dp"
-            android:paddingEnd="6.5dp"
-            android:paddingTop="0.5dp"
-            android:paddingBottom="0.5dp"
-            android:gravity="center"
-            android:textSize="11dp"
-            android:textColor="@color/fomes_light_gray"
-            android:text="i"
-            android:background="@drawable/circle_background"
-            android:theme="@style/BetaTestTheme.InfoBackground"
-            app:layout_constraintStart_toEndOf="@id/betatest_notice_textview"
-            app:layout_constraintTop_toTopOf="@id/betatest_notice_textview"
-            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/feedback_recyclerview"
