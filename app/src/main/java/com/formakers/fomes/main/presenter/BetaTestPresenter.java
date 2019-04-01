@@ -11,7 +11,10 @@ import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestFragmentScope;
 import com.formakers.fomes.model.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -59,7 +62,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                     view.setUserNickName(user.getNickName());
                 })
                 .observeOn(Schedulers.io())
-                .flatMap(user -> loadToBetaTestList())
+                .flatMap(user -> loadToBetaTestList(new Date()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> view.showLoading())
                 .doAfterTerminate(() -> view.hideLoading())
@@ -67,34 +70,69 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
-    public Single<List<BetaTest>> loadToBetaTestList() {
+    public Single<List<BetaTest>> loadToBetaTestList(Date sortingCriteriaDate) {
         return betaTestService.getBetaTestList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(betaTests -> {
-
                     if (betaTests == null || betaTests.isEmpty()) {
                         throw new IllegalStateException("Empty List");
                     }
 
-                    // TODO : 정렬 로직이 프레젠터에 있는게 맞을까? 고민되네... Service로 이동 필요
-                    Collections.sort(betaTests, (betaTest1, betaTest2) -> {
-                        int compareWithIsOpened = Boolean.compare(betaTest1.isOpened(), betaTest2.isOpened());
-                        if (compareWithIsOpened != 0)
-                            return -1 * compareWithIsOpened;
+                    List<BetaTest> attendableList = new ArrayList<>();
+                    List<BetaTest> attendedList = new ArrayList<>();
+                    List<BetaTest> completedList = new ArrayList<>();
+                    List<BetaTest> finishedList = new ArrayList<>();
+                    List<BetaTest> groupResultList = new ArrayList<>();
 
-                        int compareWithIsCompleted = Boolean.compare(betaTest1.isCompleted(), betaTest2.isCompleted());
-                        if (compareWithIsCompleted != 0)
-                            return (betaTest1.isOpened() ? 1 : -1) * compareWithIsCompleted;
+                    for (BetaTest betaTest : betaTests) {
+                        // 그룹결과카드 (종료일 역순 - 최신꺼 먼저 나오게)
+                        if (betaTest.isGroup()) {
+                            groupResultList.add(betaTest);
+                        }
+                        else if (betaTest.isCompleted()) {
+                            if (betaTest.isOpened()) {
+                                // 참여완료 - 미종료 테스트카드
+                                attendedList.add(betaTest);
+                            } else {
+                                // 참여완료 - 종료 테스트카드
+                                completedList.add(betaTest);
+                            }
+                        }
+                        // 종료 테스트카드 (종료일 임박순)
+                        else if (!betaTest.isOpened()) {
+                            finishedList.add(betaTest);
+                        } else {
+                            // 참여가능 테스트카드 (종료일 임박순)
+                            attendableList.add(betaTest);
+                        }
+                    }
 
-                        return betaTest1.getCloseDate().compareTo(betaTest2.getCloseDate());
-                    });
+                    Comparator<BetaTest> comparator = (o1, o2) -> compareByCloseDate(o1, o2, sortingCriteriaDate);
+
+                    Collections.sort(attendableList, comparator);
+                    Collections.sort(attendedList, comparator);
+                    Collections.sort(completedList, comparator);
+                    Collections.sort(finishedList, comparator);
+                    Collections.sort(groupResultList, comparator);
 
                     betaTestListAdapterModel.clear();
-                    betaTestListAdapterModel.addAll(betaTests);
+                    betaTestListAdapterModel.addAll(attendableList);
+                    betaTestListAdapterModel.addAll(attendedList);
+                    betaTestListAdapterModel.addAll(completedList);
+                    betaTestListAdapterModel.addAll(finishedList);
+                    betaTestListAdapterModel.addAll(groupResultList);
+
                     view.refreshBetaTestList();
                     view.showBetaTestListView();
                 })
                 .doOnError(e -> view.showEmptyView());
+    }
+
+    private int compareByCloseDate(BetaTest betaTest1, BetaTest betaTest2, Date currentDate) {
+        Long betaTestDiff1 = Math.abs(currentDate.getTime() - betaTest1.getCloseDate().getTime());
+        Long betaTestDiff2 = Math.abs(currentDate.getTime() - betaTest2.getCloseDate().getTime());
+
+        return betaTestDiff1.compareTo(betaTestDiff2);
     }
 
     @Override

@@ -41,6 +41,9 @@
 # For using GSON @Expose annotation
 -keepattributes *Annotation*
 
+# For Inner Classes
+-keepattributes InnerClasses
+
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
 #-keep class com.google.gson.stream.** { *; }
@@ -130,16 +133,17 @@
 
 # Fomes Model
 -keep class com.formakers.fomes.model.** { *; }
+-keep class com.formakers.fomes.model.**.$* { *; }
 -dontwarn com.formakers.fomes.model.**
 
 -keep class com.formakers.fomes.common.network.vo.** { *; }
+-keep class com.formakers.fomes.common.network.vo.**.$* { *; }
 -dontwarn com.formakers.fomes.common.network.vo.**
 
 -keep class com.formakers.fomes.common.repository.model.** { *; }
 -dontwarn com.formakers.fomes.common.repository.model.**
 
 # Constants
--keepattributes InnerClasses
 -keep class com.formakers.fomes.common.FomesConstants.** { *; }
 -keep class com.formakers.fomes.common.FomesConstants.$* { *; }
 -dontwarn com.formakers.fomes.common.FomesConstants.**

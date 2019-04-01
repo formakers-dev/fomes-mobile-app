@@ -2,15 +2,13 @@ package com.formakers.fomes.common.view;
 
 import android.content.Intent;
 
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
 import com.formakers.fomes.provisioning.view.ProvisioningNickNameFragment;
 import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
-import com.formakers.fomes.provisioning.view.ProvisioningUserInfoFragment;
-import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.provisioning.view.RecentAnalysisReportActivityTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -123,19 +121,19 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
         assertThat(nextStartedActivity).isNull();
     }
 
-    @Test
-    public void 액티비티_진입시__마이그레이션_버전이_바뀐_상태면__마이그레이션_화면으로_진입한다() {
-        if (this instanceof RecentAnalysisReportActivityTest) {
-            return;
-        }
-
-        when(mockSharedPreferencesHelper.getOldLatestMigrationVersion()).thenReturn(0);
-
-        launchActivity();
-
-        Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(NoticeMigrationActivity.class.getName());
-    }
+//    @Test
+//    public void 액티비티_진입시__마이그레이션_버전이_바뀐_상태면__마이그레이션_화면으로_진입한다() {
+//        if (this instanceof RecentAnalysisReportActivityTest) {
+//            return;
+//        }
+//
+//        when(mockSharedPreferencesHelper.getOldLatestMigrationVersion()).thenReturn(0);
+//
+//        launchActivity();
+//
+//        Intent nextStartedActivity = shadowOf(subject).getNextStartedActivity();
+//        assertThat(nextStartedActivity.getComponent().getClassName()).isEqualTo(NoticeMigrationActivity.class.getName());
+//    }
 
     @Test
     public void 액티비티_진입시__마이그레이션_버전이_바뀐_상태가_아니면__현재화면으로_진입한다() {

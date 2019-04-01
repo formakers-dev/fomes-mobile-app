@@ -36,6 +36,7 @@ public class RecommendPresenter implements RecommendContract.Presenter {
 
     private int currentPage;
     private List<String> installedApps = new ArrayList<>();
+    private boolean isAvaiableToLoad = true;
 
     @Inject
     public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, AndroidNativeHelper androidNativeHelper) {
@@ -79,16 +80,24 @@ public class RecommendPresenter implements RecommendContract.Presenter {
             );
         }
 
+        if (!this.isAvaiableToLoad) {
+            return;
+        }
+
         compositeSubscription.add(
             recommendService.requestRecommendApps(categoryId, nextPage)
                 .observeOn(Schedulers.io())
+                .filter(apps -> {
+                    boolean isEmpty = apps == null || apps.size() <= 0;
+                    this.isAvaiableToLoad = !isEmpty;
+                    return this.isAvaiableToLoad;
+                })
                 .concatMapIterable(i -> i)
                 .filter(app -> !adapterModel.contains(app.getAppInfo().getPackageName()))
                 .map(app -> {
                     app.getAppInfo().setInstalled(installedApps.contains(app.getAppInfo().getPackageName()));
                     return app;
                 })
-                .doOnNext(app -> adapterModel.add(app))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> this.view.showLoading())
                 .doOnTerminate(() -> {
@@ -100,16 +109,16 @@ public class RecommendPresenter implements RecommendContract.Presenter {
                         this.view.showRecommendList();
                     }
                 })
-                .doOnCompleted(() -> {
-                    setCurrentPage(nextPage);
-                    this.view.refreshRecommendList();
+                .subscribe(recommendApp -> adapterModel.add(recommendApp),
+                    e -> Log.e(TAG, e.toString()),
+                    () -> {
+                        setCurrentPage(nextPage);
+                        this.view.refreshRecommendList();
 
-                    if (this.view.isNeedMoreRecommendItems()) {
-                        this.loadRecommendApps("GAME");
+                        if (this.view.isEndOfRecommendList()) {
+                            this.loadRecommendApps("GAME");
                     }
-                })
-                .subscribe(recommendApp -> Log.v(TAG, "recommend=" + recommendApp),
-                        e -> Log.e(TAG, e.toString()))
+                } )
         );
     }
 

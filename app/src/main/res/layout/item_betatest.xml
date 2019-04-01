@@ -160,15 +160,15 @@
                 app:layout_constraintEnd_toStartOf="@id/betatest_overview_imageview"
                 app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
                 tools:text="보상 없음" />
-
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
+    <!-- 카드 위에 띄우고 싶다면 이 아래에 추가하자 -->
     <View android:id="@+id/betatest_disable_background"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
         android:background="@drawable/item_rect_rounded_corner_background"
-        android:theme="@style/BetaTestTheme.DisableBackground"
+        android:theme="@style/BetaTestTheme.LegacyDisableBackground"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/betatest_cardview"
         app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"

@@ -40,7 +40,7 @@
     <color name="fomes_content_background_dark">@color/fomes_deep_gray</color>
     <!--<color name="fomes_content_item_background">@color/fomes_deep_gray</color>-->
     <color name="fomes_content_card_background">@color/fomes_gray_2</color>
-    <color name="fomes_content_disable_card_background">#d9454647</color>
+    <color name="fomes_content_disable_card_background">#c0454647</color>
 
     <color name="app_label_background">@color/fomes_dark_gray</color>
     <color name="item_inner_divider">@color/fomes_gray_3</color>
@@ -55,5 +55,6 @@
 
     <!-- for BetaTest -->
     <color name="beta_test_label_disable_background">@color/fomes_black_alpha_80</color>
+    <color name="beta_test_finished_group_block_background">#991e1e1e</color>
 
 </resources>
