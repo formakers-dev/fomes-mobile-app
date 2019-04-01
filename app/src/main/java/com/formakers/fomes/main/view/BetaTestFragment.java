@@ -1,7 +1,5 @@
 package com.formakers.fomes.main.view;
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,7 +30,6 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class BetaTestFragment extends BaseFragment implements BetaTestContract.View {
 
@@ -148,24 +145,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Override
     public void refreshBetaTestList() {
         betaTestListAdapterView.notifyDataSetChanged();
-    }
-
-    @OnClick(R.id.betatest_notice_more_info)
-    public void onInfoButtonClicked() {
-        View view = getLayoutInflater().inflate(R.layout.layout_betatest_notice, null);
-
-        view.findViewById(R.id.notice_send_mail_button).setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("message/rfc822");
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@formakers.net"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "테스트 참여 완료 처리 문의 (By " + presenter.getUserEmail() + ")");
-            intent.putExtra(Intent.EXTRA_TEXT, "포메스 팀에게 문의해주세요! :-)\n\n======신속한 문의 대응을 위한 유저 정보======\n\n포메스 가입 이메일: " + presenter.getUserEmail() + "\n\n======================================\n\n* 문의 내용 : \n");
-            startActivity(intent);
-        });
-
-        new AlertDialog.Builder(this.getContext())
-                .setView(view)
-                .show();
     }
 
     @Override
