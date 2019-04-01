@@ -26,7 +26,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 1
+        versionCode 9999
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
