@@ -43,17 +43,16 @@ public class UserDAOTest {
     public void updateUserInfo_호출시__유저정보를_업데이트한다() {
         insertDummyData();
 
-        User newUserInfo = new User().setUserId("newUserId")
+        User newUserInfo = new User()
                 .setNickName("newNickName")
                 .setBirthday(1992)
                 .setGender("male")
                 .setEmail("new@email.com")
-                .setJob("newJob");
+                .setJob(User.JobCategory.IT.getCode());
         subject.updateUserInfo(newUserInfo);
 
         UserRealmObject user = realm.where(UserRealmObject.class).findFirst();
         assertNotNull(user);
-        assertEquals(user.getUserId(), "testUserId");
         assertEquals(user.getNickName(), "newNickName");
         assertEquals(user.getBirthday().intValue(), 1992);
         assertEquals(user.getGender(), "male");
@@ -67,13 +66,12 @@ public class UserDAOTest {
 
         User newUserInfo = new User()
                 .setNickName("newNickName")
-                .setJob("newJob");
+                .setJob(User.JobCategory.IT.getCode());
 
         subject.updateUserInfo(newUserInfo);
 
         UserRealmObject user = realm.where(UserRealmObject.class).findFirst();
         assertNotNull(user);
-        assertEquals(user.getUserId(), "testUserId");
         assertEquals(user.getNickName(), "newNickName");
         assertEquals(user.getBirthday().intValue(), 1991);
         assertEquals(user.getGender(), "female");
@@ -88,7 +86,6 @@ public class UserDAOTest {
         User user = subject.getUserInfo().toBlocking().value();
 
         assertNotNull(user);
-        assertEquals(user.getUserId(), "testUserId");
         assertEquals(user.getNickName(), "testUserNickName");
         assertEquals(user.getBirthday().intValue(), 1991);
         assertEquals(user.getGender(), "female");
@@ -99,12 +96,11 @@ public class UserDAOTest {
     private void insertDummyData() {
         realm.executeTransaction((realmInstance) -> {
             UserRealmObject userRealmObject = new UserRealmObject();
-            userRealmObject.setUserId("testUserId");
             userRealmObject.setNickName("testUserNickName");
             userRealmObject.setBirthday(1991);
             userRealmObject.setGender("female");
             userRealmObject.setEmail("test@email.com");
-            userRealmObject.setJob("testJob");
+            userRealmObject.setJob(User.JobCategory.IT.getCode());
             realmInstance.copyToRealmOrUpdate(userRealmObject);
         });
     }

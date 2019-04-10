@@ -1,9 +1,7 @@
 package com.formakers.fomes.helper;
 
 import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
 import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
 
@@ -32,7 +30,6 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -50,7 +47,6 @@ public class AppUsageDataHelperTest {
 
     private AndroidNativeHelper mockAndroidNativeHelper;
     private AppStatService mockAppStatService;
-    private AppRepositoryHelper mockAppRepositoryHelper;
     private TimeHelper mockTimeHelper;
     private SharedPreferencesHelper mockSharedPreferencesHelper;
 
@@ -69,10 +65,9 @@ public class AppUsageDataHelperTest {
 
         this.mockAndroidNativeHelper = mock(AndroidNativeHelper.class);
         this.mockAppStatService = mock(AppStatService.class);
-        this.mockAppRepositoryHelper = mock(AppRepositoryHelper.class);
         this.mockTimeHelper = mock(TimeHelper.class);
         this.mockSharedPreferencesHelper = mock(SharedPreferencesHelper.class);
-        subject = new AppUsageDataHelper(mockAndroidNativeHelper, mockAppStatService, mockAppRepositoryHelper, mockSharedPreferencesHelper, mockTimeHelper);
+        subject = new AppUsageDataHelper(mockAndroidNativeHelper, mockAppStatService, mockSharedPreferencesHelper, mockTimeHelper);
     }
 
     @After
@@ -217,75 +212,6 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
-    @Ignore
-    public void sendAppUsages호출시_앱통계정보가_DB에_삭제_저장하고_통계저장API를_호출한다() throws Exception {
-        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
-        when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
-        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
-        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
-        when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.complete());
-
-        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
-        subject.sendAppUsages().subscribe(testSubscriber);
-
-        verify(mockAppRepositoryHelper).deleteAppUsages(anyInt());
-        verify(mockAppRepositoryHelper).updateAppUsages(any(List.class));
-        verify(mockAppStatService).sendAppUsages(any(List.class));
-        verify(mockSharedPreferencesHelper).setLastUpdateAppUsageTimestamp(eq(10L));
-        testSubscriber.assertCompleted();
-    }
-
-    @Test
-    @Ignore
-    public void sendAppUsages호출시_앱사용정보통계전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
-        when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
-        when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
-        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(0L);
-        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(new ArrayList<>());
-        when(mockAppStatService.sendAppUsages(any(List.class))).thenReturn(Completable.error(new Throwable()));
-
-        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
-        subject.sendAppUsages().subscribe(testSubscriber);
-
-        testSubscriber.assertError(Throwable.class);
-    }
-
-    @Test
-    @Ignore
-    public void getDailyStatSummary호출시_전달된_단기통계정보를_날짜별_앱별로_사용시간을_합산하여_리턴한다() throws Exception {
-        List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
-        mockShortTermStatList.add(new ShortTermStat("package1", 1510974000000L, 1510974001000L, 1000L));     //2017-11-18 03:00:00
-        mockShortTermStatList.add(new ShortTermStat("package1", 1511006400000L, 1511006402000L, 2000L));     //2017-11-18 12:00:00
-        mockShortTermStatList.add(new ShortTermStat("package1", 1511049600000L, 1511049601500L, 1500L));     //2017-11-19 00:00:00
-        mockShortTermStatList.add(new ShortTermStat("package2", 1511006400000L, 1511006403000L, 4000L));     //2017-11-18 12:00:00
-
-        List<DailyStatSummary> dailyStatSummaryList = subject.getDailyStatSummary(mockShortTermStatList);
-
-        sortDailyStatSummaryList(dailyStatSummaryList);
-
-        assertDailyStatSummary(dailyStatSummaryList.get(0), "package1", 20171118, 3000L);
-        assertDailyStatSummary(dailyStatSummaryList.get(1), "package1", 20171119, 1500L);
-        assertDailyStatSummary(dailyStatSummaryList.get(2), "package2", 20171118, 4000L);
-    }
-
-    @Test
-    @Ignore
-    public void getDailyStatSummary호출시_시작일자와_종료일자가_하루차이가날경우_종료일자의_0시_기준으로_사용시간을_나누어_저장한다() throws Exception {
-        List<ShortTermStat> mockShortTermStatList = new ArrayList<>();
-        mockShortTermStatList.add(new ShortTermStat("package", 1511182800000L, 1511193600000L, 10800000L));     //2017-11-20 22:00:00 ~ 2017-11-21 01:00:00
-
-        List<DailyStatSummary> dailyStatSummaryList = subject.getDailyStatSummary(mockShortTermStatList);
-
-        sortDailyStatSummaryList(dailyStatSummaryList);
-
-        assertDailyStatSummary(dailyStatSummaryList.get(0), "package", 20171120, 7200000L);
-        assertDailyStatSummary(dailyStatSummaryList.get(1), "package", 20171121, 3600000L);
-
-    }
-
-
-
-    @Test
     public void getAppUsage_호출시__날짜별_앱_누적사용시간을_리턴한다() {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1554768000000L);   //2019-04-09
 
@@ -373,26 +299,6 @@ public class AppUsageDataHelperTest {
         assertThat(weeklyStatSummaryList.get(2).getPackageName()).isEqualTo("packageC");
         assertThat(weeklyStatSummaryList.get(2).getTotalUsedTime()).isEqualTo(175L);
 
-    }
-
-    @Deprecated
-    private void assertDailyStatSummary(DailyStatSummary dailyStatSummary, String packageName, int yyyymmdd, long totalUsedTime) {
-        assertThat(dailyStatSummary.getPackageName()).isEqualTo(packageName);
-        assertThat(dailyStatSummary.getYyyymmdd()).isEqualTo(yyyymmdd);
-        assertThat(dailyStatSummary.getTotalUsedTime()).isEqualTo(totalUsedTime);
-    }
-
-    @Deprecated
-    private void sortDailyStatSummaryList(List<DailyStatSummary> dailyStatSummaryList) {
-        Collections.sort(dailyStatSummaryList, (o1, o2) -> {
-            int i = o1.getPackageName().compareTo(o2.getPackageName());
-
-            if (i == 0) {
-                return o1.getYyyymmdd() - o2.getYyyymmdd();
-            } else {
-                return i;
-            }
-        });
     }
 
     private void assertAppUsage(AppUsage appUsage, Date date, String packageName, long totalUsedTime) {
