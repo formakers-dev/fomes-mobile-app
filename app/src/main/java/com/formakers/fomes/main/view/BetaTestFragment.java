@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -82,13 +83,11 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
             Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
 
-            bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
-            bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
+            bundle.putInt(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getId());
 
-            BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
-            betaTestDetailAlertDialog.setArguments(bundle);
-            betaTestDetailAlertDialog.setPresenter(this.presenter);
-            betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
+            Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
+            intent.putExtras(bundle);
+            this.startActivity(intent);
 
             this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
         });
