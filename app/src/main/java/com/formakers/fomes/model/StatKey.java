@@ -2,6 +2,7 @@ package com.formakers.fomes.model;
 
 import java.util.Objects;
 
+@Deprecated
 public class StatKey {
     private String packageName;
     private String date;

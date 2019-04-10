@@ -2,15 +2,16 @@ package com.formakers.fomes.helper;
 
 import android.support.annotation.NonNull;
 
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
+import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.model.StatKey;
-import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
-import com.formakers.fomes.common.util.DateUtil;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class AppUsageDataHelper {
 
     private final AndroidNativeHelper androidNativeHelper;
     private final AppStatService appStatService;
-    private final AppRepositoryHelper appRepositoryHelper;
+    @Deprecated private final AppRepositoryHelper appRepositoryHelper;
     private final TimeHelper timeHelper;
     private final SharedPreferencesHelper SharedPreferencesHelper;
 
@@ -103,16 +104,19 @@ public class AppUsageDataHelper {
                 .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateAppUsageTimestamp(to));
     }
 
+    @Deprecated
     private void updateAppUsage(long from, long to) {
         final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
         appRepositoryHelper.updateAppUsages(getDailyStatSummary(shortTermStatList));
     }
 
+    @Deprecated
     private void deleteOldAppUsage() {
-        final int currentDate = Integer.parseInt(DateUtil.getDateFromTimestamp(timeHelper.getCurrentTime()));
+        final int currentDate = Integer.parseInt(DateUtil.getDateStringFromTimestamp(timeHelper.getCurrentTime()));
         appRepositoryHelper.deleteAppUsages(DateUtil.calBeforeDate(currentDate, 30));
     }
 
+    @Deprecated
     List<DailyStatSummary> getDailyStatSummary(List<ShortTermStat> shortTermStatList) {
         List<DailyStatSummary> dailyStatSummaryList = new ArrayList<>();
 
@@ -121,11 +125,11 @@ public class AppUsageDataHelper {
         for (ShortTermStat shortTermStat : shortTermStatList) {
             StatKey key;
             if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 0) {
-                key = new StatKey(shortTermStat.getPackageName(), DateUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp()));
+                key = new StatKey(shortTermStat.getPackageName(), DateUtil.getDateStringFromTimestamp(shortTermStat.getStartTimeStamp()));
                 mergeTotalUsedTimeByStatKey(map, key, shortTermStat.getTotalUsedTime());
             } else if (DateUtil.calDateDiff(shortTermStat.getStartTimeStamp(), shortTermStat.getEndTimeStamp()) == 1) {
-                String startDate = DateUtil.getDateFromTimestamp(shortTermStat.getStartTimeStamp());
-                String endDate = DateUtil.getDateFromTimestamp(shortTermStat.getEndTimeStamp());
+                String startDate = DateUtil.getDateStringFromTimestamp(shortTermStat.getStartTimeStamp());
+                String endDate = DateUtil.getDateStringFromTimestamp(shortTermStat.getEndTimeStamp());
 
                 key = new StatKey(shortTermStat.getPackageName(), startDate);
                 long firstTotalUsedTime = DateUtil.getTimestampFromDate(endDate) - shortTermStat.getStartTimeStamp();
@@ -146,6 +150,21 @@ public class AppUsageDataHelper {
         return dailyStatSummaryList;
     }
 
+    // for send??
+    public List<AppUsage> getAppUsage() {
+        return getAppUsages(30);
+    }
+
+    public List<AppUsage> getAppUsages(int durationDays) {
+        long endTimestamp = timeHelper.getCurrentTime();
+        long startTimestamp = endTimestamp - (durationDays * 24 * 60 * 60 * 1000L);
+
+        List<ShortTermStat> shortTermStats = getShortTermStats(startTimestamp, endTimestamp);
+        List<AppUsage> appUsages = convertToAppUsage(shortTermStats);
+
+        return appUsages;
+    }
+
     // 현재 시간부터 지정한 기간까지의 앱 누적 사용량을 리턴
     public List<AppUsage> getAppUsagesFor(int days) {
         long endTimestamp = timeHelper.getCurrentTime();
@@ -154,6 +173,7 @@ public class AppUsageDataHelper {
         List<ShortTermStat> shortTermStats = getShortTermStats(startTimestamp, endTimestamp);
         List<AppUsage> appUsages = convertToAppUsage(shortTermStats);
 
+        // TODO : 이거 왜 했더라..?? 없어도 되지 않을까?
         // 사용시간 순 정렬
         Collections.sort(appUsages, (o1, o2) -> {
             if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
@@ -168,22 +188,27 @@ public class AppUsageDataHelper {
 
     // ShortTermStats 사용시간 누적 (리듀스) 해서 AppUsage로 바꿈
     private List<AppUsage> convertToAppUsage(List<ShortTermStat> shortTermStatList) {
-        Map<String, Long> map = new HashMap<>();
+        Map<String, AppUsage> map = new HashMap<>();
+
+        String key;
+        AppUsage value;
 
         for (ShortTermStat shortTermStat : shortTermStatList) {
-            if (map.containsKey(shortTermStat.getPackageName())) {
-                map.put(shortTermStat.getPackageName(), map.get(shortTermStat.getPackageName()) + shortTermStat.getTotalUsedTime());
+            // 날짜 + 패키지네임
+            key = DateUtil.getDateStringFromTimestamp(shortTermStat.getStartTimeStamp())
+                    + shortTermStat.getPackageName();
+
+            if (map.containsKey(key)) {
+                value = map.get(key);
+                value.setTotalUsedTime(value.getTotalUsedTime() + shortTermStat.getTotalUsedTime());
             } else {
-                map.put(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime());
+                value = new AppUsage(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime())
+                        .setDate(DateUtil.getDateWithoutTime(new Date(shortTermStat.getStartTimeStamp())));
             }
+            map.put(key, value);
         }
 
-        List<AppUsage> result = new ArrayList<>();
-        for (String packageName : map.keySet()) {
-            result.add(new AppUsage(packageName, map.get(packageName)));
-        }
-
-        return result;
+        return Lists.newArrayList(map.values());
     }
 
     /******************************** AppBee Legacy **/
@@ -230,6 +255,7 @@ public class AppUsageDataHelper {
 
     /************************** End of AppBee Legacy **/
 
+    @Deprecated
     private void mergeTotalUsedTimeByStatKey(Map<StatKey, Long> map, StatKey statKey, long totalUsedTime) {
         if (map.get(statKey) != null) {
             map.put(statKey, map.get(statKey) + totalUsedTime);

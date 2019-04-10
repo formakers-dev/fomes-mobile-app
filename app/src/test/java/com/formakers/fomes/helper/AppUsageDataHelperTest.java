@@ -1,12 +1,13 @@
 package com.formakers.fomes.helper;
 
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.DailyStatSummary;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
-import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
 
+import org.assertj.core.util.DateUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -16,6 +17,7 @@ import org.mockito.Captor;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import rx.Completable;
@@ -215,6 +217,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
+    @Ignore
     public void sendAppUsages호출시_앱통계정보가_DB에_삭제_저장하고_통계저장API를_호출한다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
@@ -233,6 +236,7 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
+    @Ignore
     public void sendAppUsages호출시_앱사용정보통계전송중_에러발생시_Callback의_onFail을_호출한다() throws Exception {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1509667200000L);   //2017-11-03
         when(mockSharedPreferencesHelper.getLastUpdateAppUsageTimestamp()).thenReturn(0L);
@@ -276,6 +280,40 @@ public class AppUsageDataHelperTest {
 
         assertDailyStatSummary(dailyStatSummaryList.get(0), "package", 20171120, 7200000L);
         assertDailyStatSummary(dailyStatSummaryList.get(1), "package", 20171121, 3600000L);
+
+    }
+
+
+
+    @Test
+    public void getAppUsage_호출시__날짜별_앱_누적사용시간을_리턴한다() {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1554768000000L);   //2019-04-09
+
+        List<EventStat> mockEventStatList = new ArrayList<>();
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768000000L));   // 2019-04-09
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554768001000L));
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554336000000L));   // 2019-04-04
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554336002000L));
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768005000L));   // 2019-04-09
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554768006000L));
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1554508800000L));   // 2019-04-06
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1554508803000L));
+        mockEventStatList.add(new EventStat("packageD", MOVE_TO_FOREGROUND, 1554163200000L));   // 2019-04-02
+        mockEventStatList.add(new EventStat("packageD", MOVE_TO_BACKGROUND, 1554163204000L));
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+
+        List<AppUsage> actualList = subject.getAppUsage();
+
+        sortAppUsage(actualList);
+        System.out.println(actualList);
+
+        assertAppUsage(actualList.get(0), DateUtil.parse("2019-04-02"), "packageD", 4000L);
+        assertAppUsage(actualList.get(1), DateUtil.parse("2019-04-04"), "packageA", 2000L);
+        assertAppUsage(actualList.get(2), DateUtil.parse("2019-04-06"), "packageC", 3000L);
+        assertAppUsage(actualList.get(3), DateUtil.parse("2019-04-09"), "packageA", 2000L);
+
+
+        System.out.println(actualList);
 
     }
 
@@ -337,12 +375,14 @@ public class AppUsageDataHelperTest {
 
     }
 
+    @Deprecated
     private void assertDailyStatSummary(DailyStatSummary dailyStatSummary, String packageName, int yyyymmdd, long totalUsedTime) {
         assertThat(dailyStatSummary.getPackageName()).isEqualTo(packageName);
         assertThat(dailyStatSummary.getYyyymmdd()).isEqualTo(yyyymmdd);
         assertThat(dailyStatSummary.getTotalUsedTime()).isEqualTo(totalUsedTime);
     }
 
+    @Deprecated
     private void sortDailyStatSummaryList(List<DailyStatSummary> dailyStatSummaryList) {
         Collections.sort(dailyStatSummaryList, (o1, o2) -> {
             int i = o1.getPackageName().compareTo(o2.getPackageName());
@@ -351,6 +391,24 @@ public class AppUsageDataHelperTest {
                 return o1.getYyyymmdd() - o2.getYyyymmdd();
             } else {
                 return i;
+            }
+        });
+    }
+
+    private void assertAppUsage(AppUsage appUsage, Date date, String packageName, long totalUsedTime) {
+        assertThat(appUsage.getDate()).isEqualTo(date);
+        assertThat(appUsage.getPackageName()).isEqualTo(packageName);
+        assertThat(appUsage.getTotalUsedTime()).isEqualTo(totalUsedTime);
+    }
+
+    private void sortAppUsage(List<AppUsage> appUsages) {
+        Collections.sort(appUsages, (o1, o2) -> {
+            boolean isSameDate = o1.getDate().equals(o2.getDate());
+
+            if (isSameDate) {
+                return o1.getPackageName().compareTo(o2.getPackageName());
+            } else {
+                return o1.getDate().compareTo(o2.getDate());
             }
         });
     }

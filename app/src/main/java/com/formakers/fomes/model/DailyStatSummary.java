@@ -1,5 +1,6 @@
 package com.formakers.fomes.model;
 
+@Deprecated
 public class DailyStatSummary {
     private String packageName;
     private int yyyymmdd;

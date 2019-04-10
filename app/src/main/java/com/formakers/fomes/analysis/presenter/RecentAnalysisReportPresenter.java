@@ -68,6 +68,9 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     }
 
     private Completable requestPostUsages() {
+        // TODO : 아래 테스트해보고 괜찮으면 아래로 치환
+        Log.d(TAG, String.valueOf(appUsageDataHelper.getAppUsage()));
+
         return appStatService.sendAppUsages(appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS));
     }
 
