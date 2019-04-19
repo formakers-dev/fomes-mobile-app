@@ -216,16 +216,19 @@ public class AppUsageDataHelperTest {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1554768000000L);   //2019-04-09
 
         List<EventStat> mockEventStatList = new ArrayList<>();
-        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768000000L));   // 2019-04-09
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768000000L));   // 2019-04-09 09:00 (KST)
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554768001000L));
-        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554336000000L));   // 2019-04-04
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554336000000L));   // 2019-04-04 09:00 (KST)
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554336002000L));
-        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768005000L));   // 2019-04-09
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768005000L));   // 2019-04-09 09:00 (KST)
         mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554768006000L));
-        mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1554508800000L));   // 2019-04-06
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1554508800000L));   // 2019-04-06 09:00 (KST)
         mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1554508803000L));
-        mockEventStatList.add(new EventStat("packageD", MOVE_TO_FOREGROUND, 1554163200000L));   // 2019-04-02
+        mockEventStatList.add(new EventStat("packageD", MOVE_TO_FOREGROUND, 1554163200000L));   // 2019-04-02 09:00 (KST)
         mockEventStatList.add(new EventStat("packageD", MOVE_TO_BACKGROUND, 1554163204000L));
+        mockEventStatList.add(new EventStat("packageE", MOVE_TO_FOREGROUND, 1554213600000L));   // 2019-04-02 23:00 (KST)
+        mockEventStatList.add(new EventStat("packageE", MOVE_TO_BACKGROUND, 1554307200000L));   // 2019-04-03 01:00 (KST)
+
         when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
         List<AppUsage> actualList = subject.getAppUsage();
@@ -234,9 +237,10 @@ public class AppUsageDataHelperTest {
         System.out.println(actualList);
 
         assertAppUsage(actualList.get(0), DateUtil.parse("2019-04-02"), "packageD", 4000L);
-        assertAppUsage(actualList.get(1), DateUtil.parse("2019-04-04"), "packageA", 2000L);
-        assertAppUsage(actualList.get(2), DateUtil.parse("2019-04-06"), "packageC", 3000L);
-        assertAppUsage(actualList.get(3), DateUtil.parse("2019-04-09"), "packageA", 2000L);
+        assertAppUsage(actualList.get(1), DateUtil.parse("2019-04-02"), "packageE", 93600000L);
+        assertAppUsage(actualList.get(2), DateUtil.parse("2019-04-04"), "packageA", 2000L);
+        assertAppUsage(actualList.get(3), DateUtil.parse("2019-04-06"), "packageC", 3000L);
+        assertAppUsage(actualList.get(4), DateUtil.parse("2019-04-09"), "packageA", 2000L);
 
 
         System.out.println(actualList);
