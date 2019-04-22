@@ -104,22 +104,34 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
             viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
 
+            // for 완료 여부
             if (item.isCompleted()) {
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
                 viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
                 viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
-
-                viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
-
                 viewHolder.companySaysTextView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            } else {
+                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                viewHolder.companySaysTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
             }
 
-            if (item.getAfterService() != null) {
-                if (item.isCompleted()) {
-                    viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed_flag, 0, R.drawable.icon_completed_flag_reverse, 0);
-                    viewHolder.progressTitleTextView.setText(R.string.betatest_delivered_my_feedback);
-                }
+            // for flag
+            if (item.getAfterService() != null && item.isCompleted()) {
+                // 전달 완료
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed_flag, 0, R.drawable.icon_completed_flag_reverse, 0);
+                viewHolder.progressTitleTextView.setText(R.string.betatest_delivered_my_feedback);
+            } else if (item.isCompleted()) {
+                // 제출 완료
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
+                viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
+            } else {
+                // 미완료
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
+                viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
+            }
 
+            // for as
+            if (item.getAfterService() != null) {
                 viewHolder.progressSubTitleTextView.setText(R.string.betatest_delivered_all_results);
                 viewHolder.epilogueButton.setText(R.string.betatest_epilogue_opened);
 
@@ -134,6 +146,17 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                    context.startActivity(intent);
                 });
+            } else {
+                viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
+                viewHolder.epilogueButton.setVisibility(View.VISIBLE);
+                viewHolder.epilogueButton.setText("");
+                viewHolder.epilogueButtonTextView.setVisibility(View.VISIBLE);
+                viewHolder.epilogueButtonIcon.setVisibility(View.VISIBLE);
+                viewHolder.epilogueButton.setEnabled(false);
+
+                viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
+
+                viewHolder.epilogueButton.setOnClickListener(null);
             }
         } else {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
