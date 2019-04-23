@@ -23,7 +23,6 @@ import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
@@ -164,12 +163,6 @@ public class TestApplicationModule {
     @Provides
     SharedPreferencesHelper SharedPreferencesHelper() {
         return mock(SharedPreferencesHelper.class);
-    }
-
-    @Singleton
-    @Provides
-    AppRepositoryHelper appRepositoryHelper() {
-        return mock(AppRepositoryHelper.class);
     }
 
     @Provides

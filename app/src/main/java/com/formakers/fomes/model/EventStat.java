@@ -2,7 +2,7 @@ package com.formakers.fomes.model;
 
 public class EventStat {
     private String packageName;
-    private int eventType;
+    private int eventType;  // background, foreground etc.....
     private long eventTime;
 
     public EventStat(String packageName, int eventType, long eventTime) {

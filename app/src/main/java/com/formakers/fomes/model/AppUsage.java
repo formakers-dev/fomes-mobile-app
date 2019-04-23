@@ -1,11 +1,15 @@
 package com.formakers.fomes.model;
 
+import java.util.Date;
+
 public class AppUsage {
+    Date date;
     String packageName;
     long totalUsedTime;
     AppInfo appInfo;
 
-    public AppUsage(String packageName, long totalUsedTime, AppInfo appInfo) {
+    public AppUsage(Date date, String packageName, long totalUsedTime, AppInfo appInfo) {
+        this.date = date;
         this.packageName = packageName;
         this.totalUsedTime = totalUsedTime;
         this.appInfo = appInfo;
@@ -14,6 +18,15 @@ public class AppUsage {
     public AppUsage(String packageName, long totalUsedTime) {
         this.packageName = packageName;
         this.totalUsedTime = totalUsedTime;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public AppUsage setDate(Date date) {
+        this.date = date;
+        return this;
     }
 
     public String getPackageName() {
@@ -43,7 +56,8 @@ public class AppUsage {
     @Override
     public String toString() {
         return "AppUsage{" +
-                "packageName='" + packageName + '\'' +
+                "date=" + date +
+                ", packageName='" + packageName + '\'' +
                 ", totalUsedTime=" + totalUsedTime +
                 ", appInfo=" + appInfo +
                 '}';
