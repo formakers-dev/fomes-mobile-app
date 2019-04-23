@@ -39,11 +39,9 @@ import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,7 +81,7 @@ public class SendDataJobServiceTest {
         appUsages.add(new AppUsage("packageName1", 1000));
         appUsages.add(new AppUsage("packageName2", 2000));
 
-        when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(appUsages);
+        when(mockAppUsageDataHelper.getAppUsages()).thenReturn(appUsages);
         when(mockAppUsageDataHelper.sendShortTermStats()).thenReturn(Completable.complete());
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
@@ -138,7 +136,7 @@ public class SendDataJobServiceTest {
         subject_onStartJob();
 
         verify(mockAppUsageDataHelper).sendShortTermStats();
-        verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
+        verify(mockAppUsageDataHelper).getAppUsages();
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
     }
 

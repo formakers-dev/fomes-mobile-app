@@ -88,37 +88,17 @@ public class AppUsageDataHelper {
     }
 
     // for send??
-    public List<AppUsage> getAppUsage() {
+    public List<AppUsage> getAppUsages() {
         return getAppUsages(30);
     }
 
     public List<AppUsage> getAppUsages(int durationDays) {
+        Log.d(TAG, "getAppUsages(" + durationDays + ")");
         long endTimestamp = timeHelper.getCurrentTime();
         long startTimestamp = endTimestamp - (durationDays * 24 * 60 * 60 * 1000L);
 
         List<ShortTermStat> shortTermStats = getShortTermStats(startTimestamp, endTimestamp);
         List<AppUsage> appUsages = convertToAppUsage(shortTermStats);
-
-        return appUsages;
-    }
-
-    // 현재 시간부터 지정한 기간까지의 앱 누적 사용량을 리턴
-    public List<AppUsage> getAppUsagesFor(int days) {
-        long endTimestamp = timeHelper.getCurrentTime();
-        long startTimestamp = endTimestamp - (days * 24 * 60 * 60 * 1000L);
-
-        List<ShortTermStat> shortTermStats = getShortTermStats(startTimestamp, endTimestamp);
-        List<AppUsage> appUsages = convertToAppUsage(shortTermStats);
-
-        // TODO : 이거 왜 했더라..?? 없어도 되지 않을까?
-        // 사용시간 순 정렬
-        Collections.sort(appUsages, (o1, o2) -> {
-            if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
-                return o1.getPackageName().compareTo(o2.getPackageName());
-            } else {
-                return (int) (o2.getTotalUsedTime() - o1.getTotalUsedTime());
-            }
-        });
 
         return appUsages;
     }

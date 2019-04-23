@@ -212,6 +212,37 @@ public class AppUsageDataHelperTest {
     }
 
     @Test
+    public void getAppUsage_호출시__7일간의_날짜별_앱_누적사용시간을_리턴한다() {
+        when(mockTimeHelper.getCurrentTime()).thenReturn(1554768000000L);   //2019-04-09
+
+        List<EventStat> mockEventStatList = new ArrayList<>();
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768000000L));   // 2019-04-09 09:00 (KST)
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554768001000L));
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554336000000L));   // 2019-04-04 09:00 (KST)
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554336002000L));
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1554768005000L));   // 2019-04-09 09:00 (KST)
+        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1554768006000L));
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1554508800000L));   // 2019-04-06 09:00 (KST)
+        mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1554508803000L));
+        mockEventStatList.add(new EventStat("packageD", MOVE_TO_FOREGROUND, 1554163200000L));   // 2019-04-02 09:00 (KST)
+        mockEventStatList.add(new EventStat("packageD", MOVE_TO_BACKGROUND, 1554163204000L));
+        mockEventStatList.add(new EventStat("packageE", MOVE_TO_FOREGROUND, 1554213600000L));   // 2019-04-02 23:00 (KST)
+        mockEventStatList.add(new EventStat("packageE", MOVE_TO_BACKGROUND, 1554307200000L));   // 2019-04-03 01:00 (KST)
+
+        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
+
+        List<AppUsage> actualList = subject.getAppUsages();
+
+        sortAppUsage(actualList);
+
+        assertAppUsage(actualList.get(0), DateUtil.parse("2019-04-02"), "packageD", 4000L);
+        assertAppUsage(actualList.get(1), DateUtil.parse("2019-04-02"), "packageE", 93600000L);
+        assertAppUsage(actualList.get(2), DateUtil.parse("2019-04-04"), "packageA", 2000L);
+        assertAppUsage(actualList.get(3), DateUtil.parse("2019-04-06"), "packageC", 3000L);
+        assertAppUsage(actualList.get(4), DateUtil.parse("2019-04-09"), "packageA", 2000L);
+    }
+
+    @Test
     public void getAppUsage_호출시__날짜별_앱_누적사용시간을_리턴한다() {
         when(mockTimeHelper.getCurrentTime()).thenReturn(1554768000000L);   //2019-04-09
 
@@ -231,50 +262,15 @@ public class AppUsageDataHelperTest {
 
         when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong())).thenReturn(mockEventStatList);
 
-        List<AppUsage> actualList = subject.getAppUsage();
+        List<AppUsage> actualList = subject.getAppUsages(7);
 
         sortAppUsage(actualList);
-        System.out.println(actualList);
 
         assertAppUsage(actualList.get(0), DateUtil.parse("2019-04-02"), "packageD", 4000L);
         assertAppUsage(actualList.get(1), DateUtil.parse("2019-04-02"), "packageE", 93600000L);
         assertAppUsage(actualList.get(2), DateUtil.parse("2019-04-04"), "packageA", 2000L);
         assertAppUsage(actualList.get(3), DateUtil.parse("2019-04-06"), "packageC", 3000L);
         assertAppUsage(actualList.get(4), DateUtil.parse("2019-04-09"), "packageA", 2000L);
-
-
-        System.out.println(actualList);
-
-    }
-
-    @Test
-    public void getAppUsagesFor_호출시__현재시간부터_지정한기간까지의_앱_누적_사용량을_리턴한다() {
-        when(mockTimeHelper.getCurrentTime()).thenReturn(1512950400000L);
-        List<EventStat> mockEventStatList = new ArrayList<>();
-        mockEventStatList.add(new EventStat("packageA", MOVE_TO_FOREGROUND, 1000L));
-        mockEventStatList.add(new EventStat("packageA", MOVE_TO_BACKGROUND, 1250L));
-        mockEventStatList.add(new EventStat("packageB", MOVE_TO_FOREGROUND, 1100L));
-        mockEventStatList.add(new EventStat("packageB", MOVE_TO_BACKGROUND, 1400L));
-        mockEventStatList.add(new EventStat("packageC", MOVE_TO_FOREGROUND, 1200L));
-        mockEventStatList.add(new EventStat("packageC", MOVE_TO_BACKGROUND, 1375L));
-
-        when(mockAndroidNativeHelper.getUsageStatEvents(anyLong(), anyLong()))
-                .thenReturn(mockEventStatList);
-
-        List<AppUsage> result = subject.getAppUsagesFor(7);
-
-        // 7일 동안의 데이터를 가져왔니?
-        verify(mockAndroidNativeHelper).getUsageStatEvents(startTimeCaptor.capture(), endTimeCaptor.capture());
-        assertThat(endTimeCaptor.getValue() - startTimeCaptor.getValue()).isEqualTo(7 * 24 * 60 * 60 * 1000L);
-
-        // 앱 누적 사용량 제대로 리턴했니?
-        assertThat(result.size()).isEqualTo(3);
-        assertThat(result.get(0).getPackageName()).isEqualTo("packageB");
-        assertThat(result.get(0).getTotalUsedTime()).isEqualTo(300L);
-        assertThat(result.get(1).getPackageName()).isEqualTo("packageA");
-        assertThat(result.get(1).getTotalUsedTime()).isEqualTo(250L);
-        assertThat(result.get(2).getPackageName()).isEqualTo("packageC");
-        assertThat(result.get(2).getTotalUsedTime()).isEqualTo(175L);
     }
 
     @Ignore

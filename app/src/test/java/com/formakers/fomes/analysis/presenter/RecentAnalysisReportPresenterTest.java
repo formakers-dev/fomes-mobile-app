@@ -81,7 +81,7 @@ public class RecentAnalysisReportPresenterTest {
 
         ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
 
-        when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(new ArrayList<>());
+        when(mockAppUsageDataHelper.getAppUsages()).thenReturn(new ArrayList<>());
         when(mockUser.getNickName()).thenReturn("mockUserNickName");
         when(mockUser.getGender()).thenReturn("male");
         when(mockUser.getBirthday()).thenReturn(1989);
@@ -136,7 +136,7 @@ public class RecentAnalysisReportPresenterTest {
 
         // 앱 누적 사용 시간 데이터 서버로 전송
         // requestPostUsages - 7일간의_앱_누적_사용시간을_서버에_전송한다
-        verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
+        verify(mockAppUsageDataHelper).getAppUsages();
         verify(mockAppStatService).sendAppUsages(anyList());
         verify(mockUserDAO).getUserInfo();
 
