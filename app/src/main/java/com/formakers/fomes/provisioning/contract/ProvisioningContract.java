@@ -1,5 +1,6 @@
 package com.formakers.fomes.provisioning.contract;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -8,6 +9,9 @@ import rx.Completable;
 
 public interface ProvisioningContract {
     interface Presenter {
+        //Base
+        AnalyticsModule.Analytics getAnalytics();
+
         void updateUserInfo(String game, Integer birth, Integer job, String gender);
         void updateNickNameToUser(String nickName);
         void setProvisioningProgressStatus(int status);
