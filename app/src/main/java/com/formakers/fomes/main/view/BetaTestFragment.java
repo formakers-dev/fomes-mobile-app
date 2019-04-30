@@ -95,6 +95,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
             this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
+            this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Logging.TARGET_BETA_TEST_ITEM, String.valueOf(betaTestItem.getId()));
         });
 
         swipeRefreshLayout.setOnRefreshListener(() -> {

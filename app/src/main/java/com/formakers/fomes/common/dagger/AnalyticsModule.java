@@ -2,6 +2,7 @@ package com.formakers.fomes.common.dagger;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.formakers.fomes.common.util.Log;
@@ -32,6 +33,7 @@ public class AnalyticsModule {
     public interface Analytics {
         void setCurrentScreen(Activity activity);
         void setCurrentScreen(Fragment fragment);
+        void sendClickEventLog(String contentType, String id);
     }
 
     public class AnalyticsImpl implements Analytics {
@@ -51,6 +53,14 @@ public class AnalyticsModule {
         public void setCurrentScreen(Fragment fragment) {
             Log.v("Analytics", "setCurrentScreen(" + fragment + ")");
             this.firebaseAnalytics.setCurrentScreen(Objects.requireNonNull(fragment.getActivity()), fragment.getClass().getSimpleName(), fragment.getClass().getSimpleName());
+        }
+
+        @Override
+        public void sendClickEventLog(String contentType, String id) {
+            Bundle params = new Bundle();
+            params.putString("CONTENT_TYPE", contentType);
+            params.putString("ITEM_ID", id);
+            this.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
         }
     }
 }

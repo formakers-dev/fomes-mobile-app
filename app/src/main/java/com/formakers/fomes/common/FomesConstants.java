@@ -21,9 +21,21 @@ public interface FomesConstants {
         }
     }
 
+    interface Main {
+        interface Logging {
+            String TARGET_EVENT_BANNER = "EventBanner";
+        }
+    }
+
     interface BetaTest {
         String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
         String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
+
+        interface Logging {
+            String TARGET_BETA_TEST_ITEM = "BetaTestItem";
+            String TARGET_BETA_TEST_DIALOG = "BetaTestDialog";
+            String TARGET_BETA_TEST_DIALOG_BUTTON = "BetaTestDialogButton";
+        }
     }
 
     interface Settings {
