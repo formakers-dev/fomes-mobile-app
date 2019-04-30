@@ -32,9 +32,10 @@ public interface FomesConstants {
         String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
 
         interface Logging {
-            String TARGET_BETA_TEST_ITEM = "BetaTestItem";
-            String TARGET_BETA_TEST_DIALOG = "BetaTestDialog";
-            String TARGET_BETA_TEST_DIALOG_BUTTON = "BetaTestDialogButton";
+            String TARGET_ITEM = "BetaTest_Item";
+            String TARGET_DETAIL_DIALOG = "BetaTest_DetailDialog";
+            String TARGET_DETAIL_DIALOG_BUTTON = "BetaTest_DetailDialog_Button";
+            String TARGET_EPILOGUE_BUTTON = "BetaTest_Epilogue_Button";
         }
     }
 
