@@ -29,7 +29,7 @@ public class AnalyticsModule {
         return new AnalyticsImpl(firebaseAnalytics);
     }
 
-    /*** TODO : 임시구조. 코드 분리 필요, 네이밍 고민(Tracking? Logging?) ***/
+    /*** TODO : 임시구조. 코드 분리 필요, 네이밍 고민(Tracking? Log?) ***/
     public interface Analytics {
         void setCurrentScreen(Activity activity);
         void setCurrentScreen(Fragment fragment);

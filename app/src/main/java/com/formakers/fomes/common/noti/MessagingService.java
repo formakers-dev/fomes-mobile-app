@@ -53,7 +53,7 @@ public class MessagingService extends FirebaseMessagingService {
             Map<String, String> dataMap = remoteMessage.getData();
 
             channelManager.sendNotification(dataMap, MainActivity.class);
-            eventLogService.sendEventLog(new EventLog().setCode(FomesConstants.EventLog.Code.NOTIFICATION_RECEIVED))
+            eventLogService.sendEventLog(new EventLog().setCode(FomesConstants.FomesEventLog.Code.NOTIFICATION_RECEIVED))
                     .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
                             (e) -> Log.e(TAG, String.valueOf(e)));
         }

@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class EventLogServiceTest extends AbstractServiceTest {
+public class FomesEventLogServiceTest extends AbstractServiceTest {
 
     @Mock EventLogAPI mockEventLogAPI;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;

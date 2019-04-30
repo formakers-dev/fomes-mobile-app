@@ -22,7 +22,7 @@ public interface FomesConstants {
     }
 
     interface Main {
-        interface Logging {
+        interface Log {
             String TARGET_EVENT_BANNER = "EventBanner";
         }
     }
@@ -31,7 +31,8 @@ public interface FomesConstants {
         String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
         String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
 
-        interface Logging {
+        // TODO : Log? Analytic? Tracking? 네이밍 고민
+        interface Log {
             String TARGET_ITEM = "BetaTest_Item";
             String TARGET_DETAIL_DIALOG = "BetaTest_DetailDialog";
             String TARGET_DETAIL_DIALOG_BUTTON = "BetaTest_DetailDialog_Button";
@@ -61,7 +62,9 @@ public interface FomesConstants {
         String DEEPLINK = "deeplink";
     }
 
-    interface EventLog {
+    // TODO : 리팩토링 필요. 실시간으로 봐야하는 로그만 포메스 이벤트로그로 관리하자
+    interface FomesEventLog {
+        // TODO : SCREEN(해당 이벤트가 일어나는 화면), EVENT(ACTION, 보통 이게 CODE로 불림.. ex. click, touch, remove 등등), TARGET (EVENT의 대상), DETAIL_INFOS 와 같은 구조로 나눠야 함
         interface Code {
             String MAIN_ACTIVITY_ENTER = "MAIN_ENT";
             String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAP_BETA";

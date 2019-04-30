@@ -72,7 +72,7 @@ public class MessagingServiceTest {
 
         ArgumentCaptor<EventLog> eventLogArgumentCaptor = ArgumentCaptor.forClass(EventLog.class);
         verify(mockEventLogService).sendEventLog(eventLogArgumentCaptor.capture());
-        assertThat(eventLogArgumentCaptor.getValue().getCode()).isEqualTo(FomesConstants.EventLog.Code.NOTIFICATION_RECEIVED);
+        assertThat(eventLogArgumentCaptor.getValue().getCode()).isEqualTo(FomesConstants.FomesEventLog.Code.NOTIFICATION_RECEIVED);
     }
 
     @Test

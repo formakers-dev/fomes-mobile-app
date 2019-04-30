@@ -16,7 +16,6 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.BetaTestListAdapter;
@@ -47,7 +46,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
+        com.formakers.fomes.common.util.Log.d(TAG, "onCreateView");
 
         DaggerBetaTestFragmentComponent.builder()
                 .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
@@ -84,7 +83,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             Bundle bundle = new Bundle();
             BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
 
-            Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
+            com.formakers.fomes.common.util.Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
 
             bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
             bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
@@ -94,8 +93,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             betaTestDetailAlertDialog.setPresenter(this.presenter);
             betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
-            this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
-            this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Logging.TARGET_ITEM, String.valueOf(betaTestItem.getId()));
+            this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
+            this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_ITEM, String.valueOf(betaTestItem.getId()));
         });
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -104,7 +103,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                     .doOnSubscribe(x -> swipeRefreshLayout.setRefreshing(true))
                     .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
                     .subscribe(() -> {
-                    }, e -> Log.e(TAG, String.valueOf(e)));
+                    }, e -> com.formakers.fomes.common.util.Log.e(TAG, String.valueOf(e)));
         });
 
         presenter.initialize();

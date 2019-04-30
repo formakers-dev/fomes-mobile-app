@@ -141,9 +141,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         presenter.requestPromotions();
 
         if (getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false)) {
-            presenter.sendEventLog(FomesConstants.EventLog.Code.NOTIFICATION_TAP);
+            presenter.sendEventLog(FomesConstants.FomesEventLog.Code.NOTIFICATION_TAP);
         } else {
-            presenter.sendEventLog(FomesConstants.EventLog.Code.MAIN_ACTIVITY_ENTER);
+            presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_ENTER);
         }
     }
 
@@ -262,8 +262,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         presenter.sendEventLog((tab.getPosition() == 0) ?
-                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST :
-                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
+                FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST :
+                FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
     }
 
     @Override
