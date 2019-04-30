@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.OnPageChange;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Subscription;
@@ -62,6 +63,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private Subscription eventPagerAutoSlideSubscription;
 
     private MainContract.Presenter presenter;
+
+    public interface FragmentCommunicator {
+        void onSelectedPage();
+    }
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
@@ -116,7 +121,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
-        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
+        BetaTestFragment betaTestFragment = new BetaTestFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("IS_DEFAULT_PAGE", true);
+        betaTestFragment.setArguments(bundle);
+
+        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
         fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
         contentsViewPager.setAdapter(fragmentPagerAdapter);
@@ -291,6 +301,32 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         adapter.notifyDataSetChanged();
     }
+
+    /*** start of 사실상 프래그먼트 페이저를 가지는 모든 액티비티에서 쓰이는 코드...ㅋㅋ ***/
+    public boolean isSelectedFragment(Fragment fragment) {
+        return this.contentsViewPager.getCurrentItem() == contentsViewPager.getAdapter().getItemPosition(fragment);
+    }
+
+    @OnPageChange(value = R.id.main_contents_view_pager, callback = OnPageChange.Callback.PAGE_SELECTED)
+    public void onSelectedPage(int position) {
+        android.util.Log.i("FA", "yenarue screen_view MainActivity onSelectedPage(" + position + ")");
+        getFragmentCommunicator(position).onSelectedPage();
+    }
+
+    private FragmentCommunicator getCurrentFragmentCommunicator() {
+        return getFragmentCommunicator(contentsViewPager.getCurrentItem());
+    }
+
+    private FragmentCommunicator getFragmentCommunicator(int position) {
+        Fragment currentFragment = ((FragmentPagerAdapter) contentsViewPager.getAdapter()).getItem(position);
+
+        if (currentFragment instanceof FragmentCommunicator) {
+            return (FragmentCommunicator) currentFragment;
+        } else {
+            throw new IllegalArgumentException("Current Fragment didn't implement FragmentCommunicator!");
+        }
+    }
+    /*** end of 사실상 프래그먼트 페이저를 가지는 모든 액티비티에서 쓰이는 코드...ㅋㅋ ***/
 
     private void verifyAccessToken() {
         addToCompositeSubscription(

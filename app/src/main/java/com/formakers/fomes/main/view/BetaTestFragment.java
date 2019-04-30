@@ -31,7 +31,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class BetaTestFragment extends BaseFragment implements BetaTestContract.View {
+public class BetaTestFragment extends BaseFragment implements BetaTestContract.View, MainActivity.FragmentCommunicator {
 
     public static final String TAG = "BetaTestFragment";
 
@@ -54,6 +54,10 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 .betaTestFragmentModule(new BetaTestFragmentModule(this))
                 .build()
                 .inject(this);
+
+        if (((MainActivity) getActivity()).isSelectedFragment(this)) {
+            onSelectedPage();
+        }
 
         return inflater.inflate(R.layout.fragment_betatest, container, false);
     }
@@ -154,5 +158,10 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         if (this.presenter != null) {
             this.presenter.unsubscribe();
         }
+    }
+
+    @Override
+    public void onSelectedPage() {
+        presenter.getAnalytics().setCurrentScreen(this);
     }
 }

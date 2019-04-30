@@ -33,7 +33,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class RecommendFragment extends BaseFragment implements RecommendContract.View, AppInfoDetailDialogFragment.Communicator {
+public class RecommendFragment extends BaseFragment implements RecommendContract.View,
+        MainActivity.FragmentCommunicator, AppInfoDetailDialogFragment.Communicator {
 
     public static final String TAG = "RecommendFragment";
 
@@ -61,6 +62,10 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
                 .recommendFragmentModule(new RecommendFragmentModule(this))
                 .build()
                 .inject(this);
+
+        if (((MainActivity) getActivity()).isSelectedFragment(this)) {
+            onSelectedPage();
+        }
 
         return inflater.inflate(R.layout.fragment_recommend, container, false);
     }
@@ -167,5 +172,10 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     public void emitUpdateWishedStatusEvent(String packageName, boolean isWished) {
         this.presenter.updateWishedStatus(packageName, isWished);
         this.recommendListAdapterView.notifyItemChanged(packageName);
+    }
+
+    @Override
+    public void onSelectedPage() {
+        presenter.getAnalytics().setCurrentScreen(this);
     }
 }

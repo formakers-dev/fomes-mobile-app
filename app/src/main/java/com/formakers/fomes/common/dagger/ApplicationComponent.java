@@ -50,6 +50,8 @@ public interface ApplicationComponent {
     JobManager jobManager();
     ChannelManager channelManager();
 
+    AnalyticsModule.Analytics analytics();
+
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);
 

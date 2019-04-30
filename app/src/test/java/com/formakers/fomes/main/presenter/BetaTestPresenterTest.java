@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
@@ -45,6 +46,7 @@ public class BetaTestPresenterTest {
     @Mock private BetaTestService mockBetaTestService;
     @Mock private UserDAO mockUserDAO;
     @Mock private EventLogService mockEventLogService;
+    @Mock private AnalyticsModule.Analytics mockAnalytics;
 
     private User dummyUser;
     private List<BetaTest> betaTests = new ArrayList<>();
@@ -77,7 +79,7 @@ public class BetaTestPresenterTest {
         when(mockAdapterModel.getItem(0)).thenReturn(betaTests.get(0));
         when(mockAdapterModel.getItem(1)).thenReturn(betaTests.get(1));
 
-        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO);
+        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO, mockAnalytics);
         subject.setAdapterModel(mockAdapterModel);
     }
 
