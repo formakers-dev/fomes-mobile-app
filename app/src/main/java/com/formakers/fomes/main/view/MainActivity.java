@@ -88,7 +88,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onPostCreate(savedInstanceState);
         Log.v(TAG,"onPostCreate");
 
-        Log.i(TAG, "isRegisteredSendDataJob=" + presenter.checkRegisteredSendDataJob());
+        boolean isRegisteredSendDataJob = presenter.checkRegisteredSendDataJob();
+        Log.i(TAG, "isRegisteredSendDataJob=" + isRegisteredSendDataJob);
+        if (!isRegisteredSendDataJob) {
+            this.presenter.registerSendDataJob();
+        }
 
         setSupportActionBar(toolbar);
 

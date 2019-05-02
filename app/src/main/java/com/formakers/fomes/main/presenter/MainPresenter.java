@@ -10,14 +10,10 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.Observable;
 import rx.Single;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -58,6 +54,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public Completable requestVerifyAccessToken() {
         return userService.verifyToken();
+    }
+
+    @Override
+    public int registerSendDataJob() {
+        return this.jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
     }
 
     @Override

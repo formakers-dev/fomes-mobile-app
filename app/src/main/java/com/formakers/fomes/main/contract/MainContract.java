@@ -1,7 +1,7 @@
 package com.formakers.fomes.main.contract;
 
-import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.model.User;
 
@@ -17,6 +17,7 @@ public interface MainContract {
         void sendEventLog(String code);
         void requestPromotions();
 
+        int registerSendDataJob();
         boolean checkRegisteredSendDataJob();
 
         void unsubscribe();

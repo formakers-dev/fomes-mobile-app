@@ -90,6 +90,8 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");
         when(mockPresenter.requestUserInfo()).thenReturn(Single.just(user));
         when(mockPresenter.requestVerifyAccessToken()).thenReturn(Completable.complete());
+
+        when(mockPresenter.checkRegisteredSendDataJob()).thenReturn(true);
     }
 
     @Override
@@ -98,6 +100,13 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         RxJavaHooks.reset();
         RxAndroidPlugins.getInstance().reset();
         super.tearDown();
+    }
+
+    @Test
+    public void MainActivity_진입시__단기통계데이터전송Job가_등록되어있지않으면_등록한다() {
+        when(mockPresenter.checkRegisteredSendDataJob()).thenReturn(false);
+        launchActivity();
+        verify(mockPresenter).registerSendDataJob();
     }
 
     @Test
