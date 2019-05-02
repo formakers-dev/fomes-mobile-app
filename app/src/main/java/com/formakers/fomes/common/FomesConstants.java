@@ -39,6 +39,7 @@ public interface FomesConstants {
         String TOPIC_NOTICE_ALL = "notice-all";
 
         // Request Body Key
+        String TYPE = "type";
         String CHANNEL = "channel";
         String TITLE = "title";
         String MESSAGE = "message";
@@ -46,6 +47,10 @@ public interface FomesConstants {
         String SUMMARY_SUB_TEXT = "summarySubText";
         String SUB_TITLE = "subTitle";
         String DEEPLINK = "deeplink";
+
+        // Values
+        String TYPE_SIGNAL = "signal";
+        String SIGNAL_REGISTER_SEND_DATA_JOB = "register_send_data_job";
     }
 
     interface EventLog {

@@ -3,6 +3,7 @@ package com.formakers.fomes.common.noti;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
@@ -45,6 +46,7 @@ public class MessagingServiceTest {
     @Inject UserDAO mockUserDAO;
     @Inject ChannelManager mockChannelManager;
     @Inject EventLogService mockEventLogService;
+    @Inject JobManager mockJobManager;
 
     @Before
     public void setUp() throws Exception {
@@ -100,6 +102,20 @@ public class MessagingServiceTest {
 
         verify(mockChannelManager, never()).sendNotification(any(), any());
         verify(mockEventLogService, never()).sendEventLog(any());
+    }
+
+    @Test
+    public void 단기통계데이터전송Job_등록_시그널_노티가_전송되었을_경우__단기통계데이터전송Job을_등록한다() {
+        Map<String, String> dataMap = new HashMap<>();
+        dataMap.put("type", "signal");
+        dataMap.put("signal", "register_send_data_job");
+        RemoteMessage remoteMessage = new RemoteMessage.Builder("noti")
+                .setData(dataMap)
+                .build();
+
+        subject.onMessageReceived(remoteMessage);
+
+        verify(mockJobManager).registerSendDataJob(1001);
     }
 
     @Test
