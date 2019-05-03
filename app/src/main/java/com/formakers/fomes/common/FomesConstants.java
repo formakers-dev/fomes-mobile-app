@@ -34,8 +34,7 @@ public interface FomesConstants {
         // TODO : Log? Analytic? Tracking? 네이밍 고민
         interface Log {
             String TARGET_ITEM = "BetaTest_Item";
-            String TARGET_DETAIL_DIALOG = "BetaTest_DetailDialog";
-            String TARGET_DETAIL_DIALOG_BUTTON = "BetaTest_DetailDialog_Button";
+            String TARGET_DETAIL_DIALOG_JOIN_BUTTON = "BetaTest_DetailDialog_JoinButton";
             String TARGET_EPILOGUE_BUTTON = "BetaTest_Epilogue_Button";
         }
     }

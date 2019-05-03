@@ -119,6 +119,8 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
         String actionType = betaTest.getActionType();
         if ("link".equals(actionType)) {
             joinButton.setOnClickListener(v -> {
+                this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_DETAIL_DIALOG_JOIN_BUTTON, String.valueOf(betaTest.getId()));
+
                 String url = betaTest.getAction() + userEmail;
 
                 Intent i = new Intent(Intent.ACTION_VIEW);
