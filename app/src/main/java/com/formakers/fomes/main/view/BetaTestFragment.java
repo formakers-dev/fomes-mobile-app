@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,7 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.BetaTestListAdapter;
@@ -33,6 +35,8 @@ import butterknife.BindView;
 public class BetaTestFragment extends BaseFragment implements BetaTestContract.View, MainActivity.FragmentCommunicator {
 
     public static final String TAG = "BetaTestFragment";
+
+    public static final int REQUEST_CODE_DETAIL_DIALOG = 1001;
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
@@ -91,22 +95,33 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
             betaTestDetailAlertDialog.setArguments(bundle);
             betaTestDetailAlertDialog.setPresenter(this.presenter);
+            betaTestDetailAlertDialog.setTargetFragment(this, REQUEST_CODE_DETAIL_DIALOG);
             betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
             this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
             this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_ITEM, String.valueOf(betaTestItem.getId()));
         });
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
+        swipeRefreshLayout.setOnRefreshListener(() ->
             presenter.loadToBetaTestList(new Date())
                     .toCompletable()
                     .doOnSubscribe(x -> swipeRefreshLayout.setRefreshing(true))
                     .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
                     .subscribe(() -> {
-                    }, e -> com.formakers.fomes.common.util.Log.e(TAG, String.valueOf(e)));
-        });
+                    }, e -> com.formakers.fomes.common.util.Log.e(TAG, String.valueOf(e))));
 
         presenter.initialize();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+
+        if (requestCode == REQUEST_CODE_DETAIL_DIALOG) {
+            this.presenter.getAnalytics().setCurrentScreen(this);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
