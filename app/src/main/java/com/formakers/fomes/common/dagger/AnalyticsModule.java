@@ -3,8 +3,11 @@ package com.formakers.fomes.common.dagger;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.util.Log;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -34,6 +37,7 @@ public class AnalyticsModule {
         void setCurrentScreen(Activity activity);
         void setCurrentScreen(Fragment fragment);
         void sendClickEventLog(String contentType, String id);
+        void sendNotificationEventLog(String action, ChannelManager.Channel channel, String title);
     }
 
     public class AnalyticsImpl implements Analytics {
@@ -58,9 +62,36 @@ public class AnalyticsModule {
         @Override
         public void sendClickEventLog(String contentType, String id) {
             Bundle params = new Bundle();
-            params.putString("CONTENT_TYPE", contentType);
-            params.putString("ITEM_ID", id);
+            params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType);
+            params.putString(FirebaseAnalytics.Param.ITEM_ID, id);
             this.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
+        }
+
+        @Override
+        public void sendNotificationEventLog(@NonNull String action, ChannelManager.Channel channel, String title) {
+            boolean isShowing = false;
+            switch (action) {
+                // TODO : 리팩토링 필요
+                case FomesConstants.Notification.Log.ACTION_OPEN: {
+                    sendClickEventLog(FomesConstants.Notification.Log.TARGET, title);
+                    return;
+                }
+                case FomesConstants.Notification.Log.ACTION_RECEIVE: {
+                    isShowing = true;
+                    break;
+                }
+                case FomesConstants.Notification.Log.ACTION_DISMISS: {
+                    isShowing = false;
+                    break;
+                }
+            }
+
+            Bundle params = new Bundle();
+            params.putString(FirebaseAnalytics.Param.ITEM_ID, title);   // TODO : 노티에 ID 생기고 난 이후에 변경 필요
+            params.putString(FirebaseAnalytics.Param.ITEM_NAME, title);
+            params.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, channel.name());
+            params.putDouble(FirebaseAnalytics.Param.VALUE, isShowing ? 1d : 0d);
+            this.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, params);
         }
     }
 }

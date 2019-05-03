@@ -59,6 +59,15 @@ public interface FomesConstants {
         String SUMMARY_SUB_TEXT = "summarySubText";
         String SUB_TITLE = "subTitle";
         String DEEPLINK = "deeplink";
+
+        // TODO : Log? Analytic? Tracking? 네이밍 고민
+        interface Log {
+            String ACTION_RECEIVE = "receive";
+            String ACTION_OPEN = "open";
+            String ACTION_DISMISS = "dismiss";
+
+            String TARGET = "notification";
+        }
     }
 
     // TODO : 리팩토링 필요. 실시간으로 봐야하는 로그만 포메스 이벤트로그로 관리하자

@@ -19,6 +19,7 @@ import android.text.TextUtils;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
@@ -65,10 +66,12 @@ public class ChannelManager {
     }
 
     private Context context;
+    private AnalyticsModule.Analytics analytics;
 
     @Inject
-    public ChannelManager(Context context) {
+    public ChannelManager(Context context, AnalyticsModule.Analytics analytics) {
         this.context = context;
+        this.analytics = analytics;
     }
 
     public NotificationCompat.Builder getNotificationBuilder() {
@@ -135,6 +138,7 @@ public class ChannelManager {
         Notification notification = builder.build();
 
         sendNotification(notification.hashCode(), notification);
+        analytics.sendNotificationEventLog(FomesConstants.Notification.Log.ACTION_RECEIVE, channel, title);
     }
 
     public void sendNotification(int notiId, Notification notification) {
