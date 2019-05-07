@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.util.Log;
+import com.google.common.base.Strings;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Objects;
@@ -37,6 +38,7 @@ public class AnalyticsModule {
         void setCurrentScreen(Activity activity);
         void setCurrentScreen(Fragment fragment);
         void sendClickEventLog(String contentType, String id);
+        void sendClickEventLog(String contentType, String id, String name);
         void sendNotificationEventLog(String action, ChannelManager.Channel channel, String title);
     }
 
@@ -60,10 +62,22 @@ public class AnalyticsModule {
         }
 
         @Override
-        public void sendClickEventLog(String contentType, String id) {
+        public void sendClickEventLog(String target, String id) {
+            sendClickEventLog(target, id, null);
+        }
+
+        @Override
+        public void sendClickEventLog(String target, String id, String name) {
             Bundle params = new Bundle();
-            params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType);
-            params.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+            if (!Strings.isNullOrEmpty(target)) {
+                params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, target);
+            }
+            if (!Strings.isNullOrEmpty(id)) {
+                params.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+            }
+            if (!Strings.isNullOrEmpty(name)) {
+                params.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+            }
             this.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
         }
 
