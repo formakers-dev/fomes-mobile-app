@@ -60,6 +60,9 @@ public interface FomesConstants {
         String SUB_TITLE = "subTitle";
         String DEEPLINK = "deeplink";
 
+        // for Extras
+        String DESTINATION_ACTIVITY = "DESTINATION_ACTIVITY_CLASS_NAME";
+
         // TODO : Log? Analytic? Tracking? 네이밍 고민
         interface Log {
             String ACTION_RECEIVE = "receive";
@@ -82,5 +85,10 @@ public interface FomesConstants {
             String NOTIFICATION_RECEIVED = "NOTI_RCV";
             String NOTIFICATION_TAP = "NOTI_TAP";
         }
+    }
+
+    interface Broadcast {
+        String ACTION_NOTI_CANCELLED = "com.formakers.fomes.NOTI_CANCELLED";
+        String ACTION_NOTI_CLICKED = "com.formakers.fomes.NOTI_CLICKED";
     }
 }

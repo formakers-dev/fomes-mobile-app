@@ -2,6 +2,7 @@ package com.formakers.fomes.common.dagger;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.LocalBroadcastReceiver;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
@@ -54,6 +55,7 @@ public interface ApplicationComponent {
 
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);
+    void inject(LocalBroadcastReceiver localBroadcastReceiver);
 
     // fomes
     void inject(NoticeMigrationActivity provisioningPresenter);

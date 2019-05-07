@@ -78,17 +78,24 @@ public class AnalyticsModule {
             if (!Strings.isNullOrEmpty(name)) {
                 params.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
             }
+
+            sendClickEvent(params);
+        }
+
+        private void sendClickEvent(Bundle params) {
             this.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
         }
 
         @Override
         public void sendNotificationEventLog(@NonNull String action, ChannelManager.Channel channel, String title) {
             boolean isShowing = false;
+
+            String event = FirebaseAnalytics.Event.VIEW_ITEM;
+
             switch (action) {
-                // TODO : 리팩토링 필요
                 case FomesConstants.Notification.Log.ACTION_OPEN: {
-                    sendClickEventLog(FomesConstants.Notification.Log.TARGET, title);
-                    return;
+                    event = FirebaseAnalytics.Event.SELECT_CONTENT;
+                    break;
                 }
                 case FomesConstants.Notification.Log.ACTION_RECEIVE: {
                     isShowing = true;
@@ -105,7 +112,7 @@ public class AnalyticsModule {
             params.putString(FirebaseAnalytics.Param.ITEM_NAME, title);
             params.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, channel.name());
             params.putDouble(FirebaseAnalytics.Param.VALUE, isShowing ? 1d : 0d);
-            this.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, params);
+            this.firebaseAnalytics.logEvent(event, params);
         }
     }
 }
