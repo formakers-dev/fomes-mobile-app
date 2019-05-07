@@ -23,7 +23,7 @@ public interface FomesConstants {
 
     interface Main {
         interface Log {
-            String TARGET_EVENT_BANNER = "EventBanner";
+            String TARGET_EVENT_BANNER = "Main_EventBanner";
         }
     }
 

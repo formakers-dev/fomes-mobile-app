@@ -23,18 +23,17 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
-import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
+import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.view.WishListActivity;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -61,6 +60,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
 
     private Subscription eventPagerAutoSlideSubscription;
+    private EventPagerAdapterContract.View eventPagerAdapterView;
 
     private MainContract.Presenter presenter;
 
@@ -135,8 +135,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.tabLayout.addOnTabSelectedListener(this);
 
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
-
+        eventPagerAdapter.setPresenter(this.presenter);
         eventViewPager.setAdapter(eventPagerAdapter);
+        this.presenter.setAdapterModel(eventPagerAdapter);
+        this.eventPagerAdapterView = eventPagerAdapter;
 
         presenter.requestPromotions();
 
@@ -282,24 +284,18 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     }
 
     public void showNextEventBanner() {
-        if (eventViewPager == null || eventViewPager.getAdapter() == null || eventViewPager.getAdapter().getCount() < 2)
+        if (eventViewPager == null || presenter.getPromotionCount() < 2)
             return;
 
-        int nextItem = (eventViewPager.getCurrentItem() < eventViewPager.getAdapter().getCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
+        int nextItem = (eventViewPager.getCurrentItem() < presenter.getPromotionCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
 
         Log.v(TAG, "showNextEventBanner) position=" + nextItem);
         eventViewPager.setCurrentItem(nextItem);
     }
 
     @Override
-    public void setPromotionViews(List<Post> promotions) {
-        EventPagerAdapter adapter = (EventPagerAdapter) eventViewPager.getAdapter();
-
-        for (Post post : promotions) {
-            adapter.addEvent(post);
-        }
-
-        adapter.notifyDataSetChanged();
+    public void refreshEventPager() {
+        this.eventPagerAdapterView.notifyDataSetChanged();
     }
 
     /*** start of 사실상 프래그먼트 페이저를 가지는 모든 액티비티에서 쓰이는 코드...ㅋㅋ ***/
