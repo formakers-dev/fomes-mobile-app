@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,9 +32,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class BetaTestFragment extends BaseFragment implements BetaTestContract.View {
+public class BetaTestFragment extends BaseFragment implements BetaTestContract.View, MainActivity.FragmentCommunicator {
 
     public static final String TAG = "BetaTestFragment";
+
+    public static final int REQUEST_CODE_DETAIL_DIALOG = 1001;
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
@@ -47,13 +50,17 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
+        com.formakers.fomes.common.util.Log.d(TAG, "onCreateView");
 
         DaggerBetaTestFragmentComponent.builder()
                 .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
                 .betaTestFragmentModule(new BetaTestFragmentModule(this))
                 .build()
                 .inject(this);
+
+        if (((MainActivity) getActivity()).isSelectedFragment(this)) {
+            onSelectedPage();
+        }
 
         return inflater.inflate(R.layout.fragment_betatest, container, false);
     }
@@ -80,7 +87,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             Bundle bundle = new Bundle();
             BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
 
-            Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
+            com.formakers.fomes.common.util.Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
 
             bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
             bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
@@ -88,21 +95,33 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
             betaTestDetailAlertDialog.setArguments(bundle);
             betaTestDetailAlertDialog.setPresenter(this.presenter);
+            betaTestDetailAlertDialog.setTargetFragment(this, REQUEST_CODE_DETAIL_DIALOG);
             betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
-            this.presenter.sendEventLog(FomesConstants.EventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
+            this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
+            this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_ITEM, String.valueOf(betaTestItem.getId()));
         });
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
+        swipeRefreshLayout.setOnRefreshListener(() ->
             presenter.loadToBetaTestList(new Date())
                     .toCompletable()
                     .doOnSubscribe(x -> swipeRefreshLayout.setRefreshing(true))
                     .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
                     .subscribe(() -> {
-                    }, e -> Log.e(TAG, String.valueOf(e)));
-        });
+                    }, e -> com.formakers.fomes.common.util.Log.e(TAG, String.valueOf(e))));
 
         presenter.initialize();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+
+        if (requestCode == REQUEST_CODE_DETAIL_DIALOG) {
+            this.presenter.getAnalytics().setCurrentScreen(this);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -154,5 +173,10 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         if (this.presenter != null) {
             this.presenter.unsubscribe();
         }
+    }
+
+    @Override
+    public void onSelectedPage() {
+        presenter.getAnalytics().setCurrentScreen(this);
     }
 }

@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
@@ -36,20 +37,27 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private UserDAO userDAO;
     private User user;
     private EventLogService eventLogService;
+    private AnalyticsModule.Analytics analytics;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO) {
+    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
         this.userDAO = userDAO;
+        this.analytics = analytics;
     }
 
     @Override
     public void setAdapterModel(BetaTestListAdapterContract.Model adapterModel) {
         this.betaTestListAdapterModel = adapterModel;
+    }
+
+    @Override
+    public AnalyticsModule.Analytics getAnalytics() {
+        return this.analytics;
     }
 
     @Override

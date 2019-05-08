@@ -27,7 +27,7 @@ public class EventLog {
 
     @Override
     public String toString() {
-        return "EventLog{" +
+        return "FomesEventLog{" +
                 "code='" + code + '\'' +
                 ", ref='" + ref + '\'' +
                 '}';

@@ -11,23 +11,30 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.WebViewActivity;
+import com.formakers.fomes.main.contract.EventPagerAdapterContract;
+import com.formakers.fomes.main.contract.MainContract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventPagerAdapter extends PagerAdapter {
+public class EventPagerAdapter extends PagerAdapter implements EventPagerAdapterContract.Model, EventPagerAdapterContract.View {
 
     private static final String TAG = "EventPagerAdapter";
 
     private Context context;
     private List<EventPagerAdapter.BannerItem> events = new ArrayList<>();
+    private MainContract.Presenter presenter;
 
     public EventPagerAdapter(Context context) {
         this.context = context;
     }
+
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) { this.presenter = presenter; }
 
     public void addEvent(Post post) {
         ImageView promotionImageView = new ImageView(context);
@@ -37,6 +44,13 @@ public class EventPagerAdapter extends PagerAdapter {
                 .into(promotionImageView);
 
         events.add(new BannerItem(promotionImageView, post));
+    }
+
+    @Override
+    public void addAll(List<Post> promotions) {
+        for (Post post : promotions) {
+            this.addEvent(post);
+        }
     }
 
     @Override
@@ -54,6 +68,8 @@ public class EventPagerAdapter extends PagerAdapter {
         Context context = container.getContext();
 
         coverView.setOnClickListener(v -> {
+            presenter.getAnalytics().sendClickEventLog(FomesConstants.Main.Log.TARGET_EVENT_BANNER, event.post.getObjectId(), event.post.getTitle());
+
             Intent intent;
 
             if (TextUtils.isEmpty(event.post.getDeeplink())) {

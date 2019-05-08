@@ -2,14 +2,15 @@ package com.formakers.fomes.provisioning.presenter;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import org.assertj.core.util.Lists;
 import org.junit.After;
@@ -17,8 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
 
 import rx.Completable;
 import rx.Scheduler;
@@ -41,6 +40,7 @@ public class ProvisioningPresenterTest {
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
     @Mock UserDAO mockUserDAO;
+    @Mock AnalyticsModule.Analytics mockAnalytics;
 
     ProvisioningPresenter subject;
 
@@ -61,7 +61,7 @@ public class ProvisioningPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO);
+        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO, mockAnalytics);
     }
 
     @After

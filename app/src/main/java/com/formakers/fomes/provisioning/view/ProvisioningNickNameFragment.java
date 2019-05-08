@@ -1,6 +1,5 @@
 package com.formakers.fomes.provisioning.view;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -37,6 +36,10 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (this.presenter != null && this.presenter.isSelected(this)) {
+            onSelectedPage();
+        }
+
         return inflater.inflate(R.layout.fragment_provision_nickname, container, false);
     }
 
@@ -48,6 +51,8 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     @Override
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
+        this.presenter.getAnalytics().setCurrentScreen(this);
+
         if (getView() != null && this.isVisible()) {
             CharSequence nickName = nickNameEditText.getText();
             onNickNameTextChanged(nickName, 0, 0, nickName.length());

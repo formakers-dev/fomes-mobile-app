@@ -9,8 +9,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
@@ -19,9 +19,12 @@ import android.text.TextUtils;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.LocalBroadcastReceiver;
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,16 +34,20 @@ import static com.formakers.fomes.common.FomesConstants.Notification.TOPIC_NOTIC
 @Singleton
 public class ChannelManager {
 
+    private static final int REQUEST_CODE_OPEN = 1001;
+    private static final int REQUEST_CODE_DISMISS = 1002;
+
     public enum Channel {
         DEFAULT("channel_default"),
         ANNOUNCE("channel_announce", "공지사항"),
         BETATEST("channel_betatest", "테스트 관련");
 
-        String id;
-        String title;
+        final String id;
+        final String title;
 
         Channel(String id) {
             this.id = id;
+            this.title = null;
         }
 
         Channel(String id, String title) {
@@ -49,7 +56,7 @@ public class ChannelManager {
         }
 
         @Nullable
-        static Channel findById(String id) {
+        public static Channel findById(String id) {
             if (TextUtils.isEmpty(id)) {
                 return DEFAULT;
             }
@@ -65,10 +72,12 @@ public class ChannelManager {
     }
 
     private Context context;
+    private AnalyticsModule.Analytics analytics;
 
     @Inject
-    public ChannelManager(Context context) {
+    public ChannelManager(Context context, AnalyticsModule.Analytics analytics) {
         this.context = context;
+        this.analytics = analytics;
     }
 
     public NotificationCompat.Builder getNotificationBuilder() {
@@ -82,19 +91,31 @@ public class ChannelManager {
     }
 
     public void sendNotification(Map<String, String> dataMap, Class<?> destActivity) {
+        Bundle bundle = new Bundle();
+        for (Map.Entry<String, String> entry: dataMap.entrySet()) {
+            bundle.putString(entry.getKey(), entry.getValue());
+        }
+
+        bundle.putSerializable(FomesConstants.Notification.DESTINATION_ACTIVITY, destActivity);
+        bundle.putSerializable(FomesConstants.Notification.CHANNEL, ChannelManager.Channel.findById(dataMap.get(FomesConstants.Notification.CHANNEL)));
+
+        sendNotification(bundle);
+    }
+
+    public void sendNotification(Bundle notiDataBundle) {
         NotificationCompat.Builder builder;
 
         // mandatory
-        Channel channel = ChannelManager.Channel.findById(dataMap.get(FomesConstants.Notification.CHANNEL));
-        String title = dataMap.get(FomesConstants.Notification.TITLE);
-        String subTitle = dataMap.get(FomesConstants.Notification.SUB_TITLE);
-        String message = dataMap.get(FomesConstants.Notification.MESSAGE);
+        Channel channel = (ChannelManager.Channel) notiDataBundle.getSerializable(FomesConstants.Notification.CHANNEL);
+        String title = notiDataBundle.getString(FomesConstants.Notification.TITLE);
+        String subTitle = notiDataBundle.getString(FomesConstants.Notification.SUB_TITLE);
+        String message = notiDataBundle.getString(FomesConstants.Notification.MESSAGE);
 
         // optional
-        String isSummaryString = dataMap.get(FomesConstants.Notification.IS_SUMMARY);
+        String isSummaryString = notiDataBundle.getString(FomesConstants.Notification.IS_SUMMARY);
         boolean isSummary = isSummaryString != null && Boolean.parseBoolean(isSummaryString);
-        String summarySubText = dataMap.get(FomesConstants.Notification.SUMMARY_SUB_TEXT);
-        String deeplink = dataMap.get(FomesConstants.Notification.DEEPLINK);
+        String summarySubText = notiDataBundle.getString(FomesConstants.Notification.SUMMARY_SUB_TEXT);
+        String deeplink = notiDataBundle.getString(FomesConstants.Notification.DEEPLINK);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = getNotificationBuilder(channel, NotificationManager.IMPORTANCE_MAX);
@@ -102,19 +123,23 @@ public class ChannelManager {
             builder = getNotificationBuilder();
         }
 
-        // 노티 클릭 시 이동할 액티비티 지정
-        Intent notificationIntent;
+        // 노티 이벤트 중첩을 막기위해 identical hash code 생성
+        int id = Long.valueOf(new Date().getTime()).hashCode();
 
-        if (TextUtils.isEmpty(deeplink)) {
-            notificationIntent = new Intent(context, destActivity);
-            notificationIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
-        } else {
-            notificationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplink));
-        }
+        // 노티 클릭 시 수행할 이벤트
+        Intent clickIntent = new Intent(context, LocalBroadcastReceiver.class);
+        clickIntent.setAction(FomesConstants.Broadcast.ACTION_NOTI_CLICKED);
+        clickIntent.putExtras(notiDataBundle);
+        PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context, id + REQUEST_CODE_OPEN, clickIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // 노티 취소 시 수행할 이벤트
+        Intent cancelIntent = new Intent(context, LocalBroadcastReceiver.class);
+        cancelIntent.setAction(FomesConstants.Broadcast.ACTION_NOTI_CANCELLED);
+        cancelIntent.putExtras(notiDataBundle);
+        PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(context, id + REQUEST_CODE_DISMISS, cancelIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        builder = builder.setContentIntent(pendingIntent)
+        builder = builder.setContentIntent(clickPendingIntent)
+                .setDeleteIntent(cancelPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setSmallIcon(R.drawable.ic_noti)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_app))
@@ -135,6 +160,8 @@ public class ChannelManager {
         Notification notification = builder.build();
 
         sendNotification(notification.hashCode(), notification);
+
+        analytics.sendNotificationEventLog(FomesConstants.Notification.Log.ACTION_RECEIVE, channel, title);
     }
 
     public void sendNotification(int notiId, Notification notification) {

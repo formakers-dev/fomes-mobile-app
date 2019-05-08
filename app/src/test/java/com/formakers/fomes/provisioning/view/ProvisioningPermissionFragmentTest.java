@@ -8,8 +8,9 @@ import android.view.View;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
-import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import org.robolectric.shadows.support.v4.SupportFragmentController;
 import static com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment.REQUEST_CODE_USAGE_STATS_PERMISSION;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -40,6 +42,8 @@ public class ProvisioningPermissionFragmentTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+
+        when(mockPresenter.getAnalytics()).thenReturn(mock(AnalyticsModule.Analytics.class));
 
         subject = new ProvisioningPermissionFragment();
         subject.setPresenter(mockPresenter);

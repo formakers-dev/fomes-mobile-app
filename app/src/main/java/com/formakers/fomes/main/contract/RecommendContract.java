@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.contract;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 
@@ -7,6 +8,9 @@ import rx.Completable;
 
 public interface RecommendContract {
     interface Presenter {
+        //Base
+        AnalyticsModule.Analytics getAnalytics();
+
         void setAdapterModel(RecommendListAdapterContract.Model adapterModel);
         void emitShowDetailEvent(RecommendApp recommendApp);
         void loadRecommendApps(String categoryId);

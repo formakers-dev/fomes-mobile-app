@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.presenter;
 
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -45,6 +46,7 @@ public class RecommendPresenterTest {
     @Mock private RecommendService mockRecommendService;
     @Mock private UserService mockUserService;
     @Mock private AndroidNativeHelper mockAndroidNativeHelper;
+    @Mock private AnalyticsModule.Analytics mockAnalytics;
 
     private RecommendPresenter subject;
 
@@ -72,7 +74,7 @@ public class RecommendPresenterTest {
         when(mockAndroidNativeHelper.getInstalledLaunchableApps()).thenReturn(Observable.from(new ArrayList<>()));
         when(mockView.isEndOfRecommendList()).thenReturn(false);
 
-        subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService, mockAndroidNativeHelper);
+        subject = new RecommendPresenter(mockView, mockRecommendService, mockUserService, mockAndroidNativeHelper, mockAnalytics);
         subject.setAdapterModel(mockAdapterModel);
     }
 

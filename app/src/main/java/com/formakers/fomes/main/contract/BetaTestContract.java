@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.contract;
 
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.BetaTest;
 
@@ -11,6 +12,9 @@ import rx.Single;
 
 public interface BetaTestContract {
     interface Presenter {
+        //Base
+        AnalyticsModule.Analytics getAnalytics();
+
         void setAdapterModel(BetaTestListAdapterContract.Model adapterModel);
 
         void initialize();

@@ -27,6 +27,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
@@ -224,12 +226,17 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
     @Test
     public void onStart시__이벤트_페이저를_3초간격으로_넘긴다() {
+        when(mockPresenter.getPromotionCount()).thenReturn(3);
+
         launchActivity();
 
+        List<Post> dummyPosts = new ArrayList<>();
+        dummyPosts.add(new Post());
+        dummyPosts.add(new Post());
+        dummyPosts.add(new Post());
+
         ViewPager viewPager = subject.findViewById(R.id.main_event_view_pager);
-        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
-        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
-        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
+        ((EventPagerAdapter) viewPager.getAdapter()).addAll(dummyPosts);
 
         testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(0);

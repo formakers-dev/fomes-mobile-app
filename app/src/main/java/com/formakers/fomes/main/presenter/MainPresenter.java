@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.PostService;
@@ -7,6 +8,7 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
 
@@ -25,10 +27,12 @@ public class MainPresenter implements MainContract.Presenter {
     @Inject UserService userService;
     @Inject PostService postService;
     @Inject EventLogService eventLogService;
+    @Inject AnalyticsModule.Analytics analytics;
 
     @Inject JobManager jobManager;
 
     private MainContract.View view;
+    private EventPagerAdapterContract.Model adapterModel;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
@@ -45,6 +49,14 @@ public class MainPresenter implements MainContract.Presenter {
         this.jobManager = jobManager;
         this.eventLogService = eventLogService;
     }
+
+    @Override
+    public AnalyticsModule.Analytics getAnalytics() {
+        return this.analytics;
+    }
+
+    @Override
+    public void setAdapterModel(EventPagerAdapterContract.Model adapterModel) { this.adapterModel = adapterModel; }
 
     @Override
     public Single<User> requestUserInfo() {
@@ -80,9 +92,18 @@ public class MainPresenter implements MainContract.Presenter {
         compositeSubscription.add(
             postService.getPromotions()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(promotions -> view.setPromotionViews(promotions),
-                        e -> Log.e(TAG, String.valueOf(e)))
+                .subscribe(promotions -> {
+                        this.adapterModel.addAll(promotions);
+                        this.view.refreshEventPager();
+                    },
+                    e -> Log.e(TAG, String.valueOf(e))
+                )
         );
+    }
+
+    @Override
+    public int getPromotionCount() {
+        return adapterModel.getCount();
     }
 
     @Override

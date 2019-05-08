@@ -236,4 +236,10 @@ public class TestApplicationModule {
     UserDAO userDAO() {
         return mock(UserDAO.class);
     }
+
+    @Singleton
+    @Provides
+    AnalyticsModule.Analytics analytics() {
+        return mock(AnalyticsModule.Analytics.class);
+    }
 }
