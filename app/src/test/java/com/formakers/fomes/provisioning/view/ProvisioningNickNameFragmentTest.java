@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 
 import org.junit.After;
@@ -27,6 +28,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +44,8 @@ public class ProvisioningNickNameFragmentTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+
+        when(mockPresenter.getAnalytics()).thenReturn(mock(AnalyticsModule.Analytics.class));
 
         subject = new ProvisioningNickNameFragment();
         subject.setPresenter(mockPresenter);

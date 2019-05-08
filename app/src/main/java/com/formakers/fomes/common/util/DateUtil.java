@@ -67,8 +67,18 @@ public class DateUtil {
         return Integer.parseInt(INPUT_DATE_FORMAT.format(calender.getTime()));
     }
 
+    public static Date getDateWithoutTime(Date date) {
+        SimpleDateFormat onlyDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        String onlyDateString = onlyDateFormat.format(date);
+        try {
+            return onlyDateFormat.parse(onlyDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-    public static String getDateFromTimestamp(long timestamp) {
+    public static String getDateStringFromTimestamp(long timestamp) {
         return INPUT_DATE_FORMAT.format(new Date(timestamp));
     }
 

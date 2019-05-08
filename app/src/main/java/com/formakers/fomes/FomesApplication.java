@@ -36,8 +36,7 @@ public class FomesApplication extends Application {
         Typekit.getInstance()
                 .addNormal(Typekit.createFromAsset(this, "NotoSans-Regular.otf"))
                 .addBold(Typekit.createFromAsset(this, "NotoSans-Bold.otf"))
-                .add(getString(R.string.font_medium), Typekit.createFromAsset(this, "NotoSans-Medium.otf"))
-                .add(getString(R.string.font_bmjua), Typekit.createFromAsset(this, "BMJUA.otf"));
+                .add(getString(R.string.font_medium), Typekit.createFromAsset(this, "NotoSans-Medium.otf"));
     }
 
     protected void initRealm() {

@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
@@ -33,17 +34,24 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     private RecommendService recommendService;
     private UserService userService;
     private AndroidNativeHelper androidNativeHelper;
+    private AnalyticsModule.Analytics analytics;
 
     private int currentPage;
     private List<String> installedApps = new ArrayList<>();
     private boolean isAvaiableToLoad = true;
 
     @Inject
-    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, AndroidNativeHelper androidNativeHelper) {
+    public RecommendPresenter(RecommendContract.View view, RecommendService recommendService, UserService userService, AndroidNativeHelper androidNativeHelper, AnalyticsModule.Analytics analytics) {
         this.view = view;
         this.recommendService = recommendService;
         this.userService = userService;
         this.androidNativeHelper = androidNativeHelper;
+        this.analytics = analytics;
+    }
+
+    @Override
+    public AnalyticsModule.Analytics getAnalytics() {
+        return analytics;
     }
 
     @Override

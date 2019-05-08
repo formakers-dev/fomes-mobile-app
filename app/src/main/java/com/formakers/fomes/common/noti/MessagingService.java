@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
@@ -25,6 +26,7 @@ public class MessagingService extends FirebaseMessagingService {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject UserService userService;
     @Inject EventLogService eventLogService;
+    @Inject JobManager jobManager;
 
     @Override
     public void onCreate() {
@@ -48,20 +50,37 @@ public class MessagingService extends FirebaseMessagingService {
             return;
         }
 
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Map<String, String> dataMap = remoteMessage.getData();
-
-            channelManager.sendNotification(dataMap, MainActivity.class);
-            eventLogService.sendEventLog(new EventLog().setCode(FomesConstants.EventLog.Code.NOTIFICATION_RECEIVED))
-                    .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
-                            (e) -> Log.e(TAG, String.valueOf(e)));
-        }
-
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
+
+        // Check if message contains a data payload.
+        if (remoteMessage.getData().size() <= 0) {
+            return;
+        }
+
+        Map<String, String> dataMap = remoteMessage.getData();
+
+        String type = dataMap.get(FomesConstants.Notification.TYPE);
+
+        if (FomesConstants.Notification.TYPE_SIGNAL.equals(type)) {
+            Log.d(TAG, "signal notification");
+
+            String signal = dataMap.get(FomesConstants.Notification.TYPE_SIGNAL);
+
+            if (FomesConstants.Notification.SIGNAL_REGISTER_SEND_DATA_JOB.equals(signal)) {
+                jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
+            } else {
+                Log.e(TAG, "Unknown signal! = " + signal);
+            }
+        } else {
+            channelManager.sendNotification(dataMap, MainActivity.class);
+        }
+
+        eventLogService.sendEventLog(new EventLog().setCode(FomesConstants.FomesEventLog.Code.NOTIFICATION_RECEIVED))
+                .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
+                        (e) -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

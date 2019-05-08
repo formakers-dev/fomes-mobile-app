@@ -23,21 +23,21 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
-import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
+import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.main.presenter.MainPresenter;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.view.WishListActivity;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.OnPageChange;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Subscription;
@@ -60,8 +60,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
 
     private Subscription eventPagerAutoSlideSubscription;
+    private EventPagerAdapterContract.View eventPagerAdapterView;
 
     private MainContract.Presenter presenter;
+
+    public interface FragmentCommunicator {
+        void onSelectedPage();
+    }
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
@@ -88,7 +93,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onPostCreate(savedInstanceState);
         Log.v(TAG,"onPostCreate");
 
-        Log.i(TAG, "isRegisteredSendDataJob=" + presenter.checkRegisteredSendDataJob());
+        boolean isRegisteredSendDataJob = presenter.checkRegisteredSendDataJob();
+        Log.i(TAG, "isRegisteredSendDataJob=" + isRegisteredSendDataJob);
+        if (!isRegisteredSendDataJob) {
+            this.presenter.registerSendDataJob();
+        }
 
         setSupportActionBar(toolbar);
 
@@ -116,7 +125,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
-        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, new BetaTestFragment(), getString(R.string.main_tab_betatest));
+        BetaTestFragment betaTestFragment = new BetaTestFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("IS_DEFAULT_PAGE", true);
+        betaTestFragment.setArguments(bundle);
+
+        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
         fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
         contentsViewPager.setAdapter(fragmentPagerAdapter);
@@ -125,15 +139,17 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.tabLayout.addOnTabSelectedListener(this);
 
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
-
+        eventPagerAdapter.setPresenter(this.presenter);
         eventViewPager.setAdapter(eventPagerAdapter);
+        this.presenter.setAdapterModel(eventPagerAdapter);
+        this.eventPagerAdapterView = eventPagerAdapter;
 
         presenter.requestPromotions();
 
         if (getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false)) {
-            presenter.sendEventLog(FomesConstants.EventLog.Code.NOTIFICATION_TAP);
+            presenter.sendEventLog(FomesConstants.FomesEventLog.Code.NOTIFICATION_TAP);
         } else {
-            presenter.sendEventLog(FomesConstants.EventLog.Code.MAIN_ACTIVITY_ENTER);
+            presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_ENTER);
         }
     }
 
@@ -252,8 +268,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         presenter.sendEventLog((tab.getPosition() == 0) ?
-                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST :
-                FomesConstants.EventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
+                FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST :
+                FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
     }
 
     @Override
@@ -272,25 +288,45 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     }
 
     public void showNextEventBanner() {
-        if (eventViewPager == null || eventViewPager.getAdapter() == null || eventViewPager.getAdapter().getCount() < 2)
+        if (eventViewPager == null || presenter.getPromotionCount() < 2)
             return;
 
-        int nextItem = (eventViewPager.getCurrentItem() < eventViewPager.getAdapter().getCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
+        int nextItem = (eventViewPager.getCurrentItem() < presenter.getPromotionCount() - 1) ? eventViewPager.getCurrentItem() + 1 : 0;
 
         Log.v(TAG, "showNextEventBanner) position=" + nextItem);
         eventViewPager.setCurrentItem(nextItem);
     }
 
     @Override
-    public void setPromotionViews(List<Post> promotions) {
-        EventPagerAdapter adapter = (EventPagerAdapter) eventViewPager.getAdapter();
-
-        for (Post post : promotions) {
-            adapter.addEvent(post);
-        }
-
-        adapter.notifyDataSetChanged();
+    public void refreshEventPager() {
+        this.eventPagerAdapterView.notifyDataSetChanged();
     }
+
+    /*** start of 사실상 프래그먼트 페이저를 가지는 모든 액티비티에서 쓰이는 코드...ㅋㅋ ***/
+    public boolean isSelectedFragment(Fragment fragment) {
+        return this.contentsViewPager.getCurrentItem() == contentsViewPager.getAdapter().getItemPosition(fragment);
+    }
+
+    @OnPageChange(value = R.id.main_contents_view_pager, callback = OnPageChange.Callback.PAGE_SELECTED)
+    public void onSelectedPage(int position) {
+        android.util.Log.i("FA", "yenarue screen_view MainActivity onSelectedPage(" + position + ")");
+        getFragmentCommunicator(position).onSelectedPage();
+    }
+
+    private FragmentCommunicator getCurrentFragmentCommunicator() {
+        return getFragmentCommunicator(contentsViewPager.getCurrentItem());
+    }
+
+    private FragmentCommunicator getFragmentCommunicator(int position) {
+        Fragment currentFragment = ((FragmentPagerAdapter) contentsViewPager.getAdapter()).getItem(position);
+
+        if (currentFragment instanceof FragmentCommunicator) {
+            return (FragmentCommunicator) currentFragment;
+        } else {
+            throw new IllegalArgumentException("Current Fragment didn't implement FragmentCommunicator!");
+        }
+    }
+    /*** end of 사실상 프래그먼트 페이저를 가지는 모든 액티비티에서 쓰이는 코드...ㅋㅋ ***/
 
     private void verifyAccessToken() {
         addToCompositeSubscription(

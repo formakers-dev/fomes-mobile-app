@@ -27,6 +27,8 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
@@ -90,6 +92,8 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");
         when(mockPresenter.requestUserInfo()).thenReturn(Single.just(user));
         when(mockPresenter.requestVerifyAccessToken()).thenReturn(Completable.complete());
+
+        when(mockPresenter.checkRegisteredSendDataJob()).thenReturn(true);
     }
 
     @Override
@@ -98,6 +102,13 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         RxJavaHooks.reset();
         RxAndroidPlugins.getInstance().reset();
         super.tearDown();
+    }
+
+    @Test
+    public void MainActivity_진입시__단기통계데이터전송Job가_등록되어있지않으면_등록한다() {
+        when(mockPresenter.checkRegisteredSendDataJob()).thenReturn(false);
+        launchActivity();
+        verify(mockPresenter).registerSendDataJob();
     }
 
     @Test
@@ -215,12 +226,17 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
     @Test
     public void onStart시__이벤트_페이저를_3초간격으로_넘긴다() {
+        when(mockPresenter.getPromotionCount()).thenReturn(3);
+
         launchActivity();
 
+        List<Post> dummyPosts = new ArrayList<>();
+        dummyPosts.add(new Post());
+        dummyPosts.add(new Post());
+        dummyPosts.add(new Post());
+
         ViewPager viewPager = subject.findViewById(R.id.main_event_view_pager);
-        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
-        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
-        ((EventPagerAdapter) viewPager.getAdapter()).addEvent(new Post());
+        ((EventPagerAdapter) viewPager.getAdapter()).addAll(dummyPosts);
 
         testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(0);

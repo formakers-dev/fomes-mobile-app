@@ -80,9 +80,7 @@ public class SendDataJobService extends JobService {
                     .doOnSubscribe(a -> Log.i(TAG, "sendShortTermStats) onSubscribe"))
                     .doOnCompleted(() -> Log.i(TAG, "sendShortTermStats) onCompleted"))
             );
-            completableList.add(appStatService.sendAppUsages(
-                    appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS)
-            ));
+            completableList.add(appStatService.sendAppUsages(appUsageDataHelper.getAppUsages()));
         }
 
         subscription = Completable.merge(Observable.from(completableList))

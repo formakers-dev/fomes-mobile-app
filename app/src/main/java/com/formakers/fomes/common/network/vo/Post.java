@@ -1,8 +1,11 @@
 package com.formakers.fomes.common.network.vo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class Post {
+    @SerializedName("_id") String objectId;
     Integer order;
     Date openDate;
     Date closeDate;
@@ -11,6 +14,14 @@ public class Post {
     // 우선순위 : deeplink > contents
     String contents;
     String deeplink;
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
 
     public Integer getOrder() {
         return order;
@@ -78,13 +89,14 @@ public class Post {
     @Override
     public String toString() {
         return "Post{" +
-                "order=" + order +
+                "objectId='" + objectId + '\'' +
+                ", order=" + order +
                 ", openDate=" + openDate +
                 ", closeDate=" + closeDate +
+                ", title='" + title + '\'' +
                 ", coverImageUrl='" + coverImageUrl + '\'' +
                 ", contents='" + contents + '\'' +
                 ", deeplink='" + deeplink + '\'' +
-                ", title='" + title + '\'' +
                 '}';
     }
 }

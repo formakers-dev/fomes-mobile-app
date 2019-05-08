@@ -68,7 +68,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     }
 
     private Completable requestPostUsages() {
-        return appStatService.sendAppUsages(appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS));
+        return appStatService.sendAppUsages(appUsageDataHelper.getAppUsages());
     }
 
     private Observable<RecentReport> requestRecentReport() {

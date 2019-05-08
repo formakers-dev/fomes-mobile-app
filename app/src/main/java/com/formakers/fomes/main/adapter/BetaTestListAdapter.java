@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
@@ -141,10 +142,12 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 viewHolder.companySaysTextView.setText(String.format(context.getString(R.string.betatest_company_says), item.getAfterService().getCompanySays()));
 
                 viewHolder.epilogueButton.setOnClickListener(v -> {
-                   Uri uri = Uri.parse(item.getAfterService().getEpilogue());
+                    presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_EPILOGUE_BUTTON, item.getObjectId());
 
-                   Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                   context.startActivity(intent);
+                    Uri uri = Uri.parse(item.getAfterService().getEpilogue());
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(intent);
                 });
             } else {
                 viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);

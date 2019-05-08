@@ -4,10 +4,14 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -128,12 +132,36 @@ public class WebViewActivity extends FomesBaseActivity {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            Log.v(TAG, "onPageStarted=" + url);
             super.onPageStarted(view, url, favicon);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            Log.v(TAG, "onPageFinished=" + url);
             super.onPageFinished(view, url);
+        }
+
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            Log.e(TAG, "onReceivedError on " + failingUrl);
+            Log.e(TAG, "onReceivedError [" + errorCode + "]" + description);
+            super.onReceivedError(view, errorCode, description, failingUrl);
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            Log.e(TAG, "onReceivedError [" + error.getErrorCode() + "]" + error.getDescription());
+            super.onReceivedError(view, request, error);
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            Log.e(TAG, "onReceivedHttpError on [" + request.getMethod() + "] " +request.getUrl());
+            Log.e(TAG, "onReceivedHttpError [" + errorResponse.getStatusCode() + "]" + errorResponse.getReasonPhrase());
+            super.onReceivedHttpError(view, request, errorResponse);
         }
     }
 }

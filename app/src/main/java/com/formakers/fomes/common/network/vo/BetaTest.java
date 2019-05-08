@@ -4,11 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.formakers.fomes.common.util.DateUtil;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
 
 public class BetaTest implements Parcelable {
+    @SerializedName("_id") String objectId;
     Integer id;
 
     String overviewImageUrl;
@@ -110,6 +112,15 @@ public class BetaTest implements Parcelable {
 
     public BetaTest(Parcel in) {
         readFromParcel(in);
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public BetaTest setObjectId(String objectId) {
+        this.objectId = objectId;
+        return this;
     }
 
     public Integer getId() {
@@ -286,7 +297,8 @@ public class BetaTest implements Parcelable {
     @Override
     public String toString() {
         return "BetaTest{" +
-                "id=" + id +
+                "objectId='" + objectId + '\'' +
+                ", id=" + id +
                 ", overviewImageUrl='" + overviewImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", subTitle='" + subTitle + '\'' +
@@ -313,6 +325,7 @@ public class BetaTest implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(objectId);
         dest.writeInt(id);
         dest.writeString(overviewImageUrl);
         dest.writeString(title);
@@ -334,6 +347,7 @@ public class BetaTest implements Parcelable {
     }
 
     private void readFromParcel(Parcel in) {
+        objectId = in.readString();
         id = in.readInt();
         overviewImageUrl = in.readString();
         title = in.readString();

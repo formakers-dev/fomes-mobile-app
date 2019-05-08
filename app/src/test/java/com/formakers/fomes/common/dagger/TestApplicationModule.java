@@ -23,7 +23,6 @@ import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.common.repository.helper.AppRepositoryHelper;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
@@ -166,12 +165,6 @@ public class TestApplicationModule {
         return mock(SharedPreferencesHelper.class);
     }
 
-    @Singleton
-    @Provides
-    AppRepositoryHelper appRepositoryHelper() {
-        return mock(AppRepositoryHelper.class);
-    }
-
     @Provides
     @Singleton
     AppUsageDataHelper appUsageDataHelper() {
@@ -242,5 +235,11 @@ public class TestApplicationModule {
     @Provides
     UserDAO userDAO() {
         return mock(UserDAO.class);
+    }
+
+    @Singleton
+    @Provides
+    AnalyticsModule.Analytics analytics() {
+        return mock(AnalyticsModule.Analytics.class);
     }
 }

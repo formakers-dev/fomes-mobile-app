@@ -28,16 +28,11 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_provision_permission, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         if (this.presenter != null && this.presenter.isSelected(this)) {
             onSelectedPage();
         }
+
+        return inflater.inflate(R.layout.fragment_provision_permission, container, false);
     }
 
     @Override
@@ -71,6 +66,7 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
     @Override
     public void onSelectedPage() {
         this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
+        this.presenter.getAnalytics().setCurrentScreen(this);
 
         if (this.presenter.hasUsageStatsPermission()) {
             moveToNextPage();

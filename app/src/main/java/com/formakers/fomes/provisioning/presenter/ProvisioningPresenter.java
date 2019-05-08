@@ -3,6 +3,7 @@ package com.formakers.fomes.provisioning.presenter;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
@@ -14,13 +15,10 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
 import com.google.common.collect.Lists;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import javax.inject.Inject;
 
 import rx.Completable;
-
-import static com.formakers.fomes.common.FomesConstants.Notification.TOPIC_NOTICE_ALL;
 
 public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
@@ -31,6 +29,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Inject UserDAO userDAO;
     @Inject JobManager jobManager;
     @Inject ChannelManager channelManager;
+    @Inject AnalyticsModule.Analytics analytics;
 
     private ProvisioningContract.View view;
     private User user = new User();
@@ -41,13 +40,19 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     // temporary code for test
-    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
+    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
         this.view = view;
         this.user = user;
         this.userService = userService;
         this.androidNativeHelper = androidNativeHelper;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
         this.userDAO = userDAO;
+        this.analytics = analytics;
+    }
+
+    @Override
+    public AnalyticsModule.Analytics getAnalytics() {
+        return this.analytics;
     }
 
     @Override
