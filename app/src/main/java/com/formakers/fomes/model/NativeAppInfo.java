@@ -38,4 +38,13 @@ public class NativeAppInfo {
         this.icon = icon;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "NativeAppInfo{" +
+                "packageName='" + packageName + '\'' +
+                ", appName='" + appName + '\'' +
+                ", icon=" + icon +
+                '}';
+    }
 }

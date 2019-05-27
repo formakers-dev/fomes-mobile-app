@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.util.Log;

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.view.View;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
@@ -18,8 +20,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import static com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment.REQUEST_CODE_USAGE_STATS_PERMISSION;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -30,14 +30,13 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class ProvisioningPermissionFragmentTest {
 
     @Mock
     ProvisioningContract.Presenter mockPresenter;
 
     ProvisioningPermissionFragment subject;
-    SupportFragmentController<ProvisioningPermissionFragment> controller;
+    FragmentScenario<ProvisioningPermissionFragment> scenario;
 
     @Before
     public void setUp() throws Exception {
@@ -45,10 +44,15 @@ public class ProvisioningPermissionFragmentTest {
 
         when(mockPresenter.getAnalytics()).thenReturn(mock(AnalyticsModule.Analytics.class));
 
-        subject = new ProvisioningPermissionFragment();
-        subject.setPresenter(mockPresenter);
-        controller = SupportFragmentController.of(subject);
-        controller.create().start().resume().visible();
+        scenario = FragmentScenario.launchInContainer(ProvisioningPermissionFragment.class);
+        scenario.onFragment(fragment -> {
+            subject = fragment;
+            fragment.setPresenter(mockPresenter);
+        });
+
+        scenario.moveToState(Lifecycle.State.CREATED)
+                .moveToState(Lifecycle.State.STARTED)
+                .moveToState(Lifecycle.State.RESUMED);
     }
 
     @Test

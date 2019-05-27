@@ -7,14 +7,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
+
 import com.formakers.fomes.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.verify;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class FomesAlertDialogTest {
     private FomesAlertDialog subject;
     private DialogInterface.OnClickListener mockPositiveOnClickListener = mock(DialogInterface.OnClickListener.class);
@@ -33,15 +31,15 @@ public class FomesAlertDialogTest {
 
 
     private void setUpWithPositiveButtonOnly() throws Exception {
-        subject = new FomesAlertDialog(RuntimeEnvironment.application, "팝업타이틀", "팝업메시지", mockPositiveOnClickListener);
+        subject = new FomesAlertDialog(ApplicationProvider.getApplicationContext(), "팝업타이틀", "팝업메시지", mockPositiveOnClickListener);
     }
 
     private void setUpWithPositiveAndNegativeButtons() throws Exception {
-        subject = new FomesAlertDialog(RuntimeEnvironment.application, "팝업타이틀", "팝업메시지", mockPositiveOnClickListener, mockNegativeOnClickListener);
+        subject = new FomesAlertDialog(ApplicationProvider.getApplicationContext(), "팝업타이틀", "팝업메시지", mockPositiveOnClickListener, mockNegativeOnClickListener);
     }
 
     private void setUpWithImageAndPositiveButton() throws Exception {
-        subject = new FomesAlertDialog(RuntimeEnvironment.application, R.drawable.dialog_success_image, "팝업타이틀", "팝업메시지", mockPositiveOnClickListener);
+        subject = new FomesAlertDialog(ApplicationProvider.getApplicationContext(), R.drawable.dialog_success_image, "팝업타이틀", "팝업메시지", mockPositiveOnClickListener);
     }
 
     @Test

@@ -8,7 +8,6 @@ import android.util.ArraySet;
 import android.view.View;
 import android.widget.TextView;
 
-import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.ConfigService;
@@ -36,7 +35,7 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestFomesApplication.class)
+@Config(application = TestFomesApplication.class)
 public abstract class BaseActivityTest<T extends Activity> {
     public static final int LIFECYCLE_TYPE_CREATE = 1;
     public static final int LIFECYCLE_TYPE_POST_CREATE = 2;

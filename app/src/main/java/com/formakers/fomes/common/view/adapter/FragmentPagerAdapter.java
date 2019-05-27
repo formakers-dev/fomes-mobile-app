@@ -1,8 +1,8 @@
 package com.formakers.fomes.common.view.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.formakers.fomes.common.view.BaseFragment;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
+public class FragmentPagerAdapter extends androidx.fragment.app.FragmentPagerAdapter {
 
     private LinkedHashMap<String, ContentsFragment> contentsMap = new LinkedHashMap<>();
 

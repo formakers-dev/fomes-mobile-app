@@ -2,8 +2,8 @@ package com.formakers.fomes.helper;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

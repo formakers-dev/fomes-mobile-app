@@ -2,7 +2,8 @@ package com.formakers.fomes.analysis.presenter;
 
 import android.util.Pair;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
+
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.AppStatService;
@@ -23,8 +24,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class RecentAnalysisReportPresenterTest {
 
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
@@ -79,7 +77,7 @@ public class RecentAnalysisReportPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
         when(mockAppUsageDataHelper.getAppUsages()).thenReturn(new ArrayList<>());
         when(mockUser.getNickName()).thenReturn("mockUserNickName");

@@ -6,7 +6,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
@@ -19,9 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
-import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import rx.Completable;
 
@@ -34,13 +34,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class ProvisioningUserInfoFragmentTest {
 
     @Mock ProvisioningContract.Presenter mockPresenter;
 
     ProvisioningUserInfoFragment subject;
-    SupportFragmentController<ProvisioningUserInfoFragment> controller;
+    FragmentScenario<ProvisioningUserInfoFragment> scenario;
 
     @Before
     public void setUp() throws Exception {
@@ -48,11 +47,15 @@ public class ProvisioningUserInfoFragmentTest {
 
         when(mockPresenter.getAnalytics()).thenReturn(mock(AnalyticsModule.Analytics.class));
 
-        subject = new ProvisioningUserInfoFragment();
-        subject.setPresenter(mockPresenter);
-        controller = SupportFragmentController.of(subject);
+        scenario = FragmentScenario.launchInContainer(ProvisioningUserInfoFragment.class);
+        scenario.onFragment(fragment -> {
+            subject = fragment;
+            fragment.setPresenter(mockPresenter);
+        });
 
-        controller.create().start().resume().visible();
+        scenario.moveToState(Lifecycle.State.CREATED)
+                .moveToState(Lifecycle.State.STARTED)
+                .moveToState(Lifecycle.State.RESUMED);
     }
 
     @After
@@ -77,6 +80,7 @@ public class ProvisioningUserInfoFragmentTest {
 
     @Test
     public void ProvisioningUserInfoFragment_시작시__프로비저닝_진행상황을_업데이트한다() {
+        subject.onCreateView(subject.getLayoutInflater(), null, null);
         verify(mockPresenter).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
     }
 

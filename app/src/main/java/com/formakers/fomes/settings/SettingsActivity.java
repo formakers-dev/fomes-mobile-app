@@ -3,18 +3,19 @@ package com.formakers.fomes.settings;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.settings.adapter.SettingsListAdapter;
 import com.formakers.fomes.settings.model.SettingsItem;
-import com.formakers.fomes.common.FomesConstants.Settings.*;
-import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class SettingsActivity extends FomesBaseActivity implements SettingsListA
         super.onPostCreate(savedInstanceState);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         settingsRecyclerView.setLayoutManager(linearLayoutManager);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(this, ContentDividerItemDecoration.VERTICAL);

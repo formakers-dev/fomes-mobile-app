@@ -2,6 +2,8 @@ package com.formakers.fomes.common.job;
 
 import android.app.job.JobParameters;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
@@ -21,8 +23,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SendDataJobServiceTest {
 
     private SendDataJobService subject;
@@ -76,7 +75,7 @@ public class SendDataJobServiceTest {
             }
         });
 
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
         appUsages.add(new AppUsage("packageName1", 1000));
         appUsages.add(new AppUsage("packageName2", 2000));
