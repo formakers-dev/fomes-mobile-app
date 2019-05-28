@@ -67,7 +67,7 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/provision_content_title_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/provision_nickname_content_edittext"
+            app:layout_constraintEnd_toStartOf="@+id/provision_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_0" />
 
