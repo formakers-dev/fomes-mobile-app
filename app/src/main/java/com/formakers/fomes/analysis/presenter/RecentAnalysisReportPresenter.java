@@ -79,7 +79,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     @Override
     public Completable loading() {
 
-        appUsageDataHelper.sendShortTermStats()
+        appStatService.sendShortTermStats(appUsageDataHelper.getShortTermStats())
                 .observeOn(Schedulers.io())
                 .subscribe(() -> Log.d(TAG, "send short term stats success!!!"),
                         e -> Log.e(TAG, "send short term stats failed!!!! e=" + String.valueOf(e)));

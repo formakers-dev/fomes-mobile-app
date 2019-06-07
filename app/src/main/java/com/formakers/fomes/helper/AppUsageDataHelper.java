@@ -3,12 +3,10 @@ package com.formakers.fomes.helper;
 import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
-import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,9 +17,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import rx.Completable;
-import rx.schedulers.Schedulers;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
 import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
@@ -47,6 +42,15 @@ public class AppUsageDataHelper {
         this.timeHelper = timeHelper;
     }
 
+    public List<ShortTermStat> getShortTermStats() {
+        final long from = SharedPreferencesHelper.getLastUpdateShortTermStatTimestamp();
+        final long to = timeHelper.getStatBasedCurrentTime();
+
+        List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
+        Log.d(TAG, "shortTermStats Size=" + shortTermStatList.size() + " from=" + new Date(from));
+        return shortTermStatList;
+    }
+
     @NonNull
     List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
         List<EventStat> eventStats = androidNativeHelper.getUsageStatEvents(startTime, endTime);
@@ -62,7 +66,13 @@ public class AppUsageDataHelper {
 
                 case MOVE_TO_BACKGROUND:
                     if (beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
-                        shortTermStats.add(createShortTermStat(eventStat.getPackageName(), beforeForegroundEvent.getEventTime(), eventStat.getEventTime()));
+                        String packageName = eventStat.getPackageName();
+                        String versionName = this.androidNativeHelper.getVersionName(packageName);
+
+                        ShortTermStat shortTermStat = new ShortTermStat(packageName, beforeForegroundEvent.getEventTime(), eventStat.getEventTime())
+                                .setVersionName(versionName);
+
+                        shortTermStats.add(shortTermStat);
                         beforeForegroundEvent = null;
                     }
                     break;
@@ -72,60 +82,19 @@ public class AppUsageDataHelper {
         return shortTermStats;
     }
 
-    private ShortTermStat createShortTermStat(String packageName, long startTimestamp, long endTimestamp) {
-        return new ShortTermStat(packageName, startTimestamp, endTimestamp, endTimestamp - startTimestamp);
-    }
-
-    public Completable sendShortTermStats() {
-        final long from = SharedPreferencesHelper.getLastUpdateShortTermStatTimestamp();
-        final long to = timeHelper.getStatBasedCurrentTime();
-        final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
-
-        Log.d(TAG, "shortTermStats Size=" + shortTermStatList.size() + " from=" + new Date(from));
-        return appStatService.sendShortTermStats(shortTermStatList)
-                .observeOn(Schedulers.io())
-                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(to));
-    }
-
     // for send??
     public List<AppUsage> getAppUsages() {
         return getAppUsages(30);
     }
 
-    public List<AppUsage> getAppUsages(int durationDays) {
+    List<AppUsage> getAppUsages(int durationDays) {
         Log.d(TAG, "getAppUsages(" + durationDays + ")");
         long endTimestamp = timeHelper.getCurrentTime();
         long startTimestamp = endTimestamp - (durationDays * 24 * 60 * 60 * 1000L);
 
         List<ShortTermStat> shortTermStats = getShortTermStats(startTimestamp, endTimestamp);
-        List<AppUsage> appUsages = convertToAppUsage(shortTermStats);
 
-        return appUsages;
-    }
-
-    // ShortTermStats 사용시간 누적 (리듀스) 해서 AppUsage로 바꿈
-    private List<AppUsage> convertToAppUsage(List<ShortTermStat> shortTermStatList) {
-        Map<String, AppUsage> map = new HashMap<>();
-
-        String key;
-        AppUsage value;
-
-        for (ShortTermStat shortTermStat : shortTermStatList) {
-            // 날짜 + 패키지네임
-            key = DateUtil.getDateStringFromTimestamp(shortTermStat.getStartTimeStamp())
-                    + shortTermStat.getPackageName();
-
-            if (map.containsKey(key)) {
-                value = map.get(key);
-                value.setTotalUsedTime(value.getTotalUsedTime() + shortTermStat.getTotalUsedTime());
-            } else {
-                value = new AppUsage(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime())
-                        .setDate(DateUtil.getDateWithoutTime(new Date(shortTermStat.getStartTimeStamp())));
-            }
-            map.put(key, value);
-        }
-
-        return Lists.newArrayList(map.values());
+        return AppUsage.createListFromShortTermStats(shortTermStats);
     }
 
     /******************************** AppBee Legacy **/

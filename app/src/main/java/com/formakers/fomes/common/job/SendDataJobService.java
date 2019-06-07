@@ -83,7 +83,8 @@ public class SendDataJobService extends JobService {
         if (androidNativeHelper.hasUsageStatsPermission()) {
             Log.d(TAG, "Start to update data!");
 
-            completableList.add(appUsageDataHelper.sendShortTermStats()
+            completableList.add(appStatService.sendShortTermStats(appUsageDataHelper.getShortTermStats())
+                    .observeOn(Schedulers.io())
                     .doOnSubscribe(a -> Log.i(TAG, "sendShortTermStats) onSubscribe"))
                     .doOnCompleted(() -> Log.i(TAG, "sendShortTermStats) onCompleted"))
             );

@@ -40,7 +40,8 @@ public class AppStatService extends AbstractService {
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .compose(APIHelper.refreshExpiredToken())
-                    .toCompletable();
+                    .toCompletable()
+                    .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(shortTermStatList.get(shortTermStatList.size() - 1).getEndTimeStamp()));
         } else {
             return Completable.complete();
         }
