@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/analysis_not_enough_top_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             app:layout_constraintTop_toBottomOf="@+id/not_enough_title_textview"/>
 
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/analysis_top_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@id/analysis_icon_imageview"/>
         
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_layout_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,7 +99,8 @@
         <View
             android:id="@+id/analysis_my_playtime_rank_divider"
             style="@style/AnaylsisTheme.Divider"
-            app:layout_constraintTop_toBottomOf="@id/top_layout_guideline" />
+            app:layout_constraintTop_toBottomOf="@id/top_layout_guideline"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/analysis_my_playtime_rank_title"
@@ -228,7 +229,8 @@
             android:id="@+id/playtime_rank_divider"
             style="@style/AnaylsisTheme.Divider"
             android:layout_marginTop="46dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_my_playtime_rank_description" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_playtime_rank_description"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/analysis_playtime_rank_title"
@@ -274,7 +276,8 @@
             android:id="@+id/my_genre_divider"
             style="@style/AnaylsisTheme.Divider"
             android:layout_marginTop="34dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_horizontal_bar_chart" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_playtime_rank_horizontal_bar_chart"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/analysis_my_genre_title"
@@ -377,7 +380,8 @@
             android:id="@+id/people_genre_divider"
             style="@style/AnaylsisTheme.Divider"
             android:layout_marginTop="34dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_1" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_my_genre_1"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/analysis_people_genre_title"
@@ -435,7 +439,8 @@
             android:id="@+id/favorite_developer_divider"
             style="@style/AnaylsisTheme.Divider"
             android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_people_genre_job" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_people_genre_job"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/analysis_favorite_developer_title"
@@ -506,7 +511,8 @@
             android:id="@+id/my_games_divider"
             style="@style/AnaylsisTheme.Divider"
             android:layout_marginTop="45dp"
-            app:layout_constraintTop_toBottomOf="@id/analysis_job_favorite_developer" />
+            app:layout_constraintTop_toBottomOf="@id/analysis_job_favorite_developer"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/analysis_my_games_divider_title"
@@ -574,7 +580,7 @@
             app:rank_number="3"
             app:rank_color="@color/fomes_blush_pink" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/analysis_my_game_barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -682,6 +688,6 @@
             app:layout_constraintTop_toBottomOf="@id/analysis_people_games_table_bottom"
             tools:ignore="MissingConstraints" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

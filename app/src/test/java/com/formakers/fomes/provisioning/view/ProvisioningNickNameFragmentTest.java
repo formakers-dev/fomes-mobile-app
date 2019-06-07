@@ -4,7 +4,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
@@ -16,8 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -33,13 +33,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class ProvisioningNickNameFragmentTest {
 
     @Mock ProvisioningContract.Presenter mockPresenter;
 
     ProvisioningNickNameFragment subject;
-    SupportFragmentController<ProvisioningNickNameFragment> controller;
+    FragmentScenario<ProvisioningNickNameFragment> scenario;
 
     @Before
     public void setUp() throws Exception {
@@ -47,11 +46,15 @@ public class ProvisioningNickNameFragmentTest {
 
         when(mockPresenter.getAnalytics()).thenReturn(mock(AnalyticsModule.Analytics.class));
 
-        subject = new ProvisioningNickNameFragment();
-        subject.setPresenter(mockPresenter);
-        controller = SupportFragmentController.of(subject);
+        scenario = FragmentScenario.launchInContainer(ProvisioningNickNameFragment.class);
+        scenario.onFragment(fragment -> {
+            subject = fragment;
+            fragment.setPresenter(mockPresenter);
+        });
 
-        controller.create().start().resume().visible();
+        scenario.moveToState(Lifecycle.State.CREATED)
+                .moveToState(Lifecycle.State.STARTED)
+                .moveToState(Lifecycle.State.RESUMED);
     }
 
     @After

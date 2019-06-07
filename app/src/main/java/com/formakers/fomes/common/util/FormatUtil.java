@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.util;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

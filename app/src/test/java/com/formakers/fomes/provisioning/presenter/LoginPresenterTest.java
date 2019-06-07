@@ -3,7 +3,8 @@ package com.formakers.fomes.provisioning.presenter;
 
 import android.content.Intent;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
+
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.job.JobManager;
@@ -27,8 +28,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import javax.inject.Inject;
 
@@ -52,7 +51,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class LoginPresenterTest {
 
     @Inject UserService mockUserService;
@@ -94,7 +92,7 @@ public class LoginPresenterTest {
         when(mockAccount.getDisplayName()).thenReturn("testName");
         when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockAccount);
 
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
         subject = new LoginPresenter(mockView, mockGoogleSignInAPIHelper, mockUserService, mockSharedPreferencesHelper, mockUserDAO, mockJobManager, mockChannelManager);
     }
 

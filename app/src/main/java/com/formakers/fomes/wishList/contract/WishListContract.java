@@ -1,6 +1,6 @@
 package com.formakers.fomes.wishList.contract;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;

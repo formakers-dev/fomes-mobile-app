@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.presenter;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
+
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
@@ -17,8 +18,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import javax.inject.Inject;
 
@@ -38,7 +37,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class MainPresenterTest {
 
     @Inject
@@ -75,7 +73,7 @@ public class MainPresenterTest {
         });
 
         MockitoAnnotations.initMocks(this);
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
         subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockEventLogService, mockJobManager);
     }
 

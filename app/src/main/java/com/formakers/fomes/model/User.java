@@ -1,6 +1,6 @@
 package com.formakers.fomes.model;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import com.formakers.fomes.R;
 
@@ -86,6 +86,7 @@ public class User {
     private String registrationToken;
     private List<String> lifeApps;
     private String appVersion;
+    private DeviceInfo device;
 
     public User() {
     }
@@ -185,6 +186,15 @@ public class User {
         return ((currentYear - this.birthday) / 10) * 10;
     }
 
+    public DeviceInfo getDevice() {
+        return device;
+    }
+
+    public User setDevice(DeviceInfo device) {
+        this.device = device;
+        return this;
+    }
+
     public @StringRes int getGenderToStringResId() {
         return "male".equals(this.gender) ? R.string.common_male : R.string.common_female;
     }
@@ -216,10 +226,54 @@ public class User {
                 ", nickName='" + nickName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthday=" + birthday +
-                ", job='" + job + '\'' +
+                ", job=" + job +
                 ", gender='" + gender + '\'' +
                 ", registrationToken='" + registrationToken + '\'' +
                 ", lifeApps=" + lifeApps +
+                ", appVersion='" + appVersion + '\'' +
+                ", device=" + device +
                 '}';
+    }
+
+    public static class DeviceInfo {
+        String manufacturer;
+        String model;
+        Integer osVersion;
+
+        public String getManufacturer() {
+            return manufacturer;
+        }
+
+        public DeviceInfo setManufacturer(String manufacturer) {
+            this.manufacturer = manufacturer;
+            return this;
+        }
+
+        public String getModel() {
+            return model;
+        }
+
+        public DeviceInfo setModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        public Integer getOsVersion() {
+            return osVersion;
+        }
+
+        public DeviceInfo setOsVersion(Integer osVersion) {
+            this.osVersion = osVersion;
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return "DeviceInfo{" +
+                    "manufacturer='" + manufacturer + '\'' +
+                    ", model='" + model + '\'' +
+                    ", osVersion=" + osVersion +
+                    '}';
+        }
     }
 }

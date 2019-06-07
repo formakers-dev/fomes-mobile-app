@@ -1,8 +1,9 @@
 package com.formakers.fomes.main.view;
 
-import android.support.v4.app.Fragment;
+import android.util.SupportFragmentController;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.fragment.app.Fragment;
+
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.main.presenter.RecommendPresenter;
@@ -15,15 +16,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.support.v4.SupportFragmentController;
 
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class RecommendFragmentViewTest {
 
     @Mock RecommendPresenter mockRecommendPresenter;

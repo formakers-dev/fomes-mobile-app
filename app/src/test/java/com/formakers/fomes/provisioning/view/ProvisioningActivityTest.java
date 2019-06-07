@@ -1,10 +1,12 @@
 package com.formakers.fomes.provisioning.view;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.viewpager.widget.ViewPager;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
@@ -19,7 +21,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowToast;
 
@@ -40,7 +41,7 @@ public class ProvisioningActivityTest extends BaseActivityTest<ProvisioningActiv
 
     @Before
     public void setUp() throws Exception {
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
         MockitoAnnotations.initMocks(this);
         super.setUp();
     }

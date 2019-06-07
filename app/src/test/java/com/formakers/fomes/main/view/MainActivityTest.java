@@ -1,11 +1,13 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Intent;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.core.view.GravityCompat;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.viewpager.widget.ViewPager;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
@@ -24,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         });
 
         MockitoAnnotations.initMocks(this);
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
         super.setUp();
 
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");

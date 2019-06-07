@@ -1,6 +1,7 @@
 package com.formakers.fomes.provisioning.view;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
+
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
@@ -9,11 +10,10 @@ import com.formakers.fomes.shadow.ShadowRecentAnalysisReportFragment;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, shadows = {ShadowRecentAnalysisReportFragment.class})
+@Config(shadows = {ShadowRecentAnalysisReportFragment.class})
 public class RecentAnalysisReportActivityTest extends FomesBaseActivityTest {
 
     public RecentAnalysisReportActivityTest() {
@@ -28,7 +28,7 @@ public class RecentAnalysisReportActivityTest extends FomesBaseActivityTest {
     @Override
     @Before
     public void setUp() throws Exception {
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
         super.setUp();
     }
 }

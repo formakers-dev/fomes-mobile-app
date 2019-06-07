@@ -1,6 +1,9 @@
 package com.formakers.fomes.common.job;
 
 import android.app.job.JobParameters;
+import android.os.Build;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
@@ -21,8 +24,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SendDataJobServiceTest {
 
     private SendDataJobService subject;
@@ -76,7 +76,7 @@ public class SendDataJobServiceTest {
             }
         });
 
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
         appUsages.add(new AppUsage("packageName1", 1000));
         appUsages.add(new AppUsage("packageName2", 2000));
@@ -129,6 +129,13 @@ public class SendDataJobServiceTest {
 
         // FCM 토큰 셋팅했는지
         assertThat(requestedUser.getRegistrationToken()).isEqualTo("myRegistrationToken");
+
+        // 디바이스 정보 셋팅했는지 (CI 테스트 환경의 정보를 알 수 없어 참조로 검증함)
+        System.out.println(requestedUser.getDevice());
+        assertThat(requestedUser.getDevice()).isNotNull();
+        assertThat(requestedUser.getDevice().getManufacturer()).isEqualTo(Build.MANUFACTURER);
+        assertThat(requestedUser.getDevice().getModel()).isEqualTo(Build.MODEL);
+        assertThat(requestedUser.getDevice().getOsVersion()).isEqualTo(Build.VERSION.SDK_INT);
     }
 
     @Test

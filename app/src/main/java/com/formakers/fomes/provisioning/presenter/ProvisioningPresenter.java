@@ -1,5 +1,7 @@
 package com.formakers.fomes.provisioning.presenter;
 
+import android.os.Build;
+
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
@@ -116,7 +118,13 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     @Override
     public Completable requestUpdateUser() {
         userDAO.updateUserInfo(this.user);
-        return this.userService.updateUser(this.user.setAppVersion(BuildConfig.VERSION_NAME));
+        return this.userService.updateUser(
+                this.user.setAppVersion(BuildConfig.VERSION_NAME)
+                        .setDevice(new User.DeviceInfo()
+                                .setManufacturer(Build.MANUFACTURER)
+                                .setModel(Build.MODEL)
+                                .setOsVersion(Build.VERSION.SDK_INT))
+        );
     }
 
     @Override

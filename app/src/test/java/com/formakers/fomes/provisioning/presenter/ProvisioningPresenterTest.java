@@ -1,6 +1,5 @@
 package com.formakers.fomes.provisioning.presenter;
 
-import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.UserService;
@@ -35,12 +34,12 @@ import static org.mockito.Mockito.when;
 public class ProvisioningPresenterTest {
 
     @Mock ProvisioningContract.View mockView;
-    @Mock User mockUser;
     @Mock UserService mockUserService;
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
     @Mock UserDAO mockUserDAO;
     @Mock AnalyticsModule.Analytics mockAnalytics;
+    @Mock User mockUser;
 
     ProvisioningPresenter subject;
 
@@ -60,6 +59,8 @@ public class ProvisioningPresenterTest {
         });
 
         MockitoAnnotations.initMocks(this);
+
+        when(mockUser.setAppVersion(any())).thenReturn(mockUser);
 
         subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO, mockAnalytics);
     }
@@ -134,7 +135,6 @@ public class ProvisioningPresenterTest {
         subject.requestUpdateUser();
 
         verify(mockUserDAO).updateUserInfo(eq(mockUser));
-        verify(mockUser).setAppVersion(eq(BuildConfig.VERSION_NAME));
 //        verify(mockUserService).updateUser(eq(mockUser));
     }
 

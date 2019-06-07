@@ -3,14 +3,14 @@ package com.formakers.fomes.main.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
@@ -20,6 +20,7 @@ import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.main.contract.AppInfoDetailContract;
 import com.formakers.fomes.main.dagger.AppInfoDetailFragmentModule;
 import com.formakers.fomes.main.dagger.DaggerAppInfoDetailFragmentComponent;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.common.base.Joiner;
 
 import java.util.List;

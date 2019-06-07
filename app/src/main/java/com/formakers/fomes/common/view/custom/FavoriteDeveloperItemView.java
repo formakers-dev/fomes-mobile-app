@@ -1,8 +1,8 @@
 package com.formakers.fomes.common.view.custom;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.constraint.ConstraintLayout;
+import androidx.annotation.LayoutRes;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;

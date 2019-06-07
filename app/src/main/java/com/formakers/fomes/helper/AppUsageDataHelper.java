@@ -1,6 +1,6 @@
 package com.formakers.fomes.helper;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.util.DateUtil;

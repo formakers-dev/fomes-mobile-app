@@ -2,7 +2,6 @@ package com.formakers.fomes.provisioning.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
@@ -47,11 +48,13 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (this.presenter != null && this.presenter.isSelected(this)) {
-            onSelectedPage();
-        }
+        if (this.presenter != null) {
+            if (this.presenter.isSelected(this)) {
+                onSelectedPage();
+            }
 
-        this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
+            this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.INTRO);
+        }
         return inflater.inflate(R.layout.fragment_provision_user_info, container, false);
     }
 
@@ -136,6 +139,10 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
 
     @SuppressLint("ResourceType")
     private void emitFilledUpEvent() {
+        if (this.presenter == null) {
+            return;
+        }
+
         if (lifeGameEditText.getText().length() > 0
                 && birthSpinner.getSelectedItemPosition() > 0
                 && jobSpinner.getSelectedItemPosition() > 0

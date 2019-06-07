@@ -1,6 +1,7 @@
 package com.formakers.fomes.common.noti;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
+
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.job.JobManager;
@@ -18,8 +19,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +36,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class MessagingServiceTest {
     private MessagingService subject;
 
@@ -50,7 +48,7 @@ public class MessagingServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
         when(mockSharedPreferenceHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferenceHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");

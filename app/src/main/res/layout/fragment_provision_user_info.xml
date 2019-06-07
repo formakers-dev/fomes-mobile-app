@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/provision_padding_start_end"
@@ -67,7 +67,7 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/provision_content_title_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/provision_nickname_content_edittext"
+            app:layout_constraintEnd_toStartOf="@+id/provision_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_0" />
 
@@ -225,6 +225,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/provision_user_info_gender_title_textview" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

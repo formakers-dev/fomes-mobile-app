@@ -1,21 +1,22 @@
 package com.formakers.fomes.settings;
 
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.settings.adapter.SettingsListAdapter;
 import com.formakers.fomes.settings.model.SettingsItem;
-import com.formakers.fomes.common.FomesConstants.Settings.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RuntimeEnvironment;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
@@ -34,7 +35,7 @@ public class SettingsActivityTest extends FomesBaseActivityTest<SettingsActivity
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        ((TestFomesApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
         super.setUp();
     }
 

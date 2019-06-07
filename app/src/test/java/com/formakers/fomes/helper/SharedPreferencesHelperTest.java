@@ -3,28 +3,25 @@ package com.formakers.fomes.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.formakers.fomes.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SharedPreferencesHelperTest {
     private SharedPreferencesHelper subject;
     private SharedPreferences sf;
 
     @Before
     public void setUp() throws Exception {
-        subject = new SharedPreferencesHelper(RuntimeEnvironment.application);
+        subject = new SharedPreferencesHelper(ApplicationProvider.getApplicationContext());
 
-        sf = RuntimeEnvironment.application.getSharedPreferences("FOMES_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+        sf = ApplicationProvider.getApplicationContext().getSharedPreferences("FOMES_SHARED_PREFERENCES", Context.MODE_PRIVATE);
         sf.edit()
                 .putString("ACCESS_TOKEN", "TEST_STRING_VALUE")
                 .putLong("LAST_USAGE_TIME", 1234567890L)
