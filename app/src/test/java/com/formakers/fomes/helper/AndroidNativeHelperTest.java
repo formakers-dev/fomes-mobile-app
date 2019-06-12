@@ -27,6 +27,13 @@ import org.robolectric.shadows.ShadowPackageManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.observers.TestSubscriber;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -48,6 +55,20 @@ public class AndroidNativeHelperTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
+//        RxJavaHooks.setOnComputationScheduler(scheduler -> testScheduler);
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+
         mockUsageStatsManager = mock(UsageStatsManager.class);
         mockAppOpsManager = mock(AppOpsManager.class);
 
@@ -76,7 +97,7 @@ public class AndroidNativeHelperTest {
         });
         when(mockUsageStatsManager.queryEvents(anyLong(), anyLong())).thenReturn(usageEvents);
 
-        subject.getUsageStatEvents(0L, 1L);
+        subject.getUsageStatEvents(0L, 1L).subscribe(new TestSubscriber<>());
 
         verify(usageEvents, times(2)).getNextEvent(any());
     }

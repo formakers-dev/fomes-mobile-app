@@ -2,6 +2,7 @@ package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.model.User;
@@ -18,7 +19,12 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.observers.TestSubscriber;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,17 +40,29 @@ public class AppStatServiceTest extends AbstractServiceTest {
 
     private AppStatService subject;
 
-    @Mock
-    private SharedPreferencesHelper mockSharedPreferencesHelper;
-
-    @Mock
-    private StatAPI mockStatAPI;
+    @Mock private SharedPreferencesHelper mockSharedPreferencesHelper;
+    @Mock private StatAPI mockStatAPI;
+    @Mock private TimeHelper mockTimeHelper;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new AppStatService(mockStatAPI, mockSharedPreferencesHelper, getMockAPIHelper());
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.trampoline());
+//        RxJavaHooks.setOnComputationScheduler(scheduler -> testScheduler);
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+
+        subject = new AppStatService(mockStatAPI, mockSharedPreferencesHelper, getMockAPIHelper(), mockTimeHelper);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
@@ -77,6 +95,22 @@ public class AppStatServiceTest extends AbstractServiceTest {
     public void sendShortTermStats호출시_토큰_만료_여부를_확인한다() throws Exception {
         List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
         verifyToCheckExpiredToken(subject.sendShortTermStats(shortTermStatList).toObservable());
+    }
+
+
+    @Test
+    public void sendShortTermStats_완료시__마지막_업데이트_시간을_갱신한다() throws Exception {
+        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
+        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
+
+        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        subject.sendShortTermStats(shortTermStatList).subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent();
+
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertCompleted();
+        verify(mockSharedPreferencesHelper).setLastUpdateShortTermStatTimestamp(eq(10L));
     }
 
     @Test

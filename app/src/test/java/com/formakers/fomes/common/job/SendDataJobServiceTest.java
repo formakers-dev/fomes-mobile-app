@@ -15,6 +15,7 @@ import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.AppUsage;
+import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.model.User;
 
 import org.junit.After;
@@ -31,6 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Completable;
+import rx.Observable;
 import rx.Scheduler;
 import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
@@ -60,29 +62,33 @@ public class SendDataJobServiceTest {
     @Inject UserDAO mockUserDAO;
 
     List<AppUsage> appUsages = new ArrayList<>();
+    List<ShortTermStat> shortTermStats = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
         RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
-        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
-        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.trampoline());
 
         RxAndroidPlugins.getInstance().reset();
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
             @Override
             public Scheduler getMainThreadScheduler() {
-                return Schedulers.immediate();
+                return Schedulers.trampoline();
             }
         });
 
         ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
+        shortTermStats.add(new ShortTermStat("packageName1", 1000, 2000));
+        shortTermStats.add(new ShortTermStat("packageName2", 2000, 3000));
+
         appUsages.add(new AppUsage("packageName1", 1000));
         appUsages.add(new AppUsage("packageName2", 2000));
 
-        when(mockAppUsageDataHelper.getAppUsages()).thenReturn(appUsages);
-        when(mockAppUsageDataHelper.sendShortTermStats()).thenReturn(Completable.complete());
+        when(mockAppUsageDataHelper.getAppUsages()).thenReturn(Observable.from(appUsages));
+        when(mockAppUsageDataHelper.getShortTermStats()).thenReturn(Observable.from(shortTermStats));
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
@@ -90,6 +96,8 @@ public class SendDataJobServiceTest {
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User()));
         when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
         when(mockUserService.notifyActivated()).thenReturn(Completable.complete());
+        when(mockAppStatService.sendAppUsages(any())).thenReturn(Completable.complete());
+        when(mockAppStatService.sendShortTermStats(any())).thenReturn(Completable.complete());
 
         subject = Robolectric.setupService(SendDataJobService.class);
     }
@@ -139,10 +147,12 @@ public class SendDataJobServiceTest {
     }
 
     @Test
-    public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() {
+    public void onStartJob_실행시_단기통계데이터와_기본수집일동안의_앱사용통계정보를_서버로_전송한다() {
         subject_onStartJob();
 
-        verify(mockAppUsageDataHelper).sendShortTermStats();
+        verify(mockAppUsageDataHelper).getShortTermStats();
+        verify(mockAppStatService).sendShortTermStats(eq(shortTermStats));
+
         verify(mockAppUsageDataHelper).getAppUsages();
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
     }
@@ -153,7 +163,7 @@ public class SendDataJobServiceTest {
 
         subject_onStartJob();
 
-        verify(mockAppUsageDataHelper, never()).sendShortTermStats();
+        verify(mockAppStatService, never()).sendShortTermStats(any());
         verify(mockAppStatService, never()).sendAppUsages(any());
     }
 

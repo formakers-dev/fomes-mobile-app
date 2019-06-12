@@ -3,6 +3,7 @@ package com.formakers.fomes.common.network;
 import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.helper.TimeHelper;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
@@ -23,12 +24,14 @@ public class AppStatService extends AbstractService {
     private final StatAPI statAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
     private final APIHelper APIHelper;
+    private final TimeHelper timeHelper;
 
     @Inject
-    public AppStatService(StatAPI statAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper) {
+    public AppStatService(StatAPI statAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper, TimeHelper timeHelper) {
         this.statAPI = statAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
         this.APIHelper = APIHelper;
+        this.timeHelper = timeHelper;
     }
 
     public Completable sendShortTermStats(List<ShortTermStat> shortTermStatList) {
@@ -41,7 +44,7 @@ public class AppStatService extends AbstractService {
                     .observeOn(Schedulers.io())
                     .compose(APIHelper.refreshExpiredToken())
                     .toCompletable()
-                    .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(shortTermStatList.get(shortTermStatList.size() - 1).getEndTimeStamp()));
+                    .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(timeHelper.getStatBasedCurrentTime()));
         } else {
             return Completable.complete();
         }

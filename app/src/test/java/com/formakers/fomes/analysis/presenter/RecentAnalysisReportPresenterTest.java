@@ -13,6 +13,7 @@ import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.AppUsageDataHelper;
+import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.model.User;
 
 import org.assertj.core.util.Lists;
@@ -40,6 +41,7 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -57,6 +59,7 @@ public class RecentAnalysisReportPresenterTest {
     @Mock User mockUser;
 
     RecentReport report;
+    List<ShortTermStat> shortTermStats = new ArrayList<>();
 
     RecentAnalysisReportPresenter subject;
 
@@ -79,7 +82,7 @@ public class RecentAnalysisReportPresenterTest {
 
         ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
-        when(mockAppUsageDataHelper.getAppUsages()).thenReturn(new ArrayList<>());
+        when(mockAppUsageDataHelper.getAppUsages()).thenReturn(Observable.from(new ArrayList<>()));
         when(mockUser.getNickName()).thenReturn("mockUserNickName");
         when(mockUser.getGender()).thenReturn("male");
         when(mockUser.getBirthday()).thenReturn(1989);
@@ -103,6 +106,9 @@ public class RecentAnalysisReportPresenterTest {
         totalUsedTimeRank.add(new Rank("user3", 999, 1L));
         totalUsedTimeRank.add(new Rank("mockUserId", 24, 1000000L));
 
+        shortTermStats.add(new ShortTermStat("packageName1", 1000, 2000));
+        shortTermStats.add(new ShortTermStat("packageName2", 2000, 3000));
+
         List<UsageGroup> usages = new ArrayList<>();
 
         // TODO : 리스트를 ... 다..만들어야...한다...........귀차니즘..............
@@ -112,9 +118,9 @@ public class RecentAnalysisReportPresenterTest {
 
         report = new RecentReport().setTotalUsedTimeRank(totalUsedTimeRank).setUsages(usages).setTotalUserCount(999);
 
+        when(mockAppUsageDataHelper.getShortTermStats()).thenReturn(Observable.from(shortTermStats));
         when(mockAppStatService.requestRecentReport(eq("GAME"), eq(mockUser))).thenReturn(Observable.just(report));
-
-        when(mockAppUsageDataHelper.sendShortTermStats()).thenReturn(Completable.complete());
+        when(mockAppStatService.sendShortTermStats(any())).thenReturn(Completable.complete());
     }
 
     @Test
@@ -123,7 +129,7 @@ public class RecentAnalysisReportPresenterTest {
 
         subject.loading().subscribe();
 
-        verify(mockAppUsageDataHelper).sendShortTermStats();
+        verify(mockAppStatService).sendShortTermStats(eq(shortTermStats));
     }
 
     @Test

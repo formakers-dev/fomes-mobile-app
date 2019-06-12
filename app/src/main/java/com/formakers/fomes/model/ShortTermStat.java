@@ -7,6 +7,7 @@ public class ShortTermStat {
     private long totalUsedTime;
     private String versionName;
 
+    @Deprecated
     public ShortTermStat(String packageName, long startTimeStamp, long endTimeStamp, long totalUsedTime) {
         this.packageName = packageName;
         this.startTimeStamp = startTimeStamp;
