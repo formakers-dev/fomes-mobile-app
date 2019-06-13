@@ -39,6 +39,22 @@
             app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
             app:layout_constraintTop_toBottomOf="@id/betatest_list_textview" />
 
+        <TextView android:id="@+id/title_option_menu"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginEnd="11dp"
+            android:text="즐겨찾기"
+            android:textColor="@color/fomes_light_gray"
+            android:textSize="@dimen/main_tab_subtitle_text_size"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/ripple"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/betatest_list_textview"
+            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recommend_recyclerview"
             android:layout_width="@dimen/match_constraint"
