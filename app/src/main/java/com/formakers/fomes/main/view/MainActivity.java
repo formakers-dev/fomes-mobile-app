@@ -132,6 +132,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         betaTestFragment.setArguments(bundle);
 
         fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
+        fragmentPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, new FinishedBetaTestFragment(), getString(R.string.main_tab_finished_betatest));
         fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
         contentsViewPager.setAdapter(fragmentPagerAdapter);

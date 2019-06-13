@@ -223,4 +223,5 @@
     <string name="betatest_epilogue_opened">테스트 에필로그 보기</string>
     <string name="betatest_company_says_not_collected">게임사 소감 : \?\?\? (모든 결과 취합 시 표시됩니다)</string>
     <string name="betatest_company_says">게임사 소감 : %s</string>
+    <string name="main_tab_finished_betatest">마감된 테스트</string>
 </resources>

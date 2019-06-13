@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/finished_betatest_swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fomes_content_background_dark"
+            android:descendantFocusability="blocksDescendants">
+
+            <TextView android:id="@+id/finished_betatest_list_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp"
+                android:text="테스트 목록"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="@color/fomes_pale_gray"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/feedback_recyclerview"
+                app:layout_constraintVertical_bias="0.0"/>
+
+            <TextView android:id="@+id/finished_betatest_notice_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textSize="11dp"
+                android:textColor="@color/fomes_light_gray"
+                android:text="게임 관련 테스트가 표시됩니다."
+                app:layout_constraintStart_toEndOf="@id/finished_betatest_list_textview"
+                app:layout_constraintBottom_toBottomOf="@id/finished_betatest_list_textview" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feedback_recyclerview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/finished_betatest_list_textview"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <LinearLayout android:id="@+id/finished_betatest_empty_view"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/finished_betatest_list_textview"
+                app:layout_constraintVertical_bias="0.0">
+
+                <ImageView
+                    android:layout_width="254dp"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="39dp"
+                    android:background="@drawable/betatest_empty_background" />
+
+                <TextView
+                    android:id="@+id/finished_betatest_empty_textview"
+                    android:layout_width="255dp"
+                    android:layout_height="73dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/betatest_empty_text_background"
+                    android:gravity="center"
+                    android:lineSpacingExtra="7dp"
+                    android:paddingBottom="7dp"
+                    android:paddingEnd="14dp"
+                    android:paddingStart="14dp"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/fomes_light_gray"
+                    android:textSize="12dp"
+                    tools:text="곡씩씩 님께 도착할 테스트를 기다리고 있어요.\n테스트가 도착하면 포메스가 알려드릴게요." />
+
+            </LinearLayout>
+
+            <ProgressBar android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
