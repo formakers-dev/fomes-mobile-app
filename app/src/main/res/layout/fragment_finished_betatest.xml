@@ -47,7 +47,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/finished_betatest_list_textview" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/feedback_recyclerview"
+                android:id="@+id/finished_betatest_recyclerview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"

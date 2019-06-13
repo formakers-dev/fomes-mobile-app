@@ -39,7 +39,7 @@ public class BetaTestServiceTest extends AbstractServiceTest {
 
     @Test
     public void getFinishedBetaTestList_호출시__참여가능한_리스트를_요청한다() {
-        subject.getBetaTestList().subscribe(new TestSubscriber<>());
+        subject.getFinishedBetaTestList().subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestAPI).getFinishedBetaTests(eq("TEST_ACCESS_TOKEN"));
     }
