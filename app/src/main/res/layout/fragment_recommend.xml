@@ -1,21 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView android:id="@+id/recommend_nested_scrollview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/fomes_content_background_dark">
+    android:fillViewport="true"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
 
-    <include android:id="@+id/recommend_contents_layout"
-        layout="@layout/fragment_recommend_contents"
-        android:visibility="gone"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fomes_content_background_dark"
+        android:descendantFocusability="blocksDescendants">
 
-    <include android:id="@+id/recommend_error_layout"
-        layout="@layout/fragment_recommend_error"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/betatest_list_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_tab_title_margin_start"
+            android:layout_marginTop="@dimen/main_tab_title_margin_top"
+            android:text="데이터 기반 추천 목록"
+            android:textColor="@color/fomes_pale_gray"
+            android:textSize="@dimen/main_tab_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-    <ProgressBar android:id="@+id/recommend_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/betatest_notice_textview"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:text="지난 7일동안의 플레이 분석을 기반으로 추천합니다."
+            android:textColor="@color/fomes_light_gray"
+            android:textSize="@dimen/main_tab_subtitle_text_size"
+            app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
+            app:layout_constraintTop_toBottomOf="@id/betatest_list_textview" />
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_recyclerview"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview"/>
+
+        <include
+            android:id="@+id/recommend_error_layout"
+            layout="@layout/fragment_recommend_error"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview" />
+
+        <ProgressBar
+            android:id="@+id/recommend_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

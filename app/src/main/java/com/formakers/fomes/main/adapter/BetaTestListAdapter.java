@@ -109,8 +109,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (item.getAfterService() != null) {
                 viewHolder.epilogueButton.setText(R.string.betatest_epilogue_opened);
 
-                viewHolder.epilogueButtonTextView.setVisibility(View.GONE);
-                viewHolder.epilogueButtonIcon.setVisibility(View.GONE);
                 viewHolder.epilogueButton.setEnabled(true);
                 viewHolder.companySaysTextView.setText(String.format(context.getString(R.string.betatest_company_says), item.getAfterService().getCompanySays()));
 
@@ -125,8 +123,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 viewHolder.epilogueButton.setVisibility(View.VISIBLE);
                 viewHolder.epilogueButton.setText("");
-                viewHolder.epilogueButtonTextView.setVisibility(View.VISIBLE);
-                viewHolder.epilogueButtonIcon.setVisibility(View.VISIBLE);
                 viewHolder.epilogueButton.setEnabled(false);
 
                 viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
@@ -246,17 +242,13 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView companySaysTextView;
         ImageView iconImageview;
         TextView progressPeriodTextView;
-        ImageView epilogueButtonIcon;
         Button epilogueButton;
-        TextView epilogueButtonTextView;
 
         public FinishedItemViewHolder(View itemView) {
             super(itemView);
             iconImageview = itemView.findViewById(R.id.betatest_icon_imageview);
             progressPeriodTextView = itemView.findViewById(R.id.betatest_period_textview);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
-            epilogueButtonIcon = itemView.findViewById(R.id.betatest_finished_epilogue_button_icon);
-            epilogueButtonTextView = itemView.findViewById(R.id.betatest_finished_epilogue_button_text);
             companySaysTextView = itemView.findViewById(R.id.betatest_finished_company_says);
         }
     }

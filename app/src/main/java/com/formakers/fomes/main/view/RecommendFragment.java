@@ -40,7 +40,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     public static final String TAG = "RecommendFragment";
 
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
-    @BindView(R.id.recommend_contents_layout) NestedScrollView recommendContentsLayout;
+    @BindView(R.id.recommend_nested_scrollview) NestedScrollView recommendContentsLayout;
     @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
     @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
 
@@ -144,13 +144,13 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void showRecommendList() {
-        recommendContentsLayout.setVisibility(View.VISIBLE);
+        recommendRecyclerView.setVisibility(View.VISIBLE);
         recommendErrorLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void showErrorPage() {
-        recommendContentsLayout.setVisibility(View.GONE);
+        recommendRecyclerView.setVisibility(View.GONE);
         recommendErrorLayout.setVisibility(View.VISIBLE);
     }
 

@@ -136,6 +136,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
         contentsViewPager.setAdapter(fragmentPagerAdapter);
+        contentsViewPager.setOffscreenPageLimit(3);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
