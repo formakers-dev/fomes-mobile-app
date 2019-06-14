@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.FinishedBetaTestListAdapter;
@@ -32,6 +34,7 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     @BindView(R.id.finished_betatest_recyclerview) RecyclerView finishedBetatestRecyclerView;
     @BindView(R.id.finished_betatest_empty_view) View finishedBetatestEmptyView;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
+    @BindView(R.id.finished_betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
     @Inject FinishedBetaTestContract.Presenter presenter;
 
@@ -75,6 +78,12 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
         this.setAdapterView(adapter);
 
         presenter.initialize();
+
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.load()
+                .toCompletable()
+                .doOnSubscribe((x) -> swipeRefreshLayout.setRefreshing(true))
+                .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
+                .subscribe(() -> {}, e -> Log.e(TAG, "ErrorOnLoad e=" + e)));
     }
 
     @Override

@@ -55,14 +55,8 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     public void initialize() {
         compositeSubscription.add(load()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(() -> {
-                    Log.d(TAG, "load - doOnSubscribe");
-                    view.showLoading();
-                })
-                .doAfterTerminate(() -> {
-                    Log.d(TAG, "load - doAfterTerminate");
-                    view.hideLoading();
-                })
+                .doOnSubscribe(() -> view.showLoading())
+                .doAfterTerminate(() -> view.hideLoading())
                 .toCompletable()
                 .subscribe(() -> { }, e -> Log.e(TAG, String.valueOf(e))));
     }
@@ -72,7 +66,6 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
         return betaTestService.getFinishedBetaTestList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(betaTests -> {
-                    Log.d(TAG, "A???");
                     if (betaTests == null || betaTests.isEmpty()) {
                         throw new IllegalStateException("Empty List");
                     }
@@ -83,7 +76,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                     view.refresh();
                     view.showListView();
 
-                    Log.d(TAG, String.valueOf(betaTests));
+                    Log.v(TAG, String.valueOf(betaTests));
                 })
                 .doOnError(e -> {
                     Log.e(TAG, "doOnError e=" + e);
