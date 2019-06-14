@@ -5,18 +5,20 @@ import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.FinishedBetaTestContract;
 import com.formakers.fomes.main.contract.FinishedBetaTestListAdapterContract;
 import com.formakers.fomes.main.dagger.scope.FinishedBetaTestFragmentScope;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 @FinishedBetaTestFragmentScope
@@ -33,8 +35,10 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
+    private List<BetaTest> finishedList = new ArrayList<>();
+
     @Inject
-    public FinishedBetaTestPresenter(FinishedBetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
+    public FinishedBetaTestPresenter(FinishedBetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService,AnalyticsModule.Analytics analytics) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
@@ -70,11 +74,9 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                         throw new IllegalStateException("Empty List");
                     }
 
-                    adapterModel.clear();
-                    adapterModel.addAll(betaTests);
-
-                    view.refresh();
-                    view.showListView();
+                    finishedList.clear();
+                    finishedList.addAll(betaTests);
+                    updateDisplayedList(filterCompletedList(finishedList, view.isNeedAppliedCompletedFilter()));
 
                     Log.v(TAG, "load) onSuccess = " + betaTests);
                 })
@@ -82,6 +84,35 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                     Log.e(TAG, "load) onError e=" + e);
                     view.showEmptyView();
                 });
+    }
+
+    @Override
+    public void applyCompletedFilter(boolean isNeedFileter) {
+        updateDisplayedList(filterCompletedList(finishedList, isNeedFileter));
+    }
+
+    private List<BetaTest> filterCompletedList(List<BetaTest> originalList, boolean isFilteredCompleted) {
+        if (isFilteredCompleted) {
+            return Observable.from(originalList)
+                    .observeOn(Schedulers.io())
+                    .filter(BetaTest::isCompleted)
+                    .toList().toSingle().toBlocking().value();
+        } else {
+            return originalList;
+        }
+    }
+
+    private void updateDisplayedList(List<BetaTest> betaTests) {
+        adapterModel.clear();
+        adapterModel.addAll(betaTests);
+
+        view.refresh();
+
+        if (betaTests.isEmpty()) {
+            view.showEmptyView();
+        } else {
+            view.showListView();
+        }
     }
 
     @Override

@@ -159,6 +159,7 @@
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">마감된 테스트 목록</string>
     <string name="finished_betatest_subtitle">마감된 테스트의 에필로그 및 후기를 볼 수 있습니다.</string>
+    <string name="finished_betatest_complete_switch_text">완료한 테스트만 보기</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>

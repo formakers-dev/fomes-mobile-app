@@ -19,6 +19,7 @@ public interface FinishedBetaTestContract {
 
         void initialize();
         Single<List<BetaTest>> load();
+        void applyCompletedFilter(boolean isNeedFilter);
         BetaTest getItem(int position);
 
         void unsubscribe();
@@ -26,6 +27,8 @@ public interface FinishedBetaTestContract {
 
     interface View extends BaseView<Presenter> {
         void setAdapterView(FinishedBetaTestListAdapterContract.View adapterView);
+
+        boolean isNeedAppliedCompletedFilter();
 
         void showLoading();
         void hideLoading();

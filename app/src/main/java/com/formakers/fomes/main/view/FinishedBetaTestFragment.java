@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     @BindView(R.id.finished_betatest_empty_view) View finishedBetatestEmptyView;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
     @BindView(R.id.finished_betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.title_option_menu_switch) Switch completedFilterSwitch;
 
     @Inject FinishedBetaTestContract.Presenter presenter;
 
@@ -84,6 +86,8 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
                 .doOnSubscribe((x) -> swipeRefreshLayout.setRefreshing(true))
                 .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
                 .subscribe(() -> {}, e -> Log.e(TAG, "ErrorOnLoad e=" + e)));
+
+        completedFilterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> presenter.applyCompletedFilter(isChecked));
     }
 
     @Override
@@ -99,6 +103,11 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     @Override
     public void setAdapterView(FinishedBetaTestListAdapterContract.View adapterView) {
         this.adapterView = adapterView;
+    }
+
+    @Override
+    public boolean isNeedAppliedCompletedFilter() {
+        return completedFilterSwitch.isChecked();
     }
 
     @Override
