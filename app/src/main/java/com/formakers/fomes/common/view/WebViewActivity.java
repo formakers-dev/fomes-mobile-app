@@ -183,14 +183,19 @@ public class WebViewActivity extends FomesBaseActivity {
             Log.v(TAG, "onPageStarted=" + url);
             super.onPageStarted(view, url, favicon);
 
-            loadingBar.setVisibility(View.VISIBLE);
+            if (loadingBar != null) {
+                loadingBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             Log.v(TAG, "onPageFinished=" + url);
             super.onPageFinished(view, url);
-            loadingBar.setVisibility(View.GONE);
+
+            if (loadingBar != null) {
+                loadingBar.setVisibility(View.GONE);
+            }
         }
 
 
@@ -199,7 +204,10 @@ public class WebViewActivity extends FomesBaseActivity {
             Log.e(TAG, "onReceivedError on " + failingUrl);
             Log.e(TAG, "onReceivedError [" + errorCode + "]" + description);
             super.onReceivedError(view, errorCode, description, failingUrl);
-            loadingBar.setVisibility(View.GONE);
+
+            if (loadingBar != null) {
+                loadingBar.setVisibility(View.GONE);
+            }
         }
 
         @RequiresApi(api = Build.VERSION_CODES.M)
@@ -207,7 +215,10 @@ public class WebViewActivity extends FomesBaseActivity {
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             Log.e(TAG, "onReceivedError [" + error.getErrorCode() + "]" + error.getDescription());
             super.onReceivedError(view, request, error);
-            loadingBar.setVisibility(View.GONE);
+
+            if (loadingBar != null) {
+                loadingBar.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -215,7 +226,10 @@ public class WebViewActivity extends FomesBaseActivity {
             Log.e(TAG, "onReceivedHttpError on [" + request.getMethod() + "] " +request.getUrl());
             Log.e(TAG, "onReceivedHttpError [" + errorResponse.getStatusCode() + "]" + errorResponse.getReasonPhrase());
             super.onReceivedHttpError(view, request, errorResponse);
-            loadingBar.setVisibility(View.GONE);
+
+            if (loadingBar != null) {
+                loadingBar.setVisibility(View.GONE);
+            }
         }
     }
 }
