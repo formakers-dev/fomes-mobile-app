@@ -24,6 +24,7 @@ import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
 import com.formakers.fomes.main.contract.EventPagerAdapterContract;
@@ -112,17 +113,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         navigationView.getMenu().clear();
 
         navigationView.inflateMenu(R.menu.main_nav);
-
-        addToCompositeSubscription(
-            presenter.requestUserInfo()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> {
-                    ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
-                            .setText(user.getNickName());
-                    ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
-                            .setText(user.getEmail());
-                })
-        );
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
+                .setText(presenter.getUserInfo().getNickName());
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
+                .setText(presenter.getUserInfo().getEmail());
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
@@ -203,7 +197,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.my_wish_list).setVisible(true);
+        menu.findItem(R.id.fomes_postbox).setVisible(true);
+        menu.findItem(R.id.my_wish_list).setVisible(false);
         menu.findItem(R.id.my_recent_analysis).setVisible(false);
         menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
 
@@ -229,6 +224,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             case R.id.settings: {
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            }
+            case R.id.fomes_postbox: {
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.EXTRA_TITLE, getString(R.string.postbox_title));
+                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, "https://docs.google.com/forms/d/e/1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ/viewform?usp=pp_url&entry.1223559684=" + presenter.getUserInfo().getEmail());
+                startActivity(intent);
             }
         }
 

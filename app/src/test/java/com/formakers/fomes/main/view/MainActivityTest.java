@@ -14,6 +14,7 @@ import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
+import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
@@ -37,7 +38,6 @@ import retrofit2.Response;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
 import rx.Scheduler;
-import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
@@ -46,6 +46,7 @@ import rx.schedulers.TestScheduler;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -91,7 +92,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         super.setUp();
 
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");
-        when(mockPresenter.requestUserInfo()).thenReturn(Single.just(user));
+        when(mockPresenter.getUserInfo()).thenReturn(user);
         when(mockPresenter.requestVerifyAccessToken()).thenReturn(Completable.complete());
 
         when(mockPresenter.checkRegisteredSendDataJob()).thenReturn(true);
@@ -146,7 +147,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     public void MainActivity_시작시__사이드메뉴에_유저정보가_셋팅된다() {
         launchActivity();
 
-        verify(mockPresenter).requestUserInfo();
+        verify(mockPresenter, times(2)).getUserInfo();
 
         View sideHeaderView = subject.navigationView.getHeaderView(0);
         assertThat(((TextView) sideHeaderView.findViewById(R.id.user_nickname)).getText())
@@ -205,15 +206,17 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
     }
 
     @Test
-    public void 옵선아이템의_즐겨찾기_클릭시__즐겨찾기화면으로_이동한다() {
+    public void 메뉴의_우체통_클릭시__우체통_화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
-        when(item.getItemId()).thenReturn(R.id.my_wish_list);
+        when(item.getItemId()).thenReturn(R.id.fomes_postbox);
 
         launchActivity();
         subject.onOptionsItemSelected(item);
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(WishListActivity.class.getSimpleName());
+        assertThat(intent.getComponent().getClassName()).contains(WebViewActivity.class.getSimpleName());
+        assertThat(intent.getStringExtra(WebViewActivity.EXTRA_TITLE)).isEqualTo("포메스 우체통");
+        assertThat(intent.getStringExtra(WebViewActivity.EXTRA_CONTENTS)).contains("1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ");
     }
 
     @Test

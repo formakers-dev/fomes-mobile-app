@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/fomes_postbox"
+        android:title="@string/main_option_menu_fomes_postbox"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/my_recent_analysis"
         android:icon="@drawable/icon_my_recent_analysis_option"
         android:iconTint="@color/fomes_white"
@@ -11,6 +15,5 @@
         android:icon="@drawable/icon_wish_list"
         android:iconTint="@color/fomes_white"
         android:title="@string/main_menu_my_wish_list"
-        android:visible="false"
         app:showAsAction="always"/>
 </menu>
