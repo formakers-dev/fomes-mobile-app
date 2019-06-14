@@ -55,7 +55,7 @@ public class LocalBroadcastReceiver extends BroadcastReceiver {
                     destIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplink));
                 }
 
-                context.startActivity(destIntent);
+                context.startActivity(destIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             }
             case ACTION_NOTI_CANCELLED: {
