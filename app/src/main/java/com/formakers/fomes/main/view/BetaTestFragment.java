@@ -2,12 +2,14 @@ package com.formakers.fomes.main.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -96,7 +98,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
             betaTestDetailAlertDialog.setArguments(bundle);
             betaTestDetailAlertDialog.setPresenter(this.presenter);
-            betaTestDetailAlertDialog.setTargetFragment(this, REQUEST_CODE_DETAIL_DIALOG);
             betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
 
             // 테스트 디테일 화면
@@ -118,6 +119,27 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                     }, e -> com.formakers.fomes.common.util.Log.e(TAG, String.valueOf(e))));
 
         presenter.initialize();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String id = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+
+            if (!TextUtils.isEmpty(id)) {
+                int betaTestId = Integer.parseInt(id);
+                int position = presenter.getBetaTestPostitionById(betaTestId);
+                if (position >= 0) {
+                    recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+                } else {
+                    Toast.makeText(getContext(), "없어용", Toast.LENGTH_SHORT).show();
+                }
+                bundle.remove("EXTRA_SELECTED_ITEM_ID");
+            }
+        }
     }
 
     @Override

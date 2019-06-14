@@ -119,6 +119,17 @@ public class WebViewActivity extends FomesBaseActivity {
             Log.d(TAG, "shouldOverrideUrlLoading) uri=" + uri);
             String scheme = uri.getScheme();
 
+            // 예외 상황 2. 포메스 딥링크 일 때
+            if (DeeplinkActivity.SCHEME_FOMES.equals(scheme)) {
+                Log.d(TAG, "shouldOverrideUrlLoading) deeplink case");
+
+                Intent intent = new Intent(view.getContext(), DeeplinkActivity.class);
+                intent.setData(uri);
+                startActivity(intent);
+
+                return true;
+            }
+
             // 예외 상황 3. 인텐트 일 때
             if ("intent".equals(scheme)) {
                 Log.d(TAG, "shouldOverrideUrlLoading) intent case");

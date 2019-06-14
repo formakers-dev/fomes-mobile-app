@@ -2,6 +2,7 @@ package com.formakers.fomes.main.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,6 +63,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
 
+    private FragmentPagerAdapter tabPagerAdapter;
+
     private Subscription eventPagerAutoSlideSubscription;
     private EventPagerAdapterContract.View eventPagerAdapterView;
 
@@ -119,18 +122,18 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
                 .setText(presenter.getUserInfo().getEmail());
 
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
+        tabPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
         BetaTestFragment betaTestFragment = new BetaTestFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("IS_DEFAULT_PAGE", true);
         betaTestFragment.setArguments(bundle);
 
-        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
-        fragmentPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, new FinishedBetaTestFragment(), getString(R.string.main_tab_finished_betatest));
-        fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        tabPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
+        tabPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, new FinishedBetaTestFragment(), getString(R.string.main_tab_finished_betatest));
+        tabPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
-        contentsViewPager.setAdapter(fragmentPagerAdapter);
+        contentsViewPager.setAdapter(tabPagerAdapter);
         contentsViewPager.setOffscreenPageLimit(3);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
@@ -149,6 +152,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         } else {
             presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_ENTER);
         }
+
+        handleDeeplink(getIntent().getExtras());
     }
 
     @Override
@@ -159,6 +164,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(seq -> showNextEventBanner());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        handleDeeplink(intent.getExtras());
     }
 
     @Override
@@ -361,5 +373,29 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private <T> void startActivity(Class<T> destActivity) {
         Intent intent = new Intent(this, destActivity);
         startActivity(intent);
+    }
+
+    private void handleDeeplink(Bundle bundle) {
+        if (bundle == null) {
+            Log.d(TAG, "handleDeeplink) bundle is null. maybe it is not from deeplink");
+            return;
+        }
+
+        String selectedTab = bundle.getString("EXTRA_SELECTED_TAB", BetaTestFragment.TAG);
+        String selectedItemId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+
+        if (!TextUtils.isEmpty(selectedTab)) {
+            Fragment selectedFragment = tabPagerAdapter.getItem(selectedTab);
+
+            Bundle arguemnts = new Bundle();
+            arguemnts.putString("EXTRA_SELECTED_ITEM_ID", selectedItemId);
+
+            selectedFragment.setArguments(arguemnts);
+
+            contentsViewPager.postDelayed(() -> {
+                contentsViewPager.setCurrentItem(tabPagerAdapter.getPosition(selectedFragment));
+                contentsViewPager.getAdapter().notifyDataSetChanged();
+            }, 100);
+        }
     }
 }
