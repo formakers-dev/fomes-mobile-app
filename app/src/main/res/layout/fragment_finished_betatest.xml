@@ -106,7 +106,7 @@
                     android:paddingTop="20dp"
                     android:textColor="@color/fomes_light_gray"
                     android:textSize="12dp"
-                    tools:text="곡씩씩 님께 도착할 테스트를 기다리고 있어요.\n테스트가 도착하면 포메스가 알려드릴게요." />
+                    android:text="@string/finished_beta_test_empty_text_format" />
 
             </LinearLayout>
 
