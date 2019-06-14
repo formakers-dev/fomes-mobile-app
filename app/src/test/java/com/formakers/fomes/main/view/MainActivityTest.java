@@ -216,7 +216,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(WebViewActivity.class.getSimpleName());
         assertThat(intent.getStringExtra(WebViewActivity.EXTRA_TITLE)).isEqualTo("포메스 우체통");
-        assertThat(intent.getStringExtra(WebViewActivity.EXTRA_CONTENTS)).contains("1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ");
+        assertThat(intent.getStringExtra(WebViewActivity.EXTRA_CONTENTS)).startsWith("http");
     }
 
     @Test

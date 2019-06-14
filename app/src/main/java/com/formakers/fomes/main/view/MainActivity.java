@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
@@ -228,7 +229,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             case R.id.fomes_postbox: {
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(WebViewActivity.EXTRA_TITLE, getString(R.string.postbox_title));
-                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, "https://docs.google.com/forms/d/e/1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ/viewform?usp=pp_url&entry.1223559684=" + presenter.getUserInfo().getEmail());
+                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, (BuildConfig.DEBUG ?
+                        "https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&entry.1042588232="
+                        : "https://docs.google.com/forms/d/e/1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ/viewform?usp=pp_url&entry.1223559684=") + presenter.getUserInfo().getEmail());
                 startActivity(intent);
             }
         }

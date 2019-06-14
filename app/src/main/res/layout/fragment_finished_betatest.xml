@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/main_tab_title_margin_start"
                 android:layout_marginTop="@dimen/main_tab_title_margin_top"
-                android:text="마감된 테스트 목록"
+                android:text="@string/finished_betatest_title"
                 android:textSize="@dimen/main_tab_title_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/fomes_pale_gray"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/main_tab_subtitle_text_size"
                 android:textColor="@color/fomes_light_gray"
-                android:text="자세한 테스트 시상 및 후기를 볼 수 있습니다."
+                android:text="@string/finished_betatest_subtitle"
                 app:layout_constraintStart_toStartOf="@id/finished_betatest_list_textview"
                 app:layout_constraintTop_toBottomOf="@id/finished_betatest_list_textview" />
 
