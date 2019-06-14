@@ -27,6 +27,7 @@ import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.main.contract.BetaTestContract;
 
 import java.util.List;
@@ -127,22 +128,32 @@ public class BetaTestDetailAlertDialog extends DialogFragment {
         }
 
         String actionType = betaTest.getActionType();
-        if ("link".equals(actionType)) {
-            joinButton.setOnClickListener(v -> {
-                this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_DETAIL_DIALOG_JOIN_BUTTON, String.valueOf(betaTest.getId()));
 
-                String url = betaTest.getAction() + userEmail;
+        joinButton.setOnClickListener(v -> {
+            this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_DETAIL_DIALOG_JOIN_BUTTON, String.valueOf(betaTest.getId()));
 
+            String url = betaTest.getAction() + userEmail;
+            Uri uri = Uri.parse(url);
+
+            if ("internal_web".equals(actionType)
+                    || (uri.getQueryParameter("internal_web") != null && uri.getQueryParameter("internal_web").equals("true"))) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(WebViewActivity.EXTRA_TITLE, betaTest.getTitle());
+                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, url);
+                startActivity(intent);
+            } else {
+                // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+            }
 
-                this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_DIALOG_TAP_CONFIRM, String.valueOf(betaTest.getId()));
+            this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_DIALOG_TAP_CONFIRM, String.valueOf(betaTest.getId()));
 
-                dismiss();
-            });
-        }
+            dismiss();
+        });
     }
+
 
     @Override
     public void onDismiss(DialogInterface dialog) {
