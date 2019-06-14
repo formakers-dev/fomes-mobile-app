@@ -15,7 +15,7 @@
     </group>
 
     <group android:id="@+id/menu_group3" android:checkableBehavior="none"
-        android:enabled="false">
+        android:visible="false">
         <item
             android:id="@+id/my_betatest"
             android:title="@string/main_tab_betatest"
