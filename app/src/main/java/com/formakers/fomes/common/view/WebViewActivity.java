@@ -7,12 +7,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -30,6 +32,7 @@ public class WebViewActivity extends FomesBaseActivity {
     public static final String EXTRA_CONTENTS = "EXTRA_CONTENTS";
 
     @BindView(R.id.webview) WebView webView;
+    @BindView(R.id.loading_bar) ProgressBar loadingBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,18 +133,19 @@ public class WebViewActivity extends FomesBaseActivity {
             return super.shouldOverrideUrlLoading(view, request);
         }
 
-        // TODO : 추후 필요에 따라 로딩 프로그래스바가 필요 할 수도 있겠음
-
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Log.v(TAG, "onPageStarted=" + url);
             super.onPageStarted(view, url, favicon);
+
+            loadingBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             Log.v(TAG, "onPageFinished=" + url);
             super.onPageFinished(view, url);
+            loadingBar.setVisibility(View.GONE);
         }
 
 
@@ -150,6 +154,7 @@ public class WebViewActivity extends FomesBaseActivity {
             Log.e(TAG, "onReceivedError on " + failingUrl);
             Log.e(TAG, "onReceivedError [" + errorCode + "]" + description);
             super.onReceivedError(view, errorCode, description, failingUrl);
+            loadingBar.setVisibility(View.GONE);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.M)
@@ -157,6 +162,7 @@ public class WebViewActivity extends FomesBaseActivity {
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             Log.e(TAG, "onReceivedError [" + error.getErrorCode() + "]" + error.getDescription());
             super.onReceivedError(view, request, error);
+            loadingBar.setVisibility(View.GONE);
         }
 
         @Override
@@ -164,6 +170,7 @@ public class WebViewActivity extends FomesBaseActivity {
             Log.e(TAG, "onReceivedHttpError on [" + request.getMethod() + "] " +request.getUrl());
             Log.e(TAG, "onReceivedHttpError [" + errorResponse.getStatusCode() + "]" + errorResponse.getReasonPhrase());
             super.onReceivedHttpError(view, request, errorResponse);
+            loadingBar.setVisibility(View.GONE);
         }
     }
 }
