@@ -50,8 +50,23 @@ public class WebViewActivity extends FomesBaseActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        String title = getIntent().getStringExtra(EXTRA_TITLE);
-        String contents = getIntent().getStringExtra(EXTRA_CONTENTS);
+        Intent intent = getIntent();
+
+        Uri deeplinkUri = intent.getData();
+        String title;
+        String contents;
+        Log.d(TAG, String.valueOf(deeplinkUri));
+
+        if (deeplinkUri != null
+                && deeplinkUri.getScheme().equals("fomes")
+                && deeplinkUri.getHost().equals("web")
+                && deeplinkUri.getPath().equals("/internal")) {
+            title = deeplinkUri.getQueryParameter("title");
+            contents = deeplinkUri.getQueryParameter("url");
+        } else {
+            title = getIntent().getStringExtra(EXTRA_TITLE);
+            contents = getIntent().getStringExtra(EXTRA_CONTENTS);
+        }
 
         if (TextUtils.isEmpty(contents)) {
             throw new IllegalArgumentException("There aren't any contents");
@@ -123,10 +138,12 @@ public class WebViewActivity extends FomesBaseActivity {
             if (DeeplinkActivity.SCHEME_FOMES.equals(scheme)) {
                 Log.d(TAG, "shouldOverrideUrlLoading) deeplink case");
 
-                Intent intent = new Intent(view.getContext(), DeeplinkActivity.class);
-                intent.setData(uri);
-                startActivity(intent);
+//                Intent intent = new Intent(view.getContext(), DeeplinkActivity.class);
+//                intent.setData(uri);
+//                startActivity(intent);
 
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 return true;
             }
 
