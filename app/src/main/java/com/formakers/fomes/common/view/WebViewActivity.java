@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -27,6 +28,8 @@ import java.net.URISyntaxException;
 import butterknife.BindView;
 
 public class WebViewActivity extends FomesBaseActivity {
+
+    public static final String TAG = "WebViewActivity";
 
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_CONTENTS = "EXTRA_CONTENTS";
@@ -70,6 +73,20 @@ public class WebViewActivity extends FomesBaseActivity {
         } else {
             webView.loadData(contents, "text/html; charset=UTF-8", null);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected itemId=" + item.getItemId());
+
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                break;
+            }
+        }
+
+        return true;
     }
 
     @Override
