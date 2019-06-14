@@ -76,10 +76,10 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                     view.refresh();
                     view.showListView();
 
-                    Log.v(TAG, String.valueOf(betaTests));
+                    Log.v(TAG, "load) onSuccess = " + betaTests);
                 })
                 .doOnError(e -> {
-                    Log.e(TAG, "doOnError e=" + e);
+                    Log.e(TAG, "load) onError e=" + e);
                     view.showEmptyView();
                 });
     }
@@ -93,8 +93,8 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     public void sendEventLog(String code, String ref) {
         compositeSubscription.add(
                 eventLogService.sendEventLog(new EventLog().setCode(code).setRef(ref))
-                        .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
-                                (e) -> Log.e(TAG, String.valueOf(e)))
+                        .subscribe(() -> Log.d(TAG, "sendEventLog) onSuccess = Event log is sent successfully!!"),
+                                (e) -> Log.e(TAG, "sendEventLog) onError e=" + e))
         );
     }
 
