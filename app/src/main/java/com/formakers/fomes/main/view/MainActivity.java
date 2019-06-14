@@ -2,6 +2,7 @@ package com.formakers.fomes.main.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
@@ -24,6 +26,7 @@ import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
 import com.formakers.fomes.main.contract.EventPagerAdapterContract;
@@ -59,6 +62,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
+
+    private FragmentPagerAdapter tabPagerAdapter;
 
     private Subscription eventPagerAutoSlideSubscription;
     private EventPagerAdapterContract.View eventPagerAdapterView;
@@ -112,29 +117,24 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         navigationView.getMenu().clear();
 
         navigationView.inflateMenu(R.menu.main_nav);
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
+                .setText(presenter.getUserInfo().getNickName());
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
+                .setText(presenter.getUserInfo().getEmail());
 
-        addToCompositeSubscription(
-            presenter.requestUserInfo()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> {
-                    ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
-                            .setText(user.getNickName());
-                    ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
-                            .setText(user.getEmail());
-                })
-        );
-
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
+        tabPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
         BetaTestFragment betaTestFragment = new BetaTestFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("IS_DEFAULT_PAGE", true);
         betaTestFragment.setArguments(bundle);
 
-        fragmentPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
-        fragmentPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        tabPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
+        tabPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, new FinishedBetaTestFragment(), getString(R.string.main_tab_finished_betatest));
+        tabPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
-        contentsViewPager.setAdapter(fragmentPagerAdapter);
+        contentsViewPager.setAdapter(tabPagerAdapter);
+        contentsViewPager.setOffscreenPageLimit(3);
 
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
@@ -152,6 +152,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         } else {
             presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_ENTER);
         }
+
+        handleDeeplink(getIntent().getExtras());
     }
 
     @Override
@@ -162,6 +164,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(seq -> showNextEventBanner());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        handleDeeplink(intent.getExtras());
     }
 
     @Override
@@ -201,7 +210,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.my_wish_list).setVisible(true);
+        menu.findItem(R.id.fomes_postbox).setVisible(true);
+        menu.findItem(R.id.my_wish_list).setVisible(false);
         menu.findItem(R.id.my_recent_analysis).setVisible(false);
         menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
 
@@ -227,6 +237,14 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             case R.id.settings: {
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            }
+            case R.id.fomes_postbox: {
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.EXTRA_TITLE, getString(R.string.postbox_title));
+                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, (BuildConfig.DEBUG ?
+                        "https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&entry.1042588232="
+                        : "https://docs.google.com/forms/d/e/1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ/viewform?usp=pp_url&entry.1223559684=") + presenter.getUserInfo().getEmail());
+                startActivity(intent);
             }
         }
 
@@ -355,5 +373,29 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private <T> void startActivity(Class<T> destActivity) {
         Intent intent = new Intent(this, destActivity);
         startActivity(intent);
+    }
+
+    private void handleDeeplink(Bundle bundle) {
+        if (bundle == null) {
+            Log.d(TAG, "handleDeeplink) bundle is null. maybe it is not from deeplink");
+            return;
+        }
+
+        String selectedTab = bundle.getString("EXTRA_SELECTED_TAB", BetaTestFragment.TAG);
+        String selectedItemId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+
+        if (!TextUtils.isEmpty(selectedTab)) {
+            Fragment selectedFragment = tabPagerAdapter.getItem(selectedTab);
+
+            Bundle arguemnts = new Bundle();
+            arguemnts.putString("EXTRA_SELECTED_ITEM_ID", selectedItemId);
+
+            selectedFragment.setArguments(arguemnts);
+
+            contentsViewPager.postDelayed(() -> {
+                contentsViewPager.setCurrentItem(tabPagerAdapter.getPosition(selectedFragment));
+                contentsViewPager.getAdapter().notifyDataSetChanged();
+            }, 100);
+        }
     }
 }

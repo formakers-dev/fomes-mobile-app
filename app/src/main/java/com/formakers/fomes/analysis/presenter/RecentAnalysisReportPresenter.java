@@ -68,7 +68,10 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     }
 
     private Completable requestPostUsages() {
-        return appStatService.sendAppUsages(appUsageDataHelper.getAppUsages());
+        return appUsageDataHelper.getAppUsages().toList()
+                .observeOn(Schedulers.io())
+                .flatMap(appUsages -> appStatService.sendAppUsages(appUsages).toObservable())
+                .toCompletable();
     }
 
     private Observable<RecentReport> requestRecentReport() {
@@ -79,10 +82,13 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     @Override
     public Completable loading() {
 
-        appUsageDataHelper.sendShortTermStats()
+        appUsageDataHelper.getShortTermStats()
                 .observeOn(Schedulers.io())
+                .toList()
+                .flatMap(shortTermStats -> appStatService.sendShortTermStats(shortTermStats).toObservable())
+                .toCompletable()
                 .subscribe(() -> Log.d(TAG, "send short term stats success!!!"),
-                        e -> Log.e(TAG, "send short term stats failed!!!! e=" + String.valueOf(e)));
+                        e -> Log.e(TAG, "send short term stats failed!!!! e=" + e));
 
         return Completable.concat(
                 this.requestPostUsages(),

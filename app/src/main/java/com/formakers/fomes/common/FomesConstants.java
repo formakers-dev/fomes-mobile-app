@@ -28,6 +28,7 @@ public interface FomesConstants {
     }
 
     interface BetaTest {
+        String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
         String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
         String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
 

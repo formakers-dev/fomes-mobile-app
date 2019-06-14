@@ -6,7 +6,6 @@ import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.model.User;
 
 import rx.Completable;
-import rx.Single;
 
 public interface MainContract {
     interface Presenter {
@@ -14,7 +13,7 @@ public interface MainContract {
 
         void setAdapterModel(EventPagerAdapterContract.Model adapterModel);
 
-        Single<User> requestUserInfo();
+        User getUserInfo();
         Completable requestVerifyAccessToken();
         void sendEventLog(String code);
         void requestPromotions();

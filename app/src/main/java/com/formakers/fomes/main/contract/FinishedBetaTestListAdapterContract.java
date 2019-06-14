@@ -5,9 +5,9 @@ import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListe
 
 import java.util.List;
 
-public interface BetaTestListAdapterContract {
+public interface FinishedBetaTestListAdapterContract {
     interface View {
-        void setPresenter(BetaTestContract.Presenter presenter);
+        void setPresenter(FinishedBetaTestContract.Presenter presenter);
 
         void setOnItemClickListener(OnRecyclerItemClickListener listener);
 
@@ -15,8 +15,6 @@ public interface BetaTestListAdapterContract {
     }
 
     interface Model {
-        int getPositionById(int id);
-
         int getItemCount();
         Object getItem(int position);
         List<BetaTest> getAllItems();

@@ -26,6 +26,7 @@ import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
 import com.formakers.fomes.main.dagger.RecommendFragmentModule;
+import com.formakers.fomes.wishList.view.WishListActivity;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -39,8 +40,9 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     public static final String TAG = "RecommendFragment";
 
+    @BindView(R.id.title_option_menu) View optionMenuView;
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
-    @BindView(R.id.recommend_contents_layout) NestedScrollView recommendContentsLayout;
+    @BindView(R.id.recommend_nested_scrollview) NestedScrollView recommendContentsLayout;
     @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
     @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
 
@@ -74,6 +76,10 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        optionMenuView.setOnClickListener(v -> {
+            startActivityForResult(new Intent(getActivity(), WishListActivity.class), MainActivity.REQUEST_CODE_WISHLIST);
+        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -144,13 +150,13 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void showRecommendList() {
-        recommendContentsLayout.setVisibility(View.VISIBLE);
+        recommendRecyclerView.setVisibility(View.VISIBLE);
         recommendErrorLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void showErrorPage() {
-        recommendContentsLayout.setVisibility(View.GONE);
+        recommendRecyclerView.setVisibility(View.GONE);
         recommendErrorLayout.setVisibility(View.VISIBLE);
     }
 

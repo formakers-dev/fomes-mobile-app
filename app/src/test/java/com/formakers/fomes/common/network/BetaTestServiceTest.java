@@ -1,7 +1,6 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.BetaTestAPI;
-import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
 import org.junit.Before;
@@ -36,5 +35,12 @@ public class BetaTestServiceTest extends AbstractServiceTest {
         subject.getBetaTestList().subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestAPI).getBetaTests(eq("TEST_ACCESS_TOKEN"));
+    }
+
+    @Test
+    public void getFinishedBetaTestList_호출시__참여가능한_리스트를_요청한다() {
+        subject.getFinishedBetaTestList().subscribe(new TestSubscriber<>());
+
+        verify(mockBetaTestAPI).getFinishedBetaTests(eq("TEST_ACCESS_TOKEN"));
     }
 }

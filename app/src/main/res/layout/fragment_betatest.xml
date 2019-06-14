@@ -23,37 +23,34 @@
         <TextView android:id="@+id/betatest_list_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="19dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:text="테스트 목록"
-            android:textSize="18dp"
+            android:layout_marginStart="@dimen/main_tab_title_margin_start"
+            android:layout_marginTop="@dimen/main_tab_title_margin_top"
+            android:text="@string/betatest_title"
+            android:textSize="@dimen/main_tab_title_text_size"
             android:textStyle="bold"
             android:textColor="@color/fomes_pale_gray"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/feedback_recyclerview"
             app:layout_constraintVertical_bias="0.0"/>
 
         <TextView android:id="@+id/betatest_notice_textview"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:textSize="11dp"
+            android:textSize="@dimen/main_tab_subtitle_text_size"
             android:textColor="@color/fomes_light_gray"
-            android:text="게임 관련 테스트가 표시됩니다."
-            app:layout_constraintStart_toEndOf="@id/betatest_list_textview"
-            app:layout_constraintBottom_toBottomOf="@id/betatest_list_textview" />
+            android:text="@string/betatest_subtitle"
+            app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
+            app:layout_constraintTop_toBottomOf="@id/betatest_list_textview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/feedback_recyclerview"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/betatest_list_textview"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview"/>
 
         <LinearLayout android:id="@+id/betatest_empty_view"
             android:layout_width="@dimen/match_constraint"

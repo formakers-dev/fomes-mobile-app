@@ -15,8 +15,8 @@ import com.formakers.fomes.model.User;
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class MainPresenter implements MainContract.Presenter {
@@ -31,6 +31,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Inject JobManager jobManager;
 
+    private User userInfo;
     private MainContract.View view;
     private EventPagerAdapterContract.Model adapterModel;
 
@@ -59,8 +60,12 @@ public class MainPresenter implements MainContract.Presenter {
     public void setAdapterModel(EventPagerAdapterContract.Model adapterModel) { this.adapterModel = adapterModel; }
 
     @Override
-    public Single<User> requestUserInfo() {
-        return userDAO.getUserInfo();
+    public User getUserInfo() {
+        if (userInfo == null) {
+            userInfo = userDAO.getUserInfo().observeOn(Schedulers.io()).toBlocking().value();
+        }
+
+        return userInfo;
     }
 
     @Override

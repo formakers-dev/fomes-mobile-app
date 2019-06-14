@@ -14,6 +14,8 @@ public interface WishListContract {
 
         String getItemPackageName(int position);
         List<String> getRemovedPackageNames();
+
+        void unsubscribe();
     }
 
     interface View extends BaseView<Presenter> {

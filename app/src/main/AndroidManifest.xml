@@ -61,13 +61,29 @@
         <activity android:name=".wishList.view.WishListActivity"/>
         <activity android:name=".common.view.NoticeMigrationActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
-        <activity android:name=".common.view.WebViewActivity"/>
+        <activity android:name=".common.view.WebViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="fomes"
+                    android:host="web"
+                    android:path="/internal"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".common.view.DeeplinkActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="fomes" android:host="launch"/>
+            </intent-filter>
+        </activity>
         <receiver android:name=".common.LocalBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.formakers.fomes.NOTI_CANCELLED"/>
                 <action android:name="com.formakers.fomes.NOTI_CLICKED"/>
             </intent-filter>
         </receiver>
+        <activity android:name=".main.view.BetaTestDetailActivity"/>
     </application>
 
 </manifest>

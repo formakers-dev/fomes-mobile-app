@@ -9,6 +9,7 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.main.contract.MainContract;
+import com.formakers.fomes.model.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 
 import rx.Completable;
 import rx.Scheduler;
+import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
@@ -33,6 +35,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -74,6 +77,9 @@ public class MainPresenterTest {
 
         MockitoAnnotations.initMocks(this);
         ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
+
+        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User("email", "notiToken")));
+
         subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockEventLogService, mockJobManager);
     }
 
@@ -82,10 +88,11 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void requestUserInfo_호출시__DB에_유저정보를_요청한다() {
-        subject.requestUserInfo();
+    public void getUserInfo_호출시__이미저장된_유저정보가_없을때에만__DB에_유저정보를_요청한다() {
+        subject.getUserInfo();
+        subject.getUserInfo();
 
-        verify(mockUserDAO).getUserInfo();
+        verify(mockUserDAO, times(1)).getUserInfo();
     }
 
     @Test

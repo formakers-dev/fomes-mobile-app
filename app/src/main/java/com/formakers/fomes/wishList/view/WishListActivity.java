@@ -90,6 +90,15 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
     }
 
     @Override
+    protected void onDestroy() {
+        if (this.presenter != null) {
+            this.presenter.unsubscribe();
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
     public void finish() {
         List<String> removedPackageNames = presenter.getRemovedPackageNames();
 

@@ -13,7 +13,6 @@ import android.os.Process;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.NativeAppInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,25 +33,29 @@ public class AndroidNativeHelper {
     }
 
     // ShortTermStats
-    public List<EventStat> getUsageStatEvents(long startTime, long endTime) {
+    public Observable<EventStat> getUsageStatEvents(long startTime, long endTime) {
         final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
 
-        List<EventStat> eventStats = new ArrayList<>();
+        return Observable.create(emitter -> {
+            try {
+                UsageEvents usageEvents = usageStatsManager.queryEvents(startTime, endTime);
 
-        UsageEvents usageEvents = usageStatsManager.queryEvents(startTime, endTime);
+                while (usageEvents.hasNextEvent()) {
+                    UsageEvents.Event event = new UsageEvents.Event();
+                    boolean hasNextEvent = usageEvents.getNextEvent(event);
 
-        while (usageEvents.hasNextEvent()) {
-            UsageEvents.Event event = new UsageEvents.Event();
-            boolean hasNextEvent = usageEvents.getNextEvent(event);
-
-            if (hasNextEvent) {
-                eventStats.add(new EventStat(event.getPackageName(), event.getEventType(), event.getTimeStamp()));
+                    if (hasNextEvent) {
+                        emitter.onNext(new EventStat(event.getPackageName(), event.getEventType(), event.getTimeStamp()));
+                    }
+                }
+                emitter.onCompleted();
+            } catch (Exception e) {
+                emitter.onError(e);
             }
-        }
-
-        return eventStats;
+        });
     }
 
+    // pm.getInstalledApplicationInfo로 단순화가능할듯
     public Observable<NativeAppInfo> getInstalledLaunchableApps() {
         final PackageManager packageManager = context.getPackageManager();
 
@@ -63,6 +66,7 @@ public class AndroidNativeHelper {
                 .map(resolveInfo -> new NativeAppInfo(resolveInfo.activityInfo.packageName, resolveInfo.loadLabel(packageManager).toString()));
     }
 
+    // 리팩토링 필요해보임
     public NativeAppInfo getNativeAppInfo(String packageName) {
         NativeAppInfo nativeAppInfo = new NativeAppInfo(packageName, "");
         try {
@@ -93,5 +97,19 @@ public class AndroidNativeHelper {
         }
 
         return false;
+    }
+
+    public String getVersionName(String packageName) {
+        PackageManager packageManager = context.getPackageManager();
+
+        String versionName = null;
+
+        try {
+            versionName = packageManager.getPackageInfo(packageName, 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return versionName;
     }
 }

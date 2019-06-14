@@ -21,230 +21,173 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="21dp"
-            android:paddingLeft="23dp"
-            android:paddingRight="23dp"
-            android:paddingTop="21dp"
             android:background="@drawable/item_rect_rounded_corner_background"
-            android:theme="@style/BetaTestTheme.CardBackground">
+            android:theme="@style/BetaTestTheme.CardBackground"
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/betatest_target"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:gravity="center"
-                android:textSize="11dp"
-                android:textColor="@color/fomes_white"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.TagBackground"
-                app:layout_constraintTop_toTopOf="parent"
+            <ImageView
+                android:id="@+id/betatest_overview_imageview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:src="@color/fomes_warm_gray"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_test_type"
-                tools:text="포메스 앱 유저 대상" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/betatest_test_type"
-                android:layout_width="wrap_content"
+                android:id="@+id/betatest_progress_textview"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="테스트 참여 0% 완료"
                 android:textSize="11dp"
-                android:textColor="@color/fomes_white"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.TagBackground"
-                app:layout_constraintTop_toTopOf="@id/betatest_target"
-                app:layout_constraintStart_toEndOf="@id/betatest_target"
+                app:layout_constraintBottom_toTopOf="@+id/betatest_progress_bar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="테스트 참여 50% 완료" />
+
+            <ProgressBar
+                android:id="@+id/betatest_progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/betatest_overview_imageview"
                 app:layout_constraintEnd_toStartOf="@+id/betatest_project_status"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_target"
-                tools:text="설문" />
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@id/betatest_progress_textview"
+                tools:progress="50" />
 
             <TextView
                 android:id="@+id/betatest_project_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:gravity="center"
-                android:textSize="11dp"
-                android:textColor="@color/fomes_white"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/item_rect_rounded_corner_background"
+                android:gravity="center"
+                android:textColor="@color/fomes_white"
+                android:textSize="11dp"
                 android:theme="@style/BetaTestTheme.TagBackground"
-                app:layout_constraintTop_toTopOf="@id/betatest_target"
-                app:layout_constraintStart_toEndOf="@id/betatest_test_type"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_target"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_progress_bar"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_textview"
+                app:layout_constraintStart_toEndOf="@+id/betatest_progress_bar"
+                app:layout_constraintTop_toTopOf="@+id/betatest_progress_bar"
                 tools:text="종료 1일 전" />
+
+            <View
+                android:id="@+id/betatest_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:background="@color/fomes_gray_3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview" />
 
             <TextView
                 android:id="@+id/betatest_title_textview"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/fomes_white"
                 android:textSize="17dp"
-                app:layout_constraintTop_toBottomOf="@id/betatest_target"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
                 tools:text="서랍에서 찾은 또 다른 설문지" />
 
-            <View android:id="@+id/betatest_divider"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
-                android:background="@color/fomes_gray_3"
-                app:layout_constraintTop_toBottomOf="@id/betatest_title_textview"
-                tools:ignore="MissingConstraints" />
 
-            <TextView android:id="@+id/betatest_subtitle_textview"
+            <TextView
+                android:id="@+id/betatest_subtitle_textview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:lineSpacingExtra="4dp"
                 android:textColor="@color/fomes_light_gray"
                 android:textSize="12dp"
-                android:lineSpacingExtra="4dp"
-                app:layout_constraintTop_toBottomOf="@id/betatest_divider"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_overview_imageview"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/betatest_bug_button"
+                app:layout_constraintStart_toStartOf="@+id/betatest_title_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
                 tools:text="주변을 더듬거리다가 서랍을 찾아냈다. 드르륵 열어보니 설문이 놓여져 있다. 완료하면 보상이 있다는데 한번 해볼까…? " />
 
-            <ImageView android:id="@+id/betatest_overview_imageview"
-                android:layout_width="76dp"
-                android:layout_height="76dp"
-                android:src="@color/fomes_deep_gray"
-                app:layout_constraintTop_toTopOf="@id/betatest_subtitle_textview"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/betatest_required_time"
+            <Button
+                android:id="@+id/betatest_bug_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:drawableStart="@drawable/icon_required_time"
-                android:drawablePadding="4dp"
-                android:gravity="center"
-                android:textSize="12dp"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_amount"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="버그 제보 하기"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="약 3분" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
-                android:id="@+id/betatest_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:drawableStart="@drawable/icon_amount"
-                android:drawablePadding="4dp"
-                android:textSize="12dp"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintTop_toTopOf="@id/betatest_required_time"
-                app:layout_constraintStart_toEndOf="@id/betatest_required_time"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_reward"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
-                tools:text="9 문항" />
+            <!--<TextView-->
+            <!--android:id="@+id/betatest_required_time"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="11dp"-->
+            <!--android:drawableStart="@drawable/icon_required_time"-->
+            <!--android:drawablePadding="4dp"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="12dp"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/betatest_amount"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintVertical_bias="0.0"-->
+            <!--tools:text="약 3분" />-->
 
-            <TextView
-                android:id="@+id/betatest_reward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:gravity="center"
-                android:drawableStart="@drawable/icon_reward"
-                android:drawablePadding="4dp"
-                android:textSize="12dp"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintTop_toTopOf="@id/betatest_required_time"
-                app:layout_constraintStart_toEndOf="@id/betatest_amount"
-                app:layout_constraintEnd_toStartOf="@id/betatest_overview_imageview"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
-                tools:text="보상 없음" />
+            <!--<TextView-->
+            <!--android:id="@+id/betatest_amount"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:drawableStart="@drawable/icon_amount"-->
+            <!--android:drawablePadding="4dp"-->
+            <!--android:textSize="12dp"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--app:layout_constraintTop_toTopOf="@id/betatest_required_time"-->
+            <!--app:layout_constraintStart_toEndOf="@id/betatest_required_time"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/betatest_reward"-->
+            <!--app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"-->
+            <!--tools:text="9 문항" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/betatest_reward"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:gravity="center"-->
+            <!--android:drawableStart="@drawable/icon_reward"-->
+            <!--android:drawablePadding="4dp"-->
+            <!--android:textSize="12dp"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--app:layout_constraintTop_toTopOf="@id/betatest_required_time"-->
+            <!--app:layout_constraintStart_toEndOf="@id/betatest_amount"-->
+            <!--app:layout_constraintEnd_toStartOf="@id/betatest_overview_imageview"-->
+            <!--app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"-->
+            <!--tools:text="보상 없음" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- 카드 위에 띄우고 싶다면 이 아래에 추가하자 -->
-    <View android:id="@+id/betatest_disable_background"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="@dimen/match_constraint"
-        android:background="@drawable/item_rect_rounded_corner_background"
-        android:theme="@style/BetaTestTheme.LegacyDisableBackground"
+    <ImageView android:id="@+id/betatest_label"
+        android:layout_width="66dp"
+        android:layout_height="42dp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/betatest_cardview"
-        app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"
-        app:layout_constraintStart_toStartOf="@id/betatest_cardview"
-        app:layout_constraintEnd_toEndOf="@id/betatest_cardview"/>
-
-    <LinearLayout android:id="@+id/betatest_completed_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:background="@drawable/item_rect_rounded_corner_background"
-        android:theme="@style/BetaTestTheme.CompletedLabelBackground"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/betatest_cardview"
-        app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"
-        app:layout_constraintEnd_toEndOf="@id/betatest_cardview"
-        app:layout_constraintStart_toStartOf="@id/betatest_cardview">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/beta_test_completed_label_sub_title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="13dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/beta_test_completed_label_title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/betatest_closed_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:background="@color/beta_test_label_disable_background"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/betatest_cardview"
-        app:layout_constraintBottom_toBottomOf="@id/betatest_cardview"
-        app:layout_constraintEnd_toEndOf="@id/betatest_cardview"
-        app:layout_constraintStart_toStartOf="@id/betatest_cardview">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/beta_test_closed_label_sub_title"
-            android:textColor="@color/fomes_warm_gray"
-            android:textSize="13dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/beta_test_closed_label_title"
-            android:textColor="@color/fomes_warm_gray"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/label_attend"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

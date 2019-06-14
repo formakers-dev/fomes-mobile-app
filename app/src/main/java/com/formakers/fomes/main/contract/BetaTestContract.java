@@ -20,6 +20,7 @@ public interface BetaTestContract {
         void initialize();
         Single<List<BetaTest>> loadToBetaTestList(Date sortingCriteriaDate);
         BetaTest getBetaTestItem(int position);
+        int getBetaTestPostitionById(int id);
         String getUserEmail();
         void sendEventLog(String code, String ref);
         void unsubscribe();

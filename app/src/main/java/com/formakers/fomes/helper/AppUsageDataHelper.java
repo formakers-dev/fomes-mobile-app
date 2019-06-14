@@ -3,15 +3,12 @@ package com.formakers.fomes.helper;
 import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.model.AppUsage;
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.ShortTermStat;
-import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +17,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Completable;
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import static android.app.usage.UsageEvents.Event.MOVE_TO_BACKGROUND;
@@ -29,7 +26,7 @@ import static android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND;
 @Singleton
 public class AppUsageDataHelper {
     private static final String TAG = "AppUsageDataHelper";
-    public static final int DEFAULT_APP_USAGE_DURATION_DAYS = 7;
+    public static final int DEFAULT_APP_USAGE_DURATION_DAYS = 30;
 
     private final AndroidNativeHelper androidNativeHelper;
     private final AppStatService appStatService;
@@ -47,111 +44,117 @@ public class AppUsageDataHelper {
         this.timeHelper = timeHelper;
     }
 
-    @NonNull
-    List<ShortTermStat> getShortTermStats(long startTime, long endTime) {
-        List<EventStat> eventStats = androidNativeHelper.getUsageStatEvents(startTime, endTime);
-        List<ShortTermStat> shortTermStats = new ArrayList<>();
-
-        EventStat beforeForegroundEvent = null;
-
-        for (EventStat eventStat : eventStats) {
-            switch (eventStat.getEventType()) {
-                case MOVE_TO_FOREGROUND:
-                    beforeForegroundEvent = eventStat;
-                    break;
-
-                case MOVE_TO_BACKGROUND:
-                    if (beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
-                        shortTermStats.add(createShortTermStat(eventStat.getPackageName(), beforeForegroundEvent.getEventTime(), eventStat.getEventTime()));
-                        beforeForegroundEvent = null;
-                    }
-                    break;
-            }
-        }
-
-        return shortTermStats;
-    }
-
-    private ShortTermStat createShortTermStat(String packageName, long startTimestamp, long endTimestamp) {
-        return new ShortTermStat(packageName, startTimestamp, endTimestamp, endTimestamp - startTimestamp);
-    }
-
-    public Completable sendShortTermStats() {
+    /*** start of ShortTermStats ***/
+    public Observable<ShortTermStat> getShortTermStats() {
         final long from = SharedPreferencesHelper.getLastUpdateShortTermStatTimestamp();
         final long to = timeHelper.getStatBasedCurrentTime();
-        final List<ShortTermStat> shortTermStatList = getShortTermStats(from, to);
 
-        Log.d(TAG, "shortTermStats Size=" + shortTermStatList.size() + " from=" + new Date(from));
-        return appStatService.sendShortTermStats(shortTermStatList)
+        Log.d(TAG, "shortTermStats from=" + new Date(from));
+        return getShortTermStats(from, to).subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    Observable<ShortTermStat> getShortTermStats(long startTime, long endTime) {
+
+        return Observable.create(emitter -> androidNativeHelper.getUsageStatEvents(startTime, endTime).onBackpressureBuffer()
                 .observeOn(Schedulers.io())
-                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(to));
+                .toList()
+                .subscribe(stats -> {
+                    EventStat beforeForegroundEvent = null;
+
+                    for (EventStat eventStat : stats) {
+                        switch (eventStat.getEventType()) {
+                            case MOVE_TO_FOREGROUND:
+                                beforeForegroundEvent = eventStat;
+                                break;
+
+                            case MOVE_TO_BACKGROUND:
+                                if (beforeForegroundEvent != null && eventStat.getPackageName().equals(beforeForegroundEvent.getPackageName())) {
+                                    String packageName = eventStat.getPackageName();
+                                    String versionName = this.androidNativeHelper.getVersionName(packageName);
+
+                                    ShortTermStat shortTermStat = new ShortTermStat(packageName, beforeForegroundEvent.getEventTime(), eventStat.getEventTime())
+                                            .setVersionName(versionName);
+
+                                    emitter.onNext(shortTermStat);
+                                    beforeForegroundEvent = null;
+                                }
+                                break;
+                        }
+                    }
+
+                    emitter.onCompleted();
+                }));
+
+        // 아래처럼 리팩토링 가능할듯... 좀 더 다듬긴해야함. groupBy 관련 에러 (Only one Subscriber allowed!)
+//        return eventStats.groupBy(eventStat -> eventStat.getPackageName())
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(Schedulers.io())
+//                    .flatMap(stringEventStatGroupedObservable -> {
+//                        Observable<EventStat> foregroundEventStats = stringEventStatGroupedObservable.filter(eventStat -> eventStat.getEventType() == MOVE_TO_FOREGROUND);
+//                        Observable<EventStat> backgroundEventStats = stringEventStatGroupedObservable.filter(eventStat -> eventStat.getEventType() == MOVE_TO_BACKGROUND);
+//
+//                        return foregroundEventStats.zipWith(backgroundEventStats, (Func2<EventStat, EventStat, Pair>) Pair::new)
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(Schedulers.io())
+//                                .map(eventStatPair -> {
+//                                    EventStat foregroundEventStat = (EventStat) eventStatPair.first;
+//                                    EventStat backgroundEventStat = (EventStat) eventStatPair.second;
+//
+//                                    String packageName = foregroundEventStat.getPackageName();
+//                                    String versionName = this.androidNativeHelper.getVersionName(packageName);
+//
+//                                    return new ShortTermStat(packageName,
+//                                            foregroundEventStat.getEventTime(), backgroundEventStat.getEventTime())
+//                                            .setVersionName(versionName);
+//                                });
+//                    })
     }
 
+    /*** end of ShortTermStats ***/
+
+    /*** start of AppUsages ***/
     // for send??
-    public List<AppUsage> getAppUsages() {
-        return getAppUsages(30);
+    public Observable<AppUsage> getAppUsages() {
+        return getAppUsages(DEFAULT_APP_USAGE_DURATION_DAYS).subscribeOn(Schedulers.io());
     }
 
-    public List<AppUsage> getAppUsages(int durationDays) {
+    Observable<AppUsage> getAppUsages(int durationDays) {
         Log.d(TAG, "getAppUsages(" + durationDays + ")");
         long endTimestamp = timeHelper.getCurrentTime();
         long startTimestamp = endTimestamp - (durationDays * 24 * 60 * 60 * 1000L);
 
-        List<ShortTermStat> shortTermStats = getShortTermStats(startTimestamp, endTimestamp);
-        List<AppUsage> appUsages = convertToAppUsage(shortTermStats);
-
-        return appUsages;
+        return getShortTermStats(startTimestamp, endTimestamp)
+                .observeOn(Schedulers.io())
+                .toList()
+                .flatMap(shortTermStats -> Observable.from(AppUsage.createListFromShortTermStats(shortTermStats)));
     }
 
-    // ShortTermStats 사용시간 누적 (리듀스) 해서 AppUsage로 바꿈
-    private List<AppUsage> convertToAppUsage(List<ShortTermStat> shortTermStatList) {
-        Map<String, AppUsage> map = new HashMap<>();
-
-        String key;
-        AppUsage value;
-
-        for (ShortTermStat shortTermStat : shortTermStatList) {
-            // 날짜 + 패키지네임
-            key = DateUtil.getDateStringFromTimestamp(shortTermStat.getStartTimeStamp())
-                    + shortTermStat.getPackageName();
-
-            if (map.containsKey(key)) {
-                value = map.get(key);
-                value.setTotalUsedTime(value.getTotalUsedTime() + shortTermStat.getTotalUsedTime());
-            } else {
-                value = new AppUsage(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime())
-                        .setDate(DateUtil.getDateWithoutTime(new Date(shortTermStat.getStartTimeStamp())));
-            }
-            map.put(key, value);
-        }
-
-        return Lists.newArrayList(map.values());
-    }
+    /*** end of ShortTermStats ***/
 
     /******************************** AppBee Legacy **/
-    // 1주일 치 단기통계데에터 가져오기
+    // 앱별 1주일 치 누적 플레이시간 단기통계데이터 가져오기
     @Deprecated
-    public List<ShortTermStat> getWeeklyStatSummaryList() {
+    public Observable<ShortTermStat> getWeeklyStatSummaryList() {
         long endTimestamp = timeHelper.getCurrentTime();
         long startTimestamp = endTimestamp - (7L * 24 * 60 * 60 * 1000);    // 1주일 전
 
-        List<ShortTermStat> shortTermStatList = summaryShortTermStat(getShortTermStats(startTimestamp, endTimestamp));
-
-        // 사용시간 순 정렬
-        Collections.sort(shortTermStatList, (o1, o2) -> {
-            if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
-                return o1.getPackageName().compareTo(o2.getPackageName());
-            } else {
-                return (int) (o2.getTotalUsedTime() - o1.getTotalUsedTime());
-            }
-        });
-
-        return shortTermStatList;
+        return getShortTermStats(startTimestamp, endTimestamp)
+                .observeOn(Schedulers.io())
+                .toList()
+                .flatMap(shortTermStats -> Observable.from(summaryPlayTimeEachAppFromShortTermStat(shortTermStats)))
+                .sorted((o1, o2) -> {
+                    if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
+                        return o1.getPackageName().compareTo(o2.getPackageName());
+                    } else {
+                        return (int) (o2.getTotalUsedTime() - o1.getTotalUsedTime());
+                    }
+                });
     }
 
     // ShortTermStats 사용시간 누적 - 리듀스
     @Deprecated
-    private List<ShortTermStat> summaryShortTermStat(List<ShortTermStat> shortTermStatList) {
+    private List<ShortTermStat> summaryPlayTimeEachAppFromShortTermStat(List<ShortTermStat> shortTermStatList) {
         Map<String, Long> map = new HashMap<>();
 
         for (ShortTermStat shortTermStat : shortTermStatList) {
