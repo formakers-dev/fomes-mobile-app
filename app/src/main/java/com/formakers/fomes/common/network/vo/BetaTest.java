@@ -14,6 +14,7 @@ public class BetaTest implements Parcelable {
     Integer id;
 
     String overviewImageUrl;
+    String iconImageUrl;
     String title;
     String subTitle;
 
@@ -140,6 +141,15 @@ public class BetaTest implements Parcelable {
 
     public BetaTest setOverviewImageUrl(String overviewImageUrl) {
         this.overviewImageUrl = overviewImageUrl;
+        return this;
+    }
+
+    public String getIconImageUrl() {
+        return iconImageUrl;
+    }
+
+    public BetaTest setIconImageUrl(String iconImageUrl) {
+        this.iconImageUrl = iconImageUrl;
         return this;
     }
 
@@ -311,6 +321,7 @@ public class BetaTest implements Parcelable {
                 "objectId='" + objectId + '\'' +
                 ", id=" + id +
                 ", overviewImageUrl='" + overviewImageUrl + '\'' +
+                ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", tags=" + tags +
@@ -340,6 +351,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(objectId);
         dest.writeInt(id);
         dest.writeString(overviewImageUrl);
+        dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(subTitle);
         dest.writeStringList(tags);
@@ -363,6 +375,7 @@ public class BetaTest implements Parcelable {
         objectId = in.readString();
         id = in.readInt();
         overviewImageUrl = in.readString();
+        iconImageUrl = in.readString();
         title = in.readString();
         subTitle = in.readString();
         in.readStringList(tags);

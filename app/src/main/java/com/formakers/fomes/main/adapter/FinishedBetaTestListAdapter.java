@@ -44,7 +44,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         RecyclerView.ViewHolder viewHolder;
 
-        if (Feature.BETATEST_GROUP_DATA_MIGRATION) {
+        if (isNewDesign()) {
             viewHolder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_finished_betatest, parent, false));
         } else {
             viewHolder = new GroupViewHolder(LayoutInflater.from(context).inflate(R.layout.item_group_betatest_old, parent, false));
@@ -57,13 +57,13 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BetaTest item = betaTestList.get(position);
 
-        if (Feature.BETATEST_GROUP_DATA_MIGRATION) {
+        if (isNewDesign()) {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.titleTextView.setText(item.getTitle());
             viewHolder.subTitleTextView.setText(item.getSubTitle());
             viewHolder.periodTextView.setText(String.format("%s ~ %s", item.getOpenDate(), item.getCloseDate()));
 
-            Glide.with(context).load(item.getOverviewImageUrl())
+            Glide.with(context).load(item.getIconImageUrl())
                     .apply(new RequestOptions().override(76, 76)
                             .centerCrop()
                             .transform(new RoundedCorners(4))
@@ -183,6 +183,10 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 viewHolder.epilogueButton.setOnClickListener(null);
             }
         }
+    }
+
+    private boolean isNewDesign() {
+        return Feature.BETATEST_GROUP_DATA_MIGRATION || Feature.FOMES_V_2_5_DESIGN;
     }
 
     @Override
