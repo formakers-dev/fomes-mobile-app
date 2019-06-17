@@ -217,9 +217,9 @@
         <item name="item_stroke_width">1dp</item>
     </style>
 
-    <style name="BetaTestTheme.TagBackground.BlushPink" parent="BetaTestTheme.TagBackground">
+    <style name="BetaTestTheme.TagBackground.Red" parent="BetaTestTheme.TagBackground">
         <item name="item_solid_color">@android:color/transparent</item>
-        <item name="item_stroke_color">@color/fomes_blush_pink</item>
+        <item name="item_stroke_color">@color/fomes_red</item>
         <item name="item_stroke_width">1dp</item>
     </style>
 

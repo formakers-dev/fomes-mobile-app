@@ -3,6 +3,7 @@ package com.formakers.fomes.main.adapter;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -92,14 +95,33 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             long remainDays = item.getRemainDays();
 
             String projectStatus;
-            if (remainDays > 0) {
+            if (remainDays >= 0) {
                 projectStatus = String.format("D - %d", remainDays);
             } else if (remainDays == 0) {
                 projectStatus = "D - day";
             } else {
                 projectStatus = context.getString(R.string.common_close);
             }
+
             baseViewHolder.projectStatusTextView.setText(projectStatus);
+
+            @StyleRes int projectStatusStyleId;
+            @ColorRes int projectStatusColorId;
+            if (remainDays > 5) {
+                projectStatusStyleId = R.style.BetaTestTheme_TagBackground;
+                projectStatusColorId = R.color.colorPrimary;
+            } else if (remainDays > 1) {
+                projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Squash;
+                projectStatusColorId = R.color.fomes_squash;
+            } else {
+                projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Red;
+                projectStatusColorId = R.color.fomes_red;
+            }
+
+            baseViewHolder.projectStatusTextView.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
+                    new ContextThemeWrapper(context, projectStatusStyleId).getTheme()));
+            baseViewHolder.projectStatusTextView.setTextColor(context.getResources().getColor(projectStatusColorId));
+
 
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
