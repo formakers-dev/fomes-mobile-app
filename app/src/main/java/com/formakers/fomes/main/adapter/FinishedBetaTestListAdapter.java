@@ -80,7 +80,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             Glide.with(context).load(item.getIconImageUrl())
                     .apply(new RequestOptions().override(76, 76)
                             .centerCrop()
-                            .transform(new RoundedCorners(4))
+                            .transform(new RoundedCorners(8))
                             .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
                     .into(viewHolder.iconImageView);
 
