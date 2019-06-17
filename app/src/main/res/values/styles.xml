@@ -123,6 +123,12 @@
     <style name="AnaylsisTheme" parent="FomesTheme.NoActionBar">
     </style>
 
+    <style name="FinishedAwardBackground">
+        <item name="item_background_radius">8dp</item>
+        <item name="item_solid_color">@color/beta_test_finished_group_block_background</item>
+        <item name="item_stroke_width">0dp</item>
+    </style>
+
     <style name="AnaylsisTheme.Divider">
         <item name="android:layout_width">@dimen/match_constraint</item>
         <item name="android:layout_height">1dp</item>
@@ -262,11 +268,18 @@
         <item name="item_stroke_width">0dp</item>
     </style>
 
-    <style name="BetaTestTheme.EpilogueButtonBackground">
+    <style name="BetaTestTheme.EpilogueButtonBackgroundOld">
         <item name="item_background_radius">4dp</item>
         <item name="item_solid_color">@color/beta_test_finished_group_block_background</item>
         <item name="item_stroke_width">1dp</item>
         <item name="item_stroke_color">@color/colorPrimary</item>
+    </style>
+
+    <style name="BetaTestTheme.EpilogueButtonBackground">
+        <item name="item_background_radius">6dp</item>
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_width">1dp</item>
+        <item name="item_stroke_color">@color/beta_test_finished_group_epilogue_button</item>
     </style>
 
     <style name="BetaTestTheme.LegacyDisableBackground">
