@@ -147,6 +147,10 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 baseViewHolder.requiredTimeTextView.setVisibility(View.VISIBLE);
                 baseViewHolder.amountTextView.setVisibility(View.VISIBLE);
                 baseViewHolder.rewardTextView.setVisibility(View.VISIBLE);
+
+                itemViewHolder.completedLabelTextView.setText(String.format(context.getString(R.string.beta_test_completed_label_title), item.getTags().get(0)));
+                itemViewHolder.completedLabelView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
+                itemViewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
             }
         } else {
             // 디데이
@@ -248,6 +252,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Deprecated TextView requiredTimeTextView;
         @Deprecated TextView amountTextView;
         @Deprecated TextView rewardTextView;
+        @Deprecated View completedLabelView;
+        @Deprecated TextView completedLabelTextView;
+        @Deprecated View closedLabelView;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
@@ -258,6 +265,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             requiredTimeTextView = itemView.findViewById(R.id.betatest_required_time);
             amountTextView = itemView.findViewById(R.id.betatest_amount);
             rewardTextView = itemView.findViewById(R.id.betatest_reward);
+            completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
+            completedLabelTextView = itemView.findViewById(R.id.betatest_completed_label_textview);
+            closedLabelView = itemView.findViewById(R.id.betatest_closed_label);
         }
     }
 
@@ -283,16 +293,12 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageView overviewImageView;
         TextView targetTextView;
         TextView testTypeTextView;
-        View completedLabelView;
-        View closedLabelView;
 
         public OldItemViewHolder(View itemView) {
             super(itemView);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
             targetTextView = itemView.findViewById(R.id.betatest_target);
             testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
-            completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
-            closedLabelView = itemView.findViewById(R.id.betatest_closed_label);
         }
     }
 }

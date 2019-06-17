@@ -141,7 +141,8 @@
     <string name="betatest_required_time_format">약 %.0f분</string>
     <string name="betatest_reward_none">보상 없음</string>
     <string name="beta_test_completed_label_sub_title">Good! 멋져요! 최고에요!</string>
-    <string name="beta_test_completed_label_title">완료한 테스트</string>
+    <string name="beta_test_completed_label_title_old">완료한 테스트</string>
+    <string name="beta_test_completed_label_title">%s 완료</string>
     <string name="beta_test_closed_label_sub_title">아쉬워요…흑흑</string>
     <string name="beta_test_closed_label_title">종료된 테스트</string>
     <string name="beta_test_empty_text_format">%s 님께 도착할 테스트를 기다리고 있어요.\n테스트가 도착하면 포메스가 알려드릴게요.</string>
