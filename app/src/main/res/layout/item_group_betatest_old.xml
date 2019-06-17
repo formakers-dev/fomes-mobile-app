@@ -93,19 +93,6 @@
                 app:layout_constraintTop_toBottomOf="@id/betatest_title_textview"
                 tools:ignore="MissingConstraints" />
 
-            <!-- 카드 위에 띄우고 싶다면 이 아래에 추가하자 -->
-            <View android:id="@+id/betatest_disable_background"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="@dimen/match_constraint"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.DisableBackground"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:visibility="visible"/>
-
             <LinearLayout android:id="@+id/betatest_finished_my_feedback"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
