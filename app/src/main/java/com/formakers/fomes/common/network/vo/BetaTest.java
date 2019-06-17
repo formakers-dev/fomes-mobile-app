@@ -46,6 +46,7 @@ public class BetaTest implements Parcelable {
     public static class AfterService implements Parcelable {
         String epilogue;
         String companySays;
+        String award;
 
         public AfterService() {}
 
@@ -71,11 +72,21 @@ public class BetaTest implements Parcelable {
             return this;
         }
 
+        public String getAward() {
+            return award;
+        }
+
+        public AfterService setAward(String award) {
+            this.award = award;
+            return this;
+        }
+
         @Override
         public String toString() {
             return "AfterService{" +
                     "epilogue='" + epilogue + '\'' +
                     ", companySays='" + companySays + '\'' +
+                    ", award='" + award + '\'' +
                     '}';
         }
 
@@ -87,11 +98,13 @@ public class BetaTest implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(epilogue);
             dest.writeString(companySays);
+            dest.writeString(award);
         }
 
         private void readFromParcel(Parcel in) {
             epilogue = in.readString();
             companySays = in.readString();
+            award = in.readString();
         }
 
         @Override

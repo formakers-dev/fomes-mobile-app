@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -90,6 +91,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             BetaTest.AfterService afterService = item.getAfterService();
 
             if (afterService != null) {
+                viewHolder.awardTextView.setText(afterService.getAward());
                 viewHolder.companySaysTextView.setText(afterService.getCompanySays());
                 viewHolder.epilogueButton.setOnClickListener(v -> {
                     Uri uri = Uri.parse(afterService.getEpilogue());
@@ -98,6 +100,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 });
                 viewHolder.epilogueButton.setEnabled(true);
             } else {
+                viewHolder.awardGroup.setVisibility(View.GONE);
                 viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
                 viewHolder.epilogueButton.setOnClickListener(null);
                 viewHolder.epilogueButton.setEnabled(false);
@@ -256,6 +259,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageView iconImageView;
         TextView subTitleTextView;
         TextView periodTextView;
+        Group awardGroup;
+        TextView awardTextView;
         Button epilogueButton;
 
         public ViewHolder(@NonNull View itemView) {
@@ -265,6 +270,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             periodTextView = itemView.findViewById(R.id.betatest_period_textview);
+            awardGroup = itemView.findViewById(R.id.betatest_award_group);
+            awardTextView = itemView.findViewById(R.id.betatest_award_contents);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
         }
     }
