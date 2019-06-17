@@ -61,7 +61,8 @@
         <activity android:name=".wishList.view.WishListActivity"/>
         <activity android:name=".common.view.NoticeMigrationActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
-        <activity android:name=".common.view.WebViewActivity">
+        <activity android:name=".common.view.WebViewActivity"
+            android:parentActivityName=".main.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -69,6 +70,9 @@
                     android:host="web"
                     android:path="/internal"/>
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main.view.MainActivity" />
         </activity>
         <activity android:name=".common.view.DeeplinkActivity">
             <intent-filter>

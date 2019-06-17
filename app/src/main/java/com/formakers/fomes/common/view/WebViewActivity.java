@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -91,16 +90,7 @@ public class WebViewActivity extends FomesBaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected itemId=" + item.getItemId());
-
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                finish();
-                break;
-            }
-        }
-
+    protected boolean isDifferentBetweenUpAndBack() {
         return true;
     }
 

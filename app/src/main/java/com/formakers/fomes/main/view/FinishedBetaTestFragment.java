@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
     @BindView(R.id.finished_betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.title_option_menu_switch) Switch completedFilterSwitch;
+    @BindView(R.id.title_option_menu) TextView completedFilterTextView;
 
     @Inject FinishedBetaTestContract.Presenter presenter;
 
@@ -87,7 +89,10 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
                 .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
                 .subscribe(() -> {}, e -> Log.e(TAG, "ErrorOnLoad e=" + e)));
 
-        completedFilterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> presenter.applyCompletedFilter(isChecked));
+        completedFilterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            presenter.applyCompletedFilter(isChecked);
+            completedFilterTextView.setTextColor(isChecked ? getResources().getColor(R.color.colorPrimary) : getResources().getColor(R.color.fomes_warm_gray_2));
+        });
     }
 
     @Override

@@ -50,10 +50,11 @@ public class LocalBroadcastReceiver extends BroadcastReceiver {
                 Intent destIntent;
                 if (TextUtils.isEmpty(deeplink)) {
                     destIntent = new Intent(context, destActivity);
-                    destIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
                 } else {
                     destIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplink));
                 }
+
+                destIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
 
                 context.startActivity(destIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;

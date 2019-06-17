@@ -14,6 +14,7 @@ public class BetaTest implements Parcelable {
     Integer id;
 
     String overviewImageUrl;
+    String iconImageUrl;
     String title;
     String subTitle;
 
@@ -30,6 +31,8 @@ public class BetaTest implements Parcelable {
 
     String reward;
 
+    String bugReportUrl;
+
     long requiredTime;
     String amount;
 
@@ -43,6 +46,7 @@ public class BetaTest implements Parcelable {
     public static class AfterService implements Parcelable {
         String epilogue;
         String companySays;
+        String award;
 
         public AfterService() {}
 
@@ -68,11 +72,21 @@ public class BetaTest implements Parcelable {
             return this;
         }
 
+        public String getAward() {
+            return award;
+        }
+
+        public AfterService setAward(String award) {
+            this.award = award;
+            return this;
+        }
+
         @Override
         public String toString() {
             return "AfterService{" +
                     "epilogue='" + epilogue + '\'' +
                     ", companySays='" + companySays + '\'' +
+                    ", award='" + award + '\'' +
                     '}';
         }
 
@@ -84,11 +98,13 @@ public class BetaTest implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(epilogue);
             dest.writeString(companySays);
+            dest.writeString(award);
         }
 
         private void readFromParcel(Parcel in) {
             epilogue = in.readString();
             companySays = in.readString();
+            award = in.readString();
         }
 
         @Override
@@ -138,6 +154,15 @@ public class BetaTest implements Parcelable {
 
     public BetaTest setOverviewImageUrl(String overviewImageUrl) {
         this.overviewImageUrl = overviewImageUrl;
+        return this;
+    }
+
+    public String getIconImageUrl() {
+        return iconImageUrl;
+    }
+
+    public BetaTest setIconImageUrl(String iconImageUrl) {
+        this.iconImageUrl = iconImageUrl;
         return this;
     }
 
@@ -231,6 +256,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public String getBugReportUrl() {
+        return bugReportUrl;
+    }
+
+    public BetaTest setBugReportUrl(String bugReportUrl) {
+        this.bugReportUrl = bugReportUrl;
+        return this;
+    }
+
     // convertType : DateUtil.CONVERT_TYPE_.*
     public float getRequiredTime(int convertType) {
         return DateUtil.convertDurationFromMilliseconds(convertType, requiredTime, 0);
@@ -300,6 +334,7 @@ public class BetaTest implements Parcelable {
                 "objectId='" + objectId + '\'' +
                 ", id=" + id +
                 ", overviewImageUrl='" + overviewImageUrl + '\'' +
+                ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", tags=" + tags +
@@ -310,6 +345,7 @@ public class BetaTest implements Parcelable {
                 ", actionType='" + actionType + '\'' +
                 ", action='" + action + '\'' +
                 ", reward='" + reward + '\'' +
+                ", bugReportUrl='" + bugReportUrl + '\'' +
                 ", requiredTime=" + requiredTime +
                 ", amount='" + amount + '\'' +
                 ", isOpened=" + isOpened +
@@ -328,6 +364,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(objectId);
         dest.writeInt(id);
         dest.writeString(overviewImageUrl);
+        dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(subTitle);
         dest.writeStringList(tags);
@@ -338,6 +375,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(actionType);
         dest.writeString(action);
         dest.writeString(reward);
+        dest.writeString(bugReportUrl);
         dest.writeLong(requiredTime);
         dest.writeString(amount);
         dest.writeInt(isOpened ? 1 : 0);
@@ -350,6 +388,7 @@ public class BetaTest implements Parcelable {
         objectId = in.readString();
         id = in.readInt();
         overviewImageUrl = in.readString();
+        iconImageUrl = in.readString();
         title = in.readString();
         subTitle = in.readString();
         in.readStringList(tags);
@@ -360,6 +399,7 @@ public class BetaTest implements Parcelable {
         actionType = in.readString();
         action = in.readString();
         reward = in.readString();
+        bugReportUrl = in.readString();
         requiredTime = in.readLong();
         amount = in.readString();
         isOpened = (in.readInt() == 1);

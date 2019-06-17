@@ -1,10 +1,13 @@
 package com.formakers.fomes.common.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NavUtils;
+import androidx.core.app.TaskStackBuilder;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.FomesConstants;
@@ -59,11 +62,26 @@ public class FomesBaseActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            if (upIntent != null && isShouldUpRecreateTask(this)) {
+                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+            } else if (isDifferentBetweenUpAndBack()) {
+                finish();
+            } else {
+                onBackPressed();
+            }
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    protected boolean isDifferentBetweenUpAndBack() {
+        return false;
+    }
+
+    private boolean isShouldUpRecreateTask(Activity from) {
+        return from.getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false);
     }
 
     private boolean isNeedProvisioning() {
