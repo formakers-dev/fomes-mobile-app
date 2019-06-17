@@ -240,7 +240,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/beta_test_closed_label_title"
+            android:text="@string/beta_test_closed_label_title_old"
             android:textColor="@color/fomes_warm_gray"
             android:textSize="24dp"
             android:textStyle="bold" />

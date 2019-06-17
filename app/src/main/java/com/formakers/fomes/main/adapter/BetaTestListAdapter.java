@@ -150,6 +150,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 itemViewHolder.completedLabelTextView.setText(String.format(context.getString(R.string.beta_test_completed_label_title), item.getTags().get(0)));
                 itemViewHolder.completedLabelView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
+                itemViewHolder.closedLabelTextView.setText(String.format(context.getString(R.string.beta_test_closed_label_title), item.getTags().get(0)));
                 itemViewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
             }
         } else {
@@ -255,6 +256,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Deprecated View completedLabelView;
         @Deprecated TextView completedLabelTextView;
         @Deprecated View closedLabelView;
+        @Deprecated TextView closedLabelTextView;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
@@ -268,6 +270,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
             completedLabelTextView = itemView.findViewById(R.id.betatest_completed_label_textview);
             closedLabelView = itemView.findViewById(R.id.betatest_closed_label);
+            closedLabelTextView = itemView.findViewById(R.id.betatest_closed_label_textview);
         }
     }
 
