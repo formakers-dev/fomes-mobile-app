@@ -57,9 +57,22 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BetaTest item = betaTestList.get(position);
 
+        BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
+
+        baseViewHolder.titleTextView.setText(item.getTitle());
+
+        List<String> targetApps = item.getApps();
+
+        if (targetApps == null || targetApps.isEmpty()) {
+            baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), context.getString(R.string.app_name)));
+        } else {
+            baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), targetApps.get(0)));
+        }
+
+        baseViewHolder.testTypeTextView.setText(item.getTags().get(0));
+
         if (isNewDesign()) {
             ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.titleTextView.setText(item.getTitle());
             viewHolder.subTitleTextView.setText(item.getSubTitle());
             viewHolder.periodTextView.setText(String.format("%s ~ %s", item.getOpenDate(), item.getCloseDate()));
 
@@ -89,20 +102,21 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 viewHolder.epilogueButton.setOnClickListener(null);
                 viewHolder.epilogueButton.setEnabled(false);
             }
-        } else {
-            BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
 
-            baseViewHolder.titleTextView.setText(item.getTitle());
-
-            List<String> targetApps = item.getApps();
-
-            if (targetApps == null || targetApps.isEmpty()) {
-                baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), context.getString(R.string.app_name)));
-            } else {
-                baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), targetApps.get(0)));
+            if (!Feature.BETATEST_GROUP_DATA_MIGRATION && Feature.FOMES_V_2_5_DESIGN) {
+                baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
+                baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
+                viewHolder.subTitleTextView.setVisibility(View.GONE);
             }
 
-            baseViewHolder.testTypeTextView.setText(item.getTags().get(0));
+        } else {
+            GroupViewHolder viewHolder = (GroupViewHolder) holder;
+
+            baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
+            baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
+
+            baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
+            baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
 
             long remainDays = item.getRemainDays();
 
@@ -114,14 +128,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             } else {
                 projectStatus = context.getString(R.string.common_close);
             }
-            baseViewHolder.projectStatusTextView.setText(projectStatus);
-
-            baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
-
-            // Enable 처리
-            baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
-            baseViewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
-            GroupViewHolder viewHolder = (GroupViewHolder) holder;
+            viewHolder.projectStatusTextView.setText(projectStatus);
+            viewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
 
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
             viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
@@ -229,11 +237,23 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         this.itemClickListener = listener;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class BaseViewHolder extends RecyclerView.ViewHolder {
+        TextView titleTextView;
+        @Deprecated TextView targetTextView;
+        @Deprecated TextView testTypeTextView;
+
+        public BaseViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = itemView.findViewById(R.id.betatest_title_textview);
+            targetTextView = itemView.findViewById(R.id.betatest_target);
+            testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
+        }
+    }
+
+    class ViewHolder extends BaseViewHolder {
         TextView companySaysTextView;
         ImageView labelImageView;
         ImageView iconImageView;
-        TextView titleTextView;
         TextView subTitleTextView;
         TextView periodTextView;
         Button epilogueButton;
@@ -243,7 +263,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             companySaysTextView = itemView.findViewById(R.id.betatest_finished_company_says);
             labelImageView = itemView.findViewById(R.id.betatest_label);
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
-            titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             periodTextView = itemView.findViewById(R.id.betatest_period_textview);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
@@ -251,25 +270,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Deprecated
-    class BaseViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView;
-        TextView targetTextView;
-        TextView testTypeTextView;
-        TextView projectStatusTextView;
-        View disableBackgroundView;
-
-        public BaseViewHolder(View itemView) {
-            super(itemView);
-            titleTextView = itemView.findViewById(R.id.betatest_title_textview);
-            targetTextView = itemView.findViewById(R.id.betatest_target);
-            testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
-            projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
-            disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
-        }
-    }
-
-    @Deprecated
     class GroupViewHolder extends BaseViewHolder {
+        TextView projectStatusTextView;
         ImageView stampImageView;
         TextView progressTitleTextView;
         TextView progressSubTitleTextView;
@@ -277,9 +279,12 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageView epilogueButtonIcon;
         TextView epilogueButtonTextView;
         TextView companySaysTextView;
+        View disableBackgroundView;
 
         public GroupViewHolder(View itemView) {
             super(itemView);
+            disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
+            projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
             stampImageView = itemView.findViewById(R.id.betatest_label);
             progressTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_title);
             progressSubTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_subtitle);
