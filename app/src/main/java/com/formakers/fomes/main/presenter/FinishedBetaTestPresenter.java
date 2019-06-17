@@ -11,6 +11,9 @@ import com.formakers.fomes.main.contract.FinishedBetaTestListAdapterContract;
 import com.formakers.fomes.main.dagger.scope.FinishedBetaTestFragmentScope;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -74,6 +77,9 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                         throw new IllegalStateException("Empty List");
                     }
 
+                    Comparator<BetaTest> comparator = (o1, o2) -> compareByCloseDate(o1, o2, new Date());
+                    Collections.sort(betaTests, comparator);
+
                     finishedList.clear();
                     finishedList.addAll(betaTests);
                     updateDisplayedList(filterCompletedList(finishedList, view.isNeedAppliedCompletedFilter()));
@@ -84,6 +90,13 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                     Log.e(TAG, "load) onError e=" + e);
                     view.showEmptyView();
                 });
+    }
+
+    private int compareByCloseDate(BetaTest betaTest1, BetaTest betaTest2, Date currentDate) {
+        Long betaTestDiff1 = Math.abs(currentDate.getTime() - betaTest1.getCloseDate().getTime());
+        Long betaTestDiff2 = Math.abs(currentDate.getTime() - betaTest2.getCloseDate().getTime());
+
+        return betaTestDiff1.compareTo(betaTestDiff2);
     }
 
     @Override
