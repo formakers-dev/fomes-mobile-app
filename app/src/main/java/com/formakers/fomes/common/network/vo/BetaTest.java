@@ -30,6 +30,8 @@ public class BetaTest implements Parcelable {
 
     String reward;
 
+    String bugReportUrl;
+
     long requiredTime;
     String amount;
 
@@ -231,6 +233,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public String getBugReportUrl() {
+        return bugReportUrl;
+    }
+
+    public BetaTest setBugReportUrl(String bugReportUrl) {
+        this.bugReportUrl = bugReportUrl;
+        return this;
+    }
+
     // convertType : DateUtil.CONVERT_TYPE_.*
     public float getRequiredTime(int convertType) {
         return DateUtil.convertDurationFromMilliseconds(convertType, requiredTime, 0);
@@ -310,6 +321,7 @@ public class BetaTest implements Parcelable {
                 ", actionType='" + actionType + '\'' +
                 ", action='" + action + '\'' +
                 ", reward='" + reward + '\'' +
+                ", bugReportUrl='" + bugReportUrl + '\'' +
                 ", requiredTime=" + requiredTime +
                 ", amount='" + amount + '\'' +
                 ", isOpened=" + isOpened +
@@ -338,6 +350,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(actionType);
         dest.writeString(action);
         dest.writeString(reward);
+        dest.writeString(bugReportUrl);
         dest.writeLong(requiredTime);
         dest.writeString(amount);
         dest.writeInt(isOpened ? 1 : 0);
@@ -360,6 +373,7 @@ public class BetaTest implements Parcelable {
         actionType = in.readString();
         action = in.readString();
         reward = in.readString();
+        bugReportUrl = in.readString();
         requiredTime = in.readLong();
         amount = in.readString();
         isOpened = (in.readInt() == 1);

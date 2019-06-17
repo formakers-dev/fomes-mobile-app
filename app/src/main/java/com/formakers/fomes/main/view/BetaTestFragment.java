@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -77,7 +78,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         recyclerView.setLayoutManager(linearLayoutManager);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(),
+                Feature.BETATEST_GROUP_DATA_MIGRATION ? R.style.FomesMainTabTheme_BetaTestDivider : R.style.FomesMainTabTheme_OldBetaTestDivider).getTheme()));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         BetaTestListAdapter betaTestListAdapter = new BetaTestListAdapter();

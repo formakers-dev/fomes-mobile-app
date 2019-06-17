@@ -79,6 +79,12 @@
 
     <style name="FomesMainTabTheme.BetaTestDivider">
         <item name="divider_width">@dimen/match_constraint</item>
+        <item name="divider_height">12dp</item>
+        <item name="divider_color">@android:color/transparent</item>
+    </style>
+
+    <style name="FomesMainTabTheme.OldBetaTestDivider">
+        <item name="divider_width">@dimen/match_constraint</item>
         <item name="divider_height">9dp</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>
@@ -200,8 +206,42 @@
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.TagBackground.Squash" parent="BetaTestTheme.TagBackground">
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/fomes_squash</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.TagBackground.BlushPink" parent="BetaTestTheme.TagBackground">
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/fomes_blush_pink</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.OldTagBackground">
+        <item name="android:paddingStart">7dp</item>
+        <item name="android:paddingEnd">7dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/label_background_dark</item>
         <item name="item_stroke_color">@android:color/transparent</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.BugButtonBackground">
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="item_background_radius">6dp</item>
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">#979797</item>
         <item name="item_stroke_width">1dp</item>
     </style>
 

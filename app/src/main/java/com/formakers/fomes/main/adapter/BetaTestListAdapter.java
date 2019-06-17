@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,80 +51,69 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
 
-        if (Feature.BETATEST_GROUP_DATA_MIGRATION) {
+        if (Feature.BETATEST_GROUP_DATA_MIGRATION || Feature.FOMES_V_2_5_DESIGN) {
             return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_betatest, parent, false));
         } else {
             return new OldItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_betatest_old, parent, false));
         }
     }
 
+    private boolean isNewDesign() {
+        return Feature.BETATEST_GROUP_DATA_MIGRATION || Feature.FOMES_V_2_5_DESIGN;
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         BetaTest item = betaTests.get(position);
 
-        if (Feature.BETATEST_GROUP_DATA_MIGRATION) {
-            BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
+        BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
 
-            baseViewHolder.titleTextView.setText(item.getTitle());
-            baseViewHolder.subTitleTextView.setText(item.getSubTitle());
+        baseViewHolder.titleTextView.setText(item.getTitle());
+        baseViewHolder.subTitleTextView.setText(item.getSubTitle());
 
-//        List<String> targetApps = item.getApps();
-//
-//        if (targetApps == null || targetApps.isEmpty()) {
-//            baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), context.getString(R.string.app_name)));
-//        } else {
-//            baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), targetApps.get(0)));
-//        }
-//
-//        baseViewHolder.testTypeTextView.setText(item.getTags().get(0));
+        baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
 
-            baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
+        // Enable 처리
+        baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
+        baseViewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
 
-            baseViewHolder.attendLabelImageView.setVisibility(item.isCompleted() || !item.isOpened() ? View.VISIBLE : View.GONE);
+        if (isNewDesign()) {
+            // 디데이
+            long remainDays = item.getRemainDays();
 
-            // Enable 처리
-            baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
-
-            baseViewHolder.attendLabelImageView.setVisibility(item.isCompleted() || !item.isOpened() ? View.VISIBLE : View.GONE);
+            String projectStatus;
+            if (remainDays > 0) {
+                projectStatus = String.format("D - %d", remainDays);
+            } else if (remainDays == 0) {
+                projectStatus = "D - day";
+            } else {
+                projectStatus = context.getString(R.string.common_close);
+            }
+            baseViewHolder.projectStatusTextView.setText(projectStatus);
 
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
+            itemViewHolder.attendLabelImageView.setVisibility(item.isCompleted() || !item.isOpened() ? View.VISIBLE : View.GONE);
+
+            itemViewHolder.attendLabelImageView.setVisibility(item.isCompleted() || !item.isOpened() ? View.VISIBLE : View.GONE);
+
             Glide.with(context).load(item.getOverviewImageUrl())
-                    .apply(new RequestOptions().override(76, 76)
+                    .apply(new RequestOptions()
                             .centerCrop()
                             .transform(new RoundedCorners(4))
                             .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
                     .into(itemViewHolder.overviewImageView);
 
-            itemViewHolder.subTitleTextView.setText(item.getSubTitle());
-
-            long remainDays = item.getRemainDays();
-
-            String projectStatus;
-            if (remainDays > 0) {
-                projectStatus = String.format(context.getString(R.string.betatest_project_status_format), remainDays);
-            } else if (remainDays == 0) {
-                projectStatus = context.getString(R.string.beta_test_today_close);
-            } else {
-                projectStatus = context.getString(R.string.common_close);
+            if (TextUtils.isEmpty(item.getBugReportUrl())) {
+                itemViewHolder.reportBugButton.setVisibility(View.GONE);
             }
 
-            itemViewHolder.projectStatusTextView.setText(projectStatus);
+            if (Feature.FOMES_V_2_5_DESIGN) {
+                itemViewHolder.progressBar.setVisibility(View.GONE);
+                itemViewHolder.progressTextView.setVisibility(View.GONE);
+            }
         } else {
-            OldBaseViewHolder baseViewHolder = (OldBaseViewHolder) holder;
-
-            baseViewHolder.titleTextView.setText(item.getTitle());
-
-            List<String> targetApps = item.getApps();
-
-            if (targetApps == null || targetApps.isEmpty()) {
-                baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), context.getString(R.string.app_name)));
-            } else {
-                baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), targetApps.get(0)));
-            }
-
-            baseViewHolder.testTypeTextView.setText(item.getTags().get(0));
-
+            // 디데이
             long remainDays = item.getRemainDays();
 
             String projectStatus;
@@ -138,13 +126,17 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             baseViewHolder.projectStatusTextView.setText(projectStatus);
 
-            baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
-
-            // Enable 처리
-            baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
-            baseViewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
-
             OldItemViewHolder itemViewHolder = (OldItemViewHolder) holder;
+
+            List<String> targetApps = item.getApps();
+
+            if (targetApps == null || targetApps.isEmpty()) {
+                itemViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), context.getString(R.string.app_name)));
+            } else {
+                itemViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), targetApps.get(0)));
+            }
+
+            itemViewHolder.testTypeTextView.setText(item.getTags().get(0));
 
             Glide.with(context).load(item.getOverviewImageUrl())
                     .apply(new RequestOptions().override(76, 76)
@@ -152,8 +144,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             .transform(new RoundedCorners(4))
                             .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
                     .into(itemViewHolder.overviewImageView);
-
-            itemViewHolder.subTitleTextView.setText(item.getSubTitle());
 
             itemViewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
             itemViewHolder.amountTextView.setText(item.getAmount());
@@ -223,17 +213,15 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class BaseViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView subTitleTextView;
-        //        TextView targetTextView;
-//        TextView testTypeTextView;
-        ImageView attendLabelImageView;
+        TextView projectStatusTextView;
+        @Deprecated View disableBackgroundView;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
-//            targetTextView = itemView.findViewById(R.id.betatest_target);
-//            testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
-            attendLabelImageView = itemView.findViewById(R.id.betatest_label);
+            projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
+            disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
         }
     }
 
@@ -241,54 +229,38 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageView overviewImageView;
         TextView progressTextView;
         ProgressBar progressBar;
-        TextView projectStatusTextView;
-        Button reportBugButton;
+        ImageView attendLabelImageView;
+        TextView reportBugButton;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
             progressTextView = itemView.findViewById(R.id.betatest_progress_textview);
             progressBar = itemView.findViewById(R.id.betatest_progress_bar);
-            projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
+            attendLabelImageView = itemView.findViewById(R.id.betatest_label);
             reportBugButton = itemView.findViewById(R.id.betatest_bug_button);
         }
     }
 
     @Deprecated
-    class OldBaseViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView;
-        TextView targetTextView;
-        TextView testTypeTextView;
-        TextView projectStatusTextView;
-        View disableBackgroundView;
-
-        public OldBaseViewHolder(View itemView) {
-            super(itemView);
-            titleTextView = itemView.findViewById(R.id.betatest_title_textview);
-            targetTextView = itemView.findViewById(R.id.betatest_target);
-            testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
-            projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
-            disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
-        }
-    }
-
-    @Deprecated
-    class OldItemViewHolder extends OldBaseViewHolder {
+    class OldItemViewHolder extends BaseViewHolder {
         ImageView overviewImageView;
-        TextView subTitleTextView;
         TextView requiredTimeTextView;
         TextView amountTextView;
         TextView rewardTextView;
+        TextView targetTextView;
+        TextView testTypeTextView;
         View completedLabelView;
         View closedLabelView;
 
         public OldItemViewHolder(View itemView) {
             super(itemView);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
-            subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             requiredTimeTextView = itemView.findViewById(R.id.betatest_required_time);
             amountTextView = itemView.findViewById(R.id.betatest_amount);
             rewardTextView = itemView.findViewById(R.id.betatest_reward);
+            targetTextView = itemView.findViewById(R.id.betatest_target);
+            testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
             completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
             closedLabelView = itemView.findViewById(R.id.betatest_closed_label);
         }
