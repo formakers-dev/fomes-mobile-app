@@ -37,6 +37,7 @@
         <TextView android:id="@+id/betatest_notice_textview"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/main_tab_subtitle_top_margin"
             android:textSize="@dimen/main_tab_subtitle_text_size"
             android:textColor="@color/fomes_light_gray"
             android:text="@string/betatest_subtitle"

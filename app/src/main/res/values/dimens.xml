@@ -53,4 +53,5 @@
     <dimen name="main_tab_subtitle_text_size">11dp</dimen>
     <dimen name="main_tab_title_margin_top">16dp</dimen>
     <dimen name="main_tab_title_margin_start">19dp</dimen>
+    <dimen name="main_tab_subtitle_top_margin">5dp</dimen>
 </resources>
