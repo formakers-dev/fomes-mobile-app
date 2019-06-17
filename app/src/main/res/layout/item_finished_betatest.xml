@@ -43,6 +43,7 @@
             <TextView android:id="@+id/betatest_finished_company_says"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:textSize="12dp"
                 android:textColor="@color/fomes_white"
                 android:text="@string/betatest_company_says_not_collected"
@@ -155,6 +156,17 @@
                 app:layout_constraintEnd_toEndOf="@+id/betatest_title_textview"
                 tools:text="테스트 기간 : 2019 3월 11일~21일" />
 
+            <View android:id="@+id/betatest_title_layout_disable_background"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/match_constraint"
+                android:background="#90454647"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/betatest_icon_imageview"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_period_textview"
+                app:layout_constraintStart_toStartOf="@+id/betatest_label"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_title_textview"
+                tools:visibility="visible"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
@@ -225,6 +237,36 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:visibility="visible" />
+
+                <LinearLayout android:id="@+id/betatest_finished_my_feedback"
+                    android:layout_width="@dimen/match_constraint"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    <TextView android:id="@+id/betatest_finished_progress_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="4dp"
+                        android:drawableStart="@drawable/icon_grey_flag"
+                        android:drawableEnd="@drawable/icon_grey_flag_reverse"
+                        android:gravity="center"
+                        android:textSize="16dp"
+                        android:textColor="@color/fomes_warm_gray"
+                        android:text="@string/betatest_not_submitted_my_feedback" />
+                    <TextView android:id="@+id/betatest_finished_progress_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="13dp"
+                        android:textColor="@color/fomes_warm_gray"
+                        android:text="@string/betatest_collecting_results" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

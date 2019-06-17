@@ -106,10 +106,43 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 viewHolder.epilogueButton.setEnabled(false);
             }
 
+            if (item.isCompleted()) {
+                viewHolder.disableTitleLayout.setVisibility(View.GONE);
+                viewHolder.companySaysLayout.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            } else {
+                viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
+                viewHolder.companySaysLayout.setBackgroundColor(context.getResources().getColor(R.color.beta_test_finished_group_block_background));
+            }
+
             if (!Feature.BETATEST_GROUP_DATA_MIGRATION && Feature.FOMES_V_2_5_DESIGN) {
                 baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
                 baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
                 viewHolder.subTitleTextView.setVisibility(View.GONE);
+
+                if (item.getAfterService() == null) {
+                    viewHolder.awardGroup.setVisibility(View.GONE);
+                    viewHolder.progressLayout.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.awardGroup.setVisibility(View.VISIBLE);
+                    viewHolder.progressLayout.setVisibility(View.GONE);
+                }
+
+                if (item.isCompleted()) {
+                    // 제출 완료
+                    viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
+                    viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
+                    viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
+                    viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
+                } else {
+                    // 미제출
+                    viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                    viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+
+                    viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
+                    viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
+                }
+
+                viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
             }
 
         } else {
@@ -244,17 +277,24 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         TextView titleTextView;
         @Deprecated TextView targetTextView;
         @Deprecated TextView testTypeTextView;
+        @Deprecated View progressLayout;
+        @Deprecated TextView progressTitleTextView;
+        @Deprecated TextView progressSubTitleTextView;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             targetTextView = itemView.findViewById(R.id.betatest_target);
             testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
+            progressLayout = itemView.findViewById(R.id.betatest_finished_my_feedback);
+            progressTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_title);
+            progressSubTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_subtitle);
         }
     }
 
     class ViewHolder extends BaseViewHolder {
         TextView companySaysTextView;
+        View companySaysLayout;
         ImageView labelImageView;
         ImageView iconImageView;
         TextView subTitleTextView;
@@ -262,10 +302,12 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         Group awardGroup;
         TextView awardTextView;
         Button epilogueButton;
+        View disableTitleLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             companySaysTextView = itemView.findViewById(R.id.betatest_finished_company_says);
+            companySaysLayout = itemView.findViewById(R.id.betatest_divider);
             labelImageView = itemView.findViewById(R.id.betatest_label);
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
@@ -273,6 +315,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             awardGroup = itemView.findViewById(R.id.betatest_award_group);
             awardTextView = itemView.findViewById(R.id.betatest_award_contents);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
+            disableTitleLayout = itemView.findViewById(R.id.betatest_title_layout_disable_background);
         }
     }
 
@@ -280,8 +323,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     class GroupViewHolder extends BaseViewHolder {
         TextView projectStatusTextView;
         ImageView stampImageView;
-        TextView progressTitleTextView;
-        TextView progressSubTitleTextView;
         Button epilogueButton;
         ImageView epilogueButtonIcon;
         TextView epilogueButtonTextView;
@@ -293,8 +334,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
             stampImageView = itemView.findViewById(R.id.betatest_label);
-            progressTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_title);
-            progressSubTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_subtitle);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
             epilogueButtonIcon = itemView.findViewById(R.id.betatest_finished_epilogue_button_icon);
             epilogueButtonTextView = itemView.findViewById(R.id.betatest_finished_epilogue_button_text);
