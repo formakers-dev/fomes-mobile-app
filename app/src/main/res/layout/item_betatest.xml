@@ -104,7 +104,6 @@
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/fomes_light_gray"
                 android:textSize="11dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/betatest_bug_button"
                 app:layout_constraintStart_toStartOf="@+id/betatest_title_layout"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_layout"
@@ -122,54 +121,57 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/betatest_title_layout" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/betatest_required_time"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="11dp"-->
-            <!--android:drawableStart="@drawable/icon_required_time"-->
-            <!--android:drawablePadding="4dp"-->
-            <!--android:gravity="center"-->
-            <!--android:textSize="12dp"-->
-            <!--android:textColor="@color/colorPrimary"-->
-            <!--app:layout_constraintHorizontal_chainStyle="spread_inside"-->
-            <!--app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintEnd_toStartOf="@+id/betatest_amount"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintVertical_bias="0.0"-->
-            <!--tools:text="약 3분" />-->
+            <TextView
+                android:id="@+id/betatest_required_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_required_time"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="11dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/betatest_amount"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="@id/betatest_title_layout"
+                app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="약 3분" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/betatest_amount"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:drawableStart="@drawable/icon_amount"-->
-            <!--android:drawablePadding="4dp"-->
-            <!--android:textSize="12dp"-->
-            <!--android:textColor="@color/colorPrimary"-->
-            <!--app:layout_constraintTop_toTopOf="@id/betatest_required_time"-->
-            <!--app:layout_constraintStart_toEndOf="@id/betatest_required_time"-->
-            <!--app:layout_constraintEnd_toStartOf="@+id/betatest_reward"-->
-            <!--app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"-->
-            <!--tools:text="9 문항" />-->
+            <TextView
+                android:id="@+id/betatest_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_amount"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="11dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
+                app:layout_constraintEnd_toStartOf="@+id/betatest_reward"
+                app:layout_constraintStart_toEndOf="@id/betatest_required_time"
+                app:layout_constraintTop_toTopOf="@id/betatest_required_time"
+                tools:text="9 문항" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/betatest_reward"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="12dp"-->
-            <!--android:gravity="center"-->
-            <!--android:drawableStart="@drawable/icon_reward"-->
-            <!--android:drawablePadding="4dp"-->
-            <!--android:textSize="12dp"-->
-            <!--android:textColor="@color/colorPrimary"-->
-            <!--app:layout_constraintTop_toTopOf="@id/betatest_required_time"-->
-            <!--app:layout_constraintStart_toEndOf="@id/betatest_amount"-->
-            <!--app:layout_constraintEnd_toStartOf="@id/betatest_overview_imageview"-->
-            <!--app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"-->
-            <!--tools:text="보상 없음" />-->
+            <TextView
+                android:id="@+id/betatest_reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_reward"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="11dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
+                app:layout_constraintEnd_toStartOf="@id/betatest_bug_button"
+                app:layout_constraintStart_toEndOf="@id/betatest_amount"
+                app:layout_constraintTop_toTopOf="@id/betatest_required_time"
+                app:layout_goneMarginEnd="10dp"
+                tools:text="보상 없음" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

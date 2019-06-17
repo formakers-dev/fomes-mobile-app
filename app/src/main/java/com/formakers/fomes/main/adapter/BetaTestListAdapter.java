@@ -77,6 +77,16 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
         baseViewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
 
+        baseViewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
+        baseViewHolder.amountTextView.setText(item.getAmount());
+
+        String reward = item.getReward();
+        if (TextUtils.isEmpty(reward)) {
+            baseViewHolder.rewardTextView.setText(R.string.betatest_reward_none);
+        } else {
+            baseViewHolder.rewardTextView.setText(reward);
+        }
+
         if (isNewDesign()) {
             // 디데이
             long remainDays = item.getRemainDays();
@@ -108,9 +118,13 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 itemViewHolder.reportBugButton.setVisibility(View.GONE);
             }
 
-            if (Feature.FOMES_V_2_5_DESIGN) {
+            if (!Feature.BETATEST_GROUP_DATA_MIGRATION && Feature.FOMES_V_2_5_DESIGN) {
                 itemViewHolder.progressBar.setVisibility(View.GONE);
                 itemViewHolder.progressTextView.setVisibility(View.GONE);
+
+                baseViewHolder.requiredTimeTextView.setVisibility(View.VISIBLE);
+                baseViewHolder.amountTextView.setVisibility(View.VISIBLE);
+                baseViewHolder.rewardTextView.setVisibility(View.VISIBLE);
             }
         } else {
             // 디데이
@@ -145,18 +159,12 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
                     .into(itemViewHolder.overviewImageView);
 
-            itemViewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
-            itemViewHolder.amountTextView.setText(item.getAmount());
-
-            String reward = item.getReward();
-            if (TextUtils.isEmpty(reward)) {
-                itemViewHolder.rewardTextView.setText(R.string.betatest_reward_none);
-            } else {
-                itemViewHolder.rewardTextView.setText(reward);
-            }
-
             itemViewHolder.completedLabelView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
             itemViewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
+
+            baseViewHolder.requiredTimeTextView.setVisibility(View.VISIBLE);
+            baseViewHolder.amountTextView.setVisibility(View.VISIBLE);
+            baseViewHolder.rewardTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -215,6 +223,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView subTitleTextView;
         TextView projectStatusTextView;
         @Deprecated View disableBackgroundView;
+        @Deprecated TextView requiredTimeTextView;
+        @Deprecated TextView amountTextView;
+        @Deprecated TextView rewardTextView;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
@@ -222,6 +233,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
             disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
+            requiredTimeTextView = itemView.findViewById(R.id.betatest_required_time);
+            amountTextView = itemView.findViewById(R.id.betatest_amount);
+            rewardTextView = itemView.findViewById(R.id.betatest_reward);
         }
     }
 
@@ -245,9 +259,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Deprecated
     class OldItemViewHolder extends BaseViewHolder {
         ImageView overviewImageView;
-        TextView requiredTimeTextView;
-        TextView amountTextView;
-        TextView rewardTextView;
         TextView targetTextView;
         TextView testTypeTextView;
         View completedLabelView;
@@ -256,9 +267,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public OldItemViewHolder(View itemView) {
             super(itemView);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
-            requiredTimeTextView = itemView.findViewById(R.id.betatest_required_time);
-            amountTextView = itemView.findViewById(R.id.betatest_amount);
-            rewardTextView = itemView.findViewById(R.id.betatest_reward);
             targetTextView = itemView.findViewById(R.id.betatest_target);
             testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
             completedLabelView = itemView.findViewById(R.id.betatest_completed_label);
