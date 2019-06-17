@@ -165,7 +165,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 projectStatus = context.getString(R.string.common_close);
             }
             viewHolder.projectStatusTextView.setText(projectStatus);
-            viewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
 
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
             viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
@@ -327,11 +326,9 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageView epilogueButtonIcon;
         TextView epilogueButtonTextView;
         TextView companySaysTextView;
-        View disableBackgroundView;
 
         public GroupViewHolder(View itemView) {
             super(itemView);
-            disableBackgroundView = itemView.findViewById(R.id.betatest_disable_background);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
             stampImageView = itemView.findViewById(R.id.betatest_label);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
