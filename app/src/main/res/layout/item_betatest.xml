@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
             android:background="@drawable/item_rect_rounded_corner_background"
+            android:foreground="@drawable/item_rect_rounded_corner_stroke_background"
             android:theme="@style/BetaTestTheme.CardBackground"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -37,6 +38,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/match_constraint"
+                android:background="@drawable/gradient"
+                app:layout_constraintStart_toStartOf="@id/betatest_overview_imageview"
+                app:layout_constraintEnd_toEndOf="@id/betatest_overview_imageview"
+                app:layout_constraintTop_toTopOf="@id/betatest_overview_imageview"
+                app:layout_constraintBottom_toBottomOf="@id/betatest_overview_imageview"
+                />
 
             <TextView
                 android:id="@+id/betatest_progress_textview"
@@ -66,7 +77,7 @@
                 android:id="@+id/betatest_title_layout"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:gravity="center_vertical"

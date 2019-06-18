@@ -180,7 +180,8 @@
     </style>
 
     <style name="TurquoiseTextLabel">
-        <item name="item_color">@color/colorPrimary</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
         <item name="item_background_radius">10dp</item>
     </style>
 
@@ -192,6 +193,13 @@
         <item name="item_stroke_color">@color/item_inner_divider</item>
         <item name="item_stroke_width">1dp</item>
     </style>
+
+    <!--<style name="BetaTestTheme.CardGradient">-->
+        <!--<item name="item_gradient_start_color">@color/fomes_content_card_background</item>-->
+        <!--<item name="item_gradient_end_color">@android:color/transparent</item>-->
+        <!--<item name="item_gradient_angle">90</item>-->
+        <!--<item name="item_gradient_radius">10dp</item>-->
+    <!--</style>-->
 
     <style name="BetaTestTheme.DetailDialog">
         <item name="item_background_radius">0dp</item>
