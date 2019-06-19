@@ -36,6 +36,9 @@ public class WebViewActivity extends FomesBaseActivity {
     @BindView(R.id.webview) WebView webView;
     @BindView(R.id.loading_bar) ProgressBar loadingBar;
 
+    // TODO : MVP 로 분리해라
+//    @Inject UserDAO userDAO;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,22 +49,37 @@ public class WebViewActivity extends FomesBaseActivity {
     }
 
     @Override
+    protected boolean isFromDeeplink() {
+        Intent intent = getIntent();
+        Uri deeplinkUri = intent.getData();
+        Log.d(TAG, String.valueOf(deeplinkUri));
+
+        return deeplinkUri != null
+                && deeplinkUri.getScheme().equals("fomes")
+                && deeplinkUri.getHost().equals("web")
+                && deeplinkUri.getPath().equals("/internal");
+    }
+
+    @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         Intent intent = getIntent();
-
-        Uri deeplinkUri = intent.getData();
         String title;
         String contents;
-        Log.d(TAG, String.valueOf(deeplinkUri));
 
-        if (deeplinkUri != null
-                && deeplinkUri.getScheme().equals("fomes")
-                && deeplinkUri.getHost().equals("web")
-                && deeplinkUri.getPath().equals("/internal")) {
+        // TODO : 커밋후 리턴타입 고민하기
+        if (isFromDeeplink()) {
+            Uri deeplinkUri = intent.getData();
+
             title = deeplinkUri.getQueryParameter("title");
             contents = deeplinkUri.getQueryParameter("url");
+            String appended = deeplinkUri.getQueryParameter("appendedUrl");
+
+            if (!TextUtils.isEmpty(appended)) {
+                // appendedUrl 파람의 예약어는 여기에 정의하자
+                contents += appended.replace("{email}", userDAO2.getUserInfo().toBlocking().value().getEmail());
+            }
         } else {
             title = getIntent().getStringExtra(EXTRA_TITLE);
             contents = getIntent().getStringExtra(EXTRA_CONTENTS);
