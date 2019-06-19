@@ -92,7 +92,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             BetaTest.AfterService afterService = item.getAfterService();
 
             if (afterService != null) {
-                viewHolder.awardTextView.setText(afterService.getAward());
+                viewHolder.awardTextView.setText(afterService.getAwards());
                 viewHolder.companySaysTextView.setText(afterService.getCompanySays());
                 viewHolder.epilogueButton.setOnClickListener(v -> {
                     Uri uri = Uri.parse(afterService.getEpilogue());
