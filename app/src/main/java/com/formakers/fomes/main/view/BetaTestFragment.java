@@ -69,6 +69,10 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         return inflater.inflate(R.layout.fragment_betatest, container, false);
     }
 
+    private boolean isNewDesign() {
+        return Feature.BETATEST_GROUP_DATA_MIGRATION || Feature.FOMES_V_2_5_DESIGN;
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -79,7 +83,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(),
-                Feature.BETATEST_GROUP_DATA_MIGRATION ? R.style.FomesMainTabTheme_BetaTestDivider : R.style.FomesMainTabTheme_OldBetaTestDivider).getTheme()));
+                isNewDesign() ? R.style.FomesMainTabTheme_BetaTestDivider : R.style.FomesMainTabTheme_OldBetaTestDivider).getTheme()));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         BetaTestListAdapter betaTestListAdapter = new BetaTestListAdapter();

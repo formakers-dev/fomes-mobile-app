@@ -51,11 +51,12 @@
             android:textSize="@dimen/main_tab_subtitle_text_size"
             android:focusable="true"
             android:clickable="true"
-            android:background="@drawable/ripple"
+            android:foreground="@drawable/ripple"
+            android:background="@drawable/item_rect_rounded_corner_stroke_background"
+            android:theme="@style/RecommendTheme.WishListButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/betatest_list_textview"
-            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recommend_recyclerview"
