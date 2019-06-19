@@ -126,6 +126,7 @@
     <string name="main_menu_my_wish_list">즐겨찾기</string>
     <string name="main_menu_my_recent_analysis">게임 성향 분석</string>
     <string name="main_menu_settings">설정</string>
+    <string name="main_menu_donation">후원하기</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
     <string name="main_option_menu_fomes_postbox">포메스\n우체통</string>
 
