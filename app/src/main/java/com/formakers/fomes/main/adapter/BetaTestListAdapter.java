@@ -91,37 +91,42 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         if (isNewDesign()) {
+
             // 디데이
             long remainDays = item.getRemainDays();
 
-            String projectStatus;
-            if (remainDays >= 0) {
-                projectStatus = String.format("D - %d", remainDays);
-            } else if (remainDays == 0) {
-                projectStatus = "D - day";
+            if (remainDays < 0) {
+                baseViewHolder.projectStatusTextView.setVisibility(View.GONE);
             } else {
-                projectStatus = context.getString(R.string.common_close);
+                String projectStatus;
+                if (remainDays > 0) {
+                    projectStatus = String.format("D - %d", remainDays);
+                } else if (remainDays == 0) {
+                    projectStatus = "오늘 마감";
+                } else {
+                    projectStatus = context.getString(R.string.common_close);
+                }
+
+                baseViewHolder.projectStatusTextView.setText(projectStatus);
+
+                @StyleRes int projectStatusStyleId;
+                @ColorRes int projectStatusColorId;
+                if (remainDays < 2) {
+                    projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Red;
+                    projectStatusColorId = R.color.fomes_red;
+                } else if (remainDays < 4) {
+                    projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Squash;
+                    projectStatusColorId = R.color.fomes_squash;
+                } else {
+                    projectStatusStyleId = R.style.BetaTestTheme_TagBackground;
+                    projectStatusColorId = R.color.colorPrimary;
+                }
+
+                baseViewHolder.projectStatusTextView.setVisibility(View.VISIBLE);
+                baseViewHolder.projectStatusTextView.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
+                        new ContextThemeWrapper(context, projectStatusStyleId).getTheme()));
+                baseViewHolder.projectStatusTextView.setTextColor(context.getResources().getColor(projectStatusColorId));
             }
-
-            baseViewHolder.projectStatusTextView.setText(projectStatus);
-
-            @StyleRes int projectStatusStyleId;
-            @ColorRes int projectStatusColorId;
-            if (remainDays > 5) {
-                projectStatusStyleId = R.style.BetaTestTheme_TagBackground;
-                projectStatusColorId = R.color.colorPrimary;
-            } else if (remainDays > 1) {
-                projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Squash;
-                projectStatusColorId = R.color.fomes_squash;
-            } else {
-                projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Red;
-                projectStatusColorId = R.color.fomes_red;
-            }
-
-            baseViewHolder.projectStatusTextView.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
-                    new ContextThemeWrapper(context, projectStatusStyleId).getTheme()));
-            baseViewHolder.projectStatusTextView.setTextColor(context.getResources().getColor(projectStatusColorId));
-
 
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
