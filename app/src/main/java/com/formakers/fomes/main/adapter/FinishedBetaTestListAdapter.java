@@ -170,7 +170,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.projectStatusTextView.setText(projectStatus);
 
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
-            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
+            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend_old : R.drawable.label_absent_old);
 
             // for 완료 여부
             if (item.isCompleted()) {
