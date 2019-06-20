@@ -106,7 +106,7 @@ public class LoginPresenterTest {
     public void signUpOrSignIn_호출시__프로비저닝_단계면__받아온_구글정보로_가입요청을_시도한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("anything"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -121,7 +121,7 @@ public class LoginPresenterTest {
     public void signUp_성공시__유저정보를_내부_디비에_저장한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("testFomesToken"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -140,7 +140,7 @@ public class LoginPresenterTest {
     public void singUp성공시__FomesToken저장_공지채널등록_단기통계데이터작업등록() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("testFomesToken"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -159,7 +159,7 @@ public class LoginPresenterTest {
     public void singUp성공시__프로비저닝_플로우로_넘어가는_요청을_보낸다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signUp(anyString(), any(User.class))).thenReturn(Single.just("testFomesToken"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -171,7 +171,7 @@ public class LoginPresenterTest {
     public void signUpOrSignIn_호출시__프로비저닝_단계가_아니면__받아온_구글정보로_로그인요청을_시도한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -183,7 +183,7 @@ public class LoginPresenterTest {
     public void singIn성공시__프로비저닝_단계를_완료시킨다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -198,7 +198,7 @@ public class LoginPresenterTest {
     public void singIn성공시__FomesToken저장_공지채널등록_단기통계데이터작업등록() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -219,7 +219,7 @@ public class LoginPresenterTest {
     public void singIn성공시__메인화면으로_넘어가는_요청을_보낸다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signIn(anyString())).thenReturn(Observable.just("testFomesToken"));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);
@@ -233,7 +233,7 @@ public class LoginPresenterTest {
     public void signUpOrSignIn실패시__실패문구를_토스트로_띄우도록_요청한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
         when(mockUserService.signIn(anyString())).thenReturn(Observable.error(new Throwable()));
 
         subject.signUpOrSignIn(mockGoogleSignInResult);

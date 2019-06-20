@@ -49,13 +49,13 @@ public class SharedPreferencesHelperTest {
 
     @Test
     public void setRegistrationToken호출시_SharedPreference에_fcm_등록토큰값을_저장한다() throws Exception {
-        subject.setRegistrationToken("test_registration_token");
+        subject.setUserRegistrationToken("test_registration_token");
         assertThat(sf.getString("REGISTRATION_TOKEN", "")).isEqualTo("test_registration_token");
     }
 
     @Test
     public void getRegistrationToken호출시_SharedPreference에_저장된_값을_리턴한다() throws Exception {
-        assertThat(subject.getRegistrationToken()).isEqualTo("TEST_REGISTRATION_TOKEN");
+        assertThat(subject.getUserRegistrationToken()).isEqualTo("TEST_REGISTRATION_TOKEN");
     }
 
     @Test

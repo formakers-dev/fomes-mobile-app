@@ -89,7 +89,7 @@ public class MessagingService extends FirebaseMessagingService {
 
         Log.d(TAG, "Token refreshed: " + newToken);
 
-        sharedPreferencesHelper.setRegistrationToken(newToken);
+        sharedPreferencesHelper.setUserRegistrationToken(newToken);
 
         // 로그인한 사용자만 노티 토큰을 서버에 업데이트 시킨다.
         if (sharedPreferencesHelper.hasAccessToken()) {

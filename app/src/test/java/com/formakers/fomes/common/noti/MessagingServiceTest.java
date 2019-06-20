@@ -51,7 +51,7 @@ public class MessagingServiceTest {
         ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
         when(mockSharedPreferenceHelper.hasAccessToken()).thenReturn(true);
-        when(mockSharedPreferenceHelper.getRegistrationToken()).thenReturn("OLD_TOKEN");
+        when(mockSharedPreferenceHelper.getUserRegistrationToken()).thenReturn("OLD_TOKEN");
         when(mockUserService.updateRegistrationToken(anyString())).thenReturn(Completable.complete());
         when(mockEventLogService.sendEventLog(any())).thenReturn(Completable.complete());
 
@@ -118,22 +118,22 @@ public class MessagingServiceTest {
 
     @Test
     public void 토큰이_갱신되었을_경우__로그인한_유저인_경우__사용자푸시토큰_업데이트API를_호출한다() {
-        when(mockSharedPreferenceHelper.getRegistrationToken()).thenReturn("NEW_TOKEN");
+        when(mockSharedPreferenceHelper.getUserRegistrationToken()).thenReturn("NEW_TOKEN");
 
         subject.onNewToken("NEW_TOKEN");
 
-        verify(mockSharedPreferenceHelper).setRegistrationToken("NEW_TOKEN");
+        verify(mockSharedPreferenceHelper).setUserRegistrationToken("NEW_TOKEN");
         verify(mockUserService).updateRegistrationToken(eq("NEW_TOKEN"));
     }
 
     @Test
     public void 토큰이_갱신되었을_경우__로그인한_유저가_아닌_경우__갱신된_토큰정보를_로컬에만_저장한다() {
         when(mockSharedPreferenceHelper.hasAccessToken()).thenReturn(false);
-        when(mockSharedPreferenceHelper.getRegistrationToken()).thenReturn("NEW_TOKEN");
+        when(mockSharedPreferenceHelper.getUserRegistrationToken()).thenReturn("NEW_TOKEN");
 
         subject.onNewToken("NEW_TOKEN");
 
-        verify(mockSharedPreferenceHelper).setRegistrationToken("NEW_TOKEN");
+        verify(mockSharedPreferenceHelper).setUserRegistrationToken("NEW_TOKEN");
         verify(mockUserService, never()).updateRegistrationToken(any());
     }
 }

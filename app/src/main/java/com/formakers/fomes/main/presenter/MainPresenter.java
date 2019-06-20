@@ -8,6 +8,7 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
@@ -28,6 +29,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Inject PostService postService;
     @Inject EventLogService eventLogService;
     @Inject AnalyticsModule.Analytics analytics;
+    @Inject SharedPreferencesHelper sharedPreferencesHelper;
 
     @Inject JobManager jobManager;
 
@@ -43,12 +45,13 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     // temporary code for test
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, EventLogService eventLogService, JobManager jobManager) {
+    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
         this.jobManager = jobManager;
         this.eventLogService = eventLogService;
+        this.sharedPreferencesHelper = sharedPreferencesHelper;
     }
 
     @Override
@@ -63,6 +66,9 @@ public class MainPresenter implements MainContract.Presenter {
     public User getUserInfo() {
         if (userInfo == null) {
             userInfo = userDAO.getUserInfo().observeOn(Schedulers.io()).toBlocking().value();
+
+            // TODO : 임시코드 (DB에만 존재하던 유저 이메일을 sharedPreferences에도 저장시키기)
+            sharedPreferencesHelper.setUserEmail(userInfo.getEmail());
         }
 
         return userInfo;
