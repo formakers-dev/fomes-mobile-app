@@ -33,7 +33,7 @@
             <View android:id="@+id/betatest_finished_company_says_background"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="@dimen/match_constraint"
-                android:background="@drawable/item_rect_rounded_corner_background"
+                android:background="@drawable/item_rect_rounded_corner_stroke_background"
                 android:theme="@style/BetaTestTheme.FinishedCompanySaysBackground"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

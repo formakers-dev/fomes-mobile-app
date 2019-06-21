@@ -329,12 +329,12 @@
 
     <style name="BetaTestTheme.FinishedCompanySaysBackground">
         <item name="item_background_radius">8dp</item>
-        <item name="item_solid_color">@color/beta_test_finished_group_block_background</item>
-        <item name="item_stroke_width">0dp</item>
+        <item name="item_stroke_color">@color/beta_test_finished_group_block_background</item>
+        <item name="item_stroke_width">1dp</item>
     </style>
 
     <style name="BetaTestTheme.FinishedCompanySaysBackground.Attend" parent="BetaTestTheme.FinishedCompanySaysBackground">
-        <item name="item_solid_color">@color/beta_test_finished_group_company_says_attend_background</item>
+        <item name="item_stroke_color">@color/beta_test_finished_group_company_says_attend_background</item>
     </style>
 
     <style name="BetaTestTheme.FinishedIconForeground">

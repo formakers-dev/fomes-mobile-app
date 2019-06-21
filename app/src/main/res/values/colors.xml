@@ -56,7 +56,7 @@
     <!-- for BetaTest -->
     <color name="beta_test_label_disable_background">@color/fomes_black_alpha_80</color>
     <color name="beta_test_finished_group_block_background">#991e1e1e</color>
-    <color name="beta_test_finished_group_company_says_attend_background">#2000bfba</color>
+    <color name="beta_test_finished_group_company_says_attend_background">@color/colorPrimary</color>
     <color name="beta_test_finished_group_epilogue_button">@color/fomes_light_gray</color>
 
 </resources>
