@@ -224,7 +224,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 viewHolder.epilogueButtonIcon.setVisibility(View.VISIBLE);
                 viewHolder.epilogueButton.setEnabled(false);
 
-                viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
+                viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected_old);
 
                 viewHolder.epilogueButton.setOnClickListener(null);
             }

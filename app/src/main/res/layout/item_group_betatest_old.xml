@@ -174,7 +174,7 @@
                 android:layout_marginTop="10dp"
                 android:textSize="12dp"
                 android:textColor="@color/fomes_warm_gray"
-                android:text="@string/betatest_company_says_not_collected"
+                android:text="@string/betatest_company_says_not_collected_old"
                 app:layout_constraintTop_toBottomOf="@id/betatest_finished_epilogue_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -64,7 +64,7 @@
                 android:layout_marginBottom="10dp"
                 android:textSize="12dp"
                 android:textColor="@color/fomes_white"
-                android:text="@string/betatest_company_says_not_collected"
+                android:text="@string/betatest_company_says_not_collected_old"
                 app:layout_constraintTop_toBottomOf="@id/betatest_finished_company_says_title"
                 app:layout_constraintStart_toStartOf="@id/betatest_finished_company_says_title"
                 app:layout_constraintEnd_toEndOf="@id/betatest_finished_company_says_title"
