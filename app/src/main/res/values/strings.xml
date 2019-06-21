@@ -159,6 +159,7 @@
     <string name="betatest_company_says_not_collected_old">게임사 소감 : \?\?\? (모든 결과 취합 시 표시됩니다)</string>
     <string name="betatest_company_says_not_collected">\?\?\? (모든 결과 취합 시 표시됩니다)</string>
     <string name="betatest_company_says">게임사 소감 : %s</string>
+    <string name="betatest_company_says_title">게임사 소감 및 계획</string>
 
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">마감된 테스트 목록</string>
