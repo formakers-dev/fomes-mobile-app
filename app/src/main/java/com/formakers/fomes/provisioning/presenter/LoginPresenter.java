@@ -59,7 +59,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         User userInfo = new User()
                 .setName(account.getDisplayName())
                 .setEmail(account.getEmail())
-                .setRegistrationToken(sharedPreferencesHelper.getRegistrationToken());
+                .setRegistrationToken(sharedPreferencesHelper.getUserRegistrationToken());
 
         Single<String> loginSingle;
 

@@ -12,7 +12,9 @@
 
     <application
         android:name=".FomesApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        tools:replace="android:allowBackup"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher_app"
         android:label="@string/app_name"
         android:supportsRtl="true"

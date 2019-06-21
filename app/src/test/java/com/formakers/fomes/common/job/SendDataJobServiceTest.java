@@ -92,7 +92,7 @@ public class SendDataJobServiceTest {
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
         when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("myRegistrationToken");
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User()));
         when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
         when(mockUserService.notifyActivated()).thenReturn(Completable.complete());

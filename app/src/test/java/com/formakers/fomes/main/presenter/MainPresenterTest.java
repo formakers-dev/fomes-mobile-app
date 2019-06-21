@@ -8,6 +8,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
 
@@ -42,14 +43,11 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class MainPresenterTest {
 
-    @Inject
-    UserDAO mockUserDAO;
-    @Inject
-    UserService mockUserService;
-    @Inject
-    JobManager mockJobManager;
-    @Inject
-    EventLogService mockEventLogService;
+    @Inject UserDAO mockUserDAO;
+    @Inject UserService mockUserService;
+    @Inject JobManager mockJobManager;
+    @Inject EventLogService mockEventLogService;
+    @Inject SharedPreferencesHelper mockSharedPreferenceHelper;
 
     @Mock
     MainContract.View mockView;
@@ -80,7 +78,7 @@ public class MainPresenterTest {
 
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User("email", "notiToken")));
 
-        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockEventLogService, mockJobManager);
+        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper);
     }
 
     @After

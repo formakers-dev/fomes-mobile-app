@@ -2,6 +2,7 @@ package com.formakers.fomes.common.repository.dao;
 
 import android.text.TextUtils;
 
+import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.repository.model.UserRealmObject;
 import com.formakers.fomes.common.util.Log;
@@ -22,9 +23,11 @@ public class UserDAO {
     public static final String TAG = UserDAO.class.getSimpleName();
 
     private Gson gson = new Gson();
+    private SharedPreferencesHelper sharedPreferencesHelper;
 
     @Inject
-    public UserDAO() {
+    public UserDAO(SharedPreferencesHelper sharedPreferencesHelper) {
+        this.sharedPreferencesHelper = sharedPreferencesHelper;
     }
 
     public void updateUserInfo(User userInfo) {
@@ -48,6 +51,7 @@ public class UserDAO {
                 }
 
                 if (!TextUtils.isEmpty(userInfo.getEmail())) {
+                    this.sharedPreferencesHelper.setUserEmail(userInfo.getEmail());
                     userRealmObject.setEmail(userInfo.getEmail());
                 }
 

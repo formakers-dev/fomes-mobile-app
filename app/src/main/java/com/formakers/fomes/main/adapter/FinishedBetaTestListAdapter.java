@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             BetaTest.AfterService afterService = item.getAfterService();
 
             if (afterService != null) {
-                viewHolder.awardTextView.setText(afterService.getAward());
+                viewHolder.awardTextView.setText(afterService.getAwards());
                 viewHolder.companySaysTextView.setText(afterService.getCompanySays());
                 viewHolder.epilogueButton.setOnClickListener(v -> {
                     Uri uri = Uri.parse(afterService.getEpilogue());
@@ -108,10 +109,12 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
             if (item.isCompleted()) {
                 viewHolder.disableTitleLayout.setVisibility(View.GONE);
-                viewHolder.companySaysLayout.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
+                        , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground_Attend).getTheme()));
             } else {
                 viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
-                viewHolder.companySaysLayout.setBackgroundColor(context.getResources().getColor(R.color.beta_test_finished_group_block_background));
+                viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
+                        , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground).getTheme()));
             }
 
             if (!Feature.BETATEST_GROUP_DATA_MIGRATION && Feature.FOMES_V_2_5_DESIGN) {
@@ -167,7 +170,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.projectStatusTextView.setText(projectStatus);
 
             viewHolder.stampImageView.setVisibility(View.VISIBLE);
-            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
+            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend_old : R.drawable.label_absent_old);
 
             // for 완료 여부
             if (item.isCompleted()) {
@@ -221,7 +224,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 viewHolder.epilogueButtonIcon.setVisibility(View.VISIBLE);
                 viewHolder.epilogueButton.setEnabled(false);
 
-                viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
+                viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected_old);
 
                 viewHolder.epilogueButton.setOnClickListener(null);
             }
@@ -306,7 +309,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             companySaysTextView = itemView.findViewById(R.id.betatest_finished_company_says);
-            companySaysLayout = itemView.findViewById(R.id.betatest_divider);
+            companySaysLayout = itemView.findViewById(R.id.betatest_finished_company_says_background);
             labelImageView = itemView.findViewById(R.id.betatest_label);
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);

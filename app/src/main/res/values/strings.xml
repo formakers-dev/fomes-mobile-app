@@ -123,9 +123,10 @@
     <string name="main_tab_finished_betatest">마감된 테스트</string>
     <string name="main_tab_betatest">테스트 참여 존</string>
     <string name="main_tab_event">이벤트</string>
-    <string name="main_menu_my_wish_list">즐겨찾기</string>
+    <string name="main_menu_my_wish_list">@string/wish_list</string>
     <string name="main_menu_my_recent_analysis">게임 성향 분석</string>
     <string name="main_menu_settings">설정</string>
+    <string name="main_menu_donation">후원하기</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
     <string name="main_option_menu_fomes_postbox">포메스\n우체통</string>
 
@@ -155,14 +156,16 @@
     <string name="betatest_delivered_all_results">모든 결과가 게임사에게 전달되었습니다.</string>
     <string name="betatest_epilogue_coming_soon">테스트 에필로그 (커밍 순)</string>
     <string name="betatest_epilogue_opened">테스트 에필로그 보기</string>
-    <string name="betatest_company_says_not_collected">게임사 소감 : \?\?\? (모든 결과 취합 시 표시됩니다)</string>
+    <string name="betatest_company_says_not_collected_old">게임사 소감 : \?\?\? (모든 결과 취합 시 표시됩니다)</string>
+    <string name="betatest_company_says_not_collected">\?\?\? (모든 결과 취합 시 표시됩니다)</string>
     <string name="betatest_company_says">게임사 소감 : %s</string>
+    <string name="betatest_company_says_title">게임사 소감 및 계획</string>
 
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">마감된 테스트 목록</string>
-    <string name="finished_betatest_subtitle">마감된 테스트의 에필로그 및 후기를 볼 수 있습니다.</string>
-    <string name="finished_betatest_complete_switch_text">참여한 테스트만</string>
-    <string name="finished_beta_test_empty_text_format">아직 참여하신 테스트가 없으시군요!\n지금 테스트를 참여해보시면 어떨까요?</string>
+    <string name="finished_betatest_subtitle">게임사 소감 및 테스터 시상식을 볼 수 있습니다.</string>
+    <string name="finished_betatest_complete_switch_text">완료한 테스트만</string>
+    <string name="finished_beta_test_empty_text_format">아직 완료하신 테스트가 없으시군요!\n지금 테스트를 진행해보시면 어떨까요?</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>
@@ -170,13 +173,13 @@
     <string name="settings_menu_private">개인정보 취급 방침</string>
     <string name="settings_menu_contact_us">이메일로 문의하기</string>
     <string name="thanks_to_title">Special thanks to</string>
-    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인, 싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
+    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 줄리, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인, 싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
     <string name="contact_to_formakers">포메스 팀에 메일보내기</string>
 
     <!-- Recommend -->
     <string name="recommend_title">데이터 기반 추천 목록</string>
-    <string name="recommend_subtitle">지난 7일 동안의 플레이 분석을 기반으로 추천합니다.</string>
-    <string name="recommend_option_menu_title">즐겨찾기\n리스트</string>
+    <string name="recommend_subtitle">지난 7일간의 플레이를 기반으로 추천합니다.</string>
+    <string name="recommend_option_menu_title">관심게임\n리스트</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
     <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
     <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>
@@ -190,9 +193,9 @@
 
     <!-- Wish List -->
     <string name="download">다운로드</string>
-    <string name="wish_list">즐겨찾기 리스트</string>
+    <string name="wish_list">관심 게임 리스트</string>
     <string name="wish_list_description">지금 다운로드 가능한 게임들입니다.</string>
-    <string name="wish_list_empty_description">아직 즐겨찾기에 저장한 게임이 없으시네요.</string>
-    <string name="wish_list_add_fail">즐겨찾기 등록에 실패하였습니다.</string>
-    <string name="wish_list_remove_fail">즐겨찾기 삭제에 실패하였습니다.</string>
+    <string name="wish_list_empty_description">아직 관심 게임 리스트에 저장한 게임이 없으시네요.</string>
+    <string name="wish_list_add_fail">관심 게임 등록에 실패하였습니다.</string>
+    <string name="wish_list_remove_fail">관심 게임 삭제에 실패하였습니다.</string>
 </resources>

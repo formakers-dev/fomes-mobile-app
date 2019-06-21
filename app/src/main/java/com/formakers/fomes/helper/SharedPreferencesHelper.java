@@ -3,8 +3,9 @@ package com.formakers.fomes.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.util.Log;
@@ -82,12 +83,20 @@ public class SharedPreferencesHelper {
         return getString(KEY_ACCESS_TOKEN, EMPTY_STRING);
     }
 
-    public void setRegistrationToken(String registrationToken) {
+    public void setUserEmail(String email) {
+        putString(KEY_EMAIL, email);
+    }
+
+    public String getUserEmail() {
+        return getString(KEY_EMAIL, null);
+    }
+
+    public void setUserRegistrationToken(String registrationToken) {
         putString(KEY_REGISTRATION_TOKEN, registrationToken);
     }
 
     @NonNull
-    public String getRegistrationToken() {
+    public String getUserRegistrationToken() {
         return getString(KEY_REGISTRATION_TOKEN, EMPTY_STRING);
     }
 

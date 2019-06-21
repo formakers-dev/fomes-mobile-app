@@ -11,6 +11,7 @@ import androidx.core.app.TaskStackBuilder;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.provisioning.view.LoginActivity;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 public class FomesBaseActivity extends BaseActivity {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject AndroidNativeHelper androidNativeHelper;
+    @Inject UserDAO userDAO2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +77,8 @@ public class FomesBaseActivity extends BaseActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+    protected boolean isFromDeeplink() { return false; }
 
     protected boolean isDifferentBetweenUpAndBack() {
         return false;
