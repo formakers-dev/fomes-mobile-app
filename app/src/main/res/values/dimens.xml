@@ -55,4 +55,5 @@
     <dimen name="main_tab_title_margin_start">19dp</dimen>
     <dimen name="main_tab_subtitle_top_margin">5dp</dimen>
     <dimen name="main_tab_listview_top_margin">21dp</dimen>
+    <dimen name="betatest_list_item_padding_start_end">12dp</dimen>
 </resources>
