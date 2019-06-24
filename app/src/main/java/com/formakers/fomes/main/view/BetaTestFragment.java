@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @BindView(R.id.betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.betatest_empty_view) View emptyView;
     @BindView(R.id.betatest_empty_textview) TextView emptyTextView;
+    @BindView(R.id.title_option_menu_switch) Switch attendFilterSwitch;
+    @BindView(R.id.title_option_menu) TextView attendFilterTextView;
 
     @Inject BetaTestContract.Presenter presenter;
     BetaTestListAdapterContract.View betaTestListAdapterView;
@@ -118,6 +121,11 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                     .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
                     .subscribe(() -> {
                     }, e -> com.formakers.fomes.common.util.Log.e(TAG, String.valueOf(e))));
+
+        attendFilterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            presenter.applyAttendFilter(isChecked);
+            attendFilterTextView.setTextColor(isChecked ? getResources().getColor(R.color.colorPrimary) : getResources().getColor(R.color.fomes_warm_gray_2));
+        });
 
         presenter.initialize();
     }

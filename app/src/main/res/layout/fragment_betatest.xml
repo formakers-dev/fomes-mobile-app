@@ -44,6 +44,26 @@
             app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
             app:layout_constraintTop_toBottomOf="@id/betatest_list_textview" />
 
+        <Switch android:id="@+id/title_option_menu_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/betatest_list_textview"
+            app:layout_constraintEnd_toEndOf="@+id/title_option_menu"
+            app:layout_constraintBottom_toTopOf="@+id/title_option_menu" />
+
+        <TextView android:id="@+id/title_option_menu"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="17dp"
+            android:gravity="end"
+            android:text="@string/betatest_complete_switch_text"
+            android:textColor="@color/fomes_warm_gray_2"
+            android:textSize="@dimen/main_tab_subtitle_text_size"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_option_menu_switch"
+            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/feedback_recyclerview"
             android:layout_width="@dimen/match_constraint"

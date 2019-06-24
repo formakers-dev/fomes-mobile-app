@@ -136,6 +136,7 @@
     <!-- Beta Test -->
     <string name="betatest_title">테스트 목록</string>
     <string name="betatest_subtitle">참여 가능한 테스트가 표시됩니다.</string>
+    <string name="betatest_complete_switch_text">참여 중 테스트만</string>
     <string name="go_to_join_beta_test">참여하러 가기</string>
     <string name="betatest_target_format">%s 앱 유저 대상</string>
     <string name="betatest_project_status_format">종료 %d일 전</string>
