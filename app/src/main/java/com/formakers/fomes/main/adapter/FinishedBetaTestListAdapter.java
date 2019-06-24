@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
@@ -44,15 +43,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
 
-        RecyclerView.ViewHolder viewHolder;
-
-        if (isNewDesign()) {
-            viewHolder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_finished_betatest, parent, false));
-        } else {
-            viewHolder = new GroupViewHolder(LayoutInflater.from(context).inflate(R.layout.item_group_betatest_old, parent, false));
-        }
-
-        return viewHolder;
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_finished_betatest, parent, false));
     }
 
     @Override
@@ -73,166 +64,79 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         baseViewHolder.testTypeTextView.setText(item.getTags().get(0));
 
-        if (isNewDesign()) {
-            ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.subTitleTextView.setText(item.getSubTitle());
-            viewHolder.periodTextView.setText(String.format("%s ~ %s", item.getOpenDate(), item.getCloseDate()));
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.subTitleTextView.setText(item.getSubTitle());
+        viewHolder.periodTextView.setText(String.format("%s ~ %s", item.getOpenDate(), item.getCloseDate()));
 
-            Glide.with(context).load(item.getIconImageUrl())
-                    .apply(new RequestOptions().override(76, 76)
-                            .centerCrop()
-                            .transform(new RoundedCorners(8))
-                            .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
-                    .into(viewHolder.iconImageView);
+        Glide.with(context).load(item.getIconImageUrl())
+                .apply(new RequestOptions().override(76, 76)
+                        .centerCrop()
+                        .transform(new RoundedCorners(8))
+                        .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
+                .into(viewHolder.iconImageView);
 
-            viewHolder.labelImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
+        viewHolder.labelImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
 
-            viewHolder.epilogueButton.setText("자세히 보기");
+        viewHolder.epilogueButton.setText("자세히 보기");
 
-            BetaTest.AfterService afterService = item.getAfterService();
+        BetaTest.AfterService afterService = item.getAfterService();
 
-            if (afterService != null) {
-                viewHolder.awardTextView.setText(afterService.getAwards());
-                viewHolder.companySaysTextView.setText(afterService.getCompanySays());
-                viewHolder.epilogueButton.setOnClickListener(v -> {
-                    Uri uri = Uri.parse(afterService.getEpilogue());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    context.startActivity(intent);
-                });
-                viewHolder.epilogueButton.setEnabled(true);
-            } else {
-                viewHolder.awardGroup.setVisibility(View.GONE);
-                viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
-                viewHolder.epilogueButton.setOnClickListener(null);
-                viewHolder.epilogueButton.setEnabled(false);
-            }
-
-            if (item.isCompleted()) {
-                viewHolder.disableTitleLayout.setVisibility(View.GONE);
-                viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
-                        , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground_Attend).getTheme()));
-            } else {
-                viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
-                viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
-                        , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground).getTheme()));
-            }
-
-            if (!Feature.BETATEST_GROUP_DATA_MIGRATION && Feature.FOMES_V_2_5_DESIGN) {
-                baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
-                baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
-                viewHolder.subTitleTextView.setVisibility(View.GONE);
-
-                if (item.getAfterService() == null) {
-                    viewHolder.awardGroup.setVisibility(View.GONE);
-                    viewHolder.progressLayout.setVisibility(View.VISIBLE);
-                } else {
-                    viewHolder.awardGroup.setVisibility(View.VISIBLE);
-                    viewHolder.progressLayout.setVisibility(View.GONE);
-                }
-
-                if (item.isCompleted()) {
-                    // 제출 완료
-                    viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
-                    viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
-                    viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
-                    viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
-                } else {
-                    // 미제출
-                    viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-                    viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-
-                    viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
-                    viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
-                }
-
-                viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
-            }
-
+        if (afterService != null) {
+            viewHolder.awardTextView.setText(afterService.getAwards());
+            viewHolder.companySaysTextView.setText(afterService.getCompanySays());
+            viewHolder.epilogueButton.setOnClickListener(v -> {
+                Uri uri = Uri.parse(afterService.getEpilogue());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+            });
+            viewHolder.epilogueButton.setEnabled(true);
         } else {
-            GroupViewHolder viewHolder = (GroupViewHolder) holder;
+            viewHolder.awardGroup.setVisibility(View.GONE);
+            viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
+            viewHolder.epilogueButton.setOnClickListener(null);
+            viewHolder.epilogueButton.setEnabled(false);
+        }
 
+        if (item.isCompleted()) {
+            viewHolder.disableTitleLayout.setVisibility(View.GONE);
+            viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
+                    , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground_Attend).getTheme()));
+        } else {
+            viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
+            viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
+                    , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground).getTheme()));
+        }
+
+        if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
             baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
             baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
+            viewHolder.subTitleTextView.setVisibility(View.GONE);
 
-            baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
-            baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
-
-            long remainDays = item.getRemainDays();
-
-            String projectStatus;
-            if (remainDays > 0) {
-                projectStatus = String.format(context.getString(R.string.betatest_project_status_format), remainDays);
-            } else if (remainDays == 0) {
-                projectStatus = context.getString(R.string.beta_test_today_close);
+            if (item.getAfterService() == null) {
+                viewHolder.awardGroup.setVisibility(View.GONE);
+                viewHolder.progressLayout.setVisibility(View.VISIBLE);
             } else {
-                projectStatus = context.getString(R.string.common_close);
+                viewHolder.awardGroup.setVisibility(View.VISIBLE);
+                viewHolder.progressLayout.setVisibility(View.GONE);
             }
-            viewHolder.projectStatusTextView.setText(projectStatus);
 
-            viewHolder.stampImageView.setVisibility(View.VISIBLE);
-            viewHolder.stampImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend_old : R.drawable.label_absent_old);
-
-            // for 완료 여부
             if (item.isCompleted()) {
+                // 제출 완료
                 viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
                 viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
-                viewHolder.companySaysTextView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            } else {
-                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-                viewHolder.companySaysTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-            }
-
-            // for flag
-            if (item.getAfterService() != null && item.isCompleted()) {
-                // 전달 완료
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed_flag, 0, R.drawable.icon_completed_flag_reverse, 0);
-                viewHolder.progressTitleTextView.setText(R.string.betatest_delivered_my_feedback);
-            } else if (item.isCompleted()) {
-                // 제출 완료
                 viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
                 viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
             } else {
-                // 미완료
+                // 미제출
+                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+
                 viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
                 viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
             }
 
-            // for as
-            if (item.getAfterService() != null) {
-                viewHolder.progressSubTitleTextView.setText(R.string.betatest_delivered_all_results);
-                viewHolder.epilogueButton.setText(R.string.betatest_epilogue_opened);
-
-                viewHolder.epilogueButtonTextView.setVisibility(View.GONE);
-                viewHolder.epilogueButtonIcon.setVisibility(View.GONE);
-                viewHolder.epilogueButton.setEnabled(true);
-                viewHolder.companySaysTextView.setText(String.format(context.getString(R.string.betatest_company_says), item.getAfterService().getCompanySays()));
-
-                viewHolder.epilogueButton.setOnClickListener(v -> {
-                    presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_EPILOGUE_BUTTON, item.getObjectId());
-
-                    Uri uri = Uri.parse(item.getAfterService().getEpilogue());
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    context.startActivity(intent);
-                });
-            } else {
-                viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
-                viewHolder.epilogueButton.setVisibility(View.VISIBLE);
-                viewHolder.epilogueButton.setText("");
-                viewHolder.epilogueButtonTextView.setVisibility(View.VISIBLE);
-                viewHolder.epilogueButtonIcon.setVisibility(View.VISIBLE);
-                viewHolder.epilogueButton.setEnabled(false);
-
-                viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected_old);
-
-                viewHolder.epilogueButton.setOnClickListener(null);
-            }
+            viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
         }
-    }
-
-    private boolean isNewDesign() {
-        return Feature.BETATEST_GROUP_DATA_MIGRATION || Feature.FOMES_V_2_5_DESIGN;
     }
 
     @Override
@@ -318,26 +222,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             awardTextView = itemView.findViewById(R.id.betatest_award_contents);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
             disableTitleLayout = itemView.findViewById(R.id.betatest_title_layout_disable_background);
-        }
-    }
-
-    @Deprecated
-    class GroupViewHolder extends BaseViewHolder {
-        TextView projectStatusTextView;
-        ImageView stampImageView;
-        Button epilogueButton;
-        ImageView epilogueButtonIcon;
-        TextView epilogueButtonTextView;
-        TextView companySaysTextView;
-
-        public GroupViewHolder(View itemView) {
-            super(itemView);
-            projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
-            stampImageView = itemView.findViewById(R.id.betatest_label);
-            epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
-            epilogueButtonIcon = itemView.findViewById(R.id.betatest_finished_epilogue_button_icon);
-            epilogueButtonTextView = itemView.findViewById(R.id.betatest_finished_epilogue_button_text);
-            companySaysTextView = itemView.findViewById(R.id.betatest_finished_company_says);
         }
     }
 }
