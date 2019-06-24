@@ -233,7 +233,7 @@
                     android:id="@+id/betatest_finished_epilogue_button"
                     android:layout_width="68dp"
                     android:layout_height="32dp"
-                    android:background="@drawable/epilogue_button_selector_old"
+                    android:background="@drawable/epilogue_button_selector"
                     android:enabled="false"
                     android:foreground="@drawable/ripple"
                     android:text="자세히 보기"
