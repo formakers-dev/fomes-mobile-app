@@ -65,8 +65,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         baseViewHolder.testTypeTextView.setText(item.getTags().get(0));
 
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.subTitleTextView.setText(item.getSubTitle());
-        viewHolder.periodTextView.setText(String.format("%s ~ %s", item.getOpenDate(), item.getCloseDate()));
+//        viewHolder.subTitleTextView.setText(item.getSubTitle());
 
         Glide.with(context).load(item.getIconImageUrl())
                 .apply(new RequestOptions().override(76, 76)
@@ -107,18 +106,20 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                     , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground).getTheme()));
         }
 
+        if (item.getAfterService() == null) {
+            viewHolder.awardGroup.setVisibility(View.GONE);
+            viewHolder.progressLayout.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.awardGroup.setVisibility(View.VISIBLE);
+            viewHolder.progressLayout.setVisibility(View.GONE);
+        }
+
+        viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
+
         if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
             baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
             baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
             viewHolder.subTitleTextView.setVisibility(View.GONE);
-
-            if (item.getAfterService() == null) {
-                viewHolder.awardGroup.setVisibility(View.GONE);
-                viewHolder.progressLayout.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.awardGroup.setVisibility(View.VISIBLE);
-                viewHolder.progressLayout.setVisibility(View.GONE);
-            }
 
             if (item.isCompleted()) {
                 // 제출 완료
@@ -204,7 +205,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageView labelImageView;
         ImageView iconImageView;
         TextView subTitleTextView;
-        TextView periodTextView;
         Group awardGroup;
         TextView awardTextView;
         Button epilogueButton;
@@ -217,7 +217,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             labelImageView = itemView.findViewById(R.id.betatest_label);
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
-            periodTextView = itemView.findViewById(R.id.betatest_period_textview);
             awardGroup = itemView.findViewById(R.id.betatest_award_group);
             awardTextView = itemView.findViewById(R.id.betatest_award_contents);
             epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
