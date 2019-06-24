@@ -344,7 +344,22 @@
         <item name="item_stroke_color">#979797</item>
     </style>
 
+    <style name="BetaTestTheme.ProgressLabelBackground">
+        <item name="item_background_radius">2dp</item>
+        <item name="item_solid_color">@color/fomes_black</item>
+        <item name="item_stroke_width">0dp</item>
+        <item name="android:textColor">@color/fomes_warm_gray_2</item>
+    </style>
+
+    <style name="BetaTestTheme.ProgressLabelBackground.Doing">
+        <item name="item_background_radius">2dp</item>
+        <item name="item_solid_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">0dp</item>
+        <item name="android:textColor">@color/fomes_dark_gray</item>
+    </style>
+
     <style name="BetaTestOpenTheme"/>
+
     <style name="BetaTestOpenTheme.InnerBox">
         <item name="item_background_radius">10dp</item>
         <item name="item_stroke_color">@color/colorPrimary</item>

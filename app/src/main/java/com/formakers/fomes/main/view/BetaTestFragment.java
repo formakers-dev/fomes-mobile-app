@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -126,6 +127,11 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 //            presenter.applyAttendFilter(isChecked);
             attendFilterTextView.setTextColor(isChecked ? getResources().getColor(R.color.colorPrimary) : getResources().getColor(R.color.fomes_warm_gray_2));
         });
+
+        if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
+            attendFilterSwitch.setVisibility(View.GONE);
+            attendFilterTextView.setVisibility(View.GONE);
+        }
 
         presenter.initialize();
     }
