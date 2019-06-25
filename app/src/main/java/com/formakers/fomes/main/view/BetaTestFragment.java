@@ -95,21 +95,23 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             Bundle bundle = new Bundle();
             BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
 
-            com.formakers.fomes.common.util.Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
+            Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
 
-            bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
-            bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
+            if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
+                bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
+                bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
 
-            BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
-            betaTestDetailAlertDialog.setArguments(bundle);
-            betaTestDetailAlertDialog.setPresenter(this.presenter);
-            betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
-
-            // 테스트 디테일 화면
-//            bundle.putInt(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getId())
-//            Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
-//            intent.putExtras(bundle);
-//            this.startActivity(intent);
+                BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
+                betaTestDetailAlertDialog.setArguments(bundle);
+                betaTestDetailAlertDialog.setPresenter(this.presenter);
+                betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
+            } else {
+                // 테스트 디테일 화면
+                bundle.putInt(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getId());
+                Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
+                intent.putExtras(bundle);
+                this.startActivity(intent);
+            }
 
             this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
             this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_ITEM, String.valueOf(betaTestItem.getId()));

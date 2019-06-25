@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.formakers.fomes.common.util.DateUtil;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,13 +19,13 @@ public class BetaTest implements Parcelable {
     String title;
     String subTitle;
 
-    List<String> tags;
+    List<String> tags = new ArrayList<>();
 
     Date openDate;
     Date closeDate;
     Date currentDate;
 
-    List<String> apps;
+    List<String> apps = new ArrayList<>();
 
     String actionType;
     String action;
