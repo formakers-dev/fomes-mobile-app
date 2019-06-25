@@ -89,7 +89,8 @@
                 <action android:name="com.formakers.fomes.NOTI_CLICKED"/>
             </intent-filter>
         </receiver>
-        <activity android:name=".main.view.BetaTestDetailActivity"/>
+        <activity android:name=".main.view.BetaTestDetailActivity"
+            android:theme="@style/FomesTheme.NoActionBar"/>
     </application>
 
 </manifest>

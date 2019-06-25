@@ -27,7 +27,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity {
 
         this.setContentView(R.layout.activity_betatest_detail);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
