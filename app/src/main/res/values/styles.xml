@@ -369,4 +369,10 @@
         <item name="item_solid_color">@color/fomes_white_2</item>
     </style>
 
+    <style name="BetaTestDetailTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

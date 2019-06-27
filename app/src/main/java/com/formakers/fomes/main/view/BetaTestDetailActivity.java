@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.view;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity {
 
         this.setContentView(R.layout.activity_betatest_detail);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -42,6 +45,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity {
             return;
         }
 
-        titleTextView.setText(String.valueOf(bundle.getInt(FomesConstants.BetaTest.EXTRA_GROUP_ID, 0)));
+        String id = bundle.getString(FomesConstants.BetaTest.EXTRA_GROUP_ID);
+        titleTextView.setText(id);
     }
 }

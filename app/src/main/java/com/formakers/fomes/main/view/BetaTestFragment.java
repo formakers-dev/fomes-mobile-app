@@ -107,7 +107,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
             } else {
                 // 테스트 디테일 화면
-                bundle.putInt(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getId());
+                bundle.putString(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getObjectId());
                 Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
                 intent.putExtras(bundle);
                 this.startActivity(intent);

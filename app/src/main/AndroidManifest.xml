@@ -90,7 +90,7 @@
             </intent-filter>
         </receiver>
         <activity android:name=".main.view.BetaTestDetailActivity"
-            android:theme="@style/FomesTheme.NoActionBar"/>
+            android:theme="@style/BetaTestDetailTheme"/>
     </application>
 
 </manifest>
