@@ -48,4 +48,11 @@ public class BetaTestService extends AbstractService {
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();
     }
+
+    public Single<BetaTest> getDetailBetaTest(String id) {
+        return Observable.defer(() -> betaTestAPI.getDetailBetaTest(sharedPreferencesHelper.getAccessToken(), id))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
+    }
 }

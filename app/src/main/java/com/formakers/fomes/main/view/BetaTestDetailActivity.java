@@ -30,7 +30,6 @@ public class BetaTestDetailActivity extends FomesBaseActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
