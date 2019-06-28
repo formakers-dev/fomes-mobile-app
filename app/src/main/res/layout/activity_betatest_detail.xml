@@ -53,7 +53,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:foreground="@drawable/gradient"
+                android:foreground="@drawable/betatest_detail_gradient"
                 android:src="@color/fomes_white"
                 app:layout_collapseMode="parallax" />
 

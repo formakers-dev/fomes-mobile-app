@@ -42,7 +42,7 @@
             <View
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="@dimen/match_constraint"
-                android:background="@drawable/gradient"
+                android:background="@drawable/betatest_list_item_gradient"
                 app:layout_constraintStart_toStartOf="@id/betatest_overview_imageview"
                 app:layout_constraintEnd_toEndOf="@id/betatest_overview_imageview"
                 app:layout_constraintTop_toTopOf="@id/betatest_overview_imageview"
