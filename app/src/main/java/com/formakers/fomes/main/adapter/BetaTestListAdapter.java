@@ -64,22 +64,20 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
 
         baseViewHolder.titleTextView.setText(item.getTitle());
-        baseViewHolder.subTitleTextView.setText(item.getSubTitle());
+
+        // 태그가 있으면 태그를, 없으면 description을 보여주기
+        if (item.getTags() != null && item.getTags().size() > 0) {
+//            baseViewHolder.subTitleTextView.setText(TextUtils.join("#", item.getTags()));
+            List<String> hashTags = new ArrayList<>();
+            for (String tag : item.getTags()) {
+                hashTags.add("#" + tag);
+            }
+            baseViewHolder.subTitleTextView.setText(TextUtils.join("", hashTags));
+        } else {
+            baseViewHolder.subTitleTextView.setText(item.getDescription());
+        }
 
         baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
-
-        // Enable 처리
-        baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
-
-        baseViewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
-        baseViewHolder.amountTextView.setText(item.getAmount());
-
-        String reward = item.getReward();
-        if (TextUtils.isEmpty(reward)) {
-            baseViewHolder.rewardTextView.setText(R.string.betatest_reward_none);
-        } else {
-            baseViewHolder.rewardTextView.setText(reward);
-        }
 
         // 디데이
         long remainDays = item.getRemainDays();
@@ -129,6 +127,20 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
+            baseViewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
+            baseViewHolder.amountTextView.setText(item.getAmount());
+
+            String reward = item.getReward();
+            if (TextUtils.isEmpty(reward)) {
+                baseViewHolder.rewardTextView.setText(R.string.betatest_reward_none);
+            } else {
+                baseViewHolder.rewardTextView.setText(reward);
+            }
+
+            // Enable 처리
+            baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
+
+            baseViewHolder.subTitleTextView.setText(item.getSubTitle());
             baseViewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
 
             itemViewHolder.progressBar.setVisibility(View.GONE);
@@ -160,9 +172,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public int getPositionById(int id) {
+    public int getPositionById(String id) {
         for (BetaTest betaTest : betaTests) {
-            if (betaTest.getId() == id) {
+            if (TextUtils.equals(id, betaTest.getId())) {
                 return betaTests.indexOf(betaTest);
             }
         }

@@ -15,7 +15,7 @@ public interface BetaTestListAdapterContract {
     }
 
     interface Model {
-        int getPositionById(int id);
+        int getPositionById(String id);
 
         int getItemCount();
         Object getItem(int position);

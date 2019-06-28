@@ -11,13 +11,12 @@ import java.util.Date;
 import java.util.List;
 
 public class BetaTest implements Parcelable {
-    @SerializedName("_id") String objectId;
-    Integer id;
+    @SerializedName("_id") String id;
 
     String overviewImageUrl;
     String iconImageUrl;
     String title;
-    String subTitle;
+    String description;
 
     List<String> tags = new ArrayList<>();
 
@@ -25,24 +24,25 @@ public class BetaTest implements Parcelable {
     Date closeDate;
     Date currentDate;
 
-    List<String> apps = new ArrayList<>();
+    BugReport bugReport;
 
-    String actionType;
-    String action;
+    List<Mission> missions;
 
-    String reward;
+    Rewards rewards;
 
-    String bugReportUrl;
-
-    long requiredTime;
-    String amount;
-
-    boolean isOpened;
     boolean isCompleted;
 
     boolean isGroup;
-
     AfterService afterService;
+    List<String> apps = new ArrayList<>();
+
+    @Deprecated boolean isOpened;
+    @Deprecated String subTitle;
+    @Deprecated long requiredTime;
+    @Deprecated String amount;
+    @Deprecated String reward;
+    @Deprecated String actionType;
+    @Deprecated String action;
 
     public static class AfterService implements Parcelable {
         String epilogue;
@@ -124,6 +124,222 @@ public class BetaTest implements Parcelable {
         };
     }
 
+    public static class BugReport implements Parcelable {
+        String url;
+        List<String> completedUserIds;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public BugReport setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public List<String> getCompletedUserIds() {
+            return completedUserIds;
+        }
+
+        public BugReport setCompletedUserIds(List<String> completedUserIds) {
+            this.completedUserIds = completedUserIds;
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return "BugReport{" +
+                    "url='" + url + '\'' +
+                    ", completedUserIds=" + completedUserIds +
+                    '}';
+        }
+
+        /**
+         * for Parcelable
+         */
+
+        public BugReport(Parcel in) {
+            readFromParcel(in);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(url);
+            dest.writeStringList(completedUserIds);
+        }
+
+        private void readFromParcel(Parcel in) {
+            url = in.readString();
+            in.readStringList(completedUserIds);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public BugReport createFromParcel(Parcel in) {
+                return new BugReport(in);
+            }
+
+            public BugReport[] newArray(int size) {
+                return new BugReport[size];
+            }
+        };
+    }
+
+    public static class Rewards implements Parcelable {
+        Integer minimumDelay;
+        List<RewardItem> list;
+
+        public static class RewardItem implements Parcelable {
+            Integer order;
+            String iconImageUrl;
+            String title;
+            String content;
+            List<String> userIds;
+
+            public Integer getOrder() {
+                return order;
+            }
+
+            public RewardItem setOrder(Integer order) {
+                this.order = order;
+                return this;
+            }
+
+            public String getIconImageUrl() {
+                return iconImageUrl;
+            }
+
+            public RewardItem setIconImageUrl(String iconImageUrl) {
+                this.iconImageUrl = iconImageUrl;
+                return this;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public RewardItem setTitle(String title) {
+                this.title = title;
+                return this;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public RewardItem setContent(String content) {
+                this.content = content;
+                return this;
+            }
+
+            public List<String> getUserIds() {
+                return userIds;
+            }
+
+            public RewardItem setUserIds(List<String> userIds) {
+                this.userIds = userIds;
+                return this;
+            }
+
+            @Override
+            public String toString() {
+                return "RewardItem{" +
+                        "order=" + order +
+                        ", iconImageUrl='" + iconImageUrl + '\'' +
+                        ", title='" + title + '\'' +
+                        ", content='" + content + '\'' +
+                        ", userIds=" + userIds +
+                        '}';
+            }
+
+            /**
+             * for Parcelable
+             */
+
+            public RewardItem(Parcel in) {
+                readFromParcel(in);
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(order);
+                dest.writeString(iconImageUrl);
+                dest.writeString(title);
+                dest.writeString(content);
+                dest.writeStringList(userIds);
+            }
+
+            private void readFromParcel(Parcel in) {
+                order = in.readInt();
+                iconImageUrl = in.readString();
+                title = in.readString();
+                content = in.readString();
+                in.readStringList(userIds);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            public static final Parcelable.Creator<RewardItem> CREATOR = new Parcelable.Creator<RewardItem>() {
+                public RewardItem createFromParcel(Parcel in) {
+                    return new RewardItem(in);
+                }
+
+                public RewardItem[] newArray(int size) {
+                    return new RewardItem[size];
+                }
+            };
+        }
+
+        @Override
+        public String toString() {
+            return "Rewards{" +
+                    "minimumDelay=" + minimumDelay +
+                    ", list=" + list +
+                    '}';
+        }
+
+        /**
+         * for Parcelable
+         */
+
+        public Rewards(Parcel in) {
+            readFromParcel(in);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(minimumDelay);
+            dest.writeTypedList(list);
+        }
+
+        private void readFromParcel(Parcel in) {
+            minimumDelay = in.readInt();
+            in.readTypedList(list, RewardItem.CREATOR);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Parcelable.Creator<Rewards> CREATOR = new Parcelable.Creator<Rewards>() {
+            public Rewards createFromParcel(Parcel in) {
+                return new Rewards(in);
+            }
+
+            public Rewards[] newArray(int size) {
+                return new Rewards[size];
+            }
+        };
+    }
+
     public BetaTest() {
     }
 
@@ -131,20 +347,11 @@ public class BetaTest implements Parcelable {
         readFromParcel(in);
     }
 
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public BetaTest setObjectId(String objectId) {
-        this.objectId = objectId;
-        return this;
-    }
-
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public BetaTest setId(Integer id) {
+    public BetaTest setId(String id) {
         this.id = id;
         return this;
     }
@@ -176,12 +383,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public String getSubTitle() {
-        return subTitle;
+    public String getDescription() {
+        return description;
     }
 
-    public BetaTest setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
+    public BetaTest setDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -230,74 +437,6 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public String getActionType() {
-        return actionType;
-    }
-
-    public BetaTest setActionType(String actionType) {
-        this.actionType = actionType;
-        return this;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public BetaTest setAction(String action) {
-        this.action = action;
-        return this;
-    }
-
-    public String getReward() {
-        return reward;
-    }
-
-    public BetaTest setReward(String reward) {
-        this.reward = reward;
-        return this;
-    }
-
-    public String getBugReportUrl() {
-        return bugReportUrl;
-    }
-
-    public BetaTest setBugReportUrl(String bugReportUrl) {
-        this.bugReportUrl = bugReportUrl;
-        return this;
-    }
-
-    // convertType : DateUtil.CONVERT_TYPE_.*
-    public float getRequiredTime(int convertType) {
-        return DateUtil.convertDurationFromMilliseconds(convertType, requiredTime, 0);
-    }
-
-    public long getRequiredTime() {
-        return requiredTime;
-    }
-
-    public BetaTest setRequiredTime(long requiredTime) {
-        this.requiredTime = requiredTime;
-        return this;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public BetaTest setAmount(String amount) {
-        this.amount = amount;
-        return this;
-    }
-
-    public boolean isOpened() {
-        return isOpened;
-    }
-
-    public BetaTest setOpened(boolean opened) {
-        isOpened = opened;
-        return this;
-    }
-
     public boolean isCompleted() {
         return isCompleted;
     }
@@ -326,33 +465,141 @@ public class BetaTest implements Parcelable {
     }
 
     public long getRemainDays() {
-        return DateUtil.calculateDdays(getCurrentDate().getTime(), getCloseDate().getTime());
+        // TODO : Response Header에서 가져오는걸로 변경하기
+        return DateUtil.calculateDdays(new Date().getTime(), getCloseDate().getTime());
+//        return DateUtil.calculateDdays(getCurrentDate().getTime(), getCloseDate().getTime());
+    }
+
+    public BugReport getBugReport() {
+        return bugReport;
+    }
+
+    public BetaTest setBugReport(BugReport bugReport) {
+        this.bugReport = bugReport;
+        return this;
+    }
+
+    public List<Mission> getMissions() {
+        return missions;
+    }
+
+    public BetaTest setMissions(List<Mission> missions) {
+        this.missions = missions;
+        return this;
+    }
+
+    public Rewards getRewards() {
+        return rewards;
+    }
+
+    public BetaTest setRewards(Rewards rewards) {
+        this.rewards = rewards;
+        return this;
+    }
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public BetaTest setOpened(boolean opened) {
+        isOpened = opened;
+        return this;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public BetaTest setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+        return this;
+    }
+
+    // convertType : DateUtil.CONVERT_TYPE_.*
+    public float getRequiredTime(int convertType) {
+        return DateUtil.convertDurationFromMilliseconds(convertType, requiredTime, 0);
+    }
+
+    public BetaTest setRequiredTime(long requiredTime) {
+        this.requiredTime = requiredTime;
+        return this;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public BetaTest setAmount(String amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    public String getReward() {
+        return reward;
+    }
+
+    public BetaTest setReward(String reward) {
+        this.reward = reward;
+        return this;
+    }
+
+    @Deprecated
+    public String getBugReportUrl() {
+        if (this.bugReport != null) {
+            return this.bugReport.getUrl();
+        } else {
+            return null;
+        }
+    }
+
+    public long getRequiredTime() {
+        return requiredTime;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public BetaTest setActionType(String actionType) {
+        this.actionType = actionType;
+        return this;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public BetaTest setAction(String action) {
+        this.action = action;
+        return this;
     }
 
     @Override
     public String toString() {
         return "BetaTest{" +
-                "objectId='" + objectId + '\'' +
-                ", id=" + id +
+                "id='" + id + '\'' +
                 ", overviewImageUrl='" + overviewImageUrl + '\'' +
                 ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
-                ", subTitle='" + subTitle + '\'' +
+                ", description='" + description + '\'' +
                 ", tags=" + tags +
                 ", openDate=" + openDate +
                 ", closeDate=" + closeDate +
                 ", currentDate=" + currentDate +
-                ", apps=" + apps +
-                ", actionType='" + actionType + '\'' +
-                ", action='" + action + '\'' +
-                ", reward='" + reward + '\'' +
-                ", bugReportUrl='" + bugReportUrl + '\'' +
-                ", requiredTime=" + requiredTime +
-                ", amount='" + amount + '\'' +
-                ", isOpened=" + isOpened +
+                ", bugReport=" + bugReport +
+                ", missions=" + missions +
+                ", rewards=" + rewards +
                 ", isCompleted=" + isCompleted +
                 ", isGroup=" + isGroup +
                 ", afterService=" + afterService +
+                ", apps=" + apps +
+                ", isOpened=" + isOpened +
+                ", subTitle='" + subTitle + '\'' +
+                ", requiredTime=" + requiredTime +
+                ", amount='" + amount + '\'' +
+                ", reward='" + reward + '\'' +
+                ", actionType='" + actionType + '\'' +
+                ", action='" + action + '\'' +
                 '}';
     }
 
@@ -362,51 +609,55 @@ public class BetaTest implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(objectId);
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(overviewImageUrl);
         dest.writeString(iconImageUrl);
         dest.writeString(title);
-        dest.writeString(subTitle);
+        dest.writeString(description);
         dest.writeStringList(tags);
         dest.writeLong(openDate.getTime());
         dest.writeLong(closeDate.getTime());
         dest.writeLong(currentDate.getTime());
-        dest.writeStringList(apps);
-        dest.writeString(actionType);
-        dest.writeString(action);
-        dest.writeString(reward);
-        dest.writeString(bugReportUrl);
-        dest.writeLong(requiredTime);
-        dest.writeString(amount);
-        dest.writeInt(isOpened ? 1 : 0);
+        dest.writeParcelable(bugReport, 0);
+        dest.writeTypedList(missions);
+        dest.writeParcelable(rewards, 0);
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isGroup ? 1 : 0);
         dest.writeParcelable(afterService, 0);
+        dest.writeStringList(apps);
+        dest.writeInt(isOpened ? 1 : 0);
+        dest.writeString(subTitle);
+        dest.writeLong(requiredTime);
+        dest.writeString(amount);
+        dest.writeString(reward);
+        dest.writeString(actionType);
+        dest.writeString(action);
     }
 
     private void readFromParcel(Parcel in) {
-        objectId = in.readString();
-        id = in.readInt();
+        id = in.readString();
         overviewImageUrl = in.readString();
         iconImageUrl = in.readString();
         title = in.readString();
-        subTitle = in.readString();
+        description = in.readString();
         in.readStringList(tags);
         openDate = new Date(in.readLong());
         closeDate = new Date(in.readLong());
         currentDate = new Date(in.readLong());
-        in.readStringList(apps);
-        actionType = in.readString();
-        action = in.readString();
-        reward = in.readString();
-        bugReportUrl = in.readString();
-        requiredTime = in.readLong();
-        amount = in.readString();
-        isOpened = (in.readInt() == 1);
+        bugReport = in.readParcelable(null);
+        in.readTypedList(missions, Mission.CREATOR);
+        rewards = in.readParcelable(null);
         isCompleted = (in.readInt() == 1);
         isGroup = (in.readInt() == 1);
         afterService = in.readParcelable(null);
+        in.readStringList(apps);
+        isOpened = (in.readInt() == 1);
+        subTitle = in.readString();
+        requiredTime = in.readLong();
+        amount = in.readString();
+        reward = in.readString();
+        actionType = in.readString();
+        action = in.readString();
     }
 
     @Override
@@ -414,7 +665,7 @@ public class BetaTest implements Parcelable {
         return 0;
     }
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    public static final Parcelable.Creator<BetaTest> CREATOR = new Parcelable.Creator<BetaTest>() {
         public BetaTest createFromParcel(Parcel in) {
             return new BetaTest(in);
         }

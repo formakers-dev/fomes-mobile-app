@@ -107,7 +107,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
             } else {
                 // 테스트 디테일 화면
-                bundle.putString(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getObjectId());
+                bundle.putString(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getId());
                 Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
                 intent.putExtras(bundle);
                 this.startActivity(intent);
@@ -144,10 +144,9 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String id = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+            String betaTestId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
 
-            if (!TextUtils.isEmpty(id)) {
-                int betaTestId = Integer.parseInt(id);
+            if (!TextUtils.isEmpty(betaTestId)) {
                 int position = presenter.getBetaTestPostitionById(betaTestId);
                 if (position >= 0) {
                     recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
