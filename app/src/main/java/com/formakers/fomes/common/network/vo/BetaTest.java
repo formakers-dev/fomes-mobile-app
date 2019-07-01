@@ -468,9 +468,7 @@ public class BetaTest implements Parcelable {
     }
 
     public long getRemainDays() {
-        // TODO : Response Header에서 가져오는걸로 변경하기
-        return DateUtil.calculateDdays(new Date().getTime(), getCloseDate().getTime());
-//        return DateUtil.calculateDdays(getCurrentDate().getTime(), getCloseDate().getTime());
+        return DateUtil.calculateDdays(getCurrentDate().getTime(), getCloseDate().getTime());
     }
 
     public BugReport getBugReport() {
