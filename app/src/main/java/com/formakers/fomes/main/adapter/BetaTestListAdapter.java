@@ -156,6 +156,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemViewHolder.closedLabelTextView.setText(String.format(context.getString(R.string.beta_test_closed_label_title), item.getTags().get(0)));
             itemViewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
         } else {
+            itemViewHolder.progressBar.setProgress(item.getCompletedItemCount() * 100 / item.getTotalItemCount());
             itemViewHolder.progressLabelTextView.setVisibility(item.isCompleted() ? View.GONE : View.VISIBLE);
 
             itemViewHolder.attendLabelImageView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);

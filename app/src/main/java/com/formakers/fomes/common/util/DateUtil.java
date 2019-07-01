@@ -152,4 +152,16 @@ public class DateUtil {
 
             return (float) Math.ceil(converted * temp) / temp;
     }
+
+    public static Date convertHTTPHeaderDateToDate(String dateString) {
+        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss zzz");
+
+        try {
+            return format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

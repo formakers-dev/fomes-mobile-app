@@ -36,6 +36,9 @@ public class BetaTest implements Parcelable {
     AfterService afterService;
     List<String> apps = new ArrayList<>();
 
+    Integer completedItemCount;
+    Integer totalItemCount;
+
     @Deprecated boolean isOpened;
     @Deprecated String subTitle;
     @Deprecated long requiredTime;
@@ -497,6 +500,22 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public Integer getCompletedItemCount() {
+        return completedItemCount;
+    }
+
+    public void setCompletedItemCount(Integer completedItemCount) {
+        this.completedItemCount = completedItemCount;
+    }
+
+    public Integer getTotalItemCount() {
+        return totalItemCount;
+    }
+
+    public void setTotalItemCount(Integer totalItemCount) {
+        this.totalItemCount = totalItemCount;
+    }
+
     public boolean isOpened() {
         return isOpened;
     }
@@ -593,6 +612,8 @@ public class BetaTest implements Parcelable {
                 ", isGroup=" + isGroup +
                 ", afterService=" + afterService +
                 ", apps=" + apps +
+                ", completedItemCount=" + completedItemCount +
+                ", totalItemCount=" + totalItemCount +
                 ", isOpened=" + isOpened +
                 ", subTitle='" + subTitle + '\'' +
                 ", requiredTime=" + requiredTime +
@@ -625,6 +646,8 @@ public class BetaTest implements Parcelable {
         dest.writeInt(isGroup ? 1 : 0);
         dest.writeParcelable(afterService, 0);
         dest.writeStringList(apps);
+        dest.writeInt(completedItemCount);
+        dest.writeInt(totalItemCount);
         dest.writeInt(isOpened ? 1 : 0);
         dest.writeString(subTitle);
         dest.writeLong(requiredTime);
@@ -651,6 +674,8 @@ public class BetaTest implements Parcelable {
         isGroup = (in.readInt() == 1);
         afterService = in.readParcelable(null);
         in.readStringList(apps);
+        completedItemCount = in.readInt();
+        totalItemCount = in.readInt();
         isOpened = (in.readInt() == 1);
         subTitle = in.readString();
         requiredTime = in.readLong();
