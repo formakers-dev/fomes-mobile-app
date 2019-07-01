@@ -14,4 +14,7 @@ public interface BetaTestAPI {
 
     @GET("/beta-tests/finished")
     Observable<List<BetaTest>> getFinishedBetaTests(@Header("x-access-token") String accessToken);
+
+    @GET("/beta-tests/detail/{id}")
+    Observable<BetaTest> getDetailBetaTest(@Header("x-access-token") String accessToken, String id);
 }

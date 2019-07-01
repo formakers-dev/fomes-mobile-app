@@ -7,14 +7,18 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.main.contract.BetaTestDetailContract;
+import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
+import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
 
 import butterknife.BindView;
 
-public class BetaTestDetailActivity extends FomesBaseActivity {
+public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTestDetailContract.View {
 
     private static final String TAG = "BetaTestDetailActivity";
 
@@ -30,7 +34,11 @@ public class BetaTestDetailActivity extends FomesBaseActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        DaggerBetaTestDetailActivityComponent.builder()
+                .applicationComponent(FomesApplication.get(this).getComponent())
+                .betaTestDetailActivityModule(new BetaTestDetailActivityModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -47,5 +55,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity {
 
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_GROUP_ID);
         titleTextView.setText(id);
+    }
+
+    @Override
+    public void setPresenter(BetaTestDetailContract.Presenter presenter) {
+
     }
 }
