@@ -1,23 +1,35 @@
 package com.formakers.fomes.main.view;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
 import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -27,7 +39,12 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     private static final String TAG = "BetaTestDetailActivity";
 
-    @BindView(R.id.betatest_detail_title_textview) TextView titleTextView;
+    @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
+    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
+    @BindView(R.id.betatest_detail_title) TextView titleTextView;
+    @BindView(R.id.betatest_detail_subtitle) TextView descriptionTextView;
+    @BindView(R.id.betatest_detail_period) TextView periodTextView;
+    @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
 
     @Inject BetaTestDetailContract.Presenter presenter;
@@ -61,9 +78,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             return;
         }
 
-        String id = bundle.getString(FomesConstants.BetaTest.EXTRA_GROUP_ID);
-        titleTextView.setText(id);
-
+        String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         this.presenter.load(id);
     }
 
@@ -81,7 +96,60 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @Override
     public void bind(BetaTest betaTest) {
-        // 여기서 뷰를 셋팅하면 된다
+        Glide.with(this).load(betaTest.getOverviewImageUrl())
+                .apply(new RequestOptions().centerCrop()
+                        .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
+                .into(overviewImageView);
+
+        Glide.with(this).load(betaTest.getIconImageUrl())
+                .apply(new RequestOptions().override(60, 60)
+                        .centerCrop()
+                        .transform(new RoundedCorners(8))
+                        .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
+                .into(iconImageView);
+
+        titleTextView.setText(betaTest.getTitle());
+        descriptionTextView.setText(betaTest.getDisplayDescription());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YY_DOT_MM_DOT_DD, Locale.getDefault());
+
+        periodTextView.setText(String.format("%s ~ %s",
+                dateFormat.format(betaTest.getOpenDate()),
+                dateFormat.format(betaTest.getCloseDate())));
+
+        // 디데이
+        Bundle bundle = getIntent().getExtras();
+        long remainDays = bundle.getLong(FomesConstants.BetaTest.EXTRA_REMAIN_DAYS, 0);
+
+        String projectStatus;
+        if (remainDays > 0) {
+            projectStatus = String.format("D - %d", remainDays);
+        } else if (remainDays == 0) {
+            projectStatus = "오늘 마감";
+        } else {
+            projectStatus = getString(R.string.common_close);
+        }
+
+        dDayTextView.setVisibility(View.VISIBLE);
+        dDayTextView.setText(projectStatus);
+
+        @StyleRes int projectStatusStyleId;
+        @ColorRes int projectStatusColorId;
+        if (remainDays < 2) {
+            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Red;
+            projectStatusColorId = R.color.fomes_red;
+        } else if (remainDays < 4) {
+            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Squash;
+            projectStatusColorId = R.color.fomes_squash;
+        } else {
+            projectStatusStyleId = R.style.BetaTestTheme_TagBackground;
+            projectStatusColorId = R.color.colorPrimary;
+        }
+
+        dDayTextView.setVisibility(View.VISIBLE);
+        dDayTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
+                new ContextThemeWrapper(this, projectStatusStyleId).getTheme()));
+        dDayTextView.setTextColor(getResources().getColor(projectStatusColorId));
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.formakers.fomes.common.network.vo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.formakers.fomes.common.util.DateUtil;
 import com.google.gson.annotations.SerializedName;
@@ -463,6 +464,19 @@ public class BetaTest implements Parcelable {
     public BetaTest setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    public String getDisplayDescription() {
+        // 태그가 있으면 태그를, 없으면 description을 보여주기
+        if (getTags() != null && getTags().size() > 0) {
+            List<String> hashTags = new ArrayList<>();
+            for (String tag : getTags()) {
+                hashTags.add("#" + tag);
+            }
+            return TextUtils.join("", hashTags);
+        } else {
+            return getDescription();
+        }
     }
 
     public String getDescription() {

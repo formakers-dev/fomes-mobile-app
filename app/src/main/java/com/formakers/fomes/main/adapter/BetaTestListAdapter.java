@@ -67,17 +67,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         baseViewHolder.titleTextView.setText(item.getTitle());
 
-        // 태그가 있으면 태그를, 없으면 description을 보여주기
-        if (item.getTags() != null && item.getTags().size() > 0) {
-//            baseViewHolder.subTitleTextView.setText(TextUtils.join("#", item.getTags()));
-            List<String> hashTags = new ArrayList<>();
-            for (String tag : item.getTags()) {
-                hashTags.add("#" + tag);
-            }
-            baseViewHolder.subTitleTextView.setText(TextUtils.join("", hashTags));
-        } else {
-            baseViewHolder.subTitleTextView.setText(item.getDescription());
-        }
+        baseViewHolder.subTitleTextView.setText(item.getDisplayDescription());
 
         baseViewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
 
