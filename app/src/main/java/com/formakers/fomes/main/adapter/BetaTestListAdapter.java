@@ -163,12 +163,14 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if (item.isCompleted()) {
                 itemViewHolder.progressLabelTextView.setVisibility(View.GONE);
+                itemViewHolder.progressTextView.setText(item.getProgressText().getDone());
             } else {
                 itemViewHolder.progressLabelTextView.setVisibility(View.VISIBLE);
                 itemViewHolder.progressLabelTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
                         new ContextThemeWrapper(context, progressRate > 0 ? R.style.BetaTestTheme_ProgressLabelBackground_Doing : R.style.BetaTestTheme_ProgressLabelBackground).getTheme()));
                 itemViewHolder.progressLabelTextView.setTextColor(progressRate > 0 ? res.getColor(R.color.fomes_dark_gray) : res.getColor(R.color.fomes_warm_gray_2));
                 itemViewHolder.progressLabelTextView.setText(progressRate > 0 ? R.string.betatest_progress_attend_label_doing : R.string.betatest_progress_attend_label);
+                itemViewHolder.progressTextView.setText(progressRate > 0 ? item.getProgressText().getDoing() : item.getProgressText().getReady());
             }
 
             itemViewHolder.attendLabelImageView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);

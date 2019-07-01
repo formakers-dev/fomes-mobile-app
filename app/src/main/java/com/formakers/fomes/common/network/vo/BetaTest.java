@@ -17,6 +17,7 @@ public class BetaTest implements Parcelable {
     String iconImageUrl;
     String title;
     String description;
+    ProgressText progressText;
 
     List<String> tags = new ArrayList<>();
 
@@ -46,6 +47,84 @@ public class BetaTest implements Parcelable {
     @Deprecated String reward;
     @Deprecated String actionType;
     @Deprecated String action;
+
+    public static class ProgressText implements Parcelable {
+        String ready;
+        String doing;
+        String done;
+
+        public String getReady() {
+            return ready;
+        }
+
+        public ProgressText setReady(String ready) {
+            this.ready = ready;
+            return this;
+        }
+
+        public String getDoing() {
+            return doing;
+        }
+
+        public ProgressText setDoing(String doing) {
+            this.doing = doing;
+            return this;
+        }
+
+        public String getDone() {
+            return done;
+        }
+
+        public ProgressText setDone(String done) {
+            this.done = done;
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return "ProgressText{" +
+                    "ready='" + ready + '\'' +
+                    ", doing='" + doing + '\'' +
+                    ", done='" + done + '\'' +
+                    '}';
+        }
+
+        /**
+         * for Parcelable
+         */
+
+        public ProgressText(Parcel in) {
+            readFromParcel(in);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(ready);
+            dest.writeString(doing);
+            dest.writeString(done);
+        }
+
+        private void readFromParcel(Parcel in) {
+            ready = in.readString();
+            doing = in.readString();
+            done = in.readString();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Parcelable.Creator<ProgressText> CREATOR = new Parcelable.Creator<ProgressText>() {
+            public ProgressText createFromParcel(Parcel in) {
+                return new ProgressText(in);
+            }
+
+            public ProgressText[] newArray(int size) {
+                return new ProgressText[size];
+            }
+        };
+    }
 
     public static class AfterService implements Parcelable {
         String epilogue;
@@ -395,6 +474,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public ProgressText getProgressText() {
+        return progressText;
+    }
+
+    public BetaTest setProgressText(ProgressText progressText) {
+        this.progressText = progressText;
+        return this;
+    }
+
     public List<String> getTags() {
         return tags;
     }
@@ -594,6 +682,7 @@ public class BetaTest implements Parcelable {
                 ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", progressText=" + progressText +
                 ", tags=" + tags +
                 ", openDate=" + openDate +
                 ", closeDate=" + closeDate +
@@ -628,6 +717,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(description);
+        dest.writeParcelable(progressText, 0);
         dest.writeStringList(tags);
         dest.writeLong(openDate.getTime());
         dest.writeLong(closeDate.getTime());
@@ -656,6 +746,7 @@ public class BetaTest implements Parcelable {
         iconImageUrl = in.readString();
         title = in.readString();
         description = in.readString();
+        progressText = in.readParcelable(null);
         in.readStringList(tags);
         openDate = new Date(in.readLong());
         closeDate = new Date(in.readLong());

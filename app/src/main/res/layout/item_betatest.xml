@@ -46,26 +46,24 @@
                 app:layout_constraintStart_toStartOf="@id/betatest_overview_imageview"
                 app:layout_constraintEnd_toEndOf="@id/betatest_overview_imageview"
                 app:layout_constraintTop_toTopOf="@id/betatest_overview_imageview"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_overview_imageview"
-                />
+                app:layout_constraintBottom_toBottomOf="@id/betatest_overview_imageview" />
 
             <TextView
                 android:id="@+id/betatest_progress_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="3dp"
-                android:paddingEnd="3dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:textStyle="bold"
                 android:textSize="9dp"
                 android:text="@string/betatest_progress_attend_label"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:theme="@style/BetaTestTheme.ProgressLabelBackground"
                 tools:text="참여 전"
                 app:layout_constraintStart_toStartOf="@+id/betatest_progress_bar"
-                app:layout_constraintTop_toTopOf="@+id/betatest_progress_textview"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_progress_textview"
-                />
+                app:layout_constraintTop_toTopOf="@+id/betatest_progress_textview" />
 
             <TextView
                 android:id="@+id/betatest_progress_textview"
@@ -73,7 +71,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 app:layout_goneMarginStart="0dp"
-                android:text="테스트 참여 0% 완료"
                 android:textSize="10dp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
