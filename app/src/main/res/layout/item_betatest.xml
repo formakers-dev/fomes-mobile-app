@@ -58,7 +58,7 @@
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:textSize="9dp"
-                android:text="참여 전"
+                android:text="@string/betatest_progress_attend_label"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:theme="@style/BetaTestTheme.ProgressLabelBackground"
                 tools:text="참여 전"

@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
@@ -59,6 +60,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Resources res = context.getResources();
         BetaTest item = betaTests.get(position);
 
         BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
@@ -107,9 +109,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         baseViewHolder.projectStatusTextView.setVisibility(View.VISIBLE);
-        baseViewHolder.projectStatusTextView.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
+        baseViewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
                 new ContextThemeWrapper(context, projectStatusStyleId).getTheme()));
-        baseViewHolder.projectStatusTextView.setTextColor(context.getResources().getColor(projectStatusColorId));
+        baseViewHolder.projectStatusTextView.setTextColor(res.getColor(projectStatusColorId));
 
         // end of 디데이
 
@@ -119,7 +121,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .apply(new RequestOptions()
                         .centerCrop()
                         .transform(new RoundedCorners(4))
-                        .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
+                        .placeholder(new ColorDrawable(res.getColor(R.color.fomes_deep_gray))))
                 .into(itemViewHolder.overviewImageView);
 
         if (TextUtils.isEmpty(item.getBugReportUrl())) {
@@ -156,13 +158,23 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemViewHolder.closedLabelTextView.setText(String.format(context.getString(R.string.beta_test_closed_label_title), item.getTags().get(0)));
             itemViewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
         } else {
-            itemViewHolder.progressBar.setProgress(item.getCompletedItemCount() * 100 / item.getTotalItemCount());
-            itemViewHolder.progressLabelTextView.setVisibility(item.isCompleted() ? View.GONE : View.VISIBLE);
+            int progressRate = Math.round(item.getCompletedItemCount() * 100 / item.getTotalItemCount());
+            itemViewHolder.progressBar.setProgress(progressRate);
+
+            if (item.isCompleted()) {
+                itemViewHolder.progressLabelTextView.setVisibility(View.GONE);
+            } else {
+                itemViewHolder.progressLabelTextView.setVisibility(View.VISIBLE);
+                itemViewHolder.progressLabelTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                        new ContextThemeWrapper(context, progressRate > 0 ? R.style.BetaTestTheme_ProgressLabelBackground_Doing : R.style.BetaTestTheme_ProgressLabelBackground).getTheme()));
+                itemViewHolder.progressLabelTextView.setTextColor(progressRate > 0 ? res.getColor(R.color.fomes_dark_gray) : res.getColor(R.color.fomes_warm_gray_2));
+                itemViewHolder.progressLabelTextView.setText(progressRate > 0 ? R.string.betatest_progress_attend_label_doing : R.string.betatest_progress_attend_label);
+            }
 
             itemViewHolder.attendLabelImageView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
 
-            baseViewHolder.titleTextView.setTextColor(item.isCompleted() ? context.getResources().getColor(R.color.colorPrimary) : context.getResources().getColor(R.color.fomes_white));
-            baseViewHolder.subTitleTextView.setTextColor(item.isCompleted() ? context.getResources().getColor(R.color.colorPrimary) : context.getResources().getColor(R.color.fomes_light_gray));
+            baseViewHolder.titleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
+            baseViewHolder.subTitleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
 
         }
     }

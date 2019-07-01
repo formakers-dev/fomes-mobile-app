@@ -441,12 +441,7 @@ public class BetaTest implements Parcelable {
     }
 
     public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public BetaTest setCompleted(boolean isCompleted) {
-        this.isCompleted = isCompleted;
-        return this;
+        return getCompletedItemCount().equals(getTotalItemCount());
     }
 
     public boolean isGroup() {
