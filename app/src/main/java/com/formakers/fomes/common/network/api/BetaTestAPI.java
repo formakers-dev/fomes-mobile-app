@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Path;
 import rx.Observable;
 
 public interface BetaTestAPI {
@@ -16,5 +17,5 @@ public interface BetaTestAPI {
     Observable<List<BetaTest>> getFinishedBetaTests(@Header("x-access-token") String accessToken);
 
     @GET("/beta-tests/detail/{id}")
-    Observable<BetaTest> getDetailBetaTest(@Header("x-access-token") String accessToken, String id);
+    Observable<BetaTest> getDetailBetaTest(@Header("x-access-token") String accessToken, @Path("id") String id);
 }

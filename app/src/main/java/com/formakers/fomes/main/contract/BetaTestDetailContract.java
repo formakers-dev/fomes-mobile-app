@@ -3,6 +3,7 @@ package com.formakers.fomes.main.contract;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.mvp.BaseView;
+import com.formakers.fomes.common.network.vo.BetaTest;
 
 public interface BetaTestDetailContract {
     interface Presenter {
@@ -11,9 +12,13 @@ public interface BetaTestDetailContract {
 
         void sendEventLog(String code, String ref);
         void unsubscribe();
+
+        void load(String id);
     }
 
     interface View extends BaseView<Presenter> {
-
+        void bind(BetaTest betaTest);
+        void showLoading();
+        void hideLoading();
     }
 }
