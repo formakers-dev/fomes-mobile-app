@@ -2,12 +2,9 @@ package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.vo.BetaTest;
-import com.formakers.fomes.common.util.DateUtil;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,20 +38,6 @@ public class BetaTestService extends AbstractService {
     public Single<List<BetaTest>> getBetaTestList() {
         return Observable.defer(() -> betaTestAPI.getBetaTests(sharedPreferencesHelper.getAccessToken()))
                 .subscribeOn(Schedulers.io())
-                .map(response -> {
-                    // Date 헤더: 메시지가 만들어진 날짜와 시간
-                    Date currentDate = DateUtil.convertHTTPHeaderDateToDate(response.headers().get("Date"));
-                    List<BetaTest> betaTests = response.body();
-
-                    Log.d(TAG, "getBetaTestList current date: " + currentDate);
-                    if (betaTests != null) {
-                        for(BetaTest betaTest : betaTests) {
-                            betaTest.setCurrentDate(currentDate);
-                        }
-                    }
-
-                    return betaTests;
-                })
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();
     }
