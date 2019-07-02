@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -29,6 +30,7 @@ import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
 import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -39,13 +41,14 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     private static final String TAG = "BetaTestDetailActivity";
 
+    @BindView(R.id.loading) ProgressBar loadingProgressBar;
     @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
     @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
     @BindView(R.id.betatest_detail_title) TextView titleTextView;
     @BindView(R.id.betatest_detail_subtitle) TextView descriptionTextView;
     @BindView(R.id.betatest_detail_period) TextView periodTextView;
     @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
-    @BindView(R.id.loading) ProgressBar loadingProgressBar;
+    @BindView(R.id.betatest_reward_items) ViewGroup rewardViewGroup;
 
     @Inject BetaTestDetailContract.Presenter presenter;
 
@@ -150,6 +153,28 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         dDayTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
                 new ContextThemeWrapper(this, projectStatusStyleId).getTheme()));
         dDayTextView.setTextColor(getResources().getColor(projectStatusColorId));
+
+        // 리워드 목록
+        Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
+
+        for (BetaTest.Rewards.RewardItem rewardItem: betaTest.getRewards().getList()) {
+            View rewardItemView = getLayoutInflater().inflate(R.layout.item_betatest_reward, null);
+
+            ImageView rewardItemIconImageView = rewardItemView.findViewById(R.id.betatest_reward_icon);
+            TextView rewardItemTitleTextView = rewardItemView.findViewById(R.id.betatest_reward_title);
+            TextView rewardItemDescriptionTextView = rewardItemView.findViewById(R.id.betatest_reward_description);
+
+            Glide.with(this).load(rewardItem.getIconImageUrl())
+                    .apply(new RequestOptions().centerCrop()
+                            .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
+                    .into(rewardItemIconImageView);
+
+            rewardItemTitleTextView.setText(rewardItem.getTitle());
+            rewardItemDescriptionTextView.setText(rewardItem.getContent());
+
+            rewardViewGroup.addView(rewardItemView);
+        }
+
     }
 
     @Override

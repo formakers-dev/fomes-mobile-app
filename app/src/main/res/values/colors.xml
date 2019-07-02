@@ -19,6 +19,7 @@
     <color name="fomes_warm_gray">#808080</color>
     <color name="fomes_warm_gray_2">#9b9b9b</color>
     <color name="fomes_light_gray">#d4d4d4</color>
+    <color name="fomes_light_pale_gray">#e9e9e9</color>
     <color name="fomes_pale_gray">#f0f0f1</color>
 
     <color name="fomes_squash">#f8ab1c</color>

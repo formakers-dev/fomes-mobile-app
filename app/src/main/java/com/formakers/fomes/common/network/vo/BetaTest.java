@@ -380,6 +380,24 @@ public class BetaTest implements Parcelable {
             };
         }
 
+        public Integer getMinimumDelay() {
+            return minimumDelay;
+        }
+
+        public Rewards setMinimumDelay(Integer minimumDelay) {
+            this.minimumDelay = minimumDelay;
+            return this;
+        }
+
+        public List<RewardItem> getList() {
+            return list;
+        }
+
+        public Rewards setList(List<RewardItem> list) {
+            this.list = list;
+            return this;
+        }
+
         @Override
         public String toString() {
             return "Rewards{" +
