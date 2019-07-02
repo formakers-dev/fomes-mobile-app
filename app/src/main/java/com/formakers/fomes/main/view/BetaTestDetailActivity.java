@@ -1,8 +1,10 @@
 package com.formakers.fomes.main.view;
 
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -12,8 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -22,15 +27,18 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
 import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -48,7 +56,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_detail_subtitle) TextView descriptionTextView;
     @BindView(R.id.betatest_detail_period) TextView periodTextView;
     @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
-    @BindView(R.id.betatest_reward_items) ViewGroup rewardViewGroup;
+    @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
+    @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
 
     @Inject BetaTestDetailContract.Presenter presenter;
 
@@ -175,6 +184,15 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             rewardViewGroup.addView(rewardItemView);
         }
 
+        missionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(this, ContentDividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,
+                new ContextThemeWrapper(this, R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
+        missionRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest.getMissions());
+        missionRecyclerView.setAdapter(missionListAdapter);
     }
 
     @Override
@@ -185,5 +203,63 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Override
     public void hideLoading() {
         loadingProgressBar.setVisibility(View.GONE);
+    }
+
+    public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        List<Mission> missionList;
+
+        public MissionListAdapter(List<Mission> missionList) {
+            this.missionList = missionList;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_betatest_mission, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            Mission mission = missionList.get(position);
+
+            ViewHolder viewHolder = ((ViewHolder) holder);
+            Context context = viewHolder.itemView.getContext();
+
+            Glide.with(context).load(mission.getIconImageUrl())
+                    .apply(new RequestOptions().placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
+                    .into(viewHolder.titleIconImageView);
+
+            viewHolder.titleTextView.setText(mission.getTitle());
+            viewHolder.descriptionTextView.setText(mission.getDescription());
+
+            Glide.with(context).load(mission.getDescriptionImageUrl())
+                    .apply(new RequestOptions().placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
+                    .into(viewHolder.descriptionImageView);
+            viewHolder.guideTextView.setText(mission.getGuide());
+        }
+
+        @Override
+        public int getItemCount() {
+            return missionList.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView titleIconImageView;
+            TextView titleTextView;
+            TextView descriptionTextView;
+            ImageView descriptionImageView;
+            TextView guideTextView;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+
+                titleIconImageView = itemView.findViewById(R.id.mission_title_icon);
+                titleTextView = itemView.findViewById(R.id.mission_title);
+                descriptionTextView = itemView.findViewById(R.id.mission_description);
+                descriptionImageView = itemView.findViewById(R.id.mission_description_image);
+                guideTextView = itemView.findViewById(R.id.mission_guide);
+            }
+        }
     }
 }

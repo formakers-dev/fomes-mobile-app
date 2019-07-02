@@ -9,7 +9,7 @@
         <!--android:gradientRadius="?attr/item_gradient_radius"/>-->
 
     <gradient
-        android:startColor="@color/fomes_greyish_brown"
+        android:startColor="@color/fomes_deep_gray"
         android:centerColor="@android:color/transparent"
         android:endColor="@android:color/transparent"
         android:angle="90"

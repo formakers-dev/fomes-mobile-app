@@ -201,4 +201,10 @@
     <string name="wish_list_empty_description">아직 관심 게임 리스트에 저장한 게임이 없으시네요.</string>
     <string name="wish_list_add_fail">관심 게임 등록에 실패하였습니다.</string>
     <string name="wish_list_remove_fail">관심 게임 삭제에 실패하였습니다.</string>
+
+    <!-- Beta Test Detail -->
+    <string name="betatest_detail_rewards_title">테스트 보상</string>
+    <string name="betatest_detail_rewards_description">테스트 마감후 %d일 이내에 보상이 지급됩니다.</string>
+    <string name="betatest_detail_mission_list_title">테스트 참여</string>
+    <string name="betatest_detail_mission_list_description">당신의 게임 분석력과 통찰력을 기대할게요!</string>
 </resources>

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Mission implements Parcelable {
     Integer order;
-    String iconImageUserl;
+    String iconImageUrl;
     String title;
     String description;
     String descriptionImageUrl;
@@ -114,12 +114,12 @@ public class Mission implements Parcelable {
         return this;
     }
 
-    public String getIconImageUserl() {
-        return iconImageUserl;
+    public String getIconImageUrl() {
+        return iconImageUrl;
     }
 
-    public Mission setIconImageUserl(String iconImageUserl) {
-        this.iconImageUserl = iconImageUserl;
+    public Mission setIconImageUrl(String iconImageUrl) {
+        this.iconImageUrl = iconImageUrl;
         return this;
     }
 
@@ -172,7 +172,7 @@ public class Mission implements Parcelable {
     public String toString() {
         return "Mission{" +
                 "order=" + order +
-                ", iconImageUserl='" + iconImageUserl + '\'' +
+                ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionImageUrl='" + descriptionImageUrl + '\'' +
@@ -192,7 +192,7 @@ public class Mission implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(order);
-        dest.writeString(iconImageUserl);
+        dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(descriptionImageUrl);
@@ -202,7 +202,7 @@ public class Mission implements Parcelable {
 
     private void readFromParcel(Parcel in) {
         order = in.readInt();
-        iconImageUserl = in.readString();
+        iconImageUrl = in.readString();
         title = in.readString();
         description = in.readString();
         descriptionImageUrl = in.readString();
