@@ -21,51 +21,18 @@
             app:contentScrim="@color/fomes_greyish_brown"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-            <!--<FrameLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_collapseMode="parallax">-->
-
-            <!--<androidx.viewpager.widget.ViewPager-->
-            <!--android:id="@+id/main_event_view_pager"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="150dp"-->
-            <!--android:layout_marginTop="?attr/actionBarSize"-->
-            <!--android:scaleType="centerCrop" />-->
-
-            <!--<com.rd.PageIndicatorView-->
-            <!--android:id="@+id/main_event_indicator"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal|bottom"-->
-            <!--android:padding="10dp"-->
-            <!--app:piv_animationType="worm"-->
-            <!--app:piv_dynamicCount="true"-->
-            <!--app:piv_interactiveAnimation="true"-->
-            <!--app:piv_padding="4dp"-->
-            <!--app:piv_radius="4dp"-->
-            <!--app:piv_selectedColor="@color/fomes_light_gray"-->
-            <!--app:piv_unselectedColor="@color/fomes_warm_gray"-->
-            <!--app:piv_viewPager="@id/main_event_view_pager" />-->
-
-            <!--</FrameLayout>-->
-
             <ImageView
                 android:id="@+id/betatest_detail_overview_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:foreground="@drawable/betatest_detail_gradient"
                 android:src="@color/fomes_greyish_brown"
                 app:layout_collapseMode="parallax" />
 
-            <!--<androidx.appcompat.widget.Toolbar-->
-                <!--android:id="@+id/main_toolbar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="?attr/actionBarSize"-->
-                <!--android:background="@android:color/transparent"-->
-                <!--app:navigationIcon="@drawable/top_arrow"-->
-                <!--app:layout_collapseMode="pin"-->
-                <!--app:popupTheme="@style/PopupOverlay"/>-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/betatest_detail_gradient"
+                app:layout_collapseMode="pin"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -144,21 +111,56 @@
         android:layout_height="match_parent"
         android:background="@color/fomes_greyish_brown"
         android:fillViewport="true"
+        android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="1000dp">
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
 
             <TextView
                 android:id="@+id/betatest_detail_title_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
+                android:text="kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/feedback_recyclerview"
                 tools:ignore="MissingConstraints"
                 tools:text="테스트" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feedback_recyclerview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1000dp"
+                android:layout_marginTop="@dimen/main_tab_listview_top_margin"
+                android:background="@color/fomes_red"
+                android:overScrollMode="never"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_title_textview"/>
+
+            <TextView
+                android:id="@+id/betatest_detail_title_textview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ"
+                app:layout_constraintTop_toBottomOf="@+id/feedback_recyclerview"
+                tools:ignore="MissingConstraints"
+                tools:text="테스트" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feedback_recyclerview2"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1000dp"
+                android:layout_marginTop="@dimen/main_tab_listview_top_margin"
+                android:background="@color/fomes_black"
+                android:overScrollMode="never"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_title_textview2"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
