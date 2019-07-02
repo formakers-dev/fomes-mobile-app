@@ -14,11 +14,15 @@ public interface BetaTestDetailContract {
         void unsubscribe();
 
         void load(String id);
+
+        void requestCompleteMissionItem(String id);
     }
 
     interface View extends BaseView<Presenter> {
         void bind(BetaTest betaTest);
         void showLoading();
         void hideLoading();
+
+        void unlockMissions();
     }
 }

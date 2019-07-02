@@ -3,6 +3,7 @@ package com.formakers.fomes.main.view;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +68,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.v(TAG,"onCreate");
+        Log.v(TAG, "onCreate");
 
         this.setContentView(R.layout.activity_betatest_detail);
 
@@ -170,7 +171,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
 
-        for (BetaTest.Rewards.RewardItem rewardItem: betaTest.getRewards().getList()) {
+        for (BetaTest.Rewards.RewardItem rewardItem : betaTest.getRewards().getList()) {
             View rewardItemView = getLayoutInflater().inflate(R.layout.item_betatest_reward, null);
 
             ImageView rewardItemIconImageView = rewardItemView.findViewById(R.id.betatest_reward_icon);
@@ -195,7 +196,23 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 new ContextThemeWrapper(this, R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
 
+        boolean isLocked = bundle.getInt(FomesConstants.BetaTest.EXTRA_COMPLETED_ITEM_COUNT, 0) <= 0;
         MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest.getMissions());
+        missionListAdapter.setLocked(isLocked);
+
+        if (isLocked) {
+            missionListAdapter.setMissionItemClickListener(v -> {
+                // 모든 플레이타입 미션 아이템이 여기서 완료처리가 되어야 하니까....
+                // 타입ㅇ 필요해요... 그 탕디.ㅂ.....ㄹㅇ그니끼ㅏ..그
+                for (Mission mission : betaTest.getMissions()) {
+                    for (Mission.MissionItem missionItem : mission.getItems()) {
+                        if ("play".equals(missionItem.getType())) {
+                            presenter.requestCompleteMissionItem(missionItem.getId());
+                        }
+                    }
+                }
+            });
+        }
         missionRecyclerView.setAdapter(missionListAdapter);
     }
 
@@ -209,12 +226,37 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         loadingProgressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void unlockMissions() {
+        if (missionRecyclerView.getAdapter() instanceof MissionListAdapter) {
+            MissionListAdapter adapter = (MissionListAdapter) missionRecyclerView.getAdapter();
+            adapter.setLocked(false);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         List<Mission> missionList;
+        @Deprecated boolean isLocked = false;
+        View.OnClickListener missionItemClickListener;
 
         public MissionListAdapter(List<Mission> missionList) {
             this.missionList = missionList;
+        }
+
+        public boolean isLocked() {
+            return isLocked;
+        }
+
+        public MissionListAdapter setLocked(boolean locked) {
+            isLocked = locked;
+            return this;
+        }
+
+        public MissionListAdapter setMissionItemClickListener(View.OnClickListener missionItemClickListener) {
+            this.missionItemClickListener = missionItemClickListener;
+            return this;
         }
 
         @NonNull
@@ -237,10 +279,20 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             viewHolder.titleTextView.setText(mission.getTitle());
             viewHolder.descriptionTextView.setText(mission.getDescription());
 
-            Glide.with(context).load(mission.getDescriptionImageUrl())
-                    .apply(new RequestOptions().placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
-                    .into(viewHolder.descriptionImageView);
+            if (TextUtils.isEmpty(mission.getDescriptionImageUrl())) {
+                viewHolder.descriptionImageView.setVisibility(View.GONE);
+            } else {
+                viewHolder.descriptionImageView.setVisibility(View.VISIBLE);
+                Glide.with(context).load(mission.getDescriptionImageUrl())
+                        .apply(new RequestOptions().placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
+                        .into(viewHolder.descriptionImageView);
+            }
+
             viewHolder.guideTextView.setText(mission.getGuide());
+
+            viewHolder.lockView.setVisibility(isLocked ? View.VISIBLE : View.GONE);
+
+            viewHolder.itemView.setOnClickListener(missionItemClickListener);
         }
 
         @Override
@@ -254,6 +306,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             TextView descriptionTextView;
             ImageView descriptionImageView;
             TextView guideTextView;
+            View lockView;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -263,6 +316,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 descriptionTextView = itemView.findViewById(R.id.mission_description);
                 descriptionImageView = itemView.findViewById(R.id.mission_description_image);
                 guideTextView = itemView.findViewById(R.id.mission_guide);
+                lockView = itemView.findViewById(R.id.betatest_lock_layout);
             }
         }
     }

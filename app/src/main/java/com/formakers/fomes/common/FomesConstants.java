@@ -30,6 +30,8 @@ public interface FomesConstants {
     interface BetaTest {
         String EXTRA_ID = "EXTRA_ID";
         String EXTRA_REMAIN_DAYS = "EXTRA_REMAIN_DAYS";
+        String EXTRA_COMPLETED_ITEM_COUNT = "EXTRA_COMPLETED_ITEM_COUNT";
+        String EXTRA_TOTAL_ITEM_COUNT = "EXTRA_TOTAL_ITEM_COUNT";
         String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
         String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
 

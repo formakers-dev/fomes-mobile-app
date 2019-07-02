@@ -203,9 +203,9 @@
 
     <style name="BetaTestTheme.CardBackground.Lock">
         <item name="item_background_radius">10dp</item>
-        <item name="item_solid_color">@color/fomes_gray_2_e0</item>
-        <item name="item_stroke_color">@color/item_inner_divider</item>
-        <item name="item_stroke_width">0dp</item>
+        <item name="item_solid_color">@color/beta_test_detail_mission_lock</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
     </style>
 
     <!--<style name="BetaTestTheme.CardGradient">-->

@@ -61,4 +61,13 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         }, e -> Log.e(TAG, String.valueOf(e)))
         );
     }
+
+    @Override
+    public void requestCompleteMissionItem(String id) {
+        compositeSubscription.add(
+                this.betaTestService.postCompleteBetaTest(id)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe((x) -> this.view.unlockMissions(), e -> Log.e(TAG, String.valueOf(e)))
+        );
+    }
 }

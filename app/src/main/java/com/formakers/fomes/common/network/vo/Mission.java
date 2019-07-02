@@ -3,6 +3,8 @@ package com.formakers.fomes.common.network.vo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Mission implements Parcelable {
@@ -15,10 +17,30 @@ public class Mission implements Parcelable {
     String guide;
 
     public static class MissionItem implements Parcelable {
+        @SerializedName("_id") String id;
+        String type;
         String title;
         String actionType;
         String action;
         List<String> completedUserIds;
+
+        public String getId() {
+            return id;
+        }
+
+        public MissionItem setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public MissionItem setType(String type) {
+            this.type = type;
+            return this;
+        }
 
         public String getTitle() {
             return title;
@@ -59,7 +81,9 @@ public class Mission implements Parcelable {
         @Override
         public String toString() {
             return "MissionItem{" +
-                    "title='" + title + '\'' +
+                    "id='" + id + '\'' +
+                    ", type='" + type + '\'' +
+                    ", title='" + title + '\'' +
                     ", actionType='" + actionType + '\'' +
                     ", action='" + action + '\'' +
                     ", completedUserIds=" + completedUserIds +
@@ -76,6 +100,8 @@ public class Mission implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(id);
+            dest.writeString(type);
             dest.writeString(title);
             dest.writeString(actionType);
             dest.writeString(action);
@@ -83,6 +109,8 @@ public class Mission implements Parcelable {
         }
 
         private void readFromParcel(Parcel in) {
+            id = in.readString();
+            type = in.readString();
             title = in.readString();
             actionType = in.readString();
             action = in.readString();

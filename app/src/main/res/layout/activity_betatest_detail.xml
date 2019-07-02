@@ -203,31 +203,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/betatest_mission_list_description_textview"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <LinearLayout
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="@dimen/match_constraint"
-                android:gravity="center_horizontal"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.CardBackground.Lock"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="@+id/betatest_mission_list"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_mission_list"
-                app:layout_constraintStart_toStartOf="@+id/betatest_mission_list"
-                app:layout_constraintEnd_toEndOf="@id/betatest_mission_list">
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/icon_my_betatest"
-                    android:backgroundTint="@color/colorPrimary"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/fomes_white"
-                    android:text="눌러서 시작하기"/>
-            </LinearLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
