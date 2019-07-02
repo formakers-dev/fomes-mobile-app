@@ -188,38 +188,47 @@
                 app:layout_constraintEnd_toEndOf="@+id/betatest_mission_list_title_textview"
                 tools:ignore="MissingConstraints"/>
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/betatest_mission_list"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/betatest_detail_items_list_margin_top"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:overScrollMode="never"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_mission_list_description_textview"/>
+                app:layout_constraintTop_toBottomOf="@+id/betatest_mission_list_description_textview"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <!--<TextView-->
-                <!--android:id="@+id/betatest_detail_title_textview2"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="20dp"-->
-                <!--android:text="ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ"-->
-                <!--app:layout_constraintTop_toBottomOf="@+id/betatest_mission_list"-->
-                <!--tools:ignore="MissingConstraints"-->
-                <!--tools:text="테스트" />-->
+            <LinearLayout
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/match_constraint"
+                android:gravity="center_horizontal"
+                android:background="@drawable/item_rect_rounded_corner_background"
+                android:theme="@style/BetaTestTheme.CardBackground.Lock"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="@+id/betatest_mission_list"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_mission_list"
+                app:layout_constraintStart_toStartOf="@+id/betatest_mission_list"
+                app:layout_constraintEnd_toEndOf="@id/betatest_mission_list">
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/icon_my_betatest"
+                    android:backgroundTint="@color/colorPrimary"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/fomes_white"
+                    android:text="눌러서 시작하기"/>
+            </LinearLayout>
 
-            <!--<androidx.recyclerview.widget.RecyclerView-->
-                <!--android:id="@+id/feedback_recyclerview2"-->
-                <!--android:layout_width="@dimen/match_constraint"-->
-                <!--android:layout_height="1000dp"-->
-                <!--android:layout_marginTop="@dimen/main_tab_listview_top_margin"-->
-                <!--android:background="@color/fomes_black"-->
-                <!--android:overScrollMode="never"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintTop_toBottomOf="@+id/betatest_detail_title_textview2"/>-->
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
