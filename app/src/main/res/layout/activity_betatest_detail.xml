@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/fomes_deep_gray"
     android:fitsSystemWindows="true"
     tools:context="com.formakers.fomes.main.view.MainActivity">
 

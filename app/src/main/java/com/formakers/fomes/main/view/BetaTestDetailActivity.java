@@ -48,6 +48,7 @@ import butterknife.BindView;
 public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTestDetailContract.View {
 
     private static final String TAG = "BetaTestDetailActivity";
+    private static final int DEFAULT_REWARDS_MINIMUM_DELAY = 7;
 
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
     @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
@@ -56,6 +57,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_detail_subtitle) TextView descriptionTextView;
     @BindView(R.id.betatest_detail_period) TextView periodTextView;
     @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
+    @BindView(R.id.betatest_reward_description_textview) TextView rewardDescriptionTextView;
     @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
 
@@ -164,6 +166,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         dDayTextView.setTextColor(getResources().getColor(projectStatusColorId));
 
         // 리워드 목록
+        rewardDescriptionTextView.setText(String.format(getString(R.string.betatest_detail_rewards_description), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
+
         Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
 
         for (BetaTest.Rewards.RewardItem rewardItem: betaTest.getRewards().getList()) {
