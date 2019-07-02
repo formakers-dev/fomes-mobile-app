@@ -141,7 +141,6 @@
                 android:textSize="11dp"
                 android:textColor="@color/fomes_warm_gray_2"
                 android:layout_marginTop="@dimen/betatest_detail_items_description_margin_top"
-                android:text="@string/betatest_detail_rewards_description"
                 app:layout_constraintTop_toBottomOf="@id/betatest_reward_title_textview"
                 app:layout_constraintStart_toStartOf="@+id/betatest_reward_title_textview"
                 tools:ignore="MissingConstraints"

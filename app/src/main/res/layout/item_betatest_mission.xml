@@ -89,11 +89,14 @@
                 android:id="@+id/mission_items_layout"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
+                android:showDividers="middle"
+                android:divider="@drawable/divider"
+                android:theme="@style/BetaTestDetailTheme.RewardDivider"
                 app:layout_constraintTop_toBottomOf="@+id/mission_description_layout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/mission_guide"
@@ -102,7 +105,7 @@
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="5dp"
                 android:textSize="10dp"
-                android:textColor="@color/fomes_black_alpha_80"
+                android:textColor="@color/colorPrimary"
                 app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintTop_toBottomOf="@+id/mission_items_layout"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +128,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="visible">
+        tools:visibility="gone">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -18,11 +18,12 @@ public class Mission implements Parcelable {
 
     public static class MissionItem implements Parcelable {
         @SerializedName("_id") String id;
+        Integer order;
         String type;
         String title;
         String actionType;
         String action;
-        List<String> completedUserIds;
+        Boolean isCompleted;
 
         public String getId() {
             return id;
@@ -30,6 +31,15 @@ public class Mission implements Parcelable {
 
         public MissionItem setId(String id) {
             this.id = id;
+            return this;
+        }
+
+        public Integer getOrder() {
+            return order;
+        }
+
+        public MissionItem setOrder(Integer order) {
+            this.order = order;
             return this;
         }
 
@@ -69,12 +79,12 @@ public class Mission implements Parcelable {
             return this;
         }
 
-        public List<String> getCompletedUserIds() {
-            return completedUserIds;
+        public Boolean isCompleted() {
+            return isCompleted;
         }
 
-        public MissionItem setCompletedUserIds(List<String> completedUserIds) {
-            this.completedUserIds = completedUserIds;
+        public MissionItem setCompleted(Boolean completed) {
+            isCompleted = completed;
             return this;
         }
 
@@ -82,11 +92,12 @@ public class Mission implements Parcelable {
         public String toString() {
             return "MissionItem{" +
                     "id='" + id + '\'' +
+                    ", order=" + order +
                     ", type='" + type + '\'' +
                     ", title='" + title + '\'' +
                     ", actionType='" + actionType + '\'' +
                     ", action='" + action + '\'' +
-                    ", completedUserIds=" + completedUserIds +
+                    ", isCompleted=" + isCompleted +
                     '}';
         }
 
@@ -101,20 +112,22 @@ public class Mission implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(id);
+            dest.writeInt(order);
             dest.writeString(type);
             dest.writeString(title);
             dest.writeString(actionType);
             dest.writeString(action);
-            dest.writeStringList(completedUserIds);     // TODO : ??
+            dest.writeInt(isCompleted ? 1 : 0);     // TODO : ??
         }
 
         private void readFromParcel(Parcel in) {
             id = in.readString();
+            order = in.readInt();
             type = in.readString();
             title = in.readString();
             actionType = in.readString();
             action = in.readString();
-            in.readStringList(completedUserIds);
+            isCompleted = in.readInt() == 1;
         }
 
         @Override

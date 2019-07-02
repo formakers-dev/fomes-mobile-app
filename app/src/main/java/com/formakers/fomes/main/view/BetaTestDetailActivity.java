@@ -292,6 +292,26 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
             viewHolder.lockView.setVisibility(isLocked ? View.VISIBLE : View.GONE);
 
+            viewHolder.itemViewGroup.removeAllViews();
+            for (Mission.MissionItem missionItem: mission.getItems()) {
+                View missionItemView = getLayoutInflater().inflate(R.layout.item_mission_item, null);
+
+                TextView missionItemOrderTextView = missionItemView.findViewById(R.id.mission_item_order);
+                TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
+                TextView missionItemProgressStatusTextView = missionItemView.findViewById(R.id.mission_item_progress_status);
+
+                missionItemOrderTextView.setText(String.format("%d)", missionItem.getOrder()));
+                missionItemTitleTextView.setText(missionItem.getTitle());
+
+                if ("play".equals(missionItem.getType())) {
+                    missionItemProgressStatusTextView.setText("참여 중");
+                } else {
+                    missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
+                }
+
+                viewHolder.itemViewGroup.addView(missionItemView);
+            }
+
             viewHolder.itemView.setOnClickListener(missionItemClickListener);
         }
 
@@ -307,6 +327,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             ImageView descriptionImageView;
             TextView guideTextView;
             View lockView;
+            ViewGroup itemViewGroup;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -317,6 +338,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 descriptionImageView = itemView.findViewById(R.id.mission_description_image);
                 guideTextView = itemView.findViewById(R.id.mission_guide);
                 lockView = itemView.findViewById(R.id.betatest_lock_layout);
+                itemViewGroup = itemView.findViewById(R.id.mission_items_layout);
             }
         }
     }

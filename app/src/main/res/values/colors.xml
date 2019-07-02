@@ -7,7 +7,7 @@
 
     <!-- Fomes colors -->
     <color name="fomes_black">#000000</color>
-    <color name="fomes_black_alpha_80">#80000000</color>
+    <color name="fomes_black_alpha_50">#80000000</color>
     <color name="fomes_black_alpha_30">#4c000000</color>
 
     <color name="fomes_dark_gray">#202020</color>
@@ -55,7 +55,7 @@
     <color name="main_tab_indicator_color">@color/colorPrimary</color>
 
     <!-- for BetaTest -->
-    <color name="beta_test_label_disable_background">@color/fomes_black_alpha_80</color>
+    <color name="beta_test_label_disable_background">@color/fomes_black_alpha_50</color>
     <color name="beta_test_finished_group_block_background">#991e1e1e</color>
     <color name="beta_test_finished_group_company_says_attend_background">@color/colorPrimary</color>
     <color name="beta_test_finished_group_epilogue_button">@color/fomes_light_gray</color>

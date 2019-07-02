@@ -387,4 +387,10 @@
         <item name="divider_color">@android:color/transparent</item>
     </style>
 
+    <style name="BetaTestDetailTheme.MissionItem">
+        <item name="item_background_radius">19dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_50</item>
+        <item name="item_stroke_width">0dp</item>
+    </style>
+
 </resources>
