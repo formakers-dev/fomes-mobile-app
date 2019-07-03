@@ -1,7 +1,9 @@
 package com.formakers.fomes.main.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
@@ -32,6 +34,7 @@ import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
@@ -194,7 +197,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
 
         boolean isLocked = bundle.getInt(FomesConstants.BetaTest.EXTRA_COMPLETED_ITEM_COUNT, 0) <= 0;
-        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest.getMissions());
+        String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, "");
+        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest.getMissions(), userEmail);
         missionListAdapter.setLocked(isLocked);
 
         if (isLocked) {
@@ -234,10 +238,12 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         List<Mission> missionList;
         @Deprecated boolean isLocked = false;
+        String userEmail;
         View.OnClickListener missionItemClickListener;
 
-        public MissionListAdapter(List<Mission> missionList) {
+        public MissionListAdapter(List<Mission> missionList, String userEmail) {
             this.missionList = missionList;
+            this.userEmail = userEmail;
         }
 
         public boolean isLocked() {
@@ -303,6 +309,26 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 } else {
                     missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
                 }
+
+                missionItemView.setOnClickListener(v -> {
+                    String url = missionItem.getAction() + userEmail;
+                    Uri uri = Uri.parse(url);
+
+                    Intent intent;
+
+                    if ("internal_web".equals(missionItem.getActionType())
+                            || (uri.getQueryParameter("internal_web") != null && uri.getQueryParameter("internal_web").equals("true"))) {
+                        intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra(WebViewActivity.EXTRA_TITLE, missionItem.getTitle());
+                        intent.putExtra(WebViewActivity.EXTRA_CONTENTS, url);
+                    } else {
+                        // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(url));
+                    }
+
+                    startActivity(intent);
+                });
 
                 viewHolder.itemViewGroup.addView(missionItemView);
             }
