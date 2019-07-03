@@ -193,7 +193,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/betatest_detail_items_list_margin_top"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="45dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:overScrollMode="never"
