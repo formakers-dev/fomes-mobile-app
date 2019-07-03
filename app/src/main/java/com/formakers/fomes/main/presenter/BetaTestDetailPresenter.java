@@ -3,9 +3,12 @@ package com.formakers.fomes.main.presenter;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestDetailActivityScope;
+
+import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -57,6 +60,14 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         .doAfterTerminate(() -> this.view.hideLoading())
                         .subscribe(betaTest -> {
                             this.betaTest = betaTest;
+
+                            Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
+                            Collections.sort(betaTest.getMissions(), (o1, o2) -> o1.getOrder() - o2.getOrder());
+
+                            for (Mission mission : betaTest.getMissions()) {
+                                Collections.sort(mission.getItems(), ((o1, o2) -> o1.getOrder() - o2.getOrder()));
+                            }
+
                             this.view.bind(betaTest);
                         }, e -> Log.e(TAG, String.valueOf(e)))
         );

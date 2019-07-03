@@ -38,7 +38,6 @@ import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
 import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -169,8 +168,6 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         // 리워드 목록
         rewardDescriptionTextView.setText(String.format(getString(R.string.betatest_detail_rewards_description), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
 
-        Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
-
         for (BetaTest.Rewards.RewardItem rewardItem : betaTest.getRewards().getList()) {
             View rewardItemView = getLayoutInflater().inflate(R.layout.item_betatest_reward, null);
 
@@ -202,8 +199,6 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         if (isLocked) {
             missionListAdapter.setMissionItemClickListener(v -> {
-                // 모든 플레이타입 미션 아이템이 여기서 완료처리가 되어야 하니까....
-                // 타입ㅇ 필요해요... 그 탕디.ㅂ.....ㄹㅇ그니끼ㅏ..그
                 for (Mission mission : betaTest.getMissions()) {
                     for (Mission.MissionItem missionItem : mission.getItems()) {
                         if ("play".equals(missionItem.getType())) {
