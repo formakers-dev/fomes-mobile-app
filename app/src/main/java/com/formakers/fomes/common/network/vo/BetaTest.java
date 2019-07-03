@@ -617,16 +617,18 @@ public class BetaTest implements Parcelable {
         return completedItemCount;
     }
 
-    public void setCompletedItemCount(Integer completedItemCount) {
+    public BetaTest setCompletedItemCount(Integer completedItemCount) {
         this.completedItemCount = completedItemCount;
+        return this;
     }
 
     public Integer getTotalItemCount() {
         return totalItemCount;
     }
 
-    public void setTotalItemCount(Integer totalItemCount) {
+    public BetaTest setTotalItemCount(Integer totalItemCount) {
         this.totalItemCount = totalItemCount;
+        return this;
     }
 
     public boolean isOpened() {

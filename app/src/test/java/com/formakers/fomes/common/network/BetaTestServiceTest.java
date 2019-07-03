@@ -53,7 +53,7 @@ public class BetaTestServiceTest extends AbstractServiceTest {
 
     @Test
     public void postCompleteBetaTest_호출시__해당테스트의_상세정보를_요청한다() {
-        subject.getDetailBetaTest("1234id").subscribe(new TestSubscriber<>());
+        subject.postCompleteBetaTest("1234id").subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestAPI).postCompleteBetaTest(eq("TEST_ACCESS_TOKEN"), eq("1234id"));
     }

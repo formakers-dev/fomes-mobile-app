@@ -102,12 +102,12 @@ public class BetaTestPresenterTest {
     public void loadToBetaTestList__호출시__결과로_받은_테스트존_리스트를_정렬된_순서로_화면에_보여준다() {
         List<BetaTest> unsortedBetaTestList = new ArrayList();
         // 참여가능
-        unsortedBetaTestList.add(new BetaTest().setId("1").setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId("2").setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("1").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("2").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
 
         // 참여 완료 - 미종료
-        unsortedBetaTestList.add(new BetaTest().setId("3").setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId("4").setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("3").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("4").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
 
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
 
