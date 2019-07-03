@@ -311,7 +311,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 }
 
                 missionItemView.setOnClickListener(v -> {
-                    String url = missionItem.getAction() + userEmail;
+                    String action = missionItem.getAction();
+
+                    if (TextUtils.isEmpty(action)) {
+                        return;
+                    }
+
+                    String url = action + userEmail;
                     Uri uri = Uri.parse(url);
 
                     Intent intent;
