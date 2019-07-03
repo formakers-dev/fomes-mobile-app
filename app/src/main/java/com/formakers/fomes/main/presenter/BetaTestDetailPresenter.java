@@ -58,6 +58,25 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(() -> this.view.showLoading())
                         .doAfterTerminate(() -> this.view.hideLoading())
+                        .map(betaTest -> {
+                            int total = 0;
+                            int completed = 0;
+
+                            for (Mission mission: betaTest.getMissions()) {
+                                total += mission.getItems().size();
+
+                                for (Mission.MissionItem missionItem : mission.getItems()) {
+                                    if (missionItem.isCompleted()) {
+                                        completed++;
+                                    }
+                                }
+                            }
+
+                            betaTest.setTotalItemCount(total);
+                            betaTest.setCompletedItemCount(completed);
+
+                            return betaTest;
+                        })
                         .subscribe(betaTest -> {
                             this.betaTest = betaTest;
 

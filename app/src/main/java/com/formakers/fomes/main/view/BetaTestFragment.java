@@ -109,8 +109,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 // 테스트 디테일 화면
                 bundle.putString(FomesConstants.BetaTest.EXTRA_ID, betaTestItem.getId());
                 bundle.putLong(FomesConstants.BetaTest.EXTRA_REMAIN_DAYS, betaTestItem.getRemainDays());
-                bundle.putInt(FomesConstants.BetaTest.EXTRA_COMPLETED_ITEM_COUNT, betaTestItem.getCompletedItemCount());
-                bundle.putInt(FomesConstants.BetaTest.EXTRA_TOTAL_ITEM_COUNT, betaTestItem.getTotalItemCount());
                 bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
                 Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
                 intent.putExtras(bundle);

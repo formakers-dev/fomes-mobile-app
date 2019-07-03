@@ -196,7 +196,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 new ContextThemeWrapper(this, R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        boolean isLocked = bundle.getInt(FomesConstants.BetaTest.EXTRA_COMPLETED_ITEM_COUNT, 0) <= 0;
+        boolean isLocked = betaTest.getCompletedItemCount() <= 0;
         String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, "");
         MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest.getMissions(), userEmail);
         missionListAdapter.setLocked(isLocked);
