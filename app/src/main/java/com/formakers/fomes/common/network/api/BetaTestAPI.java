@@ -1,6 +1,7 @@
 package com.formakers.fomes.common.network.api;
 
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.Mission;
 
 import java.util.List;
 
@@ -18,7 +19,10 @@ public interface BetaTestAPI {
     Observable<List<BetaTest>> getFinishedBetaTests(@Header("x-access-token") String accessToken);
 
     @GET("/beta-tests/detail/{id}")
-    Observable<BetaTest> getDetailBetaTest(@Header("x-access-token") String accessToken, @Path("id") String id);
+    Observable<BetaTest> getDetailBetaTest(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
+
+    @GET("/beta-tests/mission/{id}/progress")
+    Observable<List<Mission.MissionItem>> getMissionProgress(@Header("x-access-token") String accessToken, @Path("id") String missionId);
 
     @POST("/beta-tests/{id}/complete")
     Observable<Void> postCompleteBetaTest(@Header("x-access-token") String accessToken, @Path("id") String id);

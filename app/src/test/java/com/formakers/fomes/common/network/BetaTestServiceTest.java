@@ -58,4 +58,11 @@ public class BetaTestServiceTest extends AbstractServiceTest {
         verify(mockBetaTestAPI).postCompleteBetaTest(eq("TEST_ACCESS_TOKEN"), eq("1234id"));
     }
 
+    @Test
+    public void getMissionProgress_호출시_해당미션의_진행상황을_요청한다() {
+        subject.getMissionProgress("1234id").subscribe(new TestSubscriber<>());
+
+        verify(mockBetaTestAPI).getMissionProgress(eq("TEST_ACCESS_TOKEN"), eq("1234id"));
+    }
+
 }
