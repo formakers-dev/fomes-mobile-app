@@ -21,7 +21,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:paddingTop="15dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp"
             android:background="@drawable/item_rect_rounded_corner_background"
             android:foreground="@drawable/item_rect_rounded_corner_stroke_background"
             android:theme="@style/BetaTestTheme.CardBackground">
@@ -59,6 +62,7 @@
                 android:id="@+id/mission_title"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textSize="13dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
