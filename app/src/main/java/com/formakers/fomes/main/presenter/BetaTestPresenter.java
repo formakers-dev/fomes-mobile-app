@@ -156,6 +156,34 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                 .doOnError(e -> view.showEmptyView());
     }
 
+    @Override
+    public void requestBetaTestProgress(String betaTestId) {
+        compositeSubscription.add(
+                betaTestService.getBetaTestProgress(betaTestId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(betaTestProgress -> {
+                            int position = betaTestListAdapterModel.getPositionById(betaTestProgress.getId());
+                            boolean isUpdated = false;
+
+                            BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
+
+                            if (!originalBetaTest.getCompletedItemCount().equals(betaTestProgress.getCompletedItemCount())) {
+                                originalBetaTest.setCompletedItemCount(betaTestProgress.getCompletedItemCount());
+                                isUpdated = true;
+                            }
+
+                            if (!originalBetaTest.getTotalItemCount().equals(betaTestProgress.getTotalItemCount())) {
+                                originalBetaTest.setTotalItemCount(betaTestProgress.getTotalItemCount());
+                                isUpdated = true;
+                            }
+
+                            if (isUpdated) {
+                                view.refreshBetaTestProgress(position);
+                            }
+                        }, e -> Log.e(TAG, String.valueOf(e)))
+        );
+    }
+
     private int compareByCloseDate(BetaTest betaTest1, BetaTest betaTest2, Date currentDate) {
         Long betaTestDiff1 = Math.abs(currentDate.getTime() - betaTest1.getCloseDate().getTime());
         Long betaTestDiff2 = Math.abs(currentDate.getTime() - betaTest2.getCloseDate().getTime());

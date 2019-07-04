@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -109,6 +110,14 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         this.presenter.unsubscribe();
         compositeSubscription.clear();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, getIntent().getStringExtra(FomesConstants.BetaTest.EXTRA_ID));
+        setResult(Activity.RESULT_OK, intent);
+        super.onBackPressed();
     }
 
     @Override

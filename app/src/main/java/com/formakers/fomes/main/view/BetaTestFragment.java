@@ -42,6 +42,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     public static final String TAG = "BetaTestFragment";
 
     public static final int REQUEST_CODE_DETAIL_DIALOG = 1001;
+    public static final int REQUEST_CODE_DETAIL = 1002;
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
@@ -112,7 +113,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                 bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
                 Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
                 intent.putExtras(bundle);
-                this.startActivity(intent);
+                this.startActivityForResult(intent, REQUEST_CODE_DETAIL);
             }
 
             this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
@@ -166,6 +167,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
         if (requestCode == REQUEST_CODE_DETAIL_DIALOG) {
             this.presenter.getAnalytics().setCurrentScreen(this);
+        } else if (requestCode == REQUEST_CODE_DETAIL) {
+            this.presenter.requestBetaTestProgress(data.getStringExtra(FomesConstants.BetaTest.EXTRA_ID));
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -211,6 +214,11 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Override
     public void refreshBetaTestList() {
         betaTestListAdapterView.notifyDataSetChanged();
+    }
+
+    @Override
+    public void refreshBetaTestProgress(int position) {
+        betaTestListAdapterView.notifyItemChanged(position);
     }
 
     @Override

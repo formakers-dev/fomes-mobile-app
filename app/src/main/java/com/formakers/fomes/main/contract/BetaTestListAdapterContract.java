@@ -12,6 +12,7 @@ public interface BetaTestListAdapterContract {
         void setOnItemClickListener(OnRecyclerItemClickListener listener);
 
         void notifyDataSetChanged();
+        void notifyItemChanged(int position);
     }
 
     interface Model {
