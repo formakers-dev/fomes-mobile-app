@@ -193,7 +193,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             TextView rewardItemDescriptionTextView = rewardItemView.findViewById(R.id.betatest_reward_description);
 
             Glide.with(this).load(rewardItem.getIconImageUrl())
-                    .apply(new RequestOptions().centerCrop()
+                    .apply(new RequestOptions()
+                            .fitCenter()
                             .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
                     .into(rewardItemIconImageView);
 
@@ -277,7 +278,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             Context context = viewHolder.itemView.getContext();
 
             Glide.with(context).load(mission.getIconImageUrl())
-                    .apply(new RequestOptions().placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
+                    .apply(new RequestOptions()
+                            .fitCenter()
+                            .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
                     .into(viewHolder.titleIconImageView);
 
             viewHolder.titleTextView.setText(mission.getTitle());
