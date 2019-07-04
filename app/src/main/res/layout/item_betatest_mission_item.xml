@@ -24,11 +24,12 @@
         android:id="@+id/mission_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginStart="10dp"
         android:textStyle="bold"
         android:textSize="12dp"
         android:textColor="@color/fomes_light_pale_gray"
-        tools:text="게임 플레이"/>
+        tools:text="게임 플레이ddddddddddddddddddddddddddddddddddddd"/>
 
     <TextView
         android:id="@+id/mission_item_progress_status"

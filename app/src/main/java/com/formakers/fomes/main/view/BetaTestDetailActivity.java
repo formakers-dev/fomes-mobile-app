@@ -47,6 +47,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTestDetailContract.View {
 
@@ -65,6 +67,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
 
     @Inject BetaTestDetailContract.Presenter presenter;
+
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Override
     protected void onDestroy() {
         this.presenter.unsubscribe();
+        compositeSubscription.clear();
         super.onDestroy();
     }
 
@@ -241,6 +246,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         String userEmail;
         View.OnClickListener missionItemClickListener;
 
+        public List<Mission> getMissionList() {
+            return missionList;
+        }
+
         public MissionListAdapter(List<Mission> missionList, String userEmail) {
             this.missionList = missionList;
             this.userEmail = userEmail;
@@ -295,7 +304,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
             viewHolder.itemViewGroup.removeAllViews();
             for (Mission.MissionItem missionItem: mission.getItems()) {
-                View missionItemView = getLayoutInflater().inflate(R.layout.item_mission_item, null);
+                View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
 
                 TextView missionItemOrderTextView = missionItemView.findViewById(R.id.mission_item_order);
                 TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
@@ -339,6 +348,26 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 viewHolder.itemViewGroup.addView(missionItemView);
             }
 
+            viewHolder.refreshButton.setOnClickListener(v -> {
+                compositeSubscription.add(presenter.refreshMissionProgress(mission.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(() -> {
+                            viewHolder.refreshButton.setVisibility(View.INVISIBLE);
+                            viewHolder.refreshProgress.setVisibility(View.VISIBLE);
+                        })
+                        .doAfterTerminate(() -> {
+                            viewHolder.refreshButton.setVisibility(View.VISIBLE);
+                            viewHolder.refreshProgress.setVisibility(View.GONE);
+                        })
+                        .subscribe(missionItem -> {
+                            for (Mission.MissionItem item : mission.getItems()) {
+                                if (item.getId().equals(missionItem.getId())) {
+                                    item.setCompleted(missionItem.isCompleted());
+                                }
+                            }
+                        }, e -> Log.e(TAG, String.valueOf(e)), () -> notifyItemChanged(position)));
+            });
+
             viewHolder.itemView.setOnClickListener(missionItemClickListener);
         }
 
@@ -355,6 +384,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             TextView guideTextView;
             View lockView;
             ViewGroup itemViewGroup;
+            View refreshButton;
+            View refreshProgress;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -366,6 +397,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 guideTextView = itemView.findViewById(R.id.mission_guide);
                 lockView = itemView.findViewById(R.id.betatest_lock_layout);
                 itemViewGroup = itemView.findViewById(R.id.mission_items_layout);
+                refreshButton = itemView.findViewById(R.id.mission_refresh_button);
+                refreshProgress = itemView.findViewById(R.id.mission_refresh_progress);
             }
         }
     }

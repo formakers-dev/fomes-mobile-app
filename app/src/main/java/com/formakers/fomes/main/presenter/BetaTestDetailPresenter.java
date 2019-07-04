@@ -12,6 +12,7 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -62,7 +63,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                             int total = 0;
                             int completed = 0;
 
-                            for (Mission mission: betaTest.getMissions()) {
+                            for (Mission mission : betaTest.getMissions()) {
                                 total += mission.getItems().size();
 
                                 for (Mission.MissionItem missionItem : mission.getItems()) {
@@ -99,5 +100,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((x) -> this.view.unlockMissions(), e -> Log.e(TAG, String.valueOf(e)))
         );
+    }
+
+    @Override
+    public Observable<Mission.MissionItem> refreshMissionProgress(String id) {
+        return this.betaTestService.getMissionProgress(id);
     }
 }

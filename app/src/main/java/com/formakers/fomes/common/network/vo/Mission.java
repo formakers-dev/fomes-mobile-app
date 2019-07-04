@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Mission implements Parcelable {
+    @SerializedName("_id") String id;
     Integer order;
     String iconImageUrl;
     String title;
@@ -146,6 +147,15 @@ public class Mission implements Parcelable {
         };
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public Mission setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public Integer getOrder() {
         return order;
     }
@@ -212,7 +222,8 @@ public class Mission implements Parcelable {
     @Override
     public String toString() {
         return "Mission{" +
-                "order=" + order +
+                "id='" + id + '\'' +
+                ", order=" + order +
                 ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
@@ -232,6 +243,7 @@ public class Mission implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeInt(order);
         dest.writeString(iconImageUrl);
         dest.writeString(title);
@@ -242,12 +254,14 @@ public class Mission implements Parcelable {
     }
 
     private void readFromParcel(Parcel in) {
+        id = in.readString();
         order = in.readInt();
         iconImageUrl = in.readString();
         title = in.readString();
         description = in.readString();
         descriptionImageUrl = in.readString();
         in.readTypedList(items, MissionItem.CREATOR);
+        guide = in.readString();
     }
 
     @Override
