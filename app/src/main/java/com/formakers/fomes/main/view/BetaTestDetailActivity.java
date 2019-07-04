@@ -317,6 +317,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     missionItemProgressStatusTextView.setText("참여 중");
                 } else {
                     missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
+                    missionItemView.setEnabled(!missionItem.isCompleted());
                 }
 
                 missionItemView.setOnClickListener(v -> {
