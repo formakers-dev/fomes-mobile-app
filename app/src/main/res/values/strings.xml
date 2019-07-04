@@ -134,8 +134,9 @@
     <string name="postbox_title">포메스 우체통</string>
 
     <!-- Beta Test -->
-    <string name="betatest_title">테스트 목록</string>
-    <string name="betatest_subtitle">참여 가능한 테스트가 표시됩니다.</string>
+    <string name="betatest_title">진행 중 테스트 목록</string>
+    <string name="betatest_subtitle">게임 소개와 테스트 정보를 볼 수 있습니다.</string>
+    <string name="betatest_complete_switch_text">참여 중 테스트만</string>
     <string name="go_to_join_beta_test">참여하러 가기</string>
     <string name="betatest_target_format">%s 앱 유저 대상</string>
     <string name="betatest_project_status_format">종료 %d일 전</string>
@@ -160,6 +161,8 @@
     <string name="betatest_company_says_not_collected">\?\?\? (모든 결과 취합 시 표시됩니다)</string>
     <string name="betatest_company_says">게임사 소감 : %s</string>
     <string name="betatest_company_says_title">게임사 소감 및 계획</string>
+    <string name="betatest_progress_attend_label">참여 전</string>
+    <string name="betatest_progress_attend_label_doing">참여 중</string>
 
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">마감된 테스트 목록</string>
@@ -198,4 +201,10 @@
     <string name="wish_list_empty_description">아직 관심 게임 리스트에 저장한 게임이 없으시네요.</string>
     <string name="wish_list_add_fail">관심 게임 등록에 실패하였습니다.</string>
     <string name="wish_list_remove_fail">관심 게임 삭제에 실패하였습니다.</string>
+
+    <!-- Beta Test Detail -->
+    <string name="betatest_detail_rewards_title">테스트 보상</string>
+    <string name="betatest_detail_rewards_description">테스트 마감후 %d일 이내에 보상이 지급됩니다.</string>
+    <string name="betatest_detail_mission_list_title">테스트 참여</string>
+    <string name="betatest_detail_mission_list_description">당신의 게임 분석력과 통찰력을 기대할게요!</string>
 </resources>

@@ -21,7 +21,7 @@
             android:descendantFocusability="blocksDescendants">
 
             <TextView android:id="@+id/finished_betatest_list_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/main_tab_title_margin_start"
                 android:layout_marginTop="@dimen/main_tab_title_margin_top"
@@ -32,6 +32,7 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
                 app:layout_constraintVertical_bias="0.0"/>
 
             <TextView android:id="@+id/finished_betatest_notice_textview"
@@ -41,6 +42,7 @@
                 android:textSize="@dimen/main_tab_subtitle_text_size"
                 android:textColor="@color/fomes_light_gray"
                 android:text="@string/finished_betatest_subtitle"
+                app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
                 app:layout_constraintStart_toStartOf="@id/finished_betatest_list_textview"
                 app:layout_constraintTop_toBottomOf="@id/finished_betatest_list_textview" />
 

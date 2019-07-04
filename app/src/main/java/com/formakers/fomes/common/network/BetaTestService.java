@@ -2,6 +2,7 @@ package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.helper.APIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 
@@ -47,5 +48,33 @@ public class BetaTestService extends AbstractService {
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();
+    }
+
+    public Single<BetaTest> getDetailBetaTest(String id) {
+        return Observable.defer(() -> betaTestAPI.getDetailBetaTest(sharedPreferencesHelper.getAccessToken(), id))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
+    }
+
+    public Single<Void> postCompleteBetaTest(String id) {
+        return Observable.defer(() -> betaTestAPI.postCompleteBetaTest(sharedPreferencesHelper.getAccessToken(), id))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
+    }
+
+    public Single<BetaTest> getBetaTestProgress(String betaTestId) {
+        return Observable.defer(() -> betaTestAPI.getBetaTestProgress(sharedPreferencesHelper.getAccessToken(), betaTestId))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
+    }
+
+    public Observable<Mission.MissionItem> getMissionProgress(String missionId) {
+        return Observable.defer(() -> betaTestAPI.getMissionProgress(sharedPreferencesHelper.getAccessToken(), missionId))
+                .flatMap(Observable::from)
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken());
     }
 }

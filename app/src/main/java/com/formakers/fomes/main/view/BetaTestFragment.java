@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +42,15 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     public static final String TAG = "BetaTestFragment";
 
     public static final int REQUEST_CODE_DETAIL_DIALOG = 1001;
+    public static final int REQUEST_CODE_DETAIL = 1002;
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
     @BindView(R.id.betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.betatest_empty_view) View emptyView;
     @BindView(R.id.betatest_empty_textview) TextView emptyTextView;
+    @BindView(R.id.title_option_menu_switch) Switch attendFilterSwitch;
+    @BindView(R.id.title_option_menu) TextView attendFilterTextView;
 
     @Inject BetaTestContract.Presenter presenter;
     BetaTestListAdapterContract.View betaTestListAdapterView;
@@ -69,10 +73,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         return inflater.inflate(R.layout.fragment_betatest, container, false);
     }
 
-    private boolean isNewDesign() {
-        return Feature.BETATEST_GROUP_DATA_MIGRATION || Feature.FOMES_V_2_5_DESIGN;
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -82,8 +82,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         recyclerView.setLayoutManager(linearLayoutManager);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(getContext(),
-                isNewDesign() ? R.style.FomesMainTabTheme_BetaTestDivider : R.style.FomesMainTabTheme_OldBetaTestDivider).getTheme()));
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,
+                new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         BetaTestListAdapter betaTestListAdapter = new BetaTestListAdapter();
@@ -96,21 +96,25 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             Bundle bundle = new Bundle();
             BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
 
-            com.formakers.fomes.common.util.Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
+            Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
 
-            bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
-            bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
+            if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
+                bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
+                bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
 
-            BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
-            betaTestDetailAlertDialog.setArguments(bundle);
-            betaTestDetailAlertDialog.setPresenter(this.presenter);
-            betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
-
-            // 테스트 디테일 화면
-//            bundle.putInt(FomesConstants.BetaTest.EXTRA_GROUP_ID, betaTestItem.getId())
-//            Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
-//            intent.putExtras(bundle);
-//            this.startActivity(intent);
+                BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
+                betaTestDetailAlertDialog.setArguments(bundle);
+                betaTestDetailAlertDialog.setPresenter(this.presenter);
+                betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
+            } else {
+                // 테스트 디테일 화면
+                bundle.putString(FomesConstants.BetaTest.EXTRA_ID, betaTestItem.getId());
+                bundle.putLong(FomesConstants.BetaTest.EXTRA_REMAIN_DAYS, betaTestItem.getRemainDays());
+                bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
+                Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
+                intent.putExtras(bundle);
+                this.startActivityForResult(intent, REQUEST_CODE_DETAIL);
+            }
 
             this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
             this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_ITEM, String.valueOf(betaTestItem.getId()));
@@ -124,6 +128,16 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
                     .subscribe(() -> {
                     }, e -> com.formakers.fomes.common.util.Log.e(TAG, String.valueOf(e))));
 
+        attendFilterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            presenter.applyAttendFilter(isChecked);
+            attendFilterTextView.setTextColor(isChecked ? getResources().getColor(R.color.colorPrimary) : getResources().getColor(R.color.fomes_warm_gray_2));
+        });
+
+        if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
+            attendFilterSwitch.setVisibility(View.GONE);
+            attendFilterTextView.setVisibility(View.GONE);
+        }
+
         presenter.initialize();
     }
 
@@ -133,10 +147,9 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String id = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+            String betaTestId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
 
-            if (!TextUtils.isEmpty(id)) {
-                int betaTestId = Integer.parseInt(id);
+            if (!TextUtils.isEmpty(betaTestId)) {
                 int position = presenter.getBetaTestPostitionById(betaTestId);
                 if (position >= 0) {
                     recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
@@ -154,6 +167,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
         if (requestCode == REQUEST_CODE_DETAIL_DIALOG) {
             this.presenter.getAnalytics().setCurrentScreen(this);
+        } else if (requestCode == REQUEST_CODE_DETAIL) {
+            this.presenter.requestBetaTestProgress(data.getStringExtra(FomesConstants.BetaTest.EXTRA_ID));
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -199,6 +214,11 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Override
     public void refreshBetaTestList() {
         betaTestListAdapterView.notifyDataSetChanged();
+    }
+
+    @Override
+    public void refreshBetaTestProgress(int position) {
+        betaTestListAdapterView.notifyItemChanged(position);
     }
 
     @Override

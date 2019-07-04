@@ -56,4 +56,9 @@
     <dimen name="main_tab_subtitle_top_margin">5dp</dimen>
     <dimen name="main_tab_listview_top_margin">21dp</dimen>
     <dimen name="betatest_list_item_padding_start_end">12dp</dimen>
+
+    <!-- Beta Test Detail -->
+    <dimen name="betatest_detail_items_margin_top">45dp</dimen>
+    <dimen name="betatest_detail_items_description_margin_top">10dp</dimen>
+    <dimen name="betatest_detail_items_list_margin_top">21dp</dimen>
 </resources>

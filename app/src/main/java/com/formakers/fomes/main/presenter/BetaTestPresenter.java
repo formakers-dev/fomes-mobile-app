@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
@@ -92,48 +93,95 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                     List<BetaTest> finishedList = new ArrayList<>();
                     List<BetaTest> groupResultList = new ArrayList<>();
 
-                    for (BetaTest betaTest : betaTests) {
-                        // 그룹결과카드 (종료일 역순 - 최신꺼 먼저 나오게)
-                        if (betaTest.isGroup()) {
-                            groupResultList.add(betaTest);
-                        }
-                        else if (betaTest.isCompleted()) {
-                            if (betaTest.isOpened()) {
-                                // 참여완료 - 미종료 테스트카드
-                                attendedList.add(betaTest);
+                    if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
+                        for (BetaTest betaTest : betaTests) {
+                            // 그룹결과카드 (종료일 역순 - 최신꺼 먼저 나오게)
+                            if (betaTest.isGroup()) {
+                                groupResultList.add(betaTest);
+                            }
+                            else if (betaTest.isCompleted()) {
+                                if (betaTest.isOpened()) {
+                                    // 참여완료 - 미종료 테스트카드
+                                    attendedList.add(betaTest);
+                                } else {
+                                    // 참여완료 - 종료 테스트카드
+                                    completedList.add(betaTest);
+                                }
+                            }
+                            // 종료 테스트카드 (종료일 임박순)
+                            else if (!betaTest.isOpened()) {
+                                finishedList.add(betaTest);
                             } else {
-                                // 참여완료 - 종료 테스트카드
-                                completedList.add(betaTest);
+                                // 참여가능 테스트카드 (종료일 임박순)
+                                attendableList.add(betaTest);
                             }
                         }
-                        // 종료 테스트카드 (종료일 임박순)
-                        else if (!betaTest.isOpened()) {
-                            finishedList.add(betaTest);
-                        } else {
-                            // 참여가능 테스트카드 (종료일 임박순)
-                            attendableList.add(betaTest);
+
+                        Comparator<BetaTest> comparator = (o1, o2) -> compareByCloseDate(o1, o2, sortingCriteriaDate);
+
+                        Collections.sort(attendableList, comparator);
+                        Collections.sort(attendedList, comparator);
+                        Collections.sort(completedList, comparator);
+                        Collections.sort(finishedList, comparator);
+                        Collections.sort(groupResultList, comparator);
+
+                        betaTestListAdapterModel.clear();
+                        betaTestListAdapterModel.addAll(attendableList);
+                        betaTestListAdapterModel.addAll(attendedList);
+                        betaTestListAdapterModel.addAll(completedList);
+                        betaTestListAdapterModel.addAll(finishedList);
+                        betaTestListAdapterModel.addAll(groupResultList);
+                    } else {
+                        for (BetaTest betaTest : betaTests) {
+                            if (betaTest.isCompleted()) {
+                                completedList.add(betaTest);
+                            } else {
+                                attendableList.add(betaTest);
+                            }
                         }
+
+                        Comparator<BetaTest> comparator = (o1, o2) -> compareByCloseDate(o1, o2, sortingCriteriaDate);
+
+                        Collections.sort(attendableList, comparator);
+                        Collections.sort(completedList, comparator);
+
+                        betaTestListAdapterModel.clear();
+                        betaTestListAdapterModel.addAll(attendableList);
+                        betaTestListAdapterModel.addAll(completedList);
                     }
-
-                    Comparator<BetaTest> comparator = (o1, o2) -> compareByCloseDate(o1, o2, sortingCriteriaDate);
-
-                    Collections.sort(attendableList, comparator);
-                    Collections.sort(attendedList, comparator);
-                    Collections.sort(completedList, comparator);
-                    Collections.sort(finishedList, comparator);
-                    Collections.sort(groupResultList, comparator);
-
-                    betaTestListAdapterModel.clear();
-                    betaTestListAdapterModel.addAll(attendableList);
-                    betaTestListAdapterModel.addAll(attendedList);
-                    betaTestListAdapterModel.addAll(completedList);
-                    betaTestListAdapterModel.addAll(finishedList);
-                    betaTestListAdapterModel.addAll(groupResultList);
 
                     view.refreshBetaTestList();
                     view.showBetaTestListView();
                 })
                 .doOnError(e -> view.showEmptyView());
+    }
+
+    @Override
+    public void requestBetaTestProgress(String betaTestId) {
+        compositeSubscription.add(
+                betaTestService.getBetaTestProgress(betaTestId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(betaTestProgress -> {
+                            int position = betaTestListAdapterModel.getPositionById(betaTestProgress.getId());
+                            boolean isUpdated = false;
+
+                            BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
+
+                            if (!originalBetaTest.getCompletedItemCount().equals(betaTestProgress.getCompletedItemCount())) {
+                                originalBetaTest.setCompletedItemCount(betaTestProgress.getCompletedItemCount());
+                                isUpdated = true;
+                            }
+
+                            if (!originalBetaTest.getTotalItemCount().equals(betaTestProgress.getTotalItemCount())) {
+                                originalBetaTest.setTotalItemCount(betaTestProgress.getTotalItemCount());
+                                isUpdated = true;
+                            }
+
+                            if (isUpdated) {
+                                view.refreshBetaTestProgress(position);
+                            }
+                        }, e -> Log.e(TAG, String.valueOf(e)))
+        );
     }
 
     private int compareByCloseDate(BetaTest betaTest1, BetaTest betaTest2, Date currentDate) {
@@ -149,7 +197,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
-    public int getBetaTestPostitionById(int id) {
+    public int getBetaTestPostitionById(String id) {
         return this.betaTestListAdapterModel.getPositionById(id);
     }
 

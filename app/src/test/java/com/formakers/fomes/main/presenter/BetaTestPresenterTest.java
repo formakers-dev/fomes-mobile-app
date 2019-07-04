@@ -102,24 +102,12 @@ public class BetaTestPresenterTest {
     public void loadToBetaTestList__호출시__결과로_받은_테스트존_리스트를_정렬된_순서로_화면에_보여준다() {
         List<BetaTest> unsortedBetaTestList = new ArrayList();
         // 참여가능
-        unsortedBetaTestList.add(new BetaTest().setId(1).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(2).setOpened(true).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("1").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("2").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
 
         // 참여 완료 - 미종료
-        unsortedBetaTestList.add(new BetaTest().setId(3).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(4).setOpened(true).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
-
-        // 참여 완료 - 종료
-        unsortedBetaTestList.add(new BetaTest().setId(5).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(6).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-01T00:00:00.000Z"))));
-
-        // 참여 안함 - 종료
-        unsortedBetaTestList.add(new BetaTest().setId(7).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-30T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(8).setOpened(false).setCompleted(false).setCloseDate(Date.from(Instant.parse("2018-11-01T00:00:00.000Z"))));
-
-        // 그룹 결과 카드
-        unsortedBetaTestList.add(new BetaTest().setId(9).setGroup(true).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-31T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId(10).setGroup(true).setOpened(false).setCompleted(true).setCloseDate(Date.from(Instant.parse("2018-03-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("3").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("4").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
 
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
 
@@ -127,23 +115,14 @@ public class BetaTestPresenterTest {
 
         ArgumentCaptor<List<BetaTest>> captor = ArgumentCaptor.forClass(List.class);
         verify(mockAdapterModel).clear();
-        verify(mockAdapterModel, times(5)).addAll(captor.capture());
+        verify(mockAdapterModel, times(2)).addAll(captor.capture());
         List<BetaTest> sortedBetaTestList = captor.getAllValues().get(0);
         sortedBetaTestList.addAll(captor.getAllValues().get(1));
-        sortedBetaTestList.addAll(captor.getAllValues().get(2));
-        sortedBetaTestList.addAll(captor.getAllValues().get(3));
-        sortedBetaTestList.addAll(captor.getAllValues().get(4));
 
-        assertThat(sortedBetaTestList.get(0).getId()).isEqualTo(1);
-        assertThat(sortedBetaTestList.get(1).getId()).isEqualTo(2);
-        assertThat(sortedBetaTestList.get(2).getId()).isEqualTo(3);
-        assertThat(sortedBetaTestList.get(3).getId()).isEqualTo(4);
-        assertThat(sortedBetaTestList.get(4).getId()).isEqualTo(5);
-        assertThat(sortedBetaTestList.get(5).getId()).isEqualTo(6);
-        assertThat(sortedBetaTestList.get(6).getId()).isEqualTo(7);
-        assertThat(sortedBetaTestList.get(7).getId()).isEqualTo(8);
-        assertThat(sortedBetaTestList.get(8).getId()).isEqualTo(9);
-        assertThat(sortedBetaTestList.get(9).getId()).isEqualTo(10);
+        assertThat(sortedBetaTestList.get(0).getId()).isEqualTo("1");
+        assertThat(sortedBetaTestList.get(1).getId()).isEqualTo("2");
+        assertThat(sortedBetaTestList.get(2).getId()).isEqualTo("3");
+        assertThat(sortedBetaTestList.get(3).getId()).isEqualTo("4");
 
         verify(mockView).refreshBetaTestList();
         verify(mockView).showBetaTestListView();

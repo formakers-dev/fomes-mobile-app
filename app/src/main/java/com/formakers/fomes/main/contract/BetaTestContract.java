@@ -19,8 +19,10 @@ public interface BetaTestContract {
 
         void initialize();
         Single<List<BetaTest>> loadToBetaTestList(Date sortingCriteriaDate);
+        void requestBetaTestProgress(String betaTestId);
+
         BetaTest getBetaTestItem(int position);
-        int getBetaTestPostitionById(int id);
+        int getBetaTestPostitionById(String id);
         String getUserEmail();
         void sendEventLog(String code, String ref);
         void unsubscribe();
@@ -37,5 +39,6 @@ public interface BetaTestContract {
         void showBetaTestListView();
 
         void refreshBetaTestList();
+        void refreshBetaTestProgress(int betaTestId);
     }
 }

@@ -8,6 +8,8 @@ import java.util.Locale;
 
 public class DateUtil {
     private static final SimpleDateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+    public static final String YYYY_MM_DD = "yyyy/MM/dd";
+    public static final String YY_DOT_MM_DOT_DD = "YY.MM.dd";
 
     public static final int CONVERT_TYPE_SECONDS = 1;
     public static final int CONVERT_TYPE_MINUTES = 2;
@@ -68,7 +70,7 @@ public class DateUtil {
     }
 
     public static Date getDateWithoutTime(Date date) {
-        SimpleDateFormat onlyDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        SimpleDateFormat onlyDateFormat = new SimpleDateFormat(YYYY_MM_DD, Locale.getDefault());
         String onlyDateString = onlyDateFormat.format(date);
         try {
             return onlyDateFormat.parse(onlyDateString);
@@ -151,5 +153,17 @@ public class DateUtil {
             }
 
             return (float) Math.ceil(converted * temp) / temp;
+    }
+
+    public static Date convertHTTPHeaderDateToDate(String dateString) {
+        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss zzz");
+
+        try {
+            return format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -201,6 +201,13 @@
         <item name="item_stroke_width">1dp</item>
     </style>
 
+    <style name="BetaTestTheme.CardBackground.Lock">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/beta_test_detail_mission_lock</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
     <!--<style name="BetaTestTheme.CardGradient">-->
         <!--<item name="item_gradient_start_color">@color/fomes_content_card_background</item>-->
         <!--<item name="item_gradient_end_color">@android:color/transparent</item>-->
@@ -344,7 +351,22 @@
         <item name="item_stroke_color">#979797</item>
     </style>
 
+    <style name="BetaTestTheme.ProgressLabelBackground">
+        <item name="item_background_radius">2dp</item>
+        <item name="item_solid_color">@color/fomes_black</item>
+        <item name="item_stroke_width">0dp</item>
+        <item name="android:textColor">@color/fomes_warm_gray_2</item>
+    </style>
+
+    <style name="BetaTestTheme.ProgressLabelBackground.Doing">
+        <item name="item_background_radius">2dp</item>
+        <item name="item_solid_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">0dp</item>
+        <item name="android:textColor">@color/fomes_dark_gray</item>
+    </style>
+
     <style name="BetaTestOpenTheme"/>
+
     <style name="BetaTestOpenTheme.InnerBox">
         <item name="item_background_radius">10dp</item>
         <item name="item_stroke_color">@color/colorPrimary</item>
@@ -352,6 +374,24 @@
     </style>
     <style name="BetaTestOpenTheme.InnerBox.Process">
         <item name="item_solid_color">@color/fomes_white_2</item>
+    </style>
+
+    <style name="BetaTestDetailTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="BetaTestDetailTheme.RewardDivider">
+        <item name="divider_height">8dp</item>
+        <item name="divider_color">@android:color/transparent</item>
+    </style>
+
+    <style name="BetaTestDetailTheme.MissionItem">
+        <item name="item_background_radius">19dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_50</item>
+        <item name="item_stroke_width">0dp</item>
     </style>
 
 </resources>
