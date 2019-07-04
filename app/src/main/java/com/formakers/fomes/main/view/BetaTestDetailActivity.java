@@ -215,18 +215,6 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest.getMissions(), userEmail);
         missionListAdapter.setLocked(isLocked);
 
-        if (isLocked) {
-            missionListAdapter.setMissionItemClickListener(v -> {
-                for (Mission mission : betaTest.getMissions()) {
-                    for (Mission.MissionItem missionItem : mission.getItems()) {
-                        if ("play".equals(missionItem.getType())
-                                || "hidden".equals(missionItem.getType())) {
-                            presenter.requestCompleteMissionItem(missionItem.getId());
-                        }
-                    }
-                }
-            });
-        }
         missionRecyclerView.setAdapter(missionListAdapter);
     }
 
@@ -307,6 +295,18 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             viewHolder.guideTextView.setText(mission.getGuide());
 
             viewHolder.lockView.setVisibility(isLocked ? View.VISIBLE : View.GONE);
+            if (isLocked) {
+                viewHolder.lockView.setOnClickListener(v -> {
+                    for (Mission lockedMission : missionList) {
+                        for (Mission.MissionItem missionItem : lockedMission.getItems()) {
+                            if ("play".equals(missionItem.getType())
+                                    || "hidden".equals(missionItem.getType())) {
+                                presenter.requestCompleteMissionItem(missionItem.getId());
+                            }
+                        }
+                    }
+                });
+            }
 
             viewHolder.itemViewGroup.removeAllViews();
             for (Mission.MissionItem missionItem: mission.getItems()) {
