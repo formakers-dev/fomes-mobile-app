@@ -219,7 +219,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             missionListAdapter.setMissionItemClickListener(v -> {
                 for (Mission mission : betaTest.getMissions()) {
                     for (Mission.MissionItem missionItem : mission.getItems()) {
-                        if ("play".equals(missionItem.getType())) {
+                        if ("play".equals(missionItem.getType())
+                                || "hidden".equals(missionItem.getType())) {
                             presenter.requestCompleteMissionItem(missionItem.getId());
                         }
                     }
@@ -254,10 +255,6 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         @Deprecated boolean isLocked = false;
         String userEmail;
         View.OnClickListener missionItemClickListener;
-
-        public List<Mission> getMissionList() {
-            return missionList;
-        }
 
         public MissionListAdapter(List<Mission> missionList, String userEmail) {
             this.missionList = missionList;
@@ -313,14 +310,16 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
             viewHolder.itemViewGroup.removeAllViews();
             for (Mission.MissionItem missionItem: mission.getItems()) {
+
+                if ("hidden".equals(missionItem.getType())) {
+                    continue;
+                }
+
                 View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
 
                 TextView missionItemOrderTextView = missionItemView.findViewById(R.id.mission_item_order);
                 TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
                 TextView missionItemProgressStatusTextView = missionItemView.findViewById(R.id.mission_item_progress_status);
-
-                missionItemOrderTextView.setText(String.format("%d)", missionItem.getOrder()));
-                missionItemTitleTextView.setText(missionItem.getTitle());
 
                 if ("play".equals(missionItem.getType())) {
                     missionItemProgressStatusTextView.setText("참여 중");
@@ -328,6 +327,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
                     missionItemView.setEnabled(!missionItem.isCompleted());
                 }
+
+                missionItemOrderTextView.setText(String.format("%d)", missionItem.getOrder()));
+                missionItemTitleTextView.setText(missionItem.getTitle());
 
                 missionItemView.setOnClickListener(v -> {
                     String action = missionItem.getAction();
