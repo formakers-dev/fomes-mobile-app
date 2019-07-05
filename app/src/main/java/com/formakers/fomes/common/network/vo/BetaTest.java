@@ -486,12 +486,9 @@ public class BetaTest implements Parcelable {
 
     public String getDisplayDescription() {
         // 태그가 있으면 태그를, 없으면 description을 보여주기
-        if (getTags() != null && getTags().size() > 0) {
-            List<String> hashTags = new ArrayList<>();
-            for (String tag : getTags()) {
-                hashTags.add("#" + tag);
-            }
-            return TextUtils.join("", hashTags);
+        String result = getTagsString();
+        if (!TextUtils.isEmpty(result)) {
+            return result;
         } else {
             return getDescription();
         }
@@ -513,6 +510,18 @@ public class BetaTest implements Parcelable {
     public BetaTest setProgressText(ProgressText progressText) {
         this.progressText = progressText;
         return this;
+    }
+
+    public String getTagsString() {
+        if (getTags() != null && getTags().size() > 0) {
+            List<String> hashTags = new ArrayList<>();
+            for (String tag : getTags()) {
+                hashTags.add("#" + tag);
+            }
+            return TextUtils.join("", hashTags);
+        } else {
+            return "";
+        }
     }
 
     public List<String> getTags() {

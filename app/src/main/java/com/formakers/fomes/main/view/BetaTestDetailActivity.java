@@ -60,9 +60,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
     @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
     @BindView(R.id.betatest_detail_title) TextView titleTextView;
-    @BindView(R.id.betatest_detail_subtitle) TextView descriptionTextView;
+    @BindView(R.id.betatest_detail_subtitle) TextView subTitleTextView;
     @BindView(R.id.betatest_detail_period) TextView periodTextView;
     @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
+    @BindView(R.id.betatest_detail_description_textview) TextView descriptionTextView;
     @BindView(R.id.betatest_reward_description_textview) TextView rewardDescriptionTextView;
     @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
@@ -140,7 +141,20 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 .into(iconImageView);
 
         titleTextView.setText(betaTest.getTitle());
-        descriptionTextView.setText(betaTest.getDisplayDescription());
+
+        String tagsString = betaTest.getTagsString();
+        if (!TextUtils.isEmpty(tagsString)) {
+            subTitleTextView.setText(tagsString);
+        } else {
+            subTitleTextView.setVisibility(View.GONE);
+        }
+
+        String description = betaTest.getDescription();
+        if (!TextUtils.isEmpty(description)) {
+            descriptionTextView.setText(betaTest.getDescription());
+        } else {
+            descriptionTextView.setVisibility(View.GONE);
+        }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YY_DOT_MM_DOT_DD, Locale.getDefault());
 
