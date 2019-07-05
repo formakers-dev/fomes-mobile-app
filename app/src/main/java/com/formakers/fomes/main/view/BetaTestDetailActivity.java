@@ -331,7 +331,11 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     missionItemView.setEnabled(!missionItem.isCompleted());
                 }
 
+                int missionItemOrder = missionItem.getOrder();
                 missionItemOrderTextView.setText(String.format("%d)", missionItem.getOrder()));
+                if (missionItemOrder <= 0) {
+                    missionItemOrderTextView.setVisibility(View.INVISIBLE);
+                }
                 missionItemTitleTextView.setText(missionItem.getTitle());
 
                 missionItemView.setOnClickListener(v -> {

@@ -60,6 +60,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         .doOnSubscribe(() -> this.view.showLoading())
                         .doAfterTerminate(() -> this.view.hideLoading())
                         .map(betaTest -> {
+                            // 진행상태 체크 (progress)
                             int total = 0;
                             int completed = 0;
 
@@ -76,11 +77,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                             betaTest.setTotalItemCount(total);
                             betaTest.setCompletedItemCount(completed);
 
-                            return betaTest;
-                        })
-                        .subscribe(betaTest -> {
-                            this.betaTest = betaTest;
-
+                            // 정렬 (order)
                             Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
                             Collections.sort(betaTest.getMissions(), (o1, o2) -> o1.getOrder() - o2.getOrder());
 
@@ -88,8 +85,9 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                                 Collections.sort(mission.getItems(), ((o1, o2) -> o1.getOrder() - o2.getOrder()));
                             }
 
-                            this.view.bind(betaTest);
-                        }, e -> Log.e(TAG, String.valueOf(e)))
+                            return betaTest;
+                        })
+                        .subscribe(betaTest -> this.view.bind(betaTest), e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 

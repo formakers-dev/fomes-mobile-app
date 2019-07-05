@@ -36,7 +36,7 @@ public class Mission implements Parcelable {
         }
 
         public Integer getOrder() {
-            return order;
+            return order == null ? 0 : order;
         }
 
         public MissionItem setOrder(Integer order) {
@@ -157,7 +157,7 @@ public class Mission implements Parcelable {
     }
 
     public Integer getOrder() {
-        return order;
+        return this.order == null ? 0 : this.order;
     }
 
     public Mission setOrder(Integer order) {
