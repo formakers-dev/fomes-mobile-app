@@ -24,7 +24,7 @@ public class Post {
     }
 
     public Integer getOrder() {
-        return order;
+        return order == null ? 0 : order;
     }
 
     public Post setOrder(Integer order) {

@@ -284,7 +284,7 @@ public class BetaTest implements Parcelable {
             List<String> userIds;
 
             public Integer getOrder() {
-                return order;
+                return order == null ? 0 : order;
             }
 
             public RewardItem setOrder(Integer order) {
