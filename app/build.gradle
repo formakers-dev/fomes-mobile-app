@@ -16,7 +16,7 @@ project.ext.set("packageID", "Fomes")
 
 def majorVersion = 0
 def minorVersion = 2
-def patchVersion = 42
+def patchVersion = 43
 
 android {
     compileSdkVersion 28
@@ -26,7 +26,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 28
         multiDexEnabled true
-        versionCode 35
+        versionCode 36
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
