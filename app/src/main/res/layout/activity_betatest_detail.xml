@@ -144,6 +144,7 @@
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
                 app:layout_goneMarginTop="@dimen/betatest_detail_items_margin_top"
                 android:layout_marginStart="31dp"
+                android:layout_marginEnd="31dp"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_detail_description_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -165,15 +166,13 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_marginStart="31dp"
-                android:layout_marginEnd="31dp"
                 android:showDividers="middle"
                 android:divider="@drawable/divider"
                 android:theme="@style/BetaTestDetailTheme.RewardDivider"
                 android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/betatest_reward_description_textview"/>
+                app:layout_constraintStart_toStartOf="@+id/betatest_reward_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_reward_title_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_description_textview"/>
 
             <TextView
                 android:id="@+id/betatest_mission_list_title_textview"
