@@ -16,7 +16,7 @@ project.ext.set("packageID", "Fomes")
 
 def majorVersion = 0
 def minorVersion = 2
-def patchVersion = 33
+def patchVersion = 40
 
 android {
     compileSdkVersion 28
