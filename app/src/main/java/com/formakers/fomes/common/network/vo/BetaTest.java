@@ -485,12 +485,12 @@ public class BetaTest implements Parcelable {
     }
 
     public String getDisplayDescription() {
-        // description이 있으면 description을, 없으면 태그를 보여주기
-        String result = getDescription();
+        // 태그가 있으면 태그를, 없으면 description을 보여주기
+        String result = getTagsString();
         if (!TextUtils.isEmpty(result)) {
             return result;
         } else {
-            return getTagsString();
+            return getDescription();
         }
     }
 
