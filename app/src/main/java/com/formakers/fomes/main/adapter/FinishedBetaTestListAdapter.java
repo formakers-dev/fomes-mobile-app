@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.main.contract.FinishedBetaTestContract;
@@ -115,29 +114,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
-
-        if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
-            baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
-            baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
-            viewHolder.subTitleTextView.setVisibility(View.GONE);
-
-            if (item.isCompleted()) {
-                // 제출 완료
-                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
-                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
-                viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
-            } else {
-                // 미제출
-                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
-                viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
-            }
-
-            viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
-        }
     }
 
     @Override
