@@ -40,7 +40,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     public static final String TAG = "BetaTestFragment";
 
-    public static final int REQUEST_CODE_DETAIL_DIALOG = 1001;
     public static final int REQUEST_CODE_DETAIL = 1002;
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
@@ -96,6 +95,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             BetaTest betaTestItem = this.presenter.getBetaTestItem(position);
 
             Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
+
             // 테스트 디테일 화면
             bundle.putString(FomesConstants.BetaTest.EXTRA_ID, betaTestItem.getId());
             bundle.putLong(FomesConstants.BetaTest.EXTRA_REMAIN_DAYS, betaTestItem.getRemainDays());
@@ -148,9 +148,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 
-        if (requestCode == REQUEST_CODE_DETAIL_DIALOG) {
+        if (requestCode == REQUEST_CODE_DETAIL) {
             this.presenter.getAnalytics().setCurrentScreen(this);
-        } else if (requestCode == REQUEST_CODE_DETAIL) {
             this.presenter.requestBetaTestProgress(data.getStringExtra(FomesConstants.BetaTest.EXTRA_ID));
         } else {
             super.onActivityResult(requestCode, resultCode, data);
