@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true">
-        <bitmap android:src="@drawable/icon_star"/>
+        <bitmap android:src="@drawable/icon_bookmark" android:tint="@color/colorPrimary"/>
     </item>
     <item>
-        <bitmap android:src="@drawable/icon_empty_star"/>
+        <bitmap android:src="@drawable/icon_empty_bookmark" android:tint="@color/colorPrimary"/>
     </item>
 </selector>

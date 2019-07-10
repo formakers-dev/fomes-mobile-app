@@ -14,7 +14,7 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/my_wish_list"
-        android:icon="@drawable/icon_wish_list"
+        android:icon="@drawable/icon_bookmark"
         android:iconTint="@color/fomes_white"
         android:title="@string/main_menu_my_wish_list"
         app:showAsAction="always"/>
