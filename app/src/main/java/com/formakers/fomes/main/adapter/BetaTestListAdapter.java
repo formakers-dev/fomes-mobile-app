@@ -1,8 +1,10 @@
 package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -114,6 +116,12 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (TextUtils.isEmpty(item.getBugReportUrl())) {
             itemViewHolder.reportBugButton.setVisibility(View.GONE);
+        } else {
+            itemViewHolder.reportBugButton.setVisibility(View.VISIBLE);
+            itemViewHolder.reportBugButton.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getBugReportUrl()));
+                context.startActivity(intent);
+            });
         }
 
         int progressRate = Math.round(item.getCompletedItemCount() * 100 / item.getTotalItemCount());
