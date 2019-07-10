@@ -67,9 +67,9 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 //        viewHolder.subTitleTextView.setText(item.getSubTitle());
 
         Glide.with(context).load(item.getIconImageUrl())
-                .apply(new RequestOptions().override(76, 76)
+                .apply(new RequestOptions().override(120, 120)
                         .centerCrop()
-                        .transform(new RoundedCorners(8))
+                        .transform(new RoundedCorners(16))
                         .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
                 .into(viewHolder.iconImageView);
 
