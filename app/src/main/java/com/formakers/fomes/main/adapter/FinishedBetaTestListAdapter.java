@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,12 +96,10 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         if (item.isCompleted()) {
             viewHolder.disableTitleLayout.setVisibility(View.GONE);
-            viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
-                    , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground_Attend).getTheme()));
+            viewHolder.companySaysLayout.setEnabled(true);
         } else {
             viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
-            viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
-                    , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground).getTheme()));
+            viewHolder.companySaysLayout.setEnabled(false);
         }
 
         if (item.getAfterService() == null) {

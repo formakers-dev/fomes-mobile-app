@@ -30,52 +30,48 @@
             android:background="@drawable/item_rect_rounded_corner_background"
             android:theme="@style/BetaTestTheme.CardBackground">
 
-            <View android:id="@+id/betatest_finished_company_says_background"
+            <LinearLayout
+                android:id="@+id/betatest_finished_company_says_background"
                 android:layout_width="@dimen/match_constraint"
-                android:layout_height="@dimen/match_constraint"
-                android:background="@drawable/item_rect_rounded_corner_stroke_background"
-                android:theme="@style/BetaTestTheme.FinishedCompanySaysBackground"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:orientation="vertical"
+                android:background="@drawable/speech_bubble"
+                android:backgroundTint="@color/speech_bubble_color_selector"
+                app:layout_constraintBottom_toTopOf="@+id/betatest_icon_imageview"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/betatest_icon_imageview"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView android:id="@+id/betatest_finished_company_says_title"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/betatest_company_says_title"
-                android:textStyle="bold"
-                android:textSize="10dp"
-                android:textColor="@color/fomes_warm_gray"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintTop_toTopOf="@id/betatest_finished_company_says_background"
-                app:layout_constraintStart_toStartOf="@id/betatest_finished_company_says_background"
-                app:layout_constraintEnd_toEndOf="@id/betatest_finished_company_says_background"
-                app:layout_constraintBottom_toTopOf="@+id/betatest_finished_company_says"
-                />
+                <TextView
+                    android:id="@+id/betatest_finished_company_says_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/betatest_company_says_title"
+                    android:textColor="@color/fomes_warm_gray"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
 
-            <TextView android:id="@+id/betatest_finished_company_says"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="12dp"
-                android:textColor="@color/fomes_white"
-                android:text="@string/betatest_company_says_not_collected_old"
-                app:layout_constraintTop_toBottomOf="@id/betatest_finished_company_says_title"
-                app:layout_constraintStart_toStartOf="@id/betatest_finished_company_says_title"
-                app:layout_constraintEnd_toEndOf="@id/betatest_finished_company_says_title"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_finished_company_says_background"
-                tools:text="'참여해주셔서 감사합니다. 현재 게임사의 한마디가 준비중입니다.' - from 포메스"/>
+                <TextView
+                    android:id="@+id/betatest_finished_company_says"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/betatest_company_says_not_collected_old"
+                    android:textColor="@color/fomes_white"
+                    android:textSize="12dp"
+                    tools:text="'참여해주셔서 감사합니다. 현재 게임사의 한마디가 준비중입니다.' - from 포메스" />
+
+            </LinearLayout>
 
             <ImageView android:id="@+id/betatest_icon_imageview"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="2dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:foreground="@drawable/item_rect_rounded_corner_background"
                 android:theme="@style/BetaTestTheme.FinishedIconForeground"
                 android:src="@drawable/not_found_app_icon"
