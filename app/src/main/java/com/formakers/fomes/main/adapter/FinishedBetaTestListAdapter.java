@@ -74,6 +74,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         viewHolder.labelImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
 
+        viewHolder.subTitleTextView.setText(item.getDisplayDescription());
+
         viewHolder.epilogueButton.setText("자세히 보기");
 
         BetaTest.AfterService afterService = item.getAfterService();

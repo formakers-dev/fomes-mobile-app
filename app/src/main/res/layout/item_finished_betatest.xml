@@ -133,7 +133,7 @@
                 app:layout_constraintTop_toBottomOf="@id/betatest_target"
                 app:layout_constraintStart_toStartOf="@+id/betatest_label"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_title_textview"
-                android:text="#시뮬레이션 #보상있음 #고양이 #캠핑장" />
+                tools:text="#시뮬레이션 #보상있음 #고양이 #캠핑장" />
 
             <View android:id="@+id/betatest_title_layout_disable_background"
                 android:layout_width="@dimen/match_constraint"
@@ -212,7 +212,7 @@
                     app:layout_constraintStart_toStartOf="@id/betatest_award_icon"
                     app:layout_constraintEnd_toStartOf="@+id/betatest_finished_epilogue_button"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="테스트 영웅 : 조로 님\n테스트요정: 이브 외 9명" />
+                    tools:text="테스트 영웅 : 조로 님\n테스트요정: 이브 외 9명" />
                 
                 <Button
                     android:id="@+id/betatest_finished_epilogue_button"
