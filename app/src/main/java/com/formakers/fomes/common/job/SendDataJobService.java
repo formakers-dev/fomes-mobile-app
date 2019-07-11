@@ -2,7 +2,6 @@ package com.formakers.fomes.common.job;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.os.Build;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
@@ -74,10 +73,7 @@ public class SendDataJobService extends JobService {
             // 2-2. FCM Token 업로드하기
             user.setRegistrationToken(sharedPreferencesHelper.getUserRegistrationToken());
             // 2-3. 디바이스 정보 올리기
-            user.setDevice(new User.DeviceInfo()
-                    .setManufacturer(Build.MANUFACTURER)
-                    .setModel(Build.MODEL)
-                    .setOsVersion(Build.VERSION.SDK_INT));
+            user.setDevice(new User.DeviceInfo());
             return user;
         }).observeOn(Schedulers.io()).flatMapCompletable(user -> userService.updateUser(user)));
 

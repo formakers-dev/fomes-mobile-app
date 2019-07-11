@@ -1,5 +1,7 @@
 package com.formakers.fomes.model;
 
+import android.os.Build;
+
 import androidx.annotation.StringRes;
 
 import com.formakers.fomes.R;
@@ -86,11 +88,12 @@ public class User {
     private String registrationToken;
     private List<String> lifeApps;
     private String appVersion;
-    private DeviceInfo device;
+    private DeviceInfo device = new User.DeviceInfo();
 
     public User() {
     }
 
+    @Deprecated
     public User(String email, String registrationToken) {
         this.email = email;
         this.registrationToken = registrationToken;
@@ -236,9 +239,9 @@ public class User {
     }
 
     public static class DeviceInfo {
-        String manufacturer;
-        String model;
-        Integer osVersion;
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        Integer osVersion = Build.VERSION.SDK_INT;
 
         public String getManufacturer() {
             return manufacturer;
