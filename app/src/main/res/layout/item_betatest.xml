@@ -101,16 +101,16 @@
                 android:id="@+id/betatest_project_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0.5dp"
-                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:gravity="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="8dp"
-                android:theme="@style/BetaTestTheme.TagBackground"
-                app:layout_constraintTop_toTopOf="@+id/betatest_title_textview"
-                app:layout_constraintStart_toEndOf="@+id/betatest_title_textview"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"
+                android:textSize="9dp"
+                android:textStyle="bold"
+                android:theme="@style/BetaTestTheme.ProjectStatusBackground"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="종료 1일 전" />
 
             <TextView
@@ -121,7 +121,7 @@
                 android:textSize="15dp"
                 app:layout_constraintWidth_default="wrap"
                 app:layout_constraintStart_toEndOf="@+id/betatest_label"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_project_status"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_progress_bar"
                 tools:text="서랍에서 찾은 또 다른 설문지" />
 
@@ -144,12 +144,11 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/fomes_light_gray"
-                android:textSize="11dp"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_bug_button"
+                android:textSize="10dp"
                 app:layout_constraintStart_toStartOf="@+id/betatest_progress_bar"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
                 tools:text="주변을 더듬거리다가 서랍을 찾아냈다. 드르륵 열어보니 설문이 놓여져 있다. 완료하면 보상이 있다는데 한번 해볼까…? " />
 
@@ -157,16 +156,18 @@
                 android:id="@+id/betatest_bug_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="@drawable/ripple"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:text="버그 제보"
                 android:textColor="@color/fomes_light_gray"
                 android:textSize="11dp"
                 android:theme="@style/BetaTestTheme.BugButtonBackground"
-                app:layout_constraintVertical_bias="1.0"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_subtitle_textview"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/betatest_progress_bar" />
+                app:layout_constraintStart_toStartOf="@id/betatest_progress_bar" />
 
             <!-- TODO : V2.5 릴리즈 시 지워져야 한다 -->
             <TextView

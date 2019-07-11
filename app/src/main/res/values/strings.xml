@@ -19,8 +19,6 @@
     <!-- Error Messages -->
     <string name="app_usage_data_http_fail_message">데이터 전송에 실패하였습니다.</string>
     <string name="user_http_fail_message">사용자 정보 저장에 실패하였습니다.</string>
-    <string name="participate_http_fail_message">인터뷰 신청에 실패하였습니다.</string>
-    <string name="participate_cancel_http_fail_message">인터뷰 취소에 실패하였습니다.</string>
     <string name="unexpected_error_message">예상치 못한 에러가 발생하였습니다.</string>
     <!-- end of AppBee's strings -->
 

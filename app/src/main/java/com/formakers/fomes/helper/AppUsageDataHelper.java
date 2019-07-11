@@ -73,7 +73,7 @@ public class AppUsageDataHelper {
                                     String packageName = eventStat.getPackageName();
                                     String versionName = this.androidNativeHelper.getVersionName(packageName);
 
-                                    ShortTermStat shortTermStat = new ShortTermStat(packageName, beforeForegroundEvent.getEventTime(), eventStat.getEventTime())
+                                    ShortTermStat shortTermStat = new ShortTermStat(packageName, beforeForegroundEvent.getEventTime(), (eventStat.getEventTime()))
                                             .setVersionName(versionName);
 
                                     emitter.onNext(shortTermStat);

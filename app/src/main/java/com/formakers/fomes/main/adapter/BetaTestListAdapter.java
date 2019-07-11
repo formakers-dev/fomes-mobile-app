@@ -1,8 +1,10 @@
 package com.formakers.fomes.main.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -13,16 +15,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
-import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
-import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
@@ -85,22 +84,16 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         baseViewHolder.projectStatusTextView.setText(projectStatus);
 
-        @StyleRes int projectStatusStyleId;
         @ColorRes int projectStatusColorId;
         if (remainDays < 2) {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Red;
             projectStatusColorId = R.color.fomes_red;
         } else if (remainDays < 4) {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Squash;
             projectStatusColorId = R.color.fomes_squash;
         } else {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground;
             projectStatusColorId = R.color.colorPrimary;
         }
 
         baseViewHolder.projectStatusTextView.setVisibility(View.VISIBLE);
-        baseViewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new ContextThemeWrapper(context, projectStatusStyleId).getTheme()));
         baseViewHolder.projectStatusTextView.setTextColor(res.getColor(projectStatusColorId));
 
         // end of 디데이
@@ -116,59 +109,34 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (TextUtils.isEmpty(item.getBugReportUrl())) {
             itemViewHolder.reportBugButton.setVisibility(View.GONE);
-        }
-
-        if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
-            baseViewHolder.requiredTimeTextView.setText(String.format(context.getString(R.string.betatest_required_time_format), item.getRequiredTime(DateUtil.CONVERT_TYPE_MINUTES)));
-            baseViewHolder.amountTextView.setText(item.getAmount());
-
-            String reward = item.getReward();
-            if (TextUtils.isEmpty(reward)) {
-                baseViewHolder.rewardTextView.setText(R.string.betatest_reward_none);
-            } else {
-                baseViewHolder.rewardTextView.setText(reward);
-            }
-
-            // Enable 처리
-            baseViewHolder.itemView.setEnabled(item.isOpened() && !item.isCompleted());
-
-            baseViewHolder.subTitleTextView.setText(item.getSubTitle());
-            baseViewHolder.disableBackgroundView.setVisibility(!baseViewHolder.itemView.isEnabled() ? View.VISIBLE : View.GONE);
-
-            itemViewHolder.progressBar.setVisibility(View.GONE);
-            itemViewHolder.progressTextView.setVisibility(View.GONE);
-            itemViewHolder.progressLabelTextView.setVisibility(View.GONE);
-
-            baseViewHolder.requiredTimeTextView.setVisibility(View.VISIBLE);
-            baseViewHolder.amountTextView.setVisibility(View.VISIBLE);
-            baseViewHolder.rewardTextView.setVisibility(View.VISIBLE);
-
-            itemViewHolder.completedLabelTextView.setText(String.format(context.getString(R.string.beta_test_completed_label_title), item.getTags().get(0)));
-            itemViewHolder.completedLabelView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
-            itemViewHolder.closedLabelTextView.setText(String.format(context.getString(R.string.beta_test_closed_label_title), item.getTags().get(0)));
-            itemViewHolder.closedLabelView.setVisibility(!item.isOpened() && !item.isCompleted() ? View.VISIBLE : View.GONE);
         } else {
-            int progressRate = Math.round(item.getCompletedItemCount() * 100 / item.getTotalItemCount());
-            itemViewHolder.progressBar.setProgress(progressRate);
-
-            if (item.isCompleted()) {
-                itemViewHolder.progressLabelTextView.setVisibility(View.GONE);
-                itemViewHolder.progressTextView.setText(item.getProgressText().getDone());
-            } else {
-                itemViewHolder.progressLabelTextView.setVisibility(View.VISIBLE);
-                itemViewHolder.progressLabelTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                        new ContextThemeWrapper(context, progressRate > 0 ? R.style.BetaTestTheme_ProgressLabelBackground_Doing : R.style.BetaTestTheme_ProgressLabelBackground).getTheme()));
-                itemViewHolder.progressLabelTextView.setTextColor(progressRate > 0 ? res.getColor(R.color.fomes_dark_gray) : res.getColor(R.color.fomes_warm_gray_2));
-                itemViewHolder.progressLabelTextView.setText(progressRate > 0 ? R.string.betatest_progress_attend_label_doing : R.string.betatest_progress_attend_label);
-                itemViewHolder.progressTextView.setText(progressRate > 0 ? item.getProgressText().getDoing() : item.getProgressText().getReady());
-            }
-
-            itemViewHolder.attendLabelImageView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
-
-            baseViewHolder.titleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
-            baseViewHolder.subTitleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
-
+            itemViewHolder.reportBugButton.setVisibility(View.VISIBLE);
+            itemViewHolder.reportBugButton.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getBugReportUrl()));
+                context.startActivity(intent);
+            });
         }
+
+        int progressRate = Math.round(item.getCompletedItemCount() * 100 / item.getTotalItemCount());
+        itemViewHolder.progressBar.setProgress(progressRate);
+
+        if (item.isCompleted()) {
+            itemViewHolder.progressLabelTextView.setVisibility(View.GONE);
+            itemViewHolder.progressTextView.setText(item.getProgressText().getDone());
+        } else {
+            itemViewHolder.progressLabelTextView.setVisibility(View.VISIBLE);
+            itemViewHolder.progressLabelTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                    new ContextThemeWrapper(context, progressRate > 0 ? R.style.BetaTestTheme_ProgressLabelBackground_Doing : R.style.BetaTestTheme_ProgressLabelBackground).getTheme()));
+            itemViewHolder.progressLabelTextView.setTextColor(progressRate > 0 ? res.getColor(R.color.fomes_dark_gray) : res.getColor(R.color.fomes_warm_gray_2));
+            itemViewHolder.progressLabelTextView.setText(progressRate > 0 ? R.string.betatest_progress_attend_label_doing : R.string.betatest_progress_attend_label);
+            itemViewHolder.progressTextView.setText(progressRate > 0 ? item.getProgressText().getDoing() : item.getProgressText().getReady());
+        }
+
+        itemViewHolder.attendLabelImageView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
+
+        baseViewHolder.titleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
+        baseViewHolder.subTitleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
+
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.main.contract.FinishedBetaTestContract;
@@ -68,13 +66,15 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 //        viewHolder.subTitleTextView.setText(item.getSubTitle());
 
         Glide.with(context).load(item.getIconImageUrl())
-                .apply(new RequestOptions().override(76, 76)
+                .apply(new RequestOptions().override(120, 120)
                         .centerCrop()
-                        .transform(new RoundedCorners(8))
+                        .transform(new RoundedCorners(16))
                         .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
                 .into(viewHolder.iconImageView);
 
         viewHolder.labelImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
+
+        viewHolder.subTitleTextView.setText(item.getDisplayDescription());
 
         viewHolder.epilogueButton.setText("자세히 보기");
 
@@ -98,12 +98,10 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         if (item.isCompleted()) {
             viewHolder.disableTitleLayout.setVisibility(View.GONE);
-            viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
-                    , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground_Attend).getTheme()));
+            viewHolder.companySaysLayout.setEnabled(true);
         } else {
             viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
-            viewHolder.companySaysLayout.setBackground(context.getResources().getDrawable(R.drawable.item_rect_rounded_corner_background
-                    , new ContextThemeWrapper(context, R.style.BetaTestTheme_FinishedCompanySaysBackground).getTheme()));
+            viewHolder.companySaysLayout.setEnabled(false);
         }
 
         if (item.getAfterService() == null) {
@@ -115,29 +113,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
-
-        if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
-            baseViewHolder.targetTextView.setVisibility(View.VISIBLE);
-            baseViewHolder.testTypeTextView.setVisibility(View.VISIBLE);
-            viewHolder.subTitleTextView.setVisibility(View.GONE);
-
-            if (item.isCompleted()) {
-                // 제출 완료
-                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
-                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
-                viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
-            } else {
-                // 미제출
-                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
-
-                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
-                viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
-            }
-
-            viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
-        }
     }
 
     @Override

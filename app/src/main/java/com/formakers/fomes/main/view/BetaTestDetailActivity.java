@@ -134,9 +134,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 .into(overviewImageView);
 
         Glide.with(this).load(betaTest.getIconImageUrl())
-                .apply(new RequestOptions().override(60, 60)
+                .apply(new RequestOptions().override(120, 120)
                         .centerCrop()
-                        .transform(new RoundedCorners(8))
+                        .transform(new RoundedCorners(16))
                         .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
                 .into(iconImageView);
 

@@ -11,7 +11,7 @@
         <item
             android:id="@+id/my_wish_list"
             android:title="@string/main_menu_my_wish_list"
-            android:icon="@drawable/icon_wish_list"/>
+            android:icon="@drawable/icon_bookmark"/>
     </group>
 
     <group android:id="@+id/menu_group3" android:checkableBehavior="none"

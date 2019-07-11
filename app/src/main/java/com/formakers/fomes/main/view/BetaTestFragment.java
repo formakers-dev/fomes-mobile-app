@@ -20,7 +20,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -41,7 +40,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     public static final String TAG = "BetaTestFragment";
 
-    public static final int REQUEST_CODE_DETAIL_DIALOG = 1001;
     public static final int REQUEST_CODE_DETAIL = 1002;
 
     @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
@@ -98,23 +96,13 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
             Log.v(TAG, "Clicked BetaTest=" + betaTestItem);
 
-            if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
-                bundle.putParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTestItem);
-                bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
-
-                BetaTestDetailAlertDialog betaTestDetailAlertDialog = new BetaTestDetailAlertDialog();
-                betaTestDetailAlertDialog.setArguments(bundle);
-                betaTestDetailAlertDialog.setPresenter(this.presenter);
-                betaTestDetailAlertDialog.show(getFragmentManager(), BetaTestDetailAlertDialog.TAG);
-            } else {
-                // 테스트 디테일 화면
-                bundle.putString(FomesConstants.BetaTest.EXTRA_ID, betaTestItem.getId());
-                bundle.putLong(FomesConstants.BetaTest.EXTRA_REMAIN_DAYS, betaTestItem.getRemainDays());
-                bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
-                Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
-                intent.putExtras(bundle);
-                this.startActivityForResult(intent, REQUEST_CODE_DETAIL);
-            }
+            // 테스트 디테일 화면
+            bundle.putString(FomesConstants.BetaTest.EXTRA_ID, betaTestItem.getId());
+            bundle.putLong(FomesConstants.BetaTest.EXTRA_REMAIN_DAYS, betaTestItem.getRemainDays());
+            bundle.putString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, this.presenter.getUserEmail());
+            Intent intent = new Intent(getContext(), BetaTestDetailActivity.class);
+            intent.putExtras(bundle);
+            this.startActivityForResult(intent, REQUEST_CODE_DETAIL);
 
             this.presenter.sendEventLog(FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_ITEM, String.valueOf(betaTestItem.getId()));
             this.presenter.getAnalytics().sendClickEventLog(FomesConstants.BetaTest.Log.TARGET_ITEM, String.valueOf(betaTestItem.getId()));
@@ -132,11 +120,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 //            presenter.applyAttendFilter(isChecked);
             attendFilterTextView.setTextColor(isChecked ? getResources().getColor(R.color.colorPrimary) : getResources().getColor(R.color.fomes_warm_gray_2));
         });
-
-        if (Feature.FOMES_V_2_5_TEMPORARY_DESIGN) {
-            attendFilterSwitch.setVisibility(View.GONE);
-            attendFilterTextView.setVisibility(View.GONE);
-        }
 
         presenter.initialize();
     }
@@ -165,9 +148,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 
-        if (requestCode == REQUEST_CODE_DETAIL_DIALOG) {
+        if (requestCode == REQUEST_CODE_DETAIL) {
             this.presenter.getAnalytics().setCurrentScreen(this);
-        } else if (requestCode == REQUEST_CODE_DETAIL) {
             this.presenter.requestBetaTestProgress(data.getStringExtra(FomesConstants.BetaTest.EXTRA_ID));
         } else {
             super.onActivityResult(requestCode, resultCode, data);

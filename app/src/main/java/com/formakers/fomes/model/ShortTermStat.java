@@ -1,11 +1,12 @@
 package com.formakers.fomes.model;
 
 public class ShortTermStat {
-    private String packageName;
-    private long startTimeStamp;
-    private long endTimeStamp;
+    private final String packageName;
+    private final long startTimeStamp;
+    private final long endTimeStamp;
     private long totalUsedTime;
     private String versionName;
+    private User.DeviceInfo device = new User.DeviceInfo();
 
     @Deprecated
     public ShortTermStat(String packageName, long startTimeStamp, long endTimeStamp, long totalUsedTime) {
@@ -26,27 +27,12 @@ public class ShortTermStat {
         return packageName;
     }
 
-    public ShortTermStat setPackageName(String packageName) {
-        this.packageName = packageName;
-        return this;
-    }
-
     public long getStartTimeStamp() {
         return startTimeStamp;
     }
 
-    public ShortTermStat setStartTimeStamp(long startTimeStamp) {
-        this.startTimeStamp = startTimeStamp;
-        return this;
-    }
-
     public long getEndTimeStamp() {
         return endTimeStamp;
-    }
-
-    public ShortTermStat setEndTimeStamp(long endTimeStamp) {
-        this.endTimeStamp = endTimeStamp;
-        return this;
     }
 
     public long getTotalUsedTime() {
@@ -75,6 +61,7 @@ public class ShortTermStat {
                 ", endTimeStamp=" + endTimeStamp +
                 ", totalUsedTime=" + totalUsedTime +
                 ", versionName='" + versionName + '\'' +
+                ", device=" + device +
                 '}';
     }
 }
