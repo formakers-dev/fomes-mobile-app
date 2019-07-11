@@ -107,6 +107,23 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         if (item.getAfterService() == null) {
             viewHolder.awardGroup.setVisibility(View.GONE);
             viewHolder.progressLayout.setVisibility(View.VISIBLE);
+
+            if (item.isCompleted()) {
+                // 제출 완료
+                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_white));
+                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray_2));
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_racing_flag, 0, R.drawable.icon_racing_flag_reverse, 0);
+                viewHolder.progressTitleTextView.setText(R.string.betatest_submitted_my_feedback);
+            } else {
+                // 미제출
+                viewHolder.progressTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+                viewHolder.progressSubTitleTextView.setTextColor(context.getResources().getColor(R.color.fomes_warm_gray));
+
+                viewHolder.progressTitleTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_grey_flag, 0, R.drawable.icon_grey_flag_reverse, 0);
+                viewHolder.progressTitleTextView.setText(R.string.betatest_not_submitted_my_feedback);
+            }
+
+            viewHolder.progressSubTitleTextView.setText(R.string.betatest_collecting_results);
         } else {
             viewHolder.awardGroup.setVisibility(View.VISIBLE);
             viewHolder.progressLayout.setVisibility(View.GONE);
