@@ -26,6 +26,9 @@ public class Mission implements Parcelable {
         String action;
         Boolean isCompleted;
 
+        public MissionItem() {
+        }
+
         public String getId() {
             return id;
         }

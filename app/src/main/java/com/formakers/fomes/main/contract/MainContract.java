@@ -11,7 +11,7 @@ public interface MainContract {
     interface Presenter {
         AnalyticsModule.Analytics getAnalytics();
 
-        void setAdapterModel(EventPagerAdapterContract.Model adapterModel);
+        void setEventPagerAdapterModel(EventPagerAdapterContract.Model eventPagerAdapterModel);
 
         User getUserInfo();
         Completable requestVerifyAccessToken();

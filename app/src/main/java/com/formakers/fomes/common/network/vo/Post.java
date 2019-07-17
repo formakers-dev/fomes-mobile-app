@@ -15,6 +15,9 @@ public class Post {
     String contents;
     String deeplink;
 
+    public Post() {
+    }
+
     public String getObjectId() {
         return objectId;
     }

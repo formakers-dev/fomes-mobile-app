@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import rx.Completable;
 import rx.Observable;
 import rx.Single;
 import rx.schedulers.Schedulers;
@@ -57,11 +58,11 @@ public class BetaTestService extends AbstractService {
                 .toSingle();
     }
 
-    public Single<Void> postCompleteBetaTest(String id) {
+    public Completable postCompleteBetaTest(String id) {
         return Observable.defer(() -> betaTestAPI.postCompleteBetaTest(sharedPreferencesHelper.getAccessToken(), id))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
-                .toSingle();
+                .toCompletable();
     }
 
     public Single<BetaTest> getBetaTestProgress(String betaTestId) {

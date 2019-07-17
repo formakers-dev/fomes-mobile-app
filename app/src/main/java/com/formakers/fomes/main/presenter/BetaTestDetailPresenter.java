@@ -102,16 +102,16 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public void requestCompleteMissionItem(String id) {
+    public void requestCompleteMissionItem(String missionItemId) {
         compositeSubscription.add(
-                this.betaTestService.postCompleteBetaTest(id)
+                this.betaTestService.postCompleteBetaTest(missionItemId)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe((x) -> this.view.unlockMissions(), e -> Log.e(TAG, String.valueOf(e)))
+                        .subscribe(() -> this.view.unlockMissions(), e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 
     @Override
-    public Observable<Mission.MissionItem> refreshMissionProgress(String id) {
-        return this.betaTestService.getMissionProgress(id);
+    public Observable<Mission.MissionItem> refreshMissionProgress(String missionId) {
+        return this.betaTestService.getMissionProgress(missionId);
     }
 }

@@ -35,7 +35,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     private User userInfo;
     private MainContract.View view;
-    private EventPagerAdapterContract.Model adapterModel;
+    private EventPagerAdapterContract.Model eventPagerAdapterModel;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
@@ -45,10 +45,11 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     // temporary code for test
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper) {
+    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
+        this.postService = postService;
         this.jobManager = jobManager;
         this.eventLogService = eventLogService;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
@@ -60,7 +61,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void setAdapterModel(EventPagerAdapterContract.Model adapterModel) { this.adapterModel = adapterModel; }
+    public void setEventPagerAdapterModel(EventPagerAdapterContract.Model eventPagerAdapterModel) { this.eventPagerAdapterModel = eventPagerAdapterModel; }
 
     @Override
     public User getUserInfo() {
@@ -104,7 +105,7 @@ public class MainPresenter implements MainContract.Presenter {
             postService.getPromotions()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(promotions -> {
-                        this.adapterModel.addAll(promotions);
+                        this.eventPagerAdapterModel.addAll(promotions);
                         this.view.refreshEventPager();
                     },
                     e -> Log.e(TAG, String.valueOf(e))
@@ -114,7 +115,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public int getPromotionCount() {
-        return adapterModel.getCount();
+        return eventPagerAdapterModel.getCount();
     }
 
     @Override

@@ -18,9 +18,9 @@ public interface BetaTestDetailContract {
 
         void load(String id);
 
-        void requestCompleteMissionItem(String id);
+        void requestCompleteMissionItem(String missionItemId);
 
-        Observable<Mission.MissionItem> refreshMissionProgress(String id);
+        Observable<Mission.MissionItem> refreshMissionProgress(String missionId);
     }
 
     interface View extends BaseView<Presenter> {
