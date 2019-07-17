@@ -385,7 +385,7 @@
     </style>
 
     <style name="BetaTestDetailTheme.RewardDivider">
-        <item name="divider_height">8dp</item>
+        <item name="divider_height">12dp</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>
 
