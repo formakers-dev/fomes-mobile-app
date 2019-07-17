@@ -71,6 +71,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_reward_description_textview) TextView rewardDescriptionTextView;
     @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
+    @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
+    @BindView(R.id.betatest_purpose_description_textview) TextView purposeDescriptionTextView;
 
     @Inject BetaTestDetailContract.Presenter presenter;
 
@@ -201,6 +203,16 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         dDayTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
                 new ContextThemeWrapper(this, projectStatusStyleId).getTheme()));
         dDayTextView.setTextColor(getResources().getColor(projectStatusColorId));
+
+        // 테스트 목적
+        if (TextUtils.isEmpty(betaTest.getPurpose())) {
+            purposeTitleTextView.setVisibility(View.GONE);
+            purposeDescriptionTextView.setVisibility(View.GONE);
+        } else {
+            purposeTitleTextView.setVisibility(View.VISIBLE);
+            purposeDescriptionTextView.setVisibility(View.VISIBLE);
+            purposeDescriptionTextView.setText(betaTest.getPurpose());
+        }
 
         // 리워드 목록
         rewardDescriptionTextView.setText(String.format(getString(R.string.betatest_detail_rewards_description), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));

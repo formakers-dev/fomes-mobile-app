@@ -132,6 +132,40 @@
                 app:layout_constraintEnd_toEndOf="@+id/betatest_reward_title_textview"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+            <TextView
+                android:id="@+id/betatest_purpose_title_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/betatest_detail_purpose_title"
+                android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
+                android:visibility="gone"
+                app:layout_goneMarginTop="@dimen/betatest_detail_items_margin_top"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_description_textview"
+                app:layout_constraintStart_toStartOf="@+id/betatest_reward_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_reward_title_textview" />
+
+            <TextView
+                android:id="@+id/betatest_purpose_description_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="15dp"
+                android:textColor="@color/fomes_white"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:drawableStart="@drawable/icon_bookmark"
+                android:drawableEnd="@drawable/icon_bookmark"
+                android:drawablePadding="10dp"
+                android:visibility="gone"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintTop_toBottomOf="@id/betatest_purpose_title_textview"
+                app:layout_constraintStart_toStartOf="@id/betatest_purpose_title_textview"
+                app:layout_constraintEnd_toEndOf="@id/betatest_purpose_title_textview"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/betatest_reward_title_textview"
@@ -145,7 +179,7 @@
                 app:layout_goneMarginTop="@dimen/betatest_detail_items_margin_top"
                 android:layout_marginStart="31dp"
                 android:layout_marginEnd="31dp"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_description_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_description_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
