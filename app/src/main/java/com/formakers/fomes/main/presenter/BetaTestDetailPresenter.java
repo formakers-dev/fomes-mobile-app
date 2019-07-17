@@ -2,7 +2,9 @@ package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
@@ -23,16 +25,21 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     private AnalyticsModule.Analytics analytics;
     private BetaTestService betaTestService;
+    private EventLogService eventLogService;
 
     private BetaTest betaTest;
     private BetaTestDetailContract.View view;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    public BetaTestDetailPresenter(BetaTestDetailContract.View view, AnalyticsModule.Analytics analytics, BetaTestService betaTestService) {
+    public BetaTestDetailPresenter(BetaTestDetailContract.View view,
+                                   AnalyticsModule.Analytics analytics,
+                                   EventLogService eventLogService,
+                                   BetaTestService betaTestService) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
+        this.eventLogService = eventLogService;
     }
 
     @Override
@@ -42,7 +49,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public void sendEventLog(String code, String ref) {
-
+        compositeSubscription.add(
+                eventLogService.sendEventLog(new EventLog().setCode(code).setRef(ref))
+                        .subscribe(() -> { }, e -> Log.e(TAG, String.valueOf(e)))
+        );
     }
 
     @Override

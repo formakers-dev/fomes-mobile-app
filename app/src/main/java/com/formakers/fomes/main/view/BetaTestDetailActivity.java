@@ -42,7 +42,6 @@ import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
 import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -50,6 +49,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
+
+import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_ENTER;
+import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_LOCK;
+import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_MISSION_ITEM;
+import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_MISSION_REFRESH;
 
 public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTestDetailContract.View {
 
@@ -103,6 +107,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         this.presenter.load(id);
+
+        presenter.sendEventLog(BETA_TEST_DETAIL_ENTER, id);
     }
 
 
@@ -227,7 +233,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         boolean isLocked = betaTest.getCompletedItemCount() <= 0;
         String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, "");
-        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest.getMissions(), userEmail);
+        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest, userEmail);
         missionListAdapter.setLocked(isLocked);
 
         missionRecyclerView.setAdapter(missionListAdapter);
@@ -254,13 +260,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        List<Mission> missionList;
+        BetaTest betaTest;
         @Deprecated boolean isLocked = false;
         String userEmail;
         View.OnClickListener missionItemClickListener;
 
-        public MissionListAdapter(List<Mission> missionList, String userEmail) {
-            this.missionList = missionList;
+        public MissionListAdapter(BetaTest betaTest, String userEmail) {
+            this.betaTest = betaTest;
             this.userEmail = userEmail;
         }
 
@@ -286,7 +292,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            Mission mission = missionList.get(position);
+            Mission mission = betaTest.getMissions().get(position);
 
             ViewHolder viewHolder = ((ViewHolder) holder);
             Context context = viewHolder.itemView.getContext();
@@ -314,7 +320,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             viewHolder.lockView.setVisibility(isLocked ? View.VISIBLE : View.GONE);
             if (isLocked) {
                 viewHolder.lockView.setOnClickListener(v -> {
-                    for (Mission lockedMission : missionList) {
+                    for (Mission lockedMission : betaTest.getMissions()) {
                         for (Mission.MissionItem missionItem : lockedMission.getItems()) {
                             if ("play".equals(missionItem.getType())
                                     || "hidden".equals(missionItem.getType())) {
@@ -322,6 +328,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                             }
                         }
                     }
+
+                    presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, betaTest.getId());
                 });
             }
 
@@ -353,6 +361,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 missionItemTitleTextView.setText(missionItem.getTitle());
 
                 missionItemView.setOnClickListener(v -> {
+                    presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_ITEM, missionItem.getId());
+
                     String action = missionItem.getAction();
 
                     if (TextUtils.isEmpty(action)) {
@@ -382,6 +392,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             }
 
             viewHolder.refreshButton.setOnClickListener(v -> {
+                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getId());
+
                 compositeSubscription.add(presenter.refreshMissionProgress(mission.getId())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(() -> {
@@ -406,7 +418,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         @Override
         public int getItemCount() {
-            return missionList.size();
+            return betaTest.getMissions().size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
