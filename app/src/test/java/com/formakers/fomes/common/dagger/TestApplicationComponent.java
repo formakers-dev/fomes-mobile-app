@@ -1,6 +1,7 @@
 package com.formakers.fomes.common.dagger;
 
 import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenterTest;
+import com.formakers.fomes.common.LocalBroadcastReceiverTest;
 import com.formakers.fomes.common.job.SendDataJobServiceTest;
 import com.formakers.fomes.common.noti.MessagingServiceTest;
 import com.formakers.fomes.common.view.custom.FomesAlertDialogTest;
@@ -20,6 +21,7 @@ import dagger.Component;
 public interface TestApplicationComponent extends ApplicationComponent {
     void inject(FomesAlertDialogTest fomesAlertDialogTest);
     void inject(SendDataJobServiceTest sendDataJobServiceTest);
+    void inject(LocalBroadcastReceiverTest localBroadcastReceiverTest);
     void inject(MessagingServiceTest messagingServiceTest);
 
     // Fomes
