@@ -100,8 +100,8 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     }
 
     @Override
-    public void applyCompletedFilter(boolean isNeedFileter) {
-        updateDisplayedList(filterCompletedList(finishedList, isNeedFileter));
+    public void applyCompletedFilter(boolean isNeedFilter) {
+        updateDisplayedList(filterCompletedList(finishedList, isNeedFilter));
     }
 
     private List<BetaTest> filterCompletedList(List<BetaTest> originalList, boolean isFilteredCompleted) {

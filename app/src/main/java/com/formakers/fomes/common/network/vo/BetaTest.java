@@ -18,6 +18,7 @@ public class BetaTest implements Parcelable {
     String iconImageUrl;
     String title;
     String description;
+    String purpose;
     ProgressText progressText;
 
     List<String> tags = new ArrayList<>();
@@ -503,6 +504,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public BetaTest setPurpose(String purpose) {
+        this.purpose = purpose;
+        return this;
+    }
+
     public ProgressText getProgressText() {
         return progressText;
     }
@@ -725,6 +735,7 @@ public class BetaTest implements Parcelable {
                 ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", purpose='" + purpose + '\'' +
                 ", progressText=" + progressText +
                 ", tags=" + tags +
                 ", openDate=" + openDate +
@@ -760,6 +771,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(description);
+        dest.writeString(purpose);
         dest.writeParcelable(progressText, 0);
         dest.writeStringList(tags);
         dest.writeLong(openDate.getTime());
@@ -789,6 +801,7 @@ public class BetaTest implements Parcelable {
         iconImageUrl = in.readString();
         title = in.readString();
         description = in.readString();
+        purpose = in.readString();
         progressText = in.readParcelable(null);
         in.readStringList(tags);
         openDate = new Date(in.readLong());

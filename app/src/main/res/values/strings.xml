@@ -205,4 +205,5 @@
     <string name="betatest_detail_rewards_description">테스트 마감후 %d일 이내에 보상이 지급됩니다.</string>
     <string name="betatest_detail_mission_list_title">테스트 참여</string>
     <string name="betatest_detail_mission_list_description">당신의 게임 분석력과 통찰력을 기대할게요!</string>
+    <string name="betatest_detail_purpose_title">테스트 목적</string>
 </resources>

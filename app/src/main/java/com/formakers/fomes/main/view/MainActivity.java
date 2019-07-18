@@ -142,7 +142,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
         eventPagerAdapter.setPresenter(this.presenter);
         eventViewPager.setAdapter(eventPagerAdapter);
-        this.presenter.setAdapterModel(eventPagerAdapter);
+        this.presenter.setEventPagerAdapterModel(eventPagerAdapter);
         this.eventPagerAdapterView = eventPagerAdapter;
 
         presenter.requestPromotions();

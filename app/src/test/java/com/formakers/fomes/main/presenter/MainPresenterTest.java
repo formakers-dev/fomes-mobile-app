@@ -5,12 +5,16 @@ import androidx.test.core.app.ApplicationProvider;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
+import com.formakers.fomes.common.network.PostService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
+import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
 import com.formakers.fomes.model.User;
+import com.google.common.collect.Lists;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +24,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -48,6 +54,8 @@ public class MainPresenterTest {
     @Inject JobManager mockJobManager;
     @Inject EventLogService mockEventLogService;
     @Inject SharedPreferencesHelper mockSharedPreferenceHelper;
+    @Inject PostService mockPostService;
+    @Mock EventPagerAdapterContract.Model mockEventPagerAdapterModel;
 
     @Mock
     MainContract.View mockView;
@@ -77,8 +85,12 @@ public class MainPresenterTest {
         ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User("email", "notiToken")));
+        when(mockPostService.getPromotions()).thenReturn(Single.just(Lists.newArrayList(new Post())));
+        when(mockEventPagerAdapterModel.getCount()).thenReturn(3);
 
-        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper);
+        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockPostService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper);
+
+        subject.setEventPagerAdapterModel(mockEventPagerAdapterModel);
     }
 
     @After
@@ -101,6 +113,13 @@ public class MainPresenterTest {
     }
 
     @Test
+    public void registerSendDataJob_호출시__단기통계데이터전송_작업을_등록한다() {
+        subject.registerSendDataJob();
+
+        verify(mockJobManager).registerSendDataJob(eq(JobManager.JOB_ID_SEND_DATA));
+    }
+
+    @Test
     public void checkRegisteredSendDataJob_호출시__단기통계데이터전송_작업의_등록여부를_반환한다() {
         when(mockJobManager.isRegisteredJob(JobManager.JOB_ID_SEND_DATA)).thenReturn(true);
 
@@ -108,6 +127,23 @@ public class MainPresenterTest {
 
         verify(mockJobManager).isRegisteredJob(eq(JobManager.JOB_ID_SEND_DATA));
         assertThat(isRegistered).isTrue();
+    }
+
+    @Test
+    public void requestPromotions_호출시__이벤트배너를_요청한다() {
+        subject.requestPromotions();
+
+        ArgumentCaptor<List<Post>> postArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockEventPagerAdapterModel).addAll(postArgumentCaptor.capture());
+        verify(mockView).refreshEventPager();
+
+        List<Post> actualPosts = postArgumentCaptor.getValue();
+
+    }
+
+    @Test
+    public void getPromotionCount_호출시__이벤트배너의_개수를_반환한다() {
+        assertThat(subject.getPromotionCount()).isEqualTo(3);
     }
 
     @Test

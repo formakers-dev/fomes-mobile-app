@@ -72,12 +72,14 @@ public class BetaTestPresenterTest {
         dummyUser = new User().setEmail("user@gmail.com").setNickName("dummyNickName");
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(dummyUser));
 
-        betaTests.add(new BetaTest().setTitle("베타테스트1").setCloseDate(new Date()));
-        betaTests.add(new BetaTest().setTitle("베타테스트2").setCloseDate(new Date()));
+        betaTests.add(new BetaTest().setId("1").setTitle("베타테스트1").setCloseDate(new Date()));
+        betaTests.add(new BetaTest().setId("2").setTitle("베타테스트2").setCloseDate(new Date()));
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(betaTests));
 
         when(mockAdapterModel.getItem(0)).thenReturn(betaTests.get(0));
         when(mockAdapterModel.getItem(1)).thenReturn(betaTests.get(1));
+        when(mockAdapterModel.getPositionById("1")).thenReturn(0);
+        when(mockAdapterModel.getPositionById("2")).thenReturn(1);
 
         subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO, mockAnalytics);
         subject.setAdapterModel(mockAdapterModel);
@@ -155,6 +157,14 @@ public class BetaTestPresenterTest {
         BetaTest betaTest = subject.getBetaTestItem(0);
 
         assertThat(betaTest.getTitle()).isEqualTo("베타테스트1");
+    }
+
+    @Test
+    public void getBetaTestPostitionById__호출시__해당_아이디의_리스트_포지션을_리턴한다() {
+        subject.loadToBetaTestList(new Date()).subscribe(new TestSubscriber<>());
+
+        assertThat(subject.getBetaTestPostitionById("1")).isEqualTo(0);
+        assertThat(subject.getBetaTestPostitionById("2")).isEqualTo(1);
     }
 
     @Test

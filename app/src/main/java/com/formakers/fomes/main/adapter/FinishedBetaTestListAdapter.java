@@ -27,6 +27,8 @@ import com.formakers.fomes.main.contract.FinishedBetaTestListAdapterContract;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.FINISHED_BETA_TEST_TAP_EPILOGUE;
+
 public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements FinishedBetaTestListAdapterContract.Model, FinishedBetaTestListAdapterContract.View {
 
     Context context;
@@ -84,6 +86,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.awardTextView.setText(afterService.getAwards());
             viewHolder.companySaysTextView.setText(afterService.getCompanySays());
             viewHolder.epilogueButton.setOnClickListener(v -> {
+                presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
+
                 Uri uri = Uri.parse(afterService.getEpilogue());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 context.startActivity(intent);

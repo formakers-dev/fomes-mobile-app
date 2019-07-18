@@ -29,6 +29,8 @@ import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_FRAGMENT_TAP_BUG_REPORT;
+
 public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements BetaTestListAdapterContract.Model, BetaTestListAdapterContract.View {
 
@@ -112,8 +114,10 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             itemViewHolder.reportBugButton.setVisibility(View.VISIBLE);
             itemViewHolder.reportBugButton.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getBugReportUrl()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getBugReportUrl() + presenter.getUserEmail()));
                 context.startActivity(intent);
+
+                this.presenter.sendEventLog(BETA_TEST_FRAGMENT_TAP_BUG_REPORT, item.getId());
             });
         }
 
