@@ -58,9 +58,8 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_USAGE_STATS_PERMISSION
-                && this.presenter.hasUsageStatsPermission()) {
-            moveToNextPage();
+        if (requestCode == REQUEST_CODE_USAGE_STATS_PERMISSION) {
+            onSelectedPage();
         }
     }
 

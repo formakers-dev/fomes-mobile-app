@@ -7,6 +7,8 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -108,6 +110,7 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
         int visibility = isVisible ? View.VISIBLE : View.GONE;
         if (nextButton.getVisibility() == visibility) return;
 
+        nextButton.setEnabled(isVisible);
         nextButton.setVisibility(visibility);
     }
 
@@ -140,12 +143,26 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
 
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
+        setNextButtonVisibility(false);
         getCurrentFragmentCommunicator().onNextButtonClick();
     }
 
     @OnPageChange(value = R.id.provision_viewpager, callback = OnPageChange.Callback.PAGE_SELECTED)
     public void onSelectedPage(int position) {
         getFragmentCommunicator(position).onSelectedPage();
+    }
+
+    @OnPageChange(value = R.id.provision_viewpager, callback = OnPageChange.Callback.PAGE_SCROLL_STATE_CHANGED)
+    public void onPageScrolledStateChanged(int state) {
+        Log.i(TAG, "state=" + state);
+        switch (state) {
+            case ViewPager.SCROLL_STATE_IDLE:
+                this.viewPager.endFakeDrag();
+                break;
+            default:
+                this.viewPager.beginFakeDrag();
+                break;
+        }
     }
 
     private FragmentCommunicator getFragmentCommunicator(int position) {
