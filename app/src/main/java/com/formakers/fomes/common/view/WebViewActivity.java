@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -33,11 +35,15 @@ public class WebViewActivity extends FomesBaseActivity {
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_CONTENTS = "EXTRA_CONTENTS";
 
+    private static final int REQUEST_CODE_FILE_CHOOSER = 1001;
+
     @BindView(R.id.webview) WebView webView;
     @BindView(R.id.loading_bar) ProgressBar loadingBar;
 
     // TODO : MVP 로 분리해라
 //    @Inject UserDAO userDAO;
+
+    private ValueCallback<Uri[]> selectedFilePathCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +106,8 @@ public class WebViewActivity extends FomesBaseActivity {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
+        webView.setWebChromeClient(new FomesWebChromeClient());
+
         if (contents.toLowerCase().startsWith("http")) {
             webView.loadUrl(contents);
         } else {
@@ -123,6 +131,37 @@ public class WebViewActivity extends FomesBaseActivity {
         } catch (Exception e) {
             Log.e(TAG, "Exception) " + e.getClass() + "\nmessage=" + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+
+        if (requestCode == REQUEST_CODE_FILE_CHOOSER) {
+            selectedFilePathCallback.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, data));
+            selectedFilePathCallback = null;
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private class FomesWebChromeClient extends WebChromeClient {
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            if (selectedFilePathCallback != null) {
+                selectedFilePathCallback.onReceiveValue(null);
+                selectedFilePathCallback = null;
+            }
+
+            selectedFilePathCallback = filePathCallback;
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "File Chooser"), REQUEST_CODE_FILE_CHOOSER);
+
+
+            return true;
         }
     }
 
