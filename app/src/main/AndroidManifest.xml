@@ -51,8 +51,7 @@
         <activity android:name=".analysis.view.RecentAnalysisReportActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".main.view.MainActivity"
-            android:theme="@style/FomesTheme.NoActionBar"
-            android:launchMode="singleTask">
+            android:theme="@style/FomesTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />

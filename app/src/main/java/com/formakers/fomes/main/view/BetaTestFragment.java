@@ -150,7 +150,10 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
         if (requestCode == REQUEST_CODE_DETAIL) {
             this.presenter.getAnalytics().setCurrentScreen(this);
-            this.presenter.requestBetaTestProgress(data.getStringExtra(FomesConstants.BetaTest.EXTRA_ID));
+
+            if (data != null) {
+                this.presenter.requestBetaTestProgress(data.getStringExtra(FomesConstants.BetaTest.EXTRA_ID));
+            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
