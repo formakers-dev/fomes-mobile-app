@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FormatUtil {
+public class StringFormatUtil {
     private static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("M월 d일 (E)", Locale.KOREA);
     private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yy.M.d (E)", Locale.KOREA);
 
