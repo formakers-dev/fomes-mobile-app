@@ -9,13 +9,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import android.text.TextUtils;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
@@ -23,8 +25,8 @@ import com.formakers.fomes.common.LocalBroadcastReceiver;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.Map;
 import java.util.Date;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -80,12 +82,29 @@ public class ChannelManager {
         this.analytics = analytics;
     }
 
-    public NotificationCompat.Builder getNotificationBuilder() {
+    @TargetApi(26)
+    private void prepareChannel(String channelId, int importance) {
+        final String appName = context.getString(R.string.app_name);
+        String description = "채널디스크립션";
+        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
+
+        if (notificationManager != null) {
+            NotificationChannel notiChannel = notificationManager.getNotificationChannel(channelId);
+
+            if (notiChannel == null) {
+                notiChannel = new NotificationChannel(channelId, appName, importance);
+                notiChannel.setDescription(description);
+                notificationManager.createNotificationChannel(notiChannel);
+            }
+        }
+    }
+
+    private NotificationCompat.Builder getNotificationBuilder() {
         return new NotificationCompat.Builder(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public NotificationCompat.Builder getNotificationBuilder(Channel channel, int importance) {
+    private NotificationCompat.Builder getNotificationBuilder(Channel channel, int importance) {
         prepareChannel(channel.id, importance);
         return new NotificationCompat.Builder(context, channel.id);
     }
@@ -103,8 +122,6 @@ public class ChannelManager {
     }
 
     public void sendNotification(Bundle notiDataBundle) {
-        NotificationCompat.Builder builder;
-
         // mandatory
         Channel channel = (ChannelManager.Channel) notiDataBundle.getSerializable(FomesConstants.Notification.CHANNEL);
         String title = notiDataBundle.getString(FomesConstants.Notification.TITLE);
@@ -117,6 +134,7 @@ public class ChannelManager {
         String summarySubText = notiDataBundle.getString(FomesConstants.Notification.SUMMARY_SUB_TEXT);
         String deeplink = notiDataBundle.getString(FomesConstants.Notification.DEEPLINK);
 
+        NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = getNotificationBuilder(channel, NotificationManager.IMPORTANCE_MAX);
         } else {
@@ -175,20 +193,30 @@ public class ChannelManager {
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC_NOTICE_ALL);
     }
 
-    @TargetApi(26)
-    private void prepareChannel(String channelId, int importance) {
-        final String appName = context.getString(R.string.app_name);
-        String description = "채널디스크립션";
-        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
+    public Intent onNotificationClick(Bundle notificationDataBundle) {
+        Channel channel = (Channel) notificationDataBundle.getSerializable(FomesConstants.Notification.CHANNEL);
+        String title = notificationDataBundle.getString(FomesConstants.Notification.TITLE);
+        Class destActivity = (Class) notificationDataBundle.getSerializable(FomesConstants.Notification.DESTINATION_ACTIVITY);
+        String deeplink = notificationDataBundle.getString(FomesConstants.Notification.DEEPLINK);
 
-        if (notificationManager != null) {
-            NotificationChannel notiChannel = notificationManager.getNotificationChannel(channelId);
+        analytics.sendNotificationEventLog(FomesConstants.Notification.Log.ACTION_OPEN, channel, title);
 
-            if (notiChannel == null) {
-                notiChannel = new NotificationChannel(channelId, appName, importance);
-                notiChannel.setDescription(description);
-                notificationManager.createNotificationChannel(notiChannel);
-            }
+        Intent destIntent;
+        if (TextUtils.isEmpty(deeplink)) {
+            destIntent = new Intent(context, destActivity);
+        } else {
+            destIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplink));
         }
+
+        destIntent.putExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, true);
+
+        return destIntent;
+    }
+
+    public void onNotificationCancel(Bundle notificationDataBundle) {
+        ChannelManager.Channel channel = (ChannelManager.Channel) notificationDataBundle.getSerializable(FomesConstants.Notification.CHANNEL);
+        String title = notificationDataBundle.getString(FomesConstants.Notification.TITLE);
+
+        analytics.sendNotificationEventLog(FomesConstants.Notification.Log.ACTION_DISMISS, channel, title);
     }
 }

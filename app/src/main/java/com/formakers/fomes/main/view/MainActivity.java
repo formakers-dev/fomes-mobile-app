@@ -161,7 +161,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onStart();
 
         // Start Event AutoSlide
-        eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
+        eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS + 2000, EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(seq -> showNextEventBanner());
     }

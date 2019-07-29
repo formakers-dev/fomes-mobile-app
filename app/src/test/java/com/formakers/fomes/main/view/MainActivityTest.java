@@ -245,7 +245,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(0);
 
-        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+        testScheduler.advanceTimeBy(4, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(1);
 
         testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
