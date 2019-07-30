@@ -31,7 +31,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { NetworkModule.class, GlideModule.class, AnalyticsModule.class })
+@Component(modules = { NetworkModule.class, GlideModule.class, AnalyticsModule.class, DataModule.class })
 public interface ApplicationComponent {
     AppStatService appStatService();
     UserService userService();

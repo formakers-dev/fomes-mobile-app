@@ -45,6 +45,7 @@ import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -94,8 +95,8 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");
         when(mockPresenter.getUserInfo()).thenReturn(user);
         when(mockPresenter.requestVerifyAccessToken()).thenReturn(Completable.complete());
-
         when(mockPresenter.checkRegisteredSendDataJob()).thenReturn(true);
+        when(mockPresenter.getInterpretedUrl(anyString())).thenReturn("http://www.naver.com");
     }
 
     @Override

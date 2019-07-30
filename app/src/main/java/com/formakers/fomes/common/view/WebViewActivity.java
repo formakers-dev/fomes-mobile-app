@@ -82,6 +82,7 @@ public class WebViewActivity extends FomesBaseActivity {
             contents = deeplinkUri.getQueryParameter("url");
             String appended = deeplinkUri.getQueryParameter("appendedUrl");
 
+            // TODO : 레거시코드. 크리티컬 릴리즈때 지워야한다
             if (!TextUtils.isEmpty(appended)) {
                 // appendedUrl 파람의 예약어는 여기에 정의하자
                 contents += appended.replace("{email}", userDAO2.getUserInfo().toBlocking().value().getEmail());
@@ -94,6 +95,8 @@ public class WebViewActivity extends FomesBaseActivity {
         if (TextUtils.isEmpty(contents)) {
             throw new IllegalArgumentException("There aren't any contents");
         }
+
+        // TODO : MVP 구조 적용 후 `contents` 를 interpretUrlParams 처리하기
 
         getSupportActionBar().setTitle(title);
 
