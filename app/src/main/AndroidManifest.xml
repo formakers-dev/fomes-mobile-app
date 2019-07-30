@@ -29,7 +29,18 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
 
-        <!-- 백그라운드 앱의 알림 수신 -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="true"/>
+
+        <meta-data android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled"
+            android:value="true"/>
+
+    <!-- 백그라운드 앱의 알림 수신 -->
         <service android:name=".common.noti.MessagingService"
             android:exported="true">
             <intent-filter>
