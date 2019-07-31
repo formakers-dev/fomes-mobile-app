@@ -1,14 +1,12 @@
 package com.formakers.fomes.main.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,12 +28,12 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
-import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
+import com.formakers.fomes.main.adapter.MissionListAdapter;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
 import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
@@ -47,13 +44,9 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_ENTER;
-import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_LOCK;
-import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_MISSION_ITEM;
-import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_MISSION_REFRESH;
 
 public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTestDetailContract.View {
 
@@ -107,7 +100,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             return;
         }
 
+        String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, "");
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
+
+        this.presenter.setUserEmail(userEmail);
         this.presenter.load(id);
 
         presenter.sendEventLog(BETA_TEST_DETAIL_ENTER, id);
@@ -244,8 +240,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
 
         boolean isLocked = betaTest.getCompletedItemCount() <= 0;
-        String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, "");
-        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest, userEmail);
+        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest, presenter, this);
         missionListAdapter.setLocked(isLocked);
 
         missionRecyclerView.setAdapter(missionListAdapter);
@@ -270,193 +265,28 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         }
     }
 
-    public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    @Override
+    public View inflate(int layoutResId) {
+        return getLayoutInflater().inflate(layoutResId, null);
+    }
 
-        BetaTest betaTest;
-        @Deprecated boolean isLocked = false;
-        String userEmail;
-        View.OnClickListener missionItemClickListener;
+    @Override
+    public void startWebViewActivity(String title, String url) {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.EXTRA_TITLE, title);
+        intent.putExtra(WebViewActivity.EXTRA_CONTENTS, url);
+        startActivity(intent);
+    }
 
-        public MissionListAdapter(BetaTest betaTest, String userEmail) {
-            this.betaTest = betaTest;
-            this.userEmail = userEmail;
-        }
+    @Override
+    public void startByDeeplink(Uri deeplinkUri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(deeplinkUri);
+        startActivity(intent);
+    }
 
-        public boolean isLocked() {
-            return isLocked;
-        }
-
-        public MissionListAdapter setLocked(boolean locked) {
-            isLocked = locked;
-            return this;
-        }
-
-        public MissionListAdapter setMissionItemClickListener(View.OnClickListener missionItemClickListener) {
-            this.missionItemClickListener = missionItemClickListener;
-            return this;
-        }
-
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_betatest_mission, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            Mission mission = betaTest.getMissions().get(position);
-
-            ViewHolder viewHolder = ((ViewHolder) holder);
-            Context context = viewHolder.itemView.getContext();
-
-            Glide.with(context).load(mission.getIconImageUrl())
-                    .apply(new RequestOptions()
-                            .fitCenter()
-                            .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
-                    .into(viewHolder.titleIconImageView);
-
-            viewHolder.titleTextView.setText(mission.getTitle());
-            viewHolder.descriptionTextView.setText(mission.getDescription());
-
-            if (TextUtils.isEmpty(mission.getDescriptionImageUrl())) {
-                viewHolder.descriptionImageView.setVisibility(View.GONE);
-            } else {
-                viewHolder.descriptionImageView.setVisibility(View.VISIBLE);
-                Glide.with(context).load(mission.getDescriptionImageUrl())
-                        .apply(new RequestOptions().placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
-                        .into(viewHolder.descriptionImageView);
-            }
-
-            viewHolder.guideTextView.setText(mission.getGuide());
-
-            viewHolder.lockView.setVisibility(isLocked ? View.VISIBLE : View.GONE);
-            if (isLocked) {
-                viewHolder.lockView.setOnClickListener(v -> {
-                    for (Mission lockedMission : betaTest.getMissions()) {
-                        for (Mission.MissionItem missionItem : lockedMission.getItems()) {
-                            if ("play".equals(missionItem.getType())
-                                    || "hidden".equals(missionItem.getType())) {
-                                presenter.requestCompleteMissionItem(missionItem.getId());
-                            }
-                        }
-                    }
-
-                    presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, betaTest.getId());
-                });
-            }
-
-            viewHolder.itemViewGroup.removeAllViews();
-            for (Mission.MissionItem missionItem: mission.getItems()) {
-
-                if ("hidden".equals(missionItem.getType())) {
-                    continue;
-                }
-
-                View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
-
-                TextView missionItemOrderTextView = missionItemView.findViewById(R.id.mission_item_order);
-                TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
-                TextView missionItemProgressStatusTextView = missionItemView.findViewById(R.id.mission_item_progress_status);
-
-                if ("play".equals(missionItem.getType())) {
-                    missionItemProgressStatusTextView.setText("참여 중");
-                } else {
-                    missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
-                    missionItemView.setEnabled(!missionItem.isCompleted());
-                }
-
-                int missionItemOrder = missionItem.getOrder();
-                missionItemOrderTextView.setText(String.format("%d)", missionItem.getOrder()));
-                if (missionItemOrder <= 0) {
-                    missionItemOrderTextView.setVisibility(View.INVISIBLE);
-                }
-                missionItemTitleTextView.setText(missionItem.getTitle());
-
-                missionItemView.setOnClickListener(v -> {
-                    presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_ITEM, missionItem.getId());
-
-                    String action = missionItem.getAction();
-
-                    if (TextUtils.isEmpty(action)) {
-                        return;
-                    }
-
-                    String url = action + userEmail;
-                    Uri uri = Uri.parse(url);
-
-                    Intent intent;
-
-                    if ("internal_web".equals(missionItem.getActionType())
-                            || (uri.getQueryParameter("internal_web") != null && uri.getQueryParameter("internal_web").equals("true"))) {
-                        intent = new Intent(context, WebViewActivity.class);
-                        intent.putExtra(WebViewActivity.EXTRA_TITLE, missionItem.getTitle());
-                        intent.putExtra(WebViewActivity.EXTRA_CONTENTS, url);
-                    } else {
-                        // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
-                        intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(url));
-                    }
-
-                    startActivity(intent);
-                });
-
-                viewHolder.itemViewGroup.addView(missionItemView);
-            }
-
-            viewHolder.refreshButton.setOnClickListener(v -> {
-                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getId());
-
-                compositeSubscription.add(presenter.refreshMissionProgress(mission.getId())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(() -> {
-                            viewHolder.refreshButton.setVisibility(View.INVISIBLE);
-                            viewHolder.refreshProgress.setVisibility(View.VISIBLE);
-                        })
-                        .doAfterTerminate(() -> {
-                            viewHolder.refreshButton.setVisibility(View.VISIBLE);
-                            viewHolder.refreshProgress.setVisibility(View.GONE);
-                        })
-                        .subscribe(missionItem -> {
-                            for (Mission.MissionItem item : mission.getItems()) {
-                                if (item.getId().equals(missionItem.getId())) {
-                                    item.setCompleted(missionItem.isCompleted());
-                                }
-                            }
-                        }, e -> Log.e(TAG, String.valueOf(e)), () -> notifyItemChanged(position)));
-            });
-
-            viewHolder.itemView.setOnClickListener(missionItemClickListener);
-        }
-
-        @Override
-        public int getItemCount() {
-            return betaTest.getMissions().size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            ImageView titleIconImageView;
-            TextView titleTextView;
-            TextView descriptionTextView;
-            ImageView descriptionImageView;
-            TextView guideTextView;
-            View lockView;
-            ViewGroup itemViewGroup;
-            View refreshButton;
-            View refreshProgress;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-
-                titleIconImageView = itemView.findViewById(R.id.mission_title_icon);
-                titleTextView = itemView.findViewById(R.id.mission_title);
-                descriptionTextView = itemView.findViewById(R.id.mission_description);
-                descriptionImageView = itemView.findViewById(R.id.mission_description_image);
-                guideTextView = itemView.findViewById(R.id.mission_guide);
-                lockView = itemView.findViewById(R.id.betatest_lock_layout);
-                itemViewGroup = itemView.findViewById(R.id.mission_items_layout);
-                refreshButton = itemView.findViewById(R.id.mission_refresh_button);
-                refreshProgress = itemView.findViewById(R.id.mission_refresh_progress);
-            }
-        }
+    @Override
+    public CompositeSubscription getCompositeSubscription() {
+        return compositeSubscription;
     }
 }

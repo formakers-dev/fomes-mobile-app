@@ -1,5 +1,7 @@
 package com.formakers.fomes.main.presenter;
 
+import android.net.Uri;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
@@ -11,9 +13,11 @@ import com.google.gson.Gson;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 
 import rx.Completable;
 import rx.Observable;
@@ -30,6 +34,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
 public class BetaTestDetailPresenterTest {
 
     @Mock BetaTestDetailContract.View mockView;
@@ -66,6 +71,7 @@ public class BetaTestDetailPresenterTest {
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
 
         subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService);
+        subject.setUserEmail("test@gmail.com");
     }
 
     @Test
@@ -112,6 +118,21 @@ public class BetaTestDetailPresenterTest {
         subject.refreshMissionProgress("5d1ec8094400311578e996bc");
 
         verify(mockBetaTestService).getMissionProgress(eq("5d1ec8094400311578e996bc"));
+    }
+
+    @Test
+    public void processMissionItemAction_호출시__액션타입에_맞는_액션을_결정한다() {
+
+        // 인앱웹뷰
+        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(0).getItems().get(0));
+
+        verify(mockView).startWebViewActivity(eq("의견 작성"), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
+
+        // 디폴트 (딥링크)
+        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1).getItems().get(0));
+
+        verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email=test@gmail.com"));
+
     }
 
     private BetaTest getDummyBetaTestDetail() {

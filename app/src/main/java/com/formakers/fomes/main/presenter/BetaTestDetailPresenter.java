@@ -1,5 +1,8 @@
 package com.formakers.fomes.main.presenter;
 
+import android.net.Uri;
+import android.text.TextUtils;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
@@ -16,7 +19,6 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
 
 @BetaTestDetailActivityScope
 public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter {
@@ -27,9 +29,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
 
-    private BetaTest betaTest;
     private BetaTestDetailContract.View view;
-    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+
+    private BetaTest betaTest;
+    private String userEmail;
 
     @Inject
     public BetaTestDetailPresenter(BetaTestDetailContract.View view,
@@ -49,22 +52,15 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public void sendEventLog(String code, String ref) {
-        compositeSubscription.add(
+        view.getCompositeSubscription().add(
                 eventLogService.sendEventLog(new EventLog().setCode(code).setRef(ref))
                         .subscribe(() -> { }, e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 
     @Override
-    public void unsubscribe() {
-        if (compositeSubscription != null) {
-            compositeSubscription.clear();
-        }
-    }
-
-    @Override
     public void load(String id) {
-        compositeSubscription.add(
+        view.getCompositeSubscription().add(
                 this.betaTestService.getDetailBetaTest(id)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(() -> this.view.showLoading())
@@ -102,8 +98,14 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
+    public BetaTestDetailPresenter setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+        return this;
+    }
+
+    @Override
     public void requestCompleteMissionItem(String missionItemId) {
-        compositeSubscription.add(
+        view.getCompositeSubscription().add(
                 this.betaTestService.postCompleteBetaTest(missionItemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> this.view.unlockMissions(), e -> Log.e(TAG, String.valueOf(e)))
@@ -113,5 +115,27 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public Observable<Mission.MissionItem> refreshMissionProgress(String missionId) {
         return this.betaTestService.getMissionProgress(missionId);
+    }
+
+    @Override
+    public void processMissionItemAction(Mission.MissionItem missionItem) {
+        String action = missionItem.getAction();
+
+        if (TextUtils.isEmpty(action)) {
+            return;
+        }
+
+        String url = action + userEmail;
+        Uri uri = Uri.parse(url);
+
+        // below condition logic should be move to URL Manager(or Parser and so on..)
+        if ("internal_web".equals(missionItem.getActionType())
+                || (uri.getQueryParameter("internal_web") != null
+                        && uri.getQueryParameter("internal_web").equals("true"))) {
+            view.startWebViewActivity(missionItem.getTitle(), url);
+        } else {
+            // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
+            view.startByDeeplink(Uri.parse(url));
+        }
     }
 }
