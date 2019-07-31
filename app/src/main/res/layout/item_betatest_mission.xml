@@ -82,6 +82,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/mission_title_icon"
                 tools:text="[고양이 숲] 게임을 10분 이상 플레이해주세요." />
 
+            <View
+                android:id="@+id/mission_description_diviver"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="13dp"
+                android:background="@color/fomes_black_alpha_50"
+                app:layout_constraintTop_toBottomOf="@id/mission_description"
+                app:layout_constraintStart_toStartOf="@id/mission_description"
+                app:layout_constraintEnd_toEndOf="@id/mission_description"/>
+
             <LinearLayout
                 android:id="@+id/mission_description_layout"
                 android:layout_width="@dimen/match_constraint"
@@ -89,9 +99,10 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mission_description">
+                app:layout_constraintTop_toBottomOf="@+id/mission_description_diviver">
 
                 <ImageView
                     android:id="@+id/mission_description_image"
@@ -99,27 +110,63 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/analysis_rank_medal" />
+                    tools:src="@drawable/analysis_rank_medal"
+                    android:visibility="gone"/>
+
+                <LinearLayout android:id="@+id/mission_play_time_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/mission_play_time_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:textColor="@color/fomes_light_pale_gray"
+                        android:textSize="38dp"
+                        android:textStyle="bold"
+                        tools:text="2분 32초" />
+
+                    <TextView
+                        android:id="@+id/mission_play_time_desc_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/fomes_warm_gray_2"
+                        android:textSize="12dp"
+                        android:textStyle="bold"
+                        android:text="플레이 하셨어요. 화이팅!" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/mission_items_layout"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 android:showDividers="middle"
                 android:divider="@drawable/divider"
                 android:theme="@style/BetaTestDetailTheme.RewardDivider"
                 app:layout_constraintTop_toBottomOf="@+id/mission_description_layout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent">
+                <include layout="@layout/item_betatest_mission_item"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/mission_guide"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginEnd="13dp"
                 android:lineSpacingExtra="5dp"
                 android:textSize="10dp"
                 android:textColor="@color/colorPrimary"
@@ -146,8 +193,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="visible">
+        app:layout_constraintEnd_toEndOf="parent">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -210,4 +210,7 @@
     <string name="betatest_detail_mission_list_title">테스트 참여</string>
     <string name="betatest_detail_mission_list_description">당신의 게임 분석력과 통찰력을 기대할게요!</string>
     <string name="betatest_detail_purpose_title">테스트 목적</string>
+    <string name="betatest_detail_mission_play_time_desc_ready">플레이 하러가볼까요? 화이팅!</string>
+    <string name="betatest_detail_mission_play_time_desc_playing">플레이 하셨어요. 화이팅!</string>
+    <!--<string name="betatest_detail_mission_play_time_desc_over">화이팅!</string>-->
 </resources>
