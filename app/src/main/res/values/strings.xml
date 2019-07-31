@@ -213,4 +213,5 @@
     <string name="betatest_detail_mission_play_time_desc_ready">플레이 하러가볼까요? 화이팅!</string>
     <string name="betatest_detail_mission_play_time_desc_playing">플레이 하셨어요. 화이팅!</string>
     <!--<string name="betatest_detail_mission_play_time_desc_over">화이팅!</string>-->
+    <string name="betatest_detail_mission_item_lock_level_format">%d단계 미션</string>
 </resources>

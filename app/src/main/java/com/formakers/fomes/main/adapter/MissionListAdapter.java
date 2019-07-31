@@ -100,6 +100,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         viewHolder.guideTextView.setText(mission.getGuide());
 
+        viewHolder.lockLevelTextView.setText(String.format(context.getString(R.string.betatest_detail_mission_item_lock_level_format), position + 1));
+        viewHolder.lockTitleTextView.setText(mission.getItems().get(0).getTitle());
+
         viewHolder.lockView.setVisibility(isLocked ? View.VISIBLE : View.GONE);
         if (isLocked) {
             viewHolder.lockView.setOnClickListener(v -> {
@@ -189,6 +192,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView descriptionImageView;
         TextView guideTextView;
         View lockView;
+        TextView lockLevelTextView;
+        TextView lockTitleTextView;
         ViewGroup itemViewGroup;
         View refreshButton;
         View refreshProgress;
@@ -202,6 +207,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             descriptionImageView = itemView.findViewById(R.id.mission_description_image);
             guideTextView = itemView.findViewById(R.id.mission_guide);
             lockView = itemView.findViewById(R.id.betatest_lock_layout);
+            lockLevelTextView = itemView.findViewById(R.id.betatest_mission_lock_level_textview);
+            lockTitleTextView = itemView.findViewById(R.id.betatest_mission_lock_title_textview);
             itemViewGroup = itemView.findViewById(R.id.mission_items_layout);
             refreshButton = itemView.findViewById(R.id.mission_refresh_button);
             refreshProgress = itemView.findViewById(R.id.mission_refresh_progress);

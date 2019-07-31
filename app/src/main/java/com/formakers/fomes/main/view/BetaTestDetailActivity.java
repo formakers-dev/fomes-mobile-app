@@ -112,7 +112,6 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @Override
     protected void onDestroy() {
-        this.presenter.unsubscribe();
         compositeSubscription.clear();
         super.onDestroy();
     }
