@@ -50,6 +50,21 @@ public class DateUtilTest {
     }
 
     @Test
+    public void convertDurationToString_호출시__일정시간을_문자열로_바꾼다() {
+        String str = DateUtil.convertDurationToString(1_200_000L);
+        assertThat(str).isEqualTo("20분 0초");
+
+        String str2 = DateUtil.convertDurationToString(72_000L);
+        assertThat(str2).isEqualTo("1분 12초");
+
+        String str3 = DateUtil.convertDurationToString(30_000L);
+        assertThat(str3).isEqualTo("0분 30초");
+
+        String str4 = DateUtil.convertDurationToString(4_200_000L);
+        assertThat(str4).isEqualTo("70분 0초");
+    }
+
+    @Test
     public void convertDurationFromMilliseconds_호출시__타입에_맞게_변환하고_올림하여_반환한다() {
         float day = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_DAYS, 10000000L, 1);
         float hour = DateUtil.convertDurationFromMilliseconds(DateUtil.CONVERT_TYPE_HOURS, 10000000L, 1);

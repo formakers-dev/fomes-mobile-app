@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 
@@ -133,14 +134,20 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             TextView missionItemProgressStatusTextView = missionItemView.findViewById(R.id.mission_item_progress_status);
 
             if ("play".equals(missionItem.getType())) {
+                long playtime = 0L;
+
                 missionItemProgressStatusTextView.setText("참여 중");
+                viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
+                viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
+                viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
             } else {
+                viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
                 missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
                 missionItemView.setEnabled(!missionItem.isCompleted());
             }
 
             int missionItemOrder = missionItem.getOrder();
-            missionItemOrderTextView.setText(String.format("%d)", missionItem.getOrder()));
+            missionItemOrderTextView.setText(String.format("%d단계", missionItem.getOrder()));
             if (missionItemOrder <= 0) {
                 missionItemOrderTextView.setVisibility(View.INVISIBLE);
             }
@@ -153,6 +160,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             viewHolder.itemViewGroup.addView(missionItemView);
         }
+
+        viewHolder.descriptionLayout.setVisibility((viewHolder.descriptionImageView.getVisibility() == View.VISIBLE
+                || viewHolder.missionPlayTimeLayout.getVisibility() == View.VISIBLE) ? View.VISIBLE : View.GONE);
 
         viewHolder.refreshButton.setOnClickListener(v -> {
             presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getId());
@@ -189,7 +199,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView titleIconImageView;
         TextView titleTextView;
         TextView descriptionTextView;
+        ViewGroup descriptionLayout;
         ImageView descriptionImageView;
+        ViewGroup missionPlayTimeLayout;
+        TextView missionPlayTimeTextView;
+        TextView missionPlayTimeDescriptionTextView;
         TextView guideTextView;
         View lockView;
         TextView lockLevelTextView;
@@ -204,7 +218,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             titleIconImageView = itemView.findViewById(R.id.mission_title_icon);
             titleTextView = itemView.findViewById(R.id.mission_title);
             descriptionTextView = itemView.findViewById(R.id.mission_description);
+            descriptionLayout = itemView.findViewById(R.id.mission_description_layout);
             descriptionImageView = itemView.findViewById(R.id.mission_description_image);
+            missionPlayTimeLayout = itemView.findViewById(R.id.mission_play_time_layout);
+            missionPlayTimeTextView = itemView.findViewById(R.id.mission_play_time_textview);
+            missionPlayTimeDescriptionTextView = itemView.findViewById(R.id.mission_play_time_desc_textview);
             guideTextView = itemView.findViewById(R.id.mission_guide);
             lockView = itemView.findViewById(R.id.betatest_lock_layout);
             lockLevelTextView = itemView.findViewById(R.id.betatest_mission_lock_level_textview);
