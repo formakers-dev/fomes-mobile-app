@@ -19,6 +19,7 @@ import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.NoticeMigrationActivity;
+import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
@@ -68,4 +69,5 @@ public interface ApplicationComponent {
 
     void inject(FomesBaseActivity activity);
     void inject(BaseActivity activity);
+    void inject(WebViewActivity activity);
 }
