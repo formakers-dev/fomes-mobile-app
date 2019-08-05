@@ -20,13 +20,12 @@ public class DataModule {
     @Provides
     @Named("userEmail")
     Single<String> userEmail(SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
-        return Single.create(emitter -> {
+        return userDAO.getUserInfo().map(user -> {
             String email = sharedPreferencesHelper.getUserEmail();
-
             if (!TextUtils.isEmpty(email)) {
-                emitter.onSuccess(email);
+                return email;
             } else {
-                userDAO.getUserInfo().map(User::getEmail).subscribe(emitter::onSuccess, emitter::onError);
+                return user.getEmail();
             }
         });
     }

@@ -20,6 +20,7 @@ import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.NoticeMigrationActivity;
 import com.formakers.fomes.helper.AndroidNativeHelper;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.presenter.MainPresenter;
@@ -41,6 +42,7 @@ public interface ApplicationComponent {
     BetaTestService requestService();
     EventLogService eventLogService();
     PostService postService();
+    FomesUrlHelper fomesUrlHelper();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();
