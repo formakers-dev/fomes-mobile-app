@@ -19,7 +19,9 @@ import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.NoticeMigrationActivity;
+import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.helper.AndroidNativeHelper;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.presenter.MainPresenter;
@@ -31,7 +33,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { NetworkModule.class, GlideModule.class, AnalyticsModule.class })
+@Component(modules = { NetworkModule.class, GlideModule.class, AnalyticsModule.class, DataModule.class })
 public interface ApplicationComponent {
     AppStatService appStatService();
     UserService userService();
@@ -41,6 +43,7 @@ public interface ApplicationComponent {
     BetaTestService requestService();
     EventLogService eventLogService();
     PostService postService();
+    FomesUrlHelper fomesUrlHelper();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();
     SharedPreferencesHelper sharedPreferencesHelper();
@@ -66,4 +69,5 @@ public interface ApplicationComponent {
 
     void inject(FomesBaseActivity activity);
     void inject(BaseActivity activity);
+    void inject(WebViewActivity activity);
 }

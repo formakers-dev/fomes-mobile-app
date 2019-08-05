@@ -10,6 +10,7 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
@@ -56,6 +57,7 @@ public class MainPresenterTest {
     @Inject SharedPreferencesHelper mockSharedPreferenceHelper;
     @Inject PostService mockPostService;
     @Mock EventPagerAdapterContract.Model mockEventPagerAdapterModel;
+    @Inject FomesUrlHelper mockFomesUrlHelper;
 
     @Mock
     MainContract.View mockView;
@@ -88,7 +90,7 @@ public class MainPresenterTest {
         when(mockPostService.getPromotions()).thenReturn(Single.just(Lists.newArrayList(new Post())));
         when(mockEventPagerAdapterModel.getCount()).thenReturn(3);
 
-        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockPostService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper);
+        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockPostService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper, mockFomesUrlHelper);
 
         subject.setEventPagerAdapterModel(mockEventPagerAdapterModel);
     }
@@ -156,5 +158,12 @@ public class MainPresenterTest {
 
         verify(mockEventLogService).sendEventLog(eventLogCaptor.capture());
         assertEquals(eventLogCaptor.getValue().getCode(), "ANY_CODE");
+    }
+
+    @Test
+    public void getInterpretedUrl_호출시__예약어를_해석한_새로운_URL을_반환한다() {
+        subject.getInterpretedUrl("http://www.naver.com?email={email}");
+
+        verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}"));
     }
 }

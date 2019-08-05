@@ -8,6 +8,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.google.gson.Gson;
 
@@ -27,9 +28,11 @@ import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +44,7 @@ public class BetaTestDetailPresenterTest {
     @Mock AnalyticsModule.Analytics mockAnalytics;
     @Mock EventLogService mockEventLogService;
     @Mock BetaTestService mockBetaTestService;
+    @Mock FomesUrlHelper mockFomesUrlHelper;
 
     BetaTestDetailPresenter subject;
 
@@ -69,9 +73,9 @@ public class BetaTestDetailPresenterTest {
                 .thenReturn(Observable.just(new Mission.MissionItem()));
 
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
+        when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
 
-        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService);
-        subject.setUserEmail("test@gmail.com");
+        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper);
     }
 
     @Test
@@ -122,6 +126,11 @@ public class BetaTestDetailPresenterTest {
 
     @Test
     public void processMissionItemAction_호출시__액션타입에_맞는_액션을_결정한다() {
+        when(mockFomesUrlHelper.interpretUrlParams("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}"))
+                .thenReturn("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com");
+
+        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email={email}"))
+                .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email=test@gmail.com");
 
         // 인앱웹뷰
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(0).getItems().get(0));
@@ -133,6 +142,13 @@ public class BetaTestDetailPresenterTest {
 
         verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email=test@gmail.com"));
 
+    }
+
+    @Test
+    public void getInterpretedUrl_호출시__예약어를_해석한_새로운_URL을_반환한다() {
+        subject.getInterpretedUrl("http://www.naver.com?email={email}");
+
+        verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}"));
     }
 
     private BetaTest getDummyBetaTestDetail() {
@@ -196,7 +212,7 @@ public class BetaTestDetailPresenterTest {
                 "                \"order\":1,\n" +
                 "                \"title\":\"의견 작성\",\n" +
                 "                \"actionType\":\"link\",\n" +
-                "                \"action\":\"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=\",\n" +
+                "                \"action\":\"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}\",\n" +
                 "                \"_id\":\"5d1ec8254400311578e996be\",\n" +
                 "                \"isCompleted\":true\n" +
                 "            }\n" +
@@ -216,7 +232,7 @@ public class BetaTestDetailPresenterTest {
                 "                \"order\":1,\n" +
                 "                \"title\":\"게임 플레이\",\n" +
                 "                \"actionType\":\"link\",\n" +
-                "                \"action\":\"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email=\",\n" +
+                "                \"action\":\"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email={email}\",\n" +
                 "                \"postCondition\":{\n" +
                 "                    \"packageName\":\"com.goodcircle.comeonkitty\",\n" +
                 "                    \"playTime\":1800000\n" +

@@ -100,10 +100,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             return;
         }
 
-        String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, "");
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
-
-        this.presenter.setUserEmail(userEmail);
         this.presenter.load(id);
 
         presenter.sendEventLog(BETA_TEST_DETAIL_ENTER, id);

@@ -10,6 +10,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestDetailActivityScope;
 
@@ -28,21 +29,23 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private AnalyticsModule.Analytics analytics;
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
+    private FomesUrlHelper fomesUrlHelper;
 
     private BetaTestDetailContract.View view;
 
     private BetaTest betaTest;
-    private String userEmail;
 
     @Inject
     public BetaTestDetailPresenter(BetaTestDetailContract.View view,
                                    AnalyticsModule.Analytics analytics,
                                    EventLogService eventLogService,
-                                   BetaTestService betaTestService) {
+                                   BetaTestService betaTestService,
+                                   FomesUrlHelper fomesUrlHelper) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
+        this.fomesUrlHelper = fomesUrlHelper;
     }
 
     @Override
@@ -98,12 +101,6 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public BetaTestDetailPresenter setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-        return this;
-    }
-
-    @Override
     public void requestCompleteMissionItem(String missionItemId) {
         view.getCompositeSubscription().add(
                 this.betaTestService.postCompleteBetaTest(missionItemId)
@@ -125,7 +122,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
             return;
         }
 
-        String url = action + userEmail;
+        String url = getInterpretedUrl(action);
         Uri uri = Uri.parse(url);
 
         // below condition logic should be move to URL Manager(or Parser and so on..)
@@ -137,5 +134,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
             // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
             view.startByDeeplink(Uri.parse(url));
         }
+    }
+
+    @Override
+    public String getInterpretedUrl(String originalUrl) {
+        return fomesUrlHelper.interpretUrlParams(originalUrl);
     }
 }

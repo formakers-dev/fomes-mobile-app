@@ -9,7 +9,6 @@ import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
-import com.formakers.fomes.main.presenter.BetaTestDetailPresenter;
 
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -23,12 +22,12 @@ public interface BetaTestDetailContract {
 
         void load(String id);
 
-        BetaTestDetailPresenter setUserEmail(String userEmail);
         void requestCompleteMissionItem(String missionItemId);
 
         Observable<Mission.MissionItem> refreshMissionProgress(String missionId);
 
         void processMissionItemAction(Mission.MissionItem missionItem);
+        String getInterpretedUrl(String originalUrl);
     }
 
     interface View extends BaseView<Presenter> {
