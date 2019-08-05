@@ -21,6 +21,7 @@ public interface BetaTestDetailContract {
         void requestCompleteMissionItem(String missionItemId);
 
         Observable<Mission.MissionItem> refreshMissionProgress(String missionId);
+        String getInterpretedUrl(String originalUrl);
     }
 
     interface View extends BaseView<Presenter> {

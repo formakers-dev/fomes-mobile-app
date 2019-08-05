@@ -7,6 +7,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestDetailActivityScope;
 
@@ -26,6 +27,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private AnalyticsModule.Analytics analytics;
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
+    private FomesUrlHelper fomesUrlHelper;
 
     private BetaTest betaTest;
     private BetaTestDetailContract.View view;
@@ -35,11 +37,13 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     public BetaTestDetailPresenter(BetaTestDetailContract.View view,
                                    AnalyticsModule.Analytics analytics,
                                    EventLogService eventLogService,
-                                   BetaTestService betaTestService) {
+                                   BetaTestService betaTestService,
+                                   FomesUrlHelper fomesUrlHelper) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
+        this.fomesUrlHelper = fomesUrlHelper;
     }
 
     @Override
@@ -113,5 +117,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public Observable<Mission.MissionItem> refreshMissionProgress(String missionId) {
         return this.betaTestService.getMissionProgress(missionId);
+    }
+
+    @Override
+    public String getInterpretedUrl(String originalUrl) {
+        return fomesUrlHelper.interpretUrlParams(originalUrl);
     }
 }

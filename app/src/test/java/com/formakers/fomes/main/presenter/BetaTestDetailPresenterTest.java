@@ -6,6 +6,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.google.gson.Gson;
 
@@ -36,6 +37,7 @@ public class BetaTestDetailPresenterTest {
     @Mock AnalyticsModule.Analytics mockAnalytics;
     @Mock EventLogService mockEventLogService;
     @Mock BetaTestService mockBetaTestService;
+    @Mock FomesUrlHelper mockFomesUrlHelper;
 
     BetaTestDetailPresenter subject;
 
@@ -65,7 +67,7 @@ public class BetaTestDetailPresenterTest {
 
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
 
-        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService);
+        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper);
     }
 
     @Test
@@ -112,6 +114,13 @@ public class BetaTestDetailPresenterTest {
         subject.refreshMissionProgress("5d1ec8094400311578e996bc");
 
         verify(mockBetaTestService).getMissionProgress(eq("5d1ec8094400311578e996bc"));
+    }
+
+    @Test
+    public void getInterpretedUrl_호출시__예약어를_해석한_새로운_URL을_반환한다() {
+        subject.getInterpretedUrl("http://www.naver.com?email={email}");
+
+        verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}"));
     }
 
     private BetaTest getDummyBetaTestDetail() {

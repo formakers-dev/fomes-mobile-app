@@ -244,8 +244,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
 
         boolean isLocked = betaTest.getCompletedItemCount() <= 0;
-        String userEmail = bundle.getString(FomesConstants.BetaTest.EXTRA_USER_EMAIL, "");
-        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest, userEmail);
+        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest);
         missionListAdapter.setLocked(isLocked);
 
         missionRecyclerView.setAdapter(missionListAdapter);
@@ -274,12 +273,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         BetaTest betaTest;
         @Deprecated boolean isLocked = false;
-        String userEmail;
         View.OnClickListener missionItemClickListener;
 
-        public MissionListAdapter(BetaTest betaTest, String userEmail) {
+        public MissionListAdapter(BetaTest betaTest) {
             this.betaTest = betaTest;
-            this.userEmail = userEmail;
         }
 
         public boolean isLocked() {
@@ -381,7 +378,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                         return;
                     }
 
-                    String url = action + userEmail;
+                    String url = presenter.getInterpretedUrl(action);
                     Uri uri = Uri.parse(url);
 
                     Intent intent;
