@@ -24,7 +24,9 @@ import androidx.annotation.RequiresApi;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.helper.FomesUrlHelper;
+import com.formakers.fomes.common.view.webview.DaggerWebViewDagger_Component;
+import com.formakers.fomes.common.view.webview.WebViewConstract;
+import com.formakers.fomes.common.view.webview.WebViewDagger;
 
 import java.net.URISyntaxException;
 
@@ -32,21 +34,26 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class WebViewActivity extends FomesBaseActivity {
+import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_CONTENTS;
+import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_TITLE;
+
+public class WebViewActivity extends FomesBaseActivity implements WebViewConstract.View {
 
     public static final String TAG = "WebViewActivity";
-
-    public static final String EXTRA_TITLE = "EXTRA_TITLE";
-    public static final String EXTRA_CONTENTS = "EXTRA_CONTENTS";
 
     private static final int REQUEST_CODE_FILE_CHOOSER = 1001;
 
     @BindView(R.id.webview) WebView webView;
     @BindView(R.id.loading_bar) ProgressBar loadingBar;
 
-    @Inject FomesUrlHelper fomesUrlHelper;
+    @Inject WebViewConstract.Presenter presenter;
 
     private ValueCallback<Uri[]> selectedFilePathCallback;
+
+    @Override
+    public void setPresenter(WebViewConstract.Presenter presenter) {
+        this.presenter = presenter;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +63,11 @@ public class WebViewActivity extends FomesBaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ((FomesApplication) getApplication()).getComponent().inject(this);
+        DaggerWebViewDagger_Component.builder()
+                .applicationComponent(FomesApplication.get(this).getComponent())
+                .module(new WebViewDagger.Module(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -68,8 +79,8 @@ public class WebViewActivity extends FomesBaseActivity {
         String contents;
 
         // TODO : 커밋후 리턴타입 고민하기
-        if (isFromDeeplink()) {
-            getIntent().putExtras(getInterpretedDeeplinkBundle(intent.getData()));
+        if (presenter.isFromDeeplink(intent.getData())) {
+            getIntent().putExtras(presenter.getInterpretedDeeplinkBundle(intent.getData()));
         }
 
         title = getIntent().getStringExtra(EXTRA_TITLE);
@@ -131,38 +142,6 @@ public class WebViewActivity extends FomesBaseActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    protected boolean isFromDeeplink() {
-        Intent intent = getIntent();
-        Uri deeplinkUri = intent.getData();
-        Log.d(TAG, String.valueOf(deeplinkUri));
-
-        return deeplinkUri != null
-                && deeplinkUri.getScheme().equals("fomes")
-                && deeplinkUri.getHost().equals("web")
-                && deeplinkUri.getPath().equals("/internal");
-    }
-
-    // TODO : go to presenter
-    private Bundle getInterpretedDeeplinkBundle(@Nullable Uri deeplinkUri) {
-        String title = deeplinkUri.getQueryParameter("title");
-        String contents = deeplinkUri.getQueryParameter("url");
-        String appended = deeplinkUri.getQueryParameter("appendedUrl");
-
-        contents = fomesUrlHelper.interpretUrlParams(contents);
-
-        // TODO : 레거시코드. 크리티컬 릴리즈때 지워야한다
-        if (!TextUtils.isEmpty(appended)) {
-            // TODO : 아래를 유지해야하나 말아야하나 고민됨
-            contents += appended;
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_TITLE, title);
-        bundle.putString(EXTRA_CONTENTS, contents);
-        return bundle;
     }
 
     private class FomesWebChromeClient extends WebChromeClient {

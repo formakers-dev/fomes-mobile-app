@@ -75,8 +75,8 @@ public class EventPagerAdapter extends PagerAdapter implements EventPagerAdapter
 
             if (TextUtils.isEmpty(event.post.getDeeplink())) {
                 intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra(WebViewActivity.EXTRA_TITLE, event.post.getTitle());
-                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, event.post.getContents());
+                intent.putExtra(FomesConstants.WebView.EXTRA_TITLE, event.post.getTitle());
+                intent.putExtra(FomesConstants.WebView.EXTRA_CONTENTS, event.post.getContents());
             } else {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.post.getDeeplink()));
             }

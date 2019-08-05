@@ -69,5 +69,4 @@ public interface ApplicationComponent {
 
     void inject(FomesBaseActivity activity);
     void inject(BaseActivity activity);
-    void inject(WebViewActivity activity);
 }

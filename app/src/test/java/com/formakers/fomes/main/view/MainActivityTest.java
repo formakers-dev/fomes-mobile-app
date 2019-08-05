@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.common.view.WebViewActivity;
@@ -216,8 +217,8 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
         Intent intent = shadowOf(subject).getNextStartedActivity();
         assertThat(intent.getComponent().getClassName()).contains(WebViewActivity.class.getSimpleName());
-        assertThat(intent.getStringExtra(WebViewActivity.EXTRA_TITLE)).isEqualTo("포메스 우체통");
-        assertThat(intent.getStringExtra(WebViewActivity.EXTRA_CONTENTS)).startsWith("http");
+        assertThat(intent.getStringExtra(FomesConstants.WebView.EXTRA_TITLE)).isEqualTo("포메스 우체통");
+        assertThat(intent.getStringExtra(FomesConstants.WebView.EXTRA_CONTENTS)).startsWith("http");
     }
 
     @Test

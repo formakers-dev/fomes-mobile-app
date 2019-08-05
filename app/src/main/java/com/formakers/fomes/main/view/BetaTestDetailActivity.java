@@ -292,8 +292,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Override
     public void startWebViewActivity(String title, String url) {
         Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(WebViewActivity.EXTRA_TITLE, title);
-        intent.putExtra(WebViewActivity.EXTRA_CONTENTS, url);
+        intent.putExtra(FomesConstants.WebView.EXTRA_TITLE, title);
+        intent.putExtra(FomesConstants.WebView.EXTRA_CONTENTS, url);
         startActivity(intent);
     }
 

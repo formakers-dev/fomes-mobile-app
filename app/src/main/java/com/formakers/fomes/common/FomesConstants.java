@@ -49,6 +49,11 @@ public interface FomesConstants {
         }
     }
 
+    interface WebView {
+        String EXTRA_TITLE = "EXTRA_TITLE";
+        String EXTRA_CONTENTS = "EXTRA_CONTENTS";
+    }
+
     interface Notification {
         String TOPIC_NOTICE_ALL = "notice-all";
 
