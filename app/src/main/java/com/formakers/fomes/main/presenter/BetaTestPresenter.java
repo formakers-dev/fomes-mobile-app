@@ -7,6 +7,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestFragmentScope;
@@ -38,16 +39,18 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private User user;
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
+    private FomesUrlHelper fomesUrlHelper;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
+    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO, AnalyticsModule.Analytics analytics, FomesUrlHelper fomesUrlHelper) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
         this.userDAO = userDAO;
         this.analytics = analytics;
+        this.fomesUrlHelper = fomesUrlHelper;
     }
 
     @Override
@@ -158,8 +161,8 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
-    public String getUserEmail() {
-        return this.user.getEmail();
+    public String getInterpretedUrl(String originalUrl) {
+        return this.fomesUrlHelper.interpretUrlParams(originalUrl);
     }
 
     @Override
