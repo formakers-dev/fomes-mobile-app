@@ -19,7 +19,7 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/fomes_greyish_brown"
+            app:contentScrim="@color/fomes_deep_gray"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <ImageView
