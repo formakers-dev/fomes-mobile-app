@@ -11,8 +11,6 @@ public interface LoginContract {
     interface Presenter {
         void signUpOrSignIn(GoogleSignInResult googleSignInResult);
         Single<GoogleSignInResult> googleSilentSignIn();
-        int registerSendDataJob();
-        void registerPublicNotificationTopic();
 
         Intent getGoogleSignInIntent();
         GoogleSignInResult convertGoogleSignInResult(Intent googleUserData);

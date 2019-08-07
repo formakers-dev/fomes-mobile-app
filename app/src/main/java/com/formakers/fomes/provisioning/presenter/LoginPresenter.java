@@ -56,6 +56,8 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void signUpOrSignIn(GoogleSignInResult googleSignInResult) {
         GoogleSignInAccount account = googleSignInResult.getSignInAccount();
 
+        // TODO: googleSignInResult.getSignInAccount()의 리턴값이 @Nullable. account에 대한 Null 처리 필요.
+
         User userInfo = new User()
                 .setName(account.getDisplayName())
                 .setEmail(account.getEmail())
@@ -128,20 +130,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     private void registerForInit() {
         Log.d(TAG, "registerForInit");
 
-        int jobRegisteredResult = registerSendDataJob();
-        registerPublicNotificationTopic();
+        int jobRegisteredResult = jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
+        channelManager.subscribePublicTopic();
 
         Log.d(TAG, "job registered result=" + jobRegisteredResult);
-    }
-
-    @Override
-    public int registerSendDataJob() {
-        return this.jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
-    }
-
-    @Override
-    public void registerPublicNotificationTopic() {
-        channelManager.subscribePublicTopic();
     }
 
     @Override
