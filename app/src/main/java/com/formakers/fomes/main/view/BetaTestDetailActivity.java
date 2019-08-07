@@ -28,6 +28,7 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -44,6 +45,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_ENTER;
@@ -66,6 +68,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
     @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
     @BindView(R.id.betatest_purpose_description_textview) TextView purposeDescriptionTextView;
+    @BindView(R.id.betatest_howto_items_layout) ViewGroup howtoViewGroup;
 
     @Inject BetaTestDetailContract.Presenter presenter;
 
@@ -227,6 +230,27 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
             rewardViewGroup.addView(rewardItemView);
         }
+
+        // 테스트 방법
+        Observable.from(betaTest.getMissions())
+                .concatMap(mission -> Observable.from(mission.getItems()))
+                .toList()
+                .subscribe(displayedMissionItems -> {
+                    displayedMissionItems.add(new Mission.MissionItem().setTitle("보상 받기"));
+
+                    for (Mission.MissionItem missionItem : displayedMissionItems) {
+                        View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
+
+                        TextView missionItemOrderTextView = missionItemView.findViewById(R.id.mission_item_order);
+                        TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
+
+                        missionItemOrderTextView.setText(String.format("%d단계", displayedMissionItems.indexOf(missionItem) + 1));
+                        missionItemTitleTextView.setText(missionItem.getTitle());
+
+                        howtoViewGroup.addView(missionItemView);
+                    }
+                });
+
 
         missionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

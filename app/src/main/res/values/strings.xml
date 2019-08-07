@@ -205,6 +205,8 @@
     <string name="wish_list_remove_fail">관심 게임 삭제에 실패하였습니다.</string>
 
     <!-- Beta Test Detail -->
+    <string name="betatest_detail_howto_title">테스트 방법</string>
+    <string name="betatest_detail_howto_description">어렵지 않아요. 게임을 즐기고 의견을 주면 끝!</string>
     <string name="betatest_detail_rewards_title">테스트 보상</string>
     <string name="betatest_detail_rewards_description">테스트 마감후 %d일 이내에 보상이 지급됩니다.</string>
     <string name="betatest_detail_mission_list_title">테스트 참여</string>

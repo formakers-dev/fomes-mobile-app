@@ -151,6 +151,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (missionItemOrder <= 0) {
                 missionItemOrderTextView.setVisibility(View.INVISIBLE);
             }
+            missionItemOrderTextView.setVisibility(View.GONE);
+
             missionItemTitleTextView.setText(missionItem.getTitle());
 
             missionItemView.setOnClickListener(v -> {
