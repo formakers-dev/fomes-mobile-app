@@ -30,15 +30,16 @@
             android:theme="@style/BetaTestTheme.CardBackground">
 
             <ImageView android:id="@+id/mission_refresh_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/icon_refresh"
                 android:tint="@color/colorPrimaryDark"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
             <ProgressBar android:id="@+id/mission_refresh_progress"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="@+id/mission_refresh_button"
                 app:layout_constraintBottom_toBottomOf="@+id/mission_refresh_button"
@@ -47,26 +48,26 @@
 
             <ImageView
                 android:id="@+id/mission_title_icon"
-                android:minWidth="20dp"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginEnd="9dp"
                 app:layout_constraintBottom_toBottomOf="@+id/mission_title"
-                app:layout_constraintEnd_toStartOf="@+id/mission_title"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/mission_description"
                 app:layout_constraintTop_toTopOf="@+id/mission_title"
-                tools:src="@drawable/icon_my_betatest" />
+                tools:src="@drawable/icon_racing_flag_reverse" />
 
             <TextView
                 android:id="@+id/mission_title"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="13dp"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="5dp"
+                android:gravity="center_vertical"
                 android:textColor="@color/colorPrimary"
+                android:textSize="13dp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mission_title_icon"
+                app:layout_constraintEnd_toStartOf="@+id/mission_refresh_button"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="1단계 미션" />
 
@@ -78,7 +79,7 @@
                 android:textSize="11dp"
                 android:textColor="@color/fomes_white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/mission_title_icon"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mission_title_icon"
                 tools:text="[고양이 숲] 게임을 10분 이상 플레이해주세요." />
 

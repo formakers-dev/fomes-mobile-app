@@ -83,8 +83,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         Glide.with(context).load(mission.getIconImageUrl())
                 .apply(new RequestOptions()
-                        .fitCenter()
-                        .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
+                        .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray)))
+                        .fitCenter())
                 .into(viewHolder.titleIconImageView);
 
         viewHolder.titleTextView.setText(mission.getTitle());
