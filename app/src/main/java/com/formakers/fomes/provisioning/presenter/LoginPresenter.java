@@ -56,7 +56,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void signUpOrSignIn(GoogleSignInResult googleSignInResult) {
         GoogleSignInAccount account = googleSignInResult.getSignInAccount();
 
-        // TODO: googleSignInResult.getSignInAccount()의 리턴값이 @Nullable. account에 대한 Null 처리 필요.
+        if (account == null) {
+            view.showToast("구글 로그인 계정정보를 가져오는 것에 실패하였습니다. 재시도 고고");
+            return;
+        }
 
         User userInfo = new User()
                 .setName(account.getDisplayName())

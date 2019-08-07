@@ -230,6 +230,15 @@ public class LoginPresenterTest {
     }
 
     @Test
+    public void signUpOrSignIn_호출시__구글_로그인_계정정보를_가져오는_것에_실패하면__실패문구를_토스트로_띄운다() {
+        when(mockGoogleSignInResult.getSignInAccount()).thenReturn(null);
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockView).showToast("구글 로그인 계정정보를 가져오는 것에 실패하였습니다. 재시도 고고");
+    }
+
+    @Test
     public void signUpOrSignIn실패시__실패문구를_토스트로_띄우도록_요청한다() {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
