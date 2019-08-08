@@ -21,29 +21,39 @@ import android.widget.ProgressBar;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.webview.DaggerWebViewDagger_Component;
+import com.formakers.fomes.common.view.webview.WebViewConstract;
+import com.formakers.fomes.common.view.webview.WebViewDagger;
 
 import java.net.URISyntaxException;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
-public class WebViewActivity extends FomesBaseActivity {
+import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_CONTENTS;
+import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_TITLE;
+
+public class WebViewActivity extends FomesBaseActivity implements WebViewConstract.View {
 
     public static final String TAG = "WebViewActivity";
-
-    public static final String EXTRA_TITLE = "EXTRA_TITLE";
-    public static final String EXTRA_CONTENTS = "EXTRA_CONTENTS";
 
     private static final int REQUEST_CODE_FILE_CHOOSER = 1001;
 
     @BindView(R.id.webview) WebView webView;
     @BindView(R.id.loading_bar) ProgressBar loadingBar;
 
-    // TODO : MVP 로 분리해라
-//    @Inject UserDAO userDAO;
+    @Inject WebViewConstract.Presenter presenter;
 
     private ValueCallback<Uri[]> selectedFilePathCallback;
+
+    @Override
+    public void setPresenter(WebViewConstract.Presenter presenter) {
+        this.presenter = presenter;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,18 +62,12 @@ public class WebViewActivity extends FomesBaseActivity {
         this.setContentView(R.layout.activity_webview);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
 
-    @Override
-    protected boolean isFromDeeplink() {
-        Intent intent = getIntent();
-        Uri deeplinkUri = intent.getData();
-        Log.d(TAG, String.valueOf(deeplinkUri));
-
-        return deeplinkUri != null
-                && deeplinkUri.getScheme().equals("fomes")
-                && deeplinkUri.getHost().equals("web")
-                && deeplinkUri.getPath().equals("/internal");
+        DaggerWebViewDagger_Component.builder()
+                .applicationComponent(FomesApplication.get(this).getComponent())
+                .module(new WebViewDagger.Module(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -75,25 +79,19 @@ public class WebViewActivity extends FomesBaseActivity {
         String contents;
 
         // TODO : 커밋후 리턴타입 고민하기
-        if (isFromDeeplink()) {
-            Uri deeplinkUri = intent.getData();
-
-            title = deeplinkUri.getQueryParameter("title");
-            contents = deeplinkUri.getQueryParameter("url");
-            String appended = deeplinkUri.getQueryParameter("appendedUrl");
-
-            if (!TextUtils.isEmpty(appended)) {
-                // appendedUrl 파람의 예약어는 여기에 정의하자
-                contents += appended.replace("{email}", userDAO2.getUserInfo().toBlocking().value().getEmail());
-            }
-        } else {
-            title = getIntent().getStringExtra(EXTRA_TITLE);
-            contents = getIntent().getStringExtra(EXTRA_CONTENTS);
+        if (presenter.isFromDeeplink(intent.getData())) {
+            getIntent().putExtras(presenter.getInterpretedDeeplinkBundle(intent.getData()));
         }
+
+        title = getIntent().getStringExtra(EXTRA_TITLE);
+        contents = getIntent().getStringExtra(EXTRA_CONTENTS);
 
         if (TextUtils.isEmpty(contents)) {
             throw new IllegalArgumentException("There aren't any contents");
         }
+
+        // TODO : MVP 구조 적용 후 `contents` 를 interpretUrlParams 처리하기
+        //  => 가... 맞을까? url 관련 처리는 외부에서 하도록 위임해야하는 게 아닐까?
 
         getSupportActionBar().setTitle(title);
 

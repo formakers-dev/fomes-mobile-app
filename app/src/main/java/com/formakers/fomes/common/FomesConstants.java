@@ -31,7 +31,6 @@ public interface FomesConstants {
         String EXTRA_ID = "EXTRA_ID";
         String EXTRA_REMAIN_DAYS = "EXTRA_REMAIN_DAYS";
         String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
-        String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
 
         // TODO : Log? Analytic? Tracking? 네이밍 고민
         interface Log {
@@ -48,6 +47,11 @@ public interface FomesConstants {
             int TNC_PRIVATE = 3;
             int CONTACTS_US = 4;
         }
+    }
+
+    interface WebView {
+        String EXTRA_TITLE = "EXTRA_TITLE";
+        String EXTRA_CONTENTS = "EXTRA_CONTENTS";
     }
 
     interface Notification {

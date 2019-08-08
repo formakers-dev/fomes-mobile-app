@@ -8,6 +8,7 @@ import java.util.Locale;
 
 public class DateUtil {
     private static final SimpleDateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+    private static final String MINUITES_DURATION_STRING_FORMAT = "%d분 %d초";
     public static final String YYYY_MM_DD = "yyyy/MM/dd";
     public static final String YY_DOT_MM_DOT_DD = "yy.MM.dd";
 
@@ -128,6 +129,11 @@ public class DateUtil {
                 break;
         }
         return result;
+    }
+
+    public static String convertDurationToString(long milliseconds) {
+        long seconds = milliseconds / 1000;
+        return String.format(MINUITES_DURATION_STRING_FORMAT, seconds / 60, seconds % 60);
     }
 
     public static float convertDurationFromMilliseconds(int convertedType, long milliseconds, int floatPoint) {

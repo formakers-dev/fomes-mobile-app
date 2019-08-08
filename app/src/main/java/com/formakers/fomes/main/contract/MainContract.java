@@ -18,6 +18,7 @@ public interface MainContract {
         void sendEventLog(String code);
         void requestPromotions();
         int getPromotionCount();
+        String getInterpretedUrl(String originalUrl);
 
         int registerSendDataJob();
         boolean checkRegisteredSendDataJob();

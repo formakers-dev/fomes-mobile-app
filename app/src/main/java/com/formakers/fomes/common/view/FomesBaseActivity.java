@@ -25,7 +25,6 @@ import javax.inject.Inject;
 public class FomesBaseActivity extends BaseActivity {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
     @Inject AndroidNativeHelper androidNativeHelper;
-    @Inject UserDAO userDAO2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

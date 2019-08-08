@@ -8,6 +8,7 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
@@ -32,6 +33,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Inject SharedPreferencesHelper sharedPreferencesHelper;
 
     @Inject JobManager jobManager;
+    @Inject FomesUrlHelper fomesUrlHelper;
 
     private User userInfo;
     private MainContract.View view;
@@ -45,7 +47,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     // temporary code for test
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper) {
+    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper, FomesUrlHelper fomesUrlHelper) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
@@ -53,6 +55,7 @@ public class MainPresenter implements MainContract.Presenter {
         this.jobManager = jobManager;
         this.eventLogService = eventLogService;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
+        this.fomesUrlHelper = fomesUrlHelper;
     }
 
     @Override
@@ -61,7 +64,9 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void setEventPagerAdapterModel(EventPagerAdapterContract.Model eventPagerAdapterModel) { this.eventPagerAdapterModel = eventPagerAdapterModel; }
+    public void setEventPagerAdapterModel(EventPagerAdapterContract.Model eventPagerAdapterModel) {
+        this.eventPagerAdapterModel = eventPagerAdapterModel;
+    }
 
     @Override
     public User getUserInfo() {
@@ -116,6 +121,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public int getPromotionCount() {
         return eventPagerAdapterModel.getCount();
+    }
+
+    @Override
+    public String getInterpretedUrl(String originalUrl) {
+        return this.fomesUrlHelper.interpretUrlParams(originalUrl);
     }
 
     @Override

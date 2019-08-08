@@ -25,6 +25,7 @@ import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.ImageLoader;
 import com.formakers.fomes.helper.ResourceHelper;
@@ -199,6 +200,12 @@ public class TestApplicationModule {
     @Provides
     GoogleSignInAPIHelper googleSignInAPIHelper() {
         return mock(GoogleSignInAPIHelper.class);
+    }
+
+    @Singleton
+    @Provides
+    FomesUrlHelper fomesUrlHelper() {
+        return mock(FomesUrlHelper.class);
     }
 
     @Singleton

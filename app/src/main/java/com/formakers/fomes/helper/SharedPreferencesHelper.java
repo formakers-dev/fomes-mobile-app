@@ -88,7 +88,7 @@ public class SharedPreferencesHelper {
     }
 
     public String getUserEmail() {
-        return getString(KEY_EMAIL, null);
+        return getString(KEY_EMAIL, "");
     }
 
     public void setUserRegistrationToken(String registrationToken) {

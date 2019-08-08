@@ -17,6 +17,9 @@ public class Mission implements Parcelable {
     List<MissionItem> items;
     String guide;
 
+    // For view
+    Boolean isLocked;
+
     public static class MissionItem implements Parcelable {
         @SerializedName("_id") String id;
         Integer order;
@@ -24,7 +27,9 @@ public class Mission implements Parcelable {
         String title;
         String actionType;
         String action;
-        Boolean isCompleted;
+        boolean isCompleted;
+        boolean isRepeatable;
+        boolean isMandatory;
 
         public MissionItem() {
         }
@@ -83,12 +88,30 @@ public class Mission implements Parcelable {
             return this;
         }
 
-        public Boolean isCompleted() {
+        public boolean isCompleted() {
             return isCompleted;
         }
 
-        public MissionItem setCompleted(Boolean completed) {
+        public MissionItem setCompleted(boolean completed) {
             isCompleted = completed;
+            return this;
+        }
+
+        public boolean isRepeatable() {
+            return isRepeatable;
+        }
+
+        public MissionItem setRepeatable(boolean repeatable) {
+            isRepeatable = repeatable;
+            return this;
+        }
+
+        public boolean isMandatory() {
+            return isMandatory;
+        }
+
+        public MissionItem setMandatory(boolean mandatory) {
+            isMandatory = mandatory;
             return this;
         }
 
@@ -102,6 +125,8 @@ public class Mission implements Parcelable {
                     ", actionType='" + actionType + '\'' +
                     ", action='" + action + '\'' +
                     ", isCompleted=" + isCompleted +
+                    ", isRepeatable=" + isRepeatable +
+                    ", isMandatory=" + isMandatory +
                     '}';
         }
 
@@ -121,7 +146,9 @@ public class Mission implements Parcelable {
             dest.writeString(title);
             dest.writeString(actionType);
             dest.writeString(action);
-            dest.writeInt(isCompleted ? 1 : 0);     // TODO : ??
+            dest.writeInt(isCompleted ? 1 : 0);
+            dest.writeInt(isRepeatable ? 1 : 0);
+            dest.writeInt(isMandatory ? 1 : 0);
         }
 
         private void readFromParcel(Parcel in) {
@@ -132,6 +159,8 @@ public class Mission implements Parcelable {
             actionType = in.readString();
             action = in.readString();
             isCompleted = in.readInt() == 1;
+            isRepeatable = in.readInt() == 1;
+            isMandatory = in.readInt() == 1;
         }
 
         @Override
@@ -222,6 +251,25 @@ public class Mission implements Parcelable {
         return this;
     }
 
+    public boolean isLocked() {
+        return isLocked == null ? true : isLocked;
+    }
+
+    public Mission setLocked(boolean locked) {
+        isLocked = locked;
+        return this;
+    }
+
+    public boolean isCompleted() {
+        for (MissionItem item : this.items) {
+            if (item.isMandatory() && !item.isCompleted()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public String toString() {
         return "Mission{" +
@@ -233,6 +281,7 @@ public class Mission implements Parcelable {
                 ", descriptionImageUrl='" + descriptionImageUrl + '\'' +
                 ", items=" + items +
                 ", guide='" + guide + '\'' +
+                ", isLocked=" + isLocked +
                 '}';
     }
 
@@ -254,6 +303,7 @@ public class Mission implements Parcelable {
         dest.writeString(descriptionImageUrl);
         dest.writeTypedList(items);
         dest.writeString(guide);
+        dest.writeInt(isLocked ? 1 : 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -265,6 +315,7 @@ public class Mission implements Parcelable {
         descriptionImageUrl = in.readString();
         in.readTypedList(items, MissionItem.CREATOR);
         guide = in.readString();
+        isLocked = in.readInt() == 1;
     }
 
     @Override

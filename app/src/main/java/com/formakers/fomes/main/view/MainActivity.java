@@ -47,6 +47,9 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
+import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_CONTENTS;
+import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_TITLE;
+
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
         NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener, TabLayout.OnTabSelectedListener {
 
@@ -240,10 +243,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             }
             case R.id.fomes_postbox: {
                 Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(WebViewActivity.EXTRA_TITLE, getString(R.string.postbox_title));
-                intent.putExtra(WebViewActivity.EXTRA_CONTENTS, (BuildConfig.DEBUG ?
-                        "https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&entry.1042588232="
-                        : "https://docs.google.com/forms/d/e/1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ/viewform?usp=pp_url&entry.1223559684=") + presenter.getUserInfo().getEmail());
+                intent.putExtra(EXTRA_TITLE, getString(R.string.postbox_title));
+                intent.putExtra(EXTRA_CONTENTS, this.presenter.getInterpretedUrl(BuildConfig.DEBUG ?
+                        "https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&entry.1042588232={email}"
+                        : "https://docs.google.com/forms/d/e/1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ/viewform?usp=pp_url&entry.1223559684={email}"));
                 startActivity(intent);
             }
         }

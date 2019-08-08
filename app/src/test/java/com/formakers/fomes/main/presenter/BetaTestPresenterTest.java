@@ -6,6 +6,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.adapter.BetaTestListAdapter;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.model.User;
@@ -47,6 +48,7 @@ public class BetaTestPresenterTest {
     @Mock private UserDAO mockUserDAO;
     @Mock private EventLogService mockEventLogService;
     @Mock private AnalyticsModule.Analytics mockAnalytics;
+    @Mock private FomesUrlHelper mockFomesUrlHelper;
 
     private User dummyUser;
     private List<BetaTest> betaTests = new ArrayList<>();
@@ -81,7 +83,7 @@ public class BetaTestPresenterTest {
         when(mockAdapterModel.getPositionById("1")).thenReturn(0);
         when(mockAdapterModel.getPositionById("2")).thenReturn(1);
 
-        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO, mockAnalytics);
+        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO, mockAnalytics, mockFomesUrlHelper);
         subject.setAdapterModel(mockAdapterModel);
     }
 
@@ -167,13 +169,6 @@ public class BetaTestPresenterTest {
         assertThat(subject.getBetaTestPostitionById("2")).isEqualTo(1);
     }
 
-    @Test
-    public void getUserEmail__호출시__유저의_이메일을_리턴한다() {
-        subject.initialize();
-        String userEmail = subject.getUserEmail();
-
-        assertThat(userEmail).isEqualTo("user@gmail.com");
-    }
 
     @Test
     public void sendEventLog_호출시__전달받은_내용에_대한_이벤트로그_저장을_요청한다() {
@@ -186,5 +181,12 @@ public class BetaTestPresenterTest {
         verify(mockEventLogService).sendEventLog(eventLogCaptor.capture());
         assertEquals(eventLogCaptor.getValue().getCode(), "ANY_CODE");
         assertEquals(eventLogCaptor.getValue().getRef(), "ANY_REF");
+    }
+
+    @Test
+    public void getInterpretedUrl_호출시__예약어를_해석한_새로운_URL을_반환한다() {
+        subject.getInterpretedUrl("http://www.naver.com?email={email}");
+
+        verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}"));
     }
 }

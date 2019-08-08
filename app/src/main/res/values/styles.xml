@@ -204,8 +204,7 @@
     <style name="BetaTestTheme.CardBackground.Lock">
         <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/beta_test_detail_mission_lock</item>
-        <item name="item_stroke_color">@color/colorPrimary</item>
-        <item name="item_stroke_width">1dp</item>
+        <item name="item_stroke_width">0dp</item>
     </style>
 
     <!--<style name="BetaTestTheme.CardGradient">-->
@@ -386,6 +385,11 @@
 
     <style name="BetaTestDetailTheme.RewardDivider">
         <item name="divider_height">12dp</item>
+        <item name="divider_color">@android:color/transparent</item>
+    </style>
+
+    <style name="BetaTestDetailTheme.HowToDivider">
+        <item name="divider_height">6dp</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>
 

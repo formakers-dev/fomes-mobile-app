@@ -23,7 +23,7 @@ public interface BetaTestContract {
 
         BetaTest getBetaTestItem(int position);
         int getBetaTestPostitionById(String id);
-        String getUserEmail();
+        String getInterpretedUrl(String originalUrl);
         void sendEventLog(String code, String ref);
         void unsubscribe();
     }

@@ -60,5 +60,5 @@
     <color name="beta_test_finished_group_company_says_attend_background">@color/colorPrimary</color>
     <color name="beta_test_finished_group_epilogue_button">@color/fomes_light_gray</color>
 
-    <color name="beta_test_detail_mission_lock">#F0202020</color>
+    <color name="beta_test_detail_mission_lock">#161716</color>
 </resources>

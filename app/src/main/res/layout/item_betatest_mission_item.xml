@@ -18,7 +18,7 @@
         android:layout_marginStart="5dp"
         android:textSize="12dp"
         android:textColor="@color/fomes_light_pale_gray"
-        tools:text="1번째"/>
+        tools:text="1단계"/>
 
     <TextView
         android:id="@+id/mission_item_title"
