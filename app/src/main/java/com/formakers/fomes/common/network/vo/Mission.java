@@ -17,6 +17,9 @@ public class Mission implements Parcelable {
     List<MissionItem> items;
     String guide;
 
+    // For view
+    Boolean isLocked;
+
     public static class MissionItem implements Parcelable {
         @SerializedName("_id") String id;
         Integer order;
@@ -248,6 +251,25 @@ public class Mission implements Parcelable {
         return this;
     }
 
+    public boolean isLocked() {
+        return isLocked == null ? true : isLocked;
+    }
+
+    public Mission setLocked(boolean locked) {
+        isLocked = locked;
+        return this;
+    }
+
+    public boolean isCompleted() {
+        for (MissionItem item : this.items) {
+            if (item.isMandatory() && !item.isCompleted()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public String toString() {
         return "Mission{" +
@@ -259,6 +281,7 @@ public class Mission implements Parcelable {
                 ", descriptionImageUrl='" + descriptionImageUrl + '\'' +
                 ", items=" + items +
                 ", guide='" + guide + '\'' +
+                ", isLocked=" + isLocked +
                 '}';
     }
 
@@ -280,6 +303,7 @@ public class Mission implements Parcelable {
         dest.writeString(descriptionImageUrl);
         dest.writeTypedList(items);
         dest.writeString(guide);
+        dest.writeInt(isLocked ? 1 : 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -291,6 +315,7 @@ public class Mission implements Parcelable {
         descriptionImageUrl = in.readString();
         in.readTypedList(items, MissionItem.CREATOR);
         guide = in.readString();
+        isLocked = in.readInt() == 1;
     }
 
     @Override

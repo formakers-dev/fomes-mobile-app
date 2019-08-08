@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -30,15 +32,13 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final String TAG = "MissionListAdapter";
 
-    BetaTest betaTest;
-    @Deprecated boolean isLocked = false;
+    List<Mission> missionList = new ArrayList<>();
     View.OnClickListener missionItemClickListener;
 
     BetaTestDetailContract.Presenter presenter;
     BetaTestDetailContract.View view;
 
-    public MissionListAdapter(BetaTest betaTest, BetaTestDetailContract.Presenter presenter, BetaTestDetailContract.View view) {
-        this.betaTest = betaTest;
+    public MissionListAdapter(BetaTestDetailContract.Presenter presenter, BetaTestDetailContract.View view) {
         this.presenter = presenter;
         this.view = view;
     }
@@ -53,17 +53,13 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return this;
     }
 
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public MissionListAdapter setLocked(boolean locked) {
-        isLocked = locked;
+    public MissionListAdapter setMissionItemClickListener(View.OnClickListener missionItemClickListener) {
+        this.missionItemClickListener = missionItemClickListener;
         return this;
     }
 
-    public MissionListAdapter setMissionItemClickListener(View.OnClickListener missionItemClickListener) {
-        this.missionItemClickListener = missionItemClickListener;
+    public MissionListAdapter setMissionList(List<Mission> missionList) {
+        this.missionList = missionList;
         return this;
     }
 
@@ -75,7 +71,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Mission mission = betaTest.getMissions().get(position);
+        Mission mission = missionList.get(position);
 
         ViewHolder viewHolder = ((ViewHolder) holder);
         Context context = viewHolder.itemView.getContext();
@@ -103,10 +99,15 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.lockLevelTextView.setText(String.format(context.getString(R.string.betatest_detail_mission_item_lock_level_format), position + 1));
         viewHolder.lockTitleTextView.setText(mission.getItems().get(0).getTitle());
 
-        viewHolder.lockView.setVisibility(isLocked ? View.VISIBLE : View.GONE);
-        if (isLocked) {
+        viewHolder.lockDescriptionTextView.setText(position <= 0 ? "참여하려면 터치해 주세요." : "이전 단계를 완료하시면 열립니다.");
+
+        Log.d(TAG, "mission: " + mission);
+        viewHolder.lockView.setVisibility(mission.isLocked() ? View.VISIBLE : View.GONE);
+
+        if (position <= 0 && mission.isLocked()) {
+            viewHolder.lockView.setClickable(true);
             viewHolder.lockView.setOnClickListener(v -> {
-                for (Mission lockedMission : betaTest.getMissions()) {
+                for (Mission lockedMission : missionList) {
                     for (Mission.MissionItem missionItem : lockedMission.getItems()) {
                         if ("play".equals(missionItem.getType())
                                 || "hidden".equals(missionItem.getType())) {
@@ -115,8 +116,10 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 }
 
-                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, betaTest.getId());
+                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, mission.getId());
             });
+        } else {
+            viewHolder.lockView.setClickable(false);
         }
 
         viewHolder.itemViewGroup.removeAllViews();
@@ -135,12 +138,12 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if ("play".equals(missionItem.getType())) {
                 long playtime = 0L;
 
-                missionItemProgressStatusTextView.setText("참여 중");
+                missionItemProgressStatusTextView.setText("참여 가능");
 //                viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
 //                viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
 //                viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
             } else {
-                viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
+//                viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
                 missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
                 missionItemView.setEnabled(missionItem.isRepeatable() || !missionItem.isCompleted());
             }
@@ -185,7 +188,14 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 item.setCompleted(missionItem.isCompleted());
                             }
                         }
-                    }, e -> Log.e(TAG, String.valueOf(e)), () -> notifyItemChanged(position)));
+                    }, e -> Log.e(TAG, String.valueOf(e)), () -> {
+                        presenter.getMissionList()
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(missionList -> {
+                                    setMissionList(missionList);
+                                    notifyDataSetChanged();
+                                });
+                    }));
         });
 
         viewHolder.itemView.setOnClickListener(missionItemClickListener);
@@ -193,7 +203,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return betaTest.getMissions().size();
+        return missionList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -209,6 +219,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View lockView;
         TextView lockLevelTextView;
         TextView lockTitleTextView;
+        TextView lockDescriptionTextView;
         ViewGroup itemViewGroup;
         View refreshButton;
         View refreshProgress;
@@ -228,6 +239,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             lockView = itemView.findViewById(R.id.betatest_lock_layout);
             lockLevelTextView = itemView.findViewById(R.id.betatest_mission_lock_level_textview);
             lockTitleTextView = itemView.findViewById(R.id.betatest_mission_lock_title_textview);
+            lockDescriptionTextView = itemView.findViewById(R.id.betatest_mission_lock_description_textview);
             itemViewGroup = itemView.findViewById(R.id.mission_items_layout);
             refreshButton = itemView.findViewById(R.id.mission_refresh_button);
             refreshProgress = itemView.findViewById(R.id.mission_refresh_progress);

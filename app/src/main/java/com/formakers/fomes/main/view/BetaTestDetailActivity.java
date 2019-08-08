@@ -46,6 +46,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_ENTER;
@@ -73,6 +74,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Inject BetaTestDetailContract.Presenter presenter;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private MissionListAdapter missionListAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -233,6 +235,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
         Observable.from(betaTest.getMissions())
                 .concatMap(mission -> Observable.from(mission.getItems()))
+                .filter(missionItem -> !"hidden".equals(missionItem.getType()))
                 .toList()
                 .subscribe(displayedMissionItems -> {
                     displayedMissionItems.add(new Mission.MissionItem().setTitle("보상 받기"));
@@ -257,12 +260,15 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,
                 new ContextThemeWrapper(this, R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        boolean isLocked = betaTest.getCompletedItemCount() <= 0;
-        MissionListAdapter missionListAdapter = new MissionListAdapter(betaTest, presenter, this);
-        missionListAdapter.setLocked(isLocked);
-
+        missionListAdapter = new MissionListAdapter(presenter, this);
         missionRecyclerView.setAdapter(missionListAdapter);
+
+        presenter.getMissionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionList -> {
+                    missionListAdapter.setMissionList(missionList);
+                    missionListAdapter.notifyDataSetChanged();
+                });
     }
 
     @Override
@@ -277,11 +283,14 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @Override
     public void unlockMissions() {
-        if (missionRecyclerView.getAdapter() instanceof MissionListAdapter) {
-            MissionListAdapter adapter = (MissionListAdapter) missionRecyclerView.getAdapter();
-            adapter.setLocked(false);
-            adapter.notifyDataSetChanged();
-        }
+        presenter.startMission();
+
+        presenter.getMissionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionList -> {
+                    missionListAdapter.setMissionList(missionList);
+                    missionListAdapter.notifyDataSetChanged();
+                });
     }
 
     @Override

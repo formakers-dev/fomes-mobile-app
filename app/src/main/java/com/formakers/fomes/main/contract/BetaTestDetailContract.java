@@ -10,6 +10,8 @@ import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 
+import java.util.List;
+
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
@@ -28,6 +30,9 @@ public interface BetaTestDetailContract {
 
         void processMissionItemAction(Mission.MissionItem missionItem);
         String getInterpretedUrl(String originalUrl);
+
+        Observable<List<Mission>> getMissionList();
+        void startMission();
     }
 
     interface View extends BaseView<Presenter> {

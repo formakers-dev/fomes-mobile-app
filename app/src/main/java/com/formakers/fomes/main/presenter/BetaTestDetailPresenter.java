@@ -14,12 +14,15 @@ import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestDetailActivityScope;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 @BetaTestDetailActivityScope
 public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter {
@@ -96,7 +99,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
                             return betaTest;
                         })
-                        .subscribe(betaTest -> this.view.bind(betaTest), e -> Log.e(TAG, String.valueOf(e)))
+                        .subscribe(betaTest -> {
+                            this.betaTest = betaTest;
+                            this.view.bind(betaTest);
+                        }, e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 
@@ -139,5 +145,57 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public String getInterpretedUrl(String originalUrl) {
         return fomesUrlHelper.interpretUrlParams(originalUrl);
+    }
+
+    @Override
+    public Observable<List<Mission>> getMissionList() {
+        // 각 미션들의 lock상태를 이전 미션의 필수와 완료 상태에 따라 업데이트
+        // 첫 번째 미션인 경우 hidden이나 play 미션아이템의 완료여부에 따라 lock상태 업데이트
+
+        return Observable.from(betaTest.getMissions())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .reduce(new ArrayList<Mission>(), (reducedMissionList, mission) -> {
+                    if (reducedMissionList.size() > 0) {
+                        Mission lastMission = reducedMissionList.get(reducedMissionList.size() - 1);
+                        mission.setLocked(!lastMission.isCompleted());
+                    }
+
+                    reducedMissionList.add(mission);
+
+                    return reducedMissionList;
+                })
+                .map(reducedMissionList -> {
+                    // 첫 번째 미션 락에 대한 예외처리
+                    if (reducedMissionList.get(0).isLocked()) {
+                        for (Mission lockedMission : reducedMissionList) {
+                            for (Mission.MissionItem lockedMissionItem : lockedMission.getItems()) {
+                                if ("play".equals(lockedMissionItem.getType())
+                                        || "hidden".equals(lockedMissionItem.getType())) {
+                                    reducedMissionList.get(0).setLocked(!lockedMissionItem.isCompleted());
+                                }
+                            }
+                        }
+                    }
+
+                    // 가장 먼저 발견된 락 이후로는 모두 락으로 셋팅
+                    int i;
+                    for (i = 0; i < reducedMissionList.size(); ++i) {
+                        if (reducedMissionList.get(i).isLocked()) {
+                            break;
+                        }
+                    }
+
+                    for (; i < reducedMissionList.size(); i++) {
+                        reducedMissionList.get(i).setLocked(true);
+                    }
+
+                    return reducedMissionList;
+                });
+    }
+
+    @Override
+    public void startMission() {
+        betaTest.getMissions().get(0).setLocked(false);
     }
 }

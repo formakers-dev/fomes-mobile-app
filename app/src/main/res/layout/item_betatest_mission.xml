@@ -224,12 +224,13 @@
             android:textStyle="bold"
             tools:text="게임을 플레이 하라!"/>
         <TextView
+            android:id="@+id/betatest_mission_lock_description_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:gravity="center"
             android:textSize="12dp"
             android:textColor="@color/fomes_warm_gray"
-            android:text="참여하려면 터치해 주세요."/>
+            tools:text="참여하려면 터치해 주세요."/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
