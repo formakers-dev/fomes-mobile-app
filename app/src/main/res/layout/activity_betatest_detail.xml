@@ -185,7 +185,7 @@
 
             <TextView
                 android:id="@+id/betatest_howto_description_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:textSize="11dp"
                 android:textColor="@color/fomes_warm_gray_2"
@@ -193,6 +193,7 @@
                 android:layout_marginTop="@dimen/betatest_detail_items_description_margin_top"
                 app:layout_constraintTop_toBottomOf="@id/betatest_howto_title_textview"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"
                 tools:ignore="MissingConstraints"/>
 
             <LinearLayout
@@ -209,6 +210,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/betatest_howto_description_textview"/>
 
             <TextView
+                android:id="@+id/betatest_howto_guide_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
+                android:textSize="11dp"
+                android:textColor="@color/fomes_warm_gray_2"
+                android:text="@string/betatest_detail_howto_guide"
+                android:layout_marginTop="@dimen/betatest_detail_items_description_margin_top"
+                app:layout_constraintTop_toBottomOf="@id/betatest_howto_items_layout"
+                app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"
+                tools:ignore="MissingConstraints"/>
+
+            <TextView
                 android:id="@+id/betatest_reward_title_textview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
@@ -218,7 +233,7 @@
                 android:text="@string/betatest_detail_rewards_title"
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
                 app:layout_goneMarginTop="@dimen/betatest_detail_items_margin_top"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_howto_items_layout"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_howto_guide_textview"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"/>
 
@@ -229,10 +244,10 @@
                 android:textSize="11dp"
                 android:textColor="@color/fomes_warm_gray_2"
                 android:layout_marginTop="@dimen/betatest_detail_items_description_margin_top"
+                android:text="@string/betatest_detail_rewards_description"
                 app:layout_constraintTop_toBottomOf="@id/betatest_reward_title_textview"
                 app:layout_constraintStart_toStartOf="@+id/betatest_reward_title_textview"
-                tools:ignore="MissingConstraints"
-                tools:text="테스트 마감후 7일 이내에 보상이 지급됩니다." />
+                tools:ignore="MissingConstraints" />
 
             <LinearLayout
                 android:id="@+id/betatest_reward_items_layout"

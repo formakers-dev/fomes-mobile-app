@@ -207,8 +207,9 @@
     <!-- Beta Test Detail -->
     <string name="betatest_detail_howto_title">테스트 방법</string>
     <string name="betatest_detail_howto_description">어렵지 않아요. 게임을 즐기고 의견을 주면 끝!</string>
+    <string name="betatest_detail_howto_guide">* 마감후 %d일 이내에 시상식이 열리고, 보상이 지급됩니다.\n* 시상식은 [마감된 테스트] 탭에서 확인 가능합니다.</string>
     <string name="betatest_detail_rewards_title">테스트 보상</string>
-    <string name="betatest_detail_rewards_description">테스트 마감후 %d일 이내에 보상이 지급됩니다.</string>
+    <string name="betatest_detail_rewards_description">[마감된 테스트] 탭의 시상식을 통해 선정자를 안내해드립니다.</string>
     <string name="betatest_detail_mission_list_title">테스트 참여</string>
     <string name="betatest_detail_mission_list_description">당신의 게임 분석력과 통찰력을 기대할게요!</string>
     <string name="betatest_detail_purpose_title">테스트 목적</string>

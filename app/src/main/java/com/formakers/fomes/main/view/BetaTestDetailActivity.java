@@ -63,12 +63,12 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_detail_period) TextView periodTextView;
     @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
     @BindView(R.id.betatest_detail_description_textview) TextView descriptionTextView;
-    @BindView(R.id.betatest_reward_description_textview) TextView rewardDescriptionTextView;
     @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
     @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
     @BindView(R.id.betatest_purpose_description_textview) TextView purposeDescriptionTextView;
     @BindView(R.id.betatest_howto_items_layout) ViewGroup howtoViewGroup;
+    @BindView(R.id.betatest_howto_guide_textview) TextView howtoGuideTextView;
 
     @Inject BetaTestDetailContract.Presenter presenter;
 
@@ -210,8 +210,6 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         }
 
         // 리워드 목록
-        rewardDescriptionTextView.setText(String.format(getString(R.string.betatest_detail_rewards_description), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
-
         for (BetaTest.Rewards.RewardItem rewardItem : betaTest.getRewards().getList()) {
             View rewardItemView = getLayoutInflater().inflate(R.layout.item_betatest_reward, null);
 
@@ -232,6 +230,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         }
 
         // 테스트 방법
+        howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
         Observable.from(betaTest.getMissions())
                 .concatMap(mission -> Observable.from(mission.getItems()))
                 .toList()
