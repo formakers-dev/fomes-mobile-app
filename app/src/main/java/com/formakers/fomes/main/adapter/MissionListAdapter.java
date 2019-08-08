@@ -121,6 +121,13 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else {
             viewHolder.lockView.setClickable(false);
         }
+        viewHolder.lockView.setOnTouchListener((v, event) -> {
+            if (position <= 0) {
+                v.performClick();
+            }
+
+            return true;
+        });
 
         viewHolder.itemViewGroup.removeAllViews();
         for (Mission.MissionItem missionItem: mission.getItems()) {
