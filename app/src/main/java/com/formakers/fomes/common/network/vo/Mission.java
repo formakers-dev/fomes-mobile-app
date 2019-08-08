@@ -26,6 +26,7 @@ public class Mission implements Parcelable {
         String action;
         boolean isCompleted;
         boolean isRepeatable;
+        boolean isMandatory;
 
         public MissionItem() {
         }
@@ -102,6 +103,15 @@ public class Mission implements Parcelable {
             return this;
         }
 
+        public boolean isMandatory() {
+            return isMandatory;
+        }
+
+        public MissionItem setMandatory(boolean mandatory) {
+            isMandatory = mandatory;
+            return this;
+        }
+
         @Override
         public String toString() {
             return "MissionItem{" +
@@ -113,6 +123,7 @@ public class Mission implements Parcelable {
                     ", action='" + action + '\'' +
                     ", isCompleted=" + isCompleted +
                     ", isRepeatable=" + isRepeatable +
+                    ", isMandatory=" + isMandatory +
                     '}';
         }
 
@@ -132,8 +143,9 @@ public class Mission implements Parcelable {
             dest.writeString(title);
             dest.writeString(actionType);
             dest.writeString(action);
-            dest.writeInt(isCompleted ? 1 : 0);     // TODO : ??
-            dest.writeInt(isRepeatable ? 1 : 0);     // TODO : ??
+            dest.writeInt(isCompleted ? 1 : 0);
+            dest.writeInt(isRepeatable ? 1 : 0);
+            dest.writeInt(isMandatory ? 1 : 0);
         }
 
         private void readFromParcel(Parcel in) {
@@ -145,6 +157,7 @@ public class Mission implements Parcelable {
             action = in.readString();
             isCompleted = in.readInt() == 1;
             isRepeatable = in.readInt() == 1;
+            isMandatory = in.readInt() == 1;
         }
 
         @Override
