@@ -17,7 +17,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
-import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 
@@ -137,9 +136,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 long playtime = 0L;
 
                 missionItemProgressStatusTextView.setText("참여 중");
-                viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
-                viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
-                viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
+//                viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
+//                viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
+//                viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
             } else {
                 viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
                 missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
