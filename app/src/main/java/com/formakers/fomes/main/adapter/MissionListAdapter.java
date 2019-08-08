@@ -142,7 +142,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
                 missionItemProgressStatusTextView.setText(missionItem.isCompleted() ? "참여 완료" : "");
-                missionItemView.setEnabled(!missionItem.isCompleted());
+                missionItemView.setEnabled(missionItem.isRepeatable() || !missionItem.isCompleted());
             }
 
             int missionItemOrder = missionItem.getOrder();
