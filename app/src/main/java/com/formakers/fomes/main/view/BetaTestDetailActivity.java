@@ -234,7 +234,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         // 테스트 방법
         howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
         Observable.from(betaTest.getMissions())
-                .concatMap(mission -> Observable.from(mission.getItems()))
+                .map(mission -> mission.getItem())
                 .filter(missionItem -> !"hidden".equals(missionItem.getType()))
                 .toList()
                 .subscribe(displayedMissionItems -> {

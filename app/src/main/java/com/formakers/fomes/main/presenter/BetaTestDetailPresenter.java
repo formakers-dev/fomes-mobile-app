@@ -73,16 +73,12 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         .doAfterTerminate(() -> this.view.hideLoading())
                         .map(betaTest -> {
                             // 진행상태 체크 (progress)
-                            int total = 0;
+                            int total = betaTest.getMissions().size();
                             int completed = 0;
 
                             for (Mission mission : betaTest.getMissions()) {
-                                total += mission.getItems().size();
-
-                                for (Mission.MissionItem missionItem : mission.getItems()) {
-                                    if (missionItem.isCompleted()) {
-                                        completed++;
-                                    }
+                                if (mission.getItem().isCompleted()) {
+                                     completed++;
                                 }
                             }
 
@@ -91,11 +87,13 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
                             // 정렬 (order)
                             Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
-                            Collections.sort(betaTest.getMissions(), (o1, o2) -> o1.getOrder() - o2.getOrder());
-
-                            for (Mission mission : betaTest.getMissions()) {
-                                Collections.sort(mission.getItems(), ((o1, o2) -> o1.getOrder() - o2.getOrder()));
-                            }
+                            Collections.sort(betaTest.getMissions(), (o1, o2) -> {
+                                if (o1.getOrder().equals(o2.getOrder())) {
+                                    return o1.getItem().getOrder() - o2.getItem().getOrder();
+                                } else {
+                                    return o1.getOrder() - o2.getOrder();
+                                }
+                            });
 
                             return betaTest;
                         })
@@ -158,7 +156,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 .reduce(new ArrayList<Mission>(), (reducedMissionList, mission) -> {
                     if (reducedMissionList.size() > 0) {
                         Mission lastMission = reducedMissionList.get(reducedMissionList.size() - 1);
-                        mission.setLocked(!lastMission.isCompleted());
+                        mission.setLocked(lastMission.isBlockedNextMission());
                     }
 
                     reducedMissionList.add(mission);
@@ -169,11 +167,11 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     // 첫 번째 미션 락에 대한 예외처리
                     if (reducedMissionList.get(0).isLocked()) {
                         for (Mission lockedMission : reducedMissionList) {
-                            for (Mission.MissionItem lockedMissionItem : lockedMission.getItems()) {
-                                if ("play".equals(lockedMissionItem.getType())
-                                        || "hidden".equals(lockedMissionItem.getType())) {
-                                    reducedMissionList.get(0).setLocked(!lockedMissionItem.isCompleted());
-                                }
+                            Mission.MissionItem lockedMissionItem = lockedMission.getItem();
+
+                            if ("play".equals(lockedMissionItem.getType())
+                                    || "hidden".equals(lockedMissionItem.getType())) {
+                                reducedMissionList.get(0).setLocked(!lockedMissionItem.isCompleted());
                             }
                         }
                     }

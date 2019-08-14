@@ -97,7 +97,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.guideTextView.setText(mission.getGuide());
 
         viewHolder.lockLevelTextView.setText(String.format(context.getString(R.string.betatest_detail_mission_item_lock_level_format), position + 1));
-        viewHolder.lockTitleTextView.setText(mission.getItems().get(0).getTitle());
+        viewHolder.lockTitleTextView.setText(mission.getItem().getTitle());
 
         viewHolder.lockDescriptionTextView.setText(position <= 0 ? "참여하려면 터치해 주세요." : "이전 단계를 완료하시면 열립니다.");
 
@@ -108,11 +108,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             viewHolder.lockView.setClickable(true);
             viewHolder.lockView.setOnClickListener(v -> {
                 for (Mission lockedMission : missionList) {
-                    for (Mission.MissionItem missionItem : lockedMission.getItems()) {
-                        if ("play".equals(missionItem.getType())
-                                || "hidden".equals(missionItem.getType())) {
-                            presenter.requestCompleteMissionItem(missionItem.getId());
-                        }
+                    Mission.MissionItem missionItem = lockedMission.getItem();
+
+                    if ("play".equals(missionItem.getType())
+                            || "hidden".equals(missionItem.getType())) {
+                        presenter.requestCompleteMissionItem(missionItem.getId());
                     }
                 }
 
@@ -130,12 +130,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         });
 
         viewHolder.itemViewGroup.removeAllViews();
-        for (Mission.MissionItem missionItem: mission.getItems()) {
+        Mission.MissionItem missionItem = mission.getItem();
 
-            if ("hidden".equals(missionItem.getType())) {
-                continue;
-            }
-
+        if (!"hidden".equals(missionItem.getType())) {
             View missionItemView = view.inflate(R.layout.item_betatest_mission_item);
 
             TextView missionItemOrderTextView = missionItemView.findViewById(R.id.mission_item_order);
@@ -143,7 +140,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             TextView missionItemProgressStatusTextView = missionItemView.findViewById(R.id.mission_item_progress_status);
 
             if ("play".equals(missionItem.getType())) {
-                long playtime = 0L;
+//                long playtime = 0L;
 
                 missionItemProgressStatusTextView.setText("참여 가능");
 //                viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
@@ -189,11 +186,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         viewHolder.refreshButton.setVisibility(View.VISIBLE);
                         viewHolder.refreshProgress.setVisibility(View.GONE);
                     })
-                    .subscribe(missionItem -> {
-                        for (Mission.MissionItem item : mission.getItems()) {
-                            if (item.getId().equals(missionItem.getId())) {
-                                item.setCompleted(missionItem.isCompleted());
-                            }
+                    .subscribe(newMissionItem -> {
+                        Mission.MissionItem item = mission.getItem();
+
+                        if (item.getId().equals(newMissionItem.getId())) {
+                            item.setCompleted(newMissionItem.isCompleted());
                         }
                     }, e -> Log.e(TAG, String.valueOf(e)), () -> {
                         presenter.getMissionList()

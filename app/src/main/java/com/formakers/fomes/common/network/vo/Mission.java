@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Mission implements Parcelable {
     @SerializedName("_id") String id;
     Integer order;
@@ -14,7 +12,7 @@ public class Mission implements Parcelable {
     String title;
     String description;
     String descriptionImageUrl;
-    List<MissionItem> items;
+    MissionItem item;
     String guide;
 
     // For view
@@ -233,12 +231,12 @@ public class Mission implements Parcelable {
         return this;
     }
 
-    public List<MissionItem> getItems() {
-        return items;
+    public MissionItem getItem() {
+        return item;
     }
 
-    public Mission setItems(List<MissionItem> items) {
-        this.items = items;
+    public Mission setItem(MissionItem item) {
+        this.item = item;
         return this;
     }
 
@@ -260,14 +258,13 @@ public class Mission implements Parcelable {
         return this;
     }
 
-    public boolean isCompleted() {
-        for (MissionItem item : this.items) {
-            if (item.isMandatory() && !item.isCompleted()) {
-                return false;
-            }
+    // TODO : Presenter 로 옮길까????????? 리팩토링이니깐 좀 더 고민을 해보고 차차 결정하긔
+    public boolean isBlockedNextMission() {
+        if (item.isMandatory() && !item.isCompleted()) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -279,7 +276,7 @@ public class Mission implements Parcelable {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionImageUrl='" + descriptionImageUrl + '\'' +
-                ", items=" + items +
+                ", item=" + item +
                 ", guide='" + guide + '\'' +
                 ", isLocked=" + isLocked +
                 '}';
@@ -301,7 +298,7 @@ public class Mission implements Parcelable {
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(descriptionImageUrl);
-        dest.writeTypedList(items);
+        dest.writeParcelable(item, 0);
         dest.writeString(guide);
         dest.writeInt(isLocked ? 1 : 0);
     }
@@ -313,7 +310,7 @@ public class Mission implements Parcelable {
         title = in.readString();
         description = in.readString();
         descriptionImageUrl = in.readString();
-        in.readTypedList(items, MissionItem.CREATOR);
+        item = in.readParcelable(null);
         guide = in.readString();
         isLocked = in.readInt() == 1;
     }
