@@ -110,13 +110,6 @@ public class BetaTestDetailPresenterTest {
     }
 
     @Test
-    public void requestCompleteMissionItem_호출시__해당_미션_아이템에_대한_완료처리를_요청한다() {
-        subject.requestCompleteMissionItem("5d1ec8194400311578e996bd");
-
-        verify(mockView).unlockMissions();
-    }
-
-    @Test
     public void refreshMissionProgress_호출시__해당_미션의_진행상태를_요청한다() {
         subject.refreshMissionProgress("5d1ec8094400311578e996bc");
 

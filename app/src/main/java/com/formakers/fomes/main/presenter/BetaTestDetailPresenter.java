@@ -105,15 +105,6 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public void requestCompleteMissionItem(String missionItemId) {
-        view.getCompositeSubscription().add(
-                this.betaTestService.postCompleteBetaTest(missionItemId)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> this.view.unlockMissions(), e -> Log.e(TAG, String.valueOf(e)))
-        );
-    }
-
-    @Override
     public Observable<Mission.MissionItem> refreshMissionProgress(String missionId) {
         return this.betaTestService.getMissionProgress(missionId);
     }
@@ -146,7 +137,34 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Observable<List<Mission>> getMissionList() {
+    public Observable<List<Mission>> getDisplayedMissionList() {
+        return getMissionListWithLockingSequence()
+                .filter(mission -> !"hidden".equals(mission.getItem().getType()))
+                .toList();
+    }
+
+    @Override
+    public void requestToAttendMission() {
+        this.getMissionListWithLockingSequence()
+                .filter(mission -> {
+                    String missionType = mission.getItem().getType();
+                    return "play".equals(missionType) || "hidden".equals(missionType);
+                })
+                .flatMapCompletable(mission -> this.betaTestService.postCompleteBetaTest(mission.getItem().getId()))
+                .toCompletable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( () -> {
+                    for (Mission mission : betaTest.getMissions()) {
+                        String missionType = mission.getItem().getType();
+                        if ("play".equals(missionType) || "hidden".equals(missionType)) {
+                            mission.getItem().setCompleted(true);
+                        }
+                    }
+                    this.view.refreshMissionList();
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    private Observable<Mission> getMissionListWithLockingSequence() {
         // 각 미션들의 lock상태를 이전 미션의 필수와 완료 상태에 따라 업데이트
         // 첫 번째 미션인 경우 hidden이나 play 미션아이템의 완료여부에 따라 lock상태 업데이트
 
@@ -163,7 +181,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
                     return reducedMissionList;
                 })
-                .map(reducedMissionList -> {
+                .flatMap(reducedMissionList -> {
                     // 첫 번째 미션 락에 대한 예외처리
                     if (reducedMissionList.get(0).isLocked()) {
                         for (Mission lockedMission : reducedMissionList) {
@@ -188,12 +206,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         reducedMissionList.get(i).setLocked(true);
                     }
 
-                    return reducedMissionList;
+                    return Observable.from(reducedMissionList);
                 });
-    }
-
-    @Override
-    public void startMission() {
-        betaTest.getMissions().get(0).setLocked(false);
     }
 }

@@ -263,7 +263,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         missionListAdapter = new MissionListAdapter(presenter, this);
         missionRecyclerView.setAdapter(missionListAdapter);
 
-        presenter.getMissionList()
+        // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
+        presenter.getDisplayedMissionList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(missionList -> {
                     missionListAdapter.setMissionList(missionList);
@@ -282,10 +283,11 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
-    public void unlockMissions() {
-        presenter.startMission();
+    public void refreshMissionList() {
+        Log.d(TAG, "refreshMissionList");
 
-        presenter.getMissionList()
+        // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
+        presenter.getDisplayedMissionList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(missionList -> {
                     missionListAdapter.setMissionList(missionList);
