@@ -32,7 +32,6 @@ import rx.subscriptions.CompositeSubscription;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -129,18 +128,18 @@ public class BetaTestDetailPresenterTest {
         when(mockFomesUrlHelper.interpretUrlParams("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}"))
                 .thenReturn("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com");
 
-        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email={email}"))
-                .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email=test@gmail.com");
+        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"))
+                .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty");
 
         // 인앱웹뷰
-        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(0).getItems().get(0));
+        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(0).getItem());
 
-        verify(mockView).startWebViewActivity(eq("의견 작성"), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
+        verify(mockView).startWebViewActivity(eq("의견을 작성하라!"), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
 
         // 디폴트 (딥링크)
-        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1).getItems().get(0));
+        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1).getItem());
 
-        verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email=test@gmail.com"));
+        verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"));
 
     }
 
@@ -153,8 +152,11 @@ public class BetaTestDetailPresenterTest {
 
     private BetaTest getDummyBetaTestDetail() {
         String json = "{" +
-                "\"_id\":\"5d1c5e695c20ca481f27a4ab\",\n" +
-                "\"tags\":[\n" +
+                "  \"_id\": \"5d1c5e695c20ca481f27a4ab\",\n" +
+                "  \"title\": \"[이리와 고양아] 게임 테스트\",\n" +
+                "  \"description\": \"\uD83D\uDC31 퍼즐을 풀어 냥줍한 고양이들과 함께하는 즐거운 시간!!\",\n" +
+                "  \"purpose\": null,\n" +
+                "  \"tags\": [\n" +
                 "    \"냥줍\",\n" +
                 "    \"퍼즐\",\n" +
                 "    \"고양이\",\n" +
@@ -162,90 +164,80 @@ public class BetaTestDetailPresenterTest {
                 "    \"수집\",\n" +
                 "    \"육성\",\n" +
                 "    \"시뮬레이션\"\n" +
-                "],\n" +
-                "\"title\":\"[이리와 고양아] 게임 테스트\",\n" +
-                "\"description\":\"\uD83D\uDC31 퍼즐을 풀어 냥줍한 고양이들과 함께하는 즐거운 시간!!\",\n" +
-                "\"overviewImageUrl\":\"https://i.imgur.com/Savbd4p.png\",\n" +
-                "\"iconImageUrl\":\"https://i.imgur.com/8yd6RCh.png\",\n" +
-                "\"openDate\":\"2019-07-04T00:00:00.000Z\",\n" +
-                "\"closeDate\":\"2119-07-10T14:59:59.998Z\",\n" +
-                "\"rewards\":{\n" +
-                "    \"list\":[\n" +
-                "        {\n" +
-                "            \"order\":2,\n" +
-                "            \"iconImageUrl\":\"https://i.imgur.com/6RaZ7vI.png\",\n" +
-                "            \"title\":\"테스트 성실상(20명)\",\n" +
-                "            \"content\":\"문상 1천원\",\n" +
-                "            \"userIds\":[\n" +
-                "\n" +
-                "            ]\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"order\":3,\n" +
-                "            \"iconImageUrl\":\"https://i.imgur.com/6RaZ7vI.png\",\n" +
-                "            \"title\":\"테스트 성실상333(30명)\",\n" +
-                "            \"content\":\"문상 3천원\",\n" +
-                "            \"userIds\":[\n" +
-                "\n" +
-                "            ]\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"order\":1,\n" +
-                "            \"iconImageUrl\":\"https://i.imgur.com/ybuI732.png\",\n" +
-                "            \"title\":\"테스트 수석(1명)\",\n" +
-                "            \"content\":\"문상 5천원\",\n" +
-                "            \"userIds\":[\n" +
-                "\n" +
-                "            ]\n" +
-                "        }\n" +
+                "  ],\n" +
+                "  \"overviewImageUrl\": \"https://i.imgur.com/Savbd4p.png\",\n" +
+                "  \"iconImageUrl\": \"https://i.imgur.com/8yd6RCh.png\",\n" +
+                "  \"openDate\": \"2019-07-04T00:00:00.000Z\",\n" +
+                "  \"closeDate\": \"2119-07-10T14:59:59.998Z\",\n" +
+                "  \"rewards\": {\n" +
+                "    \"list\": [\n" +
+                "      {\n" +
+                "        \"order\": 2,\n" +
+                "        \"iconImageUrl\": \"https://i.imgur.com/6RaZ7vI.png\",\n" +
+                "        \"title\": \"테스트 성실상(20명)\",\n" +
+                "        \"content\": \"문상 1천원\",\n" +
+                "        \"userIds\": []\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"order\": 3,\n" +
+                "        \"iconImageUrl\": \"https://i.imgur.com/6RaZ7vI.png\",\n" +
+                "        \"title\": \"테스트 성실상333(30명)\",\n" +
+                "        \"content\": \"문상 3천원\",\n" +
+                "        \"userIds\": []\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"order\": 1,\n" +
+                "        \"iconImageUrl\": \"https://i.imgur.com/ybuI732.png\",\n" +
+                "        \"title\": \"테스트 수석(1명)\",\n" +
+                "        \"content\": \"문상 5천원\",\n" +
+                "        \"userIds\": []\n" +
+                "      }\n" +
                 "    ]\n" +
-                "},\n" +
-                "\"missions\":[\n" +
+                "  },\n" +
+                "  \"missions\": [\n" +
                 "    {\n" +
-                "        \"order\":2,\n" +
-                "        \"title\":\"2단계 미션\",\n" +
-                "        \"description\":\"[이리와 고양아] 에 대한 구체적인 의견을 작성해주세요.\",\n" +
-                "        \"descriptionImageUrl\":\"\",\n" +
-                "        \"iconImageUrl\":\"https://i.imgur.com/Gk9byou.png\",\n" +
-                "        \"items\":[\n" +
-                "            {\n" +
-                "                \"order\":1,\n" +
-                "                \"title\":\"의견 작성\",\n" +
-                "                \"actionType\":\"link\",\n" +
-                "                \"action\":\"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}\",\n" +
-                "                \"_id\":\"5d1ec8254400311578e996be\",\n" +
-                "                \"isCompleted\":true\n" +
-                "            }\n" +
-                "        ],\n" +
-                "        \"guide\":\"* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다.\",\n" +
-                "        \"_id\":\"5d1ec8094400311578e996bc\"\n" +
+                "      \"order\": 2,\n" +
+                "      \"title\": \"2단계 미션\",\n" +
+                "      \"description\": \"[이리와 고양아] 에 대한 구체적인 의견을 작성해주세요.\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"iconImageUrl\": \"https://i.imgur.com/Gk9byou.png\",\n" +
+                "      \"guide\": \"* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다.\",\n" +
+                "      \"_id\": \"5d1ec8094400311578e996bc\",\n" +
+                "      \"item\": {\n" +
+                "        \"order\": 1,\n" +
+                "        \"title\": \"의견을 작성하라!\",\n" +
+                "        \"actionType\": \"link\",\n" +
+                "        \"action\": \"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}\",\n" +
+                "        \"_id\": \"5d1ec8254400311578e996be\",\n" +
+                "        \"isCompleted\": false,\n" +
+                "        \"isRepeatable\": true,\n" +
+                "        \"isMandatory\": true\n" +
+                "      }\n" +
                 "    },\n" +
                 "    {\n" +
-                "        \"order\":1,\n" +
-                "        \"title\":\"1단계 미션\",\n" +
-                "        \"description\":\"[이리와 고양아] 게임을 30분 이상 플레이해주세요.\",\n" +
-                "        \"descriptionImageUrl\":\"\",\n" +
-                "        \"iconImageUrl\":\"https://i.imgur.com/0ZMdxPO.png\",\n" +
-                "        \"items\":[\n" +
-                "            {\n" +
-                "                \"type\":\"play\",\n" +
-                "                \"order\":1,\n" +
-                "                \"title\":\"게임 플레이\",\n" +
-                "                \"actionType\":\"link\",\n" +
-                "                \"action\":\"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty&email={email}\",\n" +
-                "                \"postCondition\":{\n" +
-                "                    \"packageName\":\"com.goodcircle.comeonkitty\",\n" +
-                "                    \"playTime\":1800000\n" +
-                "                },\n" +
-                "                \"_id\":\"5d1ec8194400311578e996bd\",\n" +
-                "                \"isCompleted\":false\n" +
-                "            }\n" +
-                "        ],\n" +
-                "        \"guide\":\"\\n* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
-                "        \"_id\":\"5d1ec8024400311578e996bb\"\n" +
+                "      \"order\": 1,\n" +
+                "      \"title\": \"1단계 미션\",\n" +
+                "      \"description\": \"[이리와 고양아] 게임을 30분 이상 플레이해주세요.\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"iconImageUrl\": \"https://i.imgur.com/0ZMdxPO.png\",\n" +
+                "      \"guide\": \"* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
+                "      \"_id\": \"5d1ec8024400311578e996bb\",\n" +
+                "      \"item\": {\n" +
+                "        \"type\": \"play\",\n" +
+                "        \"order\": 1,\n" +
+                "        \"title\": \"게임을 플레이 하라!\",\n" +
+                "        \"actionType\": \"link\",\n" +
+                "        \"action\": \"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty\",\n" +
+                "        \"postCondition\": {\n" +
+                "          \"packageName\": \"com.goodcircle.comeonkitty\",\n" +
+                "          \"playTime\": 1800000\n" +
+                "        },\n" +
+                "        \"_id\": \"5d1ec8194400311578e996bd\",\n" +
+                "        \"isCompleted\": true\n" +
+                "      }\n" +
                 "    }\n" +
-                "],\n" +
-                "\"currentDate\":\"2019-07-17T08:40:52.362Z\"\n" +
+                "  ],\n" +
+                "  \"currentDate\": \"2019-08-14T09:52:23.879Z\"\n" +
                 "}";
 
         return new Gson().fromJson(json, BetaTest.class);
