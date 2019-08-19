@@ -50,7 +50,8 @@
             <ImageView
                 android:id="@+id/mission_title_icon"
                 android:layout_width="24dp"
-                android:layout_height="13dp"
+                android:layout_height="20dp"
+                android:scaleType="fitCenter"
                 android:tint="@color/fomes_white"
                 app:layout_constraintBottom_toBottomOf="@+id/mission_title"
                 app:layout_constraintStart_toStartOf="@+id/mission_description"

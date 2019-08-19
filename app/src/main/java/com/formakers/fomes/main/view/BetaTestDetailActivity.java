@@ -28,7 +28,6 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
-import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -56,22 +55,37 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     private static final String TAG = "BetaTestDetailActivity";
     private static final int DEFAULT_REWARDS_MINIMUM_DELAY = 7;
 
-    @BindView(R.id.loading) ProgressBar loadingProgressBar;
-    @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
-    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
-    @BindView(R.id.betatest_detail_title) TextView titleTextView;
-    @BindView(R.id.betatest_detail_subtitle) TextView subTitleTextView;
-    @BindView(R.id.betatest_detail_period) TextView periodTextView;
-    @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
-    @BindView(R.id.betatest_detail_description_textview) TextView descriptionTextView;
-    @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
-    @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
-    @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
-    @BindView(R.id.betatest_purpose_description_textview) TextView purposeDescriptionTextView;
-    @BindView(R.id.betatest_howto_items_layout) ViewGroup howtoViewGroup;
-    @BindView(R.id.betatest_howto_guide_textview) TextView howtoGuideTextView;
+    @BindView(R.id.loading)
+    ProgressBar loadingProgressBar;
+    @BindView(R.id.betatest_detail_overview_image)
+    ImageView overviewImageView;
+    @BindView(R.id.betatest_detail_app_icon)
+    ImageView iconImageView;
+    @BindView(R.id.betatest_detail_title)
+    TextView titleTextView;
+    @BindView(R.id.betatest_detail_subtitle)
+    TextView subTitleTextView;
+    @BindView(R.id.betatest_detail_period)
+    TextView periodTextView;
+    @BindView(R.id.betatest_detail_d_day)
+    TextView dDayTextView;
+    @BindView(R.id.betatest_detail_description_textview)
+    TextView descriptionTextView;
+    @BindView(R.id.betatest_reward_items_layout)
+    ViewGroup rewardViewGroup;
+    @BindView(R.id.betatest_mission_list)
+    RecyclerView missionRecyclerView;
+    @BindView(R.id.betatest_purpose_title_textview)
+    TextView purposeTitleTextView;
+    @BindView(R.id.betatest_purpose_description_textview)
+    TextView purposeDescriptionTextView;
+    @BindView(R.id.betatest_howto_items_layout)
+    ViewGroup howtoViewGroup;
+    @BindView(R.id.betatest_howto_guide_textview)
+    TextView howtoGuideTextView;
 
-    @Inject BetaTestDetailContract.Presenter presenter;
+    @Inject
+    BetaTestDetailContract.Presenter presenter;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
     private MissionListAdapter missionListAdapter;
@@ -234,23 +248,34 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         // 테스트 방법
         howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
         Observable.from(betaTest.getMissions())
-                .map(mission -> mission.getItem())
-                .filter(missionItem -> !"hidden".equals(missionItem.getType()))
-                .toList()
-                .subscribe(displayedMissionItems -> {
-                    displayedMissionItems.add(new Mission.MissionItem().setTitle("보상 받기"));
+                .filter(mission -> !"hidden".equals(mission.getItem().getType()))
+                .subscribe(displayedMission -> {
+                    View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
 
-                    for (Mission.MissionItem missionItem : displayedMissionItems) {
-                        View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
+                    ImageView missionImageView = missionItemView.findViewById(R.id.mission_icon);
+                    TextView missionTitleTextView = missionItemView.findViewById(R.id.mission_title);
+                    TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
 
-                        TextView missionItemOrderTextView = missionItemView.findViewById(R.id.mission_item_order);
-                        TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
+                    Glide.with(this).load(displayedMission.getIconImageUrl())
+                            .apply(new RequestOptions()
+                                    .fitCenter())
+                            .into(missionImageView);
+                    missionTitleTextView.setText(displayedMission.getTitle());
+                    missionItemTitleTextView.setText(displayedMission.getItem().getTitle());
 
-                        missionItemOrderTextView.setText(String.format("%d단계", displayedMissionItems.indexOf(missionItem) + 1));
-                        missionItemTitleTextView.setText(missionItem.getTitle());
+                    howtoViewGroup.addView(missionItemView);
+                }, e -> Log.e(TAG, String.valueOf(e)), () -> {
+                    View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
 
-                        howtoViewGroup.addView(missionItemView);
-                    }
+                    ImageView missionImageView = missionItemView.findViewById(R.id.mission_icon);
+                    TextView missionTitleTextView = missionItemView.findViewById(R.id.mission_title);
+                    TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
+
+                    missionImageView.setImageResource(R.drawable.icon_test_awards);
+                    missionTitleTextView.setText("테스터 시상식");
+                    missionItemTitleTextView.setText("대상사 선정 & 보상 지급");
+
+                    howtoViewGroup.addView(missionItemView);
                 });
 
 

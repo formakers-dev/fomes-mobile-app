@@ -163,7 +163,7 @@
     </style>
 
     <style name="RecommendTheme.BottomSheetDialog.Background">
-        <item name="item_color">@color/fomes_gray_2</item>
+        <item name="item_color">@color/fomes_charcoal_gray</item>
         <item name="item_background_radius">6dp</item>
     </style>
 
@@ -394,8 +394,8 @@
     </style>
 
     <style name="BetaTestDetailTheme.MissionItem">
-        <item name="item_background_radius">19dp</item>
-        <item name="item_solid_color">@color/fomes_black_alpha_50</item>
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_charcoal_gray</item>
         <item name="item_stroke_width">0dp</item>
     </style>
 
