@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import android.content.Intent;
 import android.net.Uri;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
@@ -8,6 +9,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.google.gson.Gson;
@@ -44,6 +46,7 @@ public class BetaTestDetailPresenterTest {
     @Mock EventLogService mockEventLogService;
     @Mock BetaTestService mockBetaTestService;
     @Mock FomesUrlHelper mockFomesUrlHelper;
+    @Mock AndroidNativeHelper mockAndroidNativeHelper;
 
     BetaTestDetailPresenter subject;
 
@@ -74,7 +77,7 @@ public class BetaTestDetailPresenterTest {
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
         when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
 
-        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper);
+        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper);
     }
 
     @Test
@@ -98,15 +101,16 @@ public class BetaTestDetailPresenterTest {
         verify(mockView).bind(argumentCaptor.capture());
         BetaTest actualBetaTest = argumentCaptor.getValue();
 
-        assertThat(actualBetaTest.getTotalItemCount()).isEqualTo(2);
+        assertThat(actualBetaTest.getTotalItemCount()).isEqualTo(3);
         assertThat(actualBetaTest.getCompletedItemCount()).isEqualTo(1);
         assertThat(actualBetaTest.getRewards().getList().size()).isEqualTo(3);
         assertThat(actualBetaTest.getRewards().getList().get(0).getOrder()).isEqualTo(1);
         assertThat(actualBetaTest.getRewards().getList().get(1).getOrder()).isEqualTo(2);
         assertThat(actualBetaTest.getRewards().getList().get(2).getOrder()).isEqualTo(3);
-        assertThat(actualBetaTest.getMissions().size()).isEqualTo(2);
+        assertThat(actualBetaTest.getMissions().size()).isEqualTo(3);
         assertThat(actualBetaTest.getMissions().get(0).getOrder()).isEqualTo(1);
         assertThat(actualBetaTest.getMissions().get(1).getOrder()).isEqualTo(2);
+        assertThat(actualBetaTest.getMissions().get(2).getOrder()).isEqualTo(3);
     }
 
     @Test
@@ -117,23 +121,58 @@ public class BetaTestDetailPresenterTest {
     }
 
     @Test
-    public void processMissionItemAction_호출시__액션타입에_맞는_액션을_결정한다() {
-        when(mockFomesUrlHelper.interpretUrlParams("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}"))
-                .thenReturn("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com");
-
+    public void processMissionItemAction_호출시__딥링크를_호출한다() {
         when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"))
                 .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty");
+
+        // 디폴트
+        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(2).getItem());
+
+        verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"));
+    }
+
+
+    @Test
+    public void processMissionItemAction_호출시__인앱웹뷰인_경우__인앱웹뷰를_띄우도록_호출한다() {
+        when(mockFomesUrlHelper.interpretUrlParams("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}"))
+                .thenReturn("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com");
 
         // 인앱웹뷰
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(0).getItem());
 
         verify(mockView).startWebViewActivity(eq("의견을 작성하라!"), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
 
-        // 디폴트 (딥링크)
+    }
+
+    @Test
+    public void processMissionItemAction_호출시__플레이_타입인_경우__설치되어있으면__앱을_실행시킨다 () {
+        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"))
+                .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty");
+
+        // 플레이
+        Intent expectedIntent = new Intent();
+        when(mockAndroidNativeHelper.getLaunchableIntent("com.goodcircle.comeonkitty"))
+                .thenReturn(expectedIntent);
+
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1).getItem());
 
-        verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"));
+        verify(mockAndroidNativeHelper).getLaunchableIntent("com.goodcircle.comeonkitty");
+        verify(mockView).startActivity(expectedIntent);
+    }
 
+    @Test
+    public void processMissionItemAction_호출시__플레이_타입인_경우__설치되어있지않으면__디폴트_플로우를_탄다() {
+        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"))
+                .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty");
+
+        // 플레이 - 디폴트
+        when(mockAndroidNativeHelper.getLaunchableIntent("com.goodcircle.comeonkitty"))
+                .thenReturn(null);
+
+        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1).getItem());
+
+        verify(mockAndroidNativeHelper).getLaunchableIntent("com.goodcircle.comeonkitty");
+        verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"));
     }
 
     @Test
@@ -221,12 +260,34 @@ public class BetaTestDetailPresenterTest {
                 "        \"title\": \"게임을 플레이 하라!\",\n" +
                 "        \"actionType\": \"link\",\n" +
                 "        \"action\": \"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty\",\n" +
+                "       \"packageName\": \"com.goodcircle.comeonkitty\"," +
                 "        \"postCondition\": {\n" +
                 "          \"packageName\": \"com.goodcircle.comeonkitty\",\n" +
                 "          \"playTime\": 1800000\n" +
                 "        },\n" +
                 "        \"_id\": \"5d1ec8194400311578e996bd\",\n" +
                 "        \"isCompleted\": true\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"order\": 3,\n" +
+                "      \"title\": \"3단계 미션\",\n" +
+                "      \"description\": \"[이리와 고양아] 두번째 설문\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"iconImageUrl\": \"https://i.imgur.com/0ZMdxPO.png\",\n" +
+                "      \"guide\": \"* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
+                "      \"_id\": \"5d1ec8024400311578e996bb\",\n" +
+                "      \"item\": {\n" +
+                "        \"order\": 1,\n" +
+                "        \"title\": \"게임을 플레이 하라!\",\n" +
+                "        \"actionType\": \"link\",\n" +
+                "        \"action\": \"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty\",\n" +
+                "        \"postCondition\": {\n" +
+                "          \"packageName\": \"com.goodcircle.comeonkitty\",\n" +
+                "          \"playTime\": 1800000\n" +
+                "        },\n" +
+                "        \"_id\": \"5d1ec8194400311578e996bd\",\n" +
+                "        \"isCompleted\": false\n" +
                 "      }\n" +
                 "    }\n" +
                 "  ],\n" +

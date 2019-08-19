@@ -1,5 +1,6 @@
 package com.formakers.fomes.main.presenter;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -10,6 +11,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestDetailActivityScope;
@@ -33,6 +35,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
     private FomesUrlHelper fomesUrlHelper;
+    private AndroidNativeHelper androidNativeHelper;
 
     private BetaTestDetailContract.View view;
 
@@ -43,12 +46,14 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                                    AnalyticsModule.Analytics analytics,
                                    EventLogService eventLogService,
                                    BetaTestService betaTestService,
-                                   FomesUrlHelper fomesUrlHelper) {
+                                   FomesUrlHelper fomesUrlHelper,
+                                   AndroidNativeHelper androidNativeHelper) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
         this.fomesUrlHelper = fomesUrlHelper;
+        this.androidNativeHelper = androidNativeHelper;
     }
 
     @Override
@@ -120,10 +125,19 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         String url = getInterpretedUrl(action);
         Uri uri = Uri.parse(url);
 
+        if ("play".equals(missionItem.getType())) {
+            Intent intent = this.androidNativeHelper.getLaunchableIntent(missionItem.getPackageName());
+
+            if (intent != null) {
+                view.startActivity(intent);
+                return;
+            }
+        }
+
         // below condition logic should be move to URL Manager(or Parser and so on..)
         if ("internal_web".equals(missionItem.getActionType())
                 || (uri.getQueryParameter("internal_web") != null
-                        && uri.getQueryParameter("internal_web").equals("true"))) {
+                && uri.getQueryParameter("internal_web").equals("true"))) {
             view.startWebViewActivity(missionItem.getTitle(), url);
         } else {
             // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까

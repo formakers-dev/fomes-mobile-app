@@ -1,6 +1,7 @@
 package com.formakers.fomes.main.contract;
 
 
+import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.LayoutRes;
@@ -42,6 +43,7 @@ public interface BetaTestDetailContract {
         android.view.View inflate(@LayoutRes int layoutResId);
         void startWebViewActivity(String title, String url);
         void startByDeeplink(Uri deeplinkUri);
+        void startActivity(Intent intent);
 
         // TODO : BaseView 로 이동 고려
         CompositeSubscription getCompositeSubscription();

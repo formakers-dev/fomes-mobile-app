@@ -243,7 +243,7 @@ public class AppInfo implements Parcelable {
                 ", totalUsedTime=" + totalUsedTime +
                 ", imageUrls=" + imageUrls +
                 ", isWished=" + isWished +
-                ", isInstalled=" + isInstalled +
+                ", getLaunchableIntent=" + isInstalled +
                 '}';
     }
 

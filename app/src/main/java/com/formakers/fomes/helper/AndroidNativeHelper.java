@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Process;
+import android.text.TextUtils;
 
 import com.formakers.fomes.model.EventStat;
 import com.formakers.fomes.model.NativeAppInfo;
@@ -79,6 +80,11 @@ public class AndroidNativeHelper {
         }
 
         return nativeAppInfo;
+    }
+
+    public Intent getLaunchableIntent(String packageName) {
+        return TextUtils.isEmpty(packageName) ? null
+                : context.getPackageManager().getLaunchIntentForPackage(packageName);
     }
 
     // LongTermStats
