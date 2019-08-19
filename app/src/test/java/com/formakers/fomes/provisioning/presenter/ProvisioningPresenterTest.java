@@ -1,6 +1,7 @@
 package com.formakers.fomes.provisioning.presenter;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
@@ -25,6 +26,7 @@ import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -72,7 +74,7 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void updateDemographicsToUser__호출시__유저정보를_업데이트한다() {
+    public void updateUserInfo__호출시__유저정보를_업데이트한다() {
         subject.updateUserInfo("미러스엣지", 1989, 1, "male");
 
         verify(mockUser).setLifeApps(eq(Lists.newArrayList("미러스엣지")));
@@ -160,5 +162,31 @@ public class ProvisioningPresenterTest {
         subject.setProvisioningProgressStatus(1);
 
         verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(eq(1));
+    }
+
+    @Test
+    public void isSelected_호출시__해당_프래그먼트가_선택되어있는지_확인후_여부를_리턴한다() {
+        BaseFragment baseFragment = new BaseFragment();
+        when(mockView.isSelectedFragement(baseFragment)).thenReturn(true);
+
+        boolean isSelected = subject.isSelected(baseFragment);
+
+        verify(mockView).isSelectedFragement(baseFragment);
+        assertThat(isSelected).isTrue();
+    }
+
+    @Test
+    public void isProvisiongProgress_호출시__프로비저닝_진행_상태_여부를_리턴한다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
+
+        boolean isProvisioing = subject.isProvisiongProgress();
+
+        verify(mockSharedPreferencesHelper).getProvisioningProgressStatus();
+        assertThat(isProvisioing).isTrue();
+
+        // 완료인 경우
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+
+        assertThat(subject.isProvisiongProgress()).isFalse();
     }
 }

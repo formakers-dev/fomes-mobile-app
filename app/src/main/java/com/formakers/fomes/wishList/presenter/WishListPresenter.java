@@ -12,7 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
 
 public class WishListPresenter implements WishListContract.Presenter {
 
@@ -22,8 +21,6 @@ public class WishListPresenter implements WishListContract.Presenter {
 
     private WishListContract.View view;
     private WishListAdapterContract.Model adapterModel;
-
-    private final CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     public WishListPresenter(WishListContract.View view, WishListAdapterContract.Model adapterModel) {
         this.view = view;
@@ -41,7 +38,7 @@ public class WishListPresenter implements WishListContract.Presenter {
 
     @Override
     public void loadingWishList() {
-        compositeSubscription.add(
+        this.view.getCompositeSubscription().add(
                 userService.requestWishList()
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(() -> view.showLoadingBar())
@@ -61,7 +58,7 @@ public class WishListPresenter implements WishListContract.Presenter {
     public void requestRemoveFromWishList(final int position) {
         final String packageName = adapterModel.getItem(position).getPackageName();
 
-        compositeSubscription.add(
+        this.view.getCompositeSubscription().add(
                 userService.requestRemoveAppFromWishList(packageName)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
@@ -82,10 +79,5 @@ public class WishListPresenter implements WishListContract.Presenter {
     @Override
     public List<String> getRemovedPackageNames() {
         return removedPackageNames;
-    }
-
-    @Override
-    public void unsubscribe() {
-        compositeSubscription.clear();
     }
 }

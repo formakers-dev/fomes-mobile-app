@@ -7,6 +7,8 @@ import com.formakers.fomes.common.mvp.BaseView;
 
 import java.util.List;
 
+import rx.subscriptions.CompositeSubscription;
+
 public interface WishListContract {
     interface Presenter {
         void loadingWishList();
@@ -14,8 +16,6 @@ public interface WishListContract {
 
         String getItemPackageName(int position);
         List<String> getRemovedPackageNames();
-
-        void unsubscribe();
     }
 
     interface View extends BaseView<Presenter> {
@@ -29,5 +29,8 @@ public interface WishListContract {
         void showToast(@StringRes int toastMessageResId);
         void showLoadingBar();
         void hideLoadingBar();
+
+        // TODO : BaseView 로 이동 고려
+        CompositeSubscription getCompositeSubscription();
     }
 }

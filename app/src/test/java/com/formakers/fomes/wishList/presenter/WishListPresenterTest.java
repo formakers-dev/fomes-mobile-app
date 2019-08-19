@@ -21,6 +21,7 @@ import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -66,17 +67,19 @@ public class WishListPresenterTest {
         when(mockAdapterModel.getItem(1)).thenReturn(appInfos.get(1));
         when(mockAdapterModel.getItem(2)).thenReturn(appInfos.get(2));
         when(mockAdapterModel.getItem(3)).thenReturn(appInfos.get(3));
+
+        when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
     }
 
     @Test
-    public void requestWishList__호출시_즐겨찾기를_서버에_요청한다() {
+    public void loadingWishList__호출시_즐겨찾기를_서버에_요청한다() {
         subject.loadingWishList();
 
         verify(mockUserService).requestWishList();
     }
 
     @Test
-    public void requestWishList__성공시__데이터를_업데이트하고_뷰에_보여준다() {
+    public void loadingWishList__성공시__데이터를_업데이트하고_뷰에_보여준다() {
         subject.loadingWishList();
 
         ArgumentCaptor<List<AppInfo>> captor = ArgumentCaptor.forClass(List.class);
@@ -91,7 +94,7 @@ public class WishListPresenterTest {
     }
 
     @Test
-    public void requestWishList__실패시__오류화면을_보여준다() {
+    public void loadingWishList__실패시__오류화면을_보여준다() {
         when(mockUserService.requestWishList())
                 .thenReturn(Observable.error(new Throwable()));
 
@@ -126,6 +129,16 @@ public class WishListPresenterTest {
         subject.requestRemoveFromWishList(0);
 
         verify(mockView).showToast(anyInt());
+    }
+
+    @Test
+    public void getItemPackageName_호출시__해당_인덱스의_위시리스트_앱의_패키지명을_리턴한다() {
+        when(mockAdapterModel.getItem(0)).thenReturn(new AppInfo("com.package.name"));
+
+        String actualPackageName = subject.getItemPackageName(0);
+
+        verify(mockAdapterModel).getItem(0);
+        assertThat(actualPackageName).isEqualTo("com.package.name");
     }
 
     @Test

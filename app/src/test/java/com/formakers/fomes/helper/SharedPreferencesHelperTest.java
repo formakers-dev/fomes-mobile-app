@@ -33,6 +33,7 @@ public class SharedPreferencesHelperTest {
                 .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
                 .putLong("LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP", 1000L)
                 .putInt("PROVISIONING_PROGRESS_STATUS", 0)
+                .putInt("OLD_LATEST_MIGRATION_VERSION", 1)
                 .apply();
     }
 
@@ -98,5 +99,16 @@ public class SharedPreferencesHelperTest {
 
         subject.setProvisioningProgressStatus(-1);
         assertThat(sf.getInt("PROVISIONING_PROGRESS_STATUS", 0)).isEqualTo(-1);
+    }
+
+    @Test
+    public void getOldLatestMigrationVersion호출시__가장최근의마이그레이션버전을_리턴한다() {
+        assertThat(subject.getOldLatestMigrationVersion()).isEqualTo(1);
+    }
+
+    @Test
+    public void setOldLatestMigrationVersion호출시__해당버전을_저장한다() {
+        subject.setOldLatestMigrationVersion(2);
+        assertThat(sf.getInt("OLD_LATEST_MIGRATION_VERSION", 0)).isEqualTo(2);
     }
 }

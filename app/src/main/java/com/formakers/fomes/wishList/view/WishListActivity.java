@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 import butterknife.BindView;
+import rx.subscriptions.CompositeSubscription;
 
 public class WishListActivity extends FomesBaseActivity implements WishListContract.View {
 
@@ -38,6 +39,8 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
 
     WishListContract.Presenter presenter;
     WishListAdapterContract.View adapterView;
+
+    private final CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Override
     public void setPresenter(WishListContract.Presenter presenter) {
@@ -91,9 +94,7 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
 
     @Override
     protected void onDestroy() {
-        if (this.presenter != null) {
-            this.presenter.unsubscribe();
-        }
+        compositeSubscription.clear();
 
         super.onDestroy();
     }
@@ -151,5 +152,10 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
     @Override
     public void hideLoadingBar() {
         loadingBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public CompositeSubscription getCompositeSubscription() {
+        return compositeSubscription;
     }
 }
