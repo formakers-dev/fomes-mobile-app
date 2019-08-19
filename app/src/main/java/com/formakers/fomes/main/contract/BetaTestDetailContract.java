@@ -24,22 +24,20 @@ public interface BetaTestDetailContract {
 
         void load(String id);
 
-        void requestCompleteMissionItem(String missionItemId);
-
         Observable<Mission.MissionItem> refreshMissionProgress(String missionId);
 
         void processMissionItemAction(Mission.MissionItem missionItem);
         String getInterpretedUrl(String originalUrl);
 
-        Observable<List<Mission>> getMissionList();
-        void startMission();
+        Observable<List<Mission>> getDisplayedMissionList();
+        void requestToAttendMission();
     }
 
     interface View extends BaseView<Presenter> {
         void bind(BetaTest betaTest);
         void showLoading();
         void hideLoading();
-        void unlockMissions();
+        void refreshMissionList();
 
         android.view.View inflate(@LayoutRes int layoutResId);
         void startWebViewActivity(String title, String url);

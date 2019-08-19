@@ -21,10 +21,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp"
+            android:paddingTop="16dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="17dp"
             android:background="@drawable/item_rect_rounded_corner_background"
             android:foreground="@drawable/item_rect_rounded_corner_stroke_background"
             android:theme="@style/BetaTestTheme.CardBackground">
@@ -33,7 +33,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/icon_refresh"
-                android:tint="@color/colorPrimaryDark"
+                android:tint="@color/fomes_white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -41,6 +41,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:visibility="gone"
+                android:indeterminateTint="@color/fomes_white"
                 app:layout_constraintTop_toTopOf="@+id/mission_refresh_button"
                 app:layout_constraintBottom_toBottomOf="@+id/mission_refresh_button"
                 app:layout_constraintStart_toStartOf="@+id/mission_refresh_button"
@@ -48,8 +49,10 @@
 
             <ImageView
                 android:id="@+id/mission_title_icon"
-                android:layout_width="20dp"
+                android:layout_width="24dp"
                 android:layout_height="20dp"
+                android:scaleType="fitCenter"
+                android:tint="@color/fomes_white"
                 app:layout_constraintBottom_toBottomOf="@+id/mission_title"
                 app:layout_constraintStart_toStartOf="@+id/mission_description"
                 app:layout_constraintTop_toTopOf="@+id/mission_title"
@@ -57,27 +60,43 @@
 
             <TextView
                 android:id="@+id/mission_title"
-                android:layout_width="@dimen/match_constraint"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/fomes_white"
                 android:textSize="13dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/mission_title_icon"
-                app:layout_constraintEnd_toStartOf="@+id/mission_refresh_button"
+                app:layout_constraintEnd_toStartOf="@+id/mission_item_title"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="1단계 미션" />
+
+            <TextView
+                android:id="@+id/mission_item_title"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textSize="12dp"
+                android:textColor="@color/fomes_white"
+                app:layout_constraintTop_toTopOf="@+id/mission_title"
+                app:layout_constraintBottom_toBottomOf="@+id/mission_title"
+                app:layout_constraintStart_toEndOf="@+id/mission_title"
+                app:layout_constraintEnd_toStartOf="@+id/mission_refresh_button"
+                tools:text="설문에 참여하자!"
+                />
 
             <TextView
                 android:id="@+id/mission_description"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="11dp"
-                android:textColor="@color/fomes_white"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:textSize="12dp"
+                android:textColor="@color/fomes_warm_gray_2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mission_title_icon"
@@ -87,11 +106,11 @@
                 android:id="@+id/mission_description_diviver"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/fomes_black_alpha_50"
                 app:layout_constraintTop_toBottomOf="@id/mission_description"
-                app:layout_constraintStart_toStartOf="@id/mission_description"
-                app:layout_constraintEnd_toEndOf="@id/mission_description"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <LinearLayout
                 android:id="@+id/mission_description_layout"
@@ -101,8 +120,8 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/mission_description"
+                app:layout_constraintStart_toStartOf="@+id/mission_description"
                 app:layout_constraintTop_toBottomOf="@+id/mission_description_diviver"
                 tools:visibility="visible">
 
@@ -149,39 +168,46 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/mission_items_layout"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:showDividers="middle"
-                android:divider="@drawable/divider"
-                android:theme="@style/BetaTestDetailTheme.RewardDivider"
-                app:layout_constraintTop_toBottomOf="@+id/mission_description_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-                <include layout="@layout/item_betatest_mission_item"/>
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/mission_guide"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:layout_marginStart="13dp"
-                android:layout_marginEnd="13dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                app:layout_goneMarginTop="33dp"
                 android:lineSpacingExtra="3dp"
                 android:textSize="10dp"
                 android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
                 app:layout_constraintVertical_bias="1.0"
-                app:layout_constraintTop_toBottomOf="@+id/mission_items_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mission_description_layout"
+                app:layout_constraintStart_toStartOf="@+id/mission_description"
+                app:layout_constraintEnd_toEndOf="@+id/mission_description"
+                app:layout_constraintBottom_toTopOf="@+id/mission_item_button"
+                tools:text="* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다다다다다다다다다다ㅏ다다다다다다다다다."/>
+
+            <Button
+                android:id="@+id/mission_item_button"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/fomes_white"
+                android:textStyle="bold"
+                android:background="@drawable/betatest_mission_item_button_selector"
+                app:layout_constraintTop_toBottomOf="@+id/mission_guide"
+                app:layout_constraintStart_toStartOf="@+id/mission_description"
+                app:layout_constraintEnd_toEndOf="@+id/mission_description"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다."/>
+                tools:text="참여하기"
+                tools:backgroundTint="@color/colorPrimary"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView android:id="@+id/mission_completed_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/label_completed"
+            android:layout_gravity="top|end"/>
     </androidx.cardview.widget.CardView>
 
     <LinearLayout android:id="@+id/betatest_lock_layout"

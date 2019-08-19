@@ -117,20 +117,53 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/betatest_contents_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:descendantFocusability="blocksDescendants">
 
-            <TextView android:id="@+id/betatest_detail_description_textview"
+            <TextView
+                android:id="@+id/betatest_detail_game_description_title_textview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/betatest_detail_game_description_title"
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview" />
+
+            <TextView android:id="@+id/betatest_detail_game_description_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textSize="11dp"
                 android:textColor="@color/fomes_white"
                 tools:text="🐱 퍼즐을 풀어 냥줍한 고양이들과 함께하는 즐거운 시간!!\n🏅테스트 수석(1명) : 문상 5천원\n🥉테스트 성실상(20명) : 문상 1천원"
-                app:layout_constraintStart_toStartOf="@+id/betatest_reward_title_textview"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_reward_title_textview"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_game_description_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_game_description_title_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_game_description_title_textview" />
+
+            <View
+                android:id="@+id/betatest_game_description_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
+                android:background="@color/fomes_dark_gray"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_game_description_textview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/betatest_game_description_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="betatest_detail_game_description_title_textview,betatest_detail_game_description_textview,betatest_game_description_divider"
+                />
 
             <TextView
                 android:id="@+id/betatest_purpose_title_textview"
@@ -143,7 +176,7 @@
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
                 android:visibility="gone"
                 app:layout_goneMarginTop="@dimen/betatest_detail_items_margin_top"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_description_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_game_description_divider"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview" />
 
@@ -167,6 +200,24 @@
                 app:layout_constraintEnd_toEndOf="@id/betatest_purpose_title_textview"
                 tools:ignore="MissingConstraints" />
 
+            <View
+                android:id="@+id/betatest_purpose_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
+                android:background="@color/fomes_dark_gray"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_description_textview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/betatest_purpose_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="betatest_purpose_title_textview,betatest_purpose_description_textview,betatest_purpose_divider"
+                />
+
             <TextView
                 android:id="@+id/betatest_howto_title_textview"
                 android:layout_width="@dimen/match_constraint"
@@ -179,7 +230,7 @@
                 app:layout_goneMarginTop="@dimen/betatest_detail_items_margin_top"
                 android:layout_marginStart="31dp"
                 android:layout_marginEnd="31dp"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_description_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -201,12 +252,14 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:showDividers="middle"
                 android:divider="@drawable/divider"
                 android:theme="@style/BetaTestDetailTheme.HowToDivider"
                 android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_howto_description_textview"/>
 
             <TextView
@@ -222,6 +275,16 @@
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"
                 tools:ignore="MissingConstraints"/>
 
+            <View
+                android:id="@+id/betatest_howto_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
+                android:background="@color/fomes_dark_gray"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_howto_guide_textview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <TextView
                 android:id="@+id/betatest_reward_title_textview"
                 android:layout_width="@dimen/match_constraint"
@@ -232,7 +295,7 @@
                 android:text="@string/betatest_detail_rewards_title"
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
                 app:layout_goneMarginTop="@dimen/betatest_detail_items_margin_top"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_howto_guide_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_howto_divider"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"/>
 
@@ -261,6 +324,17 @@
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_reward_description_textview"/>
 
+            <View
+                android:id="@+id/betatest_reward_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
+                android:background="@color/fomes_dark_gray"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_items_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
             <TextView
                 android:id="@+id/betatest_mission_list_title_textview"
                 android:layout_width="@dimen/match_constraint"
@@ -272,7 +346,7 @@
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_items_layout"/>
+                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_divider"/>
 
             <TextView
                 android:id="@+id/betatest_mission_list_description_textview"
