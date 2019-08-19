@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,34 +56,21 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     private static final String TAG = "BetaTestDetailActivity";
     private static final int DEFAULT_REWARDS_MINIMUM_DELAY = 7;
 
-    @BindView(R.id.loading)
-    ProgressBar loadingProgressBar;
-    @BindView(R.id.betatest_detail_overview_image)
-    ImageView overviewImageView;
-    @BindView(R.id.betatest_detail_app_icon)
-    ImageView iconImageView;
-    @BindView(R.id.betatest_detail_title)
-    TextView titleTextView;
-    @BindView(R.id.betatest_detail_subtitle)
-    TextView subTitleTextView;
-    @BindView(R.id.betatest_detail_period)
-    TextView periodTextView;
-    @BindView(R.id.betatest_detail_d_day)
-    TextView dDayTextView;
-    @BindView(R.id.betatest_detail_description_textview)
-    TextView descriptionTextView;
-    @BindView(R.id.betatest_reward_items_layout)
-    ViewGroup rewardViewGroup;
-    @BindView(R.id.betatest_mission_list)
-    RecyclerView missionRecyclerView;
-    @BindView(R.id.betatest_purpose_title_textview)
-    TextView purposeTitleTextView;
-    @BindView(R.id.betatest_purpose_description_textview)
-    TextView purposeDescriptionTextView;
-    @BindView(R.id.betatest_howto_items_layout)
-    ViewGroup howtoViewGroup;
-    @BindView(R.id.betatest_howto_guide_textview)
-    TextView howtoGuideTextView;
+    @BindView(R.id.loading) ProgressBar loadingProgressBar;
+    @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
+    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
+    @BindView(R.id.betatest_detail_title) TextView titleTextView;
+    @BindView(R.id.betatest_detail_subtitle) TextView subTitleTextView;
+    @BindView(R.id.betatest_detail_period) TextView periodTextView;
+    @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
+    @BindView(R.id.betatest_detail_description_textview) TextView descriptionTextView;
+    @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
+    @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
+    @BindView(R.id.betatest_purpose_group) Group purposeGroup;
+    @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
+    @BindView(R.id.betatest_purpose_description_textview) TextView purposeDescriptionTextView;
+    @BindView(R.id.betatest_howto_items_layout) ViewGroup howtoViewGroup;
+    @BindView(R.id.betatest_howto_guide_textview) TextView howtoGuideTextView;
 
     @Inject
     BetaTestDetailContract.Presenter presenter;
@@ -217,11 +205,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         // 테스트 목적
         if (TextUtils.isEmpty(betaTest.getPurpose())) {
-            purposeTitleTextView.setVisibility(View.GONE);
-            purposeDescriptionTextView.setVisibility(View.GONE);
+            purposeGroup.setVisibility(View.GONE);
         } else {
-            purposeTitleTextView.setVisibility(View.VISIBLE);
-            purposeDescriptionTextView.setVisibility(View.VISIBLE);
+            purposeGroup.setVisibility(View.VISIBLE);
             purposeDescriptionTextView.setText(betaTest.getPurpose());
         }
 
