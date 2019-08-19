@@ -63,7 +63,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_detail_subtitle) TextView subTitleTextView;
     @BindView(R.id.betatest_detail_period) TextView periodTextView;
     @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
-    @BindView(R.id.betatest_detail_description_textview) TextView descriptionTextView;
+    @BindView(R.id.betatest_contents_layout) ViewGroup contentsLayout;
+    @BindView(R.id.betatest_game_description_group) Group gameDescriptionGroup;
+    @BindView(R.id.betatest_detail_game_description_textview) TextView descriptionTextView;
     @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
     @BindView(R.id.betatest_purpose_group) Group purposeGroup;
@@ -158,9 +160,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         String description = betaTest.getDescription();
         if (!TextUtils.isEmpty(description)) {
+            gameDescriptionGroup.setVisibility(View.VISIBLE);
             descriptionTextView.setText(betaTest.getDescription());
         } else {
-            descriptionTextView.setVisibility(View.GONE);
+            gameDescriptionGroup.setVisibility(View.GONE);
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YY_DOT_MM_DOT_DD, Locale.getDefault());
@@ -281,6 +284,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     missionListAdapter.setMissionList(missionList);
                     missionListAdapter.notifyDataSetChanged();
                 });
+
+        contentsLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
