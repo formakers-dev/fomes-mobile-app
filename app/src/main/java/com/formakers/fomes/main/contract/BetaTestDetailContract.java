@@ -31,7 +31,7 @@ public interface BetaTestDetailContract {
         String getInterpretedUrl(String originalUrl);
 
         Observable<List<Mission>> getDisplayedMissionList();
-        void requestToAttendMission();
+        void requestToAttendBetaTest();
     }
 
     interface View extends BaseView<Presenter> {

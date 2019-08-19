@@ -22,6 +22,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.List;
+
 import rx.Completable;
 import rx.Observable;
 import rx.Scheduler;
@@ -34,6 +36,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -73,6 +76,7 @@ public class BetaTestDetailPresenterTest {
                 .thenReturn(Completable.complete());
         when(mockBetaTestService.getMissionProgress("5d1ec8094400311578e996bc"))
                 .thenReturn(Observable.just(new Mission.MissionItem()));
+        when(mockBetaTestService.postCompleteBetaTest(anyString())).thenReturn(Completable.complete());
 
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
         when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
@@ -101,16 +105,18 @@ public class BetaTestDetailPresenterTest {
         verify(mockView).bind(argumentCaptor.capture());
         BetaTest actualBetaTest = argumentCaptor.getValue();
 
-        assertThat(actualBetaTest.getTotalItemCount()).isEqualTo(3);
-        assertThat(actualBetaTest.getCompletedItemCount()).isEqualTo(1);
+        assertThat(actualBetaTest.getTotalItemCount()).isEqualTo(5);
+        assertThat(actualBetaTest.getCompletedItemCount()).isEqualTo(2);
         assertThat(actualBetaTest.getRewards().getList().size()).isEqualTo(3);
         assertThat(actualBetaTest.getRewards().getList().get(0).getOrder()).isEqualTo(1);
         assertThat(actualBetaTest.getRewards().getList().get(1).getOrder()).isEqualTo(2);
         assertThat(actualBetaTest.getRewards().getList().get(2).getOrder()).isEqualTo(3);
-        assertThat(actualBetaTest.getMissions().size()).isEqualTo(3);
+        assertThat(actualBetaTest.getMissions().size()).isEqualTo(5);
         assertThat(actualBetaTest.getMissions().get(0).getOrder()).isEqualTo(1);
         assertThat(actualBetaTest.getMissions().get(1).getOrder()).isEqualTo(2);
         assertThat(actualBetaTest.getMissions().get(2).getOrder()).isEqualTo(3);
+        assertThat(actualBetaTest.getMissions().get(3).getOrder()).isEqualTo(4);
+        assertThat(actualBetaTest.getMissions().get(4).getOrder()).isEqualTo(5);
     }
 
     @Test
@@ -180,6 +186,47 @@ public class BetaTestDetailPresenterTest {
         subject.getInterpretedUrl("http://www.naver.com?email={email}");
 
         verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}"));
+    }
+
+    @Test
+    public void getDisplayedMissionList_호출시__뷰에_보여지는_미션리스트를_반환한다() {
+        subject.load("5d1c5e695c20ca481f27a4ab");
+        List<Mission> displayedMissionList =  subject.getDisplayedMissionList().toBlocking().single();
+
+        System.out.println(displayedMissionList);
+
+        assertThat(displayedMissionList.size()).isEqualTo(4);
+
+        // 순서 정렬 & hidden 타입 제외
+        assertThat(displayedMissionList.get(0).getOrder()).isEqualTo(1);
+        assertThat(displayedMissionList.get(1).getOrder()).isEqualTo(2);
+        assertThat(displayedMissionList.get(2).getOrder()).isEqualTo(3);
+        assertThat(displayedMissionList.get(3).getOrder()).isEqualTo(5);
+
+        // 락 시퀀스
+        assertThat(displayedMissionList.get(0).getItem().isCompleted()).isEqualTo(true);
+        assertThat(displayedMissionList.get(0).getItem().isMandatory()).isEqualTo(false);
+        assertThat(displayedMissionList.get(0).getItem().isRepeatable()).isEqualTo(false);
+        assertThat(displayedMissionList.get(0).isLocked()).isEqualTo(false);
+
+        assertThat(displayedMissionList.get(1).getItem().isCompleted()).isEqualTo(false);
+        assertThat(displayedMissionList.get(1).getItem().isMandatory()).isEqualTo(true);
+        assertThat(displayedMissionList.get(1).getItem().isRepeatable()).isEqualTo(true);
+        assertThat(displayedMissionList.get(1).isLocked()).isEqualTo(false);
+
+        // 락 이후에는 전부 락
+        assertThat(displayedMissionList.get(2).isLocked()).isEqualTo(true);
+        assertThat(displayedMissionList.get(3).isLocked()).isEqualTo(true);
+    }
+
+    @Test
+    public void requestToAttendBetaTest_호출시__해당_베타테스트에_참여요청을_보낸다() {
+        subject.load("5d1c5e695c20ca481f27a4ab");
+        subject.requestToAttendBetaTest();
+
+        verify(mockBetaTestService).postCompleteBetaTest("5d1ec8194400311578e996bd");
+        verify(mockBetaTestService).postCompleteBetaTest("5d1ec8194400311578e996b2");
+        verify(mockView).refreshMissionList();
     }
 
     private BetaTest getDummyBetaTestDetail() {
@@ -286,8 +333,43 @@ public class BetaTestDetailPresenterTest {
                 "          \"packageName\": \"com.goodcircle.comeonkitty\",\n" +
                 "          \"playTime\": 1800000\n" +
                 "        },\n" +
-                "        \"_id\": \"5d1ec8194400311578e996bd\",\n" +
+                "        \"_id\": \"5d1ec8194400311578e996b1\",\n" +
                 "        \"isCompleted\": false\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"order\": 4,\n" +
+                "      \"title\": \"4단계 미션\",\n" +
+                "      \"description\": \"[이리와 고양아] 히든 미션\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"iconImageUrl\": \"https://i.imgur.com/0ZMdxPO.png\",\n" +
+                "      \"guide\": \"* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
+                "      \"_id\": \"5d1ec8024400311578e996bb\",\n" +
+                "      \"item\": {\n" +
+                "        \"order\": 1,\n" +
+                "        \"title\": \"히든\",\n" +
+                "        \"type\": \"hidden\",\n" +
+                "        \"_id\": \"5d1ec8194400311578e996b2\",\n" +
+                "        \"isCompleted\": true\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"order\": 5,\n" +
+                "      \"title\": \"5단계 미션\",\n" +
+                "      \"description\": \"[이리와 고양아] 세번째 설문\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"iconImageUrl\": \"https://i.imgur.com/Gk9byou.png\",\n" +
+                "      \"guide\": \"* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다.\",\n" +
+                "      \"_id\": \"5d1ec8094400311578e996bc\",\n" +
+                "      \"item\": {\n" +
+                "        \"order\": 1,\n" +
+                "        \"title\": \"의견을 작성하라!\",\n" +
+                "        \"actionType\": \"link\",\n" +
+                "        \"action\": \"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}\",\n" +
+                "        \"_id\": \"5d1ec8254400311578e996b3\",\n" +
+                "        \"isCompleted\": false,\n" +
+                "        \"isRepeatable\": true,\n" +
+                "        \"isMandatory\": true\n" +
                 "      }\n" +
                 "    }\n" +
                 "  ],\n" +

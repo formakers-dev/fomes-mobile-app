@@ -158,8 +158,9 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public void requestToAttendMission() {
-        this.getMissionListWithLockingSequence()
+    public void requestToAttendBetaTest() {
+        view.getCompositeSubscription().add(
+                this.getMissionListWithLockingSequence()
                 .filter(mission -> {
                     String missionType = mission.getItem().getType();
                     return "play".equals(missionType) || "hidden".equals(missionType);
@@ -167,7 +168,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 .flatMapCompletable(mission -> this.betaTestService.postCompleteBetaTest(mission.getItem().getId()))
                 .toCompletable()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( () -> {
+                .subscribe(() -> {
                     for (Mission mission : betaTest.getMissions()) {
                         String missionType = mission.getItem().getType();
                         if ("play".equals(missionType) || "hidden".equals(missionType)) {
@@ -175,7 +176,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         }
                     }
                     this.view.refreshMissionList();
-                }, e -> Log.e(TAG, String.valueOf(e)));
+                }, e -> Log.e(TAG, String.valueOf(e)))
+        );
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {

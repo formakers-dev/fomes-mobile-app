@@ -91,7 +91,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position <= 0 && mission.isLocked()) {
             viewHolder.lockView.setClickable(true);
             viewHolder.lockView.setOnClickListener(v -> {
-                presenter.requestToAttendMission();
+                presenter.requestToAttendBetaTest();
                 presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, mission.getId());
             });
         } else {
