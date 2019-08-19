@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.Mission;
-import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 
@@ -136,9 +135,10 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             long playtime = 0L;
 
             viewHolder.itemButton.setText("다운로드 & 플레이");
-            viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
-            viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
-            viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
+            viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
+//            viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
+//            viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
+//            viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
 
             // 참여상태
             viewHolder.missionCompletedImageView.setVisibility(View.GONE);
