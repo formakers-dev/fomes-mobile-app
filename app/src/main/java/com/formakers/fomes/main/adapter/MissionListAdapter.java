@@ -115,7 +115,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 .into(viewHolder.titleIconImageView);
 
         viewHolder.titleTextView.setText(mission.getTitle());
-        viewHolder.dscriptionTextView.setText(mission.getDescription());
+        viewHolder.descriptionTextView.setText(mission.getDescription());
         viewHolder.guideTextView.setText(mission.getGuide());
         viewHolder.guideTextView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         viewHolder.missionTitleTextView.setText(missionItem.getTitle());
@@ -221,7 +221,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView titleIconImageView;
         TextView titleTextView;
         TextView missionTitleTextView;
-        TextView dscriptionTextView;
+        TextView descriptionTextView;
         TextView guideTextView;
         Button itemButton;
         View refreshButton;
@@ -247,7 +247,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             titleIconImageView = itemView.findViewById(R.id.mission_title_icon);
             titleTextView = itemView.findViewById(R.id.mission_title);
             missionTitleTextView = itemView.findViewById(R.id.mission_item_title);
-            dscriptionTextView = itemView.findViewById(R.id.mission_description);
+            descriptionTextView = itemView.findViewById(R.id.mission_description);
             descriptionLayout = itemView.findViewById(R.id.mission_description_layout);
             descriptionImageView = itemView.findViewById(R.id.mission_description_image);
             missionPlayTimeLayout = itemView.findViewById(R.id.mission_play_time_layout);
