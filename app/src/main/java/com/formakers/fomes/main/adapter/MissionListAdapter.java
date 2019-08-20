@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -133,7 +134,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 미션 카드 타입별 분기 로직
         if ("play".equals(missionItem.getType())) {
-            long playtime = 0L;
+            long playtime = missionItem.getTotalPlayTime();
 
             viewHolder.itemButton.setText("다운로드 & 플레이");
             viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
@@ -177,35 +178,53 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 미션 카드 새로고침 버튼
         viewHolder.refreshButton.setOnClickListener(v -> {
-            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getId());
+            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getItem().getId());
 
-            view.getCompositeSubscription().add(
-                    presenter.refreshMissionProgress(mission.getId())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .doOnSubscribe(() -> {
-                                viewHolder.refreshButton.setVisibility(View.INVISIBLE);
-                                viewHolder.refreshProgress.setVisibility(View.VISIBLE);
-                            })
-                            .doAfterTerminate(() -> {
-                                viewHolder.refreshButton.setVisibility(View.VISIBLE);
-                                viewHolder.refreshProgress.setVisibility(View.GONE);
-                            })
-                            .subscribe(newMissionItem -> {
-                                Mission.MissionItem item = mission.getItem();
+            if ("play".equals(missionItem.getType())) {
+                view.getCompositeSubscription().add(
+                        presenter.updatePlayTime(missionItem.getId(), missionItem.getPackageName())
+                                .doOnSubscribe(x -> {
+                                    viewHolder.refreshButton.setVisibility(View.INVISIBLE);
+                                    viewHolder.refreshProgress.setVisibility(View.VISIBLE);
+                                })
+                                .doAfterTerminate(() -> {
+                                    viewHolder.refreshButton.setVisibility(View.VISIBLE);
+                                    viewHolder.refreshProgress.setVisibility(View.GONE);
+                                })
+                                .subscribe(() -> {
+                                }, e -> {
+                                    Toast.makeText(context, "새로고침 시 문제가 발생했다멍!🐶\n계속 발생하면 우체통에 문의주라멍!📮", Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, String.valueOf(e));
+                                }));
+            } else {
+                view.getCompositeSubscription().add(
+                        presenter.refreshMissionProgress(mission.getId())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .doOnSubscribe(() -> {
+                                    viewHolder.refreshButton.setVisibility(View.INVISIBLE);
+                                    viewHolder.refreshProgress.setVisibility(View.VISIBLE);
+                                })
+                                .doAfterTerminate(() -> {
+                                    viewHolder.refreshButton.setVisibility(View.VISIBLE);
+                                    viewHolder.refreshProgress.setVisibility(View.GONE);
+                                })
+                                .subscribe(newMissionItem -> {
+                                    Mission.MissionItem item = mission.getItem();
 
-                                if (item.getId().equals(newMissionItem.getId())) {
-                                    item.setCompleted(newMissionItem.isCompleted());
-                                }
-                            }, e -> Log.e(TAG, String.valueOf(e)), () -> {
+                                    if (item.getId().equals(newMissionItem.getId())) {
+                                        item.setCompleted(newMissionItem.isCompleted());
+                                    }
+                                }, e -> Log.e(TAG, String.valueOf(e)), () -> {
 
-                                // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
-                                presenter.getDisplayedMissionList()
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(missionList -> {
-                                            setMissionList(missionList);
-                                            notifyDataSetChanged();
-                                        });
-                            }));
+                                    // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
+                                    presenter.getDisplayedMissionList()
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(missionList -> {
+                                                setMissionList(missionList);
+                                                notifyDataSetChanged();
+                                            });
+                                }));
+            }
         });
 
         // 미션 아이템 클릭 리스너 등록 (보일러 플레이트 코드)

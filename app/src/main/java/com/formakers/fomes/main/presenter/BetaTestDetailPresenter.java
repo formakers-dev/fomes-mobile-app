@@ -3,6 +3,9 @@ package com.formakers.fomes.main.presenter;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Pair;
+
+import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.network.BetaTestService;
@@ -12,6 +15,7 @@ import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.AndroidNativeHelper;
+import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.formakers.fomes.main.dagger.scope.BetaTestDetailActivityScope;
@@ -22,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Completable;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,6 +41,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private EventLogService eventLogService;
     private FomesUrlHelper fomesUrlHelper;
     private AndroidNativeHelper androidNativeHelper;
+    private AppUsageDataHelper appUsageDataHelper;
 
     private BetaTestDetailContract.View view;
 
@@ -47,13 +53,15 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                                    EventLogService eventLogService,
                                    BetaTestService betaTestService,
                                    FomesUrlHelper fomesUrlHelper,
-                                   AndroidNativeHelper androidNativeHelper) {
+                                   AndroidNativeHelper androidNativeHelper,
+                                   AppUsageDataHelper appUsageDataHelper) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
         this.fomesUrlHelper = fomesUrlHelper;
         this.androidNativeHelper = androidNativeHelper;
+        this.appUsageDataHelper = appUsageDataHelper;
     }
 
     @Override
@@ -178,6 +186,20 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     this.view.refreshMissionList();
                 }, e -> Log.e(TAG, String.valueOf(e)))
         );
+    }
+
+    @Override
+    public Completable updatePlayTime(@NonNull String id, @NonNull String packageName) {
+
+        return TextUtils.isEmpty(packageName) ? Completable.error(new IllegalArgumentException("packageName is null!!!!")) : appUsageDataHelper.getUsageTime(packageName, betaTest.getOpenDate().getTime())
+                .toSingle()
+                .zipWith(Observable.from(betaTest.getMissions())
+                        .filter(mission -> id.equals(mission.getItem().getId()))
+                        .toSingle(), Pair::new)
+                .map(pair -> pair.second.getItem().setTotalPlayTime(pair.first))
+                .observeOn(AndroidSchedulers.mainThread())
+                .toCompletable()
+                .doOnCompleted(() -> this.view.refreshMissionList());
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {

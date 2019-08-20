@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.mvp.BaseView;
@@ -13,6 +14,7 @@ import com.formakers.fomes.common.network.vo.Mission;
 
 import java.util.List;
 
+import rx.Completable;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
@@ -32,6 +34,8 @@ public interface BetaTestDetailContract {
 
         Observable<List<Mission>> getDisplayedMissionList();
         void requestToAttendBetaTest();
+
+        Completable updatePlayTime(@NonNull String id, @NonNull String packageName);
     }
 
     interface View extends BaseView<Presenter> {

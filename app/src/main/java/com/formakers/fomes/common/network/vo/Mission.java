@@ -28,6 +28,7 @@ public class Mission implements Parcelable {
 
         // type - play
         String packageName;
+        Long totalPlayTime = 0L; // app only
 
         boolean isCompleted;
         boolean isRepeatable;
@@ -99,6 +100,15 @@ public class Mission implements Parcelable {
             return this;
         }
 
+        public Long getTotalPlayTime() {
+            return totalPlayTime;
+        }
+
+        public MissionItem setTotalPlayTime(Long totalPlayTime) {
+            this.totalPlayTime = totalPlayTime;
+            return this;
+        }
+
         public boolean isCompleted() {
             return isCompleted;
         }
@@ -136,6 +146,7 @@ public class Mission implements Parcelable {
                     ", actionType='" + actionType + '\'' +
                     ", action='" + action + '\'' +
                     ", packageName='" + packageName + '\'' +
+                    ", totalPlayTime=" + totalPlayTime +
                     ", isCompleted=" + isCompleted +
                     ", isRepeatable=" + isRepeatable +
                     ", isMandatory=" + isMandatory +
@@ -159,6 +170,7 @@ public class Mission implements Parcelable {
             dest.writeString(actionType);
             dest.writeString(action);
             dest.writeString(packageName);
+            dest.writeLong(totalPlayTime);
             dest.writeInt(isCompleted ? 1 : 0);
             dest.writeInt(isRepeatable ? 1 : 0);
             dest.writeInt(isMandatory ? 1 : 0);
@@ -172,6 +184,7 @@ public class Mission implements Parcelable {
             actionType = in.readString();
             action = in.readString();
             packageName = in.readString();
+            totalPlayTime = in.readLong();
             isCompleted = in.readInt() == 1;
             isRepeatable = in.readInt() == 1;
             isMandatory = in.readInt() == 1;

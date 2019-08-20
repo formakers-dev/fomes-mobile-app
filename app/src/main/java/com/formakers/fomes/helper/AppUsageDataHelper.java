@@ -57,6 +57,7 @@ public class AppUsageDataHelper {
     Observable<ShortTermStat> getShortTermStats(long startTime, long endTime) {
 
         return Observable.create(emitter -> androidNativeHelper.getUsageStatEvents(startTime, endTime).onBackpressureBuffer()
+                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .toList()
                 .subscribe(stats -> {
@@ -130,7 +131,19 @@ public class AppUsageDataHelper {
                 .flatMap(shortTermStats -> Observable.from(AppUsage.createListFromShortTermStats(shortTermStats)));
     }
 
-    /*** end of ShortTermStats ***/
+    /*** end of AppUsages ***/
+
+    /*** etc ***/
+
+    public Observable<Long> getUsageTime(@NonNull String packageName, long from) {
+        return getShortTermStats(from, timeHelper.getCurrentTime())
+                .observeOn(Schedulers.io())
+                .filter(shortTermStat -> packageName.equals(shortTermStat.getPackageName()))
+                .reduce(0L, (totalUsedTime, shortTermStat) -> {
+                    totalUsedTime += shortTermStat.getTotalUsedTime();
+                    return totalUsedTime;
+                });
+    }
 
     /******************************** AppBee Legacy **/
     // 앱별 1주일 치 누적 플레이시간 단기통계데이터 가져오기
