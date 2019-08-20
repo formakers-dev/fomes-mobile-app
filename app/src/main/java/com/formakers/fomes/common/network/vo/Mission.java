@@ -25,6 +25,10 @@ public class Mission implements Parcelable {
         String title;
         String actionType;
         String action;
+
+        // type - play
+        String packageName;
+
         boolean isCompleted;
         boolean isRepeatable;
         boolean isMandatory;
@@ -86,6 +90,15 @@ public class Mission implements Parcelable {
             return this;
         }
 
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public MissionItem setPackageName(String packageName) {
+            this.packageName = packageName;
+            return this;
+        }
+
         public boolean isCompleted() {
             return isCompleted;
         }
@@ -122,6 +135,7 @@ public class Mission implements Parcelable {
                     ", title='" + title + '\'' +
                     ", actionType='" + actionType + '\'' +
                     ", action='" + action + '\'' +
+                    ", packageName='" + packageName + '\'' +
                     ", isCompleted=" + isCompleted +
                     ", isRepeatable=" + isRepeatable +
                     ", isMandatory=" + isMandatory +
@@ -144,6 +158,7 @@ public class Mission implements Parcelable {
             dest.writeString(title);
             dest.writeString(actionType);
             dest.writeString(action);
+            dest.writeString(packageName);
             dest.writeInt(isCompleted ? 1 : 0);
             dest.writeInt(isRepeatable ? 1 : 0);
             dest.writeInt(isMandatory ? 1 : 0);
@@ -156,6 +171,7 @@ public class Mission implements Parcelable {
             title = in.readString();
             actionType = in.readString();
             action = in.readString();
+            packageName = in.readString();
             isCompleted = in.readInt() == 1;
             isRepeatable = in.readInt() == 1;
             isMandatory = in.readInt() == 1;

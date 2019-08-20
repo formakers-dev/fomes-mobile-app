@@ -1,7 +1,6 @@
 package com.formakers.fomes.helper;
 
 import android.app.AppOpsManager;
-import android.app.Application;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -9,10 +8,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
-
-import androidx.test.core.app.ApplicationProvider;
 
 import com.formakers.fomes.model.NativeAppInfo;
 
@@ -22,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowPackageManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +41,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class AndroidNativeHelperTest {
     private AndroidNativeHelper subject;
 
-    private UsageStatsManager mockUsageStatsManager;
-    private AppOpsManager mockAppOpsManager;
+    private UsageStatsManager mockUsageStatsManager = mock(UsageStatsManager.class);
+    private AppOpsManager mockAppOpsManager = mock(AppOpsManager.class);
+    private PackageManager mockPackageManager = mock(PackageManager.class);
+
+    private Context mockContext = mock(Context.class);
 
     @Before
     public void setUp() throws Exception {
@@ -69,13 +68,12 @@ public class AndroidNativeHelperTest {
             }
         });
 
-        mockUsageStatsManager = mock(UsageStatsManager.class);
-        mockAppOpsManager = mock(AppOpsManager.class);
+        when(mockContext.getPackageName()).thenReturn("com.formakers.fomes");
+        when(mockContext.getSystemService(Context.USAGE_STATS_SERVICE)).thenReturn(mockUsageStatsManager);
+        when(mockContext.getSystemService(Context.APP_OPS_SERVICE)).thenReturn(mockAppOpsManager);
+        when(mockContext.getPackageManager()).thenReturn(mockPackageManager);
 
-        shadowOf((Application) ApplicationProvider.getApplicationContext()).setSystemService(Context.USAGE_STATS_SERVICE, mockUsageStatsManager);
-        shadowOf((Application) ApplicationProvider.getApplicationContext()).setSystemService(Context.APP_OPS_SERVICE, mockAppOpsManager);
-
-        subject = new AndroidNativeHelper(ApplicationProvider.getApplicationContext().getApplicationContext());
+        subject = new AndroidNativeHelper(mockContext);
     }
 
     @Test
@@ -109,18 +107,16 @@ public class AndroidNativeHelperTest {
         resolveInfo.isDefault = true;
         resolveInfo.activityInfo = new ActivityInfo();
         resolveInfo.activityInfo.packageName = "package";
-//        shadowOf(resolveInfo).setLabel("app_name");
+        resolveInfo.nonLocalizedLabel = "app_name";
         mockReturnList.add(resolveInfo);
 
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        ShadowPackageManager shadowPackageManager = shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
-        shadowPackageManager.addResolveInfoForIntent(intent, resolveInfo);
+        when(mockPackageManager.queryIntentActivities(any(Intent.class), eq(PackageManager.GET_META_DATA)))
+                .thenReturn(mockReturnList);
 
         List<NativeAppInfo> appList = subject.getInstalledLaunchableApps().toList().toBlocking().single();
         System.out.println(appList);
-        assertThat(appList.size()).isEqualTo(2);
-//        assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
+        assertThat(appList.size()).isEqualTo(1);
+        assertThat(appList.get(0).getAppName()).isEqualTo("app_name");
         assertThat(appList.get(0).getPackageName()).isEqualTo("package");
     }
 
@@ -159,14 +155,33 @@ public class AndroidNativeHelperTest {
         packageInfo.applicationInfo.packageName = "com.package.name1";
         packageInfo.applicationInfo.name = "앱이름1";
         Drawable mockDrawable = mock(Drawable.class);
-        shadowOf(ApplicationProvider.getApplicationContext().getPackageManager()).setApplicationIcon("com.package.name1", mockDrawable);
 
-        shadowOf(ApplicationProvider.getApplicationContext().getPackageManager()).addPackage(packageInfo);
+        when(mockPackageManager.getApplicationInfo("com.package.name1", 0))
+                .thenReturn(packageInfo.applicationInfo);
+        when(mockPackageManager.getApplicationLabel(packageInfo.applicationInfo)).thenReturn(packageInfo.applicationInfo.name);
+        when(mockPackageManager.getApplicationIcon(packageInfo.applicationInfo.packageName)).thenReturn(mockDrawable);
 
         NativeAppInfo nativeAppInfo = subject.getNativeAppInfo("com.package.name1");
 
         assertThat(nativeAppInfo.getPackageName()).isEqualTo("com.package.name1");
         assertThat(nativeAppInfo.getAppName()).isEqualTo("앱이름1");
         assertThat(nativeAppInfo.getIcon()).isEqualTo(mockDrawable);
+    }
+
+    @Test
+    public void getLaunchableIntent_호출시__패키지명이_비어있으면_null을_리턴한다() {
+        assertThat(subject.getLaunchableIntent(null)).isNull();
+        assertThat(subject.getLaunchableIntent("")).isNull();
+    }
+
+    @Test
+    public void getLaunchableIntent_호출시__해당_패키지를_실행시킬수있는_정보를_불러온다() {
+        Intent expectedIntent = new Intent();
+        when(mockPackageManager.getLaunchIntentForPackage("com.package.name")).thenReturn(expectedIntent);
+
+        Intent acutalIntent = subject.getLaunchableIntent("com.package.name");
+
+        verify(mockPackageManager).getLaunchIntentForPackage("com.package.name");
+        assertThat(acutalIntent).isEqualTo(expectedIntent);
     }
 }
