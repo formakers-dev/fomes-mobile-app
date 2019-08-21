@@ -10,6 +10,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.helper.AndroidNativeHelper;
+import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
 import com.google.gson.Gson;
@@ -50,6 +51,7 @@ public class BetaTestDetailPresenterTest {
     @Mock BetaTestService mockBetaTestService;
     @Mock FomesUrlHelper mockFomesUrlHelper;
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
+    @Mock AppUsageDataHelper mockAppUsageDataHelper;
 
     BetaTestDetailPresenter subject;
 
@@ -81,7 +83,7 @@ public class BetaTestDetailPresenterTest {
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
         when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
 
-        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper);
+        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper, mockAppUsageDataHelper);
     }
 
     @Test

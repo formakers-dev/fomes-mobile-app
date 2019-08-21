@@ -4,11 +4,19 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @Ignore
 public class DateUtilTest {
+
+    @Test
+    public void calculateDdays_호출시__디데이를_계산하여_리턴한다() {
+        int dday = DateUtil.calculateDdays(1566277200000L, 1566363600000L); // 2019-08-20 05:00:00 ~ 2019-08-21 05:00:00
+        assertThat(dday).isEqualTo(1);
+    }
+
     @Test
     public void calDateDiff호출시_날짜차이를_계산하여_리턴한다() throws Exception {
         assertThat(DateUtil.calDateDiff(1511182800000L, 1511193600000L)).isEqualTo(1);  //2017-11-20 22:00:00 ~ 2017-11-21 01:00:00
@@ -25,6 +33,12 @@ public class DateUtilTest {
     @Test
     public void calBeforeDate호출시_입력일자이전의_날짜를_계산하여_리턴한다() throws Exception {
         assertThat(DateUtil.calBeforeDate(20171121, 30)).isEqualTo(20171022);
+    }
+
+    @Test
+    public void getDateWithoutTime_호출시__해당_로케일_기준으로_시간이_제거된_날짜정보를_리턴한다() {
+        Date dateWithoutTime = DateUtil.getDateWithoutTime(new Date(1566277200000L)); // 2019-08-20 05:00:00
+        assertThat(dateWithoutTime.getTime()).isEqualTo(1566226800000L);  // 2019-08-20 03:00:00
     }
 
     @Test
