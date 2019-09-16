@@ -2,16 +2,16 @@ package com.formakers.fomes.main.presenter;
 
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.UserService;
-import com.formakers.fomes.main.contract.AppInfoDetailContract;
-import com.formakers.fomes.main.dagger.scope.AppInfoDetailFragmentScope;
 import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.main.contract.AppInfoDetailContract;
+import com.formakers.fomes.main.dagger.AppInfoDetailDagger;
 
 import javax.inject.Inject;
 
 import rx.Completable;
 import rx.Single;
 
-@AppInfoDetailFragmentScope
+@AppInfoDetailDagger.Scope
 public class AppInfoDetailPresenter implements AppInfoDetailContract.Presenter {
 
     private final UserService userService;

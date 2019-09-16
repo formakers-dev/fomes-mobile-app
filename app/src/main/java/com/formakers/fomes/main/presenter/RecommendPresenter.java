@@ -6,10 +6,10 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.main.contract.RecommendContract;
-import com.formakers.fomes.main.contract.RecommendListAdapterContract;
-import com.formakers.fomes.main.dagger.scope.RecommendFragmentScope;
 import com.formakers.fomes.model.NativeAppInfo;
+import com.formakers.fomes.main.contract.RecommendContract;
+import com.formakers.fomes.main.dagger.RecommendDagger;
+import com.formakers.fomes.main.contract.RecommendListAdapterContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-@RecommendFragmentScope
+@RecommendDagger.Scope
 public class RecommendPresenter implements RecommendContract.Presenter {
 
     public final static String TAG = "RecommendPresenter";

@@ -24,8 +24,8 @@ import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.RecommendListAdapter;
 import com.formakers.fomes.main.contract.RecommendContract;
 import com.formakers.fomes.main.contract.RecommendListAdapterContract;
-import com.formakers.fomes.main.dagger.DaggerRecommendFragmentComponent;
-import com.formakers.fomes.main.dagger.RecommendFragmentModule;
+import com.formakers.fomes.main.dagger.DaggerRecommendDagger_Component;
+import com.formakers.fomes.main.dagger.RecommendDagger;
 import com.formakers.fomes.wishList.view.WishListActivity;
 import com.google.common.collect.Lists;
 
@@ -60,9 +60,9 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        DaggerRecommendFragmentComponent.builder()
+        DaggerRecommendDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
-                .recommendFragmentModule(new RecommendFragmentModule(this))
+                .module(new RecommendDagger.Module(this))
                 .build()
                 .inject(this);
 

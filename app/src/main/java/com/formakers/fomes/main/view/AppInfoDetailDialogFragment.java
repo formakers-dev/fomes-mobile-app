@@ -18,8 +18,8 @@ import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.custom.RecommendAppItemView;
 import com.formakers.fomes.main.contract.AppInfoDetailContract;
-import com.formakers.fomes.main.dagger.AppInfoDetailFragmentModule;
-import com.formakers.fomes.main.dagger.DaggerAppInfoDetailFragmentComponent;
+import com.formakers.fomes.main.dagger.AppInfoDetailDagger;
+import com.formakers.fomes.main.dagger.DaggerAppInfoDetailDagger_Component;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.common.base.Joiner;
 
@@ -68,9 +68,9 @@ public class AppInfoDetailDialogFragment extends BottomSheetDialogFragment imple
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        DaggerAppInfoDetailFragmentComponent.builder()
+        DaggerAppInfoDetailDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
-                .appInfoDetailFragmentModule(new AppInfoDetailFragmentModule(this))
+                .module(new AppInfoDetailDagger.Module(this))
                 .build()
                 .inject(this);
 
