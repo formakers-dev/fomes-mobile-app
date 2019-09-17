@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
+import com.formakers.fomes.analysis.dagger.RecentAnalysisReportDagger;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
@@ -13,7 +14,6 @@ import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 
 import java.util.ArrayList;
@@ -29,30 +29,26 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+@RecentAnalysisReportDagger.Scope
 public class RecentAnalysisReportPresenter implements RecentAnalysisReportContract.Presenter {
 
     public static final String TAG = RecentAnalysisReportPresenter.class.getSimpleName();
 
-    @Inject AppUsageDataHelper appUsageDataHelper;
-    @Inject AppStatService appStatService;
-    @Inject SharedPreferencesHelper sharedPreferencesHelper;
-    @Inject RequestManager requestManager;
-    @Inject UserDAO userDAO;
+    private AppUsageDataHelper appUsageDataHelper;
+    private AppStatService appStatService;
+    private RequestManager requestManager;
+    private UserDAO userDAO;
 
     User user;
 
     RecentAnalysisReportContract.View view;
 
-    public RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view) {
-        this.view = view;
-        this.view.getApplicationComponent().inject(this);
-    }
-
-    RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view, AppUsageDataHelper appUsageDataHelper, AppStatService appStatService, User user, UserDAO userDAO) {
+    @Inject
+    RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view, AppUsageDataHelper appUsageDataHelper, AppStatService appStatService, RequestManager requestManager, UserDAO userDAO) {
         this.view = view;
         this.appUsageDataHelper = appUsageDataHelper;
         this.appStatService = appStatService;
-        this.user = user;
+        this.requestManager = requestManager;
         this.userDAO = userDAO;
     }
 

@@ -55,7 +55,8 @@ public class WishListPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new WishListPresenter(mockView, mockAdapterModel, mockUserService);
+        subject = new WishListPresenter(mockView, mockUserService);
+        subject.setAdapterModel(mockAdapterModel);
 
         List<AppInfo> appInfos = Arrays.asList(new AppInfo("com.test.1"), new AppInfo("com.test.2"), new AppInfo("com.test.3"), new AppInfo("com.test.4"));
 

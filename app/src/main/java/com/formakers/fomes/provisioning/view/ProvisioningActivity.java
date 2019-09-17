@@ -2,6 +2,11 @@ package com.formakers.fomes.provisioning.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -9,25 +14,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
-import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
+import com.formakers.fomes.provisioning.dagger.DaggerProvisioningDagger_Component;
+import com.formakers.fomes.provisioning.dagger.ProvisioningDagger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,14 +42,19 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @BindView(R.id.provision_viewpager) SwipeViewPager viewPager;
     @BindView(R.id.next_button) Button nextButton;
 
-    private ProvisioningContract.Presenter presenter;
+    @Inject ProvisioningContract.Presenter presenter;
     private HashMap<String, BaseFragment> fragmentMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setPresenter(new ProvisioningPresenter(this));
+        DaggerProvisioningDagger_Component.builder()
+            .applicationComponent(FomesApplication.get(this).getComponent())
+            .module(new ProvisioningDagger.Module(this))
+            .build()
+            .inject(this);
+
         this.setContentView(R.layout.activity_provisioning);
     }
 
@@ -117,11 +124,6 @@ public class ProvisioningActivity extends BaseActivity implements ProvisioningCo
     @Override
     public void setNextButtonText(@StringRes int stringResId) {
         nextButton.setText(stringResId);
-    }
-
-    @Override
-    public ApplicationComponent getApplicationComponent() {
-        return ((FomesApplication) this.getApplication()).getComponent();
     }
 
     @Override

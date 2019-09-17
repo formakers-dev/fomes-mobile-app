@@ -1,7 +1,6 @@
 package com.formakers.fomes.provisioning.contract;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.view.BaseFragment;
 
@@ -36,7 +35,6 @@ public interface ProvisioningContract {
         void nextPage();
         void setNextButtonVisibility(boolean isVisible);
         void setNextButtonText(int stringResId);
-        ApplicationComponent getApplicationComponent();
         void startActivityAndFinish(Class<?> destActivity);
         void showToast(String toastMessage);
         boolean isSelectedFragement(BaseFragment fragment);

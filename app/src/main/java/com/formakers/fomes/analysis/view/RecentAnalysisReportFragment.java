@@ -21,8 +21,8 @@ import com.bumptech.glide.request.target.Target;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
-import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
+import com.formakers.fomes.analysis.dagger.DaggerRecentAnalysisReportDagger_Component;
+import com.formakers.fomes.analysis.dagger.RecentAnalysisReportDagger;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.util.Log;
@@ -47,6 +47,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -89,12 +91,17 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_playtime_rank_description_title) TextView myPlaytimeRankDescriptionTitleTextView;
     @BindView(R.id.analysis_my_playtime_rank_description_content) TextView myPlaytimeRankDescriptionContentTextView;
 
-    RecentAnalysisReportContract.Presenter presenter;
+    @Inject RecentAnalysisReportContract.Presenter presenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setPresenter(new RecentAnalysisReportPresenter(this));
+
+        DaggerRecentAnalysisReportDagger_Component.builder()
+                .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
+                .module(new RecentAnalysisReportDagger.Module(this))
+                .build()
+                .inject(this);
 
         return inflater.inflate(R.layout.fragment_current_analysis_report, container, false);
     }
@@ -127,12 +134,6 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @Override
     public void setPresenter(RecentAnalysisReportContract.Presenter presenter) {
         this.presenter = presenter;
-    }
-
-
-    @Override
-    public ApplicationComponent getApplicationComponent() {
-        return ((FomesApplication) this.getActivity().getApplication()).getComponent();
     }
 
     private void bindChart(PieChart pieChart, List<Number> datas) {

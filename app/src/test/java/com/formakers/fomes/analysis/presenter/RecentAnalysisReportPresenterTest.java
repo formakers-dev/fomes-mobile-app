@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.contract.RecentAnalysisReportContract;
 import com.formakers.fomes.common.network.AppStatService;
@@ -52,6 +53,7 @@ public class RecentAnalysisReportPresenterTest {
 
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
     @Inject AppStatService mockAppStatService;
+    @Inject RequestManager mockRequestManager;
     @Inject UserDAO mockUserDAO;
 
     @Mock RecentAnalysisReportContract.View mockView;
@@ -89,7 +91,7 @@ public class RecentAnalysisReportPresenterTest {
         when(mockUser.getJob()).thenReturn(3);
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
 
-        subject = new RecentAnalysisReportPresenter(mockView, mockAppUsageDataHelper, mockAppStatService, mockUser, mockUserDAO);
+        subject = new RecentAnalysisReportPresenter(mockView, mockAppUsageDataHelper, mockAppStatService, mockRequestManager, mockUserDAO);
     }
 
     @After

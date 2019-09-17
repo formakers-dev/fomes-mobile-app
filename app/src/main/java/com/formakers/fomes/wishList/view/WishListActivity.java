@@ -16,16 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.wishList.adapter.WishListAdapter;
 import com.formakers.fomes.wishList.contract.WishListAdapterContract;
 import com.formakers.fomes.wishList.contract.WishListContract;
-import com.formakers.fomes.wishList.presenter.WishListPresenter;
+import com.formakers.fomes.wishList.dagger.DaggerWishListDagger_Component;
+import com.formakers.fomes.wishList.dagger.WishListDagger;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import rx.subscriptions.CompositeSubscription;
@@ -37,7 +39,7 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
     @BindView(R.id.wish_list_empty_group) Group wishListEmptyGroup;
     @BindView(R.id.loading_bar) ProgressBar loadingBar;
 
-    WishListContract.Presenter presenter;
+    @Inject WishListContract.Presenter presenter;
     WishListAdapterContract.View adapterView;
 
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
@@ -52,6 +54,12 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DaggerWishListDagger_Component.builder()
+                .applicationComponent(FomesApplication.get(this).getComponent())
+                .module(new WishListDagger.Module(this))
+                .build()
+                .inject(this);
 
         setContentView(R.layout.activity_wish_list);
 
@@ -85,9 +93,8 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
         });
 
         wishListRecyclerView.setAdapter(wishListAdapter);
+        presenter.setAdapterModel(wishListAdapter);
         adapterView = wishListAdapter;
-
-        setPresenter(new WishListPresenter(this, wishListAdapter));
 
         presenter.loadingWishList();
     }
@@ -127,11 +134,6 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
     @Override
     public void refresh(int position) {
         adapterView.refresh(position);
-    }
-
-    @Override
-    public ApplicationComponent getApplicationComponent() {
-        return FomesApplication.get(this).getComponent();
     }
 
     @Override

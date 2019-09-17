@@ -51,6 +51,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
+@Ignore
 @RunWith(RobolectricTestRunner.class)
 public class RecentAnalysisReportFragmentTest {
 

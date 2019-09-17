@@ -4,9 +4,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
-import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.UserService;
-import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -14,29 +12,34 @@ import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.ProvisioningContract;
+import com.formakers.fomes.provisioning.dagger.ProvisioningDagger;
 import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 
 import rx.Completable;
 
+@ProvisioningDagger.Scope
 public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public static final String TAG = ProvisioningPresenter.class.getSimpleName();
 
-    @Inject UserService userService;
-    @Inject AndroidNativeHelper androidNativeHelper;
-    @Inject SharedPreferencesHelper sharedPreferencesHelper;
-    @Inject UserDAO userDAO;
-    @Inject JobManager jobManager;
-    @Inject ChannelManager channelManager;
-    @Inject AnalyticsModule.Analytics analytics;
+    private UserService userService;
+    private AndroidNativeHelper androidNativeHelper;
+    private SharedPreferencesHelper sharedPreferencesHelper;
+    private UserDAO userDAO;
+    private AnalyticsModule.Analytics analytics;
 
     private ProvisioningContract.View view;
     private User user = new User();
 
-    public ProvisioningPresenter(ProvisioningContract.View view) {
+    @Inject
+    ProvisioningPresenter(ProvisioningContract.View view, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
         this.view = view;
-        this.view.getApplicationComponent().inject(this);
+        this.userService = userService;
+        this.androidNativeHelper = androidNativeHelper;
+        this.sharedPreferencesHelper = sharedPreferencesHelper;
+        this.userDAO = userDAO;
+        this.analytics = analytics;
     }
 
     // temporary code for test

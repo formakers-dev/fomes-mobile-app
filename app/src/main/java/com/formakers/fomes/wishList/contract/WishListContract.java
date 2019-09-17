@@ -2,7 +2,6 @@ package com.formakers.fomes.wishList.contract;
 
 import androidx.annotation.StringRes;
 
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
 
 import java.util.List;
@@ -16,11 +15,11 @@ public interface WishListContract {
 
         String getItemPackageName(int position);
         List<String> getRemovedPackageNames();
+
+        void setAdapterModel(WishListAdapterContract.Model adapterModel);
     }
 
     interface View extends BaseView<Presenter> {
-        ApplicationComponent getApplicationComponent();
-
         void refresh();
         void refresh(int position);
 

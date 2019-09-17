@@ -1,7 +1,6 @@
 package com.formakers.fomes.common.dagger;
 
 import com.bumptech.glide.RequestManager;
-import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenter;
 import com.formakers.fomes.common.LocalBroadcastReceiver;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
@@ -25,8 +24,6 @@ import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.presenter.MainPresenter;
-import com.formakers.fomes.provisioning.presenter.ProvisioningPresenter;
-import com.formakers.fomes.wishList.presenter.WishListPresenter;
 
 import javax.inject.Singleton;
 
@@ -63,10 +60,7 @@ public interface ApplicationComponent {
 
     // fomes
     void inject(NoticeMigrationActivity provisioningPresenter);
-    void inject(ProvisioningPresenter provisioningPresenter);
-    void inject(RecentAnalysisReportPresenter reportPresenter);
     void inject(MainPresenter presenter);
-    void inject(WishListPresenter presenter);
 
     void inject(FomesBaseActivity activity);
     void inject(BaseActivity activity);

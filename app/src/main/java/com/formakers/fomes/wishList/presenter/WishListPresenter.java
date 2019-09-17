@@ -5,6 +5,7 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.wishList.contract.WishListAdapterContract;
 import com.formakers.fomes.wishList.contract.WishListContract;
+import com.formakers.fomes.wishList.dagger.WishListDagger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,26 +14,19 @@ import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 
+@WishListDagger.Scope
 public class WishListPresenter implements WishListContract.Presenter {
 
-    @Inject UserService userService;
+    private UserService userService;
 
     private List<String> removedPackageNames = new ArrayList<>();
 
     private WishListContract.View view;
     private WishListAdapterContract.Model adapterModel;
 
-    public WishListPresenter(WishListContract.View view, WishListAdapterContract.Model adapterModel) {
+    @Inject
+    public WishListPresenter(WishListContract.View view, UserService userService) {
         this.view = view;
-        this.adapterModel = adapterModel;
-
-        // ???
-        this.view.getApplicationComponent().inject(this);
-    }
-
-    public WishListPresenter(WishListContract.View view, WishListAdapterContract.Model adapterModel, UserService userService) {
-        this.view = view;
-        this.adapterModel = adapterModel;
         this.userService = userService;
     }
 
@@ -79,5 +73,10 @@ public class WishListPresenter implements WishListContract.Presenter {
     @Override
     public List<String> getRemovedPackageNames() {
         return removedPackageNames;
+    }
+
+    @Override
+    public void setAdapterModel(WishListAdapterContract.Model adapterModel) {
+        this.adapterModel = adapterModel;
     }
 }
