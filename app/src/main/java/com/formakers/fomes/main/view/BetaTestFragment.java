@@ -27,8 +27,8 @@ import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.BetaTestListAdapter;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
-import com.formakers.fomes.main.dagger.BetaTestFragmentModule;
-import com.formakers.fomes.main.dagger.DaggerBetaTestFragmentComponent;
+import com.formakers.fomes.main.dagger.BetaTestDagger;
+import com.formakers.fomes.main.dagger.DaggerBetaTestDagger_Component;
 
 import java.util.Date;
 
@@ -58,9 +58,9 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         com.formakers.fomes.common.util.Log.d(TAG, "onCreateView");
 
-        DaggerBetaTestFragmentComponent.builder()
+        DaggerBetaTestDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
-                .betaTestFragmentModule(new BetaTestFragmentModule(this))
+                .module(new BetaTestDagger.Module(this))
                 .build()
                 .inject(this);
 

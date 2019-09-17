@@ -10,7 +10,7 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestContract;
 import com.formakers.fomes.main.contract.BetaTestListAdapterContract;
-import com.formakers.fomes.main.dagger.scope.BetaTestFragmentScope;
+import com.formakers.fomes.main.dagger.BetaTestDagger;
 import com.formakers.fomes.model.User;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-@BetaTestFragmentScope
+@BetaTestDagger.Scope
 public class BetaTestPresenter implements BetaTestContract.Presenter {
 
     public static String TAG = "BetaTestPresenter";

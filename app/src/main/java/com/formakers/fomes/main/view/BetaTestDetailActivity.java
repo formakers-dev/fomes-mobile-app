@@ -36,8 +36,8 @@ import com.formakers.fomes.common.view.WebViewActivity;
 import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.MissionListAdapter;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
-import com.formakers.fomes.main.dagger.BetaTestDetailActivityModule;
-import com.formakers.fomes.main.dagger.DaggerBetaTestDetailActivityComponent;
+import com.formakers.fomes.main.dagger.BetaTestDetailDagger;
+import com.formakers.fomes.main.dagger.DaggerBetaTestDetailDagger_Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -90,9 +90,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-        DaggerBetaTestDetailActivityComponent.builder()
+        DaggerBetaTestDetailDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this).getComponent())
-                .betaTestDetailActivityModule(new BetaTestDetailActivityModule(this))
+                .module(new BetaTestDetailDagger.Module(this))
                 .build()
                 .inject(this);
     }

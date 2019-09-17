@@ -18,7 +18,7 @@ import com.formakers.fomes.helper.AndroidNativeHelper;
 import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.main.contract.BetaTestDetailContract;
-import com.formakers.fomes.main.dagger.scope.BetaTestDetailActivityScope;
+import com.formakers.fomes.main.dagger.BetaTestDetailDagger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +31,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-@BetaTestDetailActivityScope
+@BetaTestDetailDagger.Scope
 public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter {
 
     private static final String TAG = "BetaTestDetailPresenter";

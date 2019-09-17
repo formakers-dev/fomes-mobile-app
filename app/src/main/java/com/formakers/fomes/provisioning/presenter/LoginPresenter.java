@@ -13,7 +13,7 @@ import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.view.MainActivity;
 import com.formakers.fomes.model.User;
 import com.formakers.fomes.provisioning.contract.LoginContract;
-import com.formakers.fomes.provisioning.dagger.scope.LoginActivityScope;
+import com.formakers.fomes.provisioning.dagger.LoginDagger;
 import com.formakers.fomes.provisioning.view.ProvisioningActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -25,7 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-@LoginActivityScope
+@LoginDagger.Scope
 public class LoginPresenter implements LoginContract.Presenter {
 
     private static final String TAG = "LoginPresenter";

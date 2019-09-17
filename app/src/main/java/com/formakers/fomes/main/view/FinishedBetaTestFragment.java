@@ -23,8 +23,8 @@ import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.adapter.FinishedBetaTestListAdapter;
 import com.formakers.fomes.main.contract.FinishedBetaTestContract;
 import com.formakers.fomes.main.contract.FinishedBetaTestListAdapterContract;
-import com.formakers.fomes.main.dagger.DaggerFinishedBetaTestFragmentComponent;
-import com.formakers.fomes.main.dagger.FinishedBetaTestFragmentModule;
+import com.formakers.fomes.main.dagger.DaggerFinishedBetaTestDagger_Component;
+import com.formakers.fomes.main.dagger.FinishedBetaTestDagger;
 
 import javax.inject.Inject;
 
@@ -48,9 +48,9 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        DaggerFinishedBetaTestFragmentComponent.builder()
+        DaggerFinishedBetaTestDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
-                .finishedBetaTestFragmentModule(new FinishedBetaTestFragmentModule(this))
+                .module(new FinishedBetaTestDagger.Module(this))
                 .build()
                 .inject(this);
 

@@ -8,7 +8,7 @@ import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.main.contract.FinishedBetaTestContract;
 import com.formakers.fomes.main.contract.FinishedBetaTestListAdapterContract;
-import com.formakers.fomes.main.dagger.scope.FinishedBetaTestFragmentScope;
+import com.formakers.fomes.main.dagger.FinishedBetaTestDagger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +24,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-@FinishedBetaTestFragmentScope
+@FinishedBetaTestDagger.Scope
 public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Presenter {
 
     public static String TAG = "FinishedBetaTestPresenter";

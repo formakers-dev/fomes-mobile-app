@@ -3,7 +3,6 @@ package com.formakers.fomes.provisioning.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -11,13 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.provisioning.contract.LoginContract;
-import com.formakers.fomes.provisioning.dagger.DaggerLoginActivityComponent;
-import com.formakers.fomes.provisioning.dagger.LoginActivityModule;
+import com.formakers.fomes.provisioning.dagger.DaggerLoginDagger_Component;
+import com.formakers.fomes.provisioning.dagger.LoginDagger;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import javax.inject.Inject;
@@ -48,9 +49,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DaggerLoginActivityComponent.builder()
+        DaggerLoginDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this).getComponent())
-                .loginActivityModule(new LoginActivityModule(this))
+                .module(new LoginDagger.Module(this))
                 .build()
                 .inject(this);
 
