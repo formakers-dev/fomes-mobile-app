@@ -96,14 +96,17 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        injectDependency();
 
+        return inflater.inflate(R.layout.fragment_current_analysis_report, container, false);
+    }
+
+    protected void injectDependency() {
         DaggerRecentAnalysisReportDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this.getActivity()).getComponent())
                 .module(new RecentAnalysisReportDagger.Module(this))
                 .build()
                 .inject(this);
-
-        return inflater.inflate(R.layout.fragment_current_analysis_report, container, false);
     }
 
     @Override

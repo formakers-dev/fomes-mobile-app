@@ -23,7 +23,6 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.view.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.WebViewActivity;
@@ -31,7 +30,8 @@ import com.formakers.fomes.common.view.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.main.adapter.EventPagerAdapter;
 import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
-import com.formakers.fomes.main.presenter.MainPresenter;
+import com.formakers.fomes.main.dagger.DaggerMainDagger_Component;
+import com.formakers.fomes.main.dagger.MainDagger;
 import com.formakers.fomes.provisioning.view.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.view.WishListActivity;
@@ -39,6 +39,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnPageChange;
@@ -71,7 +73,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private Subscription eventPagerAutoSlideSubscription;
     private EventPagerAdapterContract.View eventPagerAdapterView;
 
-    private MainContract.Presenter presenter;
+    @Inject MainContract.Presenter presenter;
 
     public interface FragmentCommunicator {
         void onSelectedPage();
@@ -91,7 +93,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         this.setTitle(R.string.common_empty_string);
         this.setContentView(R.layout.activity_main);
-        setPresenter(new MainPresenter(this));
+
+        DaggerMainDagger_Component.builder()
+                .applicationComponent(FomesApplication.get(this).getComponent())
+                .module(new MainDagger.Module(this))
+                .build()
+                .inject(this);
 
         // 혹시나 모를 상황을 대비해 런치화면 진입시 토큰체크
         verifyAccessToken();
@@ -303,11 +310,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
-    }
-
-    @Override
-    public ApplicationComponent getApplicationComponent() {
-        return ((FomesApplication) getApplication()).getComponent();
     }
 
     public void showNextEventBanner() {

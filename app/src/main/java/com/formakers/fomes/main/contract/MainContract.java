@@ -1,7 +1,6 @@
 package com.formakers.fomes.main.contract;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
-import com.formakers.fomes.common.dagger.ApplicationComponent;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.model.User;
 
@@ -27,7 +26,6 @@ public interface MainContract {
     }
 
     interface View extends BaseView<Presenter> {
-        ApplicationComponent getApplicationComponent();
         void refreshEventPager();
     }
 }

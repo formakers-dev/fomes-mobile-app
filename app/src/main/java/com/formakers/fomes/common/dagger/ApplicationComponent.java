@@ -23,7 +23,6 @@ import com.formakers.fomes.helper.AppUsageDataHelper;
 import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.main.presenter.MainPresenter;
 
 import javax.inject.Singleton;
 
@@ -59,8 +58,7 @@ public interface ApplicationComponent {
     void inject(LocalBroadcastReceiver localBroadcastReceiver);
 
     // fomes
-    void inject(NoticeMigrationActivity provisioningPresenter);
-    void inject(MainPresenter presenter);
+    void inject(NoticeMigrationActivity activity);
 
     void inject(FomesBaseActivity activity);
     void inject(BaseActivity activity);

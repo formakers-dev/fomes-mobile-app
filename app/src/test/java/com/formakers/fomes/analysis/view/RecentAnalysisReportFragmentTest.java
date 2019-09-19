@@ -413,6 +413,6 @@ public class RecentAnalysisReportFragmentTest {
 
     public static class ShadowRecentAnalysisReportFragment extends RecentAnalysisReportFragment {
         @Override
-        public void setPresenter(RecentAnalysisReportContract.Presenter presenter) { }
+        protected void injectDependency() { }
     }
 }

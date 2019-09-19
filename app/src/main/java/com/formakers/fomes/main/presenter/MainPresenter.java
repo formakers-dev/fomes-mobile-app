@@ -12,6 +12,7 @@ import com.formakers.fomes.helper.FomesUrlHelper;
 import com.formakers.fomes.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.contract.EventPagerAdapterContract;
 import com.formakers.fomes.main.contract.MainContract;
+import com.formakers.fomes.main.dagger.MainDagger;
 import com.formakers.fomes.model.User;
 
 import javax.inject.Inject;
@@ -21,19 +22,20 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+@MainDagger.Scope
 public class MainPresenter implements MainContract.Presenter {
 
     private static final String TAG = "MainPresenter";
 
-    @Inject UserDAO userDAO;
-    @Inject UserService userService;
-    @Inject PostService postService;
-    @Inject EventLogService eventLogService;
-    @Inject AnalyticsModule.Analytics analytics;
-    @Inject SharedPreferencesHelper sharedPreferencesHelper;
+    private UserDAO userDAO;
+    private UserService userService;
+    private PostService postService;
+    private EventLogService eventLogService;
+    private AnalyticsModule.Analytics analytics;
+    private SharedPreferencesHelper sharedPreferencesHelper;
 
-    @Inject JobManager jobManager;
-    @Inject FomesUrlHelper fomesUrlHelper;
+    private JobManager jobManager;
+    private FomesUrlHelper fomesUrlHelper;
 
     private User userInfo;
     private MainContract.View view;
@@ -41,13 +43,8 @@ public class MainPresenter implements MainContract.Presenter {
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    public MainPresenter(MainContract.View view) {
-        this.view = view;
-        this.view.getApplicationComponent().inject(this);
-    }
-
-    // temporary code for test
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper, FomesUrlHelper fomesUrlHelper) {
+    @Inject
+    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper, FomesUrlHelper fomesUrlHelper, AnalyticsModule.Analytics analytics) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
@@ -56,6 +53,7 @@ public class MainPresenter implements MainContract.Presenter {
         this.eventLogService = eventLogService;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
         this.fomesUrlHelper = fomesUrlHelper;
+        this.analytics = analytics;
     }
 
     @Override
