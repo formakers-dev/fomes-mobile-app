@@ -142,7 +142,8 @@ public class AppUsageDataHelper {
                 .reduce(0L, (totalUsedTime, shortTermStat) -> {
                     totalUsedTime += shortTermStat.getTotalUsedTime();
                     return totalUsedTime;
-                });
+                })
+                .doOnNext(totalUsedTime -> Log.i(TAG, "getUsageTime) packageName=" + packageName + " totalUsedTime=" + totalUsedTime));
     }
 
     /******************************** AppBee Legacy **/

@@ -14,8 +14,8 @@ import com.formakers.fomes.common.network.vo.Mission;
 
 import java.util.List;
 
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.subscriptions.CompositeSubscription;
 
 public interface BetaTestDetailContract {
@@ -35,7 +35,7 @@ public interface BetaTestDetailContract {
         Observable<List<Mission>> getDisplayedMissionList();
         void requestToAttendBetaTest();
 
-        Completable updatePlayTime(@NonNull String id, @NonNull String packageName);
+        Single<Long> updatePlayTime(@NonNull String id, @NonNull String packageName);
     }
 
     interface View extends BaseView<Presenter> {

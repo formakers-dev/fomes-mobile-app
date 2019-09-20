@@ -8,15 +8,15 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.common.helper.AndroidNativeHelper;
-import com.formakers.fomes.common.helper.AppUsageDataHelper;
-import com.formakers.fomes.common.helper.FomesUrlHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,8 +24,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -43,7 +43,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     private BetaTestDetailContract.View view;
 
-    private BetaTest betaTest;
+    BetaTest betaTest;
 
     @Inject
     public BetaTestDetailPresenter(BetaTestDetailContract.View view,
@@ -187,17 +187,31 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Completable updatePlayTime(@NonNull String id, @NonNull String packageName) {
+    public Single<Long> updatePlayTime(@NonNull String id, @NonNull String packageName) {
+        return !TextUtils.isEmpty(packageName) ?
+                getPlayTimeAndUpdateView(id, packageName)
+                : Single.error(new IllegalArgumentException("packageName is null"));
+    }
 
-        return TextUtils.isEmpty(packageName) ? Completable.error(new IllegalArgumentException("packageName is null!!!!")) : appUsageDataHelper.getUsageTime(packageName, betaTest.getOpenDate().getTime())
+    private Single<Long> getPlayTimeAndUpdateView(@NonNull String id, @NonNull String packageName) {
+        return appUsageDataHelper.getUsageTime(packageName, betaTest.getOpenDate().getTime())
+                .map(playTime -> {
+                    if (playTime > 0) {
+                        return playTime;
+                    } else {
+                        throw new IllegalStateException("playtime is under than 0");
+                    }
+                })
                 .toSingle()
                 .zipWith(Observable.from(betaTest.getMissions())
                         .filter(mission -> id.equals(mission.getItem().getId()))
                         .toSingle(), Pair::new)
-                .map(pair -> pair.second.getItem().setTotalPlayTime(pair.first))
+                .map(pair -> {
+                    pair.second.getItem().setTotalPlayTime(pair.first);
+                    return pair.first;
+                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .toCompletable()
-                .doOnCompleted(() -> this.view.refreshMissionList());
+                .doOnSuccess(playTime -> this.view.refreshMissionList());
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {

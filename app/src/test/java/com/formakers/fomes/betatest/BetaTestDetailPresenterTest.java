@@ -3,17 +3,15 @@ package com.formakers.fomes.betatest;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.formakers.fomes.betatest.BetaTestDetailPresenter;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
-import com.formakers.fomes.common.helper.AndroidNativeHelper;
-import com.formakers.fomes.common.helper.AppUsageDataHelper;
-import com.formakers.fomes.common.helper.FomesUrlHelper;
-import com.formakers.fomes.betatest.BetaTestDetailContract;
 import com.google.gson.Gson;
 
 import org.junit.Before;
@@ -32,6 +30,7 @@ import rx.Scheduler;
 import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.observers.TestSubscriber;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -40,6 +39,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -59,15 +59,15 @@ public class BetaTestDetailPresenterTest {
     @Before
     public void setUp() throws Exception {
         RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
-        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.immediate());
-        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.trampoline());
 
         RxAndroidPlugins.getInstance().reset();
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
             @Override
             public Scheduler getMainThreadScheduler() {
-                return Schedulers.immediate();
+                return Schedulers.trampoline();
             }
         });
 
@@ -230,6 +230,63 @@ public class BetaTestDetailPresenterTest {
         verify(mockBetaTestService).postCompleteBetaTest("5d1ec8194400311578e996bd");
         verify(mockBetaTestService).postCompleteBetaTest("5d1ec8194400311578e996b2");
         verify(mockView).refreshMissionList();
+    }
+
+    @Test
+    public void updatePlayTime_호출시__특정_앱의_플레이시간을_가져와_뷰를_업데이트_한다() {
+        // given
+        when(mockAppUsageDataHelper.getUsageTime("com.goodcircle.comeonkitty", 1562198400000L)) // 2019-07-04T00:00:00.000Z
+                .thenReturn(Observable.just(1000L));
+
+        subject.load("5d1c5e695c20ca481f27a4ab");
+        Mission.MissionItem actualMissionItem = Observable.from(subject.betaTest.getMissions()).filter(mission -> "5d1ec8194400311578e996bd".equals(mission.getItem().getId())).toBlocking().single().getItem();
+        actualMissionItem.setTotalPlayTime(0L);
+
+        // when
+        subject.updatePlayTime("5d1ec8194400311578e996bd", "com.goodcircle.comeonkitty")
+                .subscribe(new TestSubscriber<>());
+
+        // then
+        long actualPlayTime = actualMissionItem.getTotalPlayTime();
+
+        verify(mockAppUsageDataHelper).getUsageTime(eq("com.goodcircle.comeonkitty"), eq(1562198400000L)); // 2019-07-04T00:00:00.000Z
+        assertThat(actualPlayTime).isEqualTo(1000L);
+        verify(mockView).refreshMissionList();
+    }
+
+    @Test
+    public void updatePlayTime_호출시__특정_앱의_플레이시간이_0이면_오류처리를_한다() {
+        // given
+        when(mockAppUsageDataHelper.getUsageTime("com.goodcircle.comeonkitty", 1562198400000L)) // 2019-07-04T00:00:00.000Z
+                .thenReturn(Observable.just(0L));
+
+        subject.load("5d1c5e695c20ca481f27a4ab");
+        Mission.MissionItem actualMissionItem = Observable.from(subject.betaTest.getMissions()).filter(mission -> "5d1ec8194400311578e996bd".equals(mission.getItem().getId())).toBlocking().single().getItem();
+        long oldTotalPlayTime = actualMissionItem.getTotalPlayTime().longValue();
+
+        TestSubscriber<Long> testSubscriber = new TestSubscriber<>();
+
+        // when
+        subject.updatePlayTime("5d1ec8194400311578e996bd", "com.goodcircle.comeonkitty")
+                .subscribe(testSubscriber);
+
+        // then
+        long actualPlayTime = actualMissionItem.getTotalPlayTime();
+
+        assertThat(actualPlayTime).isEqualTo(oldTotalPlayTime);
+        verify(mockView, never()).refreshMissionList();
+
+        testSubscriber.assertError(IllegalStateException.class);
+    }
+
+    @Test
+    public void updatePlayTime_호출시__패키지명이_없으면_오류처리를_한다() {
+        TestSubscriber<Long> testSubscriber = new TestSubscriber<>();
+
+        subject.updatePlayTime("5d1ec8194400311578e996bd", "")
+                .subscribe(testSubscriber);
+
+        testSubscriber.assertError(IllegalArgumentException.class);
     }
 
     private BetaTest getDummyBetaTestDetail() {

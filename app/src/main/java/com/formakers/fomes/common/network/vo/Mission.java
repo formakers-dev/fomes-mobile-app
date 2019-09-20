@@ -56,7 +56,7 @@ public class Mission implements Parcelable {
         }
 
         public String getType() {
-            return type;
+            return type != null ? type : "default";
         }
 
         public MissionItem setType(String type) {

@@ -34,11 +34,12 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final String TAG = "MissionListAdapter";
 
-    List<Mission> missionList = new ArrayList<>();
-    View.OnClickListener missionItemClickListener;
+    private List<Mission> missionList = new ArrayList<>();
+    private View.OnClickListener missionItemClickListener;
+    private Context context;
 
-    BetaTestDetailContract.Presenter presenter;
-    BetaTestDetailContract.View view;
+    private BetaTestDetailContract.Presenter presenter;
+    private BetaTestDetailContract.View view;
 
     public MissionListAdapter(BetaTestDetailContract.Presenter presenter, BetaTestDetailContract.View view) {
         this.presenter = presenter;
@@ -68,6 +69,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_betatest_mission, parent, false));
     }
 
@@ -77,7 +79,6 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Mission.MissionItem missionItem = mission.getItem();
 
         ViewHolder viewHolder = ((ViewHolder) holder);
-        Context context = viewHolder.itemView.getContext();
 
         // 락 화면
         viewHolder.lockLevelTextView.setText(String.format(context.getString(R.string.betatest_detail_mission_item_lock_level_format), position + 1));
@@ -106,7 +107,6 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return true;
         });
 
-
         // 미션 카드 공통 내용
         Glide.with(context).load(mission.getIconImageUrl())
                 .apply(new RequestOptions()
@@ -132,69 +132,55 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         // 미션 카드 타입별 분기 로직
-        if ("play".equals(missionItem.getType())) {
-            long playtime = missionItem.getTotalPlayTime();
+        switch (missionItem.getType()) {
+            case "play": {
+                long playtime = missionItem.getTotalPlayTime();
 
-            viewHolder.itemButton.setText("다운로드 & 플레이");
-            viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
-            viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
-            viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
+                viewHolder.itemButton.setText("다운로드 & 플레이");
+                viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
+                viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
+                viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
 
-            // 참여상태
-            viewHolder.missionCompletedImageView.setVisibility(View.GONE);
-            viewHolder.refreshButton.setVisibility(View.VISIBLE);
-            viewHolder.itemButton.setEnabled(true);
-        } else {
-            viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
+                // 참여상태
+                viewHolder.missionCompletedImageView.setVisibility(View.GONE);
+                viewHolder.refreshButton.setVisibility(View.VISIBLE);
+                viewHolder.itemButton.setEnabled(true);
 
-            // 참여상태
-            viewHolder.missionCompletedImageView.setVisibility(missionItem.isCompleted() ? View.VISIBLE : View.GONE);
-            viewHolder.refreshButton.setVisibility(missionItem.isCompleted() ? View.GONE : View.VISIBLE);
-            viewHolder.itemButton.setEnabled(missionItem.isRepeatable() || !missionItem.isCompleted());
+                // 플레이 시간 측정
+                if (!mission.isLocked()) {
+                    updatePlayTime(viewHolder, missionItem);
+                }
 
-            if (!missionItem.isCompleted()) {
-                viewHolder.itemButton.setText("참여하기");
-            } else {
-                if (missionItem.isRepeatable()) {
-                    viewHolder.itemButton.setText("수정하기");
+                break;
+            }
+            default: {
+                viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
+
+                // 참여상태
+                viewHolder.missionCompletedImageView.setVisibility(missionItem.isCompleted() ? View.VISIBLE : View.GONE);
+                viewHolder.refreshButton.setVisibility(missionItem.isCompleted() ? View.GONE : View.VISIBLE);
+                viewHolder.itemButton.setEnabled(missionItem.isRepeatable() || !missionItem.isCompleted());
+
+                if (!missionItem.isCompleted()) {
+                    viewHolder.itemButton.setText("참여하기");
                 } else {
-                    viewHolder.guideTextView.setTextColor(context.getResources().getColor(R.color.fomes_black_alpha_30));
-                    viewHolder.itemButton.setText("참여 완료");
-                    viewHolder.itemButton.setTextColor(context.getResources().getColor(R.color.fomes_greyish_brown));
+                    if (missionItem.isRepeatable()) {
+                        viewHolder.itemButton.setText("수정하기");
+                    } else {
+                        viewHolder.guideTextView.setTextColor(context.getResources().getColor(R.color.fomes_black_alpha_30));
+                        viewHolder.itemButton.setText("참여 완료");
+                        viewHolder.itemButton.setTextColor(context.getResources().getColor(R.color.fomes_greyish_brown));
+                    }
                 }
             }
         }
-
-        // 디스크립션 레이아웃 - Visibility 처리 (이미지나 플레이타임이 보여질때만 보여진다)
-        viewHolder.descriptionLayout.setVisibility((viewHolder.descriptionImageView.getVisibility() == View.VISIBLE
-                || viewHolder.missionPlayTimeLayout.getVisibility() == View.VISIBLE) ? View.VISIBLE : View.GONE);
-
-        // 미션 아이템 버튼
-        viewHolder.itemButton.setOnClickListener(v -> {
-            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_ITEM, missionItem.getId());
-            presenter.processMissionItemAction(missionItem);
-        });
 
         // 미션 카드 새로고침 버튼
         viewHolder.refreshButton.setOnClickListener(v -> {
             presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getItem().getId());
 
             if ("play".equals(missionItem.getType())) {
-                view.getCompositeSubscription().add(
-                        presenter.updatePlayTime(missionItem.getId(), missionItem.getPackageName())
-                                .doOnSubscribe(x -> {
-                                    viewHolder.refreshButton.setVisibility(View.INVISIBLE);
-                                    viewHolder.refreshProgress.setVisibility(View.VISIBLE);
-                                })
-                                .doAfterTerminate(() -> {
-                                    viewHolder.refreshButton.setVisibility(View.VISIBLE);
-                                    viewHolder.refreshProgress.setVisibility(View.GONE);
-                                })
-                                .subscribe(() -> {
-                                }, e -> {
-                                    Toast.makeText(context, "새로고침 시 문제가 발생했다멍!🐶\n계속 발생하면 우체통에 문의주라멍!📮", Toast.LENGTH_SHORT).show();
-                                    Log.e(TAG, String.valueOf(e));
-                                }));
+                updatePlayTime(viewHolder, missionItem);
             } else {
                 view.getCompositeSubscription().add(
                         presenter.refreshMissionProgress(mission.getId())
@@ -226,8 +212,41 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         });
 
+        // 디스크립션 레이아웃 - Visibility 처리 (이미지나 플레이타임이 보여질때만 보여진다)
+        viewHolder.descriptionLayout.setVisibility((viewHolder.descriptionImageView.getVisibility() == View.VISIBLE
+                || viewHolder.missionPlayTimeLayout.getVisibility() == View.VISIBLE) ? View.VISIBLE : View.GONE);
+
+        // 미션 아이템 버튼
+        viewHolder.itemButton.setOnClickListener(v -> {
+            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_ITEM, missionItem.getId());
+            presenter.processMissionItemAction(missionItem);
+        });
+
         // 미션 아이템 클릭 리스너 등록 (보일러 플레이트 코드)
         viewHolder.itemView.setOnClickListener(missionItemClickListener);
+    }
+
+    private void updatePlayTime(ViewHolder viewHolder, Mission.MissionItem missionItem) {
+        view.getCompositeSubscription().add(
+                presenter.updatePlayTime(missionItem.getId(), missionItem.getPackageName())
+                        .doOnSubscribe(() -> {
+                            viewHolder.refreshButton.setVisibility(View.INVISIBLE);
+                            viewHolder.refreshProgress.setVisibility(View.VISIBLE);
+                        })
+                        .doAfterTerminate(() -> {
+                            viewHolder.refreshButton.setVisibility(View.VISIBLE);
+                            viewHolder.refreshProgress.setVisibility(View.GONE);
+                        })
+                        .subscribe(playTime -> {
+                            Toast.makeText(context, "플레이한 시간이 더해졌다리~~~ : " + playTime, Toast.LENGTH_SHORT).show();
+                        }, e -> {
+                            if (e instanceof IllegalStateException) {
+                                Toast.makeText(context, "추가 플레이 시간이 없어요~~~~~~ 게임을 플레이하고 새로고침 버튼을 눌러라ㅏ라ㅏ라!!!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "새로고침 시 문제가 발생했다멍!🐶\n계속 발생하면 우체통에 문의주라멍!📮", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.e(TAG, String.valueOf(e));
+                        }));
     }
 
     @Override
