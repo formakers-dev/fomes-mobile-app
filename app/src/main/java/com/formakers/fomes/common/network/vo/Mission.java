@@ -3,6 +3,7 @@ package com.formakers.fomes.common.network.vo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.google.gson.annotations.SerializedName;
 
 public class Mission implements Parcelable {
@@ -56,7 +57,7 @@ public class Mission implements Parcelable {
         }
 
         public String getType() {
-            return type != null ? type : "default";
+            return type != null ? type : FomesConstants.BetaTest.Mission.TYPE_DEFAULT;
         }
 
         public MissionItem setType(String type) {

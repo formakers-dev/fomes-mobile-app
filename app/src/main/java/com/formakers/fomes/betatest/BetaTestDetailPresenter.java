@@ -7,6 +7,7 @@ import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
 import com.formakers.fomes.common.helper.AppUsageDataHelper;
@@ -131,7 +132,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         String url = getInterpretedUrl(action);
         Uri uri = Uri.parse(url);
 
-        if ("play".equals(missionItem.getType())) {
+        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionItem.getType())) {
             Intent intent = this.androidNativeHelper.getLaunchableIntent(missionItem.getPackageName());
 
             if (intent != null) {
@@ -141,7 +142,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         }
 
         // below condition logic should be move to URL Manager(or Parser and so on..)
-        if ("internal_web".equals(missionItem.getActionType())
+        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(missionItem.getActionType())
                 || (uri.getQueryParameter("internal_web") != null
                 && uri.getQueryParameter("internal_web").equals("true"))) {
             view.startWebViewActivity(missionItem.getTitle(), url);
@@ -159,7 +160,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public Observable<List<Mission>> getDisplayedMissionList() {
         return getMissionListWithLockingSequence()
-                .filter(mission -> !"hidden".equals(mission.getItem().getType()))
+                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getItem().getType()))
                 .toList();
     }
 
@@ -169,7 +170,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 this.getMissionListWithLockingSequence()
                 .filter(mission -> {
                     String missionType = mission.getItem().getType();
-                    return "play".equals(missionType) || "hidden".equals(missionType);
+                    return FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionType)
+                            || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(missionType);
                 })
                 .flatMapCompletable(mission -> this.betaTestService.postCompleteBetaTest(mission.getItem().getId()))
                 .toCompletable()
@@ -177,7 +179,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 .subscribe(() -> {
                     for (Mission mission : betaTest.getMissions()) {
                         String missionType = mission.getItem().getType();
-                        if ("play".equals(missionType) || "hidden".equals(missionType)) {
+                        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionType) || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(missionType)) {
                             mission.getItem().setCompleted(true);
                         }
                     }
@@ -237,8 +239,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         for (Mission lockedMission : reducedMissionList) {
                             Mission.MissionItem lockedMissionItem = lockedMission.getItem();
 
-                            if ("play".equals(lockedMissionItem.getType())
-                                    || "hidden".equals(lockedMissionItem.getType())) {
+                            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(lockedMissionItem.getType())
+                                    || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(lockedMissionItem.getType())) {
                                 reducedMissionList.get(0).setLocked(!lockedMissionItem.isCompleted());
                             }
                         }

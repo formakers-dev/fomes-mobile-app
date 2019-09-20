@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
@@ -133,7 +134,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 미션 카드 타입별 분기 로직
         switch (missionItem.getType()) {
-            case "play": {
+            case FomesConstants.BetaTest.Mission.TYPE_PLAY: {
                 long playtime = missionItem.getTotalPlayTime();
 
                 viewHolder.itemButton.setText("다운로드 & 플레이");
@@ -179,7 +180,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.refreshButton.setOnClickListener(v -> {
             presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getItem().getId());
 
-            if ("play".equals(missionItem.getType())) {
+            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionItem.getType())) {
                 updatePlayTime(viewHolder, missionItem);
             } else {
                 view.getCompositeSubscription().add(

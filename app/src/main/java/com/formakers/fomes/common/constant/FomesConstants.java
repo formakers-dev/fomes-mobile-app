@@ -38,6 +38,14 @@ public interface FomesConstants {
             String TARGET_DETAIL_DIALOG_JOIN_BUTTON = "BetaTest_DetailDialog_JoinButton";
             String TARGET_EPILOGUE_BUTTON = "BetaTest_Epilogue_Button";
         }
+
+        interface Mission {
+            String TYPE_PLAY = "play";
+            String TYPE_HIDDEN = "hidden";
+            String TYPE_DEFAULT = "default";
+
+            String ACTION_TYPE_INTERNAL_WEB = "internal_web";
+        }
     }
 
     interface Settings {

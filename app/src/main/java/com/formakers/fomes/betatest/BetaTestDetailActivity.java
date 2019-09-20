@@ -233,7 +233,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         // 테스트 방법
         howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
         Observable.from(betaTest.getMissions())
-                .filter(mission -> !"hidden".equals(mission.getItem().getType()))
+                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getItem().getType()))
                 .subscribe(displayedMission -> {
                     View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
 
