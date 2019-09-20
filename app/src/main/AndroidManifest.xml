@@ -53,15 +53,15 @@
         </service>
 
         <!-- Fomes -->
-        <activity android:name=".provisioning.view.LoginActivity"
+        <activity android:name=".provisioning.login.LoginActivity"
             android:theme="@style/FomesTheme.NoActionBar"
             android:launchMode="singleTop"/>
-        <activity android:name=".provisioning.view.ProvisioningActivity"
+        <activity android:name=".provisioning.ProvisioningActivity"
             android:theme="@style/ProvisioningTheme"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".analysis.view.RecentAnalysisReportActivity"
+        <activity android:name=".analysis.RecentAnalysisReportActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
-        <activity android:name=".main.view.MainActivity"
+        <activity android:name=".main.MainActivity"
             android:theme="@style/FomesTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -70,11 +70,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".settings.SettingsActivity"/>
-        <activity android:name=".wishList.view.WishListActivity"/>
+        <activity android:name=".wishList.WishListActivity"/>
         <activity android:name=".common.view.NoticeMigrationActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
-        <activity android:name=".common.view.WebViewActivity"
-            android:parentActivityName=".main.view.MainActivity">
+        <activity android:name=".common.view.webview.WebViewActivity"
+            android:parentActivityName=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -84,7 +84,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".main.view.MainActivity" />
+                android:value=".main.MainActivity" />
         </activity>
         <activity android:name=".common.view.DeeplinkActivity">
             <intent-filter>
@@ -99,7 +99,7 @@
                 <action android:name="com.formakers.fomes.NOTI_CLICKED"/>
             </intent-filter>
         </receiver>
-        <activity android:name=".main.view.BetaTestDetailActivity"
+        <activity android:name=".betatest.BetaTestDetailActivity"
             android:theme="@style/BetaTestDetailTheme"/>
     </application>
 

@@ -3,8 +3,7 @@ package com.formakers.fomes.common.dagger;
 import android.text.TextUtils;
 
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 
 import javax.inject.Named;
 import javax.inject.Singleton;

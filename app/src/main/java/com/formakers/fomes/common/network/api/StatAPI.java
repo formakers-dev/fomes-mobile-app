@@ -1,9 +1,9 @@
 package com.formakers.fomes.common.network.api;
 
 import com.formakers.fomes.common.network.vo.RecentReport;
-import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.ShortTermStat;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.model.AppUsage;
+import com.formakers.fomes.common.model.ShortTermStat;
+import com.formakers.fomes.common.model.User;
 
 import java.util.List;
 

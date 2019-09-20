@@ -11,12 +11,12 @@ import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.ShortTermStat;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.AppUsage;
+import com.formakers.fomes.common.model.ShortTermStat;
+import com.formakers.fomes.common.model.User;
 
 import org.junit.After;
 import org.junit.Before;

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/fomes_deep_gray"
     android:fitsSystemWindows="true"
-    tools:context="com.formakers.fomes.main.view.MainActivity">
+    tools:context="com.formakers.fomes.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

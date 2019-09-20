@@ -18,11 +18,11 @@ import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.NoticeMigrationActivity;
-import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.FomesUrlHelper;
-import com.formakers.fomes.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 
 import javax.inject.Singleton;
 

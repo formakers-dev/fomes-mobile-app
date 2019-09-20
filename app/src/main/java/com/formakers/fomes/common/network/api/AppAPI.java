@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network.api;
 
-import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.common.model.AppInfo;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;

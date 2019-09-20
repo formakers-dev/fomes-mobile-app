@@ -9,9 +9,9 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.main.view.BetaTestFragment;
-import com.formakers.fomes.main.view.MainActivity;
-import com.formakers.fomes.main.view.RecommendFragment;
+import com.formakers.fomes.betatest.BetaTestFragment;
+import com.formakers.fomes.main.MainActivity;
+import com.formakers.fomes.recommend.RecommendFragment;
 
 public class DeeplinkActivity extends Activity {
 

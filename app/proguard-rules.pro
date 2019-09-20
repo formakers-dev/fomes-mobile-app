@@ -132,9 +132,9 @@
 -dontwarn io.realm.**
 
 # Fomes Model
--keep class com.formakers.fomes.model.** { *; }
--keep class com.formakers.fomes.model.**$* { *; }
--dontwarn com.formakers.fomes.model.**
+-keep class com.formakers.fomes.common.model.** { *; }
+-keep class com.formakers.fomes.common.model.**$* { *; }
+-dontwarn com.formakers.fomes.common.model.**
 
 -keep class com.formakers.fomes.common.network.vo.** { *; }
 -keep class com.formakers.fomes.common.network.vo.**$* { *; }
@@ -144,6 +144,6 @@
 -dontwarn com.formakers.fomes.common.repository.model.**
 
 # Constants
--keep class com.formakers.fomes.common.FomesConstants.** { *; }
--keep class com.formakers.fomes.common.FomesConstants.$* { *; }
--dontwarn com.formakers.fomes.common.FomesConstants.**
+-keep class com.formakers.fomes.common.constant.FomesConstants.** { *; }
+-keep class com.formakers.fomes.common.constant.FomesConstants.$* { *; }
+-dontwarn com.formakers.fomes.common.constant.FomesConstants.**

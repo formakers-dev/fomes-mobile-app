@@ -22,8 +22,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.RecommendApp;
-import com.formakers.fomes.common.view.adapter.NetworkImagePagerAdapter;
-import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.common.view.custom.adapter.NetworkImagePagerAdapter;
+import com.formakers.fomes.common.model.AppInfo;
 
 public class RecommendAppItemView extends ConstraintLayout {
 

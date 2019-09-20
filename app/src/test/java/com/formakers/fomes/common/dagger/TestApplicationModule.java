@@ -23,14 +23,14 @@ import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.FomesUrlHelper;
-import com.formakers.fomes.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.helper.ImageLoader;
-import com.formakers.fomes.helper.ResourceHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.TimeHelper;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
+import com.formakers.fomes.common.helper.ImageLoader;
+import com.formakers.fomes.common.helper.ResourceHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.TimeHelper;
 
 import javax.inject.Singleton;
 

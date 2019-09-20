@@ -11,8 +11,8 @@ import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
 
-import static com.formakers.fomes.common.FomesConstants.Broadcast.ACTION_NOTI_CANCELLED;
-import static com.formakers.fomes.common.FomesConstants.Broadcast.ACTION_NOTI_CLICKED;
+import static com.formakers.fomes.common.constant.FomesConstants.Broadcast.ACTION_NOTI_CANCELLED;
+import static com.formakers.fomes.common.constant.FomesConstants.Broadcast.ACTION_NOTI_CLICKED;
 
 public class LocalBroadcastReceiver extends BroadcastReceiver {
 

@@ -2,7 +2,7 @@ package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.EventLogAPI;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 
 import org.junit.Before;
 import org.junit.Test;

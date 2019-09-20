@@ -20,7 +20,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.LocalBroadcastReceiver;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -31,7 +31,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import static com.formakers.fomes.common.FomesConstants.Notification.TOPIC_NOTICE_ALL;
+import static com.formakers.fomes.common.constant.FomesConstants.Notification.TOPIC_NOTICE_ALL;
 
 @Singleton
 public class ChannelManager {
