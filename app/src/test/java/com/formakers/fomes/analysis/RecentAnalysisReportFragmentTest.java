@@ -11,14 +11,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.R;
-import com.formakers.fomes.analysis.RecentAnalysisReportContract;
-import com.formakers.fomes.analysis.RecentAnalysisReportFragment;
+import com.formakers.fomes.common.model.AppInfo;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.view.custom.RankAppItemView;
 import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.common.model.AppInfo;
-import com.formakers.fomes.common.model.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,7 +50,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@Ignore
 @RunWith(RobolectricTestRunner.class)
 public class RecentAnalysisReportFragmentTest {
 

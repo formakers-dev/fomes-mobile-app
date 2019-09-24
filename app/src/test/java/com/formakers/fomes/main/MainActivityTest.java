@@ -1,6 +1,7 @@
 package com.formakers.fomes.main;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -13,20 +14,16 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
-import com.formakers.fomes.main.EventPagerAdapter;
-import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.main.MainContract;
-import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.provisioning.login.LoginActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -35,6 +32,8 @@ import org.robolectric.android.controller.ActivityController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nullable;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -55,23 +54,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@Ignore
-public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
+public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.ShadowMainActivity> {
 
     private TestScheduler testScheduler;
 
     @Mock MainContract.Presenter mockPresenter;
 
-    public MainActivityTest() {
-        super(MainActivity.class);
-    }
+    public MainActivityTest() { super(ShadowMainActivity.class); }
 
     @Override
     public void launchActivity() {
         subject = getActivityController().get();
 //        subject = getActivity(LIFECYCLE_TYPE_CREATE);
-        subject.setPresenter(mockPresenter);
-        ActivityController<MainActivity> a = getActivityController().create().start().postCreate(null).resume();
+        subject.setMockPresenter(mockPresenter);
+        ActivityController<ShadowMainActivity> a = getActivityController().create().start().postCreate(null).resume();
     }
 
     @Before
@@ -255,5 +251,24 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivity> {
 
         testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(2);
+    }
+
+    public static class ShadowMainActivity extends MainActivity {
+        MainContract.Presenter mockPresenter;
+
+        @Override
+        protected void onCreate(@Nullable Bundle savedInstanceState) {
+            this.setTheme(R.style.FomesTheme_NoActionBar);
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        protected void injectDependency() {
+            this.setPresenter(mockPresenter);
+        }
+
+        void setMockPresenter(MainContract.Presenter mockPresenter) {
+            this.mockPresenter = mockPresenter;
+        }
     }
 }

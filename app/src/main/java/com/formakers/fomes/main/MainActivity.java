@@ -92,14 +92,18 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.setTitle(R.string.common_empty_string);
         this.setContentView(R.layout.activity_main);
 
+        this.injectDependency();
+
+        // 혹시나 모를 상황을 대비해 런치화면 진입시 토큰체크
+        verifyAccessToken();
+    }
+
+    protected void injectDependency() {
         DaggerMainDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this).getComponent())
                 .module(new MainDagger.Module(this))
                 .build()
                 .inject(this);
-
-        // 혹시나 모를 상황을 대비해 런치화면 진입시 토큰체크
-        verifyAccessToken();
     }
 
     @Override
