@@ -314,7 +314,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     }
 
-    public void showNextEventBanner() {
+    private void showNextEventBanner() {
         if (eventViewPager == null || presenter.getPromotionCount() < 2)
             return;
 
@@ -331,6 +331,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     /*** start of 사실상 프래그먼트 페이저를 가지는 모든 액티비티에서 쓰이는 코드...ㅋㅋ ***/
     public boolean isSelectedFragment(Fragment fragment) {
+        if (this.contentsViewPager == null) {
+            return false;
+        }
+
         return this.contentsViewPager.getCurrentItem() == contentsViewPager.getAdapter().getItemPosition(fragment);
     }
 
