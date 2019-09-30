@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.main.view.MainActivity;
+import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.main.MainActivity;
 
 import javax.inject.Inject;
 

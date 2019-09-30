@@ -3,14 +3,14 @@ package com.formakers.fomes.common.noti;
 import android.content.Context;
 
 import com.formakers.fomes.FomesApplication;
-import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.main.view.MainActivity;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.main.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

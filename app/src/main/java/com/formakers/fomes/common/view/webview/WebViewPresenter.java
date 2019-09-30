@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
 
 import javax.inject.Inject;
 
-import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_CONTENTS;
-import static com.formakers.fomes.common.FomesConstants.WebView.EXTRA_TITLE;
+import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_CONTENTS;
+import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_TITLE;
 
 @WebViewDagger.Scope
 public class WebViewPresenter implements WebViewConstract.Presenter {

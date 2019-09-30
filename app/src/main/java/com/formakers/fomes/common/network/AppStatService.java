@@ -1,13 +1,13 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.vo.RecentReport;
-import com.formakers.fomes.helper.APIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.TimeHelper;
-import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.ShortTermStat;
+import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.TimeHelper;
+import com.formakers.fomes.common.model.AppUsage;
+import com.formakers.fomes.common.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.model.User;
 
 import java.util.List;
 

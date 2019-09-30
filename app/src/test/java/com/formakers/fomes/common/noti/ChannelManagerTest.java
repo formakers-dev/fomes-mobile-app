@@ -5,9 +5,9 @@ import android.os.Bundle;
 
 import androidx.test.core.app.ApplicationProvider;
 
-import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
-import com.formakers.fomes.main.view.MainActivity;
+import com.formakers.fomes.main.MainActivity;
 
 import org.junit.Before;
 import org.junit.Ignore;

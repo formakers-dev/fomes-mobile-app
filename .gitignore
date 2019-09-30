@@ -24,6 +24,7 @@ local.properties
 .idea/jsLibraryMappings.xml
 .idea/caches
 #.idea/misc.xml  # misc.xml should be version controlled : https://intellij-support.jetbrains.com/hc/en-us/community/posts/206933675--idea-misc-xml-question
+.idea/codeStyles
 
 # Sensitive or high-churn files
 .idea/assetWizardSettings.xml

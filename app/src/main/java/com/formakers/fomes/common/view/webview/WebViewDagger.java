@@ -1,7 +1,6 @@
 package com.formakers.fomes.common.view.webview;
 
 import com.formakers.fomes.common.dagger.ApplicationComponent;
-import com.formakers.fomes.common.view.WebViewActivity;
 
 public class WebViewDagger {
 

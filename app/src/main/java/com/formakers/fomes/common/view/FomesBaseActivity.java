@@ -10,14 +10,13 @@ import androidx.core.app.NavUtils;
 import androidx.core.app.TaskStackBuilder;
 
 import com.formakers.fomes.FomesApplication;
-import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.provisioning.view.LoginActivity;
-import com.formakers.fomes.provisioning.view.ProvisioningActivity;
-import com.formakers.fomes.provisioning.view.ProvisioningNickNameFragment;
-import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
+import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.provisioning.login.LoginActivity;
+import com.formakers.fomes.provisioning.ProvisioningActivity;
+import com.formakers.fomes.provisioning.ProvisioningNickNameFragment;
+import com.formakers.fomes.provisioning.ProvisioningPermissionFragment;
 
 import javax.inject.Inject;
 

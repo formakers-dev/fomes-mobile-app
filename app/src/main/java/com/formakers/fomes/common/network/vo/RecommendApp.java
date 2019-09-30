@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network.vo;
 
-import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.common.model.AppInfo;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

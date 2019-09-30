@@ -2,13 +2,13 @@ package com.formakers.fomes.common.view;
 
 import android.content.Intent;
 
-import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.provisioning.view.LoginActivity;
-import com.formakers.fomes.provisioning.view.ProvisioningActivity;
-import com.formakers.fomes.provisioning.view.ProvisioningNickNameFragment;
-import com.formakers.fomes.provisioning.view.ProvisioningPermissionFragment;
+import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.provisioning.login.LoginActivity;
+import com.formakers.fomes.provisioning.ProvisioningActivity;
+import com.formakers.fomes.provisioning.ProvisioningNickNameFragment;
+import com.formakers.fomes.provisioning.ProvisioningPermissionFragment;
 
 import org.junit.Before;
 import org.junit.Test;

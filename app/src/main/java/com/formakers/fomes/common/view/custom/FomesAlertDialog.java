@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.helper.ResourceHelper;
+import com.formakers.fomes.common.helper.ResourceHelper;
 
 public class FomesAlertDialog {
 

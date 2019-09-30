@@ -3,6 +3,7 @@ package com.formakers.fomes.common.network.vo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.google.gson.annotations.SerializedName;
 
 public class Mission implements Parcelable {
@@ -25,6 +26,11 @@ public class Mission implements Parcelable {
         String title;
         String actionType;
         String action;
+
+        // type - play
+        String packageName;
+        Long totalPlayTime = 0L; // app only
+
         boolean isCompleted;
         boolean isRepeatable;
         boolean isMandatory;
@@ -51,7 +57,7 @@ public class Mission implements Parcelable {
         }
 
         public String getType() {
-            return type;
+            return type != null ? type : FomesConstants.BetaTest.Mission.TYPE_DEFAULT;
         }
 
         public MissionItem setType(String type) {
@@ -83,6 +89,24 @@ public class Mission implements Parcelable {
 
         public MissionItem setAction(String action) {
             this.action = action;
+            return this;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public MissionItem setPackageName(String packageName) {
+            this.packageName = packageName;
+            return this;
+        }
+
+        public Long getTotalPlayTime() {
+            return totalPlayTime;
+        }
+
+        public MissionItem setTotalPlayTime(Long totalPlayTime) {
+            this.totalPlayTime = totalPlayTime;
             return this;
         }
 
@@ -122,6 +146,8 @@ public class Mission implements Parcelable {
                     ", title='" + title + '\'' +
                     ", actionType='" + actionType + '\'' +
                     ", action='" + action + '\'' +
+                    ", packageName='" + packageName + '\'' +
+                    ", totalPlayTime=" + totalPlayTime +
                     ", isCompleted=" + isCompleted +
                     ", isRepeatable=" + isRepeatable +
                     ", isMandatory=" + isMandatory +
@@ -144,6 +170,8 @@ public class Mission implements Parcelable {
             dest.writeString(title);
             dest.writeString(actionType);
             dest.writeString(action);
+            dest.writeString(packageName);
+            dest.writeLong(totalPlayTime);
             dest.writeInt(isCompleted ? 1 : 0);
             dest.writeInt(isRepeatable ? 1 : 0);
             dest.writeInt(isMandatory ? 1 : 0);
@@ -156,6 +184,8 @@ public class Mission implements Parcelable {
             title = in.readString();
             actionType = in.readString();
             action = in.readString();
+            packageName = in.readString();
+            totalPlayTime = in.readLong();
             isCompleted = in.readInt() == 1;
             isRepeatable = in.readInt() == 1;
             isMandatory = in.readInt() == 1;

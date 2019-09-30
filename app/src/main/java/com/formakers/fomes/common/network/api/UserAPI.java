@@ -1,7 +1,7 @@
 package com.formakers.fomes.common.network.api;
 
-import com.formakers.fomes.model.AppInfo;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.model.AppInfo;
+import com.formakers.fomes.common.model.User;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.AppAPI;
-import com.formakers.fomes.helper.APIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.AppInfo;
+import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.AppInfo;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

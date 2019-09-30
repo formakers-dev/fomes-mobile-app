@@ -9,10 +9,8 @@ import androidx.test.core.app.ApplicationProvider;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
-import com.formakers.fomes.common.FomesConstants.Settings.Menu;
+import com.formakers.fomes.common.constant.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
-import com.formakers.fomes.settings.adapter.SettingsListAdapter;
-import com.formakers.fomes.settings.model.SettingsItem;
 
 import org.junit.Before;
 import org.junit.Test;

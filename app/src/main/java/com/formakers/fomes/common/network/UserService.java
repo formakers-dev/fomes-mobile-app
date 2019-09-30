@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.helper.APIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.AppInfo;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.AppInfo;
+import com.formakers.fomes.common.model.User;
 
 import java.util.HashMap;
 import java.util.List;

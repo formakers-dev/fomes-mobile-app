@@ -11,11 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.FomesConstants.Settings.Menu;
+import com.formakers.fomes.common.constant.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivity;
-import com.formakers.fomes.common.view.decorator.ContentDividerItemDecoration;
-import com.formakers.fomes.settings.adapter.SettingsListAdapter;
-import com.formakers.fomes.settings.model.SettingsItem;
+import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

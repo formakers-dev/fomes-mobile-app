@@ -2,8 +2,8 @@ package com.formakers.fomes.common.repository.dao;
 
 import android.text.TextUtils;
 
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.repository.model.UserRealmObject;
 import com.formakers.fomes.common.util.Log;
 import com.google.gson.Gson;

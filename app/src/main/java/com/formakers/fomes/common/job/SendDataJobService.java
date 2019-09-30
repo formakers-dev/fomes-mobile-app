@@ -10,10 +10,10 @@ import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.helper.AndroidNativeHelper;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

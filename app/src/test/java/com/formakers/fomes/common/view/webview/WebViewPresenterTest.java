@@ -3,8 +3,8 @@ package com.formakers.fomes.common.view.webview;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.formakers.fomes.common.FomesConstants;
-import com.formakers.fomes.helper.FomesUrlHelper;
+import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.helper.APIHelper;
+import com.formakers.fomes.common.helper.APIHelper;
 
 import org.junit.After;
 import org.junit.Before;

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.formakers.fomes.common.FomesConstants;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.util.Log;
 import com.google.common.base.Strings;

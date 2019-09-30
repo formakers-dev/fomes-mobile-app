@@ -1,15 +1,15 @@
 package com.formakers.fomes.common.dagger;
 
-import com.formakers.fomes.analysis.presenter.RecentAnalysisReportPresenterTest;
+import com.formakers.fomes.analysis.RecentAnalysisReportPresenterTest;
 import com.formakers.fomes.common.LocalBroadcastReceiverTest;
 import com.formakers.fomes.common.job.SendDataJobServiceTest;
 import com.formakers.fomes.common.noti.MessagingServiceTest;
 import com.formakers.fomes.common.view.custom.FomesAlertDialogTest;
-import com.formakers.fomes.main.presenter.MainPresenterTest;
-import com.formakers.fomes.main.view.MainActivityTest;
-import com.formakers.fomes.provisioning.presenter.LoginPresenterTest;
-import com.formakers.fomes.provisioning.view.ProvisioningActivityTest;
-import com.formakers.fomes.provisioning.view.RecentAnalysisReportActivityTest;
+import com.formakers.fomes.main.MainPresenterTest;
+import com.formakers.fomes.main.MainActivityTest;
+import com.formakers.fomes.provisioning.login.LoginPresenterTest;
+import com.formakers.fomes.provisioning.ProvisioningActivityTest;
+import com.formakers.fomes.provisioning.RecentAnalysisReportActivityTest;
 import com.formakers.fomes.settings.SettingsActivityTest;
 
 import javax.inject.Singleton;

@@ -2,8 +2,8 @@ package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.api.RecommendAPI;
 import com.formakers.fomes.common.network.vo.RecommendApp;
-import com.formakers.fomes.helper.APIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 
 import java.util.List;
 
