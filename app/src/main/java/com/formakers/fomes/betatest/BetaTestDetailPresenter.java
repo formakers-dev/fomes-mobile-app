@@ -189,13 +189,13 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Single<Long> updatePlayTime(@NonNull String id, @NonNull String packageName) {
+    public Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName) {
         return !TextUtils.isEmpty(packageName) ?
-                getPlayTimeAndUpdateView(id, packageName)
+                getPlayTimeAndUpdateView(missionItemId, packageName)
                 : Single.error(new IllegalArgumentException("packageName is null"));
     }
 
-    private Single<Long> getPlayTimeAndUpdateView(@NonNull String id, @NonNull String packageName) {
+    private Single<Long> getPlayTimeAndUpdateView(@NonNull String missionItemId, @NonNull String packageName) {
         return appUsageDataHelper.getUsageTime(packageName, betaTest.getOpenDate().getTime())
                 .map(playTime -> {
                     if (playTime > 0) {
@@ -206,14 +206,14 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 })
                 .toSingle()
                 .zipWith(Observable.from(betaTest.getMissions())
-                        .filter(mission -> id.equals(mission.getItem().getId()))
+                        .filter(mission -> missionItemId.equals(mission.getItem().getId()))
                         .toSingle(), Pair::new)
                 .map(pair -> {
                     pair.second.getItem().setTotalPlayTime(pair.first);
                     return pair.first;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(playTime -> this.view.refreshMissionList());
+                .doOnSuccess(playTime -> this.view.refreshMissionItem(missionItemId));
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {

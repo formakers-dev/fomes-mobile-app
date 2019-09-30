@@ -35,7 +35,7 @@ public interface BetaTestDetailContract {
         Observable<List<Mission>> getDisplayedMissionList();
         void requestToAttendBetaTest();
 
-        Single<Long> updatePlayTime(@NonNull String id, @NonNull String packageName);
+        Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName);
     }
 
     interface View extends BaseView<Presenter> {
@@ -43,6 +43,7 @@ public interface BetaTestDetailContract {
         void showLoading();
         void hideLoading();
         void refreshMissionList();
+        void refreshMissionItem(String missionItemId);
 
         android.view.View inflate(@LayoutRes int layoutResId);
         void startWebViewActivity(String title, String url);

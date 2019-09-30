@@ -212,7 +212,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(missionList -> {
                                                 setMissionList(missionList);
-                                                notifyDataSetChanged();
+                                                notifyItemRangeChanged(position, missionList.size() - 1 - position);
                                             });
                                 }));
             }
@@ -260,6 +260,17 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemCount() {
         return missionList.size();
+    }
+
+    public int getPositionByMissionItemId(String missionItemId) {
+        for (int position = 0; position < missionList.size(); position++) {
+            Mission mission = missionList.get(position);
+            if (missionItemId.equals(mission.getItem().getId())) {
+                return position;
+            }
+        }
+
+        return -1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

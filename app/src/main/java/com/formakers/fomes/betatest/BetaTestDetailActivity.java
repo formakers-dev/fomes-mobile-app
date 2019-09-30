@@ -308,6 +308,11 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
+    public void refreshMissionItem(String missionItemId) {
+        missionListAdapter.notifyItemChanged(missionListAdapter.getPositionByMissionItemId(missionItemId));
+    }
+
+    @Override
     public View inflate(int layoutResId) {
         return getLayoutInflater().inflate(layoutResId, null);
     }
