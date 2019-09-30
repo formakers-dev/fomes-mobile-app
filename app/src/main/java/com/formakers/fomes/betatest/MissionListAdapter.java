@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
@@ -138,9 +139,13 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 long playtime = missionItem.getTotalPlayTime();
 
                 viewHolder.itemButton.setText("다운로드 & 플레이");
-                viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
-                viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
-                viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
+                if (Feature.CALCULATE_PLAY_TIME) {
+                    viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
+                    viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
+                    viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
+                } else {
+                    viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
+                }
 
                 // 참여상태
                 viewHolder.missionCompletedImageView.setVisibility(View.GONE);
@@ -228,26 +233,28 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void updatePlayTime(ViewHolder viewHolder, Mission.MissionItem missionItem) {
-        view.getCompositeSubscription().add(
-                presenter.updatePlayTime(missionItem.getId(), missionItem.getPackageName())
-                        .doOnSubscribe(() -> {
-                            viewHolder.refreshButton.setVisibility(View.INVISIBLE);
-                            viewHolder.refreshProgress.setVisibility(View.VISIBLE);
-                        })
-                        .doAfterTerminate(() -> {
-                            viewHolder.refreshButton.setVisibility(View.VISIBLE);
-                            viewHolder.refreshProgress.setVisibility(View.GONE);
-                        })
-                        .subscribe(playTime -> {
-                            Toast.makeText(context, "플레이한 시간이 더해졌다리~~~ : " + playTime, Toast.LENGTH_SHORT).show();
-                        }, e -> {
-                            if (e instanceof IllegalStateException) {
-                                Toast.makeText(context, "추가 플레이 시간이 없어요~~~~~~ 게임을 플레이하고 새로고침 버튼을 눌러라ㅏ라ㅏ라!!!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(context, "새로고침 시 문제가 발생했다멍!🐶\n계속 발생하면 우체통에 문의주라멍!📮", Toast.LENGTH_SHORT).show();
-                            }
-                            Log.e(TAG, String.valueOf(e));
-                        }));
+        if (Feature.CALCULATE_PLAY_TIME) {
+            view.getCompositeSubscription().add(
+                    presenter.updatePlayTime(missionItem.getId(), missionItem.getPackageName())
+                            .doOnSubscribe(() -> {
+                                viewHolder.refreshButton.setVisibility(View.INVISIBLE);
+                                viewHolder.refreshProgress.setVisibility(View.VISIBLE);
+                            })
+                            .doAfterTerminate(() -> {
+                                viewHolder.refreshButton.setVisibility(View.VISIBLE);
+                                viewHolder.refreshProgress.setVisibility(View.GONE);
+                            })
+                            .subscribe(playTime -> {
+                                Toast.makeText(context, "플레이한 시간이 더해졌다리~~~ : " + playTime, Toast.LENGTH_SHORT).show();
+                            }, e -> {
+                                if (e instanceof IllegalStateException) {
+                                    Toast.makeText(context, "추가 플레이 시간이 없어요~~~~~~ 게임을 플레이하고 새로고침 버튼을 눌러라ㅏ라ㅏ라!!!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, "새로고침 시 문제가 발생했다멍!🐶\n계속 발생하면 우체통에 문의주라멍!📮", Toast.LENGTH_SHORT).show();
+                                }
+                                Log.e(TAG, String.valueOf(e));
+                            }));
+        }
     }
 
     @Override
