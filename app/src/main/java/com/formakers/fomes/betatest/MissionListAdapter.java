@@ -149,7 +149,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 // 참여상태
                 viewHolder.missionCompletedImageView.setVisibility(View.GONE);
-                viewHolder.refreshButton.setVisibility(View.VISIBLE);
+                viewHolder.refreshButton.setVisibility(Feature.CALCULATE_PLAY_TIME ? View.VISIBLE : View.GONE);
                 viewHolder.itemButton.setEnabled(true);
 
                 // 플레이 시간 측정
