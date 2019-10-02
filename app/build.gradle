@@ -102,6 +102,22 @@ android {
 //        variant.buildType.name        // BuildType
 //        variant.getFlavors()[1].name  // Flavor
 
+        variant.outputs.each { output ->
+            // Copy the mapping file if Proguard is turned on for this build
+            if (variant.getBuildType().isMinifyEnabled()) {
+                variant.assemble.doLast {
+
+                    copy {
+                        from variant.mappingFile
+                        into output.outputFile.parent
+                        rename { String fileName ->
+                            "${packageID}-${variant.versionName}-${variant.name}_mapping.txt"
+                        }
+                    }
+                }
+            }
+        }
+
         variant.outputs.all {
             outputFileName = "${packageID}-${variant.versionName}-${variant.name}.apk"
         }
