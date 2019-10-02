@@ -111,7 +111,7 @@ android {
                         from variant.mappingFile
                         into output.outputFile.parent
                         rename { String fileName ->
-                            "${packageID}-${variant.versionName}-${variant.name}_mapping.txt"
+                            "${packageID}-${variant.versionName}-${variant.name}-mapping.txt"
                         }
                     }
                 }
