@@ -39,6 +39,6 @@ public interface BetaTestContract {
         void showBetaTestListView();
 
         void refreshBetaTestList();
-        void refreshBetaTestProgress(int betaTestId);
+        void refreshBetaTestProgress(int position);
     }
 }
