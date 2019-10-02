@@ -12,9 +12,11 @@ import com.formakers.fomes.common.repository.dao.UserDAO;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
 public class BetaTestPresenterTest {
 
     @Mock private BetaTestContract.View mockView;
