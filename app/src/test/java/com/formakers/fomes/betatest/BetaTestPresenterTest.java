@@ -1,16 +1,13 @@
 package com.formakers.fomes.betatest;
 
-import com.formakers.fomes.betatest.BetaTestPresenter;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.common.helper.FomesUrlHelper;
-import com.formakers.fomes.betatest.BetaTestListAdapter;
-import com.formakers.fomes.betatest.BetaTestContract;
-import com.formakers.fomes.common.model.User;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -36,7 +33,10 @@ import rx.schedulers.Schedulers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -75,12 +75,13 @@ public class BetaTestPresenterTest {
         dummyUser = new User().setEmail("user@gmail.com").setNickName("dummyNickName");
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(dummyUser));
 
-        betaTests.add(new BetaTest().setId("1").setTitle("베타테스트1").setCloseDate(new Date()));
-        betaTests.add(new BetaTest().setId("2").setTitle("베타테스트2").setCloseDate(new Date()));
+        betaTests.add(new BetaTest().setId("1").setTitle("베타테스트1").setCloseDate(new Date()).setCompletedItemCount(1).setTotalItemCount(3));
+        betaTests.add(new BetaTest().setId("2").setTitle("베타테스트2").setCloseDate(new Date()).setCompletedItemCount(0).setTotalItemCount(2));
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(betaTests));
 
         when(mockAdapterModel.getItem(0)).thenReturn(betaTests.get(0));
         when(mockAdapterModel.getItem(1)).thenReturn(betaTests.get(1));
+        when(mockAdapterModel.getPositionById(anyString())).thenReturn(-1);
         when(mockAdapterModel.getPositionById("1")).thenReturn(0);
         when(mockAdapterModel.getPositionById("2")).thenReturn(1);
 
@@ -189,5 +190,34 @@ public class BetaTestPresenterTest {
         subject.getInterpretedUrl("http://www.naver.com?email={email}");
 
         verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}"));
+    }
+
+    @Test
+    public void requestBetaTestProgress_호출시__해당_테스트의_진행상태가_변경되었으면__진행상태_뷰를_업데이트한다() {
+        when(mockBetaTestService.getBetaTestProgress("1"))
+                .thenReturn(Single.just(new BetaTest().setId("1").setCompletedItemCount(2).setTotalItemCount(3)));
+
+        subject.requestBetaTestProgress("1");
+
+        verify(mockView).refreshBetaTestProgress(0);
+    }
+    @Test
+    public void requestBetaTestProgress_호출시__해당_테스트의_진행상태가_변경되지_않았으면__진행상태_뷰를_업데이트하지_않는다() {
+        when(mockBetaTestService.getBetaTestProgress("1"))
+                .thenReturn(Single.just(new BetaTest().setId("1").setCompletedItemCount(1).setTotalItemCount(3)));
+
+        subject.requestBetaTestProgress("1");
+
+        verify(mockView, never()).refreshBetaTestProgress(anyInt());
+    }
+
+    @Test
+    public void requestBetaTestProgress_호출시__해당_테스트가_없으면__아무것도_하지않는다() {
+        when(mockBetaTestService.getBetaTestProgress("99999999999"))
+                .thenReturn(Single.just(new BetaTest().setId("99999999999")));
+
+        subject.requestBetaTestProgress("99999999999");
+
+        verify(mockView, never()).refreshBetaTestProgress(anyInt());
     }
 }

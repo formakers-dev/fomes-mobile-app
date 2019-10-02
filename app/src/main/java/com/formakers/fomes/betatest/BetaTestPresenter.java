@@ -119,10 +119,15 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(betaTestProgress -> {
                             int position = betaTestListAdapterModel.getPositionById(betaTestProgress.getId());
-                            boolean isUpdated = false;
+
+                            if (position < 0) {
+                                throw new IllegalStateException("There isn't the betatest in list. It might be initialized by system.");
+                            }
 
                             BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
 
+                            // TODO : 로직 최적화 필요. 플래그 사용 지양!
+                            boolean isUpdated = false;
                             if (!originalBetaTest.getCompletedItemCount().equals(betaTestProgress.getCompletedItemCount())) {
                                 originalBetaTest.setCompletedItemCount(betaTestProgress.getCompletedItemCount());
                                 isUpdated = true;
