@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/match_constraint"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    
-    <View android:id="@+id/rank_arrow"
-        android:layout_width="26dp"
-        android:layout_height="14dp"
-        android:background="@drawable/item_triangle_background"
+
+    <View android:id="@+id/line_view"
+        android:layout_width="@dimen/analysis_line_width"
+        android:layout_height="@dimen/analysis_line_default_height"
+        android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView android:id="@+id/rank_number"
+    <ImageView android:id="@+id/arrow_view"
+        android:layout_width="13dp"
+        android:layout_height="7dp"
+        android:background="@drawable/top_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_view"/>
+
+    <LinearLayout android:id="@+id/content_layout"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:textSize="14dp"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rank_arrow"
-        tools:text="1등" />
+        app:layout_constraintTop_toBottomOf="@id/arrow_view"
+        android:orientation="vertical">
+
+        <TextView android:id="@+id/title_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            tools:text="1등" />
+
+        <TextView android:id="@+id/desc_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/item_analysis_rank_desc_text_size"
+            android:textColor="@color/fomes_warm_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_textview"
+            tools:text="168시간" />
+    </LinearLayout>
 
 
-    <TextView android:id="@+id/rank_content"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:textSize="11dp"
-        android:textColor="@color/fomes_warm_gray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rank_number"
-        tools:text="168\n시간" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

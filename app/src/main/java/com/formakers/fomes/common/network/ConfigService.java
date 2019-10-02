@@ -1,7 +1,7 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.helper.AppBeeAPIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.api.ConfigAPI;
 
 import java.util.List;
@@ -17,13 +17,13 @@ import rx.schedulers.Schedulers;
 public class ConfigService {
     private ConfigAPI configAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
-    private final AppBeeAPIHelper appBeeAPIHelper;
+    private final APIHelper APIHelper;
 
     @Inject
-    public ConfigService(ConfigAPI configAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public ConfigService(ConfigAPI configAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper) {
         this.configAPI = configAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
-        this.appBeeAPIHelper = appBeeAPIHelper;
+        this.APIHelper = APIHelper;
     }
 
     public Single<Long> getAppVersion() {
@@ -36,7 +36,7 @@ public class ConfigService {
         return Observable.defer(() -> configAPI.getExcludePackageNames(SharedPreferencesHelper.getAccessToken()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(APIHelper.refreshExpiredToken())
                 .toSingle();
     }
 }

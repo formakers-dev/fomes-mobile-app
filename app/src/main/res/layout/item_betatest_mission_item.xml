@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="11dp"
+    android:orientation="horizontal"
+    android:background="@drawable/item_rect_rounded_corner_background"
+    android:theme="@style/BetaTestDetailTheme.MissionItem">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/mission_icon"
+            android:layout_width="24dp"
+            android:layout_height="20dp"
+            android:scaleType="fitCenter"
+            android:tint="@color/fomes_white"
+            tools:src="@drawable/icon_test_awards" />
+
+        <TextView
+            android:id="@+id/mission_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/fomes_light_pale_gray"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            tools:text="1단계 미션" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mission_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:textSize="12dp"
+        android:textColor="@color/fomes_light_pale_gray"
+        tools:text="게임 플레이ddddddddddddddddddddkjkjslfjlskjkfjksjldfklsjfjsdlafjksjjdddddddddddddddddd"/>
+
+    <TextView
+        android:id="@+id/mission_item_progress_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:textSize="12dp"
+        android:textColor="@color/colorPrimary"
+        tools:text="참여 중"/>
+</LinearLayout>

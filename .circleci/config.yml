@@ -27,19 +27,17 @@ aliases:
   - &prepare-google-service-for-release
     name: Prepare for Release Flavor
     command: |
-      mkdir app/src/development
-      mkdir app/src/staging
-      mkdir app/src/release
+      mkdir -p app/src/staging
+      mkdir -p app/src/release
       echo $FOMES_RELEASE_GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/src/release/google-services.json
       cat app/src/release/google-services.json > app/src/staging/google-services.json
-      cat app/src/release/google-services.json > app/src/development/google-services.json
       aws s3 cp s3://girlapp/fomes.jks app/fomes.jks
 
 
 defaults: &defaults
     working_directory: ~/girlapp
     docker:
-      - image: circleci/android:api-27-alpha    # https://circleci.com/docs/2.0/circleci-images/#android
+      - image: circleci/android:api-28-alpha    # https://circleci.com/docs/2.0/circleci-images/#android
     environment:
         ADB_INSTALL_TIMEOUT: 60
         JVM_OPTS: -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2

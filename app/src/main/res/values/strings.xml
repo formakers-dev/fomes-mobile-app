@@ -1,142 +1,38 @@
 <resources>
     <string name="app_name">포메스</string>
-    <string name="empty" />
+
+    <!-- FaceBook -->
+    <string name="facebook_app_id">2807495449266774</string>
+    <string name="fb_login_protocol_scheme">fb2807495449266774</string>
 
     <!-- Fonts -->
     <string name="font_bmjua">BMJUA</string>
-    <string name="font_bmjua_path">BMJUA.otf</string>
     <string name="font_medium">medium</string>
     <string name="font_medium_path">NotoSans-Medium.otf</string>
 
     <!-- start of AppBee's strings -->
     <string name="login_button_text">Google로 쉬운 시작</string>
 
-    <string name="permission_guide_title">앱 사용패턴 분석을 위해\n아래 권한이 필요합니다.</string>
-    <string name="app_data_permission">앱 사용정보 접근 권한</string>
-    <string name="app_data_permission_text">* 당신에게 프로젝트를 추천하기 위한 용도로만 사용합니다.</string>
-    <string name="permission_button_text">권한 허용하러 가기</string>
-    <string name="loading_description">당신만의 독특한 앱 사용패턴 분석중…</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="fail_to_sign_in">Fail to sign in</string>
-    <string name="fail_to_connect_google_play">Fail to connect Google Play Service</string>
-    <string name="recommendation_apps_title">유저 인터뷰 체험하기</string>
-    <string name="recommendation_apps_subtitle">앱 사용패턴 기반 신청가능한 유저 인터뷰 입니다.</string>
-    <string name="tag_key_image_url">TAG_KEY_IMAGE_URL</string>
-    <string name="interview_date_text">%1$s (%2$s)</string>
-    <string name="d_day_text">D-%d</string>
-    <string name="greeting_title">환영합니다!</string>
-    <string name="greeting_message">앱비는 당신의 앱 사용패턴을 분석해서\n새 프로젝트 &amp; 유저 인터뷰를 보여드려요.</string>
-    <string name="tnc_agree_text">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1t11gomrftWIlXFmJ9ZAqXjHLb1SAjkmcMdxwItXWtf4/edit?usp=sharing">사용약관 및 개인정보 취급방침</a>]]>에 동의됩니다.</string>
-
-    <string name="analysis_title">앱 사용패턴 분석 완료!</string>
-    <string name="analysis_description">이 결과를 기반으로 새 프로젝트와\n유저인터뷰를 추천해 드릴게요.</string>
-    <string name="onboarding_rewards_title">신상앱 유저인터뷰 체험하고\n리워드를 받아가세요.</string>
-    <string name="onboarding_rewards_description">인사이트 얻고, 인터뷰 하고, 리워드 받고!</string>
-
     <!-- Bottom Button -->
-    <string name="start_button">시작하기</string>
-    <string name="contents_title_interview">체험하기</string>
-    <string name="contents_title_project">둘러보기</string>
-    <string name="project_list_header_title">프로젝트 둘러보기</string>
-    <string name="project_list_header_subtitle">새로운 프로젝트를 둘러보고 인사이트를 얻으세요.</string>
-    <string name="personality_apps_text">나의 특성을 보여주는 앱</string>
-    <string name="most_used_apps_text">내가 많이 사용하는 앱</string>
-    <string name="my_interview_text">다가오는 유저 인터뷰</string>
-    <string name="my_app_usage_pattern_text">나의 앱 사용패턴 분석 다시 보기</string>
-    <string name="appbee_question_text">앱비에게 문의하기</string>
-    <string name="code_verification_title">앱비 초대장 코드\n인증을 부탁드립니다.</string>
-    <string name="code_verification_message">사전 신청하신 임직원 분들께 메일로\n발송된 초대장 코드를 입력해주세요.</string>
-    <string name="code_verification_button_name">인증</string>
-    <string name="code_verification_warning">* 초대장 코드에 문제가 있으시면 앱비로 연락주세요.</string>
-    <string name="interview_submit_button">유저 인터뷰 신청하기</string>
-    <string name="registered_interview_submit_button">이미 신청한 인터뷰입니다.</string>
-    <string name="closed_interview_submit_button">신청이 마감된 인터뷰입니다.</string>
-    <string name="interview_detail_plans_title_format">%s 유저 인터뷰</string>
-    <string name="interview_detail_plans_description_format">%1$s (%2$s) %3$s</string>
     <string name="confirm_button_name">확인</string>
     <string name="negative_button_name">닫기</string>
-    <string name="invitation_code_dialog_title">코드를 확인해주세요.</string>
-    <string name="invitation_code_dialog_message">유효하지 않은 초대장 코드 입니다.</string>
-    <string name="dialog_registered_interview_success_title">신청이 완료되었습니다.</string>
-    <string name="dialog_registered_interview_success_message">인터뷰 확정이 되면 푸시가 갑니다.\n확정 후 안내 메일을 참고해주세요.</string>
-    <string name="recommand_to_user_of_similar_app">\'%s\' 앱 유저에게 추천</string>
-    <string name="registered_interview_title">다가오는 유저 인터뷰</string>
-    <string name="cancel_button">취소하기</string>
-    <string name="interview_notice_title1">인터뷰 신청 후 ‘확정’을 기다려주세요.</string>
-    <string name="interview_notice_description1">확정된 인터뷰만 실제로 진행됩니다. 조금만 기다려주세요.</string>
-    <string name="interview_notice_description2">신청 마감일 이후 앱비에서 확인 후 확정 푸시를 보내드립니다.</string>
-    <string name="interview_notice_title2">확정 후 취소/ 노쇼 / 지각은 패널티가 있을 수 있습니다.</string>
-    <string name="interview_notice_title3">확정 후 변동 시 인터뷰 담당자에게 꼭 연락주세요.</string>
-    <string name="interview_notice_description3">인터뷰는 약속입니다. 준비하신 분들께 예의를 지켜주세요.</string>
-    <string name="interview_notice_description4">( 확정 후 취소 / 노쇼 / 지각 패널티 : 3개월간 신청 불가)</string>
-    <string name="interview_notice_description5">피치못할 사정이 생겼을 때 대응할 수 있도록 협조해주세요.</string>
-    <string name="interview_notice_description6">( 담당자 번호는 인터뷰 신청 후 확정되면 안내됩니다.)</string>
-    <string name="show_project_information_button">프로젝트 설명 다시 보기</string>
-    <string name="cancel_penalty">* 확정 후 취소 / 노쇼 / 지각은 패널티가 부과될 수 있습니다.</string>
-    <string name="introduce_my_project">저희 프로젝트를 소개합니다.</string>
-    <string name="project_owner">창작자</string>
-    <string name="notice_interview_process_title">유저인터뷰 신청 전 읽어주세요</string>
-    <string name="interview_date_title">인터뷰 날짜</string>
-    <string name="interview_type_title">인터뷰 종류</string>
-    <string name="interview_location_title">인터뷰 장소</string>
-    <string name="interview_rewards_title">감사 선물</string>
-    <string name="interview_duration_title">인터뷰 시간</string>
-    <string name="interview_close_date_title">신청 마감 날짜</string>
-    <string name="interview_introduce_title">인터뷰 안내</string>
-    <string name="interview_progress_guide_close">확정</string>
-    <string name="interview_progress_guide_close_desc">신청 마감/확정</string>
-    <string name="interview_progress_guide_request">신청</string>
-    <string name="interview_progress_guide_request_desc">신청 버튼 클릭</string>
-    <string name="interview_progress_guide_end">완료</string>
-    <string name="interview_progress_guide_end_desc">인터뷰 진행/완료</string>
-    <string name="interview_detail_plan_title">세부일정 선택</string>
-    <string name="interview_detail_plan_description">* 유저인터뷰 신청 후 확정이 되면 안내해드립니다(일주일 내)\n* 확정 후 취소 / 당일 노쇼 / 지각은 패널티가 부과됩니다.\n* 정확한 인터뷰 회의실과 담당자 번호는 확정 후 알려드립니다.</string>
-    <string name="registered_interview_formated_title">%s 유저 인터뷰</string>
-    <string name="registered_interview_date_location">%1$s %2$s %3$02d:00</string>
-    <string name="registered_interview_location">* 인터뷰 위치 : %1$s %2$s</string>
-    <string name="registered_interview_emergency_phone_title">* 비상 시에는 아래 연락처로 미리 연락 부탁드립니다.</string>
-    <string name="cancel_interview_activity_title">유저 인터뷰 취소</string>
-    <string name="cancel_penalty_message">*확정 후 취소는 패널티가 있을 수 있습니다.</string>
-    <string name="cancel_confirm_message">정말 취소하시겠습니까?</string>
-    <string name="cancel_yes">네, 취소합니다.</string>
-    <string name="cancel_no">아니오.</string>
-    <string name="dialog_cancel_title">취소 되었습니다.</string>
-    <string name="dialog_cancel_message">확정 후 취소하셨기 때문에\n패널티가 있을 수 있습니다.</string>
-    <string name="cancel_interview_name_status">%1$s 유저인터뷰 : %2$s</string>
-    <string name="cancel_interview_date_location">%1$s %2$s %3$02d:00</string>
-    <string name="interview_duration_40_mins">약 40분</string>
-    <string name="empty_registered_interview">신청하신 유저 인터뷰가 없습니다.</string>
-    <string name="empty_interview">도착한 유저 인터뷰가 없습니다.</string>
-    <string name="empty_project">도착한 둘러보기 프로젝트가 없습니다.</string>
-
-    <string name="my_app_usage_title">앱 사용패턴 다시 분석하기</string>
-    <string name="my_analysis_description">지금으로부터 최근 일주일동안\n앱 사용패턴을 분석해 보았어요.</string>
-
-    <string name="app_update_dialog_title">신규 버전 업데이트</string>
-    <string name="app_update_dialog_message">AppBee의 신규 버전이 업데이트 되었습니다.\n마켓에서 업데이트 진행 후 이용 부탁드립니다.</string>
-    <string name="my_interview_cancel_warning">* 인터뷰를 취소하려면 눌러주세요 (취소 패널티 주의)</string>
-    <string name="dialog_interview_register_fail_title">인터뷰 신청 실패</string>
-    <string name="dialog_interview_register_fail_message">선택한 일정의 인터뷰 신청이 마감되었습니다.</string>
-    <string name="dialog_interview_already_registered_fail_message">이미 신청한 인터뷰입니다.</string>
-    <string name="dialog_interview_cancel_fail_title">인터뷰 취소 실패</string>
-    <string name="dialog_interview_cancel_fail_message">취소 기한이 지난 인터뷰입니다.</string>
 
     <!-- Error Messages -->
     <string name="app_usage_data_http_fail_message">데이터 전송에 실패하였습니다.</string>
     <string name="user_http_fail_message">사용자 정보 저장에 실패하였습니다.</string>
-    <string name="participate_http_fail_message">인터뷰 신청에 실패하였습니다.</string>
-    <string name="participate_cancel_http_fail_message">인터뷰 취소에 실패하였습니다.</string>
     <string name="unexpected_error_message">예상치 못한 에러가 발생하였습니다.</string>
     <!-- end of AppBee's strings -->
 
     <!-- Fomes - common strings -->
+    <string name="common_empty_string"/>
     <string name="common_next_button">다음으로</string>
+    <string name="common_go_to_grant">허용하러 가기</string>
     <string name="common_confirm">확인</string>
-    <string name="common_spinner_hint">입력하시려면 이 창을 클릭해 주세요.</string>
     <string name="common_age">%d대</string>
+    <string name="common_age_under_teenager">10대 미만</string>
     <string name="common_male">남성</string>
     <string name="common_female">여성</string>
     <string name="common_new_line">\n</string>
@@ -144,67 +40,182 @@
     <string name="common_number_one">1</string>
     <string name="common_number_two">2</string>
     <string name="common_number_three">3</string>
+    <string name="common_dash">-</string>
+    <string name="common_close">종료</string>
 
     <!-- Fomes - locality strings -->
+    <!-- Base -->
+    <string name="update_dialog_title">신규 버전 업데이트</string>
+    <string name="update_dialog_message">Fomes의 신규 버전이 업데이트 되었습니다.\n마켓에서 업데이트 진행 후 이용 부탁드립니다.</string>
+
     <!-- Login -->
     <string name="login_subtitle">3분 분석으로 찾는 나의 취향저격 게임</string>
-    <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://www.google.co.kr">사용약관</a>]]> 및 <![CDATA[<a href="https://www.naver.com">개인정보 취급방침</a>]]>에 동의됩니다.</string>
+    <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing">사용약관</a>]]> 및 <![CDATA[<a href="https://docs.google.com/document/d/1QxWuv2zlKYsGYglUTiP5d5IFxZUy6HwKGObXC8x0034/edit?usp=sharing">개인정보 취급방침</a>]]>에 동의됩니다.</string>
 
     <!-- Provisioning -->
-    <string name="provision_user_info_title">안녕하세요. 분석가 포메스입니다.\n몇 가지 궁금한 점이 있습니다.</string>
-    <string name="provision_user_info_subtitle">알려주신 정보는 분석으로만 사용됩니다.</string>
+    <string name="provision_user_info_title">%s님! 당신에 대해 알려주세요.\n게임 성향 분석을 해드릴게요!</string>
+    <string name="provision_user_info_subtitle">알려주신 정보는 분석을 위해 사용됩니다.</string>
     <string name="provision_user_info_birth_title">출생연도</string>
     <string name="provision_user_info_job_title">직업</string>
     <string name="provision_user_info_gender_title">성별</string>
-    <string name="provision_life_game_title">분석과 추천을 위해\n인생게임 1개를 입력해주세요.</string>
-    <string name="provision_life_game_subtitle">콘솔 / PC / 모바일 / 오래전 게임도 좋아요.</string>
+    <string name="provision_user_info_gender_male">남자</string>
+    <string name="provision_user_info_gender_female">여자</string>
     <string name="provision_life_game_content_title">인생게임</string>
-    <string name="provision_life_game_content_hint">예) 마비노기</string>
-    <string name="provision_nickname_title">포메스 앱에서 사용할\n닉네임을 입력해주세요.</string>
+    <string name="provision_life_game_content_hint">가장 기억에 남았던 게임을 적어주세요.</string>
+    <string name="birth_spinner_hint">태어난 연도를 선택해주세요.</string>
+    <string name="job_spinner_hint">당신의 직업을 선택해주세요..</string>
+    <string name="provision_nickname_title">반가워요! 포메스가 앞으로 당신을 어떻게 부르면 될까요?</string>
     <string name="provision_nickname_subtitle">닉네임은 2글자에서 10글자 사이로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
-    <string name="provision_permission_title">정확한 분석을 위해\n아래의 권한 허용이 필요합니다.</string>
-    <string name="provision_permission_subtitle">게임 앱 사용시간 데이터를 기반으로 분석합니다.</string>
+    <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.</string>
+    <string name="provision_nickname_already_exist_warning">* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.</string>
+    <string name="provision_permission_title">데이터 기반 분석을 위해\n포메스를 찾아서 허용해주세요.</string>
+    <string name="provision_permission_subtitle">구글 정책상 직접 선택해서 허용해야 합니다.</string>
 
     <!-- Analysis -->
-    <string name="analysis_loading">게임 성향을 분석 중 입니다.\n분석 후 게임을 추천해드려요!</string>
-    <string name="current_analysis_title">당신의 게임 성향 분석 완료!\n분석은 할 때마다 업데이트됩니다.</string>
-    <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 성향을 분석했습니다.</string>
+    <string name="analysis_total_user_count">/%d명</string>
+    <string name="analysis_loading">게임 성향을 분석 중 입니다.</string>
+    <string name="current_analysis_subtitle">7일전부터 오늘까지 모바일 게임 플레이를 분석했습니다.</string>
     <string name="analysis_my_genre_title">나의 게임 장르</string>
     <string name="analysis_my_genre_subtitle">나의 7일간 모바일 게임 장르별 플레이 시간 집계</string>
+    <string name="analysis_my_genre_chart_text">%s의\n장르</string>
     <string name="analysis_my_genre_used_time_format">총 시간의 %d%%</string>
-    <string name="analysis_people_genre_title">사람들의 게임 장르</string>
+    <string name="analysis_people_genre_title">나와 비슷한 사람들의 게임 장르</string>
     <string name="analysis_people_genre_subtitle">나이/성별/직업 기준 7일간 모바일 게임 장르별 플레이 시간 집계</string>
-    <string name="analysis_playtime_rank_title">플레이 시간 순위</string>
-    <string name="analysis_playtime_rank_subtitle">유저들의 7일간 게임 플레이 시간 집계</string>
+    <string name="analysis_my_playtime_rank_title">나의 게임 플레이 시간 등수</string>
+    <string name="analysis_my_playtime_rank_subtitle">나의 7일간 게임 플레이 시간 집계</string>
+    <string name="analysis_my_playtime_rank_summary">총 %.1f시간 게임 플레이</string>
+    <string name="analysis_my_playtime_rank_description_title">나는 %s인데 너는 몇 등이니?</string>
+    <string name="analysis_my_playtime_rank_description_content">함께 게임을 즐기는 친구들과 게임 앱 분석결과를 공유하고,\n게임 플레이시간 / 장르 / 게임을 비교해보세요.</string>
+    <string name="analysis_my_playtime_rank_no_data_title">등수 산정을 위한 게임 정보가 부족해요.</string>
+    <string name="analysis_my_playtime_rank_no_data_content">스마트폰으로 게임을 플레이 하신 후 다시 도전해 보세요.\n플레이 데이터가 쌓이면 나의 등수를 확인할 수 있습니다.</string>
+
+    <string name="analysis_playtime_rank_title">플레이 시간 비교</string>
+    <string name="analysis_playtime_rank_subtitle">나와 유저들의 7일간 게임 플레이 시간 집계</string>
     <string name="analysis_playtime_rank_number">%d등</string>
+    <string name="analysis_playtime_rank_number_string">%s등</string>
+    <string name="analysis_playtime_my_rank_number">나(%s)</string>
     <string name="analysis_playtime_rank_number_last">꼴등</string>
-    <string name="analysis_playtime_rank_hours">%.1f\n시간</string>
+    <string name="analysis_playtime_rank_hours">%.1f시간</string>
     <string name="analysis_favorite_developer_title">최장 플레이 개발사</string>
     <string name="analysis_favorite_developer_subtitle">유저들이 7일간 가장 오래 플레이한 게임의 개발사</string>
     <string name="analysis_favorite_developer_group_mine">나의 1위</string>
     <string name="analysis_favorite_developer_group">%s 1위</string>
-    <string name="analysis_favorite_developer_description">%s\n게임 개발사</string>
-    <string name="analysis_my_games_title">나의 게임 1/2/3위</string>
+    <string name="analysis_favorite_developer_description_title">대표게임</string>
+    <string name="analysis_my_games_title">나의 최애 게임들</string>
     <string name="analysis_my_games_subtitle">나의 7일간 모바일 게임별 플레이 시간 집계</string>
     <string name="analysis_my_games_description">%.1f시간 플레이</string>
-    <string name="analysis_people_games_title">사람들의 게임 1/2/3위</string>
+    <string name="analysis_my_genre_cannot_know_genre">나의 게임 장르를 알수 없어요.</string>
+    <string name="analysis_people_games_title">나와 비슷한 사람들의 최애 게임들</string>
     <string name="analysis_people_games_subtitle">나이/성별/직업 기준 7일간 모바일 게임별 플레이 시간 집계</string>
     <string name="analysis_q_lifegame">Q. 인생게임에 대한 분석은 왜 없나요?</string>
     <string name="analysis_a_lifegame">A. 더 정확한 분석을 위해 데이터를 수집 중입니다.\n충분한 데이터가 모이면 최대한 빠르게 인생게임에 대한 분석 &amp; 추천을 오픈하고 알려드리겠습니다! :-)</string>
+    <string name="analysis_error_not_enough_data">정보가 부족해서\n알 수 없어요</string>
+    <string name="analysis_error_unknown">당신의 게임 성향을 분석하는데 문제가 생겼습니다…\n\n에러가 발생한 것 같습니다.\n빠른 시일내에 대처하겠습니다.\n죄송합니다.</string>
+    <string name="analysis_cannot_know_yet">아직 알 수 없어요</string>
+    <string name="analysis_game_suggestion_without_1_2_3">앗! 아직 1/2/3위가 없으시네요. 오늘 모바일 게임 한판 어때요?</string>
+    <string name="analysis_game_suggestion_without_2_3">앗! 아직 2/3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
+    <string name="analysis_game_suggestion_without_3">앗! 아직 3위가 없으시네요. 다른 게임도 해보시는건 어때요?</string>
+    <string name="analysis_not_enough_title">요즘 게임을 많이 안하셨나봐요….</string>
+    <string name="analysis_not_enough_subtitle">괜찮아요! 게임을 플레이하면 다시 분석 해볼 수 있어요.</string>
 
     <!-- Main -->
     <string name="main_tab_recommend">게임 추천</string>
-    <string name="main_tab_betatest">베타테스트</string>
-    <string name="main_menu_my_hope_games">내 게임 컬렉션</string>
-    <string name="main_menu_my_recent_analysis">내 분석 다시보기</string>
-    <string name="main_menu_my_betatest">피드백 존 (준비중)</string>
+    <string name="main_tab_finished_betatest">마감된 테스트</string>
+    <string name="main_tab_betatest">테스트 참여 존</string>
+    <string name="main_tab_event">이벤트</string>
+    <string name="main_menu_my_wish_list">@string/wish_list</string>
+    <string name="main_menu_my_recent_analysis">게임 성향 분석</string>
     <string name="main_menu_settings">설정</string>
+    <string name="main_menu_donation">후원하기</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
+    <string name="main_option_menu_fomes_postbox">포메스\n우체통</string>
+
+    <!-- Post Box -->
+    <string name="postbox_title">포메스 우체통</string>
 
     <!-- Beta Test -->
-    <string name="coming_soon">Coming Soon</string>
-    <string name="betatest_title">누구보다 먼저, 누구보다 솔직하게\n게임 고수인 당신의 의견을 전하세요!</string>
-    <string name="betatest_subtitle">게임 좀 하시는 고수들을 모십니다.\n분석된 취향에 맞는 뉴비 게임을 보내드립니다.\n누구보다 먼저 써보고 가치있는 피드백을 주세요.\n( 각종 아이템 &amp; 리워드를 드립니다. )</string>
+    <string name="betatest_title">진행 중 테스트 목록</string>
+    <string name="betatest_subtitle">게임 소개와 테스트 정보를 볼 수 있습니다.</string>
+    <string name="betatest_complete_switch_text">참여 중 테스트만</string>
+    <string name="go_to_join_beta_test">참여하러 가기</string>
+    <string name="betatest_target_format">%s 앱 유저 대상</string>
+    <string name="betatest_project_status_format">종료 %d일 전</string>
+    <string name="betatest_required_time_format">약 %.0f분</string>
+    <string name="betatest_reward_none">보상 없음</string>
+    <string name="beta_test_completed_label_sub_title">Good! 멋져요! 최고에요!</string>
+    <string name="beta_test_completed_label_title_old">완료한 테스트</string>
+    <string name="beta_test_completed_label_title">%s 완료</string>
+    <string name="beta_test_closed_label_sub_title">아쉬워요…흑흑</string>
+    <string name="beta_test_closed_label_title_old">종료된 테스트</string>
+    <string name="beta_test_closed_label_title">%s 종료</string>
+    <string name="beta_test_empty_text_format">%s 님께 도착할 테스트를 기다리고 있어요.\n테스트가 도착하면 포메스가 알려드릴게요.</string>
+    <string name="beta_test_today_close">오늘 종료</string>
+    <string name="betatest_not_submitted_my_feedback">나의 의견 제출 미완료</string>
+    <string name="betatest_submitted_my_feedback">나의 의견 제출 완료</string>
+    <string name="betatest_delivered_my_feedback">나의 의견 전달 완료</string>
+    <string name="betatest_collecting_results">다른 참여자들의 결과를 취합 중입니다.</string>
+    <string name="betatest_delivered_all_results">모든 결과가 게임사에게 전달되었습니다.</string>
+    <string name="betatest_epilogue_coming_soon">테스트 에필로그 (커밍 순)</string>
+    <string name="betatest_epilogue_opened">테스트 에필로그 보기</string>
+    <string name="betatest_company_says_not_collected_old">게임사 소감 : \?\?\? (모든 결과 취합 시 표시됩니다)</string>
+    <string name="betatest_company_says_not_collected">\?\?\? (모든 결과 취합 시 표시됩니다)</string>
+    <string name="betatest_company_says">게임사 소감 : %s</string>
+    <string name="betatest_company_says_title">게임사 소감 및 계획</string>
+    <string name="betatest_progress_attend_label">참여 전</string>
+    <string name="betatest_progress_attend_label_doing">참여 중</string>
+
+    <!-- Finshed Beta Test -->
+    <string name="finished_betatest_title">마감된 테스트 목록</string>
+    <string name="finished_betatest_subtitle">게임사 소감 및 테스터 시상식을 볼 수 있습니다.</string>
+    <string name="finished_betatest_complete_switch_text">완료한 테스트만</string>
+    <string name="finished_beta_test_empty_text_format">아직 완료하신 테스트가 없으시군요!\n지금 테스트를 진행해보시면 어떨까요?</string>
+
+    <!-- Settings -->
+    <string name="settings_menu_version">포메스 정보</string>
+    <string name="settings_menu_usage">이용약관</string>
+    <string name="settings_menu_private">개인정보 취급 방침</string>
+    <string name="settings_menu_contact_us">이메일로 문의하기</string>
+    <string name="thanks_to_title">Special thanks to</string>
+    <string name="thanks_to_contents">저희 서비스에 아낌없는 조언을 주신 분들께 감사드립니다.\n원, 티파니, 스티브, 성혜, 헤일리, 스캇, 레인, 앤디, 휴벗, 오드리, 알렉스, 줄리, 삼성전자 C-lab, SVIC, 삼성SDS ACT lab, 네오플라이, 강남구청년창업지원센터, 순순 디자인, 싱크홀 스튜디오, 케어마인드, 오진우님, 이한가람님, 박유나님, 서철웅님, 레오님, 그 외 많은 분들.</string>
+    <string name="contact_to_formakers">포메스 팀에 메일보내기</string>
+
+    <!-- Recommend -->
+    <string name="recommend_title">데이터 기반 추천 목록</string>
+    <string name="recommend_subtitle">지난 7일간의 플레이를 기반으로 추천합니다.</string>
+    <string name="recommend_option_menu_title">관심게임\n리스트</string>
+    <string name="download_to_googleplay">구글플레이 다운로드</string>
+    <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
+    <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>
+    <string name="recommend_label_format_favorite_category">내가 좋아하는 %s 장르의 추천 게임</string>
+    <string name="recommend_label_format_similar_demographic">나와 같은 %s들이 즐겨하는 게임</string>
+    <string name="format_app_info_star_score">%.1f 점</string>
+    <string name="format_app_info_download_count">설치수 %d+</string>
+    <string name="shorten_symbol">…</string>
+    <string name="recommend_error_title">Sorry!</string>
+    <string name="recommend_error_description">게임을 추천할\n데이터가 부족합니다.</string>
+
+    <!-- Wish List -->
+    <string name="download">다운로드</string>
+    <string name="wish_list">관심 게임 리스트</string>
+    <string name="wish_list_description">지금 다운로드 가능한 게임들입니다.</string>
+    <string name="wish_list_empty_description">아직 관심 게임 리스트에 저장한 게임이 없으시네요.</string>
+    <string name="wish_list_add_fail">관심 게임 등록에 실패하였습니다.</string>
+    <string name="wish_list_remove_fail">관심 게임 삭제에 실패하였습니다.</string>
+
+    <!-- Beta Test Detail -->
+    <string name="betatest_detail_game_description_title">게임 소개</string>
+    <string name="betatest_detail_howto_title">테스트 방법</string>
+    <string name="betatest_detail_howto_description">어렵지 않아요. 게임을 즐기고 의견을 주면 끝!</string>
+    <string name="betatest_detail_howto_guide">* 마감후 %d일 이내에 시상식이 열리고, 보상이 지급됩니다.\n* 시상식은 [마감된 테스트] 탭에서 확인 가능합니다.</string>
+    <string name="betatest_detail_rewards_title">테스트 보상</string>
+    <string name="betatest_detail_rewards_description">[마감된 테스트] 탭의 시상식을 통해 선정자를 안내해드립니다.</string>
+    <string name="betatest_detail_mission_list_title">테스트 참여</string>
+    <string name="betatest_detail_mission_list_description">당신의 게임 분석력과 통찰력을 기대할게요!</string>
+    <string name="betatest_detail_purpose_title">테스트 목적</string>
+    <string name="betatest_detail_mission_play_time_desc_ready">플레이 하러가볼까요? 화이팅!</string>
+    <string name="betatest_detail_mission_play_time_desc_playing">플레이 하셨어요. 화이팅!</string>
+    <!--<string name="betatest_detail_mission_play_time_desc_over">화이팅!</string>-->
+    <string name="betatest_detail_mission_item_lock_level_format">%d단계 미션</string>
 </resources>

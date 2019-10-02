@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--<betatest_list_item_gradient-->
+        <!--android:startColor="?attr/item_gradient_start_color"-->
+        <!--android:endColor="?attr/item_gradient_end_color"-->
+        <!--android:angle="?attr/item_gradient_angle"-->
+        <!--android:gradientRadius="?attr/item_gradient_radius"/>-->
+
+    <gradient
+        android:startColor="@color/fomes_content_card_background"
+        android:centerColor="@android:color/transparent"
+        android:endColor="@android:color/transparent"
+        android:angle="90"
+        android:gradientRadius="10dp"/>
+</shape>

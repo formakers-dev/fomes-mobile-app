@@ -1,10 +1,11 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.TimeHelper;
+import com.formakers.fomes.common.model.AppUsage;
+import com.formakers.fomes.common.model.ShortTermStat;
+import com.formakers.fomes.common.model.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,12 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.observers.TestSubscriber;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,17 +40,29 @@ public class AppStatServiceTest extends AbstractServiceTest {
 
     private AppStatService subject;
 
-    @Mock
-    private SharedPreferencesHelper mockSharedPreferencesHelper;
-
-    @Mock
-    private StatAPI mockStatAPI;
+    @Mock private SharedPreferencesHelper mockSharedPreferencesHelper;
+    @Mock private StatAPI mockStatAPI;
+    @Mock private TimeHelper mockTimeHelper;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new AppStatService(mockStatAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        RxJavaHooks.reset();
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.trampoline());
+//        RxJavaHooks.setOnComputationScheduler(scheduler -> testScheduler);
+
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+
+        subject = new AppStatService(mockStatAPI, mockSharedPreferencesHelper, getMockAPIHelper(), mockTimeHelper);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("TEST_ACCESS_TOKEN");
     }
 
@@ -79,6 +97,22 @@ public class AppStatServiceTest extends AbstractServiceTest {
         verifyToCheckExpiredToken(subject.sendShortTermStats(shortTermStatList).toObservable());
     }
 
+
+    @Test
+    public void sendShortTermStats_완료시__마지막_업데이트_시간을_갱신한다() throws Exception {
+        when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
+        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
+        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
+
+        TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        subject.sendShortTermStats(shortTermStatList).subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent();
+
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertCompleted();
+        verify(mockSharedPreferencesHelper).setLastUpdateShortTermStatTimestamp(eq(10L));
+    }
+
     @Test
     public void postAppUsages호출시_앱별_사용정보통계를_서버로_전송한다() throws Exception {
         List<AppUsage> mockAppUsageList = new ArrayList<>();
@@ -93,30 +127,6 @@ public class AppStatServiceTest extends AbstractServiceTest {
     @Test
     public void sendAppUsages호출시_토큰_만료_여부를_확인한다() throws Exception {
         verifyToCheckExpiredToken(subject.sendAppUsages(new ArrayList<>()).toObservable());
-    }
-
-    @Test
-    public void requestAppUsageByCategory호출시_특정_카테고리의_앱사용정보를_요청한다() throws Exception {
-        subject.requestAppUsageByCategory("COMMUNICATE").subscribe(new TestSubscriber<>());
-
-        verify(mockStatAPI).getAppUsageByCategory(anyString(), anyString());
-    }
-
-    @Test
-    public void requestAppUsageByCategory호출시_토큰_만료_여부를_확인한다() throws Exception {
-        verifyToCheckExpiredToken(subject.requestAppUsageByCategory("TOOLS"));
-    }
-
-    @Test
-    public void requestCategoryUsage호출시_카테고리별_사용량을_요청한다() throws Exception {
-        subject.requestCategoryUsage().subscribe(new TestSubscriber<>());
-
-        verify(mockStatAPI).getCategoryUsage(anyString());
-    }
-
-    @Test
-    public void requestCategoryUsage호출시_토큰_만료_여부를_확인한다() throws Exception {
-        verifyToCheckExpiredToken(subject.requestCategoryUsage());
     }
 
     @Test

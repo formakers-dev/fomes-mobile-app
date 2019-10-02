@@ -1,33 +1,37 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.vo.RecentReport;
-import com.formakers.fomes.helper.AppBeeAPIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.AppUsage;
-import com.formakers.fomes.model.CategoryUsage;
-import com.formakers.fomes.model.ShortTermStat;
+import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.TimeHelper;
+import com.formakers.fomes.common.model.AppUsage;
+import com.formakers.fomes.common.model.ShortTermStat;
 import com.formakers.fomes.common.network.api.StatAPI;
-import com.formakers.fomes.model.User;
+import com.formakers.fomes.common.model.User;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class AppStatService extends AbstractAppBeeService {
+@Singleton
+public class AppStatService extends AbstractService {
     private static final String TAG = "AppStatService";
     private final StatAPI statAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
-    private final AppBeeAPIHelper appBeeAPIHelper;
+    private final APIHelper APIHelper;
+    private final TimeHelper timeHelper;
 
     @Inject
-    public AppStatService(StatAPI statAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public AppStatService(StatAPI statAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper APIHelper, TimeHelper timeHelper) {
         this.statAPI = statAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
-        this.appBeeAPIHelper = appBeeAPIHelper;
+        this.APIHelper = APIHelper;
+        this.timeHelper = timeHelper;
     }
 
     public Completable sendShortTermStats(List<ShortTermStat> shortTermStatList) {
@@ -38,8 +42,9 @@ public class AppStatService extends AbstractAppBeeService {
                     .doOnError(this::logError)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
-                    .compose(appBeeAPIHelper.refreshExpiredToken())
-                    .toCompletable();
+                    .compose(APIHelper.refreshExpiredToken())
+                    .toCompletable()
+                    .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(timeHelper.getStatBasedCurrentTime()));
         } else {
             return Completable.complete();
         }
@@ -50,32 +55,8 @@ public class AppStatService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(APIHelper.refreshExpiredToken())
                 .toCompletable();
-    }
-
-    public Observable<List<AppUsage>> requestAppUsageByCategory(String categoryId) {
-        return  Observable.defer(() -> statAPI.getAppUsageByCategory(SharedPreferencesHelper.getAccessToken(), categoryId))
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
-    }
-
-    public Observable<List<CategoryUsage>> requestCategoryUsage() {
-        return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken()))
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
-    }
-
-    public Observable<List<CategoryUsage>> requestPeopleCategoryUsage(final int peopleGroupFilter) {
-        return  Observable.defer(() -> statAPI.getCategoryUsage(SharedPreferencesHelper.getAccessToken(), peopleGroupFilter))
-                .doOnError(this::logError)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
     }
 
     public Observable<RecentReport> requestRecentReport(String categoryId, User user) {
@@ -83,7 +64,7 @@ public class AppStatService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken());
+                .compose(APIHelper.refreshExpiredToken());
     }
 
     @Override

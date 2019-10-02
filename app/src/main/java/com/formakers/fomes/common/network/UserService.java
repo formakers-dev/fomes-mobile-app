@@ -1,41 +1,48 @@
 package com.formakers.fomes.common.network;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
+import androidx.annotation.NonNull;
 
-import com.formakers.fomes.helper.AppBeeAPIHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.AppInfo;
+import com.formakers.fomes.common.model.User;
+
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.schedulers.Schedulers;
 
-public class UserService extends AbstractAppBeeService {
-
+@Singleton
+public class UserService extends AbstractService {
     private static final String TAG = "UserService";
+
     private final UserAPI userAPI;
     private final SharedPreferencesHelper SharedPreferencesHelper;
-    private final AppBeeAPIHelper appBeeAPIHelper;
+    private final APIHelper apiHelper;
 
     @Inject
-    public UserService(UserAPI userAPI, SharedPreferencesHelper SharedPreferencesHelper, AppBeeAPIHelper appBeeAPIHelper) {
+    public UserService(UserAPI userAPI, SharedPreferencesHelper SharedPreferencesHelper, APIHelper apiHelper) {
         this.userAPI = userAPI;
         this.SharedPreferencesHelper = SharedPreferencesHelper;
-        this.appBeeAPIHelper = appBeeAPIHelper;
+        this.apiHelper = apiHelper;
     }
 
-    public Observable<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
+    public Single<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
         return userAPI.signUp(googleIdToken, user)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<String> signIn(@NonNull String googleIdToken, @NonNull User user) {
-        return userAPI.signIn(googleIdToken, user)
+    public Observable<String> signIn(@NonNull String googleIdToken) {
+        return userAPI.signIn(googleIdToken)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
@@ -46,30 +53,71 @@ public class UserService extends AbstractAppBeeService {
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
+    public Completable notifyActivated() {
+        return Observable.defer(() -> userAPI.notifyActivated(SharedPreferencesHelper.getAccessToken()))
+                .doOnCompleted(() -> Log.d(TAG, "notifyActivated) Completed!"))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
     public Completable updateRegistrationToken(String registrationToken) {
-        return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), new User(registrationToken)))
+        return Observable.defer(() -> userAPI.updateNotificationToken(SharedPreferencesHelper.getAccessToken(), new User().setRegistrationToken(registrationToken)))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .compose(appBeeAPIHelper.refreshExpiredToken())
+                .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
     }
 
-    public Completable verifyInvitationCode(String code) {
-        return userAPI.verifyInvitationCode(code)
+    public Completable requestSaveAppToWishList(String packageName) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("packageName", packageName);
+
+        return Observable.defer(() -> userAPI.postWishList(SharedPreferencesHelper.getAccessToken(), map))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
+    }
+
+    public Completable requestRemoveAppFromWishList(String packageName) {
+        return Observable.defer(() -> userAPI.deleteWishList(SharedPreferencesHelper.getAccessToken(), packageName))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
+    public Observable<List<AppInfo>> requestWishList() {
+        return Observable.defer(() -> userAPI.getWishList(SharedPreferencesHelper.getAccessToken()))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken());
     }
 
     public Completable verifyToken() {
         return userAPI.verifyToken(SharedPreferencesHelper.getAccessToken())
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io()).toCompletable();
+    }
+
+    public Completable verifyNickName(String nickName) {
+        return Observable.defer(() -> userAPI.verifyNickName(SharedPreferencesHelper.getAccessToken(), nickName)
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken()))
+                .toCompletable();
     }
 
     @Override

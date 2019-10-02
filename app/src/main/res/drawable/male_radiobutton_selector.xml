@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- It is for taking care of Lollipop. -->
+    <!-- If you upgrade min api level of this app, you should change to color selector and use `drawableTint` attribute instead of this. -->
+    <item android:state_checked="true">
+        <bitmap android:src="@drawable/icon_male" android:tint="@color/colorPrimary"/>
+    </item>
+    <item>
+        <bitmap android:src="@drawable/icon_male" android:tint="@color/fomes_light_gray"/>
+    </item>
+</selector>

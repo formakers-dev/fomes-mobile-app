@@ -5,26 +5,36 @@ import java.util.List;
 public class RecentReport {
     List<Rank> totalUsedTimeRank;
     List<UsageGroup> usages;
+    long totalUserCount;
 
-    public RecentReport(List<Rank> totalUsedTimeRank, List<UsageGroup> usages) {
-        this.totalUsedTimeRank = totalUsedTimeRank;
-        this.usages = usages;
+    public RecentReport() {
     }
 
     public List<Rank> getTotalUsedTimeRank() {
         return totalUsedTimeRank;
     }
 
-    public void setTotalUsedTimeRank(List<Rank> totalUsedTimeRank) {
+    public RecentReport setTotalUsedTimeRank(List<Rank> totalUsedTimeRank) {
         this.totalUsedTimeRank = totalUsedTimeRank;
+        return this;
     }
 
     public List<UsageGroup> getUsages() {
         return usages;
     }
 
-    public void setUsages(List<UsageGroup> usages) {
+    public RecentReport setUsages(List<UsageGroup> usages) {
         this.usages = usages;
+        return this;
+    }
+
+    public long getTotalUserCount() {
+        return totalUserCount;
+    }
+
+    public RecentReport setTotalUserCount(long totalUserCount) {
+        this.totalUserCount = totalUserCount;
+        return this;
     }
 
     @Override
@@ -32,6 +42,7 @@ public class RecentReport {
         return "RecentReport{" +
                 "totalUsedTimeRank=" + totalUsedTimeRank +
                 ", usages=" + usages +
+                ", totalUserCount=" + totalUserCount +
                 '}';
     }
 }

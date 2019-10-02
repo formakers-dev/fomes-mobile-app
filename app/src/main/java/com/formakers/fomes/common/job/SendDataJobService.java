@@ -2,38 +2,49 @@ package com.formakers.fomes.common.job;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.util.Log;
 
-import com.formakers.fomes.AppBeeApplication;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.MessagingHelper;
+import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
+import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Completable;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Observable;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 public class SendDataJobService extends JobService {
 
     private static String TAG = SendDataJobService.class.getSimpleName();
 
-    @Inject SharedPreferencesHelper SharedPreferencesHelper;
-    @Inject AppBeeAndroidNativeHelper appBeeAndroidNativeHelper;
+    @Inject SharedPreferencesHelper sharedPreferencesHelper;
+    @Inject AndroidNativeHelper androidNativeHelper;
     @Inject AppUsageDataHelper appUsageDataHelper;
-    @Inject MessagingHelper messagingHelper;
     @Inject UserService userService;
     @Inject AppStatService appStatService;
+    @Inject ChannelManager channelManager;
+    @Inject UserDAO userDAO;
+
+    private Subscription subscription;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, " onCreate : " + this);
 
-        ((AppBeeApplication) getApplication()).getComponent().inject(this);
+        ((FomesApplication) getApplication()).getComponent().inject(this);
     }
 
     @Override
@@ -45,29 +56,67 @@ public class SendDataJobService extends JobService {
             Log.d(TAG, "[" + params.getJobId() + "] isOverrideDeadlineExpired!");
         }
 
-        if (appBeeAndroidNativeHelper.hasUsageStatsPermission()) {
+        List<Completable> completableList = new ArrayList<>();
+
+        // 0. 활성화 시각 업데이트 요청하기
+        completableList.add(userService.notifyActivated());
+
+        // 1. 공지용 전체 채널 구독시키기
+        channelManager.subscribePublicTopic();
+
+        // 2. 백업용 : 유저정보 서버로 올리기
+        completableList.add(userDAO.getUserInfo().map(user -> {
+            // 2-0. TODO : 임시코드 (DB에만 존재하던 유저 이메일을 sharedPreferences에도 저장시키기)
+            sharedPreferencesHelper.setUserEmail(user.getEmail());
+            // 2-1. 버전 정보 올리기
+            user.setAppVersion(BuildConfig.VERSION_NAME);
+            // 2-2. FCM Token 업로드하기
+            user.setRegistrationToken(sharedPreferencesHelper.getUserRegistrationToken());
+            // 2-3. 디바이스 정보 올리기
+            user.setDevice(new User.DeviceInfo());
+            return user;
+        }).observeOn(Schedulers.io()).flatMapCompletable(user -> userService.updateUser(user)));
+
+        // 3. 앱 사용 정보 접근 권한이 있을 때 : 앱 사용 데이터를 서버로 보낸다
+        if (androidNativeHelper.hasUsageStatsPermission()) {
             Log.d(TAG, "Start to update data!");
 
-            // 노티 토큰 업데이트 로직 추가 - onRefreshToken 에서 에러난 경우에 대한 대비책
-            final String refreshedToken = messagingHelper.getMessagingToken();
-            if (!SharedPreferencesHelper.getRegistrationToken().equals(refreshedToken)) {
-                userService.updateRegistrationToken(refreshedToken)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                            Log.d(TAG, "Token Refresh is Completed!");
-                            SharedPreferencesHelper.setRegistrationToken(refreshedToken);
-                        }, (throwable) -> Log.e(TAG, throwable.toString()));
-            }
-
-            Completable.merge(appUsageDataHelper.sendShortTermStats()
-                    , appStatService.sendAppUsages(appUsageDataHelper.getAppUsagesFor(AppUsageDataHelper.DEFAULT_APP_USAGE_DURATION_DAYS)))
-                    .subscribeOn(Schedulers.io())
+            completableList.add(appUsageDataHelper.getShortTermStats().toList()
                     .observeOn(Schedulers.io())
-                    .doAfterTerminate(() -> this.jobFinished(params, true))
-                    .subscribe(() -> Log.d(TAG, "Send Data Success"), e -> Log.e(TAG, "Send Data Fail : " + e));
+                    .flatMap(shortTermStats -> appStatService.sendShortTermStats(shortTermStats).toObservable())
+                    .toCompletable()
+                    .doOnSubscribe(a -> Log.i(TAG, "sendShortTermStats) onSubscribe"))
+                    .doOnCompleted(() -> Log.i(TAG, "sendShortTermStats) onCompleted"))
+            );
+
+            completableList.add(appUsageDataHelper.getAppUsages().toList()
+                    .observeOn(Schedulers.io())
+                    .flatMap(appUsages -> appStatService.sendAppUsages(appUsages).toObservable())
+                    .toCompletable());
         }
 
+        subscription = Completable.merge(Observable.from(completableList))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .doAfterTerminate(() -> {
+                    Log.i(TAG, "doAfterTerminate");
+                    this.jobFinished(params, true);
+                })
+                .subscribe(() -> Log.i(TAG, "Success!"), e -> Log.e(TAG, "Fail error=" + e));
+
         return true;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
+
+        super.onDestroy();
     }
 
     @Override
@@ -77,6 +126,7 @@ public class SendDataJobService extends JobService {
         // Job 실행 도중 실행 조건이 해제되었을 경우, onStopJob()이 호출됨.
         // 예외처리 필요
 
+        // true를 리턴하면 재스케쥴링 한다.
         return true;
     }
 }

@@ -1,34 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fomes_white">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/provision_icon_imageview"
-        android:layout_width="67dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="37dp"
-        android:src="@drawable/fomes_face"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.v4.view.ViewPager
+    <com.formakers.fomes.common.view.custom.SwipeViewPager
         android:id="@+id/provision_viewpager"
         android:layout_width="@dimen/match_constraint"
-        android:layout_height="@dimen/match_constraint"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="30dp"
-        android:paddingStart="@dimen/provision_padding_start_end"
-        android:paddingEnd="@dimen/provision_padding_start_end"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
         android:overScrollMode="never"
-        app:layout_constraintTop_toBottomOf="@id/provision_icon_imageview"
-        app:layout_constraintBottom_toBottomOf="@+id/next_button"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -44,6 +30,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/provision_viewpager"
         app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints" />
-</android.support.constraint.ConstraintLayout>
+        tools:ignore="MissingConstraints"
+        tools:visibility="visible"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

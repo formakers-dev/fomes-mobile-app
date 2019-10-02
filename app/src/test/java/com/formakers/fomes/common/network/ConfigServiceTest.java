@@ -1,6 +1,6 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.api.ConfigAPI;
 
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class ConfigServiceTest extends AbstractServiceTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        subject = new ConfigService(mockConfigAPI, mockSharedPreferencesHelper, getMockAppBeeAPIHelper());
+        subject = new ConfigService(mockConfigAPI, mockSharedPreferencesHelper, getMockAPIHelper());
 
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
         when(mockConfigAPI.getAppVersion()).thenReturn(Observable.just(123L));

@@ -1,59 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingEnd="@dimen/provision_padding_start_end"
+    android:paddingStart="@dimen/provision_padding_start_end">
 
-    <TextView
-        android:id="@+id/provision_nickname_title_textview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/provision_nickname_title"
-        android:textSize="@dimen/provision_title_text_size"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/provision_icon_imageview"
+        android:layout_width="38dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="@dimen/provision_image_margin_top"
+        android:src="@drawable/fomes_face"
+        app:layout_constraintBottom_toTopOf="@+id/provision_title_textview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/provision_nickname_subtitle_textview"
+        android:id="@+id/provision_title_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="@string/provision_nickname_title"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/provision_title_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/provision_subtitle_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/provision_icon_imageview" />
+
+    <TextView
+        android:id="@+id/provision_subtitle_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/provision_subtitle_margin_top"
         android:text="@string/provision_nickname_subtitle"
-        android:textSize="@dimen/provision_subtitle_text_size"
         android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/provision_subtitle_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_title_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/provision_title_textview" />
+
+
+    <View android:id="@+id/provision_nickname_content_title_top_divider"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_pager_margin_top"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@id/provision_subtitle_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/provision_nickname_content_title_textview"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
         android:text="@string/provision_nickname_content_title"
         android:textSize="@dimen/provision_content_title_text_size"
-        android:textColor="@color/fomes_warm_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textColor="@color/fomes_greyish_brown"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/provision_nickname_content_edittext"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_subtitle_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_title_top_divider"/>
 
     <EditText
         android:id="@+id/provision_nickname_content_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/provision_content_margin_top"
+        android:layout_marginStart="13dp"
         android:inputType="textPersonName"
         android:hint="@string/provision_nickname_content_hint"
-        android:maxLength="10"
-        android:backgroundTint="@color/colorPrimary"
+        android:textColorHint="@color/fomes_warm_gray_2"
+        android:textSize="@dimen/provision_content_title_text_size"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_title_textview" />
+        app:layout_constraintStart_toEndOf="@id/provision_nickname_content_title_textview"
+        app:layout_constraintBaseline_toBaselineOf="@id/provision_nickname_content_title_textview"/>
 
-</android.support.constraint.ConstraintLayout>
+    <View android:id="@+id/provision_nickname_content_title_bottom_divider"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+        android:background="@color/fomes_pale_gray"
+        app:layout_constraintTop_toBottomOf="@id/provision_nickname_content_title_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/provision_nickname_format_warning_textview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/provision_nickname_format_warning"
+        android:textSize="@dimen/provision_content_title_text_size"
+        android:textColor="@color/fomes_red"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/provision_nickname_content_title_bottom_divider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

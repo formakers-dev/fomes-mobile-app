@@ -1,25 +1,30 @@
 package com.formakers.fomes.common.job;
 
 import android.app.job.JobParameters;
+import android.os.Build;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import com.formakers.fomes.BuildConfig;
-import com.formakers.fomes.TestAppBeeApplication;
-import com.formakers.fomes.helper.AppBeeAndroidNativeHelper;
-import com.formakers.fomes.helper.AppUsageDataHelper;
-import com.formakers.fomes.helper.SharedPreferencesHelper;
-import com.formakers.fomes.helper.MessagingHelper;
-import com.formakers.fomes.model.AppUsage;
+import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.noti.ChannelManager;
+import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.AppUsage;
+import com.formakers.fomes.common.model.ShortTermStat;
+import com.formakers.fomes.common.model.User;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +32,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Completable;
+import rx.Observable;
+import rx.Scheduler;
+import rx.Single;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -38,95 +49,129 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SendDataJobServiceTest {
 
     private SendDataJobService subject;
 
     @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
-    @Inject AppBeeAndroidNativeHelper mockAppBeeAndroidNativeHelper;
+    @Inject AndroidNativeHelper mockAndroidNativeHelper;
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
-    @Inject MessagingHelper mockMessagingHelper;
     @Inject UserService mockUserService;
     @Inject AppStatService mockAppStatService;
+    @Inject ChannelManager mockChannelManager;
+    @Inject UserDAO mockUserDAO;
+
+    List<AppUsage> appUsages = new ArrayList<>();
+    List<ShortTermStat> shortTermStats = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
         RxJavaHooks.reset();
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnNewThreadScheduler(scheduler -> Schedulers.trampoline());
+        RxJavaHooks.setOnComputationScheduler(scheduler -> Schedulers.trampoline());
 
-        ((TestAppBeeApplication) RuntimeEnvironment.application).getComponent().inject(this);
+        RxAndroidPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.trampoline();
+            }
+        });
 
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
-        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(true);
+        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
+
+        shortTermStats.add(new ShortTermStat("packageName1", 1000, 2000));
+        shortTermStats.add(new ShortTermStat("packageName2", 2000, 3000));
+
+        appUsages.add(new AppUsage("packageName1", 1000));
+        appUsages.add(new AppUsage("packageName2", 2000));
+
+        when(mockAppUsageDataHelper.getAppUsages()).thenReturn(Observable.from(appUsages));
+        when(mockAppUsageDataHelper.getShortTermStats()).thenReturn(Observable.from(shortTermStats));
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockSharedPreferencesHelper.hasAccessToken()).thenReturn(true);
         when(mockSharedPreferencesHelper.getAccessToken()).thenReturn("myToken");
-        when(mockSharedPreferencesHelper.getRegistrationToken()).thenReturn("myRegistrationToken");
-        when(mockMessagingHelper.getMessagingToken()).thenReturn("myRegistrationToken");
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("myRegistrationToken");
+        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User()));
+        when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
+        when(mockUserService.notifyActivated()).thenReturn(Completable.complete());
+        when(mockAppStatService.sendAppUsages(any())).thenReturn(Completable.complete());
+        when(mockAppStatService.sendShortTermStats(any())).thenReturn(Completable.complete());
 
         subject = Robolectric.setupService(SendDataJobService.class);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         RxJavaHooks.reset();
     }
 
     @Test
-    public void onStartJob_실행시_노티토큰이_업데이트되어있지않을경우_서버로_노티토큰_정보를_전송한다() throws Exception {
-        when(mockMessagingHelper.getMessagingToken()).thenReturn("newRegistrationToken");
-        when(mockUserService.updateRegistrationToken(eq("newRegistrationToken"))).thenReturn(Completable.complete());
+    public void onStartJob_실행시__유저의_활성화시각을_업데이트를_요청한다() {
+        subject_onStartJob();
 
-        JobParameters jobParameters = mock(JobParameters.class);
-        when(jobParameters.getJobId()).thenReturn(1);
-        when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
-
-        subject.onStartJob(jobParameters);
-
-        verify(mockUserService).updateRegistrationToken(eq("newRegistrationToken"));
+        verify(mockUserService).notifyActivated();
     }
 
     @Test
-    public void onStartJob_실행시_단기통계데이터와_7일동안의_앱사용통계정보를_서버로_전송한다() throws Exception {
-        List<AppUsage> appUsages = new ArrayList<>();
-        appUsages.add(new AppUsage("packageName1", 1000));
-        appUsages.add(new AppUsage("packageName2", 2000));
-        when(mockAppUsageDataHelper.getAppUsagesFor(7)).thenReturn(appUsages);
+    public void onStartJob_실행시__공지용_전체채널을_구독시킨다() {
+        subject_onStartJob();
 
-        JobParameters jobParameters = mock(JobParameters.class);
-        when(jobParameters.getJobId()).thenReturn(1);
-        when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
+        verify(mockChannelManager).subscribePublicTopic();
+    }
 
-        subject.onStartJob(jobParameters);
+    @Test
+    public void onStartJob_실행시__유저정보와_유저의_현재앱버전과_FCM토큰을__서버로_올린다() {
+        subject_onStartJob();
 
-        verify(mockAppUsageDataHelper).sendShortTermStats();
-        verify(mockAppUsageDataHelper).getAppUsagesFor(eq(7));
+        // 유저정보
+        verify(mockUserDAO).getUserInfo();
+
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(mockUserService).updateUser(userArgumentCaptor.capture());
+
+        // 현재 앱버전 셋팅했는지
+        User requestedUser = userArgumentCaptor.getValue();
+        assertThat(requestedUser.getAppVersion()).isEqualTo(BuildConfig.VERSION_NAME);
+
+        // FCM 토큰 셋팅했는지
+        assertThat(requestedUser.getRegistrationToken()).isEqualTo("myRegistrationToken");
+
+        // 디바이스 정보 셋팅했는지 (CI 테스트 환경의 정보를 알 수 없어 참조로 검증함)
+        System.out.println(requestedUser.getDevice());
+        assertThat(requestedUser.getDevice()).isNotNull();
+        assertThat(requestedUser.getDevice().getManufacturer()).isEqualTo(Build.MANUFACTURER);
+        assertThat(requestedUser.getDevice().getModel()).isEqualTo(Build.MODEL);
+        assertThat(requestedUser.getDevice().getOsVersion()).isEqualTo(Build.VERSION.SDK_INT);
+    }
+
+    @Test
+    public void onStartJob_실행시_단기통계데이터와_기본수집일동안의_앱사용통계정보를_서버로_전송한다() {
+        subject_onStartJob();
+
+        verify(mockAppUsageDataHelper).getShortTermStats();
+        verify(mockAppStatService).sendShortTermStats(eq(shortTermStats));
+
+        verify(mockAppUsageDataHelper).getAppUsages();
         verify(mockAppStatService).sendAppUsages(eq(appUsages));
     }
 
     @Test
-    public void onStartJob_실행시_권한이없으면_아무것도하지않는다() throws Exception {
-        when(mockAppBeeAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+    public void onStartJob_실행시_권한이없으면_통계데이터는_전송하지않는다() {
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
 
+        subject_onStartJob();
+
+        verify(mockAppStatService, never()).sendShortTermStats(any());
+        verify(mockAppStatService, never()).sendAppUsages(any());
+    }
+
+    private void subject_onStartJob() {
         JobParameters jobParameters = mock(JobParameters.class);
         when(jobParameters.getJobId()).thenReturn(1);
         when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
+
         subject.onStartJob(jobParameters);
-
-        verify(mockUserService, never()).updateRegistrationToken(any());
-        verify(mockAppUsageDataHelper, never()).sendShortTermStats();
-        verify(mockAppUsageDataHelper, never()).sendAppUsages();
     }
-
-//    @Test
-//    public void onStartJob_실행시_로그인상태가_아니면_아무것도하지않는다() throws Exception {
-//        when(mockSharedPreferencesHelper.isLoggedIn()).thenReturn(false);
-//
-//        JobParameters jobParameters = mock(JobParameters.class);
-//        when(jobParameters.getJobId()).thenReturn(1);
-//        when(jobParameters.isOverrideDeadlineExpired()).thenReturn(false);
-//        subject.onStartJob(jobParameters);
-//
-//        verify(mockAppUsageDataHelper, never()).sendShortTermStats(any());
-//        verify(mockAppUsageDataHelper, never()).sendAppUsages(any());
-//    }
 }

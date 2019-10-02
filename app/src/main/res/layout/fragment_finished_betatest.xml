@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/finished_betatest_swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fomes_content_background_dark"
+            android:descendantFocusability="blocksDescendants">
+
+            <TextView android:id="@+id/finished_betatest_list_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_tab_title_margin_start"
+                android:layout_marginTop="@dimen/main_tab_title_margin_top"
+                android:text="@string/finished_betatest_title"
+                android:textSize="@dimen/main_tab_title_text_size"
+                android:textStyle="bold"
+                android:textColor="@color/fomes_pale_gray"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
+                app:layout_constraintVertical_bias="0.0"/>
+
+            <TextView android:id="@+id/finished_betatest_notice_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_tab_subtitle_top_margin"
+                android:textSize="@dimen/main_tab_subtitle_text_size"
+                android:textColor="@color/fomes_light_gray"
+                android:text="@string/finished_betatest_subtitle"
+                app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
+                app:layout_constraintStart_toStartOf="@id/finished_betatest_list_textview"
+                app:layout_constraintTop_toBottomOf="@id/finished_betatest_list_textview" />
+
+            <Switch android:id="@+id/title_option_menu_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/finished_betatest_list_textview"
+                app:layout_constraintEnd_toEndOf="@+id/title_option_menu"
+                app:layout_constraintBottom_toTopOf="@+id/title_option_menu" />
+
+            <TextView android:id="@+id/title_option_menu"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="17dp"
+                android:gravity="end"
+                android:text="@string/finished_betatest_complete_switch_text"
+                android:textColor="@color/fomes_warm_gray_2"
+                android:textSize="@dimen/main_tab_subtitle_text_size"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_option_menu_switch"
+                app:layout_constraintBottom_toBottomOf="@id/finished_betatest_notice_textview" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/finished_betatest_recyclerview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_tab_listview_top_margin"
+                android:overScrollMode="never"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/finished_betatest_notice_textview" />
+
+            <LinearLayout android:id="@+id/finished_betatest_empty_view"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/finished_betatest_list_textview"
+                app:layout_constraintVertical_bias="0.0">
+
+                <ImageView
+                    android:layout_width="254dp"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="39dp"
+                    android:background="@drawable/betatest_empty_background" />
+
+                <TextView
+                    android:id="@+id/finished_betatest_empty_textview"
+                    android:layout_width="255dp"
+                    android:layout_height="73dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/betatest_empty_text_background"
+                    android:gravity="center"
+                    android:lineSpacingExtra="7dp"
+                    android:paddingBottom="7dp"
+                    android:paddingEnd="14dp"
+                    android:paddingStart="14dp"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/fomes_light_gray"
+                    android:textSize="12dp"
+                    android:text="@string/finished_beta_test_empty_text_format" />
+
+            </LinearLayout>
+
+            <ProgressBar android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

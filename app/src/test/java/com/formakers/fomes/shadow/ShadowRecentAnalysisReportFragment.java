@@ -1,12 +1,12 @@
 package com.formakers.fomes.shadow;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.formakers.fomes.analysis.view.RecentAnalysisReportFragment;
+import com.formakers.fomes.analysis.RecentAnalysisReportFragment;
 import com.formakers.fomes.common.view.BaseFragment;
 
 import org.robolectric.annotation.Implements;

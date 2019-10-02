@@ -15,12 +15,21 @@
         <enum name="wrap_content" value="-2" />
     </attr>
     <attr name="divider_color" format="color"/>
+    <attr name="item_background_radius" format="reference|dimension"/>
     <attr name="item_color" format="reference|color"/>
     <attr name="item_number" format="reference|string"/>
+    <attr name="item_stroke_color" format="reference|color"/>
+    <attr name="item_stroke_width" format="reference|dimension"/>
+    <attr name="item_solid_color" format="reference|color"/>
+
+    <attr name="item_gradient_start_color" format="reference|color"/>
+    <attr name="item_gradient_end_color" format="reference|color"/>
+    <attr name="item_gradient_angle" format="reference|integer"/>
+    <attr name="item_gradient_radius" format="reference|dimension"/>
 
     <declare-styleable name="RankAppItemView">
         <attr name="rank_number" format="reference|string" />
-        <attr name="rank_numberBackgroundTint" format="reference|color" />
+        <attr name="rank_color" format="reference|color" />
         <attr name="rank_title" format="reference|string" />
         <attr name="rank_description" format="reference|string" />
         <attr name="rank_appIconDrawable" format="reference|integer" />
@@ -30,4 +39,27 @@
             <enum name="visible" value="0" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="RankItemView">
+        <attr name="rank_item_line_height" format="reference|dimension"/>
+        <attr name="rank_item_color" format="reference|color" />
+        <attr name="rank_item_title" format="reference|string" />
+        <attr name="rank_item_description" format="reference|string" />
+        <attr name="rank_item_content_isTop" format="reference|boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="RecommendAppItemView">
+        <attr name="app_iconDrawable" format="reference|integer" />
+        <attr name="app_nameText" format="reference|string" />
+        <attr name="app_categoryText" format="reference|string" />
+        <attr name="app_developerText" format="reference|string" />
+        <attr name="app_recommendType" format="reference|integer">
+            <enum name="favorite_game" value="1" />
+            <enum name="favorite_developer" value="2" />
+            <enum name="favorite_category" value="3" />
+            <enum name="similar_demographic" value="4" />
+        </attr>
+        <attr name="app_verbose" format="reference|boolean"/>
+    </declare-styleable>
+
 </resources>
