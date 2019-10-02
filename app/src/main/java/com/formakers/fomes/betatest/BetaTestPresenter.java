@@ -1,14 +1,16 @@
 package com.formakers.fomes.betatest;
 
+import android.util.Pair;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.common.helper.FomesUrlHelper;
-import com.formakers.fomes.common.model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,24 +119,30 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
         compositeSubscription.add(
                 betaTestService.getBetaTestProgress(betaTestId)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(betaTestProgress -> {
-                            int position = betaTestListAdapterModel.getPositionById(betaTestProgress.getId());
+                        .map(newBetaTest -> {
+                            int position = betaTestListAdapterModel.getPositionById(newBetaTest.getId());
 
                             if (position < 0) {
                                 throw new IllegalStateException("There isn't the betatest in list. It might be initialized by system.");
                             }
 
+                            return new Pair<>(newBetaTest, position);
+                        })
+                        .subscribe(betaTestPair -> {
+                            BetaTest newBetaTest = betaTestPair.first;
+                            int position = betaTestPair.second;
+
                             BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
 
                             // TODO : 로직 최적화 필요. 플래그 사용 지양!
                             boolean isUpdated = false;
-                            if (!originalBetaTest.getCompletedItemCount().equals(betaTestProgress.getCompletedItemCount())) {
-                                originalBetaTest.setCompletedItemCount(betaTestProgress.getCompletedItemCount());
+                            if (!originalBetaTest.getCompletedItemCount().equals(newBetaTest.getCompletedItemCount())) {
+                                originalBetaTest.setCompletedItemCount(newBetaTest.getCompletedItemCount());
                                 isUpdated = true;
                             }
 
-                            if (!originalBetaTest.getTotalItemCount().equals(betaTestProgress.getTotalItemCount())) {
-                                originalBetaTest.setTotalItemCount(betaTestProgress.getTotalItemCount());
+                            if (!originalBetaTest.getTotalItemCount().equals(newBetaTest.getTotalItemCount())) {
+                                originalBetaTest.setTotalItemCount(newBetaTest.getTotalItemCount());
                                 isUpdated = true;
                             }
 
