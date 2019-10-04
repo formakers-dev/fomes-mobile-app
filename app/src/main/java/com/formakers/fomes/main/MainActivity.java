@@ -27,6 +27,7 @@ import com.formakers.fomes.betatest.FinishedBetaTestFragment;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.common.view.custom.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.provisioning.login.LoginActivity;
@@ -61,7 +62,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
-    @BindView(R.id.main_event_view_pager)       ViewPager eventViewPager;
+    @BindView(R.id.main_event_view_pager)       SwipeViewPager eventViewPager;
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
     @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
     @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
@@ -154,6 +155,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
         eventPagerAdapter.setPresenter(this.presenter);
         eventViewPager.setAdapter(eventPagerAdapter);
+        eventViewPager.setEnableSwipe(true);
+        eventViewPager.setOnSwipeListener(() -> {
+            Log.i(TAG, "EventBanner Touch Swipe! Initialize auto-swipe");
+            stopEventPagerAutoSlide();
+            startEventPagerAutoSlide(0);
+        });
         this.presenter.setEventPagerAdapterModel(eventPagerAdapter);
         this.eventPagerAdapterView = eventPagerAdapter;
 
@@ -168,14 +175,26 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         handleDeeplink(getIntent().getExtras());
     }
 
+    private void startEventPagerAutoSlide(long additionalInitDelay) {
+        Log.v(TAG, "startEventPagerAutoSlide");
+        eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS + additionalInitDelay, EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(seq -> showNextEventBanner());
+    }
+
+    private void stopEventPagerAutoSlide() {
+        Log.v(TAG, "stopEventPagerAutoSlide");
+        if (eventPagerAutoSlideSubscription != null && !eventPagerAutoSlideSubscription.isUnsubscribed()) {
+            eventPagerAutoSlideSubscription.unsubscribe();
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
 
         // Start Event AutoSlide
-        eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS + 2000, EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(seq -> showNextEventBanner());
+        startEventPagerAutoSlide(2000);
     }
 
     @Override
@@ -190,9 +209,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onStop();
 
         // Stop Event AutoSlide
-        if (eventPagerAutoSlideSubscription != null && !eventPagerAutoSlideSubscription.isUnsubscribed()) {
-            eventPagerAutoSlideSubscription.unsubscribe();
-        }
+        stopEventPagerAutoSlide();
     }
 
     @Override

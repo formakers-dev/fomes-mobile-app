@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 app:layout_collapseMode="parallax">
 
-                <androidx.viewpager.widget.ViewPager
+                <com.formakers.fomes.common.view.custom.SwipeViewPager
                     android:id="@+id/main_event_view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
