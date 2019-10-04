@@ -29,6 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginTop="?attr/actionBarSize"
+                    android:background="@color/main_tab_background"
                     android:scaleType="centerCrop" />
 
                 <com.rd.PageIndicatorView

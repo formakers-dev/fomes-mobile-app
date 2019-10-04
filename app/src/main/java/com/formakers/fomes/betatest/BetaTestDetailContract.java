@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
@@ -22,6 +23,7 @@ public interface BetaTestDetailContract {
     interface Presenter {
         //Base
         AnalyticsModule.Analytics getAnalytics();
+        ImageLoader getImageLoader();
 
         void sendEventLog(String code, String ref);
 

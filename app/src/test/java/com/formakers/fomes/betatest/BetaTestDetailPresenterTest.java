@@ -7,6 +7,7 @@ import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
 import com.formakers.fomes.common.helper.AppUsageDataHelper;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
@@ -53,6 +54,7 @@ public class BetaTestDetailPresenterTest {
     @Mock FomesUrlHelper mockFomesUrlHelper;
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
     @Mock AppUsageDataHelper mockAppUsageDataHelper;
+    @Mock ImageLoader mockImageLoader;
 
     BetaTestDetailPresenter subject;
 
@@ -84,7 +86,7 @@ public class BetaTestDetailPresenterTest {
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
         when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
 
-        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper, mockAppUsageDataHelper);
+        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper, mockAppUsageDataHelper, mockImageLoader);
     }
 
     @Test

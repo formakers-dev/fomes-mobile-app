@@ -14,6 +14,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
@@ -231,6 +232,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.Sha
 
     @Test
     public void onStart시__이벤트_페이저를_3초간격으로_넘긴다() {
+        when(mockPresenter.getImageLoader()).thenReturn(mock(ImageLoader.class));
         when(mockPresenter.getPromotionCount()).thenReturn(3);
 
         launchActivity();

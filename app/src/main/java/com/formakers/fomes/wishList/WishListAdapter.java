@@ -1,7 +1,6 @@
 package com.formakers.fomes.wishList;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.bumptech.glide.Glide;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 import com.formakers.fomes.common.model.AppInfo;
+import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,10 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context context;
 
-    public WishListAdapter() {
+    private WishListContract.Presenter presenter;
+
+    public WishListAdapter(WishListContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     @Override
@@ -47,11 +50,11 @@ public class WishListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         AppViewHolder viewHolder = (AppViewHolder) holder;
 
-        Glide.with(viewHolder.itemView.getContext()).load(wishApp.getIconUrl())
-                .apply(new RequestOptions().override(70, 70)
+        this.presenter.getImageLoader().loadImage(viewHolder.iconImageView, wishApp.getIconUrl(),
+                new RequestOptions().override(70, 70)
                         .centerCrop()
-                        .transform(new RoundedCorners(10)))
-                .into(viewHolder.iconImageView);
+                        .transform(new RoundedCorners(10))
+                , false);
 
         viewHolder.appNameTextView.setText(wishApp.getAppName());
 

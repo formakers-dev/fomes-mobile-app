@@ -1,13 +1,11 @@
 package com.formakers.fomes.betatest;
 
-import com.formakers.fomes.betatest.FinishedBetaTestPresenter;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.betatest.FinishedBetaTestListAdapter;
-import com.formakers.fomes.betatest.FinishedBetaTestContract;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -44,6 +42,7 @@ public class FinishedBetaTestPresenterTest {
     @Mock private BetaTestService mockBetaTestService;
     @Mock private EventLogService mockEventLogService;
     @Mock private AnalyticsModule.Analytics mockAnalytics;
+    @Mock private ImageLoader mockImageLoader;
 
     private List<BetaTest> finishedBetaTests = new ArrayList<>();
     private FinishedBetaTestPresenter subject;
@@ -76,7 +75,7 @@ public class FinishedBetaTestPresenterTest {
         when(mockAdapterModel.getItem(0)).thenReturn(finishedBetaTests.get(1));
         when(mockAdapterModel.getItem(1)).thenReturn(finishedBetaTests.get(0));
 
-        subject = new FinishedBetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics);
+        subject = new FinishedBetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockImageLoader);
         subject.setAdapterModel(mockAdapterModel);
     }
 

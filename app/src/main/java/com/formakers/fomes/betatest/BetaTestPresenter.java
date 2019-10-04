@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
@@ -39,17 +40,19 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
     private FomesUrlHelper fomesUrlHelper;
+    private ImageLoader imageLoader;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO, AnalyticsModule.Analytics analytics, FomesUrlHelper fomesUrlHelper) {
+    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO, AnalyticsModule.Analytics analytics, FomesUrlHelper fomesUrlHelper, ImageLoader imageLoader) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
         this.userDAO = userDAO;
         this.analytics = analytics;
         this.fomesUrlHelper = fomesUrlHelper;
+        this.imageLoader = imageLoader;
     }
 
     @Override
@@ -60,6 +63,11 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     @Override
     public AnalyticsModule.Analytics getAnalytics() {
         return this.analytics;
+    }
+
+    @Override
+    public ImageLoader getImageLoader() {
+        return this.imageLoader;
     }
 
     @Override

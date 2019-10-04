@@ -3,7 +3,6 @@ package com.formakers.fomes.betatest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.ColorRes;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
@@ -100,12 +98,13 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
-        Glide.with(context).load(item.getOverviewImageUrl())
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .transform(new RoundedCorners(4))
-                        .placeholder(new ColorDrawable(res.getColor(R.color.fomes_deep_gray))))
-                .into(itemViewHolder.overviewImageView);
+        this.presenter.getImageLoader().loadImage(
+                itemViewHolder.overviewImageView,
+                item.getOverviewImageUrl(),
+                new RequestOptions()
+                .centerCrop()
+                .transform(new RoundedCorners(4))
+        );
 
         if (TextUtils.isEmpty(item.getBugReportUrl())) {
             itemViewHolder.reportBugButton.setVisibility(View.GONE);

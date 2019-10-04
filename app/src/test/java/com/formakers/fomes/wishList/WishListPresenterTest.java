@@ -1,5 +1,6 @@
 package com.formakers.fomes.wishList;
 
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.model.AppInfo;
 import com.formakers.fomes.common.network.UserService;
 
@@ -33,6 +34,7 @@ public class WishListPresenterTest {
     @Mock private WishListContract.View mockView;
     @Mock private WishListAdapterContract.Model mockAdapterModel;
     @Mock private UserService mockUserService;
+    @Mock private ImageLoader mockImageLoader;
 
     private WishListPresenter subject;
 
@@ -53,7 +55,7 @@ public class WishListPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new WishListPresenter(mockView, mockUserService);
+        subject = new WishListPresenter(mockView, mockUserService, mockImageLoader);
         subject.setAdapterModel(mockAdapterModel);
 
         List<AppInfo> appInfos = Arrays.asList(new AppInfo("com.test.1"), new AppInfo("com.test.2"), new AppInfo("com.test.3"), new AppInfo("com.test.4"));
