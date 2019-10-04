@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
@@ -24,10 +25,12 @@ import javax.inject.Singleton;
 @Singleton
 public class ImageLoader {
     private final Context context;
+    private final RequestManager requestManager;
 
     @Inject
-    public ImageLoader(Context context) {
+    public ImageLoader(Context context, RequestManager requestManager) {
         this.context = context;
+        this.requestManager = requestManager;
     }
 
     public void loadImage(ImageView imageView, String imageUrl) {
@@ -39,7 +42,7 @@ public class ImageLoader {
     }
 
     public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUsePlaceHolder) {
-        RequestBuilder<Drawable> requestBuilder = Glide.with(context).load(imageUrl);
+        RequestBuilder<Drawable> requestBuilder = requestManager.load(imageUrl);
 
         // requestOption
         if (requestOptions == null) {
@@ -59,6 +62,7 @@ public class ImageLoader {
         requestBuilder.into(imageView);
     }
 
+    @Deprecated
     public void loadGifImage(ImageView imageView, @DrawableRes int resId) {
         Glide.with(context)
                 .asGif()
