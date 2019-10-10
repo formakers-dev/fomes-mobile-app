@@ -1,6 +1,7 @@
 package com.formakers.fomes.wishList;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.util.Log;
 
@@ -17,14 +18,21 @@ public class WishListPresenter implements WishListContract.Presenter {
     private UserService userService;
 
     private List<String> removedPackageNames = new ArrayList<>();
+    private ImageLoader imageLoader;
 
     private WishListContract.View view;
     private WishListAdapterContract.Model adapterModel;
 
     @Inject
-    public WishListPresenter(WishListContract.View view, UserService userService) {
+    public WishListPresenter(WishListContract.View view, UserService userService, ImageLoader imageLoader) {
         this.view = view;
         this.userService = userService;
+        this.imageLoader = imageLoader;
+    }
+
+    @Override
+    public ImageLoader getImageLoader() {
+        return this.imageLoader;
     }
 
     @Override

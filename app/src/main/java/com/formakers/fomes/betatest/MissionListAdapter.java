@@ -1,7 +1,6 @@
 package com.formakers.fomes.betatest;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.Feature;
@@ -110,11 +108,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         });
 
         // 미션 카드 공통 내용
-        Glide.with(context).load(mission.getIconImageUrl())
-                .apply(new RequestOptions()
-                        .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray)))
-                        .fitCenter())
-                .into(viewHolder.titleIconImageView);
+        this.presenter.getImageLoader().loadImage(viewHolder.titleIconImageView, mission.getIconImageUrl(), new RequestOptions().fitCenter());
 
         viewHolder.titleTextView.setText(mission.getTitle());
         viewHolder.descriptionTextView.setText(mission.getDescription());
@@ -128,9 +122,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             viewHolder.descriptionImageView.setVisibility(View.GONE);
         } else {
             viewHolder.descriptionImageView.setVisibility(View.VISIBLE);
-            Glide.with(context).load(mission.getDescriptionImageUrl())
-                    .apply(new RequestOptions().placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
-                    .into(viewHolder.descriptionImageView);
+            this.presenter.getImageLoader().loadImage(viewHolder.descriptionImageView, mission.getDescriptionImageUrl());
         }
 
         // 미션 카드 타입별 분기 로직
@@ -212,7 +204,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(missionList -> {
                                                 setMissionList(missionList);
-                                                notifyDataSetChanged();
+                                                notifyItemRangeChanged(position, missionList.size() - 1 - position);
                                             });
                                 }));
             }
@@ -260,6 +252,17 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemCount() {
         return missionList.size();
+    }
+
+    public int getPositionByMissionItemId(String missionItemId) {
+        for (int position = 0; position < missionList.size(); position++) {
+            Mission mission = missionList.get(position);
+            if (missionItemId.equals(mission.getItem().getId())) {
+                return position;
+            }
+        }
+
+        return -1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

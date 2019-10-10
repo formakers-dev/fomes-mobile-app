@@ -8,12 +8,14 @@ import android.widget.TextView;
 
 import androidx.core.view.GravityCompat;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.core.view.MotionEventBuilder;
 import androidx.viewpager.widget.ViewPager;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
@@ -46,6 +48,8 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 
+import static android.view.MotionEvent.ACTION_MOVE;
+import static android.view.MotionEvent.ACTION_UP;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -231,6 +235,7 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.Sha
 
     @Test
     public void onStart시__이벤트_페이저를_3초간격으로_넘긴다() {
+        when(mockPresenter.getImageLoader()).thenReturn(mock(ImageLoader.class));
         when(mockPresenter.getPromotionCount()).thenReturn(3);
 
         launchActivity();
@@ -243,13 +248,55 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.Sha
         ViewPager viewPager = subject.findViewById(R.id.main_event_view_pager);
         ((EventPagerAdapter) viewPager.getAdapter()).addAll(dummyPosts);
 
-        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(0);
+        testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(0);
 
-        testScheduler.advanceTimeBy(4, TimeUnit.SECONDS);
+        // 최초는 1번은 5초 간격
+        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(1);
 
+        // 그 이후는 3초 간격
         testScheduler.advanceTimeBy(3, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(2);
+    }
+
+    @Test
+    public void 이벤트_페이지가_터치스와이프_되었을때__딜레이시간을_초기화시킨다() {
+        //given
+        when(mockPresenter.getImageLoader()).thenReturn(mock(ImageLoader.class));
+        when(mockPresenter.getPromotionCount()).thenReturn(3);
+
+        launchActivity();
+
+        List<Post> dummyPosts = new ArrayList<>();
+        dummyPosts.add(new Post());
+        dummyPosts.add(new Post());
+        dummyPosts.add(new Post());
+
+        ViewPager viewPager = subject.findViewById(R.id.main_event_view_pager);
+        ((EventPagerAdapter) viewPager.getAdapter()).addAll(dummyPosts);
+
+        // 최초 5초
+        assertThat(viewPager.getCurrentItem()).isEqualTo(0);
+        testScheduler.advanceTimeBy(5, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(1);
+
+        // 그 이후는 3초 간격으로 진행
+        // 2초가 지났다
+        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(1);
+
+        // when - 도중에 스와이프 이벤트 발생!
+        viewPager.onTouchEvent(MotionEventBuilder.newBuilder().setAction(ACTION_MOVE).build());
+        viewPager.onTouchEvent(MotionEventBuilder.newBuilder().setAction(ACTION_UP).build());
+
+        // 1초가 추가적으로 지남 => 스와이프 되지 않았다면 2로 넘어가야하는 상황. but 초기화 되었으니 넘어가지 않음
+        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS);
+        assertThat(viewPager.getCurrentItem()).isEqualTo(1);
+
+        // 스와이프 이후 3초가 지나야 2로 넘어감
+        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
         assertThat(viewPager.getCurrentItem()).isEqualTo(2);
     }
 

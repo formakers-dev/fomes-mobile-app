@@ -1,6 +1,7 @@
 package com.formakers.fomes.main;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.PostService;
@@ -30,6 +31,7 @@ public class MainPresenter implements MainContract.Presenter {
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
     private SharedPreferencesHelper sharedPreferencesHelper;
+    private ImageLoader imageLoader;
 
     private JobManager jobManager;
     private FomesUrlHelper fomesUrlHelper;
@@ -41,7 +43,7 @@ public class MainPresenter implements MainContract.Presenter {
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper, FomesUrlHelper fomesUrlHelper, AnalyticsModule.Analytics analytics) {
+    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper, FomesUrlHelper fomesUrlHelper, AnalyticsModule.Analytics analytics, ImageLoader imageLoader) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
@@ -51,11 +53,17 @@ public class MainPresenter implements MainContract.Presenter {
         this.sharedPreferencesHelper = sharedPreferencesHelper;
         this.fomesUrlHelper = fomesUrlHelper;
         this.analytics = analytics;
+        this.imageLoader = imageLoader;
     }
 
     @Override
     public AnalyticsModule.Analytics getAnalytics() {
         return this.analytics;
+    }
+
+    @Override
+    public ImageLoader getImageLoader() {
+        return this.imageLoader = imageLoader;
     }
 
     @Override

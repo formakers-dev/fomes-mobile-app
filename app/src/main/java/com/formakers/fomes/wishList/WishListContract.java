@@ -2,6 +2,7 @@ package com.formakers.fomes.wishList;
 
 import androidx.annotation.StringRes;
 
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
 
 import java.util.List;
@@ -10,6 +11,9 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface WishListContract {
     interface Presenter {
+        // Base
+        ImageLoader getImageLoader();
+
         void loadingWishList();
         void requestRemoveFromWishList(int position);
 

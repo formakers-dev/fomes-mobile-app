@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.Post;
@@ -38,9 +37,7 @@ public class EventPagerAdapter extends PagerAdapter implements EventPagerAdapter
     public void addEvent(Post post) {
         ImageView promotionImageView = new ImageView(context);
 
-        Glide.with(context).load(post.getCoverImageUrl())
-                .apply(new RequestOptions().centerCrop())
-                .into(promotionImageView);
+        this.presenter.getImageLoader().loadImage(promotionImageView, post.getCoverImageUrl(), new RequestOptions().centerCrop());
 
         events.add(new BannerItem(promotionImageView, post));
     }

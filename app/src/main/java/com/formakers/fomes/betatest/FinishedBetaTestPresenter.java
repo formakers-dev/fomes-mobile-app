@@ -1,6 +1,7 @@
 package com.formakers.fomes.betatest;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
@@ -29,6 +30,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
+    private ImageLoader imageLoader;
 
     private FinishedBetaTestListAdapterContract.Model adapterModel;
     private FinishedBetaTestContract.View view;
@@ -38,11 +40,12 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     private List<BetaTest> finishedList = new ArrayList<>();
 
     @Inject
-    public FinishedBetaTestPresenter(FinishedBetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService,AnalyticsModule.Analytics analytics) {
+    public FinishedBetaTestPresenter(FinishedBetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, AnalyticsModule.Analytics analytics, ImageLoader imageLoader) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
         this.analytics = analytics;
+        this.imageLoader = imageLoader;
     }
 
     @Override
@@ -53,6 +56,11 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     @Override
     public AnalyticsModule.Analytics getAnalytics() {
         return this.analytics;
+    }
+
+    @Override
+    public ImageLoader getImageLoader() {
+        return this.imageLoader;
     }
 
     @Override

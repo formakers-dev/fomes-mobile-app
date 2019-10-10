@@ -12,6 +12,7 @@ import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
 import com.formakers.fomes.common.helper.AppUsageDataHelper;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
@@ -41,6 +42,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private FomesUrlHelper fomesUrlHelper;
     private AndroidNativeHelper androidNativeHelper;
     private AppUsageDataHelper appUsageDataHelper;
+    private ImageLoader imageLoader;
 
     private BetaTestDetailContract.View view;
 
@@ -53,7 +55,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                                    BetaTestService betaTestService,
                                    FomesUrlHelper fomesUrlHelper,
                                    AndroidNativeHelper androidNativeHelper,
-                                   AppUsageDataHelper appUsageDataHelper) {
+                                   AppUsageDataHelper appUsageDataHelper,
+                                   ImageLoader imageLoader) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
@@ -61,12 +64,19 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         this.fomesUrlHelper = fomesUrlHelper;
         this.androidNativeHelper = androidNativeHelper;
         this.appUsageDataHelper = appUsageDataHelper;
+        this.imageLoader = imageLoader;
     }
 
     @Override
     public AnalyticsModule.Analytics getAnalytics() {
         return null;
     }
+
+    @Override
+    public ImageLoader getImageLoader() {
+        return this.imageLoader;
+    }
+
 
     @Override
     public void sendEventLog(String code, String ref) {
@@ -189,13 +199,13 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Single<Long> updatePlayTime(@NonNull String id, @NonNull String packageName) {
+    public Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName) {
         return !TextUtils.isEmpty(packageName) ?
-                getPlayTimeAndUpdateView(id, packageName)
+                getPlayTimeAndUpdateView(missionItemId, packageName)
                 : Single.error(new IllegalArgumentException("packageName is null"));
     }
 
-    private Single<Long> getPlayTimeAndUpdateView(@NonNull String id, @NonNull String packageName) {
+    private Single<Long> getPlayTimeAndUpdateView(@NonNull String missionItemId, @NonNull String packageName) {
         return appUsageDataHelper.getUsageTime(packageName, betaTest.getOpenDate().getTime())
                 .map(playTime -> {
                     if (playTime > 0) {
@@ -206,14 +216,14 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 })
                 .toSingle()
                 .zipWith(Observable.from(betaTest.getMissions())
-                        .filter(mission -> id.equals(mission.getItem().getId()))
+                        .filter(mission -> missionItemId.equals(mission.getItem().getId()))
                         .toSingle(), Pair::new)
                 .map(pair -> {
                     pair.second.getItem().setTotalPlayTime(pair.first);
                     return pair.first;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(playTime -> this.view.refreshMissionList());
+                .doOnSuccess(playTime -> this.view.refreshMissionItem(missionItemId));
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {

@@ -1,6 +1,7 @@
 package com.formakers.fomes.main;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
 import com.formakers.fomes.common.model.User;
 
@@ -8,7 +9,9 @@ import rx.Completable;
 
 public interface MainContract {
     interface Presenter {
+        // Base
         AnalyticsModule.Analytics getAnalytics();
+        ImageLoader getImageLoader();
 
         void setEventPagerAdapterModel(EventPagerAdapterContract.Model eventPagerAdapterModel);
 

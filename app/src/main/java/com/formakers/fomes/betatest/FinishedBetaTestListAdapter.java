@@ -2,7 +2,6 @@ package com.formakers.fomes.betatest;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
@@ -65,12 +63,13 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         ViewHolder viewHolder = (ViewHolder) holder;
 //        viewHolder.subTitleTextView.setText(item.getSubTitle());
 
-        Glide.with(context).load(item.getIconImageUrl())
-                .apply(new RequestOptions().override(120, 120)
+        this.presenter.getImageLoader().loadImage(
+                viewHolder.iconImageView,
+                item.getIconImageUrl(),
+                new RequestOptions().override(120, 120)
                         .centerCrop()
                         .transform(new RoundedCorners(16))
-                        .placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray))))
-                .into(viewHolder.iconImageView);
+        );
 
         viewHolder.labelImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
 

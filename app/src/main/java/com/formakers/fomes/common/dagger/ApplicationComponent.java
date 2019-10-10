@@ -2,6 +2,7 @@ package com.formakers.fomes.common.dagger;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.LocalBroadcastReceiver;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
@@ -52,6 +53,7 @@ public interface ApplicationComponent {
     ChannelManager channelManager();
 
     AnalyticsModule.Analytics analytics();
+    ImageLoader imageLoader();
 
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);

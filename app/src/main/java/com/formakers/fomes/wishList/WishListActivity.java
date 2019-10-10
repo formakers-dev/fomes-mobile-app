@@ -74,7 +74,7 @@ public class WishListActivity extends FomesBaseActivity implements WishListContr
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_GrayDivider).getTheme()));
         wishListRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        WishListAdapter wishListAdapter = new WishListAdapter();
+        WishListAdapter wishListAdapter = new WishListAdapter(this.presenter);
 
         wishListAdapter.setOnWishCheckedChangeListener(position -> {
             // 이 경우 wish button이 삭제 버튼의 역할을 하기 떄문

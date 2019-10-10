@@ -2,6 +2,7 @@ package com.formakers.fomes.betatest;
 
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
@@ -53,6 +54,7 @@ public class BetaTestPresenterTest {
     @Mock private EventLogService mockEventLogService;
     @Mock private AnalyticsModule.Analytics mockAnalytics;
     @Mock private FomesUrlHelper mockFomesUrlHelper;
+    @Mock private ImageLoader mockImageLoader;
 
     private User dummyUser;
     private List<BetaTest> betaTests = new ArrayList<>();
@@ -88,7 +90,7 @@ public class BetaTestPresenterTest {
         when(mockAdapterModel.getPositionById("1")).thenReturn(0);
         when(mockAdapterModel.getPositionById("2")).thenReturn(1);
 
-        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO, mockAnalytics, mockFomesUrlHelper);
+        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO, mockAnalytics, mockFomesUrlHelper, mockImageLoader);
         subject.setAdapterModel(mockAdapterModel);
     }
 

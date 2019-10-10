@@ -2,7 +2,6 @@ package com.formakers.fomes.betatest;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,7 +21,6 @@ import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
@@ -133,17 +131,14 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @Override
     public void bind(BetaTest betaTest) {
-        Glide.with(this).load(betaTest.getOverviewImageUrl())
-                .apply(new RequestOptions().centerCrop()
-                        .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
-                .into(overviewImageView);
+        this.presenter.getImageLoader().loadImage(overviewImageView, betaTest.getOverviewImageUrl(),
+                new RequestOptions().centerCrop());
 
-        Glide.with(this).load(betaTest.getIconImageUrl())
-                .apply(new RequestOptions().override(120, 120)
-                        .centerCrop()
-                        .transform(new RoundedCorners(16))
-                        .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
-                .into(iconImageView);
+        this.presenter.getImageLoader().loadImage(iconImageView, betaTest.getIconImageUrl(),
+                new RequestOptions().override(120, 120)
+                .centerCrop()
+                .transform(new RoundedCorners(16))
+        , false);
 
         titleTextView.setText(betaTest.getTitle());
 
@@ -218,11 +213,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             TextView rewardItemTitleTextView = rewardItemView.findViewById(R.id.betatest_reward_title);
             TextView rewardItemDescriptionTextView = rewardItemView.findViewById(R.id.betatest_reward_description);
 
-            Glide.with(this).load(rewardItem.getIconImageUrl())
-                    .apply(new RequestOptions()
-                            .fitCenter()
-                            .placeholder(new ColorDrawable(getResources().getColor(R.color.fomes_deep_gray))))
-                    .into(rewardItemIconImageView);
+            this.presenter.getImageLoader().loadImage(rewardItemIconImageView, rewardItem.getIconImageUrl(),
+                    new RequestOptions().fitCenter());
 
             rewardItemTitleTextView.setText(rewardItem.getTitle());
             rewardItemDescriptionTextView.setText(rewardItem.getContent());
@@ -232,6 +224,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         // 테스트 방법
         howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
+
         Observable.from(betaTest.getMissions())
                 .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getItem().getType()))
                 .subscribe(displayedMission -> {
@@ -241,10 +234,12 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     TextView missionTitleTextView = missionItemView.findViewById(R.id.mission_title);
                     TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
 
-                    Glide.with(this).load(displayedMission.getIconImageUrl())
-                            .apply(new RequestOptions()
-                                    .fitCenter())
-                            .into(missionImageView);
+                    this.presenter.getImageLoader().loadImage(
+                            missionImageView,
+                            displayedMission.getIconImageUrl(),
+                            new RequestOptions().fitCenter()
+                    );
+
                     missionTitleTextView.setText(displayedMission.getTitle());
                     missionItemTitleTextView.setText(displayedMission.getItem().getTitle());
 
@@ -305,6 +300,11 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     missionListAdapter.setMissionList(missionList);
                     missionListAdapter.notifyDataSetChanged();
                 });
+    }
+
+    @Override
+    public void refreshMissionItem(String missionItemId) {
+        missionListAdapter.notifyItemChanged(missionListAdapter.getPositionByMissionItemId(missionItemId));
     }
 
     @Override

@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.model.User;
@@ -57,6 +58,7 @@ public class MainPresenterTest {
     @Inject PostService mockPostService;
     @Inject FomesUrlHelper mockFomesUrlHelper;
     @Inject AnalyticsModule.Analytics mockAnalytics;
+    @Inject ImageLoader mockImageLoader;
 
     @Mock EventPagerAdapterContract.Model mockEventPagerAdapterModel;
 
@@ -91,7 +93,7 @@ public class MainPresenterTest {
         when(mockPostService.getPromotions()).thenReturn(Single.just(Lists.newArrayList(new Post())));
         when(mockEventPagerAdapterModel.getCount()).thenReturn(3);
 
-        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockPostService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper, mockFomesUrlHelper, mockAnalytics);
+        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockPostService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper, mockFomesUrlHelper, mockAnalytics, mockImageLoader);
 
         subject.setEventPagerAdapterModel(mockEventPagerAdapterModel);
     }
