@@ -213,18 +213,17 @@
                     app:layout_constraintEnd_toStartOf="@+id/betatest_finished_epilogue_button"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:text="테스트 영웅 : 조로 님\n테스트요정: 이브 외 9명" />
-                
-                <Button
+
+                <TextView
                     android:id="@+id/betatest_finished_epilogue_button"
                     android:layout_width="68dp"
                     android:layout_height="32dp"
-                    android:background="@drawable/epilogue_button_selector"
-                    android:enabled="false"
-                    android:foreground="@drawable/ripple"
-                    android:text="자세히 보기"
-                    android:textColor="@color/beta_test_finished_group_epilogue_button"
-                    android:textSize="11dp"
+                    android:background="@drawable/item_rect_rounded_corner_stroke_background"
                     android:theme="@style/BetaTestTheme.EpilogueButtonBackground"
+                    android:textSize="11dp"
+                    android:textColor="@color/fomes_light_gray"
+                    android:text="자세히 보기"
+                    android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
