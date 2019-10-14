@@ -38,10 +38,19 @@ public class ImageLoader {
     }
 
     public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions) {
-        loadImage(imageView, imageUrl, requestOptions, true);
+        loadImage(imageView, imageUrl, requestOptions, true, true);
     }
 
     public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUsePlaceHolder) {
+        loadImage(imageView, imageUrl, requestOptions, isUsePlaceHolder, true);
+    }
+
+    // 리팩토링 필요하다... 계속 플래그와 네이밍에 의존 할 수는 없어....
+    public void loadImageWithoutCrossFade(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUsePlaceHolder) {
+        loadImage(imageView, imageUrl, requestOptions, isUsePlaceHolder, false);
+    }
+
+    public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUsePlaceHolder, boolean isUseCrossFade) {
         RequestBuilder<Drawable> requestBuilder = requestManager.load(imageUrl);
 
         // requestOption
@@ -56,7 +65,9 @@ public class ImageLoader {
         requestBuilder = requestBuilder.apply(requestOptions);
 
         // transition
-        requestBuilder = requestBuilder.transition(DrawableTransitionOptions.with(new DrawableAlwaysCrossFadeFactory()));
+        if (isUseCrossFade) {
+            requestBuilder = requestBuilder.transition(DrawableTransitionOptions.with(new DrawableAlwaysCrossFadeFactory()));
+        }
 
         // inject
         requestBuilder.into(imageView);

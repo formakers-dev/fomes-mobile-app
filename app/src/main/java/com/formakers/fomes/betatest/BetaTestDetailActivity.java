@@ -238,6 +238,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                             missionImageView,
                             displayedMission.getIconImageUrl(),
                             new RequestOptions().fitCenter()
+                            , false
                     );
 
                     missionTitleTextView.setText(displayedMission.getTitle());
