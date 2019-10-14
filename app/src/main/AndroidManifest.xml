@@ -100,7 +100,8 @@
             </intent-filter>
         </receiver>
         <activity android:name=".betatest.BetaTestDetailActivity"
-            android:theme="@style/BetaTestDetailTheme"/>
+            android:theme="@style/BetaTestDetailTheme"
+            android:label="@string/common_empty_string"/>
     </application>
 
 </manifest>

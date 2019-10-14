@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     private static final String TAG = "BetaTestDetailActivity";
     private static final int DEFAULT_REWARDS_MINIMUM_DELAY = 7;
 
+    @BindView(R.id.action_bar) Toolbar actionBar;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
     @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
     @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
@@ -103,6 +105,21 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             return;
         }
 
+        int statusBarHeight = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+
+        if (actionBar != null) {
+            setSupportActionBar(actionBar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            actionBar.setNavigationIcon(android.R.drawable.ic_lock_lock);
+            actionBar.setPadding(0, statusBarHeight, 0, 0);
+            actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
+            actionBar.setLayoutParams(actionBar.getLayoutParams());
+        }
+
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         this.presenter.load(id);
 
@@ -139,6 +156,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 .centerCrop()
                 .transform(new RoundedCorners(16))
         , false);
+
+        if (actionBar != null) {
+            actionBar.setTitle(betaTest.getTitle());
+        }
 
         titleTextView.setText(betaTest.getTitle());
 
