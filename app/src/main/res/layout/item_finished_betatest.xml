@@ -63,7 +63,9 @@
                     android:text="@string/betatest_company_says_not_collected_old"
                     android:textColor="@color/fomes_white"
                     android:textSize="12dp"
-                    tools:text="'참여해주셔서 감사합니다. 현재 게임사의 한마디가 준비중입니다.' - from 포메스" />
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="'참여해주셔서 감사합니다. 현재 게임사의 한마디가 준비중입니다.' 두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄 - from 포메스" />
 
             </LinearLayout>
 
