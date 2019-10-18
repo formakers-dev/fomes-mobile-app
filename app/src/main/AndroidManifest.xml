@@ -62,7 +62,8 @@
         <activity android:name=".analysis.RecentAnalysisReportActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".main.MainActivity"
-            android:theme="@style/FomesTheme.NoActionBar">
+            android:theme="@style/FomesTheme.NoActionBar"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -100,7 +101,8 @@
             </intent-filter>
         </receiver>
         <activity android:name=".betatest.BetaTestDetailActivity"
-            android:theme="@style/BetaTestDetailTheme"/>
+            android:theme="@style/BetaTestDetailTheme"
+            android:label="@string/common_empty_string"/>
     </application>
 
 </manifest>

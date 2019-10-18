@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/fomes_deep_gray"
-    android:fitsSystemWindows="true"
-    tools:context="com.formakers.fomes.main.MainActivity">
+    android:background="@color/fomes_deep_gray">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -19,19 +17,22 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:expandedTitleTextAppearance="@style/BetaTestDetailTheme.actionBarAppearance"
+            app:expandedTitleGravity="top"
+            app:statusBarScrim="@android:color/transparent"
             app:contentScrim="@color/fomes_deep_gray"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <ImageView
                 android:id="@+id/betatest_detail_overview_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:src="@color/fomes_greyish_brown"
                 app:layout_collapseMode="parallax" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:background="@drawable/betatest_detail_gradient"
                 app:layout_collapseMode="pin"/>
 
@@ -39,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                app:layout_collapseMode="pin">
+                app:layout_collapseMode="parallax">
 
                 <ImageView android:id="@+id/betatest_detail_app_icon"
                     android:layout_width="60dp"
@@ -104,6 +105,14 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/action_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/PopupOverlay" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

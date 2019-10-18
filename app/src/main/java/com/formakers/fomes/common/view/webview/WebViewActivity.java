@@ -26,9 +26,6 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.DeeplinkActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
-import com.formakers.fomes.common.view.webview.DaggerWebViewDagger_Component;
-import com.formakers.fomes.common.view.webview.WebViewConstract;
-import com.formakers.fomes.common.view.webview.WebViewDagger;
 
 import java.net.URISyntaxException;
 
@@ -191,6 +188,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
+                finish();
                 return true;
             }
 

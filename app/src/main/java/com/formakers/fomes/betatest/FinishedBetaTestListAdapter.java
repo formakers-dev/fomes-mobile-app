@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -75,34 +74,31 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         viewHolder.subTitleTextView.setText(item.getDisplayDescription());
 
-        viewHolder.epilogueButton.setText("자세히 보기");
 
         BetaTest.AfterService afterService = item.getAfterService();
 
         if (afterService != null) {
             viewHolder.awardTextView.setText(afterService.getAwards());
             viewHolder.companySaysTextView.setText(afterService.getCompanySays());
-            viewHolder.epilogueButton.setOnClickListener(v -> {
+            viewHolder.itemView.setEnabled(true);
+            viewHolder.itemView.setOnClickListener(v -> {
                 presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
 
                 Uri uri = Uri.parse(afterService.getEpilogue());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 context.startActivity(intent);
             });
-            viewHolder.epilogueButton.setEnabled(true);
         } else {
             viewHolder.awardGroup.setVisibility(View.GONE);
             viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
-            viewHolder.epilogueButton.setOnClickListener(null);
-            viewHolder.epilogueButton.setEnabled(false);
+            viewHolder.itemView.setEnabled(false);
+            viewHolder.itemView.setOnClickListener(null);
         }
 
         if (item.isCompleted()) {
             viewHolder.disableTitleLayout.setVisibility(View.GONE);
-            viewHolder.companySaysLayout.setEnabled(true);
         } else {
             viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
-            viewHolder.companySaysLayout.setEnabled(false);
         }
 
         if (item.getAfterService() == null) {
@@ -129,6 +125,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.awardGroup.setVisibility(View.VISIBLE);
             viewHolder.progressLayout.setVisibility(View.GONE);
         }
+
+        viewHolder.companySaysLayout.setEnabled(item.getAfterService() != null && item.isCompleted());
 
         viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
     }
@@ -175,11 +173,16 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
     class BaseViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
-        @Deprecated TextView targetTextView;
-        @Deprecated TextView testTypeTextView;
-        @Deprecated View progressLayout;
-        @Deprecated TextView progressTitleTextView;
-        @Deprecated TextView progressSubTitleTextView;
+        @Deprecated
+        TextView targetTextView;
+        @Deprecated
+        TextView testTypeTextView;
+        @Deprecated
+        View progressLayout;
+        @Deprecated
+        TextView progressTitleTextView;
+        @Deprecated
+        TextView progressSubTitleTextView;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
@@ -200,7 +203,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         TextView subTitleTextView;
         Group awardGroup;
         TextView awardTextView;
-        Button epilogueButton;
         View disableTitleLayout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -212,7 +214,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             awardGroup = itemView.findViewById(R.id.betatest_award_group);
             awardTextView = itemView.findViewById(R.id.betatest_award_contents);
-            epilogueButton = itemView.findViewById(R.id.betatest_finished_epilogue_button);
             disableTitleLayout = itemView.findViewById(R.id.betatest_title_layout_disable_background);
         }
     }

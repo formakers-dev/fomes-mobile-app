@@ -380,7 +380,11 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+<!--        <item name="android:actionBarStyle">@style/TransparentActionBar</item>-->
+<!--        <item name="actionBarStyle">@style/TransparentActionBar</item>-->
+<!--        <item name="android:windowActionBarOverlay">true</item>-->
+<!--        <item name="windowActionBarOverlay">true</item>-->
     </style>
 
     <style name="BetaTestDetailTheme.RewardDivider">
@@ -399,4 +403,15 @@
         <item name="item_stroke_width">0dp</item>
     </style>
 
+    <!-- ActionBar -->
+<!--    <style name="TransparentActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">-->
+<!--        <item name="android:fitsSystemWindows">true</item>-->
+<!--        <item name="android:background">@null</item>-->
+<!--        &lt;!&ndash; Support library compatibility &ndash;&gt;-->
+<!--        <item name="background">@null</item>-->
+<!--    </style>-->
+
+    <style name="BetaTestDetailTheme.actionBarAppearance" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
 </resources>
