@@ -80,6 +80,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         if (afterService != null) {
             viewHolder.awardTextView.setText(afterService.getAwards());
             viewHolder.companySaysTextView.setText(afterService.getCompanySays());
+            viewHolder.itemView.setEnabled(true);
             viewHolder.itemView.setOnClickListener(v -> {
                 presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
 
@@ -90,15 +91,14 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         } else {
             viewHolder.awardGroup.setVisibility(View.GONE);
             viewHolder.companySaysTextView.setText(R.string.betatest_company_says_not_collected);
+            viewHolder.itemView.setEnabled(false);
             viewHolder.itemView.setOnClickListener(null);
         }
 
         if (item.isCompleted()) {
             viewHolder.disableTitleLayout.setVisibility(View.GONE);
-            viewHolder.companySaysLayout.setEnabled(true);
         } else {
             viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
-            viewHolder.companySaysLayout.setEnabled(false);
         }
 
         if (item.getAfterService() == null) {
@@ -125,6 +125,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.awardGroup.setVisibility(View.VISIBLE);
             viewHolder.progressLayout.setVisibility(View.GONE);
         }
+
+        viewHolder.companySaysLayout.setEnabled(item.getAfterService() != null && item.isCompleted());
 
         viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
     }
@@ -171,11 +173,16 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
     class BaseViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
-        @Deprecated TextView targetTextView;
-        @Deprecated TextView testTypeTextView;
-        @Deprecated View progressLayout;
-        @Deprecated TextView progressTitleTextView;
-        @Deprecated TextView progressSubTitleTextView;
+        @Deprecated
+        TextView targetTextView;
+        @Deprecated
+        TextView testTypeTextView;
+        @Deprecated
+        View progressLayout;
+        @Deprecated
+        TextView progressTitleTextView;
+        @Deprecated
+        TextView progressSubTitleTextView;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
