@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
+            android:paddingBottom="21dp"
             android:background="@drawable/item_rect_rounded_corner_background"
             android:foreground="@drawable/item_rect_rounded_corner_stroke_background"
             android:theme="@style/BetaTestTheme.CardBackground"
@@ -84,8 +84,8 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
+                android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
                 android:progressTintMode="src_over"
                 android:progressTint="@color/colorPrimary"
                 android:progressBackgroundTintMode="src_over"
@@ -117,6 +117,7 @@
                 android:id="@+id/betatest_title_textview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/fomes_white"
                 android:textSize="15dp"
                 app:layout_constraintWidth_default="wrap"
@@ -146,7 +147,7 @@
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/fomes_light_gray"
-                android:textSize="10dp"
+                android:textSize="11dp"
                 app:layout_constraintStart_toStartOf="@+id/betatest_progress_bar"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
@@ -168,60 +169,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/betatest_subtitle_textview"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/betatest_progress_bar" />
-
-            <!-- TODO : V2.5 릴리즈 시 지워져야 한다 -->
-            <TextView
-                android:id="@+id/betatest_required_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/icon_required_time"
-                android:drawablePadding="4dp"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="11dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_amount"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="@+id/betatest_subtitle_textview"
-                app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="약 3분" />
-
-            <TextView
-                android:id="@+id/betatest_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/icon_amount"
-                android:drawablePadding="4dp"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="11dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
-                app:layout_constraintEnd_toStartOf="@+id/betatest_reward"
-                app:layout_constraintStart_toEndOf="@id/betatest_required_time"
-                app:layout_constraintTop_toTopOf="@id/betatest_required_time"
-                tools:text="9 문항" />
-
-            <TextView
-                android:id="@+id/betatest_reward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/icon_reward"
-                android:drawablePadding="4dp"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="11dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_required_time"
-                app:layout_constraintEnd_toStartOf="@id/betatest_bug_button"
-                app:layout_constraintStart_toEndOf="@id/betatest_amount"
-                app:layout_constraintTop_toTopOf="@id/betatest_required_time"
-                app:layout_goneMarginEnd="10dp"
-                tools:text="보상 없음" />
-            <!-- end of 지워져야 한다 -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

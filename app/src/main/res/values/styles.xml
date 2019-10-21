@@ -387,6 +387,17 @@
 <!--        <item name="windowActionBarOverlay">true</item>-->
     </style>
 
+    <style name="BetaTestDetailTheme.SectionTitle">
+        <item name="android:textSize">@dimen/betatest_detail_section_title_text_size</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BetaTestDetailTheme.SectionContent">
+        <item name="android:textSize">@dimen/betatest_detail_section_content_text_size</item>
+        <item name="android:textColor">@color/fomes_light_gray</item>
+    </style>
+
     <style name="BetaTestDetailTheme.RewardDivider">
         <item name="divider_height">12dp</item>
         <item name="divider_color">@android:color/transparent</item>
