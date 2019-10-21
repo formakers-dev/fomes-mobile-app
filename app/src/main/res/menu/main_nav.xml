@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group  android:id="@+id/menu_group0" android:checkableBehavior="none">
+        <item
+            android:id="@+id/my_info"
+            android:title="@string/main_menu_my_info"
+            android:icon="@drawable/icon_my_info"/>
+    </group>
+
     <group  android:id="@+id/menu_group1" android:checkableBehavior="none">
         <item
             android:id="@+id/my_recent_analysis"
@@ -29,12 +36,12 @@
             android:icon="@drawable/icon_settings"/>
     </group>
 
-    <group android:id="@+id/menu_group5" android:checkableBehavior="none">
-        <item
-            android:id="@+id/donation"
-            android:title="@string/main_menu_donation"
-            android:icon="@drawable/icon_donation"
-            android:enabled="false"/>
-    </group>
+<!--    <group android:id="@+id/menu_group5" android:checkableBehavior="none">-->
+<!--        <item-->
+<!--            android:id="@+id/donation"-->
+<!--            android:title="@string/main_menu_donation"-->
+<!--            android:icon="@drawable/icon_donation"-->
+<!--            android:enabled="false"/>-->
+<!--    </group>-->
 
 </menu>

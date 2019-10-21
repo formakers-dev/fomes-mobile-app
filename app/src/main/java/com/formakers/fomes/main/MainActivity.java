@@ -32,6 +32,7 @@ import com.formakers.fomes.common.view.custom.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.provisioning.login.LoginActivity;
 import com.formakers.fomes.recommend.RecommendFragment;
+import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -255,6 +256,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.my_info: {
+                startActivity(new Intent(this, MyInfoActivity.class));
+                break;
+            }
             case R.id.my_recent_analysis: {
                 startActivity(new Intent(this, RecentAnalysisReportActivity.class));
                 break;

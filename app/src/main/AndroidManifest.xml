@@ -71,6 +71,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".settings.MyInfoActivity"/>
         <activity android:name=".wishList.WishListActivity"/>
         <activity android:name=".common.view.NoticeMigrationActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
