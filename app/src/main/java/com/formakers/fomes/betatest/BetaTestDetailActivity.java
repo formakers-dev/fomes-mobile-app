@@ -114,7 +114,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         if (actionBar != null) {
             setSupportActionBar(actionBar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//            actionBar.setNavigationIcon(android.R.drawable.ic_lock_lock);
+            actionBar.setNavigationIcon(R.drawable.ic_home_as_up);
             actionBar.setPadding(0, statusBarHeight, 0, 0);
             actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
             actionBar.setLayoutParams(actionBar.getLayoutParams());
