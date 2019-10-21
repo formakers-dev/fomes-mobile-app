@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -83,16 +84,22 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         baseViewHolder.projectStatusTextView.setText(projectStatus);
 
         @ColorRes int projectStatusColorId;
+        @StyleRes int projectStatusStyleResId;
         if (remainDays < 2) {
             projectStatusColorId = R.color.fomes_red;
+            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Red;
         } else if (remainDays < 4) {
             projectStatusColorId = R.color.fomes_squash;
+            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Yellow;
         } else {
             projectStatusColorId = R.color.colorPrimary;
+            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Normal;
         }
 
         baseViewHolder.projectStatusTextView.setVisibility(View.VISIBLE);
         baseViewHolder.projectStatusTextView.setTextColor(res.getColor(projectStatusColorId));
+        baseViewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                new ContextThemeWrapper(context, projectStatusStyleResId).getTheme()));
 
         // end of 디데이
 
