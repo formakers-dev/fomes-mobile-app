@@ -63,7 +63,7 @@
     <string name="provision_life_game_content_title">인생게임</string>
     <string name="provision_life_game_content_hint">가장 기억에 남았던 게임을 적어주세요.</string>
     <string name="birth_spinner_hint">태어난 연도를 선택해주세요.</string>
-    <string name="job_spinner_hint">당신의 직업을 선택해주세요..</string>
+    <string name="job_spinner_hint">당신의 직업을 선택해주세요.</string>
     <string name="provision_nickname_title">반가워요! 포메스가 앞으로 당신을 어떻게 부르면 될까요?</string>
     <string name="provision_nickname_subtitle">닉네임은 2글자에서 10글자 사이로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
