@@ -46,7 +46,7 @@ public class UserDAOTest {
         User newUserInfo = new User()
                 .setNickName("newNickName")
                 .setBirthday(1992)
-                .setGender("male")
+                .setGender(User.GENDER_MALE)
                 .setEmail("new@email.com")
                 .setJob(User.JobCategory.IT.getCode());
         subject.updateUserInfo(newUserInfo);
@@ -55,7 +55,7 @@ public class UserDAOTest {
         assertNotNull(user);
         assertEquals(user.getNickName(), "newNickName");
         assertEquals(user.getBirthday().intValue(), 1992);
-        assertEquals(user.getGender(), "male");
+        assertEquals(user.getGender(), User.GENDER_MALE);
         assertEquals(user.getEmail(), "new@email.com");
         assertEquals(user.getJob(), "newJob");
     }
@@ -74,7 +74,7 @@ public class UserDAOTest {
         assertNotNull(user);
         assertEquals(user.getNickName(), "newNickName");
         assertEquals(user.getBirthday().intValue(), 1991);
-        assertEquals(user.getGender(), "female");
+        assertEquals(user.getGender(), User.GENDER_FEMALE);
         assertEquals(user.getEmail(), "test@email.com");
         assertEquals(user.getJob(), "newJob");
     }
@@ -88,7 +88,7 @@ public class UserDAOTest {
         assertNotNull(user);
         assertEquals(user.getNickName(), "testUserNickName");
         assertEquals(user.getBirthday().intValue(), 1991);
-        assertEquals(user.getGender(), "female");
+        assertEquals(user.getGender(), User.GENDER_FEMALE);
         assertEquals(user.getEmail(), "test@email.com");
         assertEquals(user.getJob(), "testJob");
     }
@@ -98,7 +98,7 @@ public class UserDAOTest {
             UserRealmObject userRealmObject = new UserRealmObject();
             userRealmObject.setNickName("testUserNickName");
             userRealmObject.setBirthday(1991);
-            userRealmObject.setGender("female");
+            userRealmObject.setGender(User.GENDER_FEMALE);
             userRealmObject.setEmail("test@email.com");
             userRealmObject.setJob(User.JobCategory.IT.getCode());
             realmInstance.copyToRealmOrUpdate(userRealmObject);

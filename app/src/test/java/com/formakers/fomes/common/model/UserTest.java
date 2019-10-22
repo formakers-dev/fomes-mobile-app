@@ -15,7 +15,7 @@ public class UserTest {
     public void setUp() throws Exception {
         subject = new User();
         subject.setBirthday(1991);
-        subject.setGender("female");
+        subject.setGender(User.GENDER_FEMALE);
     }
 
     @Test

@@ -77,7 +77,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         birthSpinner.setSelection(Arrays.asList(this.getResources().getStringArray(R.array.birth_items)).indexOf(String.valueOf(userInfo.getBirthday())));
         jobSpinner.setSelection(((ArrayAdapter<String>) jobSpinner.getAdapter()).getPosition(User.JobCategory.get(userInfo.getJob()).getName()));
 
-        if ("male".equals(userInfo.getGender())) {
+        if (User.GENDER_MALE.equals(userInfo.getGender())) {
             maleRadioButton.toggle();
         } else {
             femaleRadioButton.toggle();

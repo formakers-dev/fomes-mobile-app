@@ -12,8 +12,7 @@ import androidx.lifecycle.Lifecycle;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
-import com.formakers.fomes.provisioning.ProvisioningUserInfoFragment;
-import com.formakers.fomes.provisioning.ProvisioningContract;
+import com.formakers.fomes.common.model.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -99,7 +98,7 @@ public class ProvisioningUserInfoFragmentTest {
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).updateUserInfo(eq("인생게임"), eq(2015), eq(2001), eq("female"));
+        verify(mockPresenter).updateUserInfo(eq("인생게임"), eq(2015), eq(2001), eq(User.GENDER_FEMALE));
         verify(mockPresenter).requestUpdateUser();
     }
 

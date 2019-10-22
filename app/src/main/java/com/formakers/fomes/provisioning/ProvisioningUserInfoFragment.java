@@ -98,7 +98,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
         int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
         User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
         int job = jobCategory != null ? jobCategory.getCode() : 0;
-        String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.provision_user_info_male_radiobutton ? "male" : "female";
+        String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.provision_user_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
 
         this.presenter.updateUserInfo(game, birth, job, gender);
         addCompositeSubscription(
@@ -131,7 +131,7 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
 
     @OnCheckedChanged({R.id.provision_user_info_male_radiobutton, R.id.provision_user_info_female_radiobutton})
     void onGenderRadioSelected(CompoundButton radioButton, boolean checked) {
-        String gender = radioButton.getId() == R.id.provision_user_info_male_radiobutton ? "male" : "female";
+        String gender = radioButton.getId() == R.id.provision_user_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
         Log.v(TAG, "onGenderRadioSelected) " + gender + " checked=" + checked + " test=" + radioButton.isChecked());
         emitFilledUpEvent();
     }
