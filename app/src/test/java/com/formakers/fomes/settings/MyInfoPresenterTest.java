@@ -23,6 +23,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -108,6 +109,17 @@ public class MyInfoPresenterTest {
         subject.updateUserInfo(1991, 2000, "female", "최애겜");
 
         verify(mockUserDAO, never()).updateUserInfo(any(User.class));
+    }
+
+    @Test
+    public void updateUserInfo_호출시__서버_업데이트와_내부디비_업데이트에_성공하면__유저정보를_재로드한다() {
+        when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
+
+        subject.loadUserInfo();
+        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+
+        verify(mockUserDAO, times(2)).getUserInfo();
+        verify(mockView, times(2)).bind(any(User.class));
     }
 
     @Test
