@@ -108,7 +108,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         });
 
         // 미션 카드 공통 내용
-        this.presenter.getImageLoader().loadImage(viewHolder.titleIconImageView, mission.getIconImageUrl(), new RequestOptions().fitCenter());
+        this.presenter.getImageLoader().loadImage(
+                viewHolder.titleIconImageView,
+                mission.getIconImageUrl(),
+                new RequestOptions().fitCenter(),
+                false);
 
         viewHolder.titleTextView.setText(mission.getTitle());
         viewHolder.descriptionTextView.setText(mission.getDescription());
@@ -122,7 +126,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             viewHolder.descriptionImageView.setVisibility(View.GONE);
         } else {
             viewHolder.descriptionImageView.setVisibility(View.VISIBLE);
-            this.presenter.getImageLoader().loadImage(viewHolder.descriptionImageView, mission.getDescriptionImageUrl());
+            this.presenter.getImageLoader().loadImage(
+                    viewHolder.descriptionImageView,
+                    mission.getDescriptionImageUrl(), null, false);
         }
 
         // 미션 카드 타입별 분기 로직
