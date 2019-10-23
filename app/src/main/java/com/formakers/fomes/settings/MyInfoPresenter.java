@@ -51,8 +51,10 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
 
         userService.updateUserInfo(updatedUserInfo)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> this.view.showToast("유저정보가 업데이트 되었습니다!"),
-                        e -> Log.e(TAG, String.valueOf(e)));
+                .subscribe(() -> {
+                    userDAO.updateUserInfo(updatedUserInfo);
+                    this.view.showToast("유저정보가 업데이트 되었습니다!");
+                    }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

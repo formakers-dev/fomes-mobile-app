@@ -11,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import rx.Completable;
 import rx.Scheduler;
 import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
@@ -19,7 +20,9 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -64,6 +67,8 @@ public class MyInfoPresenterTest {
 
     @Test
     public void updateUserInfo_호출시__변경된_정보만_서버에_업데이트_요청한다() {
+        when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
+
         subject.loadUserInfo();
         subject.updateUserInfo(1991, 2000, "female", "최애겜");
 
@@ -75,6 +80,34 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getJob()).isEqualTo(2000);
         assertThat(requestedUserInfo.getGender()).isNull();
         assertThat(requestedUserInfo.getLifeApps()).isNull();
+    }
+
+    @Test
+    public void updateUserInfo_호출시__서버에_정상적으로_업데이트되면__내부디비에_업데이트를_한다() {
+        when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
+
+        subject.loadUserInfo();
+        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
+        User requestedUserInfo = userArgumentCaptor.getValue();
+
+        assertThat(requestedUserInfo.getBirthday()).isNull();
+        assertThat(requestedUserInfo.getJob()).isEqualTo(2000);
+        assertThat(requestedUserInfo.getGender()).isNull();
+        assertThat(requestedUserInfo.getLifeApps()).isNull();
+    }
+
+    @Test
+    public void updateUserInfo_호출시__서버_업데이트에_실패하면__내부디비에_업데이트를_하지않는다() {
+        when(mockUserService.updateUserInfo(any(User.class)))
+                .thenReturn(Completable.error(new Exception()));
+
+        subject.loadUserInfo();
+        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+
+        verify(mockUserDAO, never()).updateUserInfo(any(User.class));
     }
 
     @Test
