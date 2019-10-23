@@ -47,6 +47,7 @@ public class UserService extends AbstractService {
                 .subscribeOn(Schedulers.io());
     }
 
+    @Deprecated
     public Completable updateUser(User user) {
         return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), user))
                 .doOnCompleted(() -> Log.d(TAG, "updateUser) Completed!"))
@@ -69,6 +70,15 @@ public class UserService extends AbstractService {
 
     public Completable updateRegistrationToken(String registrationToken) {
         return Observable.defer(() -> userAPI.updateNotificationToken(SharedPreferencesHelper.getAccessToken(), new User().setRegistrationToken(registrationToken)))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
+    public Completable updateUserInfo(User userInfo) {
+        return Observable.defer(() -> userAPI.updateUserInfo(SharedPreferencesHelper.getAccessToken(), userInfo))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

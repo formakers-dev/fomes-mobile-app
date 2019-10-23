@@ -1,6 +1,7 @@
 package com.formakers.fomes.settings;
 
 import com.formakers.fomes.common.model.User;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 
@@ -19,12 +20,14 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
 
     private MyInfoContract.View view;
     private UserDAO userDAO;
+    private UserService userService;
     private User originalUserUnfo;
 
     @Inject
-    public MyInfoPresenter(MyInfoContract.View view, UserDAO userDAO) {
+    public MyInfoPresenter(MyInfoContract.View view, UserDAO userDAO, UserService userService) {
         this.view = view;
         this.userDAO = userDAO;
+        this.userService = userService;
     }
 
     @Override
@@ -45,6 +48,11 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
         User updatedUserInfo = getDiffWithUpdatableFields(filledUserInfo);
 
         Log.i(TAG, "user informations will be updated = " + updatedUserInfo);
+
+        userService.updateUserInfo(updatedUserInfo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> this.view.showToast("유저정보가 업데이트 되었습니다!"),
+                        e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

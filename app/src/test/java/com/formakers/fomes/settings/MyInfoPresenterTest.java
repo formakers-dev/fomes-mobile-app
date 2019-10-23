@@ -1,11 +1,13 @@
 package com.formakers.fomes.settings;
 
 import com.formakers.fomes.common.model.User;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -25,6 +27,7 @@ public class MyInfoPresenterTest {
 
     @Mock MyInfoContract.View mockView;
     @Mock UserDAO mockUserDAO;
+    @Mock UserService mockUserService;
 
     User userInfo;
     MyInfoPresenter subject;
@@ -49,7 +52,7 @@ public class MyInfoPresenterTest {
         userInfo = new User().setNickName("닉네임").setBirthday(1991).setJob(1000).setGender("female").setLifeApps(Lists.newArrayList("최애겜"));
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(userInfo));
 
-        subject = new MyInfoPresenter(mockView, mockUserDAO);
+        subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService);
     }
 
     @Test
@@ -57,6 +60,21 @@ public class MyInfoPresenterTest {
         subject.loadUserInfo();
 
         verify(mockView).bind(eq(userInfo));
+    }
+
+    @Test
+    public void updateUserInfo_호출시__변경된_정보만_서버에_업데이트_요청한다() {
+        subject.loadUserInfo();
+        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(mockUserService).updateUserInfo(userArgumentCaptor.capture());
+        User requestedUserInfo = userArgumentCaptor.getValue();
+
+        assertThat(requestedUserInfo.getBirthday()).isNull();
+        assertThat(requestedUserInfo.getJob()).isEqualTo(2000);
+        assertThat(requestedUserInfo.getGender()).isNull();
+        assertThat(requestedUserInfo.getLifeApps()).isNull();
     }
 
     @Test

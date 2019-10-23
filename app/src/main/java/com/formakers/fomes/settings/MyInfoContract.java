@@ -12,5 +12,6 @@ public interface MyInfoContract {
 
     interface View extends BaseView<Presenter> {
         void bind(User userInfo);
+        void showToast(String message);
     }
 }

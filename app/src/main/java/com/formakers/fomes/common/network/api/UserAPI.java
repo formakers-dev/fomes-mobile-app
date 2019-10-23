@@ -36,6 +36,9 @@ public interface UserAPI {
     @PATCH("/user/noti-token")
     Observable<Void> updateNotificationToken(@Header("x-access-token") String accessToken, @Body User newNotiTokenUser);
 
+    @PATCH("/user/info")
+    Observable<Void> updateUserInfo(@Header("x-access-token") String accessToken, @Body User userInfo);
+
     @POST("/user/wishlist")
     Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body HashMap<String, Object> wishListMap);
 
