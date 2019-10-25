@@ -42,6 +42,7 @@
     <string name="common_number_three">3</string>
     <string name="common_dash">-</string>
     <string name="common_close">종료</string>
+    <string name="common_modify_complete">수정 완료</string>
 
     <!-- Fomes - locality strings -->
     <!-- Base -->

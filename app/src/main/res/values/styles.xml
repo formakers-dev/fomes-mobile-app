@@ -120,6 +120,11 @@
         <item name="item_color">@color/fomes_light_gray</item>
     </style>
 
+    <style name="SubmitButton">
+        <item name="item_background_radius">6dp</item>
+        <item name="item_solid_color">@color/button_color_selector</item>
+    </style>
+
     <style name="AnaylsisTheme" parent="FomesTheme.NoActionBar">
     </style>
 

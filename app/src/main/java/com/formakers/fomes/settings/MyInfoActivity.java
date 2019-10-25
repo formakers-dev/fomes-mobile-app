@@ -2,7 +2,6 @@ package com.formakers.fomes.settings;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -81,7 +80,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         jobSpinner.setAdapter(adapter);
 
-        submitButton.setVisibility(View.GONE);
+        submitButton.setEnabled(false);
         this.presenter.loadUserInfo();
     }
 
@@ -160,9 +159,9 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         }
 
         if (this.verifyEnableToSubmit(checkedRadioButtonId)) {
-            submitButton.setVisibility(View.VISIBLE);
+            submitButton.setEnabled(true);
         } else {
-            submitButton.setVisibility(View.GONE);
+            submitButton.setEnabled(false);
         }
     }
 
