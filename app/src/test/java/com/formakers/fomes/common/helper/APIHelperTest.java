@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.helper;
 
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -61,7 +62,7 @@ public class APIHelperTest {
         GoogleSignInAccount mockGoogleSignInAccount = mock(GoogleSignInAccount.class);
         when(mockGoogleSignInResult.getSignInAccount()).thenReturn(mockGoogleSignInAccount);
         when(mockGoogleSignInAccount.getIdToken()).thenReturn("idToken");
-        when(mockUserAPI.signIn(eq("idToken"))).thenReturn(Observable.just("appbeeToken"));
+        when(mockUserAPI.signIn(eq("idToken"))).thenReturn(Observable.just(new User().setAccessToken("appbeeToken")));
     }
 
     @After
