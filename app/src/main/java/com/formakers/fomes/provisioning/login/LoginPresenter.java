@@ -84,7 +84,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         if (throwable instanceof HttpException) {
                             if (((HttpException) throwable).code() == UserAPI.StatusCode.ALREADY_SIGN_UP) {
                                 Log.d(TAG, "이미 가입된 유저입니다. 로그인으로 진행됩니다.");
-                                this.view.showToast("안녕하세요! 다시 돌아와주셨네요 😍");
+                                this.view.showToast("로그인 되었습니다! 반가워요! 😍");
                                 return signIn(account.getIdToken(), true);
                             }
                         }
