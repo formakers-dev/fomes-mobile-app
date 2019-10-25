@@ -13,6 +13,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class User {
+
+    public final static String GENDER_MALE = "male";
+    public final static String GENDER_FEMALE = "female";
+
     public enum JobCategory {
         MANAGER("관리자", 1000, true),
 
@@ -89,6 +93,9 @@ public class User {
     private List<String> lifeApps;
     private String appVersion;
     private DeviceInfo device = new User.DeviceInfo();
+
+    // for ResponseVO (signIn / signUp)
+    private String accessToken;
 
     public User() {
     }
@@ -199,7 +206,16 @@ public class User {
     }
 
     public @StringRes int getGenderToStringResId() {
-        return "male".equals(this.gender) ? R.string.common_male : R.string.common_female;
+        return User.GENDER_MALE.equals(this.gender) ? R.string.common_male : R.string.common_female;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public User setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+        return this;
     }
 
     @Override

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.formakers.fomes.common.model.User;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +31,7 @@ public class SharedPreferencesHelperTest {
                 .putString("REGISTRATION_TOKEN", "TEST_REGISTRATION_TOKEN")
                 .putString("EMAIL", "appbee0627@gmail.com")
                 .putInt("BIRTHDAY", 19991231)
-                .putString("GENDER", "female")
+                .putString("GENDER", User.GENDER_FEMALE)
                 .putLong("LAST_UPDATE_STAT_TIMESTAMP", 1000L)
                 .putLong("LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP", 1000L)
                 .putInt("PROVISIONING_PROGRESS_STATUS", 0)

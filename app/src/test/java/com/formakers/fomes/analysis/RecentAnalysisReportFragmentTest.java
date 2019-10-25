@@ -194,7 +194,7 @@ public class RecentAnalysisReportFragmentTest {
 
         when(mockPresenter.getPercentage(eq(categoryUsages_gender_age), anyInt(), anyInt())).thenReturn(usagePercentagePair_gender_age);
         when(mockPresenter.getPercentage(eq(categoryUsages_job), anyInt(), anyInt())).thenReturn(usagePercentagePair_job);
-        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob(2001));
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender(User.GENDER_FEMALE).setJob(2001));
 
         controller.create().start().resume().visible();
 
@@ -271,7 +271,7 @@ public class RecentAnalysisReportFragmentTest {
         job.add(new Usage("순순디자인", "순순디자인", 9999L, appInfos3));
         job.add(new Usage("노잼", "노잼", 99L, appInfos3));
 
-        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob(2001));
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender(User.GENDER_FEMALE).setJob(2001));
 
         controller.create().start().resume().visible();
 
@@ -355,7 +355,7 @@ public class RecentAnalysisReportFragmentTest {
         RequestBuilder mockRequestBuilder = mock(RequestBuilder.class);
         when(mockRequestManager.load(java.util.Optional.ofNullable(any()))).thenReturn(mockRequestBuilder);
 
-        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender("female").setJob(2001));
+        when(mockPresenter.getUserInfo()).thenReturn(new User().setBirthday(1991).setGender(User.GENDER_FEMALE).setJob(2001));
 
         controller.create().start().resume().visible();
 

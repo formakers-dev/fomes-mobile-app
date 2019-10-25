@@ -2,12 +2,12 @@ package com.formakers.fomes.common.network;
 
 import androidx.annotation.NonNull;
 
-import com.formakers.fomes.common.network.api.UserAPI;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.helper.APIHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.model.AppInfo;
 import com.formakers.fomes.common.model.User;
+import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.common.util.Log;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,18 +35,19 @@ public class UserService extends AbstractService {
         this.apiHelper = apiHelper;
     }
 
-    public Single<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
+    public Single<User> signUp(@NonNull String googleIdToken, @NonNull User user) {
         return userAPI.signUp(googleIdToken, user)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<String> signIn(@NonNull String googleIdToken) {
+    public Observable<User> signIn(@NonNull String googleIdToken) {
         return userAPI.signIn(googleIdToken)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 
+    @Deprecated
     public Completable updateUser(User user) {
         return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), user))
                 .doOnCompleted(() -> Log.d(TAG, "updateUser) Completed!"))
@@ -69,6 +70,15 @@ public class UserService extends AbstractService {
 
     public Completable updateRegistrationToken(String registrationToken) {
         return Observable.defer(() -> userAPI.updateNotificationToken(SharedPreferencesHelper.getAccessToken(), new User().setRegistrationToken(registrationToken)))
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
+    public Completable updateUserInfo(User userInfo) {
+        return Observable.defer(() -> userAPI.updateUserInfo(SharedPreferencesHelper.getAccessToken(), userInfo))
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

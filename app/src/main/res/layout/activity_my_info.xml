@@ -9,57 +9,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:paddingEnd="@dimen/provision_padding_start_end"
         android:paddingStart="@dimen/provision_padding_start_end">
 
-        <ImageView
-            android:id="@+id/provision_icon_imageview"
-            android:layout_width="38dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="@dimen/provision_image_margin_top"
-            android:src="@drawable/fomes_face_smile"
-            app:layout_constraintBottom_toTopOf="@+id/provision_title_textview"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
-            android:id="@+id/provision_title_textview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:text="@string/provision_user_info_title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/provision_title_text_size"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/provision_subtitle_textview"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/provision_icon_imageview" />
-
-        <TextView
-            android:id="@+id/provision_subtitle_textview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/provision_subtitle_margin_top"
-            android:text="@string/provision_user_info_subtitle"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/provision_subtitle_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provision_title_textview" />
-
-        <View
-            android:id="@+id/provision_user_info_content_divider_0"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/provision_pager_margin_top"
-            android:background="@color/fomes_pale_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/provision_subtitle_textview" />
-
-        <TextView
-            android:id="@+id/provision_life_game_content_title_textview"
+            android:id="@+id/my_info_life_game_content_title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -67,37 +23,37 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/provision_content_title_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/provision_life_game_content_edittext"
+            app:layout_constraintEnd_toStartOf="@+id/my_info_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_0" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <EditText
-            android:id="@+id/provision_life_game_content_edittext"
+            android:id="@+id/my_info_life_game_content_edittext"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:backgroundTint="@android:color/transparent"
             android:hint="@string/provision_life_game_content_hint"
             android:inputType="textShortMessage"
-            android:textColorHint="@color/fomes_warm_gray_2"
-            android:textSize="@dimen/provision_content_title_text_size"
-            app:layout_constraintBaseline_toBaselineOf="@+id/provision_life_game_content_title_textview"
+            android:textColorHint="@color/textColorHint"
+            android:textSize="@dimen/provision_content_text_size"
+            app:layout_constraintBaseline_toBaselineOf="@+id/my_info_life_game_content_title_textview"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/provision_life_game_content_title_textview" />
+            app:layout_constraintStart_toEndOf="@+id/my_info_life_game_content_title_textview" />
 
 
         <View
-            android:id="@+id/provision_user_info_content_divider_1"
+            android:id="@+id/my_info_content_divider_1"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
             android:background="@color/fomes_pale_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provision_life_game_content_title_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_life_game_content_title_textview" />
 
         <TextView
-            android:id="@+id/provision_user_info_content_title_textview"
+            android:id="@+id/my_info_content_title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -105,36 +61,36 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/provision_content_title_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_title_textview"
-            app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_1" />
+            app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_title_textview"
+            app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_title_textview"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_1" />
 
         <Spinner
-            android:id="@+id/provision_user_info_birth_spinner"
+            android:id="@+id/my_info_birth_spinner"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="25dp"
             android:backgroundTint="@color/fomes_warm_gray_2"
             android:entries="@array/birth_items"
             android:spinnerMode="dialog"
             android:prompt="@string/provision_user_info_birth_title"
-            app:layout_constraintBottom_toTopOf="@+id/provision_user_info_content_divider_2"
-            app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_edittext"
-            app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_edittext"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_1" />
+            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_2"
+            app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_edittext"
+            app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_1" />
 
         <View
-            android:id="@+id/provision_user_info_content_divider_2"
+            android:id="@+id/my_info_content_divider_2"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
             android:background="@color/fomes_pale_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_title_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_title_textview" />
 
 
         <TextView
-            android:id="@+id/provision_user_info_job_title_textview"
+            android:id="@+id/my_info_job_title_textview"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -142,34 +98,34 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/provision_content_title_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_title_textview"
-            app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_2" />
+            app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_title_textview"
+            app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_title_textview"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_2" />
 
         <Spinner
-            android:id="@+id/provision_user_info_job_spinner"
+            android:id="@+id/my_info_job_spinner"
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:backgroundTint="@color/fomes_warm_gray_2"
             android:spinnerMode="dialog"
             android:prompt="@string/provision_user_info_job_title"
-            app:layout_constraintBottom_toTopOf="@+id/provision_user_info_content_divider_3"
-            app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_edittext"
-            app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_edittext"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_2" />
+            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_3"
+            app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_edittext"
+            app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_2" />
 
         <View
-            android:id="@+id/provision_user_info_content_divider_3"
+            android:id="@+id/my_info_content_divider_3"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
             android:background="@color/fomes_pale_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_job_title_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_job_title_textview" />
 
         <TextView
-            android:id="@+id/provision_user_info_gender_title_textview"
+            android:id="@+id/my_info_gender_title_textview"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -177,25 +133,25 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/provision_content_title_text_size"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_title_textview"
-            app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_3" />
+            app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_title_textview"
+            app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_title_textview"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_3" />
 
         <RadioGroup
-            android:id="@+id/provision_user_info_gender_radiogroup"
+            android:id="@+id/my_info_gender_radiogroup"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:divider="@drawable/divider"
             android:orientation="horizontal"
             android:showDividers="middle"
             android:theme="@style/ProvisioningTheme.RadioGroup"
-            app:layout_constraintBottom_toTopOf="@+id/provision_user_info_content_divider_4"
-            app:layout_constraintEnd_toEndOf="@+id/provision_life_game_content_edittext"
-            app:layout_constraintStart_toStartOf="@+id/provision_life_game_content_edittext"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_content_divider_3">
+            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_4"
+            app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_edittext"
+            app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_3">
 
             <RadioButton
-                android:id="@+id/provision_user_info_male_radiobutton"
+                android:id="@+id/my_info_male_radiobutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@null"
@@ -206,7 +162,7 @@
                 android:textSize="12dp" />
 
             <RadioButton
-                android:id="@+id/provision_user_info_female_radiobutton"
+                android:id="@+id/my_info_female_radiobutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@null"
@@ -218,14 +174,32 @@
         </RadioGroup>
 
         <View
-            android:id="@+id/provision_user_info_content_divider_4"
+            android:id="@+id/my_info_content_divider_4"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
             android:background="@color/fomes_pale_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provision_user_info_gender_title_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_gender_title_textview" />
+
+        <Button
+            android:id="@+id/my_info_submit_button"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="40dp"
+            android:layout_marginTop="28dp"
+            android:enabled="false"
+            android:text="@string/common_modify_complete"
+            android:textSize="13dp"
+            android:textColor="@color/fomes_white"
+            android:textStyle="bold"
+            android:foreground="@drawable/ripple"
+            android:background="@drawable/item_rect_rounded_corner_background"
+            android:theme="@style/SubmitButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_4"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

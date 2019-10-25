@@ -24,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:textColor="@color/fomes_light_pale_gray"
-            android:textSize="11dp"
+            android:textColor="@color/fomes_white"
+            android:textSize="@dimen/betatest_detail_section_content_text_size"
             android:textStyle="bold"
             tools:text="수석 테스터" />
     </LinearLayout>

@@ -76,12 +76,12 @@ public class ProvisioningPresenterTest {
 
     @Test
     public void updateUserInfo__호출시__유저정보를_업데이트한다() {
-        subject.updateUserInfo("미러스엣지", 1989, 1, "male");
+        subject.updateUserInfo("미러스엣지", 1989, 1, User.GENDER_MALE);
 
         verify(mockUser).setLifeApps(eq(Lists.newArrayList("미러스엣지")));
         verify(mockUser).setBirthday(eq(1989));
         verify(mockUser).setJob(eq(1));
-        verify(mockUser).setGender(eq("male"));
+        verify(mockUser).setGender(eq(User.GENDER_MALE));
     }
 
     @Test

@@ -87,7 +87,7 @@ public class RecentAnalysisReportPresenterTest {
 
         when(mockAppUsageDataHelper.getAppUsages()).thenReturn(Observable.from(new ArrayList<>()));
         when(mockUser.getNickName()).thenReturn("mockUserNickName");
-        when(mockUser.getGender()).thenReturn("male");
+        when(mockUser.getGender()).thenReturn(User.GENDER_MALE);
         when(mockUser.getBirthday()).thenReturn(1989);
         when(mockUser.getJob()).thenReturn(3);
         when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
@@ -150,7 +150,7 @@ public class RecentAnalysisReportPresenterTest {
         // 분석 결과 요청
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockAppStatService).requestRecentReport(eq("GAME"), argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().getGender()).isEqualTo("male");
+        assertThat(argumentCaptor.getValue().getGender()).isEqualTo(User.GENDER_MALE);
         assertThat(argumentCaptor.getValue().getBirthday()).isEqualTo(1989);
         assertThat(argumentCaptor.getValue().getJob()).isEqualTo(3);
 
