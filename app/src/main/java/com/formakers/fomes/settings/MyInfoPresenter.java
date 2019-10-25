@@ -54,7 +54,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
                 .subscribe(() -> {
                     userDAO.updateUserInfo(updatedUserInfo);
                     loadUserInfo();
-                    this.view.showToast("유저정보가 업데이트 되었습니다!");
+                    this.view.showToast("프로필 수정이 완료되었습니다");
                     }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
