@@ -2,12 +2,12 @@ package com.formakers.fomes.common.network;
 
 import androidx.annotation.NonNull;
 
-import com.formakers.fomes.common.network.api.UserAPI;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.helper.APIHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.model.AppInfo;
 import com.formakers.fomes.common.model.User;
+import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.common.util.Log;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,13 +35,13 @@ public class UserService extends AbstractService {
         this.apiHelper = apiHelper;
     }
 
-    public Single<String> signUp(@NonNull String googleIdToken, @NonNull User user) {
+    public Single<User> signUp(@NonNull String googleIdToken, @NonNull User user) {
         return userAPI.signUp(googleIdToken, user)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<String> signIn(@NonNull String googleIdToken) {
+    public Observable<User> signIn(@NonNull String googleIdToken) {
         return userAPI.signIn(googleIdToken)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());

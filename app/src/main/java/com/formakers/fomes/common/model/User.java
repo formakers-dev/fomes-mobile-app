@@ -94,6 +94,9 @@ public class User {
     private String appVersion;
     private DeviceInfo device = new User.DeviceInfo();
 
+    // for ResponseVO (signIn / signUp)
+    private String accessToken;
+
     public User() {
     }
 
@@ -204,6 +207,15 @@ public class User {
 
     public @StringRes int getGenderToStringResId() {
         return User.GENDER_MALE.equals(this.gender) ? R.string.common_male : R.string.common_female;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public User setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+        return this;
     }
 
     @Override

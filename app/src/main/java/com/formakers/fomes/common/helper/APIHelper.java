@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.helper;
 
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
 
 import java.util.concurrent.TimeUnit;
@@ -47,6 +48,7 @@ public class APIHelper {
                                 .flatMap(googleSignInResult -> Observable.just(googleSignInResult.getSignInAccount()))
                                 .filter(account -> account != null)
                                 .flatMap(account -> userAPI.signIn(account.getIdToken()))
+                                .map(User::getAccessToken)
                                 .filter(accessToken -> accessToken != null && !accessToken.isEmpty())
                                 .flatMap(accessToken -> {
                                     SharedPreferencesHelper.setAccessToken(accessToken);

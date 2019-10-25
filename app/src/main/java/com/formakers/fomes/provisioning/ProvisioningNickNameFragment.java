@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 
@@ -71,7 +72,7 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
                         this.presenter.emitNextPageEvent();
                     }, e -> {
                     if (e instanceof HttpException) {
-                        if (((HttpException) e).code() == 409) {
+                        if (((HttpException) e).code() == UserAPI.StatusCode.DUPLICATED_NICK_NAME) {
                             setVisibilityWarningView(true, R.string.provision_nickname_already_exist_warning);
                         }
                     } else {

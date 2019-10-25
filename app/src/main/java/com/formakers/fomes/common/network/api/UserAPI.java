@@ -19,13 +19,18 @@ import rx.Observable;
 import rx.Single;
 
 public interface UserAPI {
-    // Return : FomesToken
-    @POST("/user/signup")
-    Single<String> signUp(@Header("x-id-token") String googleIdToken, @Body User user);
+    interface StatusCode {
+        int ALREADY_SIGN_UP = 409;
+        int DUPLICATED_NICK_NAME = 409;
+    }
 
-    // Return : FomesToken
+    // Return : User with FomesToken
+    @POST("/user/signup")
+    Single<User> signUp(@Header("x-id-token") String googleIdToken, @Body User user);
+
+    // Return : User with FomesToken
     @POST("/user/signIn")
-    Observable<String> signIn(@Header("x-id-token") String googleIdToken);
+    Observable<User> signIn(@Header("x-id-token") String googleIdToken);
 
     @POST("/user")
     Observable<Void> update(@Header("x-access-token") String accessToken, @Body User user);

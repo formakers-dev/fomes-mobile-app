@@ -3,21 +3,23 @@ package com.formakers.fomes.provisioning.login;
 import android.content.Intent;
 
 import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.provisioning.ProvisioningActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import javax.inject.Inject;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -64,31 +66,52 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .setEmail(account.getEmail())
                 .setRegistrationToken(sharedPreferencesHelper.getUserRegistrationToken());
 
-        Single<String> loginSingle;
+        Single<User> loginSingle;
 
         if (this.isProvisioningProgress()) {
             Log.v(TAG, "Provisioning Progress!");
             loginSingle = userService.signUp(account.getIdToken(), userInfo)
-                    .observeOn(Schedulers.io())
-                    .doOnSuccess(fomesToken -> userDAO.updateUserInfo(userInfo))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSuccess(fomesToken -> view.startActivityAndFinish(ProvisioningActivity.class))
-                    .doOnError(e -> view.showToast("가입에 실패하였습니다. 재시도 고고"));
+                    .doOnSuccess(user -> view.startActivityAndFinish(ProvisioningActivity.class))
+                    .doOnError(e -> {
+                        if (e instanceof HttpException) {
+                            if (((HttpException) e).code() != UserAPI.StatusCode.ALREADY_SIGN_UP) {
+                                view.showToast("가입에 실패하였습니다. 재시도 고고");
+                            }
+                        }
+                    })
+                    .onErrorResumeNext(throwable -> {
+                        if (throwable instanceof HttpException) {
+                            if (((HttpException) throwable).code() == UserAPI.StatusCode.ALREADY_SIGN_UP) {
+                                Log.d(TAG, "이미 가입된 유저입니다. 로그인으로 진행됩니다.");
+                                this.view.showToast("안녕하세요! 다시 돌아와주셨네요 😍");
+                                return signIn(account.getIdToken(), true);
+                            }
+                        }
+                        return Single.error(throwable);
+                    });
         } else {
-            loginSingle = userService.signIn(account.getIdToken()).toSingle()
-                    .doOnSuccess(fomesToken -> sharedPreferencesHelper.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSuccess(fomesToken -> view.startActivityAndFinish(MainActivity.class))
-                    .doOnError(e -> view.showToast("로그인에 실패하였습니다. 재시도 고고"));
+            loginSingle = signIn(account.getIdToken(), false);
         }
 
         compositeSubscription.add(loginSingle.observeOn(Schedulers.io())
-                .doOnSuccess(fomesToken -> {
-                    sharedPreferencesHelper.setAccessToken(fomesToken);
+                .doOnSuccess(user -> {
+                    Log.v(TAG, "login after user=" + user);
+                    Log.v(TAG, "login after accessToken=" + user.getAccessToken());
+                    userDAO.updateUserInfo(user);
+                    sharedPreferencesHelper.setAccessToken(user.getAccessToken());
                     registerForInit();
                 })
                 .subscribe(fomesToken -> Log.d(TAG, "로그인 성공!"),
                         e -> Log.e(TAG, "로그인 실패! e=" + String.valueOf(e))));
+    }
+
+    private Single<User> signIn(String idToken, boolean isSignUp) {
+        return userService.signIn(idToken).toSingle()
+                .doOnSuccess(user -> sharedPreferencesHelper.setProvisioningProgressStatus(isSignUp ? FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION : FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED))
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(user -> view.startActivityAndFinish(MainActivity.class))
+                .doOnError(e -> view.showToast("로그인에 실패하였습니다. 재시도 고고"));
     }
 
     @Override
