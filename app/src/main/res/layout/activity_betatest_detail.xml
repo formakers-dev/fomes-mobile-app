@@ -50,7 +50,7 @@
                     android:foreground="@drawable/item_rect_rounded_corner_background"
                     android:theme="@style/BetaTestTheme.FinishedIconForeground"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="@+id/betatest_detail_title"/>
 
                 <TextView android:id="@+id/betatest_detail_title"
                     android:layout_width="@dimen/match_constraint"
@@ -73,7 +73,7 @@
                     android:layout_marginTop="5dp"
                     android:textSize="@dimen/betatest_detail_subtitle_text_size"
                     android:textColor="@color/fomes_white"
-                    tools:text="#시뮬레이션#보상없음#고양이#캠핑장"
+                    tools:text="#시뮬레이션#보상없음#고양이#캠핑장두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄세줄세줄세줄세줄세줄세줄세줄세줄세줄세줄"
                     app:layout_constraintStart_toStartOf="@+id/betatest_detail_title"
                     app:layout_constraintEnd_toEndOf="@+id/betatest_detail_title"
                     app:layout_constraintTop_toBottomOf="@+id/betatest_detail_title"/>
@@ -101,7 +101,8 @@
                     tools:text="D - 7"
                     app:layout_constraintTop_toTopOf="@+id/betatest_detail_period"
                     app:layout_constraintBottom_toBottomOf="@+id/betatest_detail_period"
-                    app:layout_constraintStart_toEndOf="@+id/betatest_detail_period" />
+                    app:layout_constraintStart_toEndOf="@+id/betatest_detail_period"
+                    tools:visibility="visible"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
