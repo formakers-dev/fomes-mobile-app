@@ -227,7 +227,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            finishAffinity();
         }
     }
 
