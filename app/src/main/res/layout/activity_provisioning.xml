@@ -8,13 +8,15 @@
     <com.formakers.fomes.common.view.custom.SwipeViewPager
         android:id="@+id/provision_viewpager"
         android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/match_constraint"
         android:nestedScrollingEnabled="true"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/next_button"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints" />
 
     <Button
