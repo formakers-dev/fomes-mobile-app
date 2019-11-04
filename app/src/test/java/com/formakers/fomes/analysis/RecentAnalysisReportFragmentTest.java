@@ -302,10 +302,10 @@ public class RecentAnalysisReportFragmentTest {
     @Test
     public void bindMyGames_호출시__분석화면의_나의_최애_게임_뷰를_셋팅한다() {
         List<Usage> appUsages = new ArrayList<>();
-        appUsages.add(new Usage("com.game.rgp", "롤플레잉게임명", 10000000L, Collections.singletonList(new AppInfo("com.game.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
-        appUsages.add(new Usage("com.game.puzzle", "퍼즐게임명", 5000000L, Collections.singletonList(new AppInfo("com.game.puzzle", "퍼즐게임명", null, null, null, null, "puzzleIconUrl"))));
-        appUsages.add(new Usage("com.game.simulation", "시뮬레이션게임명", 1000000L, Collections.singletonList(new AppInfo("com.game.simulation", "시뮬레이션게임명", null, null, null, null, "simulIconUrl"))));
-        appUsages.add(new Usage("com.game.action", "액션게임명", 100L, Collections.singletonList(new AppInfo("com.game.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.rgp", "롤플레잉게임명", 10000000L, Collections.singletonList(new AppInfo("com.login_logo.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.puzzle", "퍼즐게임명", 5000000L, Collections.singletonList(new AppInfo("com.login_logo.puzzle", "퍼즐게임명", null, null, null, null, "puzzleIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.simulation", "시뮬레이션게임명", 1000000L, Collections.singletonList(new AppInfo("com.login_logo.simulation", "시뮬레이션게임명", null, null, null, null, "simulIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.action", "액션게임명", 100L, Collections.singletonList(new AppInfo("com.login_logo.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
 
         when(mockPresenter.getHour(10000000L)).thenReturn(2.8f);
         when(mockPresenter.getHour(5000000L)).thenReturn(1.4f);
@@ -339,16 +339,16 @@ public class RecentAnalysisReportFragmentTest {
     @Test
     public void bindPeopleGamesViews_호출시__분석화면의_사람들의_최애_게임_뷰를_셋팅한다() {
         List<Usage> appUsages = new ArrayList<>();
-        appUsages.add(new Usage("com.game.rgp", "롤플레잉게임명", 10000000L, Collections.singletonList(new AppInfo("com.game.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
-        appUsages.add(new Usage("com.game.puzzle", "퍼즐게임명", 5000000L, Collections.singletonList(new AppInfo("com.game.puzzle", "퍼즐게임명", null, null, null, null, "puzzleIconUrl"))));
-        appUsages.add(new Usage("com.game.simulation", "시뮬레이션게임명", 1000000L, Collections.singletonList(new AppInfo("com.game.simulation", "시뮬레이션게임명", null, null, null, null, "simulIconUrl"))));
-        appUsages.add(new Usage("com.game.action", "액션게임명", 100L, Collections.singletonList(new AppInfo("com.game.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.rgp", "롤플레잉게임명", 10000000L, Collections.singletonList(new AppInfo("com.login_logo.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.puzzle", "퍼즐게임명", 5000000L, Collections.singletonList(new AppInfo("com.login_logo.puzzle", "퍼즐게임명", null, null, null, null, "puzzleIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.simulation", "시뮬레이션게임명", 1000000L, Collections.singletonList(new AppInfo("com.login_logo.simulation", "시뮬레이션게임명", null, null, null, null, "simulIconUrl"))));
+        appUsages.add(new Usage("com.login_logo.action", "액션게임명", 100L, Collections.singletonList(new AppInfo("com.login_logo.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
 
         List<Usage> appUsages2 = new ArrayList<>();
-        appUsages2.add(new Usage("com.game.action", "액션게임명", 10000000L, Collections.singletonList(new AppInfo("com.game.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
-        appUsages2.add(new Usage("com.game.edu", "교육게임명", 5000000L, Collections.singletonList(new AppInfo("com.game.simulation", "시뮬레이션게임명", null, null, null, null, "eduIconUrl"))));
-        appUsages2.add(new Usage("com.game.acade", "아케이드게임명", 1000000L, Collections.singletonList(new AppInfo("com.game.puzzle", "퍼즐게임명", null, null, null, null, "acadeIconUrl"))));
-        appUsages2.add(new Usage("com.game.rgp", "롤플레잉게임명", 100L, Collections.singletonList(new AppInfo("com.game.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
+        appUsages2.add(new Usage("com.login_logo.action", "액션게임명", 10000000L, Collections.singletonList(new AppInfo("com.login_logo.action", "액션게임명", null, null, null, null, "actionIconUrl"))));
+        appUsages2.add(new Usage("com.login_logo.edu", "교육게임명", 5000000L, Collections.singletonList(new AppInfo("com.login_logo.simulation", "시뮬레이션게임명", null, null, null, null, "eduIconUrl"))));
+        appUsages2.add(new Usage("com.login_logo.acade", "아케이드게임명", 1000000L, Collections.singletonList(new AppInfo("com.login_logo.puzzle", "퍼즐게임명", null, null, null, null, "acadeIconUrl"))));
+        appUsages2.add(new Usage("com.login_logo.rgp", "롤플레잉게임명", 100L, Collections.singletonList(new AppInfo("com.login_logo.rgp", "롤플레잉게임명", null, null, null, null, "rpgIconUrl"))));
 
         RequestManager mockRequestManager = mock(RequestManager.class);
         when(mockPresenter.getImageLoader()).thenReturn(mockRequestManager);
