@@ -45,8 +45,8 @@
         app:layout_constraintTop_toBottomOf="@+id/provision_title_textview" />
 
     <ImageView android:id="@+id/provision_permission_imageview"
-        android:layout_width="311dp"
-        android:layout_height="256dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/provision_permission"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
