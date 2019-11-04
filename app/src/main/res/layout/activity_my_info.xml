@@ -159,7 +159,7 @@
                 android:drawablePadding="6dp"
                 android:text="남자"
                 android:textColor="@color/gender_radiobutton_color_selector"
-                android:textSize="12dp" />
+                android:textSize="@dimen/provision_content_text_size" />
 
             <RadioButton
                 android:id="@+id/my_info_female_radiobutton"
@@ -170,7 +170,7 @@
                 android:drawablePadding="6dp"
                 android:text="여자"
                 android:textColor="@color/gender_radiobutton_color_selector"
-                android:textSize="12dp" />
+                android:textSize="@dimen/provision_content_text_size" />
         </RadioGroup>
 
         <View
