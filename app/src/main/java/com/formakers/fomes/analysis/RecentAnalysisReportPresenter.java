@@ -3,6 +3,8 @@ package com.formakers.fomes.analysis;
 import android.util.Pair;
 
 import com.bumptech.glide.RequestManager;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
@@ -11,8 +13,6 @@ import com.formakers.fomes.common.network.vo.UsageGroup;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.common.helper.AppUsageDataHelper;
-import com.formakers.fomes.common.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +79,9 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
         appUsageDataHelper.getShortTermStats()
                 .observeOn(Schedulers.io())
                 .toList()
-                .flatMap(shortTermStats -> appStatService.sendShortTermStats(shortTermStats).toObservable())
+                .flatMap(shortTermStats -> {
+                    return appStatService.sendShortTermStats(shortTermStats).toObservable();
+                })
                 .toCompletable()
                 .subscribe(() -> Log.d(TAG, "send short term stats success!!!"),
                         e -> Log.e(TAG, "send short term stats failed!!!! e=" + e));
