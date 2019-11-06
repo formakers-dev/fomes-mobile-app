@@ -63,7 +63,6 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_not_enough_top_layout) Group notEnoughTopLayout;
     @BindView(R.id.analysis_top_layout) Group topLayout;
     @BindView(R.id.analysis_icon_imageview) ImageView iconImageView;
-    @BindView(R.id.analysis_title_textview) TextView titleTextView;
     @BindView(R.id.analysis_subtitle_textview) TextView subtitleTextView;
     @BindView(R.id.analysis_my_genre_chart) PieChart myGenrePieChart;
     @BindView(R.id.analysis_my_genre_chart_text) TextView myGenrePieChartTextView;
@@ -87,6 +86,9 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @BindView(R.id.analysis_my_playtime_rank_summary) TextView myPlaytimeRankSummaryTextView;
     @BindView(R.id.analysis_my_playtime_rank_description_title) TextView myPlaytimeRankDescriptionTitleTextView;
     @BindView(R.id.analysis_my_playtime_rank_description_content) TextView myPlaytimeRankDescriptionContentTextView;
+
+    @BindView(R.id.analysis_error_title_textview) TextView errorTitleView;
+    @BindView(R.id.analysis_error_subtitle_textview) TextView errorSubTitleView;
 
     @Inject RecentAnalysisReportContract.Presenter presenter;
 
@@ -120,6 +122,12 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
                 ).subscribe(() -> loadingComplete(true), e -> {
                     Log.e(TAG, String.valueOf(e));
                     loadingComplete(false);
+                    if (e instanceof IndexOutOfBoundsException) {
+                        errorTitleView.setText(R.string.analysis_error_not_enough_data_even_others);
+                        errorSubTitleView.setText(R.string.analysis_error_not_enough_data_even_others_subtitle);
+                    } else {
+                        errorTitleView.setText(R.string.analysis_error_unknown);
+                    }
             })
         );
     }
