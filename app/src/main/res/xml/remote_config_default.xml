@@ -4,4 +4,8 @@
         <key>app_update_message</key>
         <value>@string/update_dialog_message</value>
     </entry>
+    <entry>
+        <key>signup_provision_analysis_screen_is_visible</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>

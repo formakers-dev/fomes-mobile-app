@@ -29,6 +29,7 @@ public interface ProvisioningContract {
         boolean hasUsageStatsPermission();
         boolean isSelected(BaseFragment fragment);
         boolean isProvisiongProgress();
+        void checkGrantedOnPermissionFragment();
     }
 
     interface View extends BaseView<Presenter> {
