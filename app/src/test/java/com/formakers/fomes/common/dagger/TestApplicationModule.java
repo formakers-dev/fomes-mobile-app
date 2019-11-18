@@ -31,6 +31,7 @@ import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.helper.ResourceHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.helper.TimeHelper;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import javax.inject.Singleton;
 
@@ -248,5 +249,14 @@ public class TestApplicationModule {
     @Provides
     AnalyticsModule.Analytics analytics() {
         return mock(AnalyticsModule.Analytics.class);
+    }
+
+    /**
+     * Firebase
+     */
+    @Singleton
+    @Provides
+    FirebaseRemoteConfig firebaseRemoteConfig() {
+        return mock(FirebaseRemoteConfig.class);
     }
 }

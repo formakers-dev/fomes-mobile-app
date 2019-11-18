@@ -5,17 +5,17 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.view.custom.FomesAlertDialog;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.util.Log;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.formakers.fomes.common.view.custom.FomesAlertDialog;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import javax.inject.Inject;
@@ -29,8 +29,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class BaseActivity extends AppCompatActivity {
 
-//    @Inject ConfigService configService;
-    @Inject FirebaseRemoteConfig remoteConfig;
+    @Inject ConfigService configService;
 
     private Unbinder binder;
 
@@ -89,25 +88,19 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void checkUpdatePopup() {
-//        addToCompositeSubscription(
-//            configService.getAppVersion()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(version -> {
-//                    if (BuildConfig.VERSION_CODE < version) {
-//                        displayVersionUpdateDialog();
-//                    }
-//                }, e -> Log.e(TAG, String.valueOf(e)))
-//        );
-        if (remoteConfig.getLong("app_update_version_code") > BuildConfig.VERSION_CODE) {
-            displayVersionUpdateDialog();
-        }
+        addToCompositeSubscription(
+            configService.getAppVersion()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(version -> {
+                    if (version > BuildConfig.VERSION_CODE) {
+                        displayVersionUpdateDialog();
+                    }
+                }, e -> Log.e(TAG, String.valueOf(e)))
+        );
     }
 
     private void displayVersionUpdateDialog() {
-        FomesAlertDialog fomesAlertDialog = new FomesAlertDialog(this, getString(R.string.update_dialog_title),
-                remoteConfig.getString("app_update_version_name") + "\n"
-                        // new line 처리를 위해 추가 작업을 해줘야 한다. 아무래도 RemoteConfigUtil로 만들어서 관리해야할듯
-                        + remoteConfig.getString("app_update_message").replace("||", "\n"));
+        FomesAlertDialog fomesAlertDialog = new FomesAlertDialog(this, getString(R.string.update_dialog_title), getString(R.string.update_dialog_message));
 
         fomesAlertDialog.setPositiveButtonOnClickListener((dialog, which) -> {
             moveToPlayStore();
@@ -115,9 +108,7 @@ public class BaseActivity extends AppCompatActivity {
         });
 
         fomesAlertDialog.setOnCancelListener(dialog -> {
-            if (remoteConfig.getBoolean("app_update_is_critical")) {
-                finishAffinity();
-            }
+            finishAffinity();
             dialog.dismiss();
         });
         fomesAlertDialog.show();
