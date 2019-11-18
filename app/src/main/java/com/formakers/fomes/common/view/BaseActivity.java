@@ -15,6 +15,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.custom.FomesAlertDialog;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import javax.inject.Inject;
@@ -28,7 +29,8 @@ import rx.subscriptions.CompositeSubscription;
 
 public class BaseActivity extends AppCompatActivity {
 
-    @Inject ConfigService configService;
+//    @Inject ConfigService configService;
+    @Inject FirebaseRemoteConfig remoteConfig;
 
     private Unbinder binder;
 
@@ -87,25 +89,35 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void checkUpdatePopup() {
-        addToCompositeSubscription(
-            configService.getAppVersion()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(version -> {
-                    if (BuildConfig.VERSION_CODE < version) {
-                        displayVersionUpdateDialog();
-                    }
-                }, e -> Log.e(TAG, String.valueOf(e)))
-        );
+//        addToCompositeSubscription(
+//            configService.getAppVersion()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(version -> {
+//                    if (BuildConfig.VERSION_CODE < version) {
+//                        displayVersionUpdateDialog();
+//                    }
+//                }, e -> Log.e(TAG, String.valueOf(e)))
+//        );
+        if (remoteConfig.getLong("app_update_version_code") > BuildConfig.VERSION_CODE) {
+            displayVersionUpdateDialog();
+        }
     }
 
     private void displayVersionUpdateDialog() {
         FomesAlertDialog fomesAlertDialog = new FomesAlertDialog(this, getString(R.string.update_dialog_title),
-                getString(R.string.update_dialog_message), (dialog, which) -> {
+                remoteConfig.getString("app_update_version_name") + "\n"
+                        // new line 처리를 위해 추가 작업을 해줘야 한다. 아무래도 RemoteConfigUtil로 만들어서 관리해야할듯
+                        + remoteConfig.getString("app_update_message").replace("||", "\n"));
+
+        fomesAlertDialog.setPositiveButtonOnClickListener((dialog, which) -> {
             moveToPlayStore();
             dialog.dismiss();
         });
+
         fomesAlertDialog.setOnCancelListener(dialog -> {
-            finishAffinity();
+            if (remoteConfig.getBoolean("app_update_is_critical")) {
+                finishAffinity();
+            }
             dialog.dismiss();
         });
         fomesAlertDialog.show();

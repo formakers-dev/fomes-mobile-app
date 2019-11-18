@@ -36,8 +36,8 @@ public class FomesAlertDialog {
         this.negativeButtonOnClickListener = negativeButtonOnClickListener;
     }
 
-    public FomesAlertDialog(Context context, String title, String message, OnClickListener positiveButtonOnClickListener) {
-        this(context, title, message, positiveButtonOnClickListener, null);
+    public FomesAlertDialog(Context context, String title, String message) {
+        this(context, title, message, null, null);
     }
 
     public FomesAlertDialog(Context context, @DrawableRes int resId, String title, String message, OnClickListener positiveButtonOnClickListener) {
@@ -47,6 +47,14 @@ public class FomesAlertDialog {
 
     public void setOnCancelListener(OnCancelListener onCancelListener) {
         this.onCancelListener = onCancelListener;
+    }
+
+    public void setPositiveButtonOnClickListener(OnClickListener listener) {
+        this.positiveButtonOnClickListener = listener;
+    }
+
+    public void setNegativeButtonOnClickListener(OnClickListener listener) {
+        this.negativeButtonOnClickListener = listener;
     }
 
     private void createDialog() {
