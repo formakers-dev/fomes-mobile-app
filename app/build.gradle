@@ -52,6 +52,7 @@ android {
         // DEV
         development {
             debuggable true
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-dev.herokuapp.com/"'
@@ -62,6 +63,7 @@ android {
         // STG
         staging {
             debuggable true
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-stg.herokuapp.com/"'
@@ -70,6 +72,7 @@ android {
         }
         // PRD
         release {
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"http://fomesserver-env.wapcx7p5ip.ap-northeast-2.elasticbeanstalk.com/"'
