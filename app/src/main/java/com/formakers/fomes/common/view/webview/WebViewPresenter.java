@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 
@@ -30,16 +31,15 @@ public class WebViewPresenter implements WebViewConstract.Presenter {
     public boolean isFromDeeplink(Uri uri) {
         Log.d(TAG, "isFromDeeplink) " + uri);
         return uri != null
-                && uri.getScheme().equals("fomes")
-                && uri.getHost().equals("web")
-                && uri.getPath().equals("/internal");
+                && FomesConstants.DeepLink.SCHEME.equals(uri.getScheme())
+                && FomesConstants.DeepLink.HOST_WEB.equals(uri.getHost());
     }
 
     @Override
     public Bundle getInterpretedDeeplinkBundle(Uri deeplinkUri) {
-        String title = deeplinkUri.getQueryParameter("title");
-        String contents = deeplinkUri.getQueryParameter("url");
-        String appended = deeplinkUri.getQueryParameter("appendedUrl");
+        String title = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_TITLE);
+        String contents = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_URL);
+        String appended = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_APPENDED_URL);
 
         contents = fomesUrlHelper.interpretUrlParams(contents);
 

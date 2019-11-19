@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.DeeplinkActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -79,7 +80,18 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
         // TODO : 커밋후 리턴타입 고민하기
         if (presenter.isFromDeeplink(intent.getData())) {
+
+            Uri uri = intent.getData();
+
             getIntent().putExtras(presenter.getInterpretedDeeplinkBundle(intent.getData()));
+
+            if (FomesConstants.DeepLink.PATH_EXTERNAL.equals(uri.getPath())) {
+
+                Intent externalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getIntent().getStringExtra(EXTRA_CONTENTS)));
+                startActivity(externalIntent);
+                finish();
+                return;
+            }
         }
 
         title = getIntent().getStringExtra(EXTRA_TITLE);
@@ -88,9 +100,6 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         if (TextUtils.isEmpty(contents)) {
             throw new IllegalArgumentException("There aren't any contents");
         }
-
-        // TODO : MVP 구조 적용 후 `contents` 를 interpretUrlParams 처리하기
-        //  => 가... 맞을까? url 관련 처리는 외부에서 하도록 위임해야하는 게 아닐까?
 
         getSupportActionBar().setTitle(title);
 
