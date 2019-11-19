@@ -32,7 +32,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     private FirebaseRemoteConfig remoteConfig;
 
     private ProvisioningContract.View view;
-    private User user = new User();
+    User user = new User();
 
     @Inject
     ProvisioningPresenter(ProvisioningContract.View view, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO, AnalyticsModule.Analytics analytics, FirebaseRemoteConfig remoteConfig) {
@@ -43,17 +43,6 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
         this.userDAO = userDAO;
         this.analytics = analytics;
         this.remoteConfig = remoteConfig;
-    }
-
-    // temporary code for test
-    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
-        this.view = view;
-        this.user = user;
-        this.userService = userService;
-        this.androidNativeHelper = androidNativeHelper;
-        this.sharedPreferencesHelper = sharedPreferencesHelper;
-        this.userDAO = userDAO;
-        this.analytics = analytics;
     }
 
     @Override
@@ -163,6 +152,6 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
 
     private boolean isMoveToAnalysisReport() {
         return isProvisiongProgress()
-                && this.remoteConfig.getBoolean("signup_provision_analysis_screen_is_visible");
+                && this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE);
     }
 }

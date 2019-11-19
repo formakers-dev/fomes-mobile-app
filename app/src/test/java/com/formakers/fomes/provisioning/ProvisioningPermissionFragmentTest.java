@@ -9,11 +9,8 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.Lifecycle;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
-import com.formakers.fomes.provisioning.ProvisioningPermissionFragment;
-import com.formakers.fomes.provisioning.ProvisioningContract;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +21,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import static com.formakers.fomes.provisioning.ProvisioningPermissionFragment.REQUEST_CODE_USAGE_STATS_PERMISSION;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -63,34 +59,11 @@ public class ProvisioningPermissionFragmentTest {
     }
 
     @Test
-    public void ProvisioningPermissionFragment_가_보여질시__권한이_없으면__권한허용이_필요하다는_이벤트를_보낸다() {
-        when(mockPresenter.hasUsageStatsPermission()).thenReturn(false);
-
+    public void ProvisioningPermissionFragment_가_보여질시__프로비저닝_진행상태를_설정하고_권한_설정_여부를_체크한다() {
         subject.onSelectedPage();
 
         verify(mockPresenter).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
-        verify(mockPresenter).emitNeedToGrantEvent();
-    }
-
-    @Test
-    public void ProvisioningPermissionFragment_가_보여질시__권한이_있으면__상태를_업데이트하고_다음화면으로_이동한다() {
-        when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
-        when(mockPresenter.isProvisiongProgress()).thenReturn(true);
-
-        subject.onSelectedPage();
-
-        verify(mockPresenter).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-        verify(mockPresenter).emitStartActivityAndFinishEvent(eq(RecentAnalysisReportActivity.class));
-    }
-
-    @Test
-    public void ProvisioningPermissionFragment_가_보여질시__권한이_있고_프로비저닝상태가_아닐경우__종료한다() {
-        when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
-        when(mockPresenter.isProvisiongProgress()).thenReturn(false);
-
-        subject.onSelectedPage();
-
-        assertThat(subject.getActivity().isFinishing()).isTrue();
+        verify(mockPresenter).checkGrantedOnPermissionFragment();
     }
 
     @Test
@@ -102,24 +75,10 @@ public class ProvisioningPermissionFragmentTest {
     }
 
     @Test
-    public void 권한_설정_액티비티_종료시__권한설정_되었을경우__상태를_업데이트하고_다음화면으로_이동한다() {
-        when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
-        when(mockPresenter.isProvisiongProgress()).thenReturn(true);
-
+    public void 권한_설정_액티비티_종료시__권한_설정여부를_체크한다() {
         subject.onActivityResult(REQUEST_CODE_USAGE_STATS_PERMISSION, -1, null);
 
-        verify(mockPresenter).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-        verify(mockPresenter).emitStartActivityAndFinishEvent(eq(RecentAnalysisReportActivity.class));
-    }
-
-    @Test
-    public void 권한_설정_액티비티_종료시__권한설정_되었고_프로비저닝상태가_아닐경우__종료한다() {
-        when(mockPresenter.hasUsageStatsPermission()).thenReturn(true);
-        when(mockPresenter.isProvisiongProgress()).thenReturn(false);
-
-        subject.onActivityResult(REQUEST_CODE_USAGE_STATS_PERMISSION, -1, null);
-
-        assertThat(subject.getActivity().isFinishing()).isTrue();
+        verify(mockPresenter).checkGrantedOnPermissionFragment();
     }
 
     @Test

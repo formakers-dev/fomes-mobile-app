@@ -1,17 +1,17 @@
 package com.formakers.fomes.provisioning;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.common.helper.AndroidNativeHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.common.model.User;
-import com.formakers.fomes.provisioning.ProvisioningPresenter;
-import com.formakers.fomes.provisioning.ProvisioningContract;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import org.assertj.core.util.Lists;
 import org.junit.After;
@@ -42,7 +42,7 @@ public class ProvisioningPresenterTest {
     @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
     @Mock UserDAO mockUserDAO;
     @Mock AnalyticsModule.Analytics mockAnalytics;
-    @Mock User mockUser;
+    @Mock FirebaseRemoteConfig mockRemoteConfig;
 
     ProvisioningPresenter subject;
 
@@ -63,9 +63,9 @@ public class ProvisioningPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        when(mockUser.setAppVersion(any())).thenReturn(mockUser);
+        when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE)).thenReturn(true);
 
-        subject = new ProvisioningPresenter(mockView, mockUser, mockUserService, mockAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO, mockAnalytics);
+        subject = new ProvisioningPresenter(mockView, mockUserService, mockAndroidNativeHelper, mockSharedPreferencesHelper, mockUserDAO, mockAnalytics, mockRemoteConfig);
     }
 
     @After
@@ -78,17 +78,15 @@ public class ProvisioningPresenterTest {
     public void updateUserInfo__호출시__유저정보를_업데이트한다() {
         subject.updateUserInfo("미러스엣지", 1989, 1, User.GENDER_MALE);
 
-        verify(mockUser).setLifeApps(eq(Lists.newArrayList("미러스엣지")));
-        verify(mockUser).setBirthday(eq(1989));
-        verify(mockUser).setJob(eq(1));
-        verify(mockUser).setGender(eq(User.GENDER_MALE));
+        assertThat(subject.user.getLifeApps()).isEqualTo(Lists.newArrayList("미러스엣지"));
+        assertThat(subject.user.getBirthday()).isEqualTo(1989);
+        assertThat(subject.user.getJob()).isEqualTo(1);
+        assertThat(subject.user.getGender()).isEqualTo(User.GENDER_MALE);
     }
 
     @Test
     public void getUserNickName__호출시__유저의_닉네임을_반환한다() {
-        subject.getUserNickName();
-
-        verify(mockUser).getNickName();
+        assertThat(subject.getUserNickName()).isEqualTo(subject.user.getNickName());
     }
 
     @Test
@@ -137,7 +135,7 @@ public class ProvisioningPresenterTest {
 
         subject.requestUpdateUser();
 
-        verify(mockUserDAO).updateUserInfo(eq(mockUser));
+        verify(mockUserDAO).updateUserInfo(eq(subject.user));
 //        verify(mockUserService).updateUser(eq(mockUser));
     }
 
@@ -189,5 +187,50 @@ public class ProvisioningPresenterTest {
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
 
         assertThat(subject.isProvisiongProgress()).isFalse();
+    }
+
+    @Test
+    public void checkGrantedOnPermissionFragment_호출시__권한이_없으면__권한허용이_필요하다는_화면을_표시한다() {
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(false);
+
+        subject.checkGrantedOnPermissionFragment();
+
+        verify(mockView).setNextButtonText(R.string.common_go_to_grant);
+        verify(mockView).setNextButtonVisibility(true);
+    }
+
+    @Test
+    public void checkGrantedOnPermissionFragment_호출시__권한이_있으면__상태를_업데이트하고_분석화면으로_이동한다() {
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
+
+        subject.checkGrantedOnPermissionFragment();
+
+        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+        verify(mockView).startActivityAndFinish(RecentAnalysisReportActivity.class);
+    }
+
+    @Test
+    public void checkGrantedOnPermissionFragment_호출시__권한이_있고_분석화면을_보여주지않는_설정값이면__메인화면으로_이동한다() {
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
+        when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE)).thenReturn(false);
+
+        subject.checkGrantedOnPermissionFragment();
+
+        verify(mockSharedPreferencesHelper).setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+        verify(mockView).startActivityAndFinish(MainActivity.class);
+    }
+
+
+    @Test
+    public void checkGrantedOnPermissionFragment_호출시__권한이_있고__프로비저닝_상태가_아니면__메인화면으로_이동한다() {
+        when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+        when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE)).thenReturn(false);
+
+        subject.checkGrantedOnPermissionFragment();
+
+        verify(mockView).startActivityAndFinish(MainActivity.class);
     }
 }

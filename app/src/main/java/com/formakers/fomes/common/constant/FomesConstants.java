@@ -115,4 +115,8 @@ public interface FomesConstants {
         String ACTION_NOTI_CANCELLED = "com.formakers.fomes.NOTI_CANCELLED";
         String ACTION_NOTI_CLICKED = "com.formakers.fomes.NOTI_CLICKED";
     }
+
+    interface RemoteConfig {
+        String SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE ="signup_analysis_screen_is_visible";
+    }
 }
