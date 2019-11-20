@@ -2,16 +2,19 @@ package com.formakers.fomes.provisioning;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
+import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.common.helper.AndroidNativeHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
-import com.formakers.fomes.common.model.User;
+import com.formakers.fomes.main.MainActivity;
 import com.google.common.collect.Lists;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import javax.inject.Inject;
 
@@ -26,29 +29,20 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     private SharedPreferencesHelper sharedPreferencesHelper;
     private UserDAO userDAO;
     private AnalyticsModule.Analytics analytics;
+    private FirebaseRemoteConfig remoteConfig;
 
     private ProvisioningContract.View view;
-    private User user = new User();
+    User user = new User();
 
     @Inject
-    ProvisioningPresenter(ProvisioningContract.View view, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
+    ProvisioningPresenter(ProvisioningContract.View view, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO, AnalyticsModule.Analytics analytics, FirebaseRemoteConfig remoteConfig) {
         this.view = view;
         this.userService = userService;
         this.androidNativeHelper = androidNativeHelper;
         this.sharedPreferencesHelper = sharedPreferencesHelper;
         this.userDAO = userDAO;
         this.analytics = analytics;
-    }
-
-    // temporary code for test
-    ProvisioningPresenter(ProvisioningContract.View view, User user, UserService userService, AndroidNativeHelper androidNativeHelper, SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO, AnalyticsModule.Analytics analytics) {
-        this.view = view;
-        this.user = user;
-        this.userService = userService;
-        this.androidNativeHelper = androidNativeHelper;
-        this.sharedPreferencesHelper = sharedPreferencesHelper;
-        this.userDAO = userDAO;
-        this.analytics = analytics;
+        this.remoteConfig = remoteConfig;
     }
 
     @Override
@@ -137,5 +131,27 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     public boolean isProvisiongProgress() {
         return this.sharedPreferencesHelper.getProvisioningProgressStatus()
                 != FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED;
+    }
+
+    @Override
+    public void checkGrantedOnPermissionFragment() {
+        if (this.hasUsageStatsPermission()) {
+            this.finishFlow();
+        } else {
+            this.emitNeedToGrantEvent();
+        }
+    }
+
+    private void finishFlow() {
+        this.emitStartActivityAndFinishEvent(this.isMoveToAnalysisReport() ? RecentAnalysisReportActivity.class : MainActivity.class);
+
+        if (isProvisiongProgress()) {
+            this.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+        }
+    }
+
+    private boolean isMoveToAnalysisReport() {
+        return isProvisiongProgress()
+                && this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE);
     }
 }

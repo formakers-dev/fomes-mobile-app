@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Typeface;
-import androidx.annotation.DrawableRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.helper.ResourceHelper;
@@ -36,8 +37,8 @@ public class FomesAlertDialog {
         this.negativeButtonOnClickListener = negativeButtonOnClickListener;
     }
 
-    public FomesAlertDialog(Context context, String title, String message, OnClickListener positiveButtonOnClickListener) {
-        this(context, title, message, positiveButtonOnClickListener, null);
+    public FomesAlertDialog(Context context, String title, String message) {
+        this(context, title, message, null, null);
     }
 
     public FomesAlertDialog(Context context, @DrawableRes int resId, String title, String message, OnClickListener positiveButtonOnClickListener) {
@@ -47,6 +48,14 @@ public class FomesAlertDialog {
 
     public void setOnCancelListener(OnCancelListener onCancelListener) {
         this.onCancelListener = onCancelListener;
+    }
+
+    public void setPositiveButtonOnClickListener(OnClickListener listener) {
+        this.positiveButtonOnClickListener = listener;
+    }
+
+    public void setNegativeButtonOnClickListener(OnClickListener listener) {
+        this.negativeButtonOnClickListener = listener;
     }
 
     private void createDialog() {

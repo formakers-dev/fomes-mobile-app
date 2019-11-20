@@ -24,6 +24,7 @@ import com.formakers.fomes.common.helper.AppUsageDataHelper;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import javax.inject.Singleton;
 
@@ -51,6 +52,7 @@ public interface ApplicationComponent {
     RequestManager requestManager();
     JobManager jobManager();
     ChannelManager channelManager();
+    FirebaseRemoteConfig firebaseRemoteConfig();
 
     AnalyticsModule.Analytics analytics();
     ImageLoader imageLoader();

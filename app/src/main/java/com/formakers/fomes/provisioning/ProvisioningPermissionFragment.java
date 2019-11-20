@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.view.BaseFragment;
-import com.formakers.fomes.main.MainActivity;
 
 public class ProvisioningPermissionFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
@@ -67,20 +65,6 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
         this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
         this.presenter.getAnalytics().setCurrentScreen(this);
 
-        if (this.presenter.hasUsageStatsPermission()) {
-            moveToNextPage();
-        } else {
-            this.presenter.emitNeedToGrantEvent();
-        }
-    }
-
-    private void moveToNextPage() {
-        if (!this.presenter.isProvisiongProgress()) {
-            startActivity(new Intent(context, MainActivity.class));
-            getActivity().finish();
-        } else {
-            this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-            this.presenter.emitStartActivityAndFinishEvent(RecentAnalysisReportActivity.class);
-        }
+        this.presenter.checkGrantedOnPermissionFragment();
     }
 }

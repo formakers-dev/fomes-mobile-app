@@ -5,16 +5,17 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.view.custom.FomesAlertDialog;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.custom.FomesAlertDialog;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import javax.inject.Inject;
@@ -91,7 +92,7 @@ public class BaseActivity extends AppCompatActivity {
             configService.getAppVersion()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(version -> {
-                    if (BuildConfig.VERSION_CODE < version) {
+                    if (version > BuildConfig.VERSION_CODE) {
                         displayVersionUpdateDialog();
                     }
                 }, e -> Log.e(TAG, String.valueOf(e)))
@@ -99,11 +100,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void displayVersionUpdateDialog() {
-        FomesAlertDialog fomesAlertDialog = new FomesAlertDialog(this, getString(R.string.update_dialog_title),
-                getString(R.string.update_dialog_message), (dialog, which) -> {
+        FomesAlertDialog fomesAlertDialog = new FomesAlertDialog(this, getString(R.string.update_dialog_title), getString(R.string.update_dialog_message));
+
+        fomesAlertDialog.setPositiveButtonOnClickListener((dialog, which) -> {
             moveToPlayStore();
             dialog.dismiss();
         });
+
         fomesAlertDialog.setOnCancelListener(dialog -> {
             finishAffinity();
             dialog.dismiss();

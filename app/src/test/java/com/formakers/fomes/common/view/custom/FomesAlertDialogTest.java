@@ -31,7 +31,8 @@ public class FomesAlertDialogTest {
 
 
     private void setUpWithPositiveButtonOnly() throws Exception {
-        subject = new FomesAlertDialog(ApplicationProvider.getApplicationContext(), "팝업타이틀", "팝업메시지", mockPositiveOnClickListener);
+        subject = new FomesAlertDialog(ApplicationProvider.getApplicationContext(), "팝업타이틀", "팝업메시지");
+        subject.setPositiveButtonOnClickListener(mockPositiveOnClickListener);
     }
 
     private void setUpWithPositiveAndNegativeButtons() throws Exception {
