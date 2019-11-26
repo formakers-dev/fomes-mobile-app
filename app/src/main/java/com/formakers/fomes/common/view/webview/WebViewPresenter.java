@@ -1,17 +1,13 @@
 package com.formakers.fomes.common.view.webview;
 
 import android.net.Uri;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.formakers.fomes.common.constant.FomesConstants;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
-
-import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_CONTENTS;
-import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_TITLE;
 
 @WebViewDagger.Scope
 public class WebViewPresenter implements WebViewConstract.Presenter {
@@ -35,25 +31,29 @@ public class WebViewPresenter implements WebViewConstract.Presenter {
                 && FomesConstants.DeepLink.HOST_WEB.equals(uri.getHost());
     }
 
-    @Override
-    public Bundle getInterpretedDeeplinkBundle(Uri deeplinkUri) {
-        String title = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_TITLE);
-        String contents = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_URL);
-        String appended = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_APPENDED_URL);
+    public void interpreteDeepLink(Uri deeplinkUri) {
+        String host = deeplinkUri.getHost();
 
-        contents = fomesUrlHelper.interpretUrlParams(contents);
+        if (FomesConstants.DeepLink.HOST_WEB.equals(host)) {
+            String title = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_TITLE);
+            String contents = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_URL);
+            String appended = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_APPENDED_URL);
 
-        // TODO : 레거시코드. 크리티컬 릴리즈때 지워야한다
-        if (!TextUtils.isEmpty(appended)) {
-            // TODO : 아래를 유지해야하나 말아야하나 고민됨
-            contents += appended;
+            contents = fomesUrlHelper.interpretUrlParams(contents);
+
+            // TODO : 레거시코드. 크리티컬 릴리즈때 지워야한다
+            if (!TextUtils.isEmpty(appended)) {
+                // TODO : 아래를 유지해야하나 말아야하나 고민됨
+                contents += appended;
+            }
+
+            if (FomesConstants.DeepLink.PATH_EXTERNAL.equals(deeplinkUri.getPath())) {
+                this.view.throwDeepLink(Uri.parse(contents));
+            } else {
+                this.view.initialize(title, contents);
+            }
+        } else {
+            throw new IllegalArgumentException("This DeepLink is not associated with WebView !!!! (" + deeplinkUri + ")");
         }
-
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_TITLE, title);
-        bundle.putString(EXTRA_CONTENTS, contents);
-        return bundle;
     }
-
-
 }
