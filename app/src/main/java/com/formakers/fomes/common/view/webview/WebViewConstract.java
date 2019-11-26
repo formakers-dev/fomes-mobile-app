@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import com.formakers.fomes.common.mvp.BaseView;
 
+import rx.subscriptions.CompositeSubscription;
+
 public interface WebViewConstract {
     interface Presenter {
         boolean isFromDeeplink(Uri uri);
@@ -17,5 +19,7 @@ public interface WebViewConstract {
         void throwDeepLink(Uri deeplinkUri);
         void loadUrl(String url);
         void loadHtml(String html);
+
+        CompositeSubscription getCompositeSubscription();
     }
 }

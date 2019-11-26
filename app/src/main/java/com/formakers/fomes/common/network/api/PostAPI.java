@@ -12,6 +12,6 @@ public interface PostAPI {
     @GET("/posts")
     Single<List<Post>> getPromotions();
 
-    @GET("/posts/{id}")
+    @GET("/posts/detail/{id}")
     Single<Post> getPromotion(@Path("id") String postId);
 }

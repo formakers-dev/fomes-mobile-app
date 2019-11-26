@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_CONTENTS;
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_TITLE;
@@ -48,6 +49,8 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
     @Inject WebViewConstract.Presenter presenter;
 
     private ValueCallback<Uri[]> selectedFilePathCallback;
+
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Override
     public void setPresenter(WebViewConstract.Presenter presenter) {
@@ -154,6 +157,11 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
     @Override
     public void loadHtml(String html) {
         webView.loadData(html, WebViewPresenter.HTML_MIMETYPE, null);
+    }
+
+    @Override
+    public CompositeSubscription getCompositeSubscription() {
+        return compositeSubscription;
     }
 
     private class FomesWebChromeClient extends WebChromeClient {
