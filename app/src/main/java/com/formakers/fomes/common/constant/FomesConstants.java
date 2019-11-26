@@ -129,6 +129,5 @@ public interface FomesConstants {
 
         String QUERY_PARAM_TITLE = "title";
         String QUERY_PARAM_URL = "url";
-        String QUERY_PARAM_APPENDED_URL = "appendedUrl";
     }
 }

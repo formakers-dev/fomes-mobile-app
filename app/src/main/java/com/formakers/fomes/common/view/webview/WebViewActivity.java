@@ -105,11 +105,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
         webView.setWebChromeClient(new FomesWebChromeClient());
 
-        if (contents.toLowerCase().startsWith("http")) {
-            webView.loadUrl(contents);
-        } else {
-            webView.loadData(contents, "text/html; charset=UTF-8", null);
-        }
+        this.presenter.loadContents(contents);
     }
 
     @Override
@@ -148,6 +144,16 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         Intent externalIntent = new Intent(Intent.ACTION_VIEW, deeplinkUri);
         startActivity(externalIntent);
         finish();
+    }
+
+    @Override
+    public void loadUrl(String url) {
+        webView.loadUrl(url);
+    }
+
+    @Override
+    public void loadHtml(String html) {
+        webView.loadData(html, WebViewPresenter.HTML_MIMETYPE, null);
     }
 
     private class FomesWebChromeClient extends WebChromeClient {
