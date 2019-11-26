@@ -1,14 +1,13 @@
 package com.formakers.fomes.common.view.webview;
 
 import android.net.Uri;
-import android.os.Bundle;
 
-import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -40,15 +39,24 @@ public class WebViewPresenterTest {
     }
 
     @Test
-    public void getInterpretedDeeplinkBundle_호출시__링크를_해석하고__결과_데이터를_리턴한다() {
+    public void interpreteDeepLink_호출시__인앱웹뷰_딥링크이면__url로드를_준비한다() {
         when(mockFomesUrlHelper.interpretUrlParams("http://www.google.com?email={email}")).thenReturn("http://www.google.com?email=test@gmail.com");
-        Bundle bundle = subject.getInterpretedDeeplinkBundle(Uri.parse("fomes://web/internal?title=제목&url=http://www.google.com?email={email}"));
-
-        String title = bundle.getString(FomesConstants.WebView.EXTRA_TITLE);
-        String contents = bundle.getString(FomesConstants.WebView.EXTRA_CONTENTS);
+        subject.interpreteDeepLink(Uri.parse("fomes://web/internal?title=제목&url=http://www.google.com?email={email}"));
 
         verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.google.com?email={email}"));
-        assertThat(title).isEqualTo("제목");
-        assertThat(contents).isEqualTo("http://www.google.com?email=test@gmail.com");
+        verify(mockView).initialize(eq("제목"), eq("http://www.google.com?email=test@gmail.com"));
+    }
+
+    @Test
+    public void interpreteDeepLink_호출시__외부브라우저_딥링크면__url을_외부로_던진다() {
+        when(mockFomesUrlHelper.interpretUrlParams("http://www.google.com?email={email}")).thenReturn("http://www.google.com?email=test@gmail.com");
+        subject.interpreteDeepLink(Uri.parse("fomes://web/external?title=제목&url=http://www.google.com?email={email}"));
+
+        verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.google.com?email={email}"));
+
+        ArgumentCaptor<Uri> argumentCaptor = ArgumentCaptor.forClass(Uri.class);
+        verify(mockView).throwDeepLink(argumentCaptor.capture());
+        String actualDeepLink = String.valueOf(argumentCaptor.getValue());
+        assertThat(actualDeepLink).isEqualTo("http://www.google.com?email=test@gmail.com");
     }
 }
