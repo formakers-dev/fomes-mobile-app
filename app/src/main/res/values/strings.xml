@@ -69,7 +69,8 @@
     <string name="provision_nickname_subtitle">닉네임은 2글자에서 10글자 사이로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
-    <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.</string>
+    <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자/일부 특수문자(^*☆★♡♥_-)로만 작성 가능합니다.</string>
+    <string name="provision_nickname_format_special_string_warning">* 닉네임은 특수문자로만 구성될 수 없습니다.</string>
     <string name="provision_nickname_already_exist_warning">* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.</string>
     <string name="provision_permission_title">데이터 기반 분석을 위해\n포메스를 찾아서 허용해주세요.</string>
     <string name="provision_permission_subtitle">구글 정책상 직접 선택해서 허용해야 합니다.</string>

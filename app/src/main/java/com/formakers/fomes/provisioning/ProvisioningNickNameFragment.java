@@ -27,7 +27,8 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
 
     public static final String TAG = ProvisioningNickNameFragment.class.getSimpleName();
 
-    private static final String NICKNAME_REGEX = "[a-zA-Zㄱ-ㅎ가-힣0-9]{2,10}";
+    private static final String NICKNAME_REGEX = "[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\\\\^\\\\*☆★♡♥_-]{2,10}";
+    private static final String NICKNAME_WRONG_REGEX = "[\\\\^\\\\*☆★♡♥_-]{2,10}";
 
     @BindView(R.id.provision_nickname_content_edittext) EditText nickNameEditText;
     @BindView(R.id.provision_nickname_format_warning_textview) TextView nickNameWarningTextView;
@@ -86,8 +87,14 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     public void onNickNameTextChanged(CharSequence text, int start, int before, int count) {
         Log.v(TAG, text + " start=" + start + ", before=" + before + ", count=" + count);
 
-        boolean isMatched = Pattern.matches(NICKNAME_REGEX, text);
-        setVisibilityWarningView(!isMatched, R.string.provision_nickname_format_warning);
+        boolean isWrong = Pattern.matches(NICKNAME_WRONG_REGEX, text);
+
+        if (isWrong) {
+            setVisibilityWarningView(true, R.string.provision_nickname_format_special_string_warning);
+        } else {
+            boolean isMatched = Pattern.matches(NICKNAME_REGEX, text);
+            setVisibilityWarningView(!isMatched, R.string.provision_nickname_format_warning);
+        }
     }
 
     private void setVisibilityWarningView(boolean isVisible, @StringRes int stringResId) {
