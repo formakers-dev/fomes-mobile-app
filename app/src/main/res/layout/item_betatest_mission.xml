@@ -192,6 +192,7 @@
                 android:textSize="13dp"
                 android:textColor="@color/fomes_white"
                 android:textStyle="bold"
+                android:foreground="@drawable/ripple"
                 android:background="@drawable/betatest_mission_item_button_selector"
                 app:layout_constraintTop_toBottomOf="@+id/mission_guide"
                 app:layout_constraintStart_toStartOf="@+id/mission_description"

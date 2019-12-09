@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 
 import java.util.ArrayList;
@@ -48,16 +50,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         BaseViewHolder baseViewHolder = (BaseViewHolder) holder;
 
         baseViewHolder.titleTextView.setText(item.getTitle());
-
-        List<String> targetApps = item.getApps();
-
-        if (targetApps == null || targetApps.isEmpty()) {
-            baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), context.getString(R.string.app_name)));
-        } else {
-            baseViewHolder.targetTextView.setText(String.format(context.getString(R.string.betatest_target_format), targetApps.get(0)));
-        }
-
-        baseViewHolder.testTypeTextView.setText(item.getTags().get(0));
 
         ViewHolder viewHolder = (ViewHolder) holder;
 //        viewHolder.subTitleTextView.setText(item.getSubTitle());
@@ -101,6 +93,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.disableTitleLayout.setVisibility(View.VISIBLE);
         }
 
+        // 레거시 코드 - UX 업데이트 후 사라질 로직들
         if (item.getAfterService() == null) {
             viewHolder.awardGroup.setVisibility(View.GONE);
             viewHolder.progressLayout.setVisibility(View.VISIBLE);
@@ -129,6 +122,19 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         viewHolder.companySaysLayout.setEnabled(item.getAfterService() != null && item.isCompleted());
 
         viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
+
+        for (Mission mission : item.getMissions()) {
+            if (mission.getItem().isRecheckable()) {
+                Button recheckableButton = (Button) LayoutInflater.from(context).inflate(R.layout.item_button, null);
+                recheckableButton.setText(String.format(context.getString(R.string.finished_betatest_recheck_my_answer_button_text_format), mission.getItem().getTitle()));
+                recheckableButton.setOnClickListener(v -> {
+                    this.presenter.emitRecheckMyAnswer(mission.getItem());
+                });
+                viewHolder.RecheckMyAnswerLayout.addView(recheckableButton);
+            }
+        }
+
+        viewHolder.RecheckMyAnswerLayout.setVisibility(viewHolder.RecheckMyAnswerLayout.getChildCount() >= 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -174,10 +180,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     class BaseViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         @Deprecated
-        TextView targetTextView;
-        @Deprecated
-        TextView testTypeTextView;
-        @Deprecated
         View progressLayout;
         @Deprecated
         TextView progressTitleTextView;
@@ -187,8 +189,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         public BaseViewHolder(View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
-            targetTextView = itemView.findViewById(R.id.betatest_target);
-            testTypeTextView = itemView.findViewById(R.id.betatest_test_type);
             progressLayout = itemView.findViewById(R.id.betatest_finished_my_feedback);
             progressTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_title);
             progressSubTitleTextView = itemView.findViewById(R.id.betatest_finished_progress_subtitle);
@@ -204,6 +204,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         Group awardGroup;
         TextView awardTextView;
         View disableTitleLayout;
+        ViewGroup RecheckMyAnswerLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -215,6 +216,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             awardGroup = itemView.findViewById(R.id.betatest_award_group);
             awardTextView = itemView.findViewById(R.id.betatest_award_contents);
             disableTitleLayout = itemView.findViewById(R.id.betatest_title_layout_disable_background);
+            RecheckMyAnswerLayout = itemView.findViewById(R.id.layout_recheck_my_answer);
         }
     }
 }

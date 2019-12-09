@@ -1,11 +1,20 @@
 package com.formakers.fomes.betatest;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.text.TextUtils;
+
+import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
@@ -31,6 +40,8 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
     private ImageLoader imageLoader;
+    private FomesUrlHelper fomesUrlHelper;
+    private AndroidNativeHelper androidNativeHelper;
 
     private FinishedBetaTestListAdapterContract.Model adapterModel;
     private FinishedBetaTestContract.View view;
@@ -40,12 +51,20 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     private List<BetaTest> finishedList = new ArrayList<>();
 
     @Inject
-    public FinishedBetaTestPresenter(FinishedBetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, AnalyticsModule.Analytics analytics, ImageLoader imageLoader) {
+    public FinishedBetaTestPresenter(FinishedBetaTestContract.View view,
+                                     BetaTestService betaTestService,
+                                     EventLogService eventLogService,
+                                     AnalyticsModule.Analytics analytics,
+                                     ImageLoader imageLoader,
+                                     FomesUrlHelper fomesUrlHelper,
+                                     AndroidNativeHelper androidNativeHelper) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
         this.analytics = analytics;
         this.imageLoader = imageLoader;
+        this.fomesUrlHelper = fomesUrlHelper;
+        this.androidNativeHelper = androidNativeHelper;
     }
 
     @Override
@@ -136,6 +155,47 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     @Override
     public BetaTest getItem(int position) {
         return (BetaTest) this.adapterModel.getItem(position);
+    }
+
+    @Override
+    public void emitRecheckMyAnswer(Mission.MissionItem missionItem) {
+        this.view.showNoticePopup(R.string.finished_betatest_recheck_my_answer_popup_title,
+                R.string.finished_betatest_recheck_my_answer_popup_subtitle,
+                R.drawable.notice_recheck_my_answer,
+                R.string.finished_betatest_recheck_my_answer_popup_description,
+                R.string.finished_betatest_recheck_my_answer_popup_positive_button_text,
+                v -> processMissionItemAction(missionItem));
+    }
+
+    private void processMissionItemAction(Mission.MissionItem missionItem) {
+        // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
+        String action = missionItem.getAction();
+
+        if (TextUtils.isEmpty(action)) {
+            return;
+        }
+
+        String url = fomesUrlHelper.interpretUrlParams(action);
+        Uri uri = Uri.parse(url);
+
+        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionItem.getType())) {
+            Intent intent = this.androidNativeHelper.getLaunchableIntent(missionItem.getPackageName());
+
+            if (intent != null) {
+                view.startActivity(intent);
+                return;
+            }
+        }
+
+        // below condition logic should be move to URL Manager(or Parser and so on..)
+        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(missionItem.getActionType())
+                || (uri.getQueryParameter("internal_web") != null
+                && uri.getQueryParameter("internal_web").equals("true"))) {
+            view.startWebViewActivity(missionItem.getTitle(), url);
+        } else {
+            // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
+            view.startByDeeplink(Uri.parse(url));
+        }
     }
 
     @Override

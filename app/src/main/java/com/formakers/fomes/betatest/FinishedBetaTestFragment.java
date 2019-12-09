@@ -1,5 +1,7 @@
 package com.formakers.fomes.betatest;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -17,9 +19,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
+import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.main.MainActivity;
 
 import javax.inject.Inject;
@@ -134,7 +138,37 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     }
 
     @Override
+    public void showNoticePopup(int titleResId, int subTitleResId, int imageResId, int descriptionResId,
+                                int positiveButtonTextResId, View.OnClickListener positiveButtonClickListener) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesNoticeDialog.EXTRA_TITLE, getString(titleResId));
+        bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, getString(subTitleResId));
+        bundle.putInt(FomesNoticeDialog.EXTRA_IMAGE_RES_ID, imageResId);
+        bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, getString(descriptionResId));
+
+        FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
+        noticeDialog.setArguments(bundle);
+        noticeDialog.setPositiveButton(getString(positiveButtonTextResId), positiveButtonClickListener);
+        noticeDialog.show(this.getFragmentManager(), "Test");
+    }
+
+    @Override
     public void refresh() {
         adapterView.notifyDataSetChanged();
+    }
+
+    @Override
+    public void startWebViewActivity(String title, String url) {
+        Intent intent = new Intent(getContext(), WebViewActivity.class);
+        intent.putExtra(FomesConstants.WebView.EXTRA_TITLE, title);
+        intent.putExtra(FomesConstants.WebView.EXTRA_CONTENTS, url);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startByDeeplink(Uri deeplinkUri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(deeplinkUri);
+        startActivity(intent);
     }
 }

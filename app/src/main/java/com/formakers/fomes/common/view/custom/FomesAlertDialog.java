@@ -18,6 +18,7 @@ import androidx.annotation.DrawableRes;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.helper.ResourceHelper;
 
+@Deprecated
 public class FomesAlertDialog {
 
     private final Context context;

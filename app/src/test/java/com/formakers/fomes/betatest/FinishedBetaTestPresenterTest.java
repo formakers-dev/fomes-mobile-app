@@ -1,11 +1,15 @@
 package com.formakers.fomes.betatest;
 
+import com.formakers.fomes.R;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
+import com.formakers.fomes.common.network.vo.Mission;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -31,6 +35,7 @@ import rx.schedulers.Schedulers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,6 +48,8 @@ public class FinishedBetaTestPresenterTest {
     @Mock private EventLogService mockEventLogService;
     @Mock private AnalyticsModule.Analytics mockAnalytics;
     @Mock private ImageLoader mockImageLoader;
+    @Mock private FomesUrlHelper mockFomesUrlHelper;
+    @Mock private AndroidNativeHelper mockAndroidNativeHelper;
 
     private List<BetaTest> finishedBetaTests = new ArrayList<>();
     private FinishedBetaTestPresenter subject;
@@ -75,7 +82,7 @@ public class FinishedBetaTestPresenterTest {
         when(mockAdapterModel.getItem(0)).thenReturn(finishedBetaTests.get(1));
         when(mockAdapterModel.getItem(1)).thenReturn(finishedBetaTests.get(0));
 
-        subject = new FinishedBetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockImageLoader);
+        subject = new FinishedBetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockImageLoader, mockFomesUrlHelper, mockAndroidNativeHelper);
         subject.setAdapterModel(mockAdapterModel);
     }
 
@@ -171,6 +178,20 @@ public class FinishedBetaTestPresenterTest {
         BetaTest betaTest = subject.getItem(0);
 
         assertThat(betaTest.getId()).isEqualTo("1");
+    }
+
+    @Test
+    public void emitRecheckMyAnswer_호출시__공지팝업을_띄운다() {
+        Mission.MissionItem missionItem = new Mission.MissionItem().setTitle("test");
+
+        subject.emitRecheckMyAnswer(missionItem);
+
+        verify(mockView).showNoticePopup(eq(R.string.finished_betatest_recheck_my_answer_popup_title),
+                eq(R.string.finished_betatest_recheck_my_answer_popup_subtitle),
+                eq(R.drawable.notice_recheck_my_answer),
+                eq(R.string.finished_betatest_recheck_my_answer_popup_description),
+                eq(R.string.finished_betatest_recheck_my_answer_popup_positive_button_text),
+                any());
     }
 
     @Test
