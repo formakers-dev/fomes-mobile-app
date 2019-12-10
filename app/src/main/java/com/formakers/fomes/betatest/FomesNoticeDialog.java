@@ -2,6 +2,7 @@ package com.formakers.fomes.betatest;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class FomesNoticeDialog extends DialogFragment {
         if (bundle == null) {
             return;
         }
-//
+
         String title = bundle.getString(EXTRA_TITLE);
         String subtitle = bundle.getString(EXTRA_SUBTITLE);
         @DrawableRes int imageResId = bundle.getInt(EXTRA_IMAGE_RES_ID);
@@ -67,7 +68,13 @@ public class FomesNoticeDialog extends DialogFragment {
         titleTextView.setText(title);
         subTitleTextView.setText(subtitle);
         imageView.setImageDrawable(getResources().getDrawable(imageResId, null));
-        descriptionTextView.setText(description);
+
+        if (TextUtils.isEmpty(description)) {
+            descriptionTextView.setVisibility(View.GONE);
+        } else {
+            descriptionTextView.setText(description);
+            descriptionTextView.setVisibility(View.VISIBLE);
+        }
 
         postivieButton.setText(positiveButtonText);
         postivieButton.setOnClickListener(v -> {

@@ -46,7 +46,8 @@ public interface FinishedBetaTestContract {
 
         void showEmptyView();
         void showListView();
-        void showNoticePopup(@StringRes int titleResId, @StringRes int subTitleResId, @DrawableRes int imageResId, @StringRes int descriptionResId, @StringRes int positiveButtonTextResId, android.view.View.OnClickListener positiveButtonClickListener);
+        void showNoticePopup(@StringRes int titleResId, @StringRes int subTitleResId, @DrawableRes int imageResId,
+                             @StringRes int positiveButtonTextResId, android.view.View.OnClickListener positiveButtonClickListener);
 
         void refresh();
 

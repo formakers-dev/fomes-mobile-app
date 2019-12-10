@@ -123,6 +123,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
 
+        viewHolder.RecheckMyAnswerLayout.removeAllViews();
         for (Mission mission : item.getMissions()) {
             if (mission.getItem().isCompleted() && mission.getItem().isRecheckable()) {
                 Button recheckableButton = (Button) LayoutInflater.from(context).inflate(R.layout.item_button, null);
@@ -134,7 +135,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         }
 
-        viewHolder.RecheckMyAnswerLayout.setVisibility(viewHolder.RecheckMyAnswerLayout.getChildCount() >= 0 ? View.VISIBLE : View.GONE);
+        viewHolder.RecheckMyAnswerLayout.setVisibility(viewHolder.RecheckMyAnswerLayout.getChildCount() > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override

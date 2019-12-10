@@ -54,7 +54,8 @@
             android:lineSpacingExtra="6dp"
             android:text="* 임시로 오픈한 기능이라 어색하더라도 양해 부탁드려요 😭\n* 최대한 빨리 정식 기능으로 도입하겠습니다!"
             android:textColor="@color/colorPrimary"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            tools:visibility="gone"/>
     </LinearLayout>
     <Button
         android:id="@+id/dialog_positive_button"

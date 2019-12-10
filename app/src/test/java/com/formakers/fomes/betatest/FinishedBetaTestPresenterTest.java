@@ -189,7 +189,6 @@ public class FinishedBetaTestPresenterTest {
         verify(mockView).showNoticePopup(eq(R.string.finished_betatest_recheck_my_answer_popup_title),
                 eq(R.string.finished_betatest_recheck_my_answer_popup_subtitle),
                 eq(R.drawable.notice_recheck_my_answer),
-                eq(R.string.finished_betatest_recheck_my_answer_popup_description),
                 eq(R.string.finished_betatest_recheck_my_answer_popup_positive_button_text),
                 any());
     }

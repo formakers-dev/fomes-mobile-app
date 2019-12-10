@@ -162,7 +162,6 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
         this.view.showNoticePopup(R.string.finished_betatest_recheck_my_answer_popup_title,
                 R.string.finished_betatest_recheck_my_answer_popup_subtitle,
                 R.drawable.notice_recheck_my_answer,
-                R.string.finished_betatest_recheck_my_answer_popup_description,
                 R.string.finished_betatest_recheck_my_answer_popup_positive_button_text,
                 v -> processMissionItemAction(missionItem));
     }

@@ -44,6 +44,8 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
 
     FinishedBetaTestListAdapterContract.View adapterView;
 
+    private FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -138,15 +140,13 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     }
 
     @Override
-    public void showNoticePopup(int titleResId, int subTitleResId, int imageResId, int descriptionResId,
+    public void showNoticePopup(int titleResId, int subTitleResId, int imageResId,
                                 int positiveButtonTextResId, View.OnClickListener positiveButtonClickListener) {
         Bundle bundle = new Bundle();
         bundle.putString(FomesNoticeDialog.EXTRA_TITLE, getString(titleResId));
         bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, getString(subTitleResId));
         bundle.putInt(FomesNoticeDialog.EXTRA_IMAGE_RES_ID, imageResId);
-        bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, getString(descriptionResId));
 
-        FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
         noticeDialog.setArguments(bundle);
         noticeDialog.setPositiveButton(getString(positiveButtonTextResId), positiveButtonClickListener);
         noticeDialog.show(this.getFragmentManager(), "Test");
