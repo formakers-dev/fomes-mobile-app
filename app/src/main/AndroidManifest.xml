@@ -76,12 +76,13 @@
         <activity android:name=".common.view.NoticeMigrationActivity"
             android:theme="@style/FomesTheme.NoActionBar"/>
         <activity android:name=".common.view.webview.WebViewActivity"
-            android:parentActivityName=".main.MainActivity">
+            android:parentActivityName=".main.MainActivity"
+            android:label="@string/common_empty_string">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="fomes"
-                    android:host="web"/>
+                <data android:scheme="fomes" android:host="web"/>
+                <data android:scheme="fomes" android:host="post"/>
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -23,7 +23,6 @@ import androidx.annotation.RequiresApi;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.DeeplinkActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -33,6 +32,7 @@ import java.net.URISyntaxException;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_CONTENTS;
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_TITLE;
@@ -49,6 +49,8 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
     @Inject WebViewConstract.Presenter presenter;
 
     private ValueCallback<Uri[]> selectedFilePathCallback;
+
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Override
     public void setPresenter(WebViewConstract.Presenter presenter) {
@@ -75,28 +77,20 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         super.onPostCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String title;
-        String contents;
+        Uri uri = intent.getData();
 
-        // TODO : 커밋후 리턴타입 고민하기
-        if (presenter.isFromDeeplink(intent.getData())) {
+        if (presenter.isFromDeeplink(uri)) {
+            presenter.interpreteDeepLink(uri);
+        } else {
+            String title = getIntent().getStringExtra(EXTRA_TITLE);
+            String contents = getIntent().getStringExtra(EXTRA_CONTENTS);
 
-            Uri uri = intent.getData();
-
-            getIntent().putExtras(presenter.getInterpretedDeeplinkBundle(intent.getData()));
-
-            if (FomesConstants.DeepLink.PATH_EXTERNAL.equals(uri.getPath())) {
-
-                Intent externalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getIntent().getStringExtra(EXTRA_CONTENTS)));
-                startActivity(externalIntent);
-                finish();
-                return;
-            }
+            initialize(title, contents);
         }
+    }
 
-        title = getIntent().getStringExtra(EXTRA_TITLE);
-        contents = getIntent().getStringExtra(EXTRA_CONTENTS);
-
+    @Override
+    public void initialize(String title, String contents) {
         if (TextUtils.isEmpty(contents)) {
             throw new IllegalArgumentException("There aren't any contents");
         }
@@ -114,11 +108,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
         webView.setWebChromeClient(new FomesWebChromeClient());
 
-        if (contents.toLowerCase().startsWith("http")) {
-            webView.loadUrl(contents);
-        } else {
-            webView.loadData(contents, "text/html; charset=UTF-8", null);
-        }
+        this.presenter.loadContents(contents);
     }
 
     @Override
@@ -150,6 +140,28 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void throwDeepLink(Uri deeplinkUri) {
+        Intent externalIntent = new Intent(Intent.ACTION_VIEW, deeplinkUri);
+        startActivity(externalIntent);
+        finish();
+    }
+
+    @Override
+    public void loadUrl(String url) {
+        webView.loadUrl(url);
+    }
+
+    @Override
+    public void loadHtml(String html) {
+        webView.loadData(html, WebViewPresenter.HTML_MIMETYPE, null);
+    }
+
+    @Override
+    public CompositeSubscription getCompositeSubscription() {
+        return compositeSubscription;
     }
 
     private class FomesWebChromeClient extends WebChromeClient {

@@ -124,11 +124,14 @@ public interface FomesConstants {
         String SLASH = "/";
         String SCHEME = "fomes";
 
+        String HOST_POST = "post";
         String HOST_WEB = "web";
-        String PATH_EXTERNAL = SLASH + "external";
 
+        String PATH_EXTERNAL = SLASH + "external";
+        String PATH_DETAIL = SLASH + "detail";
+
+        String QUERY_PARAM_ID = "id";
         String QUERY_PARAM_TITLE = "title";
         String QUERY_PARAM_URL = "url";
-        String QUERY_PARAM_APPENDED_URL = "appendedUrl";
     }
 }

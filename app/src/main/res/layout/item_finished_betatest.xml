@@ -161,6 +161,7 @@
                 tools:visibility="visible"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/betatest_award_layout"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:background="@drawable/item_rect_rounded_corner_background"
@@ -173,8 +174,7 @@
                 android:paddingEnd="13dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/betatest_subtitle_textview">
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/betatest_award_group"
@@ -224,7 +224,7 @@
                     android:theme="@style/BetaTestTheme.EpilogueButtonBackground"
                     android:textSize="11dp"
                     android:textColor="@color/fomes_light_gray"
-                    android:text="자세히 보기"
+                    android:text="@string/finished_betatest_show_award_button_text"
                     android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -260,8 +260,23 @@
                         android:textColor="@color/fomes_warm_gray"
                         android:text="@string/betatest_collecting_results" />
                 </LinearLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_recheck_my_answer"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:divider="@drawable/divider"
+                android:showDividers="middle"
+                android:theme="@style/FomesMainTabTheme.FinishedBetaTestRecheckAnswerDivider"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_award_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

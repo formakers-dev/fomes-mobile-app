@@ -69,7 +69,8 @@
     <string name="provision_nickname_subtitle">닉네임은 2글자에서 10글자 사이로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
     <string name="provision_nickname_content_hint">여기에 닉네임을 입력해주세요.</string>
-    <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자로만 작성 가능합니다.</string>
+    <string name="provision_nickname_format_warning">* 닉네임은 2글자에서 10글자 사이로, 한글/영어/숫자/일부 특수문자(^*☆★♡♥_-)로만 작성 가능합니다.</string>
+    <string name="provision_nickname_format_special_string_warning">* 닉네임은 특수문자로만 구성될 수 없습니다.</string>
     <string name="provision_nickname_already_exist_warning">* 이미 사용된 닉네임 입니다. 다른 닉네임을 입력해주세요.</string>
     <string name="provision_permission_title">데이터 기반 분석을 위해\n포메스를 찾아서 허용해주세요.</string>
     <string name="provision_permission_subtitle">구글 정책상 직접 선택해서 허용해야 합니다.</string>
@@ -175,6 +176,11 @@
     <string name="finished_betatest_subtitle">게임사 소감 및 테스터 시상식을 볼 수 있습니다.</string>
     <string name="finished_betatest_complete_switch_text">완료한 테스트만</string>
     <string name="finished_beta_test_empty_text_format">아직 완료하신 테스트가 없으시군요!\n지금 테스트를 진행해보시면 어떨까요?</string>
+    <string name="finished_betatest_recheck_my_answer_button_text_format">내 답변 다시 보기 (%s)</string>
+    <string name="finished_betatest_recheck_my_answer_popup_title">내 답변 다시 보기</string>
+    <string name="finished_betatest_recheck_my_answer_popup_subtitle">[내 답변 다시 보기] 가 베타 오픈되었습니다!\n[응답 수정] 버튼을 클릭하시면 다시 볼 수 있습니다.</string>
+    <string name="finished_betatest_recheck_my_answer_popup_positive_button_text">내 답변 다시 보러 가기</string>
+    <string name="finished_betatest_show_award_button_text">시상식 보기</string>
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>

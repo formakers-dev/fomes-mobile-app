@@ -133,6 +133,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public void processMissionItemAction(Mission.MissionItem missionItem) {
+        // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
         String action = missionItem.getAction();
 
         if (TextUtils.isEmpty(action)) {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/fomes_charcoal_gray"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="내 답변 다시보기"
+            android:textAlignment="center"
+            android:textColor="@color/fomes_white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="6dp"
+            android:text="[내 답변 다시보기] 기능을 임시 오픈하였습니다!\n[응답 수정] 버튼을 클릭하시면 응답을 확인할 수 있습니다."
+            android:textAlignment="center"
+            android:textColor="@color/fomes_white"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/dialog_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/notice_recheck_my_answer"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/dialog_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:lineSpacingExtra="6dp"
+            android:text="* 임시로 오픈한 기능이라 어색하더라도 양해 부탁드려요 😭\n* 최대한 빨리 정식 기능으로 도입하겠습니다!"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12dp"
+            tools:visibility="gone"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/dialog_positive_button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/colorPrimary"
+        android:foreground="@drawable/ripple"
+        android:text="내 답변 다시보러 가기"
+        android:textColor="@color/fomes_white"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+</LinearLayout>

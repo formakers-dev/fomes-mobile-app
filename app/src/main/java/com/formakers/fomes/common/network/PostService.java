@@ -25,4 +25,9 @@ public class PostService {
         return postAPI.getPromotions()
                 .subscribeOn(Schedulers.io());
     }
+
+    public Single<Post> getPromotion(String id) { // promotionId? postId? objectId?
+        return postAPI.getPromotion(id)
+                .subscribeOn(Schedulers.io());
+    }
 }
