@@ -124,7 +124,7 @@ public interface FomesConstants {
         String SLASH = "/";
         String SCHEME = "fomes";
 
-        String HOST_POST = "post";
+        String HOST_POSTS = "posts";
         String HOST_WEB = "web";
 
         String PATH_EXTERNAL = SLASH + "external";

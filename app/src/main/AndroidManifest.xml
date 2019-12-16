@@ -82,7 +82,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:scheme="fomes" android:host="web"/>
-                <data android:scheme="fomes" android:host="post"/>
+                <data android:scheme="fomes" android:host="posts"/>
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
