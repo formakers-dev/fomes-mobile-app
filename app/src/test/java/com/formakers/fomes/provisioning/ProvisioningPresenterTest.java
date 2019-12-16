@@ -1,5 +1,6 @@
 package com.formakers.fomes.provisioning;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -31,6 +32,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -130,13 +132,23 @@ public class ProvisioningPresenterTest {
     }
 
     @Test
-    public void requestUpdateUser__호출시__유저정보_업데이트_API를_호출한다() {
+    public void requestUpdateUser__호출시__유저정보_업데이트_API를_호출한후_유저정보를_내부에_업데이트한다() {
         when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.complete());
+
+        subject.requestUpdateUser().subscribe();
+
+        verify(mockUserService).updateUser(eq(subject.user), eq(BuildConfig.VERSION_NAME));
+        verify(mockUserDAO).updateUserInfo(eq(subject.user));
+    }
+
+    @Test
+    public void requestUpdateUser__호출시__유저정보_업데이트_API가_실패하면__아무것도_하지않는다() {
+        when(mockUserService.updateUser(any(User.class))).thenReturn(Completable.error(new Throwable()));
 
         subject.requestUpdateUser();
 
-        verify(mockUserDAO).updateUserInfo(eq(subject.user));
-//        verify(mockUserService).updateUser(eq(mockUser));
+        verify(mockUserService).updateUser(eq(subject.user), eq(BuildConfig.VERSION_NAME));
+        verify(mockUserDAO, never()).updateUserInfo(any());
     }
 
     @Test

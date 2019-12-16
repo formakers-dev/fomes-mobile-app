@@ -47,6 +47,12 @@ public class UserService extends AbstractService {
                 .subscribeOn(Schedulers.io());
     }
 
+    public Completable updateUser(User user, String versionName) {
+        User userWithOtherInfo = user.setAppVersion(versionName)
+                .setDevice(new User.DeviceInfo());
+        return updateUser(userWithOtherInfo);
+    }
+
     @Deprecated
     public Completable updateUser(User user) {
         return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), user))
