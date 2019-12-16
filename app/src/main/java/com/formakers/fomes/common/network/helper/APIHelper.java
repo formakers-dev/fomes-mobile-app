@@ -1,5 +1,7 @@
-package com.formakers.fomes.common.helper;
+package com.formakers.fomes.common.network.helper;
 
+import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.api.UserAPI;
 
@@ -15,7 +17,7 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class APIHelper {
 
-    private final SharedPreferencesHelper SharedPreferencesHelper;
+    private final com.formakers.fomes.common.helper.SharedPreferencesHelper SharedPreferencesHelper;
     private final GoogleSignInAPIHelper googleSignInAPIHelper;
     private final UserAPI userAPI;
 

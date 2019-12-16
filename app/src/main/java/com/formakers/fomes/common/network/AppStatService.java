@@ -1,7 +1,7 @@
 package com.formakers.fomes.common.network;
 
 import com.formakers.fomes.common.network.vo.RecentReport;
-import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.network.helper.APIHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.helper.TimeHelper;
 import com.formakers.fomes.common.model.AppUsage;

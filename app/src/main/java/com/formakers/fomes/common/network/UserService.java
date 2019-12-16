@@ -2,7 +2,7 @@ package com.formakers.fomes.common.network;
 
 import androidx.annotation.NonNull;
 
-import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.network.helper.APIHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.model.AppInfo;
 import com.formakers.fomes.common.model.User;
