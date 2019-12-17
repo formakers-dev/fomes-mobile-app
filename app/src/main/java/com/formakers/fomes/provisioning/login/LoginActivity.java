@@ -62,15 +62,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         loginTncTextView.setText(Html.fromHtml(getString(R.string.login_tnc)));
         loginTncTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        addToCompositeSubscription(
-            presenter.googleSilentSignIn()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(googleSignInResult -> {
-                    signIn(googleSignInResult);
-                }, e -> {
-                    loginButton.setVisibility(View.VISIBLE);
-                })
-        );
+        if (presenter.isProvisioningProgress()) {
+            this.showLoginButton();
+        } else {
+            addToCompositeSubscription(
+                    presenter.googleSilentSignIn()
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(googleSignInResult -> {
+                                this.presenter.signUpOrSignIn(googleSignInResult);
+                            }, e -> this.showLoginButton())
+            );
+        }
     }
 
     @Override
@@ -90,7 +92,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                 return;
             }
 
-            signIn(googleSignInResult);
+            this.presenter.signUpOrSignIn(googleSignInResult);
         }
     }
 
@@ -112,8 +114,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         this.finish();
     }
 
-    private void signIn(GoogleSignInResult googleSignInResult) {
-        this.presenter.signUpOrSignIn(googleSignInResult);
+    @Override
+    public void showLoginButton() {
+        loginButton.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.login_google_button)

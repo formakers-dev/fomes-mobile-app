@@ -43,6 +43,11 @@ public class APIHelper {
                                     if (errorCode == 401) {
                                         return googleSignInAPIHelper.requestSilentSignInResult();
                                     } else {
+                                        if (errorCode == 403) {
+                                            // TODO : 이거보단 그냥 로컬 스토리지 전체 초기화가 나을 것 같다. 대신 그렇게 하게되면 경고창 띄우기
+                                            SharedPreferencesHelper.resetProvisioningProgressStatus();
+                                        }
+
                                         return Observable.error(error);
                                     }
                                 })
