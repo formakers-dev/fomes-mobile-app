@@ -99,12 +99,14 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
 
     @Override
     public void onSelectedPage() {
-
+        if (this.presenter != null) {
+            presenter.getAnalytics().setCurrentScreen(this);
+        }
     }
 
     @Override
     public void setPresenter(FinishedBetaTestContract.Presenter presenter) {
-
+        this.presenter = presenter;
     }
 
     @Override
