@@ -3,6 +3,7 @@ package com.formakers.fomes.common.helper;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.api.AppAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
+import com.formakers.fomes.common.network.helper.APIHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
@@ -81,6 +82,16 @@ public class APIHelperTest {
         verify(mockAppAPI, times(2)).getAppInfo(any(), any());
         verifyRefreshToken();
     }
+
+//    @Test
+//    public void API조회시_403에러코드를_받은_경우__프로비저닝_상태를_초기화한다() throws Exception {
+//        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+//        Observable.defer(() -> Observable.error(new HttpException(Response.error(403, ResponseBody.create(null, "")))))
+//                .compose(subject.refreshExpiredToken())
+//                .subscribe(testSubscriber);
+//
+//        verify(mockSharedPreferencesHelper).resetProvisioningProgressStatus();
+//    }
 
     private void setupTokenException(int errorCode) {
         when(mockAppAPI.getAppInfo(any(), any()))

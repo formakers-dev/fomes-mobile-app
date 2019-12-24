@@ -2,7 +2,7 @@ package com.formakers.fomes.common.network;
 
 import androidx.annotation.NonNull;
 
-import com.formakers.fomes.common.helper.APIHelper;
+import com.formakers.fomes.common.network.helper.APIHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.model.AppInfo;
 import com.formakers.fomes.common.model.User;
@@ -45,6 +45,12 @@ public class UserService extends AbstractService {
         return userAPI.signIn(googleIdToken)
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io());
+    }
+
+    public Completable updateUser(User user, String versionName) {
+        User userWithOtherInfo = user.setAppVersion(versionName)
+                .setDevice(new User.DeviceInfo());
+        return updateUser(userWithOtherInfo);
     }
 
     @Deprecated

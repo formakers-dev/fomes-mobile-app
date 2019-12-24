@@ -266,6 +266,21 @@ public class LoginPresenterTest {
     }
 
     @Test
+    public void singIn실패시__존재하지않는_유저_에러가_발생하면__프로비저닝_상태를_리셋한다() {
+        when(mockSharedPreferencesHelper.getProvisioningProgressStatus()).thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
+
+        when(mockSharedPreferencesHelper.getUserRegistrationToken()).thenReturn("testRegistrationToken");
+        when(mockUserService.signIn(anyString())).thenReturn(Observable.error(new HttpException(Response.error(403, ResponseBody.create(null, "")))));
+
+        subject.signUpOrSignIn(mockGoogleSignInResult);
+
+        verify(mockUserService).signIn(eq("testIdToken"));
+        verify(mockSharedPreferencesHelper).resetProvisioningProgressStatus();
+        verify(mockView).showToast(contains("실패"));
+        verify(mockView).showLoginButton();
+    }
+
+    @Test
     public void signUpOrSignIn_호출시__구글_로그인_계정정보를_가져오는_것에_실패하면__실패문구를_토스트로_띄운다() {
         when(mockGoogleSignInResult.getSignInAccount()).thenReturn(null);
 

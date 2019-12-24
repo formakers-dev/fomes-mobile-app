@@ -23,5 +23,6 @@ public interface LoginContract {
     interface View extends BaseView<Presenter> {
         void showToast(String toastMessage);
         void startActivityAndFinish(Class<?> destActivity);
+        void showLoginButton();
     }
 }

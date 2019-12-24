@@ -110,11 +110,8 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
 
     @Override
     public Completable requestUpdateUser() {
-        userDAO.updateUserInfo(this.user);
-        return this.userService.updateUser(
-                this.user.setAppVersion(BuildConfig.VERSION_NAME)
-                        .setDevice(new User.DeviceInfo())
-        );
+        return this.userService.updateUser(this.user, BuildConfig.VERSION_NAME)
+                .doOnCompleted(() -> userDAO.updateUserInfo(this.user));
     }
 
     @Override

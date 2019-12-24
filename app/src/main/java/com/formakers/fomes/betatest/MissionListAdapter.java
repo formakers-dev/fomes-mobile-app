@@ -210,7 +210,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(missionList -> {
                                                 setMissionList(missionList);
-                                                notifyItemRangeChanged(position, missionList.size() - 1 - position);
+                                                notifyItemRangeChanged(position, missionList.size() - position);
                                             });
                                 }));
             }

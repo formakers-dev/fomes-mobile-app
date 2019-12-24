@@ -22,6 +22,7 @@ public interface UserAPI {
     interface StatusCode {
         int ALREADY_SIGN_UP = 409;
         int DUPLICATED_NICK_NAME = 409;
+        int NOT_EXIST_USER = 403;
     }
 
     // Return : User with FomesToken

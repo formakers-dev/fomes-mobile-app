@@ -70,7 +70,7 @@ public class WebViewPresenterTest {
     public void interpreteDeepLink_호출시__포스팅_딥링크면__포스팅을_로드한다() {
         when(mockPostService.getPromotion("postId")).thenReturn(Single.just(new Post().setTitle("타이틀").setContents("http://www.naver.com")));
 
-        subject.interpreteDeepLink(Uri.parse("fomes://post/detail?id=postId"));
+        subject.interpreteDeepLink(Uri.parse("fomes://posts/detail?id=postId"));
 
         verify(mockPostService).getPromotion("postId");
         verify(mockView).initialize("타이틀", "http://www.naver.com");
@@ -80,7 +80,7 @@ public class WebViewPresenterTest {
     public void interpreteDeepLink_호출시__포스팅_딥링크이고_해당_포스트의_컨텐츠가_딥링크면__딥링크로_로드한다() {
         when(mockPostService.getPromotion("postId")).thenReturn(Single.just(new Post().setTitle("타이틀").setDeeplink("fomes://web/external?url=http://www.naver.com?email={email}").setContents("it_should_be_skipped")));
 
-        subject.interpreteDeepLink(Uri.parse("fomes://post/detail?id=postId"));
+        subject.interpreteDeepLink(Uri.parse("fomes://posts/detail?id=postId"));
 
         verify(mockPostService).getPromotion("postId");
         ArgumentCaptor<Uri> argumentCaptor = ArgumentCaptor.forClass(Uri.class);

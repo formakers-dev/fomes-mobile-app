@@ -41,6 +41,12 @@ public class SharedPreferencesHelper {
         this.sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
 
+    private void reset(String key) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(key);
+        editor.apply();
+    }
+
     private String getString(String key, String defaultValue) {
         return sharedPreferences.getString(key, defaultValue);
     }
@@ -139,6 +145,10 @@ public class SharedPreferencesHelper {
             Log.e(TAG, "You tried to set older progress status (" + status + ") than " +
                     "current progress status (" + currentStatus +"). It will be not set. Please check it.");
         }
+    }
+
+    public void resetProvisioningProgressStatus() {
+        this.reset(KEY_PROVISIONING_PROGRESS_STATUS);
     }
 
     public int getOldLatestMigrationVersion() {

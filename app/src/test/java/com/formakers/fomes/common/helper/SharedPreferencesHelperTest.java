@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.model.User;
 
 import org.junit.Before;
@@ -112,5 +113,12 @@ public class SharedPreferencesHelperTest {
     public void setOldLatestMigrationVersion호출시__해당버전을_저장한다() {
         subject.setOldLatestMigrationVersion(2);
         assertThat(sf.getInt("OLD_LATEST_MIGRATION_VERSION", 0)).isEqualTo(2);
+    }
+
+    @Test
+    public void resetProvisioningProgressStatus호출시_프로비저닝상태를_초기화한다() {
+        subject.resetProvisioningProgressStatus();
+
+        assertThat(subject.getProvisioningProgressStatus()).isEqualTo(FomesConstants.PROVISIONING.PROGRESS_STATUS.LOGIN);
     }
 }

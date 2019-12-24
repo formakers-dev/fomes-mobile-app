@@ -111,7 +111,16 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .doOnSuccess(user -> sharedPreferencesHelper.setProvisioningProgressStatus(isSignUp ? FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION : FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(user -> view.startActivityAndFinish(MainActivity.class))
-                .doOnError(e -> view.showToast("로그인에 실패하였습니다. 재시도 고고"));
+                .doOnError(e -> {
+                    if (e instanceof HttpException) {
+                        if (((HttpException) e).code() == UserAPI.StatusCode.NOT_EXIST_USER) {
+                            // TODO : 이거보단 그냥 로컬 스토리지 전체 초기화가 나을 것 같다. 대신 그렇게 하게되면 경고창 띄우기
+                            sharedPreferencesHelper.resetProvisioningProgressStatus();
+                        }
+                    }
+                    view.showToast("로그인에 실패하였습니다. 재시도 고고");
+                    view.showLoginButton();
+                });
     }
 
     @Override

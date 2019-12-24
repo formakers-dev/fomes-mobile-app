@@ -51,7 +51,7 @@ public class WebViewPresenter implements WebViewConstract.Presenter {
             } else {
                 this.view.initialize(title, contents);
             }
-        } else if (FomesConstants.DeepLink.HOST_POST.equals(host)
+        } else if (FomesConstants.DeepLink.HOST_POSTS.equals(host)
                 && FomesConstants.DeepLink.PATH_DETAIL.equals(path)) {
             String id = deeplinkUri.getQueryParameter(FomesConstants.DeepLink.QUERY_PARAM_ID);
 

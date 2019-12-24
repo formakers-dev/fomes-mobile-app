@@ -19,6 +19,7 @@ public class BetaTest implements Parcelable {
     String title;
     String description;
     String type;
+    String status;
     String purpose;
     ProgressText progressText;
 
@@ -514,6 +515,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public BetaTest setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
     public String getPurpose() {
         return purpose;
     }
@@ -746,6 +756,7 @@ public class BetaTest implements Parcelable {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
                 ", purpose='" + purpose + '\'' +
                 ", progressText=" + progressText +
                 ", tags=" + tags +
@@ -783,6 +794,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(type);
+        dest.writeString(status);
         dest.writeString(purpose);
         dest.writeParcelable(progressText, 0);
         dest.writeStringList(tags);
@@ -814,6 +826,7 @@ public class BetaTest implements Parcelable {
         title = in.readString();
         description = in.readString();
         type = in.readString();
+        status = in.readString();
         purpose = in.readString();
         progressText = in.readParcelable(null);
         in.readStringList(tags);
