@@ -179,6 +179,8 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void onSelectedPage() {
-        presenter.getAnalytics().setCurrentScreen(this);
+        if (this.presenter != null) {
+            presenter.getAnalytics().setCurrentScreen(this);
+        }
     }
 }
