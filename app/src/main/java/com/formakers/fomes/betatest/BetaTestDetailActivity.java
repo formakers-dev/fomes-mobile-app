@@ -339,6 +339,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(FomesConstants.WebView.EXTRA_TITLE, title);
         intent.putExtra(FomesConstants.WebView.EXTRA_CONTENTS, url);
+        intent.putExtra(FomesConstants.WebView.EXTRA_IS_PREVENT_BACK_PRESSED, true);
         startActivity(intent);
     }
 
