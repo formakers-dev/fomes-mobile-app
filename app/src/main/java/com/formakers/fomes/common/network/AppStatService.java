@@ -50,8 +50,10 @@ public class AppStatService extends AbstractService {
         }
     }
 
-    public Completable sendAppUsages(List<AppUsage> appUsageList) {
-        return Observable.defer(() -> statAPI.postUsages(SharedPreferencesHelper.getAccessToken(), appUsageList))
+    public Completable sendAppUsages(Observable<AppUsage> appUsages) {
+        return Observable.defer(() -> appUsages.buffer(500)
+                    .flatMap(subAppUsages -> statAPI.postUsages(SharedPreferencesHelper.getAccessToken(), subAppUsages))
+                )
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

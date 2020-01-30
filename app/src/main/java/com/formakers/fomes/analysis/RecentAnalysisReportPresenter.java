@@ -62,10 +62,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     }
 
     private Completable requestPostUsages() {
-        return appUsageDataHelper.getAppUsages().toList()
-                .observeOn(Schedulers.io())
-                .flatMap(appUsages -> appStatService.sendAppUsages(appUsages).toObservable())
-                .toCompletable();
+        return appStatService.sendAppUsages(appUsageDataHelper.getAppUsages());
     }
 
     private Observable<RecentReport> requestRecentReport() {

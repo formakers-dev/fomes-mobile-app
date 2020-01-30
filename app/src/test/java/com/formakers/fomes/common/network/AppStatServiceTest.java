@@ -115,18 +115,19 @@ public class AppStatServiceTest extends AbstractServiceTest {
 
     @Test
     public void postAppUsages호출시_앱별_사용정보통계를_서버로_전송한다() throws Exception {
-        List<AppUsage> mockAppUsageList = new ArrayList<>();
-        mockAppUsageList.add(new AppUsage("packageA", 1000L));
-        mockAppUsageList.add(new AppUsage("packageB", 2000L));
+        List<AppUsage> appUsageList = new ArrayList<>();
+        appUsageList.add(new AppUsage("packageA", 1000L));
+        appUsageList.add(new AppUsage("packageB", 2000L));
+        Observable<AppUsage> appUsages = Observable.from(appUsageList);
         when(mockStatAPI.postUsages(anyString(), any(List.class))).thenReturn(mock(Observable.class));
-        subject.sendAppUsages(mockAppUsageList).subscribe(new TestSubscriber<>());
+        subject.sendAppUsages(appUsages).subscribe(new TestSubscriber<>());
 
-        verify(mockStatAPI).postUsages(anyString(), eq(mockAppUsageList));
+        verify(mockStatAPI).postUsages(anyString(), eq(appUsageList));
     }
 
     @Test
     public void sendAppUsages호출시_토큰_만료_여부를_확인한다() throws Exception {
-        verifyToCheckExpiredToken(subject.sendAppUsages(new ArrayList<>()).toObservable());
+        verifyToCheckExpiredToken(subject.sendAppUsages(Observable.just(new AppUsage("anything", 1))).toObservable());
     }
 
     @Test

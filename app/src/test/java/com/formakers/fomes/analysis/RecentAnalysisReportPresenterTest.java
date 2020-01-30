@@ -6,17 +6,15 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.TestFomesApplication;
-import com.formakers.fomes.analysis.RecentAnalysisReportContract;
-import com.formakers.fomes.analysis.RecentAnalysisReportPresenter;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.model.ShortTermStat;
+import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.common.helper.AppUsageDataHelper;
-import com.formakers.fomes.common.model.ShortTermStat;
-import com.formakers.fomes.common.model.User;
 
 import org.assertj.core.util.Lists;
 import org.junit.After;
@@ -44,7 +42,6 @@ import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -102,7 +99,7 @@ public class RecentAnalysisReportPresenterTest {
     }
 
     private void initializeForLoadingTest() {
-        when(mockAppStatService.sendAppUsages(anyList())).thenReturn(Completable.complete());
+        when(mockAppStatService.sendAppUsages(any(Observable.class))).thenReturn(Completable.complete());
 
         List<Rank> totalUsedTimeRank = new ArrayList<>();
         totalUsedTimeRank.add(new Rank("user1", 1, 10000000L));
@@ -144,7 +141,7 @@ public class RecentAnalysisReportPresenterTest {
         // 앱 누적 사용 시간 데이터 서버로 전송
         // requestPostUsages - 7일간의_앱_누적_사용시간을_서버에_전송한다
         verify(mockAppUsageDataHelper).getAppUsages();
-        verify(mockAppStatService).sendAppUsages(anyList());
+        verify(mockAppStatService).sendAppUsages(any(Observable.class));
         verify(mockUserDAO).getUserInfo();
 
         // 분석 결과 요청

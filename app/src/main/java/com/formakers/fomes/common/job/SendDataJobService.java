@@ -89,10 +89,7 @@ public class SendDataJobService extends JobService {
                     .doOnCompleted(() -> Log.i(TAG, "sendShortTermStats) onCompleted"))
             );
 
-            completableList.add(appUsageDataHelper.getAppUsages().toList()
-                    .observeOn(Schedulers.io())
-                    .flatMap(appUsages -> appStatService.sendAppUsages(appUsages).toObservable())
-                    .toCompletable());
+            completableList.add(appStatService.sendAppUsages(appUsageDataHelper.getAppUsages()));
         }
 
         subscription = Completable.merge(Observable.from(completableList))
