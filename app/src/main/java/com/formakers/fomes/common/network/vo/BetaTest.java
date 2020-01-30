@@ -548,7 +548,7 @@ public class BetaTest implements Parcelable {
             for (String tag : getTags()) {
                 hashTags.add("#" + tag);
             }
-            return TextUtils.join("", hashTags);
+            return TextUtils.join(" ", hashTags);
         } else {
             return "";
         }

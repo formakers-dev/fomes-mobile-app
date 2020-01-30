@@ -38,8 +38,11 @@ public class FomesNoticeDialog extends DialogFragment {
     @BindView(R.id.dialog_positive_button) Button postivieButton;
 
     private Unbinder unbinder;
+
     private String positiveButtonText;
     private View.OnClickListener positiveButtonClickListener;
+    private String negativeButtonText;
+    private View.OnClickListener negativeButtonClickListener;
 
     @Nullable
     @Override
@@ -67,7 +70,12 @@ public class FomesNoticeDialog extends DialogFragment {
 
         titleTextView.setText(title);
         subTitleTextView.setText(subtitle);
-        imageView.setImageDrawable(getResources().getDrawable(imageResId, null));
+
+        if (imageResId > 0) {
+            imageView.setImageDrawable(getResources().getDrawable(imageResId, null));
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
 
         if (TextUtils.isEmpty(description)) {
             descriptionTextView.setVisibility(View.GONE);
@@ -81,7 +89,6 @@ public class FomesNoticeDialog extends DialogFragment {
             positiveButtonClickListener.onClick(v);
             dismiss();
         });
-
     }
 
     @Override
@@ -114,5 +121,10 @@ public class FomesNoticeDialog extends DialogFragment {
     public void setPositiveButton(String buttonText, View.OnClickListener clickListener) {
         this.positiveButtonText = buttonText;
         this.positiveButtonClickListener = clickListener;
+    }
+
+    public void setNegativeButton(String buttonText, View.OnClickListener clickListener) {
+        this.negativeButtonText = buttonText;
+        this.negativeButtonClickListener = clickListener;
     }
 }

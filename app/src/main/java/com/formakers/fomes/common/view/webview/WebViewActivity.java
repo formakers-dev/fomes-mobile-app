@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.betatest.FomesNoticeDialog;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.DeeplinkActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -35,6 +36,7 @@ import butterknife.BindView;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_CONTENTS;
+import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_IS_PREVENT_BACK_PRESSED;
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_TITLE;
 
 public class WebViewActivity extends FomesBaseActivity implements WebViewConstract.View {
@@ -48,6 +50,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
     @Inject WebViewConstract.Presenter presenter;
 
+    private boolean isDoubleCheckBackPressed = false;   // 임시변수 - 설문용 액티비티를 따로 빼서 리팩토링 할 예정
     private ValueCallback<Uri[]> selectedFilePathCallback;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
@@ -84,6 +87,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         } else {
             String title = getIntent().getStringExtra(EXTRA_TITLE);
             String contents = getIntent().getStringExtra(EXTRA_CONTENTS);
+            isDoubleCheckBackPressed = getIntent().getBooleanExtra(EXTRA_IS_PREVENT_BACK_PRESSED, false);
 
             initialize(title, contents);
         }
@@ -116,8 +120,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
+    private void goBack() {
         try {
             if (webView.canGoBack()) {
                 webView.goBack();
@@ -127,6 +130,26 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         } catch (Exception e) {
             Log.e(TAG, "Exception) " + e.getClass() + "\nmessage=" + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isDoubleCheckBackPressed) {
+            FomesNoticeDialog fomesNoticeDialog = new FomesNoticeDialog();
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FomesNoticeDialog.EXTRA_TITLE, "이전 화면으로 돌아가시겠어요?");
+            bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, "설문을 작성 중이셨다면 내용이 저장되지 않을 수 있습니다.\n현재 내용을 저장하고 싶으시다면, 팝업 종료 후 설문 하단의 [제출] 버튼을 클릭해주세요.\n제출 후 응답을 수정할 수 있습니다.\n\n이전 화면으로 이동하시려면 [확인] 버튼을 눌러주세요.");
+            bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, "* 실수 방지를 위한 팝업입니다.");
+
+            fomesNoticeDialog.setArguments(bundle);
+            fomesNoticeDialog.setPositiveButton("확인", v -> {
+                goBack();
+            });
+            fomesNoticeDialog.show(this.getSupportFragmentManager(), "Test");
+        } else {
+            goBack();
         }
     }
 
