@@ -129,7 +129,8 @@ public class RecentAnalysisReportPresenterTest {
 
         subject.loading().subscribe();
 
-        verify(mockAppStatService).sendShortTermStats(eq(shortTermStats));
+        verify(mockAppUsageDataHelper).getShortTermStats();
+        verify(mockAppStatService).sendShortTermStats(eq(mockAppUsageDataHelper.getShortTermStats()));
     }
 
     @Test
@@ -141,7 +142,7 @@ public class RecentAnalysisReportPresenterTest {
         // 앱 누적 사용 시간 데이터 서버로 전송
         // requestPostUsages - 7일간의_앱_누적_사용시간을_서버에_전송한다
         verify(mockAppUsageDataHelper).getAppUsages();
-        verify(mockAppStatService).sendAppUsages(any(Observable.class));
+        verify(mockAppStatService).sendAppUsages(eq(mockAppUsageDataHelper.getAppUsages()));
         verify(mockUserDAO).getUserInfo();
 
         // 분석 결과 요청

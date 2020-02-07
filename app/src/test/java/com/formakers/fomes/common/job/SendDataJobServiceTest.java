@@ -151,7 +151,7 @@ public class SendDataJobServiceTest {
         subject_onStartJob();
 
         verify(mockAppUsageDataHelper).getShortTermStats();
-        verify(mockAppStatService).sendShortTermStats(eq(shortTermStats));
+        verify(mockAppStatService).sendShortTermStats(eq(mockAppUsageDataHelper.getShortTermStats()));
 
         verify(mockAppStatService).sendAppUsages(eq(mockAppUsageDataHelper.getAppUsages()));
     }

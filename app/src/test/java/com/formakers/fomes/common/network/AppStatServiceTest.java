@@ -72,7 +72,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendShortTermStats(mockShortTermStats).subscribe(new TestSubscriber<>());
+        subject.sendShortTermStats(Observable.from(mockShortTermStats)).subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<List<ShortTermStat>> shortTermStatsCaptor = ArgumentCaptor.forClass(List.class);
 
@@ -86,7 +86,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
 
     @Test
     public void sendShortTermStats호출시_단기통계데이터가_없는경우_서버로_전송하지_않는다() throws Exception {
-        subject.sendShortTermStats(new ArrayList<>());
+        subject.sendShortTermStats(Observable.from(new ArrayList<>()));
 
         verify(mockStatAPI, never()).sendShortTermStats(anyString(), any(List.class));
     }
@@ -94,7 +94,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
     @Test
     public void sendShortTermStats호출시_토큰_만료_여부를_확인한다() throws Exception {
         List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
-        verifyToCheckExpiredToken(subject.sendShortTermStats(shortTermStatList).toObservable());
+        verifyToCheckExpiredToken(subject.sendShortTermStats(Observable.from(shortTermStatList)).toObservable());
     }
 
 
@@ -105,7 +105,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
-        subject.sendShortTermStats(shortTermStatList).subscribe(testSubscriber);
+        subject.sendShortTermStats(Observable.from(shortTermStatList)).subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();

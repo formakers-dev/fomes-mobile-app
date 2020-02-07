@@ -61,6 +61,12 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
         });
     }
 
+    private void sendShortTermStats() {
+        appStatService.sendShortTermStats(appUsageDataHelper.getShortTermStats())
+                .subscribe(() -> Log.d(TAG, "send short term stats success!!!"),
+                        e -> Log.e(TAG, "send short term stats failed!!!! e=" + e));
+    }
+
     private Completable requestPostUsages() {
         return appStatService.sendAppUsages(appUsageDataHelper.getAppUsages());
     }
@@ -73,15 +79,7 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     @Override
     public Completable loading() {
 
-        appUsageDataHelper.getShortTermStats()
-                .observeOn(Schedulers.io())
-                .toList()
-                .flatMap(shortTermStats -> {
-                    return appStatService.sendShortTermStats(shortTermStats).toObservable();
-                })
-                .toCompletable()
-                .subscribe(() -> Log.d(TAG, "send short term stats success!!!"),
-                        e -> Log.e(TAG, "send short term stats failed!!!! e=" + e));
+        sendShortTermStats();
 
         return Completable.concat(
                 this.requestPostUsages(),
