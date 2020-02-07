@@ -69,7 +69,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
     @Test
     public void sendShortTermStats호출시_전달받은_단기통계데이터를_서버로_전송한다() throws Exception {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
-        mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
+        mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L));
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendShortTermStats(Observable.from(mockShortTermStats)).subscribe(new TestSubscriber<>());
@@ -93,7 +93,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
 
     @Test
     public void sendShortTermStats호출시_토큰_만료_여부를_확인한다() throws Exception {
-        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
+        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L));
         verifyToCheckExpiredToken(subject.sendShortTermStats(Observable.from(shortTermStatList)).toObservable());
     }
 
@@ -101,7 +101,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
     @Test
     public void sendShortTermStats_완료시__마지막_업데이트_시간을_갱신한다() throws Exception {
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
-        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
+        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L));
         when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
