@@ -83,8 +83,8 @@ public class SendDataJobService extends JobService {
 
             completableList.add(
                     appStatService.sendShortTermStats(appUsageDataHelper.getShortTermStats())
-                            .doOnSubscribe(a -> Log.i(TAG, "sendShortTermStats) onSubscribe"))
-                            .doOnCompleted(() -> Log.i(TAG, "sendShortTermStats) onCompleted"))
+                            .doOnSubscribe(a -> Log.i(TAG, "postShortTermStats) onSubscribe"))
+                            .doOnCompleted(() -> Log.i(TAG, "postShortTermStats) onCompleted"))
             );
 
             completableList.add(appStatService.sendAppUsages(appUsageDataHelper.getAppUsages()));

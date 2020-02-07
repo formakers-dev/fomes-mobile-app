@@ -34,7 +34,7 @@ public class AppStatService extends AbstractService {
 
     public Completable sendShortTermStats(Observable<ShortTermStat> shortTermStats) {
         return Observable.defer(() -> shortTermStats.buffer(500)
-                    .flatMap(subShortTermStats -> statAPI.sendShortTermStats(SharedPreferencesHelper.getAccessToken(), subShortTermStats))
+                    .flatMap(subShortTermStats -> statAPI.postShortTermStats(SharedPreferencesHelper.getAccessToken(), subShortTermStats))
                 )
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())

@@ -70,13 +70,13 @@ public class AppStatServiceTest extends AbstractServiceTest {
     public void sendShortTermStats호출시_전달받은_단기통계데이터를_서버로_전송한다() throws Exception {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
         mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L));
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
+        when(mockStatAPI.postShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
         subject.sendShortTermStats(Observable.from(mockShortTermStats)).subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<List<ShortTermStat>> shortTermStatsCaptor = ArgumentCaptor.forClass(List.class);
 
-        verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
+        verify(mockStatAPI).postShortTermStats(anyString(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
         assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
@@ -88,7 +88,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
     public void sendShortTermStats호출시_단기통계데이터가_없는경우_서버로_전송하지_않는다() throws Exception {
         subject.sendShortTermStats(Observable.from(new ArrayList<>()));
 
-        verify(mockStatAPI, never()).sendShortTermStats(anyString(), any(List.class));
+        verify(mockStatAPI, never()).postShortTermStats(anyString(), any(List.class));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class AppStatServiceTest extends AbstractServiceTest {
     public void sendShortTermStats_완료시__마지막_업데이트_시간을_갱신한다() throws Exception {
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
         List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L));
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
+        when(mockStatAPI.postShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
         subject.sendShortTermStats(Observable.from(shortTermStatList)).subscribe(testSubscriber);
