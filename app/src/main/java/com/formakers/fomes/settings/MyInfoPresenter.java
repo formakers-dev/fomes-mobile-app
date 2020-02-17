@@ -37,7 +37,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
                 .subscribe(userInfo -> {
                     this.originalUserUnfo = userInfo;
                     this.view.bind(this.originalUserUnfo);
-                });
+                }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

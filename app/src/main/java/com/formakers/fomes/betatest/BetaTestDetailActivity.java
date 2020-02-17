@@ -296,7 +296,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 .subscribe(missionList -> {
                     missionListAdapter.setMissionList(missionList);
                     missionListAdapter.notifyDataSetChanged();
-                });
+                }, e -> Log.e(TAG, String.valueOf(e)));
 
         contentsLayout.setVisibility(View.VISIBLE);
     }
@@ -321,7 +321,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 .subscribe(missionList -> {
                     missionListAdapter.setMissionList(missionList);
                     missionListAdapter.notifyDataSetChanged();
-                });
+                }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

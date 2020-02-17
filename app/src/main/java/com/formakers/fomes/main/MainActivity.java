@@ -180,7 +180,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         Log.v(TAG, "startEventPagerAutoSlide");
         eventPagerAutoSlideSubscription = Observable.interval(EVENT_AUTO_SLIDE_MILLISECONDS + additionalInitDelay, EVENT_AUTO_SLIDE_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(seq -> showNextEventBanner());
+                .subscribe(seq -> showNextEventBanner(), e -> Log.e(TAG, String.valueOf(e)));
     }
 
     private void stopEventPagerAutoSlide() {

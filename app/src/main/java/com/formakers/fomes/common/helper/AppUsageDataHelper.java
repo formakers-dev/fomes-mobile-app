@@ -81,6 +81,9 @@ public class AppUsageDataHelper {
                     }
 
                     emitter.onCompleted();
+                },  e -> {
+                    Log.e(TAG, String.valueOf(e));
+                    emitter.onError(e);
                 }));
 
         // 아래처럼 리팩토링 가능할듯... 좀 더 다듬긴해야함. groupBy 관련 에러 (Only one Subscriber allowed!)
