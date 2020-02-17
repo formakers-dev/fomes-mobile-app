@@ -69,14 +69,14 @@ public class AppStatServiceTest extends AbstractServiceTest {
     @Test
     public void sendShortTermStats호출시_전달받은_단기통계데이터를_서버로_전송한다() throws Exception {
         List<ShortTermStat> mockShortTermStats = new ArrayList<>();
-        mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L, 2000L));
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
+        mockShortTermStats.add(new ShortTermStat("anyPackage", 1000L, 3000L));
+        when(mockStatAPI.postShortTermStats(anyString(), any(List.class))).thenReturn(mock(Observable.class));
 
-        subject.sendShortTermStats(mockShortTermStats).subscribe(new TestSubscriber<>());
+        subject.sendShortTermStats(Observable.from(mockShortTermStats)).subscribe(new TestSubscriber<>());
 
         ArgumentCaptor<List<ShortTermStat>> shortTermStatsCaptor = ArgumentCaptor.forClass(List.class);
 
-        verify(mockStatAPI).sendShortTermStats(anyString(), shortTermStatsCaptor.capture());
+        verify(mockStatAPI).postShortTermStats(anyString(), shortTermStatsCaptor.capture());
         ShortTermStat actualShortTermStat = shortTermStatsCaptor.getValue().get(0);
         assertEquals(actualShortTermStat.getPackageName(), "anyPackage");
         assertEquals(actualShortTermStat.getStartTimeStamp(), 1000L);
@@ -86,26 +86,26 @@ public class AppStatServiceTest extends AbstractServiceTest {
 
     @Test
     public void sendShortTermStats호출시_단기통계데이터가_없는경우_서버로_전송하지_않는다() throws Exception {
-        subject.sendShortTermStats(new ArrayList<>());
+        subject.sendShortTermStats(Observable.from(new ArrayList<>()));
 
-        verify(mockStatAPI, never()).sendShortTermStats(anyString(), any(List.class));
+        verify(mockStatAPI, never()).postShortTermStats(anyString(), any(List.class));
     }
 
     @Test
     public void sendShortTermStats호출시_토큰_만료_여부를_확인한다() throws Exception {
-        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
-        verifyToCheckExpiredToken(subject.sendShortTermStats(shortTermStatList).toObservable());
+        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L));
+        verifyToCheckExpiredToken(subject.sendShortTermStats(Observable.from(shortTermStatList)).toObservable());
     }
 
 
     @Test
     public void sendShortTermStats_완료시__마지막_업데이트_시간을_갱신한다() throws Exception {
         when(mockTimeHelper.getStatBasedCurrentTime()).thenReturn(10L);
-        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L, 999L));
-        when(mockStatAPI.sendShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
+        List<ShortTermStat> shortTermStatList = Collections.singletonList(new ShortTermStat("packageName", 0L, 999L));
+        when(mockStatAPI.postShortTermStats(anyString(), any(List.class))).thenReturn(Observable.empty());
 
         TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
-        subject.sendShortTermStats(shortTermStatList).subscribe(testSubscriber);
+        subject.sendShortTermStats(Observable.from(shortTermStatList)).subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
@@ -115,18 +115,19 @@ public class AppStatServiceTest extends AbstractServiceTest {
 
     @Test
     public void postAppUsages호출시_앱별_사용정보통계를_서버로_전송한다() throws Exception {
-        List<AppUsage> mockAppUsageList = new ArrayList<>();
-        mockAppUsageList.add(new AppUsage("packageA", 1000L));
-        mockAppUsageList.add(new AppUsage("packageB", 2000L));
+        List<AppUsage> appUsageList = new ArrayList<>();
+        appUsageList.add(new AppUsage("packageA", 1000L));
+        appUsageList.add(new AppUsage("packageB", 2000L));
+        Observable<AppUsage> appUsages = Observable.from(appUsageList);
         when(mockStatAPI.postUsages(anyString(), any(List.class))).thenReturn(mock(Observable.class));
-        subject.sendAppUsages(mockAppUsageList).subscribe(new TestSubscriber<>());
+        subject.sendAppUsages(appUsages).subscribe(new TestSubscriber<>());
 
-        verify(mockStatAPI).postUsages(anyString(), eq(mockAppUsageList));
+        verify(mockStatAPI).postUsages(anyString(), eq(appUsageList));
     }
 
     @Test
     public void sendAppUsages호출시_토큰_만료_여부를_확인한다() throws Exception {
-        verifyToCheckExpiredToken(subject.sendAppUsages(new ArrayList<>()).toObservable());
+        verifyToCheckExpiredToken(subject.sendAppUsages(Observable.just(new AppUsage("anything", 1))).toObservable());
     }
 
     @Test

@@ -2,17 +2,13 @@ package com.formakers.fomes.common.helper;
 
 import androidx.annotation.NonNull;
 
-import com.formakers.fomes.common.network.AppStatService;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.model.AppUsage;
 import com.formakers.fomes.common.model.EventStat;
 import com.formakers.fomes.common.model.ShortTermStat;
+import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.util.Log;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -145,47 +141,4 @@ public class AppUsageDataHelper {
                 })
                 .doOnNext(totalUsedTime -> Log.i(TAG, "getUsageTime) packageName=" + packageName + " totalUsedTime=" + totalUsedTime));
     }
-
-    /******************************** AppBee Legacy **/
-    // 앱별 1주일 치 누적 플레이시간 단기통계데이터 가져오기
-    @Deprecated
-    public Observable<ShortTermStat> getWeeklyStatSummaryList() {
-        long endTimestamp = timeHelper.getCurrentTime();
-        long startTimestamp = endTimestamp - (7L * 24 * 60 * 60 * 1000);    // 1주일 전
-
-        return getShortTermStats(startTimestamp, endTimestamp)
-                .observeOn(Schedulers.io())
-                .toList()
-                .flatMap(shortTermStats -> Observable.from(summaryPlayTimeEachAppFromShortTermStat(shortTermStats)))
-                .sorted((o1, o2) -> {
-                    if (o1.getTotalUsedTime() == o2.getTotalUsedTime()) {
-                        return o1.getPackageName().compareTo(o2.getPackageName());
-                    } else {
-                        return (int) (o2.getTotalUsedTime() - o1.getTotalUsedTime());
-                    }
-                });
-    }
-
-    // ShortTermStats 사용시간 누적 - 리듀스
-    @Deprecated
-    private List<ShortTermStat> summaryPlayTimeEachAppFromShortTermStat(List<ShortTermStat> shortTermStatList) {
-        Map<String, Long> map = new HashMap<>();
-
-        for (ShortTermStat shortTermStat : shortTermStatList) {
-            if (map.containsKey(shortTermStat.getPackageName())) {
-                map.put(shortTermStat.getPackageName(), map.get(shortTermStat.getPackageName()) + shortTermStat.getTotalUsedTime());
-            } else {
-                map.put(shortTermStat.getPackageName(), shortTermStat.getTotalUsedTime());
-            }
-        }
-
-        List<ShortTermStat> result = new ArrayList<>();
-        for (String key : map.keySet()) {
-            shortTermStatList.add(new ShortTermStat(key, 0L, 0L, map.get(key)));
-        }
-
-        return result;
-    }
-
-    /************************** End of AppBee Legacy **/
 }

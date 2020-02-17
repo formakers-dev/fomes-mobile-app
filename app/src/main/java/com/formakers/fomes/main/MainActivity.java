@@ -428,6 +428,14 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             selectedFragment.setArguments(arguemnts);
 
             contentsViewPager.postDelayed(() -> {
+                Log.d(TAG, "contentsViewPager.postDelayed) contentsViewPager = " + contentsViewPager + ", selectedFragment = " + selectedFragment + ", tagPagerAdapter = " + tabPagerAdapter);
+
+                if (contentsViewPager == null) {
+                    return;
+                }
+
+                Log.d(TAG, "contentsViewPager.postDelayed) contentsViewPager.getAdapter() = " + contentsViewPager.getAdapter());
+
                 contentsViewPager.setCurrentItem(tabPagerAdapter.getPosition(selectedFragment));
                 contentsViewPager.getAdapter().notifyDataSetChanged();
             }, 100);

@@ -81,18 +81,13 @@ public class SendDataJobService extends JobService {
         if (androidNativeHelper.hasUsageStatsPermission()) {
             Log.d(TAG, "Start to update data!");
 
-            completableList.add(appUsageDataHelper.getShortTermStats().toList()
-                    .observeOn(Schedulers.io())
-                    .flatMap(shortTermStats -> appStatService.sendShortTermStats(shortTermStats).toObservable())
-                    .toCompletable()
-                    .doOnSubscribe(a -> Log.i(TAG, "sendShortTermStats) onSubscribe"))
-                    .doOnCompleted(() -> Log.i(TAG, "sendShortTermStats) onCompleted"))
+            completableList.add(
+                    appStatService.sendShortTermStats(appUsageDataHelper.getShortTermStats())
+                            .doOnSubscribe(a -> Log.i(TAG, "postShortTermStats) onSubscribe"))
+                            .doOnCompleted(() -> Log.i(TAG, "postShortTermStats) onCompleted"))
             );
 
-            completableList.add(appUsageDataHelper.getAppUsages().toList()
-                    .observeOn(Schedulers.io())
-                    .flatMap(appUsages -> appStatService.sendAppUsages(appUsages).toObservable())
-                    .toCompletable());
+            completableList.add(appStatService.sendAppUsages(appUsageDataHelper.getAppUsages()));
         }
 
         subscription = Completable.merge(Observable.from(completableList))

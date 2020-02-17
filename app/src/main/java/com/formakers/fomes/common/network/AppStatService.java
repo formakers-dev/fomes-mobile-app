@@ -1,15 +1,13 @@
 package com.formakers.fomes.common.network;
 
-import com.formakers.fomes.common.network.vo.RecentReport;
-import com.formakers.fomes.common.network.helper.APIHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.helper.TimeHelper;
 import com.formakers.fomes.common.model.AppUsage;
 import com.formakers.fomes.common.model.ShortTermStat;
-import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.model.User;
-
-import java.util.List;
+import com.formakers.fomes.common.network.api.StatAPI;
+import com.formakers.fomes.common.network.helper.APIHelper;
+import com.formakers.fomes.common.network.vo.RecentReport;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,24 +32,22 @@ public class AppStatService extends AbstractService {
         this.timeHelper = timeHelper;
     }
 
-    public Completable sendShortTermStats(List<ShortTermStat> shortTermStatList) {
-        final String accessToken = SharedPreferencesHelper.getAccessToken();
-
-        if (!shortTermStatList.isEmpty()) {
-            return Observable.defer(() -> statAPI.sendShortTermStats(accessToken, shortTermStatList))
-                    .doOnError(this::logError)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .compose(APIHelper.refreshExpiredToken())
-                    .toCompletable()
-                    .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(timeHelper.getStatBasedCurrentTime()));
-        } else {
-            return Completable.complete();
-        }
+    public Completable sendShortTermStats(Observable<ShortTermStat> shortTermStats) {
+        return Observable.defer(() -> shortTermStats.buffer(500)
+                    .flatMap(subShortTermStats -> statAPI.postShortTermStats(SharedPreferencesHelper.getAccessToken(), subShortTermStats))
+                )
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(APIHelper.refreshExpiredToken())
+                .toCompletable()
+                .doOnCompleted(() -> SharedPreferencesHelper.setLastUpdateShortTermStatTimestamp(timeHelper.getStatBasedCurrentTime()));
     }
 
-    public Completable sendAppUsages(List<AppUsage> appUsageList) {
-        return Observable.defer(() -> statAPI.postUsages(SharedPreferencesHelper.getAccessToken(), appUsageList))
+    public Completable sendAppUsages(Observable<AppUsage> appUsages) {
+        return Observable.defer(() -> appUsages.buffer(500)
+                    .flatMap(subAppUsages -> statAPI.postUsages(SharedPreferencesHelper.getAccessToken(), subAppUsages))
+                )
                 .doOnError(this::logError)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
