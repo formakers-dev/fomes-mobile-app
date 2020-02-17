@@ -67,6 +67,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_purpose_group) Group purposeGroup;
     @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
     @BindView(R.id.betatest_purpose_description_textview) TextView purposeDescriptionTextView;
+    @BindView(R.id.betatest_purpose_from_textview) TextView purposeFromTextView;
     @BindView(R.id.betatest_howto_items_layout) ViewGroup howtoViewGroup;
     @BindView(R.id.betatest_howto_guide_textview) TextView howtoGuideTextView;
 
@@ -224,6 +225,11 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         } else {
             purposeGroup.setVisibility(View.VISIBLE);
             purposeDescriptionTextView.setText(betaTest.getPurpose());
+
+            // 임시 하드코딩 - 테스트 타입(?)이 나뉘면 수정필요
+            if (!betaTest.getTitle().contains("게임 테스트")) {
+                purposeFromTextView.setText("");
+            }
         }
 
         // 리워드 목록

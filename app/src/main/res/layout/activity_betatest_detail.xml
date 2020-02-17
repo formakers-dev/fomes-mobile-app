@@ -168,7 +168,7 @@
                 android:id="@+id/betatest_game_description_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:constraint_referenced_ids="betatest_detail_game_description_title_textview,betatest_detail_game_description_textview,betatest_game_description_divider"
                 />
 
@@ -190,6 +190,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textSize="15dp"
                 style="@style/BetaTestDetailTheme.SectionContent"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="15dp"
@@ -204,13 +205,27 @@
                 app:layout_constraintEnd_toEndOf="@id/betatest_purpose_title_textview"
                 tools:ignore="MissingConstraints" />
 
+            <TextView
+                android:id="@+id/betatest_purpose_from_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="10dp"
+                android:textColor="@color/fomes_warm_gray_2"
+                android:textStyle="bold"
+                android:text="from 게임사"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_description_textview"
+                app:layout_constraintStart_toStartOf="@id/betatest_purpose_title_textview"
+                app:layout_constraintEnd_toEndOf="@id/betatest_purpose_title_textview"
+                />
+
             <View
                 android:id="@+id/betatest_purpose_divider"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
                 android:background="@color/fomes_dark_gray"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_description_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_from_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -219,7 +234,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="betatest_purpose_title_textview,betatest_purpose_description_textview,betatest_purpose_divider"
+                app:constraint_referenced_ids="betatest_purpose_title_textview,betatest_purpose_description_textview,betatest_purpose_from_textview,betatest_purpose_divider"
                 />
 
             <TextView
