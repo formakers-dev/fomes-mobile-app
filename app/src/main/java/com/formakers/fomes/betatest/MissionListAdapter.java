@@ -211,7 +211,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                             .subscribe(missionList -> {
                                                 setMissionList(missionList);
                                                 notifyItemRangeChanged(position, missionList.size() - position);
-                                            });
+                                            },  e -> Log.e(TAG, String.valueOf(e)));
                                 }));
             }
         });

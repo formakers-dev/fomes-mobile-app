@@ -81,7 +81,7 @@ public class RecommendPresenter implements RecommendContract.Presenter {
                     .doOnCompleted(() -> refreshInstalledApps())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnCompleted(() -> this.view.refreshRecommendList())
-                    .subscribe(packageName -> { })
+                    .subscribe(packageName -> { },  e -> Log.e(TAG, String.valueOf(e)))
             );
         }
 
