@@ -51,7 +51,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public void updateUserInfo(String game, Integer birth, Integer job, String gender) {
+    public void setUserInfo(String game, Integer birth, Integer job, String gender) {
         this.user.setLifeApps(Lists.newArrayList(game));
         this.user.setBirthday(birth);
         this.user.setJob(job);
@@ -109,7 +109,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     @Override
-    public Completable requestUpdateUser() {
+    public Completable requestToUpdateUserInfo() {
         return this.userService.updateUser(this.user, BuildConfig.VERSION_NAME)
                 .doOnCompleted(() -> userDAO.updateUserInfo(this.user));
     }

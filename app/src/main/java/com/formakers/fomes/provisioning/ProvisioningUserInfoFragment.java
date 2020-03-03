@@ -100,9 +100,9 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
         int job = jobCategory != null ? jobCategory.getCode() : 0;
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.provision_user_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
 
-        this.presenter.updateUserInfo(game, birth, job, gender);
+        this.presenter.setUserInfo(game, birth, job, gender);
         addCompositeSubscription(
-                this.presenter.requestUpdateUser()
+                this.presenter.requestToUpdateUserInfo()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> this.presenter.emitNextPageEvent(), e -> {
                             Log.e(TAG, String.valueOf(e));

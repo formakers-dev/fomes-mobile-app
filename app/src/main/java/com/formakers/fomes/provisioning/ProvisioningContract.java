@@ -11,7 +11,7 @@ public interface ProvisioningContract {
         //Base
         AnalyticsModule.Analytics getAnalytics();
 
-        void updateUserInfo(String game, Integer birth, Integer job, String gender);
+        void setUserInfo(String game, Integer birth, Integer job, String gender);
         void updateNickNameToUser(String nickName);
         void setProvisioningProgressStatus(int status);
 
@@ -24,7 +24,7 @@ public interface ProvisioningContract {
 
         Completable requestVerifyUserToken();
         Completable requestVerifyUserNickName(String nickName);
-        Completable requestUpdateUser();
+        Completable requestToUpdateUserInfo();
 
         boolean hasUsageStatsPermission();
         boolean isSelected(BaseFragment fragment);
