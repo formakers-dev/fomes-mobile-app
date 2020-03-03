@@ -75,9 +75,6 @@ public class MainPresenter implements MainContract.Presenter {
     public User getUserInfo() {
         if (userInfo == null) {
             userInfo = userDAO.getUserInfo().observeOn(Schedulers.io()).toBlocking().value();
-
-            // TODO : 임시코드 (DB에만 존재하던 유저 이메일을 sharedPreferences에도 저장시키기)
-            sharedPreferencesHelper.setUserEmail(userInfo.getEmail());
         }
 
         return userInfo;
