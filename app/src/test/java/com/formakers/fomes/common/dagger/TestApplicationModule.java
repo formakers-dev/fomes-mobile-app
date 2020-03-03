@@ -4,6 +4,14 @@ import android.content.Context;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
+import com.formakers.fomes.common.helper.ImageLoader;
+import com.formakers.fomes.common.helper.ResourceHelper;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.helper.TimeHelper;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.AppService;
 import com.formakers.fomes.common.network.AppStatService;
@@ -23,20 +31,14 @@ import com.formakers.fomes.common.network.api.StatAPI;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.noti.ChannelManager;
 import com.formakers.fomes.common.repository.dao.UserDAO;
-import com.formakers.fomes.common.helper.AndroidNativeHelper;
-import com.formakers.fomes.common.helper.AppUsageDataHelper;
-import com.formakers.fomes.common.helper.FomesUrlHelper;
-import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.common.helper.ImageLoader;
-import com.formakers.fomes.common.helper.ResourceHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
-import com.formakers.fomes.common.helper.TimeHelper;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import rx.Single;
 
 import static org.mockito.Mockito.mock;
 
@@ -258,5 +260,22 @@ public class TestApplicationModule {
     @Provides
     FirebaseRemoteConfig firebaseRemoteConfig() {
         return mock(FirebaseRemoteConfig.class);
+    }
+
+    /**
+     * DataModule
+     */
+    @Singleton
+    @Provides
+    @Named("userEmail")
+    Single<String> userEmail() {
+        return Single.just("test@email.com");
+    }
+
+    @Singleton
+    @Provides
+    @Named("userNickName")
+    Single<String> userNickName() {
+        return Single.just("nickName");
     }
 }

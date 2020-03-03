@@ -28,4 +28,18 @@ public class DataModule {
             }
         });
     }
+
+    @Singleton
+    @Provides
+    @Named("userNickName")
+    Single<String> userNickName(SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
+        return userDAO.getUserInfo().map(user -> {
+            String nickName = sharedPreferencesHelper.getUserNickName();
+            if (!TextUtils.isEmpty(nickName)) {
+                return nickName;
+            } else {
+                return user.getNickName();
+            }
+        });
+    }
 }

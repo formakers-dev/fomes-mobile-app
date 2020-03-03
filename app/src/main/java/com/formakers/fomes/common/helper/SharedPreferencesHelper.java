@@ -28,6 +28,7 @@ public class SharedPreferencesHelper {
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_REGISTRATION_TOKEN = "REGISTRATION_TOKEN";
     private static final String KEY_EMAIL = "EMAIL";
+    private static final String KEY_NICK_NAME = "NICK_NAME";
     private static final String KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
     private static final String KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP = "LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP";
 
@@ -95,6 +96,14 @@ public class SharedPreferencesHelper {
 
     public String getUserEmail() {
         return getString(KEY_EMAIL, "");
+    }
+
+    public void setUserNickName(String nickName) {
+        putString(KEY_NICK_NAME, nickName);
+    }
+
+    public String getUserNickName() {
+        return getString(KEY_NICK_NAME, "");
     }
 
     public void setUserRegistrationToken(String registrationToken) {
