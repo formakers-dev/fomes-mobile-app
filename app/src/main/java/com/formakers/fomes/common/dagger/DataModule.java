@@ -43,7 +43,11 @@ public class DataModule {
             } else {
                 userDAO.getUserInfo()
                         .map(User::getNickName)
-                        .subscribe(singleEmitter::onSuccess, singleEmitter::onError);
+                        .subscribe(userNickName -> {
+                            // TODO : [임시코드] 크리티컬 릴리즈의 다음 릴리즈 때 지우기
+                            sharedPreferencesHelper.setUserNickName(userNickName);
+                            singleEmitter.onSuccess(nickName);
+                        }, singleEmitter::onError);
             }
         });
     }
