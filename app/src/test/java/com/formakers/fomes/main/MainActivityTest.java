@@ -53,7 +53,6 @@ import static android.view.MotionEvent.ACTION_UP;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -97,7 +96,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.Sha
         super.setUp();
 
         User user = new User().setNickName("testUserNickName").setEmail("test@email.com");
-        when(mockPresenter.getUserInfo()).thenReturn(user);
         when(mockPresenter.requestVerifyAccessToken()).thenReturn(Completable.complete());
         when(mockPresenter.checkRegisteredSendDataJob()).thenReturn(true);
         when(mockPresenter.getInterpretedUrl(anyString())).thenReturn("http://www.naver.com");
@@ -149,10 +147,17 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.Sha
     }
 
     @Test
-    public void MainActivity_시작시__사이드메뉴에_유저정보가_셋팅된다() {
+    public void MainActivity_시작시__유저정보를_바인딩한다() {
         launchActivity();
 
-        verify(mockPresenter, times(2)).getUserInfo();
+        verify(mockPresenter).bindUserInfo();
+    }
+
+    @Test
+    public void setUserInfoToNavigationView_호출시__사이드메뉴에_유저정보가_셋팅된다() {
+        launchActivity();
+
+        subject.setUserInfoToNavigationView("test@email.com", "testUserNickName");
 
         View sideHeaderView = subject.navigationView.getHeaderView(0);
         assertThat(((TextView) sideHeaderView.findViewById(R.id.user_nickname)).getText())

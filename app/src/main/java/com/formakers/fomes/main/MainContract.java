@@ -3,7 +3,6 @@ package com.formakers.fomes.main;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
-import com.formakers.fomes.common.model.User;
 
 import rx.Completable;
 
@@ -15,7 +14,7 @@ public interface MainContract {
 
         void setEventPagerAdapterModel(EventPagerAdapterContract.Model eventPagerAdapterModel);
 
-        User getUserInfo();
+        void bindUserInfo();
         Completable requestVerifyAccessToken();
         void sendEventLog(String code);
         void requestPromotions();
@@ -29,6 +28,7 @@ public interface MainContract {
     }
 
     interface View extends BaseView<Presenter> {
+        void setUserInfoToNavigationView(String email, String nickName);
         void refreshEventPager();
     }
 }
