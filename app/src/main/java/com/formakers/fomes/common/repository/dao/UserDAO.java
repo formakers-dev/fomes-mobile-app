@@ -47,6 +47,7 @@ public class UserDAO {
                 }
 
                 if (!TextUtils.isEmpty(userInfo.getNickName())) {
+                    this.sharedPreferencesHelper.setUserNickName(userInfo.getNickName());
                     userRealmObject.setNickName(userInfo.getNickName());
                 }
 
