@@ -39,7 +39,7 @@ public class BetaTest implements Parcelable {
 
     boolean isGroup;
     AfterService afterService;
-    List<String> apps = new ArrayList<>();
+    List<String> similarApps = new ArrayList<>();
 
     Integer completedItemCount;
     Integer totalItemCount;
@@ -590,12 +590,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public List<String> getApps() {
-        return apps;
+    public List<String> getSimilarApps() {
+        return similarApps;
     }
 
-    public BetaTest setApps(List<String> apps) {
-        this.apps = apps;
+    public BetaTest setSimilarApps(List<String> similarApps) {
+        this.similarApps = similarApps;
         return this;
     }
 
@@ -769,7 +769,7 @@ public class BetaTest implements Parcelable {
                 ", isCompleted=" + isCompleted +
                 ", isGroup=" + isGroup +
                 ", afterService=" + afterService +
-                ", apps=" + apps +
+                ", similarApps=" + similarApps +
                 ", completedItemCount=" + completedItemCount +
                 ", totalItemCount=" + totalItemCount +
                 ", isOpened=" + isOpened +
@@ -807,7 +807,7 @@ public class BetaTest implements Parcelable {
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isGroup ? 1 : 0);
         dest.writeParcelable(afterService, 0);
-        dest.writeStringList(apps);
+        dest.writeStringList(similarApps);
         dest.writeInt(completedItemCount);
         dest.writeInt(totalItemCount);
         dest.writeInt(isOpened ? 1 : 0);
@@ -839,7 +839,7 @@ public class BetaTest implements Parcelable {
         isCompleted = (in.readInt() == 1);
         isGroup = (in.readInt() == 1);
         afterService = in.readParcelable(null);
-        in.readStringList(apps);
+        in.readStringList(similarApps);
         completedItemCount = in.readInt();
         totalItemCount = in.readInt();
         isOpened = (in.readInt() == 1);
