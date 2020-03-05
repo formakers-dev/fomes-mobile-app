@@ -6,7 +6,6 @@ import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.PostService;
@@ -50,7 +49,6 @@ public class MainPresenterTest {
     @Inject UserService mockUserService;
     @Inject JobManager mockJobManager;
     @Inject EventLogService mockEventLogService;
-    @Inject SharedPreferencesHelper mockSharedPreferenceHelper;
     @Inject PostService mockPostService;
     @Inject FomesUrlHelper mockFomesUrlHelper;
     @Inject AnalyticsModule.Analytics mockAnalytics;
@@ -88,7 +86,7 @@ public class MainPresenterTest {
         when(mockPostService.getPromotions()).thenReturn(Single.just(Lists.newArrayList(new Post())));
         when(mockEventPagerAdapterModel.getCount()).thenReturn(3);
 
-        subject = new MainPresenter(mockView, Single.just("email"), Single.just("nickName"), mockUserService, mockPostService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper, mockFomesUrlHelper, mockAnalytics, mockImageLoader);
+        subject = new MainPresenter(mockView, Single.just("email"), Single.just("nickName"), mockUserService, mockPostService, mockEventLogService, mockJobManager, mockFomesUrlHelper, mockAnalytics, mockImageLoader);
 
         subject.setEventPagerAdapterModel(mockEventPagerAdapterModel);
     }

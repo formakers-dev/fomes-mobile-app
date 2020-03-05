@@ -5,9 +5,7 @@ import android.util.Pair;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
-import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.PostService;
 import com.formakers.fomes.common.network.UserService;
@@ -34,13 +32,11 @@ public class MainPresenter implements MainContract.Presenter {
     private PostService postService;
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
-    private SharedPreferencesHelper sharedPreferencesHelper;
     private ImageLoader imageLoader;
 
     private JobManager jobManager;
     private FomesUrlHelper fomesUrlHelper;
 
-    private User userInfo;
     private MainContract.View view;
     private EventPagerAdapterContract.Model eventPagerAdapterModel;
 
@@ -54,7 +50,6 @@ public class MainPresenter implements MainContract.Presenter {
                   PostService postService,
                   EventLogService eventLogService,
                   JobManager jobManager,
-                  SharedPreferencesHelper sharedPreferencesHelper,
                   FomesUrlHelper fomesUrlHelper,
                   AnalyticsModule.Analytics analytics,
                   ImageLoader imageLoader) {
@@ -65,7 +60,6 @@ public class MainPresenter implements MainContract.Presenter {
         this.postService = postService;
         this.jobManager = jobManager;
         this.eventLogService = eventLogService;
-        this.sharedPreferencesHelper = sharedPreferencesHelper;
         this.fomesUrlHelper = fomesUrlHelper;
         this.analytics = analytics;
         this.imageLoader = imageLoader;
