@@ -22,6 +22,7 @@ import javax.inject.Named;
 
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 @BetaTestDagger.Scope
@@ -37,7 +38,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private AnalyticsModule.Analytics analytics;
     private FomesUrlHelper fomesUrlHelper;
     private ImageLoader imageLoader;
-    private String userNickName;
+    private Single<String> userNickName;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
@@ -52,7 +53,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
-        this.userNickName = userNickName.toBlocking().value();
+        this.userNickName = userNickName;
         this.analytics = analytics;
         this.fomesUrlHelper = fomesUrlHelper;
         this.imageLoader = imageLoader;
@@ -75,7 +76,11 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
 
     @Override
     public void initialize() {
-        view.setUserNickName(userNickName);
+        compositeSubscription.add(
+            userNickName.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(userNickName -> this.view.setUserNickName(userNickName), e -> Log.e(TAG, String.valueOf(e)))
+        );
 
         compositeSubscription.add(
             loadToBetaTestList(new Date())
