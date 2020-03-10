@@ -18,7 +18,7 @@ public class BetaTest implements Parcelable {
     String iconImageUrl;
     String title;
     String description;
-    String type;
+    String plan;
     String status;
     String purpose;
     ProgressText progressText;
@@ -506,12 +506,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public String getType() {
-        return type;
+    public String getPlan() {
+        return plan;
     }
 
-    public BetaTest setType(String type) {
-        this.type = type;
+    public BetaTest setPlan(String plan) {
+        this.plan = plan;
         return this;
     }
 
@@ -755,7 +755,7 @@ public class BetaTest implements Parcelable {
                 ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
+                ", plan='" + plan + '\'' +
                 ", status='" + status + '\'' +
                 ", purpose='" + purpose + '\'' +
                 ", progressText=" + progressText +
@@ -793,7 +793,7 @@ public class BetaTest implements Parcelable {
         dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeString(type);
+        dest.writeString(plan);
         dest.writeString(status);
         dest.writeString(purpose);
         dest.writeParcelable(progressText, 0);
@@ -825,7 +825,7 @@ public class BetaTest implements Parcelable {
         iconImageUrl = in.readString();
         title = in.readString();
         description = in.readString();
-        type = in.readString();
+        plan = in.readString();
         status = in.readString();
         purpose = in.readString();
         progressText = in.readParcelable(null);
