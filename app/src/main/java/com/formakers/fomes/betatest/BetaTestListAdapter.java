@@ -105,7 +105,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         this.presenter.getImageLoader().loadImage(
                 viewHolder.overviewImageView,
-                item.getOverviewImageUrl(),
+                item.getCoverImageUrl(),
                 new RequestOptions()
                 .centerCrop()
                 .transform(new RoundedCorners(4))

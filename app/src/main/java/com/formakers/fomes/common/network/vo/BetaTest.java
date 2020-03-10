@@ -14,7 +14,7 @@ import java.util.List;
 public class BetaTest implements Parcelable {
     @SerializedName("_id") String id;
 
-    String overviewImageUrl;
+    String coverImageUrl;
     String iconImageUrl;
     String title;
     String description;
@@ -460,12 +460,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public String getOverviewImageUrl() {
-        return overviewImageUrl;
+    public String getCoverImageUrl() {
+        return coverImageUrl;
     }
 
-    public BetaTest setOverviewImageUrl(String overviewImageUrl) {
-        this.overviewImageUrl = overviewImageUrl;
+    public BetaTest setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
         return this;
     }
 
@@ -751,7 +751,7 @@ public class BetaTest implements Parcelable {
     public String toString() {
         return "BetaTest{" +
                 "id='" + id + '\'' +
-                ", overviewImageUrl='" + overviewImageUrl + '\'' +
+                ", coverImageUrl='" + coverImageUrl + '\'' +
                 ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
@@ -789,7 +789,7 @@ public class BetaTest implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(overviewImageUrl);
+        dest.writeString(coverImageUrl);
         dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(description);
@@ -821,7 +821,7 @@ public class BetaTest implements Parcelable {
 
     private void readFromParcel(Parcel in) {
         id = in.readString();
-        overviewImageUrl = in.readString();
+        coverImageUrl = in.readString();
         iconImageUrl = in.readString();
         title = in.readString();
         description = in.readString();

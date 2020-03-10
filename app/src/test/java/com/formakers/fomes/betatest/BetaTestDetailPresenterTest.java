@@ -306,7 +306,7 @@ public class BetaTestDetailPresenterTest {
                 "    \"육성\",\n" +
                 "    \"시뮬레이션\"\n" +
                 "  ],\n" +
-                "  \"overviewImageUrl\": \"https://i.imgur.com/Savbd4p.png\",\n" +
+                "  \"coverImageUrl\": \"https://i.imgur.com/Savbd4p.png\",\n" +
                 "  \"iconImageUrl\": \"https://i.imgur.com/8yd6RCh.png\",\n" +
                 "  \"openDate\": \"2019-07-04T00:00:00.000Z\",\n" +
                 "  \"closeDate\": \"2119-07-10T14:59:59.998Z\",\n" +

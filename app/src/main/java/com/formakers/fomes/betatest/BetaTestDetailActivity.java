@@ -149,7 +149,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @Override
     public void bind(BetaTest betaTest) {
-        this.presenter.getImageLoader().loadImage(overviewImageView, betaTest.getOverviewImageUrl(),
+        this.presenter.getImageLoader().loadImage(overviewImageView, betaTest.getCoverImageUrl(),
                 new RequestOptions().centerCrop());
 
         this.presenter.getImageLoader().loadImage(iconImageView, betaTest.getIconImageUrl(),
