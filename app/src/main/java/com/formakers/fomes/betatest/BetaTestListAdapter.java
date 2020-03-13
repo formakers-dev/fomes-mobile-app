@@ -105,7 +105,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         this.presenter.getImageLoader().loadImage(
                 viewHolder.overviewImageView,
-                item.getOverviewImageUrl(),
+                item.getCoverImageUrl(),
                 new RequestOptions()
                 .centerCrop()
                 .transform(new RoundedCorners(4))
@@ -143,8 +143,8 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.titleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
         viewHolder.subTitleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
 
-        // NOTE : 타입이 다른 플랜 이름으로 입력될 것을 대비하여, 구 버전은 프리미엄 뱃지로 나타나도록 처리한 것
-        if ("premium".equals(item.getType()) || item.getType() != null) {
+        // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우만 표시
+        if ("standard".equals(item.getPlan()) || "simple".equals(item.getPlan())) {
             viewHolder.premiumBadgeImageView.setVisibility(View.VISIBLE);
         } else {
             viewHolder.premiumBadgeImageView.setVisibility(View.GONE);
