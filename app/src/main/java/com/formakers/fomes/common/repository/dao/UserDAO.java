@@ -31,7 +31,7 @@ public class UserDAO {
     }
 
     public void updateUserInfo(User userInfo) {
-        Log.d(TAG, "updateUserInfo");
+        Log.d(TAG, "setUserInfo");
         try (Realm realmInstance = Realm.getDefaultInstance()) {
             realmInstance.executeTransaction(realm -> {
                 UserRealmObject userRealmObject = realm.where(UserRealmObject.class).findFirst();
@@ -47,6 +47,7 @@ public class UserDAO {
                 }
 
                 if (!TextUtils.isEmpty(userInfo.getNickName())) {
+                    this.sharedPreferencesHelper.setUserNickName(userInfo.getNickName());
                     userRealmObject.setNickName(userInfo.getNickName());
                 }
 

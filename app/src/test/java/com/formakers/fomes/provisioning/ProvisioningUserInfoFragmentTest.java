@@ -94,23 +94,23 @@ public class ProvisioningUserInfoFragmentTest {
     public void 다음버튼_클릭시__입력된_데모그래픽_정보를_유저정보에_업데이트하고_서버에_업데이트_요청을_한다() {
         setValuesToView("인생게임", 1, 3, R.id.provision_user_info_female_radiobutton);
 
-        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
+        when(mockPresenter.requestToUpdateUserInfo()).thenReturn(Completable.complete());
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).updateUserInfo(eq("인생게임"), eq(2015), eq(2001), eq(User.GENDER_FEMALE));
-        verify(mockPresenter).requestUpdateUser();
+        verify(mockPresenter).setUserInfo(eq("인생게임"), eq(2015), eq(2001), eq(User.GENDER_FEMALE));
+        verify(mockPresenter).requestToUpdateUserInfo();
     }
 
     @Test
     public void 서버에_업데이트_요청_성공시__프로비저닝_플로우를_업데이트한_후_다음페이지로_넘어가는_이벤트를_보낸다() {
         setValuesToView("인생게임", 1, 3, R.id.provision_user_info_female_radiobutton);
 
-        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.complete());
+        when(mockPresenter.requestToUpdateUserInfo()).thenReturn(Completable.complete());
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).requestUpdateUser();
+        verify(mockPresenter).requestToUpdateUserInfo();
         verify(mockPresenter).emitNextPageEvent();
     }
 
@@ -118,11 +118,11 @@ public class ProvisioningUserInfoFragmentTest {
     public void 다음버튼_클릭시__서버에_업데이트_요청을_하고_실패시__실패문구를_띄운다() {
         setValuesToView("인생게임", 1, 3, R.id.provision_user_info_female_radiobutton);
 
-        when(mockPresenter.requestUpdateUser()).thenReturn(Completable.error(new Throwable()));
+        when(mockPresenter.requestToUpdateUserInfo()).thenReturn(Completable.error(new Throwable()));
 
         subject.onNextButtonClick();
 
-        verify(mockPresenter).requestUpdateUser();
+        verify(mockPresenter).requestToUpdateUserInfo();
         assertThat(ShadowToast.getTextOfLatestToast()).contains("재시도");
     }
 

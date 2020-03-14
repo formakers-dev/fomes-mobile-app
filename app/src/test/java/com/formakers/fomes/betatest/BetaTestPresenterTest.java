@@ -8,7 +8,6 @@ import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -50,7 +49,6 @@ public class BetaTestPresenterTest {
     @Mock private BetaTestContract.View mockView;
     @Mock private BetaTestListAdapter mockAdapterModel;
     @Mock private BetaTestService mockBetaTestService;
-    @Mock private UserDAO mockUserDAO;
     @Mock private EventLogService mockEventLogService;
     @Mock private AnalyticsModule.Analytics mockAnalytics;
     @Mock private FomesUrlHelper mockFomesUrlHelper;
@@ -78,7 +76,6 @@ public class BetaTestPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         dummyUser = new User().setEmail("user@gmail.com").setNickName("dummyNickName");
-        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(dummyUser));
 
         betaTests.add(new BetaTest().setId("1").setTitle("베타테스트1").setCloseDate(new Date()).setCompletedItemCount(1).setTotalItemCount(3));
         betaTests.add(new BetaTest().setId("2").setTitle("베타테스트2").setCloseDate(new Date()).setCompletedItemCount(0).setTotalItemCount(2));
@@ -90,7 +87,7 @@ public class BetaTestPresenterTest {
         when(mockAdapterModel.getPositionById("1")).thenReturn(0);
         when(mockAdapterModel.getPositionById("2")).thenReturn(1);
 
-        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockUserDAO, mockAnalytics, mockFomesUrlHelper, mockImageLoader);
+        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockFomesUrlHelper, mockImageLoader, Single.just(dummyUser.getNickName()));
         subject.setAdapterModel(mockAdapterModel);
     }
 
@@ -98,7 +95,6 @@ public class BetaTestPresenterTest {
     public void initialize__호출시__유저정보를_가져온다() {
         subject.initialize();
 
-        verify(mockUserDAO).getUserInfo();
         verify(mockView).setUserNickName(eq("dummyNickName"));
     }
 

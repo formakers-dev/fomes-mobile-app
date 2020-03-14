@@ -78,7 +78,7 @@ public class ProvisioningPresenterTest {
 
     @Test
     public void updateUserInfo__호출시__유저정보를_업데이트한다() {
-        subject.updateUserInfo("미러스엣지", 1989, 1, User.GENDER_MALE);
+        subject.setUserInfo("미러스엣지", 1989, 1, User.GENDER_MALE);
 
         assertThat(subject.user.getLifeApps()).isEqualTo(Lists.newArrayList("미러스엣지"));
         assertThat(subject.user.getBirthday()).isEqualTo(1989);
@@ -135,7 +135,7 @@ public class ProvisioningPresenterTest {
     public void requestUpdateUser__호출시__유저정보_업데이트_API를_호출한후_유저정보를_내부에_업데이트한다() {
         when(mockUserService.updateUser(any(User.class), anyString())).thenReturn(Completable.complete());
 
-        subject.requestUpdateUser().subscribe();
+        subject.requestToUpdateUserInfo().subscribe();
 
         verify(mockUserService).updateUser(eq(subject.user), eq(BuildConfig.VERSION_NAME));
         verify(mockUserDAO).updateUserInfo(eq(subject.user));
@@ -145,7 +145,7 @@ public class ProvisioningPresenterTest {
     public void requestUpdateUser__호출시__유저정보_업데이트_API가_실패하면__아무것도_하지않는다() {
         when(mockUserService.updateUser(any(User.class), anyString())).thenReturn(Completable.error(new Throwable()));
 
-        subject.requestUpdateUser();
+        subject.requestToUpdateUserInfo();
 
         verify(mockUserService).updateUser(eq(subject.user), eq(BuildConfig.VERSION_NAME));
         verify(mockUserDAO, never()).updateUserInfo(any());

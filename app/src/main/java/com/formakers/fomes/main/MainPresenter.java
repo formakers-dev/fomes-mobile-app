@@ -1,21 +1,22 @@
 package com.formakers.fomes.main;
 
+import android.util.Pair;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.PostService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.common.helper.FomesUrlHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
-import com.formakers.fomes.common.model.User;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import rx.Completable;
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -25,32 +26,40 @@ public class MainPresenter implements MainContract.Presenter {
 
     private static final String TAG = "MainPresenter";
 
-    private UserDAO userDAO;
+    private Single<String> userEmail;
+    private Single<String> userNickName;
     private UserService userService;
     private PostService postService;
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
-    private SharedPreferencesHelper sharedPreferencesHelper;
     private ImageLoader imageLoader;
 
     private JobManager jobManager;
     private FomesUrlHelper fomesUrlHelper;
 
-    private User userInfo;
     private MainContract.View view;
     private EventPagerAdapterContract.Model eventPagerAdapterModel;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    MainPresenter(MainContract.View view, UserDAO userDAO, UserService userService, PostService postService, EventLogService eventLogService, JobManager jobManager, SharedPreferencesHelper sharedPreferencesHelper, FomesUrlHelper fomesUrlHelper, AnalyticsModule.Analytics analytics, ImageLoader imageLoader) {
+    MainPresenter(MainContract.View view,
+                  @Named("userEmail") Single<String> userEmail,
+                  @Named("userNickName") Single<String> userNickName,
+                  UserService userService,
+                  PostService postService,
+                  EventLogService eventLogService,
+                  JobManager jobManager,
+                  FomesUrlHelper fomesUrlHelper,
+                  AnalyticsModule.Analytics analytics,
+                  ImageLoader imageLoader) {
         this.view = view;
-        this.userDAO = userDAO;
+        this.userEmail = userEmail;
+        this.userNickName = userNickName;
         this.userService = userService;
         this.postService = postService;
         this.jobManager = jobManager;
         this.eventLogService = eventLogService;
-        this.sharedPreferencesHelper = sharedPreferencesHelper;
         this.fomesUrlHelper = fomesUrlHelper;
         this.analytics = analytics;
         this.imageLoader = imageLoader;
@@ -72,15 +81,13 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public User getUserInfo() {
-        if (userInfo == null) {
-            userInfo = userDAO.getUserInfo().observeOn(Schedulers.io()).toBlocking().value();
-
-            // TODO : 임시코드 (DB에만 존재하던 유저 이메일을 sharedPreferences에도 저장시키기)
-            sharedPreferencesHelper.setUserEmail(userInfo.getEmail());
-        }
-
-        return userInfo;
+    public void bindUserInfo() {
+        userEmail.zipWith(userNickName, Pair::new)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(emailNickNamePair ->
+                        this.view.setUserInfoToNavigationView(emailNickNamePair.first, emailNickNamePair.second),
+                        e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

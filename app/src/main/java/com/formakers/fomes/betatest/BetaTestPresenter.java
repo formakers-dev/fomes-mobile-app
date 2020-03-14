@@ -5,12 +5,10 @@ import android.util.Pair;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
-import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
@@ -20,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
@@ -35,21 +34,26 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
 
     private BetaTestContract.View view;
     private BetaTestService betaTestService;
-    private UserDAO userDAO;
-    private User user;
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
     private FomesUrlHelper fomesUrlHelper;
     private ImageLoader imageLoader;
+    private Single<String> userNickName;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    public BetaTestPresenter(BetaTestContract.View view, BetaTestService betaTestService, EventLogService eventLogService, UserDAO userDAO, AnalyticsModule.Analytics analytics, FomesUrlHelper fomesUrlHelper, ImageLoader imageLoader) {
+    public BetaTestPresenter(BetaTestContract.View view,
+                             BetaTestService betaTestService,
+                             EventLogService eventLogService,
+                             AnalyticsModule.Analytics analytics,
+                             FomesUrlHelper fomesUrlHelper,
+                             ImageLoader imageLoader,
+                             @Named("userNickName") Single<String> userNickName) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
-        this.userDAO = userDAO;
+        this.userNickName = userNickName;
         this.analytics = analytics;
         this.fomesUrlHelper = fomesUrlHelper;
         this.imageLoader = imageLoader;
@@ -73,14 +77,13 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     @Override
     public void initialize() {
         compositeSubscription.add(
-                userDAO.getUserInfo()
+            userNickName.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(user -> {
-                    this.user = user;
-                    view.setUserNickName(user.getNickName());
-                })
-                .observeOn(Schedulers.io())
-                .flatMap(user -> loadToBetaTestList(new Date()))
+                .subscribe(userNickName -> this.view.setUserNickName(userNickName), e -> Log.e(TAG, String.valueOf(e)))
+        );
+
+        compositeSubscription.add(
+            loadToBetaTestList(new Date())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> view.showLoading())
                 .doAfterTerminate(() -> view.hideLoading())

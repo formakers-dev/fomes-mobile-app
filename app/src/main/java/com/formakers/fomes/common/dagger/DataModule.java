@@ -2,8 +2,9 @@ package com.formakers.fomes.common.dagger;
 
 import android.text.TextUtils;
 
-import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
+import com.formakers.fomes.common.model.User;
+import com.formakers.fomes.common.repository.dao.UserDAO;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -19,12 +20,34 @@ public class DataModule {
     @Provides
     @Named("userEmail")
     Single<String> userEmail(SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
-        return userDAO.getUserInfo().map(user -> {
+        return Single.fromEmitter(singleEmitter -> {
             String email = sharedPreferencesHelper.getUserEmail();
             if (!TextUtils.isEmpty(email)) {
-                return email;
+                singleEmitter.onSuccess(email);
             } else {
-                return user.getEmail();
+                userDAO.getUserInfo()
+                        .map(User::getEmail)
+                        .subscribe(singleEmitter::onSuccess, singleEmitter::onError);
+            }
+        });
+    }
+
+    @Singleton
+    @Provides
+    @Named("userNickName")
+    Single<String> userNickName(SharedPreferencesHelper sharedPreferencesHelper, UserDAO userDAO) {
+        return Single.fromEmitter(singleEmitter -> {
+            String nickName = sharedPreferencesHelper.getUserNickName();
+            if (!TextUtils.isEmpty(nickName)) {
+                singleEmitter.onSuccess(nickName);
+            } else {
+                userDAO.getUserInfo()
+                        .map(User::getNickName)
+                        .subscribe(userNickName -> {
+                            // TODO : [임시코드] 크리티컬 릴리즈의 다음 릴리즈 때 지우기
+                            sharedPreferencesHelper.setUserNickName(userNickName);
+                            singleEmitter.onSuccess(nickName);
+                        }, singleEmitter::onError);
             }
         });
     }

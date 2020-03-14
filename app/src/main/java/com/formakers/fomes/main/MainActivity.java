@@ -127,15 +127,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         drawerToggle.setDrawerSlideAnimationEnabled(true);
         drawerToggle.syncState();
 
+        // for NavigationView
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-
         navigationView.inflateMenu(R.menu.main_nav);
-        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
-                .setText(presenter.getUserInfo().getNickName());
-        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
-                .setText(presenter.getUserInfo().getEmail());
+        this.presenter.bindUserInfo();
 
+        // for Main Tab Pager
         tabPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
         BetaTestFragment betaTestFragment = new BetaTestFragment();
@@ -153,6 +151,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.tabLayout.setupWithViewPager(contentsViewPager);
         this.tabLayout.addOnTabSelectedListener(this);
 
+        // for Main Event Banner Pager
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
         eventPagerAdapter.setPresenter(this.presenter);
         eventViewPager.setAdapter(eventPagerAdapter);
@@ -167,13 +166,24 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         presenter.requestPromotions();
 
+
+        // for Event Logging
         if (getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false)) {
             presenter.sendEventLog(FomesConstants.FomesEventLog.Code.NOTIFICATION_TAP);
         } else {
             presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_ENTER);
         }
 
+        // for Deeplink
         handleDeeplink(getIntent().getExtras());
+    }
+
+    @Override
+    public void setUserInfoToNavigationView(String email, String nickName) {
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
+                .setText(email);
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
+                .setText(nickName);
     }
 
     private void startEventPagerAutoSlide(long additionalInitDelay) {

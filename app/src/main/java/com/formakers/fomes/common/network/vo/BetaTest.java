@@ -14,11 +14,11 @@ import java.util.List;
 public class BetaTest implements Parcelable {
     @SerializedName("_id") String id;
 
-    String overviewImageUrl;
+    String coverImageUrl;
     String iconImageUrl;
     String title;
     String description;
-    String type;
+    String plan;
     String status;
     String purpose;
     ProgressText progressText;
@@ -39,7 +39,7 @@ public class BetaTest implements Parcelable {
 
     boolean isGroup;
     AfterService afterService;
-    List<String> apps = new ArrayList<>();
+    List<String> similarApps = new ArrayList<>();
 
     Integer completedItemCount;
     Integer totalItemCount;
@@ -460,12 +460,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public String getOverviewImageUrl() {
-        return overviewImageUrl;
+    public String getCoverImageUrl() {
+        return coverImageUrl;
     }
 
-    public BetaTest setOverviewImageUrl(String overviewImageUrl) {
-        this.overviewImageUrl = overviewImageUrl;
+    public BetaTest setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
         return this;
     }
 
@@ -506,12 +506,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public String getType() {
-        return type;
+    public String getPlan() {
+        return plan;
     }
 
-    public BetaTest setType(String type) {
-        this.type = type;
+    public BetaTest setPlan(String plan) {
+        this.plan = plan;
         return this;
     }
 
@@ -590,12 +590,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public List<String> getApps() {
-        return apps;
+    public List<String> getSimilarApps() {
+        return similarApps;
     }
 
-    public BetaTest setApps(List<String> apps) {
-        this.apps = apps;
+    public BetaTest setSimilarApps(List<String> similarApps) {
+        this.similarApps = similarApps;
         return this;
     }
 
@@ -751,11 +751,11 @@ public class BetaTest implements Parcelable {
     public String toString() {
         return "BetaTest{" +
                 "id='" + id + '\'' +
-                ", overviewImageUrl='" + overviewImageUrl + '\'' +
+                ", coverImageUrl='" + coverImageUrl + '\'' +
                 ", iconImageUrl='" + iconImageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
+                ", plan='" + plan + '\'' +
                 ", status='" + status + '\'' +
                 ", purpose='" + purpose + '\'' +
                 ", progressText=" + progressText +
@@ -769,7 +769,7 @@ public class BetaTest implements Parcelable {
                 ", isCompleted=" + isCompleted +
                 ", isGroup=" + isGroup +
                 ", afterService=" + afterService +
-                ", apps=" + apps +
+                ", similarApps=" + similarApps +
                 ", completedItemCount=" + completedItemCount +
                 ", totalItemCount=" + totalItemCount +
                 ", isOpened=" + isOpened +
@@ -789,11 +789,11 @@ public class BetaTest implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(overviewImageUrl);
+        dest.writeString(coverImageUrl);
         dest.writeString(iconImageUrl);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeString(type);
+        dest.writeString(plan);
         dest.writeString(status);
         dest.writeString(purpose);
         dest.writeParcelable(progressText, 0);
@@ -807,7 +807,7 @@ public class BetaTest implements Parcelable {
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isGroup ? 1 : 0);
         dest.writeParcelable(afterService, 0);
-        dest.writeStringList(apps);
+        dest.writeStringList(similarApps);
         dest.writeInt(completedItemCount);
         dest.writeInt(totalItemCount);
         dest.writeInt(isOpened ? 1 : 0);
@@ -821,11 +821,11 @@ public class BetaTest implements Parcelable {
 
     private void readFromParcel(Parcel in) {
         id = in.readString();
-        overviewImageUrl = in.readString();
+        coverImageUrl = in.readString();
         iconImageUrl = in.readString();
         title = in.readString();
         description = in.readString();
-        type = in.readString();
+        plan = in.readString();
         status = in.readString();
         purpose = in.readString();
         progressText = in.readParcelable(null);
@@ -839,7 +839,7 @@ public class BetaTest implements Parcelable {
         isCompleted = (in.readInt() == 1);
         isGroup = (in.readInt() == 1);
         afterService = in.readParcelable(null);
-        in.readStringList(apps);
+        in.readStringList(similarApps);
         completedItemCount = in.readInt();
         totalItemCount = in.readInt();
         isOpened = (in.readInt() == 1);

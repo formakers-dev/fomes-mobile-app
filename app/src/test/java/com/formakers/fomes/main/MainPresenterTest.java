@@ -6,15 +6,12 @@ import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
-import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.PostService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Post;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.google.common.collect.Lists;
 
 import org.junit.After;
@@ -43,18 +40,15 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class MainPresenterTest {
 
-    @Inject UserDAO mockUserDAO;
     @Inject UserService mockUserService;
     @Inject JobManager mockJobManager;
     @Inject EventLogService mockEventLogService;
-    @Inject SharedPreferencesHelper mockSharedPreferenceHelper;
     @Inject PostService mockPostService;
     @Inject FomesUrlHelper mockFomesUrlHelper;
     @Inject AnalyticsModule.Analytics mockAnalytics;
@@ -89,11 +83,10 @@ public class MainPresenterTest {
         MockitoAnnotations.initMocks(this);
         ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
-        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(new User("email", "notiToken")));
         when(mockPostService.getPromotions()).thenReturn(Single.just(Lists.newArrayList(new Post())));
         when(mockEventPagerAdapterModel.getCount()).thenReturn(3);
 
-        subject = new MainPresenter(mockView, mockUserDAO, mockUserService, mockPostService, mockEventLogService, mockJobManager, mockSharedPreferenceHelper, mockFomesUrlHelper, mockAnalytics, mockImageLoader);
+        subject = new MainPresenter(mockView, Single.just("email"), Single.just("nickName"), mockUserService, mockPostService, mockEventLogService, mockJobManager, mockFomesUrlHelper, mockAnalytics, mockImageLoader);
 
         subject.setEventPagerAdapterModel(mockEventPagerAdapterModel);
     }
@@ -103,11 +96,10 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void getUserInfo_호출시__이미저장된_유저정보가_없을때에만__DB에_유저정보를_요청한다() {
-        subject.getUserInfo();
-        subject.getUserInfo();
+    public void bindUserInfo_호출시__유저정보를_가져와서__네비게이션뷰에_셋팅한다() {
+        subject.bindUserInfo();
 
-        verify(mockUserDAO, times(1)).getUserInfo();
+        verify(this.mockView).setUserInfoToNavigationView(eq("email"), eq("nickName"));
     }
 
     @Test

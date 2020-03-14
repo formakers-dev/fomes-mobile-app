@@ -2,7 +2,12 @@ package com.formakers.fomes.common.dagger;
 
 import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.LocalBroadcastReceiver;
+import com.formakers.fomes.common.helper.AndroidNativeHelper;
+import com.formakers.fomes.common.helper.AppUsageDataHelper;
+import com.formakers.fomes.common.helper.FomesUrlHelper;
+import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
 import com.formakers.fomes.common.network.AppService;
@@ -19,16 +24,13 @@ import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.NoticeMigrationActivity;
-import com.formakers.fomes.common.helper.AndroidNativeHelper;
-import com.formakers.fomes.common.helper.AppUsageDataHelper;
-import com.formakers.fomes.common.helper.FomesUrlHelper;
-import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import rx.Single;
 
 @Singleton
 @Component(modules = { NetworkModule.class, GlideModule.class, AnalyticsModule.class, DataModule.class })
@@ -56,6 +58,8 @@ public interface ApplicationComponent {
 
     AnalyticsModule.Analytics analytics();
     ImageLoader imageLoader();
+    @Named("userEmail") Single<String> userEmail();
+    @Named("userNickName") Single<String> userNickName();
 
     void inject(MessagingService messagingService);
     void inject(SendDataJobService sendDataJobService);

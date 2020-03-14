@@ -140,16 +140,16 @@ android.applicationVariants.all { variant ->
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0-alpha08'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     // okHttp
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     // gson
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -158,9 +158,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     testAnnotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     // dagger
-    implementation 'com.google.dagger:dagger:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    api 'com.google.dagger:dagger:2.24'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.24'
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.24'
     // rxJava
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'io.reactivex:rxjava:1.3.8'
@@ -188,9 +188,11 @@ dependencies {
         exclude group: 'com.google.guava', module: 'guava-jdk5'
     }
     // firebase
-    implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-messaging:20.0.1'
-    implementation 'com.google.firebase:firebase-config:19.0.3'
+    implementation 'com.google.firebase:firebase-core:17.2.3'
+    implementation 'com.google.firebase:firebase-messaging:20.1.2'
+    implementation 'com.google.firebase:firebase-config:19.1.2'
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01'
     // Facebook
     implementation 'com.facebook.android:facebook-android-sdk:5.11.0'
     // youtube player api
@@ -227,6 +229,7 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'realm-android'
+apply plugin: 'com.google.firebase.crashlytics'
 
 task getAppVersion() {
     def appVersion = "${majorVersion}.${minorVersion}.${patchVersion}"

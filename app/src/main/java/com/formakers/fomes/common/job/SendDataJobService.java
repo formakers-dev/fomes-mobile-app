@@ -66,8 +66,8 @@ public class SendDataJobService extends JobService {
 
         // 2. 백업용 : 유저정보 서버로 올리기
         completableList.add(userDAO.getUserInfo().map(user -> {
-            // 2-0. TODO : 임시코드 (DB에만 존재하던 유저 이메일을 sharedPreferences에도 저장시키기)
-            sharedPreferencesHelper.setUserEmail(user.getEmail());
+            // 2-0. 유저 닉네임 정보 임시 저장 (임시코드라 테스트코드 작성X)
+            sharedPreferencesHelper.setUserNickName(user.getNickName());
             // 2-1. 버전 정보 올리기
             user.setAppVersion(BuildConfig.VERSION_NAME);
             // 2-2. FCM Token 업로드하기

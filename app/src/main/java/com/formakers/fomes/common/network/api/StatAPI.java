@@ -21,6 +21,13 @@ public interface StatAPI {
     @POST("/stats/usages/app")
     Observable<Void> postUsages(@Header("x-access-token") String accessToken, @Body List<AppUsage> appUsages);
 
+    /**
+     *
+     * @param accessToken user's appbee token for auth
+     * @param categoryId app category Id
+     * @param user (mandatory) user.job, user.birthday, user.gender
+     * @return the report of user's recent usages
+     */
     @POST("/stats/report/category/{categoryId}/recent")
     Observable<RecentReport> getRecentReport(@Header("x-access-token") String accessToken, @Path("categoryId") String categoryId, @Body User user);
 }
