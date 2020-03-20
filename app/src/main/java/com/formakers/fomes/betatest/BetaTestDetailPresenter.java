@@ -177,25 +177,14 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public void requestToAttendBetaTest() {
+        Log.d(TAG, "requestToAttendBetaTest");
         view.getCompositeSubscription().add(
-                this.getMissionListWithLockingSequence()
-                .filter(mission -> {
-                    String missionType = mission.getItem().getType();
-                    return FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionType)
-                            || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(missionType);
-                })
-                .flatMapCompletable(mission -> this.betaTestService.postCompleteBetaTest(mission.getItem().getId()))
-                .toCompletable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    for (Mission mission : betaTest.getMissions()) {
-                        String missionType = mission.getItem().getType();
-                        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionType) || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(missionType)) {
-                            mission.getItem().setCompleted(true);
-                        }
-                    }
-                    this.view.refreshMissionList();
-                }, e -> Log.e(TAG, String.valueOf(e)))
+                betaTestService.postAttendBetaTest(this.betaTest.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            this.betaTest.setAttended(true);
+                            this.view.refreshMissionList();
+                        }, e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 
@@ -246,15 +235,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 })
                 .flatMap(reducedMissionList -> {
                     // 첫 번째 미션 락에 대한 예외처리
-                    if (reducedMissionList.get(0).isLocked()) {
-                        for (Mission lockedMission : reducedMissionList) {
-                            Mission.MissionItem lockedMissionItem = lockedMission.getItem();
-
-                            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(lockedMissionItem.getType())
-                                    || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(lockedMissionItem.getType())) {
-                                reducedMissionList.get(0).setLocked(!lockedMissionItem.isCompleted());
-                            }
-                        }
+                    if (betaTest.isAttended()) {
+                        reducedMissionList.get(0).setLocked(false);
                     }
 
                     // 가장 먼저 발견된 락 이후로는 모두 락으로 셋팅

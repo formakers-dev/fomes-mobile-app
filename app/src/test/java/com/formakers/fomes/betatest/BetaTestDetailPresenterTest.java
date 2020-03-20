@@ -77,7 +77,7 @@ public class BetaTestDetailPresenterTest {
 
         when(mockBetaTestService.getDetailBetaTest("5d1c5e695c20ca481f27a4ab"))
                 .thenReturn(Single.just(getDummyBetaTestDetail()));
-        when(mockBetaTestService.postCompleteBetaTest("5d1ec8194400311578e996bd"))
+        when(mockBetaTestService.postAttendBetaTest("5d1c5e695c20ca481f27a4ab"))
                 .thenReturn(Completable.complete());
         when(mockBetaTestService.getMissionProgress("5d1ec8094400311578e996bc"))
                 .thenReturn(Observable.just(new Mission.MissionItem()));
@@ -229,8 +229,8 @@ public class BetaTestDetailPresenterTest {
         subject.load("5d1c5e695c20ca481f27a4ab");
         subject.requestToAttendBetaTest();
 
-        verify(mockBetaTestService).postCompleteBetaTest("5d1ec8194400311578e996bd");
-        verify(mockBetaTestService).postCompleteBetaTest("5d1ec8194400311578e996b2");
+        verify(mockBetaTestService).postAttendBetaTest("5d1c5e695c20ca481f27a4ab");
+        assertThat(subject.betaTest.isAttended()).isTrue();
         verify(mockView).refreshMissionList();
     }
 
@@ -435,7 +435,8 @@ public class BetaTestDetailPresenterTest {
                 "      }\n" +
                 "    }\n" +
                 "  ],\n" +
-                "  \"currentDate\": \"2019-08-14T09:52:23.879Z\"\n" +
+                "  \"currentDate\": \"2019-08-14T09:52:23.879Z\",\n" +
+                "  \"isAttended\": true\n" +
                 "}";
 
         return new Gson().fromJson(json, BetaTest.class);

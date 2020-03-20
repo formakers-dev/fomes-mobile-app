@@ -80,6 +80,16 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ViewHolder viewHolder = ((ViewHolder) holder);
 
+        if (position <= 0 && mission.isLocked()) {
+            viewHolder.lockView.setOnClickListener(v -> {
+                viewHolder.lockView.setEnabled(false);
+                presenter.requestToAttendBetaTest();
+                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, mission.getId());
+            });
+        } else {
+            viewHolder.lockView.setOnClickListener(null);
+        }
+
         // 락 화면
         viewHolder.lockLevelTextView.setText(String.format(context.getString(R.string.betatest_detail_mission_item_lock_level_format), position + 1));
         viewHolder.lockTitleTextView.setText(mission.getItem().getTitle());
@@ -88,16 +98,6 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         Log.d(TAG, "mission: " + mission);
         viewHolder.lockView.setVisibility(mission.isLocked() ? View.VISIBLE : View.GONE);
-
-        if (position <= 0 && mission.isLocked()) {
-            viewHolder.lockView.setClickable(true);
-            viewHolder.lockView.setOnClickListener(v -> {
-                presenter.requestToAttendBetaTest();
-                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, mission.getId());
-            });
-        } else {
-            viewHolder.lockView.setClickable(false);
-        }
 
         viewHolder.lockView.setOnTouchListener((v, event) -> {
             if (position <= 0) {
