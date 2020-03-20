@@ -29,4 +29,7 @@ public interface BetaTestAPI {
 
     @POST("/beta-tests/{id}/complete")
     Observable<Void> postCompleteBetaTest(@Header("x-access-token") String accessToken, @Path("id") String id);
+
+    @POST("/beta-tests/{id}/attend")
+    Observable<Void> postAttend(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
 }

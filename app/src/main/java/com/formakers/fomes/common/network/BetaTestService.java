@@ -78,4 +78,11 @@ public class BetaTestService extends AbstractService {
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken());
     }
+
+    public Completable postAttendBetaTest(String betaTestId) {
+        return Observable.defer(() -> betaTestAPI.postAttend(sharedPreferencesHelper.getAccessToken(), betaTestId))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
 }
