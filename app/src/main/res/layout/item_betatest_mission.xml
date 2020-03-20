@@ -27,7 +27,7 @@
             android:paddingBottom="17dp"
             android:background="@drawable/item_rect_rounded_corner_background"
             android:foreground="@drawable/item_rect_rounded_corner_stroke_background"
-            android:theme="@style/BetaTestTheme.CardBackground">
+            android:theme="@style/BetaTestTheme.CardBackground.Mission">
 
             <ImageView android:id="@+id/mission_refresh_button"
                 android:layout_width="25dp"

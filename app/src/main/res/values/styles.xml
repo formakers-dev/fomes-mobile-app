@@ -212,6 +212,10 @@
         <item name="item_stroke_width">0dp</item>
     </style>
 
+    <style name="BetaTestTheme.CardBackground.Mission">
+        <item name="item_solid_color">@color/fomes_charcoal_gray</item>
+    </style>
+
     <!--<style name="BetaTestTheme.CardGradient">-->
         <!--<item name="item_gradient_start_color">@color/fomes_content_card_background</item>-->
         <!--<item name="item_gradient_end_color">@android:color/transparent</item>-->
