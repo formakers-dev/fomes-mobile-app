@@ -74,22 +74,17 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         String projectStatus;
         if (remainDays > 0) {
-            projectStatus = String.format("D - %d", remainDays);
-        } else if (remainDays == 0) {
-            projectStatus = "오늘 마감";
+            projectStatus = String.format("%d 일\n남음", remainDays + 1);
         } else {
-            projectStatus = context.getString(R.string.common_close);
+            projectStatus = "오늘\n마감";
         }
 
         viewHolder.projectStatusTextView.setText(projectStatus);
 
         @ColorRes int projectStatusColorId;
         @StyleRes int projectStatusStyleResId;
-        if (remainDays < 2) {
-            projectStatusColorId = R.color.fomes_red;
-            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Red;
-        } else if (remainDays < 4) {
-            projectStatusColorId = R.color.fomes_squash;
+        if (remainDays <= 0) {
+            projectStatusColorId = R.color.fomes_orange;
             projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Yellow;
         } else {
             projectStatusColorId = R.color.colorPrimary;
@@ -97,9 +92,9 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         viewHolder.projectStatusTextView.setVisibility(View.VISIBLE);
-        viewHolder.projectStatusTextView.setTextColor(res.getColor(projectStatusColorId));
-        viewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new ContextThemeWrapper(context, projectStatusStyleResId).getTheme()));
+        viewHolder.projectStatusTextView.setBackgroundColor(res.getColor(projectStatusColorId));
+//        viewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+//                new ContextThemeWrapper(context, projectStatusStyleResId).getTheme()));
 
         // end of 디데이
 
