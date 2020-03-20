@@ -127,8 +127,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Observable<Mission.MissionItem> refreshMissionProgress(String missionId) {
-        return this.betaTestService.getMissionProgress(missionId);
+    public Single<Mission.MissionItem> refreshMissionProgress(String missionId) {
+        return this.betaTestService.getMissionProgress(betaTest.getId(), missionId);
     }
 
     @Override

@@ -79,8 +79,8 @@ public class BetaTestDetailPresenterTest {
                 .thenReturn(Single.just(getDummyBetaTestDetail()));
         when(mockBetaTestService.postAttendBetaTest("5d1c5e695c20ca481f27a4ab"))
                 .thenReturn(Completable.complete());
-        when(mockBetaTestService.getMissionProgress("5d1ec8094400311578e996bc"))
-                .thenReturn(Observable.just(new Mission.MissionItem()));
+        when(mockBetaTestService.getMissionProgress("5d1c5e695c20ca481f27a4ab", "5d1ec8094400311578e996bc"))
+                .thenReturn(Single.just(new Mission.MissionItem()));
         when(mockBetaTestService.postCompleteBetaTest(anyString())).thenReturn(Completable.complete());
 
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
@@ -126,9 +126,10 @@ public class BetaTestDetailPresenterTest {
 
     @Test
     public void refreshMissionProgress_호출시__해당_미션의_진행상태를_요청한다() {
+        subject.load("5d1c5e695c20ca481f27a4ab");
         subject.refreshMissionProgress("5d1ec8094400311578e996bc");
 
-        verify(mockBetaTestService).getMissionProgress(eq("5d1ec8094400311578e996bc"));
+        verify(mockBetaTestService).getMissionProgress(eq("5d1c5e695c20ca481f27a4ab"), eq("5d1ec8094400311578e996bc"));
     }
 
     @Test

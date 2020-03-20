@@ -203,7 +203,6 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     if (item.getId().equals(newMissionItem.getId())) {
                                         item.setCompleted(newMissionItem.isCompleted());
                                     }
-                                }, e -> Log.e(TAG, String.valueOf(e)), () -> {
 
                                     // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
                                     presenter.getDisplayedMissionList()
@@ -212,7 +211,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                                 setMissionList(missionList);
                                                 notifyItemRangeChanged(position, missionList.size() - position);
                                             },  e -> Log.e(TAG, String.valueOf(e)));
-                                }));
+                                }, e -> Log.e(TAG, String.valueOf(e)))
+                );
             }
         });
 
