@@ -140,7 +140,7 @@
             <View android:id="@+id/betatest_title_layout_disable_background"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="@dimen/match_constraint"
-                android:background="#90454647"
+                android:background="@color/fomes_content_disable_card_background"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="@+id/betatest_icon_imageview"
                 app:layout_constraintBottom_toBottomOf="@+id/betatest_subtitle_textview"

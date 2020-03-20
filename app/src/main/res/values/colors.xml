@@ -39,10 +39,10 @@
     <color name="fomes_text_title">@color/fomes_white</color>
     <color name="fomes_text_sub_title">@color/fomes_light_gray</color>
 
-    <color name="fomes_content_background_dark">@color/fomes_deep_gray</color>
+    <color name="fomes_content_background_dark">@color/fomes_dark_gray</color>
     <!--<color name="fomes_content_item_background">@color/fomes_deep_gray</color>-->
-    <color name="fomes_content_card_background">@color/fomes_charcoal_gray</color>
-    <color name="fomes_content_disable_card_background">#c0454647</color>
+    <color name="fomes_content_card_background">#3c3c3c</color>
+    <color name="fomes_content_disable_card_background">#903c3c3c</color>
 
     <color name="app_label_background">@color/fomes_dark_gray</color>
     <color name="item_inner_divider">@color/fomes_gray_3</color>

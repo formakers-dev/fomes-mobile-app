@@ -79,7 +79,7 @@
 
     <style name="FomesMainTabTheme.BetaTestDivider">
         <item name="divider_width">@dimen/match_constraint</item>
-        <item name="divider_height">12dp</item>
+        <item name="divider_height">16dp</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>
 
