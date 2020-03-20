@@ -187,7 +187,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 updatePlayTime(viewHolder, missionItem);
             } else {
                 view.getCompositeSubscription().add(
-                        presenter.refreshMissionProgress(mission.getId())
+                        presenter.refreshMissionProgress(missionItem.getId())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .doOnSubscribe(() -> {
                                     viewHolder.refreshButton.setVisibility(View.INVISIBLE);
@@ -198,10 +198,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     viewHolder.refreshProgress.setVisibility(View.GONE);
                                 })
                                 .subscribe(newMissionItem -> {
-                                    Mission.MissionItem item = mission.getItem();
-
-                                    if (item.getId().equals(newMissionItem.getId())) {
-                                        item.setCompleted(newMissionItem.isCompleted());
+                                    if (missionItem.getId().equals(newMissionItem.getId())) {
+                                        missionItem.setCompleted(newMissionItem.isCompleted());
                                     }
 
                                     // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
