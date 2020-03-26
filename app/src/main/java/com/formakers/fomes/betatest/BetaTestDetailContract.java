@@ -29,7 +29,7 @@ public interface BetaTestDetailContract {
 
         void load(String id);
 
-        Observable<Mission.MissionItem> refreshMissionProgress(String missionId);
+        Single<Mission.MissionItem> refreshMissionProgress(String missionId);
 
         void processMissionItemAction(Mission.MissionItem missionItem);
         String getInterpretedUrl(String originalUrl);

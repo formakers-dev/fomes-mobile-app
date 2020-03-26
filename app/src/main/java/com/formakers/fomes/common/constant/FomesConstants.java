@@ -41,7 +41,7 @@ public interface FomesConstants {
 
         interface Mission {
             String TYPE_PLAY = "play";
-            String TYPE_HIDDEN = "hidden";
+            @Deprecated String TYPE_HIDDEN = "hidden";
             String TYPE_DEFAULT = "default";
 
             String ACTION_TYPE_INTERNAL_WEB = "internal_web";

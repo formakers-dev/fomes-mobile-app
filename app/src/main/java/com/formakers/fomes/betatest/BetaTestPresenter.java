@@ -129,7 +129,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     public void requestBetaTestProgress(String betaTestId) {
         compositeSubscription.add(
                 betaTestService.getBetaTestProgress(betaTestId)
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .observeOn(Schedulers.io())
                         .map(newBetaTest -> {
                             int position = betaTestListAdapterModel.getPositionById(newBetaTest.getId());
 
@@ -137,16 +137,10 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                                 throw new IllegalStateException("There isn't the betatest in list. It might be initialized by system.");
                             }
 
-                            return new Pair<>(newBetaTest, position);
-                        })
-                        .subscribe(betaTestPair -> {
-                            BetaTest newBetaTest = betaTestPair.first;
-                            int position = betaTestPair.second;
-
                             BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
 
-                            // TODO : 로직 최적화 필요. 플래그 사용 지양!
                             boolean isUpdated = false;
+
                             if (!originalBetaTest.getCompletedItemCount().equals(newBetaTest.getCompletedItemCount())) {
                                 originalBetaTest.setCompletedItemCount(newBetaTest.getCompletedItemCount());
                                 isUpdated = true;
@@ -156,6 +150,13 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                                 originalBetaTest.setTotalItemCount(newBetaTest.getTotalItemCount());
                                 isUpdated = true;
                             }
+
+                            return new Pair<>(position, isUpdated);
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(pair -> {
+                            int position = pair.first;
+                            boolean isUpdated = pair.second;
 
                             if (isUpdated) {
                                 view.refreshBetaTestProgress(position);

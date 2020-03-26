@@ -80,6 +80,16 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ViewHolder viewHolder = ((ViewHolder) holder);
 
+        if (position <= 0 && mission.isLocked()) {
+            viewHolder.lockView.setOnClickListener(v -> {
+                viewHolder.lockView.setEnabled(false);
+                presenter.requestToAttendBetaTest();
+                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, mission.getId());
+            });
+        } else {
+            viewHolder.lockView.setOnClickListener(null);
+        }
+
         // 락 화면
         viewHolder.lockLevelTextView.setText(String.format(context.getString(R.string.betatest_detail_mission_item_lock_level_format), position + 1));
         viewHolder.lockTitleTextView.setText(mission.getItem().getTitle());
@@ -88,16 +98,6 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         Log.d(TAG, "mission: " + mission);
         viewHolder.lockView.setVisibility(mission.isLocked() ? View.VISIBLE : View.GONE);
-
-        if (position <= 0 && mission.isLocked()) {
-            viewHolder.lockView.setClickable(true);
-            viewHolder.lockView.setOnClickListener(v -> {
-                presenter.requestToAttendBetaTest();
-                presenter.sendEventLog(BETA_TEST_DETAIL_TAP_LOCK, mission.getId());
-            });
-        } else {
-            viewHolder.lockView.setClickable(false);
-        }
 
         viewHolder.lockView.setOnTouchListener((v, event) -> {
             if (position <= 0) {
@@ -187,7 +187,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 updatePlayTime(viewHolder, missionItem);
             } else {
                 view.getCompositeSubscription().add(
-                        presenter.refreshMissionProgress(mission.getId())
+                        presenter.refreshMissionProgress(missionItem.getId())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .doOnSubscribe(() -> {
                                     viewHolder.refreshButton.setVisibility(View.INVISIBLE);
@@ -198,12 +198,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     viewHolder.refreshProgress.setVisibility(View.GONE);
                                 })
                                 .subscribe(newMissionItem -> {
-                                    Mission.MissionItem item = mission.getItem();
-
-                                    if (item.getId().equals(newMissionItem.getId())) {
-                                        item.setCompleted(newMissionItem.isCompleted());
+                                    if (missionItem.getId().equals(newMissionItem.getId())) {
+                                        missionItem.setCompleted(newMissionItem.isCompleted());
                                     }
-                                }, e -> Log.e(TAG, String.valueOf(e)), () -> {
 
                                     // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
                                     presenter.getDisplayedMissionList()
@@ -212,7 +209,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                                 setMissionList(missionList);
                                                 notifyItemRangeChanged(position, missionList.size() - position);
                                             },  e -> Log.e(TAG, String.valueOf(e)));
-                                }));
+                                }, e -> Log.e(TAG, String.valueOf(e)))
+                );
             }
         });
 

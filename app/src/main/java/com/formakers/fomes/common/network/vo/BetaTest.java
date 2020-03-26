@@ -36,6 +36,7 @@ public class BetaTest implements Parcelable {
     Rewards rewards;
 
     boolean isCompleted;
+    boolean isAttended;
 
     boolean isGroup;
     AfterService afterService;
@@ -603,6 +604,15 @@ public class BetaTest implements Parcelable {
         return getCompletedItemCount().equals(getTotalItemCount());
     }
 
+    public boolean isAttended() {
+        return isAttended;
+    }
+
+    public BetaTest setAttended(boolean attended) {
+        isAttended = attended;
+        return this;
+    }
+
     public boolean isGroup() {
         return isGroup;
     }
@@ -767,6 +777,7 @@ public class BetaTest implements Parcelable {
                 ", missions=" + missions +
                 ", rewards=" + rewards +
                 ", isCompleted=" + isCompleted +
+                ", isAttended=" + isAttended +
                 ", isGroup=" + isGroup +
                 ", afterService=" + afterService +
                 ", similarApps=" + similarApps +
@@ -805,6 +816,7 @@ public class BetaTest implements Parcelable {
         dest.writeTypedList(missions);
         dest.writeParcelable(rewards, 0);
         dest.writeInt(isCompleted ? 1 : 0);
+        dest.writeInt(isAttended ? 1 : 0);
         dest.writeInt(isGroup ? 1 : 0);
         dest.writeParcelable(afterService, 0);
         dest.writeStringList(similarApps);
@@ -837,6 +849,7 @@ public class BetaTest implements Parcelable {
         in.readTypedList(missions, Mission.CREATOR);
         rewards = in.readParcelable(null);
         isCompleted = (in.readInt() == 1);
+        isAttended = (in.readInt() == 1);
         isGroup = (in.readInt() == 1);
         afterService = in.readParcelable(null);
         in.readStringList(similarApps);
