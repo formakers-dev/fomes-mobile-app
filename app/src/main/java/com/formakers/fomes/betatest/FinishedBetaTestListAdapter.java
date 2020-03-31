@@ -67,16 +67,16 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         viewHolder.subTitleTextView.setText(item.getDisplayDescription());
 
 
-        BetaTest.AfterService afterService = item.getAfterService();
+        BetaTest.Epilogue epilogue = item.getEpilogue();
 
-        if (afterService != null) {
-            viewHolder.awardTextView.setText(afterService.getAwards());
-            viewHolder.companySaysTextView.setText(afterService.getCompanySays());
+        if (epilogue != null) {
+            viewHolder.awardTextView.setText(epilogue.getAwards());
+            viewHolder.companySaysTextView.setText(epilogue.getCompanySays());
             viewHolder.itemView.setEnabled(true);
             viewHolder.itemView.setOnClickListener(v -> {
                 presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
 
-                Uri uri = Uri.parse(afterService.getEpilogue());
+                Uri uri = Uri.parse(epilogue.getDeeplink());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 context.startActivity(intent);
             });
@@ -94,7 +94,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         // 레거시 코드 - UX 업데이트 후 사라질 로직들
-        if (item.getAfterService() == null) {
+        if (item.getEpilogue() == null) {
             viewHolder.awardGroup.setVisibility(View.GONE);
             viewHolder.progressLayout.setVisibility(View.VISIBLE);
 
@@ -119,7 +119,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.progressLayout.setVisibility(View.GONE);
         }
 
-        viewHolder.companySaysLayout.setEnabled(item.getAfterService() != null && item.isCompleted());
+        viewHolder.companySaysLayout.setEnabled(item.getEpilogue() != null && item.isCompleted());
 
         viewHolder.subTitleTextView.setVisibility(View.VISIBLE);
 

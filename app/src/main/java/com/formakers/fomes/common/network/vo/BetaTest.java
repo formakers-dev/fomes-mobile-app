@@ -39,7 +39,7 @@ public class BetaTest implements Parcelable {
     boolean isAttended;
 
     boolean isGroup;
-    AfterService afterService;
+    Epilogue epilogue;
     List<String> similarApps = new ArrayList<>();
 
     Integer completedItemCount;
@@ -131,23 +131,23 @@ public class BetaTest implements Parcelable {
         };
     }
 
-    public static class AfterService implements Parcelable {
-        String epilogue;
+    public static class Epilogue implements Parcelable {
+        String deeplink;
         String companySays;
         String awards;
 
-        public AfterService() {}
+        public Epilogue() {}
 
-        public AfterService(Parcel in) {
+        public Epilogue(Parcel in) {
             readFromParcel(in);
         }
 
-        public String getEpilogue() {
-            return epilogue;
+        public String getDeeplink() {
+            return deeplink;
         }
 
-        public AfterService setEpilogue(String epilogue) {
-            this.epilogue = epilogue;
+        public Epilogue setDeeplink(String deeplink) {
+            this.deeplink = deeplink;
             return this;
         }
 
@@ -155,7 +155,7 @@ public class BetaTest implements Parcelable {
             return companySays;
         }
 
-        public AfterService setCompanySays(String companySays) {
+        public Epilogue setCompanySays(String companySays) {
             this.companySays = companySays;
             return this;
         }
@@ -164,15 +164,15 @@ public class BetaTest implements Parcelable {
             return awards;
         }
 
-        public AfterService setAwards(String awards) {
+        public Epilogue setAwards(String awards) {
             this.awards = awards;
             return this;
         }
 
         @Override
         public String toString() {
-            return "AfterService{" +
-                    "epilogue='" + epilogue + '\'' +
+            return "Epilogue{" +
+                    "deeplink='" + deeplink + '\'' +
                     ", companySays='" + companySays + '\'' +
                     ", awards='" + awards + '\'' +
                     '}';
@@ -184,13 +184,13 @@ public class BetaTest implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(epilogue);
+            dest.writeString(deeplink);
             dest.writeString(companySays);
             dest.writeString(awards);
         }
 
         private void readFromParcel(Parcel in) {
-            epilogue = in.readString();
+            deeplink = in.readString();
             companySays = in.readString();
             awards = in.readString();
         }
@@ -201,12 +201,12 @@ public class BetaTest implements Parcelable {
         }
 
         public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-            public AfterService createFromParcel(Parcel in) {
-                return new AfterService(in);
+            public Epilogue createFromParcel(Parcel in) {
+                return new Epilogue(in);
             }
 
-            public AfterService[] newArray(int size) {
-                return new AfterService[size];
+            public Epilogue[] newArray(int size) {
+                return new Epilogue[size];
             }
         };
     }
@@ -622,12 +622,12 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public AfterService getAfterService() {
-        return afterService;
+    public Epilogue getEpilogue() {
+        return epilogue;
     }
 
-    public BetaTest setAfterService(AfterService afterService) {
-        this.afterService = afterService;
+    public BetaTest setEpilogue(Epilogue epilogue) {
+        this.epilogue = epilogue;
         return this;
     }
 
@@ -779,7 +779,7 @@ public class BetaTest implements Parcelable {
                 ", isCompleted=" + isCompleted +
                 ", isAttended=" + isAttended +
                 ", isGroup=" + isGroup +
-                ", afterService=" + afterService +
+                ", Epilogue=" + epilogue +
                 ", similarApps=" + similarApps +
                 ", completedItemCount=" + completedItemCount +
                 ", totalItemCount=" + totalItemCount +
@@ -818,7 +818,7 @@ public class BetaTest implements Parcelable {
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isAttended ? 1 : 0);
         dest.writeInt(isGroup ? 1 : 0);
-        dest.writeParcelable(afterService, 0);
+        dest.writeParcelable(epilogue, 0);
         dest.writeStringList(similarApps);
         dest.writeInt(completedItemCount);
         dest.writeInt(totalItemCount);
@@ -851,7 +851,7 @@ public class BetaTest implements Parcelable {
         isCompleted = (in.readInt() == 1);
         isAttended = (in.readInt() == 1);
         isGroup = (in.readInt() == 1);
-        afterService = in.readParcelable(null);
+        epilogue = in.readParcelable(null);
         in.readStringList(similarApps);
         completedItemCount = in.readInt();
         totalItemCount = in.readInt();
