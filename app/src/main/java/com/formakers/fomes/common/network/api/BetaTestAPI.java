@@ -15,8 +15,13 @@ public interface BetaTestAPI {
     @GET("/beta-tests")
     Observable<List<BetaTest>> getBetaTests(@Header("x-access-token") String accessToken);
 
+    class BetaTestProgressResponseVO {
+        public boolean isAttended;
+        public List<Mission.MissionItem> missionItems;
+    }
+
     @GET("/beta-tests/{id}/progress")
-    Observable<BetaTest> getBetaTestProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
+    Observable<BetaTestProgressResponseVO> getBetaTestProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
 
     @GET("/beta-tests/finished")
     Observable<List<BetaTest>> getFinishedBetaTests(@Header("x-access-token") String accessToken);

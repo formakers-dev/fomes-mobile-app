@@ -1,10 +1,10 @@
 package com.formakers.fomes.common.network;
 
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.api.BetaTestAPI;
+import com.formakers.fomes.common.network.helper.APIHelper;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
-import com.formakers.fomes.common.network.helper.APIHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class BetaTestService extends AbstractService {
                 .toCompletable();
     }
 
-    public Single<BetaTest> getBetaTestProgress(String betaTestId) {
+    public Single<BetaTestAPI.BetaTestProgressResponseVO> getBetaTestProgress(String betaTestId) {
         return Observable.defer(() -> betaTestAPI.getBetaTestProgress(sharedPreferencesHelper.getAccessToken(), betaTestId))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())

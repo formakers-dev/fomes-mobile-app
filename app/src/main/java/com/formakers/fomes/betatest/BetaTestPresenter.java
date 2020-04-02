@@ -1,7 +1,5 @@
 package com.formakers.fomes.betatest;
 
-import android.util.Pair;
-
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
@@ -9,6 +7,7 @@ import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -127,41 +127,41 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
 
     @Override
     public void requestBetaTestProgress(String betaTestId) {
+        int position = betaTestListAdapterModel.getPositionById(betaTestId);
+
         compositeSubscription.add(
                 betaTestService.getBetaTestProgress(betaTestId)
                         .observeOn(Schedulers.io())
-                        .map(newBetaTest -> {
-                            int position = betaTestListAdapterModel.getPositionById(newBetaTest.getId());
-
+                        .map(responseVO -> {
                             if (position < 0) {
                                 throw new IllegalStateException("There isn't the betatest in list. It might be initialized by system.");
                             }
 
                             BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
+                            originalBetaTest.setAttended(responseVO.isAttended);
 
-                            boolean isUpdated = false;
+                            return responseVO.missionItems;
+                        })
+                        .flatMap(missionItems -> {
+                            BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
 
-                            if (!originalBetaTest.getCompletedItemCount().equals(newBetaTest.getCompletedItemCount())) {
-                                originalBetaTest.setCompletedItemCount(newBetaTest.getCompletedItemCount());
-                                isUpdated = true;
+                            if (!originalBetaTest.getTotalItemCount().equals(missionItems.size())) {
+                                originalBetaTest.setTotalItemCount(missionItems.size());
                             }
 
-                            if (!originalBetaTest.getTotalItemCount().equals(newBetaTest.getTotalItemCount())) {
-                                originalBetaTest.setTotalItemCount(newBetaTest.getTotalItemCount());
-                                isUpdated = true;
+                            return Observable.from(missionItems).filter(Mission.MissionItem::isCompleted).count().toSingle();
+                        })
+                        .map(completedCount -> {
+                            BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
+
+                            if (!originalBetaTest.getCompletedItemCount().equals(completedCount)) {
+                                originalBetaTest.setCompletedItemCount(completedCount);
                             }
 
-                            return new Pair<>(position, isUpdated);
+                            return completedCount;
                         })
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(pair -> {
-                            int position = pair.first;
-                            boolean isUpdated = pair.second;
-
-                            if (isUpdated) {
-                                view.refreshBetaTestProgress(position);
-                            }
-                        }, e -> Log.e(TAG, String.valueOf(e)))
+                        .subscribe(x -> view.refreshBetaTestProgress(position), e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 

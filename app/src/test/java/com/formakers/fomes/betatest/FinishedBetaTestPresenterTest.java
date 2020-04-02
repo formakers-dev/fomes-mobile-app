@@ -71,10 +71,10 @@ public class FinishedBetaTestPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        finishedBetaTests.add(new BetaTest().setId("2").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
-        finishedBetaTests.add(new BetaTest().setId("1").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
-        finishedBetaTests.add(new BetaTest().setId("4").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
-        finishedBetaTests.add(new BetaTest().setId("3").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
+        finishedBetaTests.add(new BetaTest().setId("2").setOpened(true).setAttended(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
+        finishedBetaTests.add(new BetaTest().setId("1").setOpened(true).setAttended(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
+        finishedBetaTests.add(new BetaTest().setId("4").setOpened(true).setAttended(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
+        finishedBetaTests.add(new BetaTest().setId("3").setOpened(true).setAttended(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))).setCurrentDate(Date.from(Instant.parse("2018-12-25T00:00:00.000Z"))));
         when(mockBetaTestService.getFinishedBetaTestList()).thenReturn(Single.just(finishedBetaTests));
 
         when(mockView.isNeedAppliedCompletedFilter()).thenReturn(false);

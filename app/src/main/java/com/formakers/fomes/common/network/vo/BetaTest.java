@@ -601,7 +601,7 @@ public class BetaTest implements Parcelable {
     }
 
     public boolean isCompleted() {
-        return getCompletedItemCount().equals(getTotalItemCount());
+        return isAttended() && getCompletedItemCount().equals(getTotalItemCount());
     }
 
     public boolean isAttended() {

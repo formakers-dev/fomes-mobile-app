@@ -61,54 +61,6 @@
                 app:layout_constraintTop_toTopOf="@id/betatest_overview_imageview"
                 app:layout_constraintBottom_toBottomOf="@id/betatest_overview_imageview" />
 
-            <TextView
-                android:id="@+id/betatest_progress_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:paddingTop="1dp"
-                android:paddingBottom="1dp"
-                android:textStyle="bold"
-                android:textSize="9dp"
-                android:text="@string/betatest_progress_attend_label"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.ProgressLabelBackground"
-                tools:text="참여 전"
-                app:layout_constraintStart_toStartOf="@+id/betatest_progress_bar"
-                app:layout_constraintTop_toTopOf="@+id/betatest_progress_textview" />
-
-            <TextView
-                android:id="@+id/betatest_progress_textview"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                app:layout_goneMarginStart="0dp"
-                android:textSize="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_overview_imageview"
-                app:layout_constraintStart_toEndOf="@+id/betatest_progress_label"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"
-                tools:text="테스트 참여 50% 완료" />
-
-            <ProgressBar
-                android:id="@+id/betatest_progress_bar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="20dp"
-                android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
-                android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
-                android:progressTintMode="src_over"
-                android:progressTint="@color/colorPrimary"
-                android:progressBackgroundTintMode="src_over"
-                android:progressBackgroundTint="@color/fomes_warm_gray"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_progress_textview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:progress="50" />
-
 
             <TextView
                 android:id="@+id/betatest_project_status"
@@ -131,13 +83,14 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
                 android:textColor="@color/fomes_white"
                 android:textStyle="bold"
                 android:textSize="18dp"
-                app:layout_constraintWidth_default="wrap"
+                app:layout_goneMarginStart="@dimen/betatest_list_item_content_margin_start_end"
                 app:layout_constraintStart_toEndOf="@+id/betatest_label"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_progress_bar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
                 tools:text="서랍에서 찾은 또 다른 설문지" />
 
             <ImageView
@@ -145,6 +98,7 @@
                 android:layout_width="18dp"
                 android:layout_height="19.2dp"
                 android:layout_marginTop="3dp"
+                android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/label_attend"
                 android:visibility="visible"
@@ -152,7 +106,7 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="@+id/betatest_title_textview"
                 app:layout_constraintEnd_toStartOf="@+id/betatest_title_textview"
-                app:layout_constraintStart_toStartOf="@+id/betatest_progress_bar" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/betatest_subtitle_textview"
@@ -162,8 +116,9 @@
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/fomes_light_gray"
                 android:textSize="11dp"
-                app:layout_constraintStart_toStartOf="@+id/betatest_progress_bar"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"
+                app:layout_goneMarginStart="@dimen/betatest_list_item_content_margin_start_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_label"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_title_textview"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
                 tools:text="주변을 더듬거리다가 서랍을 찾아냈다. 드르륵 열어보니 설문이 놓여져 있다. 완료하면 보상이 있다는데 한번 해볼까…? " />
 
@@ -183,8 +138,9 @@
                 android:theme="@style/BetaTestTheme.BugButtonBackground"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_subtitle_textview"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/betatest_progress_bar"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_progress_bar"/>
+                app:layout_constraintStart_toStartOf="@+id/betatest_subtitle_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_subtitle_textview"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

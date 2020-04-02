@@ -6,8 +6,10 @@ import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
+import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
+import com.formakers.fomes.common.network.vo.Mission;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -109,12 +111,12 @@ public class BetaTestPresenterTest {
     public void loadToBetaTestList__호출시__결과로_받은_테스트존_리스트를_정렬된_순서로_화면에_보여준다() {
         List<BetaTest> unsortedBetaTestList = new ArrayList();
         // 참여가능
-        unsortedBetaTestList.add(new BetaTest().setId("1").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId("2").setOpened(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("1").setOpened(true).setAttended(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-30T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("2").setOpened(true).setAttended(true).setCompletedItemCount(1).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-31T00:00:00.000Z"))));
 
         // 참여 완료 - 미종료
-        unsortedBetaTestList.add(new BetaTest().setId("3").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
-        unsortedBetaTestList.add(new BetaTest().setId("4").setOpened(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("3").setOpened(true).setAttended(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-28T00:00:00.000Z"))));
+        unsortedBetaTestList.add(new BetaTest().setId("4").setOpened(true).setAttended(true).setCompletedItemCount(2).setTotalItemCount(2).setCloseDate(Date.from(Instant.parse("2018-12-29T00:00:00.000Z"))));
 
         when(mockBetaTestService.getBetaTestList()).thenReturn(Single.just(unsortedBetaTestList));
 
@@ -194,28 +196,34 @@ public class BetaTestPresenterTest {
     }
 
     @Test
-    public void requestBetaTestProgress_호출시__해당_테스트의_진행상태가_변경되었으면__진행상태_뷰를_업데이트한다() {
+    public void requestBetaTestProgress_호출시__진행상태_뷰를_업데이트한다() {
+        BetaTestAPI.BetaTestProgressResponseVO responseVO = new BetaTestAPI.BetaTestProgressResponseVO();
+        responseVO.isAttended = true;
+        responseVO.missionItems = Lists.newArrayList(
+                new Mission.MissionItem().setId("1").setCompleted(true),
+                new Mission.MissionItem().setId("2").setCompleted(true),
+                new Mission.MissionItem().setId("3").setCompleted(false)
+        );
+
         when(mockBetaTestService.getBetaTestProgress("1"))
-                .thenReturn(Single.just(new BetaTest().setId("1").setCompletedItemCount(2).setTotalItemCount(3)));
+                .thenReturn(Single.just(responseVO));
 
         subject.requestBetaTestProgress("1");
 
         verify(mockView).refreshBetaTestProgress(0);
     }
     @Test
-    public void requestBetaTestProgress_호출시__해당_테스트의_진행상태가_변경되지_않았으면__진행상태_뷰를_업데이트하지_않는다() {
-        when(mockBetaTestService.getBetaTestProgress("1"))
-                .thenReturn(Single.just(new BetaTest().setId("1").setCompletedItemCount(1).setTotalItemCount(3)));
-
-        subject.requestBetaTestProgress("1");
-
-        verify(mockView, never()).refreshBetaTestProgress(anyInt());
-    }
-
-    @Test
     public void requestBetaTestProgress_호출시__해당_테스트가_없으면__아무것도_하지않는다() {
+        BetaTestAPI.BetaTestProgressResponseVO responseVO = new BetaTestAPI.BetaTestProgressResponseVO();
+        responseVO.isAttended = true;
+        responseVO.missionItems = Lists.newArrayList(
+                new Mission.MissionItem().setId("1").setCompleted(true),
+                new Mission.MissionItem().setId("2").setCompleted(true),
+                new Mission.MissionItem().setId("3").setCompleted(false)
+        );
+
         when(mockBetaTestService.getBetaTestProgress("99999999999"))
-                .thenReturn(Single.just(new BetaTest().setId("99999999999")));
+                .thenReturn(Single.just(responseVO));
 
         subject.requestBetaTestProgress("99999999999");
 
