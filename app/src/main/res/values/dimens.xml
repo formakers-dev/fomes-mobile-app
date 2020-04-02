@@ -57,7 +57,7 @@
     <dimen name="main_tab_listview_top_margin">21dp</dimen>
 
     <!-- Beta Test List -->
-    <dimen name="betatest_list_item_padding_start_end">12dp</dimen>
+    <dimen name="betatest_list_item_padding_start_end">16dp</dimen>
     <dimen name="betatest_list_item_content_margin_start_end">25dp</dimen>
 
     <!-- Beta Test Detail -->

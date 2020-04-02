@@ -253,29 +253,6 @@
         <item name="item_stroke_width">1dp</item>
     </style>
 
-
-    <style name="BetaTestTheme.ProjectStatusBackground">
-        <item name="android:paddingStart">7dp</item>
-        <item name="android:paddingEnd">7dp</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
-        <item name="item_background_radius">7.5dp</item>
-        <item name="item_solid_color">@color/fomes_dark_gray</item>
-        <item name="item_stroke_width">1dp</item>
-    </style>
-
-    <style name="BetaTestTheme.ProjectStatusBackground.Normal" parent="BetaTestTheme.ProjectStatusBackground">
-        <item name="item_stroke_color">@color/colorPrimary</item>
-    </style>
-
-    <style name="BetaTestTheme.ProjectStatusBackground.Yellow" parent="BetaTestTheme.ProjectStatusBackground">
-        <item name="item_stroke_color">@color/fomes_squash</item>
-    </style>
-
-    <style name="BetaTestTheme.ProjectStatusBackground.Red" parent="BetaTestTheme.ProjectStatusBackground">
-        <item name="item_stroke_color">@color/fomes_red</item>
-    </style>
-
     <style name="BetaTestTheme.OldTagBackground">
         <item name="android:paddingStart">7dp</item>
         <item name="android:paddingEnd">7dp</item>

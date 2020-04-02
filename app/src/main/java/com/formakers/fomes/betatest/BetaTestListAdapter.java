@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.ColorRes;
-import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -68,6 +67,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
 
         // 디데이
+        viewHolder.projectStatusTextView.setBackgroundResource(R.drawable.label_betatest_dday);
         long remainDays = betaTest.getRemainDays();
 
         String projectStatus;
@@ -75,22 +75,13 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             projectStatus = String.format("%d 일\n남음", remainDays + 1);
         } else {
             projectStatus = "오늘\n마감";
+            viewHolder.projectStatusTextView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.fomes_orange));
         }
 
         viewHolder.projectStatusTextView.setText(projectStatus);
 
-        @ColorRes int projectStatusColorId;
-        @StyleRes int projectStatusStyleResId;
-        if (remainDays <= 0) {
-            projectStatusColorId = R.color.fomes_orange;
-            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Yellow;
-        } else {
-            projectStatusColorId = R.color.colorPrimary;
-            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Normal;
-        }
-
         viewHolder.projectStatusTextView.setVisibility(View.VISIBLE);
-        viewHolder.projectStatusTextView.setBackgroundColor(res.getColor(projectStatusColorId));
+
 //        viewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
 //                new ContextThemeWrapper(context, projectStatusStyleResId).getTheme()));
 
