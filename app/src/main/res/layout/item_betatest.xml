@@ -39,19 +39,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/betatest_premium_badge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_premium"
-                android:layout_marginEnd="22dp"
-                android:visibility="gone"
-                app:layout_constraintVertical_bias="0.3"
-                app:layout_constraintTop_toTopOf="@+id/betatest_overview_imageview"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_overview_imageview"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_overview_imageview"
-                tools:visibility="visible" />
-
             <View
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="@dimen/match_constraint"
@@ -80,34 +67,50 @@
                 tools:text="오늘\n마감" />
 
             <TextView
+                android:id="@+id/betatest_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
+                android:background="@drawable/item_rect_rounded_corner_background"
+                android:theme="@style/BetaTestTheme.Plan.Premium"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:text="프리미엄 테스트"
+                android:textColor="@color/fomes_orange"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
+                app:layout_constraintStart_toStartOf="@+id/betatest_overview_imageview"/>
+
+            <TextView
                 android:id="@+id/betatest_title_textview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
+                android:layout_marginTop="11dp"
                 android:textColor="@color/fomes_white"
                 android:textStyle="bold"
                 android:textSize="18dp"
-                app:layout_goneMarginStart="@dimen/betatest_list_item_content_margin_start_end"
                 app:layout_constraintStart_toEndOf="@+id/betatest_label"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_plan"
                 tools:text="서랍에서 찾은 또 다른 설문지" />
 
             <ImageView
                 android:id="@+id/betatest_label"
                 android:layout_width="18dp"
                 android:layout_height="19.2dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/label_attend"
                 android:visibility="visible"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="@+id/betatest_title_textview"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_title_textview"
                 app:layout_constraintEnd_toStartOf="@+id/betatest_title_textview"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="@+id/betatest_plan" />
 
             <TextView
                 android:id="@+id/betatest_subtitle_textview"
@@ -117,7 +120,6 @@
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/fomes_light_gray"
                 android:textSize="12dp"
-                app:layout_goneMarginStart="@dimen/betatest_list_item_content_margin_start_end"
                 app:layout_constraintStart_toStartOf="@+id/betatest_label"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_title_textview"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"

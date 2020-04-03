@@ -1,5 +1,6 @@
 package com.formakers.fomes.betatest;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -11,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +58,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_betatest, parent, false));
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Resources res = context.getResources();
@@ -112,12 +118,24 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.titleTextView.setTextColor(betaTest.isAttended() || betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
         viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
 
-        // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우만 표시
+        // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우에 표시
+        @StyleRes int planStyleResId;
+        @StringRes int planNameStringId;
+        @ColorRes int planNameColorId;
         if ("standard".equals(betaTest.getPlan()) || "simple".equals(betaTest.getPlan())) {
-            viewHolder.premiumBadgeImageView.setVisibility(View.VISIBLE);
+            planStyleResId = R.style.BetaTestTheme_Plan_Premium;
+            planNameStringId = R.string.betatest_plan_premium;
+            planNameColorId = R.color.fomes_orange;
         } else {
-            viewHolder.premiumBadgeImageView.setVisibility(View.GONE);
+            planStyleResId = R.style.BetaTestTheme_Plan_Lite;
+            planNameStringId = R.string.betatest_plan_lite;
+            planNameColorId = R.color.colorPrimary;
         }
+
+        viewHolder.planTextView.setText(planNameStringId);
+        viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
+        viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                new ContextThemeWrapper(context, planStyleResId).getTheme()));
 
     }
 
@@ -175,7 +193,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView titleTextView;
         TextView subTitleTextView;
         TextView projectStatusTextView;
-        ImageView premiumBadgeImageView;
+        TextView planTextView;
         ImageView overviewImageView;
         ImageView completedLabelImageView;
         TextView reportBugButton;
@@ -185,7 +203,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
-            premiumBadgeImageView = itemView.findViewById(R.id.betatest_premium_badge);
+            planTextView = itemView.findViewById(R.id.betatest_plan);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
             completedLabelImageView = itemView.findViewById(R.id.betatest_label);
             reportBugButton = itemView.findViewById(R.id.betatest_bug_button);

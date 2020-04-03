@@ -170,6 +170,8 @@
     <string name="betatest_company_says_title">게임사 소감 및 계획</string>
     <string name="betatest_progress_attend_label">참여 전</string>
     <string name="betatest_progress_attend_label_doing">참여 중</string>
+    <string name="betatest_plan_premium">프리미엄 테스트</string>
+    <string name="betatest_plan_lite">간단 테스트</string>
 
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">마감된 테스트 목록</string>

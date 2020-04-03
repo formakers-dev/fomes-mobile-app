@@ -7,6 +7,7 @@
 
     <!-- Fomes colors -->
     <color name="fomes_black">#000000</color>
+    <color name="fomes_black_alpha_75">#c0000000</color>
     <color name="fomes_black_alpha_50">#80000000</color>
     <color name="fomes_black_alpha_30">#4c000000</color>
 
