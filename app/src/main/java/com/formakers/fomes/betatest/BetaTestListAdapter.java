@@ -115,7 +115,19 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         viewHolder.completedLabelImageView.setVisibility(betaTest.isAttended() && betaTest.isCompleted() ? View.VISIBLE : View.GONE);
 
-        viewHolder.titleTextView.setTextColor(betaTest.isAttended() || betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
+        if (betaTest.isAttended()) {
+            viewHolder.myStatusTextView.setVisibility(View.VISIBLE);
+
+            if (betaTest.isCompleted()) {
+                viewHolder.myStatusTextView.setText(R.string.betatest_my_status_completed);
+            } else {
+                viewHolder.myStatusTextView.setText(R.string.betatest_my_status_attend);
+            }
+        } else {
+            viewHolder.myStatusTextView.setVisibility(View.GONE);
+        }
+
+        viewHolder.titleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
         viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
 
         // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우에 표시
@@ -194,6 +206,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView subTitleTextView;
         TextView projectStatusTextView;
         TextView planTextView;
+        TextView myStatusTextView;
         ImageView overviewImageView;
         ImageView completedLabelImageView;
         TextView reportBugButton;
@@ -204,6 +217,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
             planTextView = itemView.findViewById(R.id.betatest_plan);
+            myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
             completedLabelImageView = itemView.findViewById(R.id.betatest_label);
             reportBugButton = itemView.findViewById(R.id.betatest_bug_button);

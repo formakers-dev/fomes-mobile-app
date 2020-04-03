@@ -29,6 +29,7 @@
     <color name="fomes_blush_pink">#ff8997</color>
 
     <color name="fomes_white">#ffffff</color>
+    <color name="fomes_white_alpha_75">#c0ffffff</color>
     <color name="fomes_white_2">#fafafa</color>
 
     <color name="fomes_red">#d0021b</color>

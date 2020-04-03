@@ -73,16 +73,26 @@
                 android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:theme="@style/BetaTestTheme.Plan.Premium"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:textSize="12dp"
-                android:textStyle="bold"
-                android:text="프리미엄 테스트"
                 android:textColor="@color/fomes_orange"
+                style="@style/BetaTestTheme.TypeTag"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
-                app:layout_constraintStart_toStartOf="@+id/betatest_overview_imageview"/>
+                app:layout_constraintStart_toStartOf="@+id/betatest_overview_imageview"
+                tools:text="프리미엄 테스트"/>
+
+            <TextView
+                android:id="@+id/betatest_my_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/item_rect_rounded_corner_background"
+                android:theme="@style/BetaTestTheme.MyStatus"
+                android:textColor="@color/fomes_white_alpha_75"
+                style="@style/BetaTestTheme.TypeTag"
+                app:layout_constraintTop_toTopOf="@+id/betatest_plan"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_plan"
+                app:layout_constraintStart_toEndOf="@+id/betatest_plan"
+                tools:text="내가 참여중"/>
+
 
             <TextView
                 android:id="@+id/betatest_title_textview"

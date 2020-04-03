@@ -306,6 +306,22 @@
         <item name="item_stroke_color">@color/beta_test_finished_group_epilogue_button</item>
     </style>
 
+    <style name="BetaTestTheme.TypeTag">
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingEnd">6dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BetaTestTheme.MyStatus">
+        <item name="item_background_radius">3dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_75</item>
+        <item name="item_stroke_width">1dp</item>
+        <item name="item_stroke_color">@color/fomes_white_alpha_75</item>
+    </style>
+
     <style name="BetaTestTheme.Plan">
         <item name="item_background_radius">3dp</item>
         <item name="item_solid_color">@color/fomes_black_alpha_75</item>
