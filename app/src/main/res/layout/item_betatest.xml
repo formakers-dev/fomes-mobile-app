@@ -146,7 +146,7 @@
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:text="버그 제보"
                 android:textColor="@color/fomes_light_gray"
-                android:textSize="11dp"
+                android:textSize="12dp"
                 android:gravity="center"
                 android:theme="@style/BetaTestTheme.BugButtonBackground"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_subtitle_textview"
