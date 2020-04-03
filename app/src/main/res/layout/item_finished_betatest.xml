@@ -194,7 +194,7 @@
                     android:layout_width="@dimen/match_constraint"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="테스터 시상식"
+                    android:text="시상식"
                     android:textStyle="bold"
                     android:textColor="@color/fomes_warm_gray_2"
                     android:textSize="10dp"
