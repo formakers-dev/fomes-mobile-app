@@ -271,7 +271,7 @@
         <item name="android:paddingBottom">8dp</item>
         <item name="item_background_radius">6dp</item>
         <item name="item_solid_color">@android:color/transparent</item>
-        <item name="item_stroke_color">#979797</item>
+        <item name="item_stroke_color">@color/fomes_white_alpha_60</item>
         <item name="item_stroke_width">1dp</item>
     </style>
 

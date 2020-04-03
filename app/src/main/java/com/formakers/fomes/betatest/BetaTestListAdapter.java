@@ -127,8 +127,8 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             viewHolder.myStatusTextView.setVisibility(View.GONE);
         }
 
-        viewHolder.titleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
-        viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
+        viewHolder.titleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_title_text_color));
+        viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_subtitle_text_color));
 
         // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우에 표시
         @StyleRes int planStyleResId;
