@@ -141,8 +141,8 @@
     <string name="postbox_title">포메스 우체통</string>
 
     <!-- Beta Test -->
-    <string name="betatest_title">진행 중 테스트 목록</string>
-    <string name="betatest_subtitle">재미있어 보이는 게임의 테스트에 참여해보세요!</string>
+    <string name="betatest_title">이 게임 테스트 어때요?</string>
+    <string name="betatest_subtitle">재미있어 보이는 게임의 테스트에 참여해보세요.</string>
     <string name="betatest_complete_switch_text">참여 중 테스트만</string>
     <string name="go_to_join_beta_test">참여하러 가기</string>
     <string name="betatest_target_format">%s 앱 유저 대상</string>
@@ -176,7 +176,7 @@
     <string name="betatest_my_status_attend">내가 참여 중</string>
 
     <!-- Finshed Beta Test -->
-    <string name="finished_betatest_title">종료된 테스트 목록</string>
+    <string name="finished_betatest_title">종료된 테스트가 궁금해!</string>
     <string name="finished_betatest_subtitle">테스트 참여 및 시상 결과를 확인해보세요.</string>
     <string name="finished_betatest_complete_switch_text">참여목록 보기</string>
     <string name="finished_beta_test_empty_text_format">아직 완료하신 테스트가 없으시군요!\n지금 테스트를 진행해보시면 어떨까요?</string>
@@ -196,8 +196,8 @@
     <string name="contact_to_formakers">포메스 팀에 메일보내기</string>
 
     <!-- Recommend -->
-    <string name="recommend_title">데이터 기반 추천 목록</string>
-    <string name="recommend_subtitle">지난 7일간의 플레이를 기반으로 추천합니다.</string>
+    <string name="recommend_title">데이터 기반 추천</string>
+    <string name="recommend_subtitle">당신의 게임 플레이 데이터를 분석해서 게임을 추천합니다.</string>
     <string name="recommend_option_menu_title">관심게임\n리스트</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
     <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
