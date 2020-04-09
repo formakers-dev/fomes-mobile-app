@@ -125,11 +125,11 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         viewHolder.RecheckMyAnswerLayout.removeAllViews();
         for (Mission mission : item.getMissions()) {
-            if (mission.getItem().isCompleted() && mission.getItem().isRecheckable()) {
+            if (mission.isCompleted() && mission.isRecheckable()) {
                 Button recheckableButton = (Button) LayoutInflater.from(context).inflate(R.layout.item_button, null);
-                recheckableButton.setText(String.format(context.getString(R.string.finished_betatest_recheck_my_answer_button_text_format), mission.getItem().getTitle()));
+                recheckableButton.setText(String.format(context.getString(R.string.finished_betatest_recheck_my_answer_button_text_format), mission.getTitle()));
                 recheckableButton.setOnClickListener(v -> {
-                    this.presenter.emitRecheckMyAnswer(mission.getItem());
+                    this.presenter.emitRecheckMyAnswer(mission);
                 });
                 viewHolder.RecheckMyAnswerLayout.addView(recheckableButton);
             }

@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -23,6 +22,7 @@ import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -76,7 +76,6 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Mission mission = missionList.get(position);
-        Mission.MissionItem missionItem = mission.getItem();
 
         ViewHolder viewHolder = ((ViewHolder) holder);
 
@@ -92,7 +91,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 락 화면
         viewHolder.lockLevelTextView.setText(String.format(context.getString(R.string.betatest_detail_mission_item_lock_level_format), position + 1));
-        viewHolder.lockTitleTextView.setText(mission.getItem().getTitle());
+        viewHolder.lockTitleTextView.setText(mission.getTitle());
 
         viewHolder.lockDescriptionTextView.setText(position <= 0 ? "참여하려면 터치해 주세요." : "이전 단계를 완료하시면 열립니다.");
 
@@ -107,18 +106,17 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return true;
         });
 
-        // 미션 카드 공통 내용
-        this.presenter.getImageLoader().loadImage(
-                viewHolder.titleIconImageView,
-                mission.getIconImageUrl(),
-                new RequestOptions().fitCenter(),
-                false);
+        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
+            viewHolder.titleIconImageView.setImageResource(R.drawable.icon_mission_type_play);
+        } else {
+            viewHolder.titleIconImageView.setImageResource(R.drawable.icon_mission_type_survey);
+        }
 
-        viewHolder.titleTextView.setText(mission.getTitle());
+        viewHolder.titleTextView.setText(String.format(Locale.getDefault(), "%d번째 미션", mission.getOrder()));
         viewHolder.descriptionTextView.setText(mission.getDescription());
         viewHolder.guideTextView.setText(mission.getGuide());
         viewHolder.guideTextView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        viewHolder.missionTitleTextView.setText(missionItem.getTitle());
+        viewHolder.missionTitleTextView.setText(mission.getTitle());
         viewHolder.itemButton.setTextColor(context.getResources().getColor(R.color.fomes_white));
 
         // 디스크립션 레이아웃
@@ -132,12 +130,12 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         // 미션 카드 타입별 분기 로직
-        switch (missionItem.getType()) {
+        switch (mission.getType()) {
             case FomesConstants.BetaTest.Mission.TYPE_PLAY: {
-                long playtime = missionItem.getTotalPlayTime();
-
                 viewHolder.itemButton.setText("다운로드 & 플레이");
-                if (Feature.CALCULATE_PLAY_TIME) {
+                Long playtime = mission.getTotalPlayTime();
+
+                if (Feature.CALCULATE_PLAY_TIME && playtime != null) {
                     viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
                     viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
                     viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
@@ -152,7 +150,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 // 플레이 시간 측정
                 if (!mission.isLocked()) {
-                    updatePlayTime(viewHolder, missionItem);
+                    updatePlayTime(viewHolder, mission);
                 }
 
                 break;
@@ -161,14 +159,14 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
 
                 // 참여상태
-                viewHolder.missionCompletedImageView.setVisibility(missionItem.isCompleted() ? View.VISIBLE : View.GONE);
-                viewHolder.refreshButton.setVisibility(missionItem.isCompleted() ? View.GONE : View.VISIBLE);
-                viewHolder.itemButton.setEnabled(missionItem.isRepeatable() || !missionItem.isCompleted());
+                viewHolder.missionCompletedImageView.setVisibility(mission.isCompleted() ? View.VISIBLE : View.GONE);
+                viewHolder.refreshButton.setVisibility(mission.isCompleted() ? View.GONE : View.VISIBLE);
+                viewHolder.itemButton.setEnabled(mission.isRepeatable() || !mission.isCompleted());
 
-                if (!missionItem.isCompleted()) {
+                if (!mission.isCompleted()) {
                     viewHolder.itemButton.setText("참여하기");
                 } else {
-                    if (missionItem.isRepeatable()) {
+                    if (mission.isRepeatable()) {
                         viewHolder.itemButton.setText("수정하기");
                     } else {
                         viewHolder.guideTextView.setTextColor(context.getResources().getColor(R.color.fomes_black_alpha_30));
@@ -181,13 +179,13 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 미션 카드 새로고침 버튼
         viewHolder.refreshButton.setOnClickListener(v -> {
-            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getItem().getId());
+            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getId());
 
-            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionItem.getType())) {
-                updatePlayTime(viewHolder, missionItem);
+            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
+                updatePlayTime(viewHolder, mission);
             } else {
                 view.getCompositeSubscription().add(
-                        presenter.refreshMissionProgress(missionItem.getId())
+                        presenter.refreshMissionProgress(mission.getId())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .doOnSubscribe(() -> {
                                     viewHolder.refreshButton.setVisibility(View.INVISIBLE);
@@ -197,9 +195,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     viewHolder.refreshButton.setVisibility(View.VISIBLE);
                                     viewHolder.refreshProgress.setVisibility(View.GONE);
                                 })
-                                .subscribe(newMissionItem -> {
-                                    if (missionItem.getId().equals(newMissionItem.getId())) {
-                                        missionItem.setCompleted(newMissionItem.isCompleted());
+                                .subscribe(newMission -> {
+                                    if (mission.getId().equals(newMission.getId())) {
+                                        mission.setCompleted(newMission.isCompleted());
                                     }
 
                                     // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
@@ -220,18 +218,18 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 미션 아이템 버튼
         viewHolder.itemButton.setOnClickListener(v -> {
-            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_ITEM, missionItem.getId());
-            presenter.processMissionItemAction(missionItem);
+            presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_ITEM, mission.getId());
+            presenter.processMissionItemAction(mission);
         });
 
         // 미션 아이템 클릭 리스너 등록 (보일러 플레이트 코드)
         viewHolder.itemView.setOnClickListener(missionItemClickListener);
     }
 
-    private void updatePlayTime(ViewHolder viewHolder, Mission.MissionItem missionItem) {
+    private void updatePlayTime(ViewHolder viewHolder, Mission mission) {
         if (Feature.CALCULATE_PLAY_TIME) {
             view.getCompositeSubscription().add(
-                    presenter.updatePlayTime(missionItem.getId(), missionItem.getPackageName())
+                    presenter.updatePlayTime(mission.getId(), mission.getPackageName())
                             .doOnSubscribe(() -> {
                                 viewHolder.refreshButton.setVisibility(View.INVISIBLE);
                                 viewHolder.refreshProgress.setVisibility(View.VISIBLE);
@@ -261,7 +259,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getPositionByMissionItemId(String missionItemId) {
         for (int position = 0; position < missionList.size(); position++) {
             Mission mission = missionList.get(position);
-            if (missionItemId.equals(mission.getItem().getId())) {
+            if (missionItemId.equals(mission.getId())) {
                 return position;
             }
         }

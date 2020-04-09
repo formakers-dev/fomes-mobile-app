@@ -253,7 +253,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
 
         Observable.from(betaTest.getMissions())
-                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getItem().getType()))
+                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getType()))
                 .subscribe(displayedMission -> {
                     View missionItemView = getLayoutInflater().inflate(R.layout.item_betatest_mission_item, null);
 
@@ -261,15 +261,14 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     TextView missionTitleTextView = missionItemView.findViewById(R.id.mission_title);
                     TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
 
-                    this.presenter.getImageLoader().loadImage(
-                            missionImageView,
-                            displayedMission.getIconImageUrl(),
-                            new RequestOptions().fitCenter()
-                            , false
-                    );
+                    if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(displayedMission.getType())) {
+                        missionImageView.setImageResource(R.drawable.icon_mission_type_play);
+                    } else {
+                        missionImageView.setImageResource(R.drawable.icon_mission_type_survey);
+                    }
 
-                    missionTitleTextView.setText(displayedMission.getTitle());
-                    missionItemTitleTextView.setText(displayedMission.getItem().getTitle());
+                    missionTitleTextView.setText(String.format(Locale.getDefault(), "%d단계 미션", displayedMission.getOrder()));
+                    missionItemTitleTextView.setText(displayedMission.getTitle());
 
                     howtoViewGroup.addView(missionItemView);
                 }, e -> Log.e(TAG, String.valueOf(e)), () -> {

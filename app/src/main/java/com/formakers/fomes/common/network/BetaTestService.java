@@ -58,6 +58,13 @@ public class BetaTestService extends AbstractService {
                 .toSingle();
     }
 
+    public Completable postCompleteMission(String betaTestId, String missionId) {
+        return Observable.defer(() -> betaTestAPI.postCompleteMission(sharedPreferencesHelper.getAccessToken(), betaTestId, missionId))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
     public Completable postCompleteBetaTest(String id) {
         return Observable.defer(() -> betaTestAPI.postCompleteBetaTest(sharedPreferencesHelper.getAccessToken(), id))
                 .subscribeOn(Schedulers.io())
@@ -72,7 +79,7 @@ public class BetaTestService extends AbstractService {
                 .toSingle();
     }
 
-    public Single<Mission.MissionItem> getMissionProgress(String betaTestId, String missionId) {
+    public Single<Mission> getMissionProgress(String betaTestId, String missionId) {
         return Observable.defer(() -> betaTestAPI.getMissionProgress(sharedPreferencesHelper.getAccessToken(), betaTestId, missionId))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
