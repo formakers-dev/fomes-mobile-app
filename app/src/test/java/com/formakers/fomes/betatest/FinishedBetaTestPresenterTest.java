@@ -182,7 +182,7 @@ public class FinishedBetaTestPresenterTest {
 
     @Test
     public void emitRecheckMyAnswer_호출시__공지팝업을_띄운다() {
-        Mission.MissionItem missionItem = new Mission.MissionItem().setTitle("test");
+        Mission missionItem = new Mission().setTitle("test");
 
         subject.emitRecheckMyAnswer(missionItem);
 

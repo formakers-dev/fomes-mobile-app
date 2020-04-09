@@ -17,7 +17,7 @@ public interface BetaTestAPI {
 
     class BetaTestProgressResponseVO {
         public boolean isAttended;
-        public List<Mission.MissionItem> missionItems;
+        public List<Mission> missionItems;
     }
 
     @GET("/beta-tests/{id}/progress")
@@ -30,7 +30,7 @@ public interface BetaTestAPI {
     Observable<BetaTest> getDetailBetaTest(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
 
     @GET("/beta-tests/{id}/missions/{missionId}/progress")
-    Observable<Mission.MissionItem> getMissionProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId, @Path("missionId") String missionId);
+    Observable<Mission> getMissionProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId, @Path("missionId") String missionId);
 
     @POST("/beta-tests/{id}/complete")
     Observable<Void> postCompleteBetaTest(@Header("x-access-token") String accessToken, @Path("id") String id);

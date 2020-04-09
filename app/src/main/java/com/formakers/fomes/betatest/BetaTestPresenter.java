@@ -149,7 +149,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                                 originalBetaTest.setTotalItemCount(missionItems.size());
                             }
 
-                            return Observable.from(missionItems).filter(Mission.MissionItem::isCompleted).count().toSingle();
+                            return Observable.from(missionItems).filter(Mission::isCompleted).count().toSingle();
                         })
                         .map(completedCount -> {
                             BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));

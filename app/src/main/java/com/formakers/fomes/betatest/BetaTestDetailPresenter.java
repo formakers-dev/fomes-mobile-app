@@ -99,7 +99,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                             int completed = 0;
 
                             for (Mission mission : betaTest.getMissions()) {
-                                if (mission.getItem().isCompleted()) {
+                                if (mission.isCompleted()) {
                                      completed++;
                                 }
                             }
@@ -111,7 +111,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                             Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
                             Collections.sort(betaTest.getMissions(), (o1, o2) -> {
                                 if (o1.getOrder().equals(o2.getOrder())) {
-                                    return o1.getItem().getOrder() - o2.getItem().getOrder();
+                                    return o1.getOrder() - o2.getOrder();
                                 } else {
                                     return o1.getOrder() - o2.getOrder();
                                 }
@@ -127,12 +127,12 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Single<Mission.MissionItem> refreshMissionProgress(String missionId) {
+    public Single<Mission> refreshMissionProgress(String missionId) {
         return this.betaTestService.getMissionProgress(betaTest.getId(), missionId);
     }
 
     @Override
-    public void processMissionItemAction(Mission.MissionItem missionItem) {
+    public void processMissionItemAction(Mission missionItem) {
         // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
         String action = missionItem.getAction();
 
@@ -171,7 +171,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public Observable<List<Mission>> getDisplayedMissionList() {
         return getMissionListWithLockingSequence()
-                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getItem().getType()))
+                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getType()))
                 .toList();
     }
 
@@ -206,10 +206,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 })
                 .toSingle()
                 .zipWith(Observable.from(betaTest.getMissions())
-                        .filter(mission -> missionItemId.equals(mission.getItem().getId()))
+                        .filter(mission -> missionItemId.equals(mission.getId()))
                         .toSingle(), Pair::new)
                 .map(pair -> {
-                    pair.second.getItem().setTotalPlayTime(pair.first);
+                    pair.second.setTotalPlayTime(pair.first);
                     return pair.first;
                 })
                 .observeOn(AndroidSchedulers.mainThread())

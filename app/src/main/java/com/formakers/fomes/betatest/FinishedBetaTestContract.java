@@ -31,7 +31,7 @@ public interface FinishedBetaTestContract {
         Single<List<BetaTest>> load();
         void applyCompletedFilter(boolean isNeedFilter);
         BetaTest getItem(int position);
-        void emitRecheckMyAnswer(Mission.MissionItem missionItem);
+        void emitRecheckMyAnswer(Mission missionItem);
 
         void unsubscribe();
     }

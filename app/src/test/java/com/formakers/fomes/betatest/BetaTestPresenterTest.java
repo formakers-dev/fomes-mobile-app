@@ -200,9 +200,9 @@ public class BetaTestPresenterTest {
         BetaTestAPI.BetaTestProgressResponseVO responseVO = new BetaTestAPI.BetaTestProgressResponseVO();
         responseVO.isAttended = true;
         responseVO.missionItems = Lists.newArrayList(
-                new Mission.MissionItem().setId("1").setCompleted(true),
-                new Mission.MissionItem().setId("2").setCompleted(true),
-                new Mission.MissionItem().setId("3").setCompleted(false)
+                new Mission().setId("1").setCompleted(true),
+                new Mission().setId("2").setCompleted(true),
+                new Mission().setId("3").setCompleted(false)
         );
 
         when(mockBetaTestService.getBetaTestProgress("1"))
@@ -217,9 +217,9 @@ public class BetaTestPresenterTest {
         BetaTestAPI.BetaTestProgressResponseVO responseVO = new BetaTestAPI.BetaTestProgressResponseVO();
         responseVO.isAttended = true;
         responseVO.missionItems = Lists.newArrayList(
-                new Mission.MissionItem().setId("1").setCompleted(true),
-                new Mission.MissionItem().setId("2").setCompleted(true),
-                new Mission.MissionItem().setId("3").setCompleted(false)
+                new Mission().setId("1").setCompleted(true),
+                new Mission().setId("2").setCompleted(true),
+                new Mission().setId("3").setCompleted(false)
         );
 
         when(mockBetaTestService.getBetaTestProgress("99999999999"))
