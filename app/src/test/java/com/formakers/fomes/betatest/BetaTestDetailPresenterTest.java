@@ -3,6 +3,7 @@ package com.formakers.fomes.betatest;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
 import com.formakers.fomes.common.helper.AppUsageDataHelper;
@@ -82,6 +83,7 @@ public class BetaTestDetailPresenterTest {
         when(mockBetaTestService.getMissionProgress("5d1c5e695c20ca481f27a4ab", "5d1ec8094400311578e996bc"))
                 .thenReturn(Single.just(new Mission()));
         when(mockBetaTestService.postCompleteBetaTest(anyString())).thenReturn(Completable.complete());
+        when(mockBetaTestService.postCompleteMission(anyString(), anyString())).thenReturn(Completable.complete());
 
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
         when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
@@ -231,7 +233,10 @@ public class BetaTestDetailPresenterTest {
         subject.requestToAttendBetaTest();
 
         verify(mockBetaTestService).postAttendBetaTest("5d1c5e695c20ca481f27a4ab");
+        verify(mockBetaTestService).postCompleteMission("5d1c5e695c20ca481f27a4ab", "5d1ec8194400311578e996bd");
         assertThat(subject.betaTest.isAttended()).isTrue();
+        assertThat(subject.betaTest.getMissions().get(0).getType()).isEqualTo(FomesConstants.BetaTest.Mission.TYPE_PLAY);
+        assertThat(subject.betaTest.getMissions().get(0).isCompleted()).isTrue();
         verify(mockView).refreshMissionList();
     }
 

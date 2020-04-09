@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Completable;
 import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
@@ -181,11 +182,22 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         view.getCompositeSubscription().add(
                 betaTestService.postAttendBetaTest(this.betaTest.getId())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .concatWith(completePlayTypeMission())
                         .subscribe(() -> {
                             this.betaTest.setAttended(true);
                             this.view.refreshMissionList();
                         }, e -> Log.e(TAG, String.valueOf(e)))
         );
+    }
+
+    private Completable completePlayTypeMission() {
+        List<Completable> missions = Observable.from(this.betaTest.getMissions())
+                .filter(mission -> FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType()))
+                .map(mission -> betaTestService.postCompleteMission(this.betaTest.getId(), mission.getId())
+                        .doOnCompleted(() -> mission.setCompleted(true)))
+                .toList().toBlocking().single();
+
+        return Completable.concat(missions);
     }
 
     @Override

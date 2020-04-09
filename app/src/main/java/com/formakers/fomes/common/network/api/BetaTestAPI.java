@@ -32,6 +32,9 @@ public interface BetaTestAPI {
     @GET("/beta-tests/{id}/missions/{missionId}/progress")
     Observable<Mission> getMissionProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId, @Path("missionId") String missionId);
 
+    @POST("/beta-tests/{id}/missions/{missionId}/complete")
+    Observable<Void> postCompleteMission(@Header("x-access-token") String accessToken, @Path("id") String betaTestId, @Path("missionId") String missionId);
+
     @POST("/beta-tests/{id}/complete")
     Observable<Void> postCompleteBetaTest(@Header("x-access-token") String accessToken, @Path("id") String id);
 
