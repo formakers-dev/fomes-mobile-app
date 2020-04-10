@@ -112,8 +112,6 @@ public class BetaTestDetailPresenterTest {
         verify(mockView).bind(argumentCaptor.capture());
         BetaTest actualBetaTest = argumentCaptor.getValue();
 
-        assertThat(actualBetaTest.getTotalItemCount()).isEqualTo(5);
-        assertThat(actualBetaTest.getCompletedItemCount()).isEqualTo(2);
         assertThat(actualBetaTest.getRewards().getList().size()).isEqualTo(3);
         assertThat(actualBetaTest.getRewards().getList().get(0).getOrder()).isEqualTo(1);
         assertThat(actualBetaTest.getRewards().getList().get(1).getOrder()).isEqualTo(2);

@@ -95,18 +95,18 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         .doOnSubscribe(() -> this.view.showLoading())
                         .doAfterTerminate(() -> this.view.hideLoading())
                         .map(betaTest -> {
-                            // 진행상태 체크 (progress)
-                            int total = betaTest.getMissions().size();
-                            int completed = 0;
-
-                            for (Mission mission : betaTest.getMissions()) {
-                                if (mission.isCompleted()) {
-                                     completed++;
-                                }
-                            }
-
-                            betaTest.setTotalItemCount(total);
-                            betaTest.setCompletedItemCount(completed);
+//                            // 진행상태 체크 (progress)
+//                            int total = betaTest.getMissions().size();
+//                            int completed = 0;
+//
+//                            for (Mission mission : betaTest.getMissions()) {
+//                                if (mission.isCompleted()) {
+//                                     completed++;
+//                                }
+//                            }
+//
+//                            betaTest.setTotalItemCount(total);
+//                            betaTest.setCompletedItemCount(completed);
 
                             // 정렬 (order)
                             Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());

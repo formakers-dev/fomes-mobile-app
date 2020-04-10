@@ -35,15 +35,12 @@ public class BetaTest implements Parcelable {
 
     Rewards rewards;
 
-    boolean isCompleted;
     boolean isAttended;
+    boolean isCompleted;
 
     boolean isGroup;
     Epilogue epilogue;
     List<String> similarApps = new ArrayList<>();
-
-    Integer completedItemCount;
-    Integer totalItemCount;
 
     @Deprecated boolean isOpened;
     @Deprecated String subTitle;
@@ -601,7 +598,12 @@ public class BetaTest implements Parcelable {
     }
 
     public boolean isCompleted() {
-        return isAttended() && getCompletedItemCount().equals(getTotalItemCount());
+        return isCompleted;
+    }
+
+    public BetaTest setCompleted(boolean completed) {
+        isCompleted = completed;
+        return this;
     }
 
     public boolean isAttended() {
@@ -659,24 +661,6 @@ public class BetaTest implements Parcelable {
 
     public BetaTest setRewards(Rewards rewards) {
         this.rewards = rewards;
-        return this;
-    }
-
-    public Integer getCompletedItemCount() {
-        return completedItemCount;
-    }
-
-    public BetaTest setCompletedItemCount(Integer completedItemCount) {
-        this.completedItemCount = completedItemCount;
-        return this;
-    }
-
-    public Integer getTotalItemCount() {
-        return totalItemCount;
-    }
-
-    public BetaTest setTotalItemCount(Integer totalItemCount) {
-        this.totalItemCount = totalItemCount;
         return this;
     }
 
@@ -776,13 +760,11 @@ public class BetaTest implements Parcelable {
                 ", bugReport=" + bugReport +
                 ", missions=" + missions +
                 ", rewards=" + rewards +
-                ", isCompleted=" + isCompleted +
                 ", isAttended=" + isAttended +
+                ", isCompleted=" + isCompleted +
                 ", isGroup=" + isGroup +
-                ", Epilogue=" + epilogue +
+                ", epilogue=" + epilogue +
                 ", similarApps=" + similarApps +
-                ", completedItemCount=" + completedItemCount +
-                ", totalItemCount=" + totalItemCount +
                 ", isOpened=" + isOpened +
                 ", subTitle='" + subTitle + '\'' +
                 ", requiredTime=" + requiredTime +
@@ -820,8 +802,6 @@ public class BetaTest implements Parcelable {
         dest.writeInt(isGroup ? 1 : 0);
         dest.writeParcelable(epilogue, 0);
         dest.writeStringList(similarApps);
-        dest.writeInt(completedItemCount);
-        dest.writeInt(totalItemCount);
         dest.writeInt(isOpened ? 1 : 0);
         dest.writeString(subTitle);
         dest.writeLong(requiredTime);
@@ -853,8 +833,6 @@ public class BetaTest implements Parcelable {
         isGroup = (in.readInt() == 1);
         epilogue = in.readParcelable(null);
         in.readStringList(similarApps);
-        completedItemCount = in.readInt();
-        totalItemCount = in.readInt();
         isOpened = (in.readInt() == 1);
         subTitle = in.readString();
         requiredTime = in.readLong();

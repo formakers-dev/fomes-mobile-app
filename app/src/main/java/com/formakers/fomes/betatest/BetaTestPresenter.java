@@ -7,7 +7,6 @@ import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
-import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -126,42 +124,24 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
-    public void requestBetaTestProgress(String betaTestId) {
-        int position = betaTestListAdapterModel.getPositionById(betaTestId);
-
+    public void requestBetaTestProgress(final String betaTestId) {
         compositeSubscription.add(
                 betaTestService.getBetaTestProgress(betaTestId)
                         .observeOn(Schedulers.io())
                         .map(responseVO -> {
+                            int position = betaTestListAdapterModel.getPositionById(betaTestId);
+
                             if (position < 0) {
                                 throw new IllegalStateException("There isn't the betatest in list. It might be initialized by system.");
                             }
 
                             BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
                             originalBetaTest.setAttended(responseVO.isAttended);
-
-                            return responseVO.missionItems;
-                        })
-                        .flatMap(missionItems -> {
-                            BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
-
-                            if (!originalBetaTest.getTotalItemCount().equals(missionItems.size())) {
-                                originalBetaTest.setTotalItemCount(missionItems.size());
-                            }
-
-                            return Observable.from(missionItems).filter(Mission::isCompleted).count().toSingle();
-                        })
-                        .map(completedCount -> {
-                            BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
-
-                            if (!originalBetaTest.getCompletedItemCount().equals(completedCount)) {
-                                originalBetaTest.setCompletedItemCount(completedCount);
-                            }
-
-                            return completedCount;
+                            originalBetaTest.setCompleted(responseVO.isCompleted);
+                            return position;
                         })
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(x -> view.refreshBetaTestProgress(position), e -> Log.e(TAG, String.valueOf(e)))
+                        .subscribe(position -> view.refreshBetaTestProgress(position), e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 

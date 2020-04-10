@@ -17,7 +17,7 @@ public interface BetaTestAPI {
 
     class BetaTestProgressResponseVO {
         public boolean isAttended;
-        public List<Mission> missionItems;
+        public boolean isCompleted;
     }
 
     @GET("/beta-tests/{id}/progress")
