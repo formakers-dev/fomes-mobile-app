@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface BetaTestAPI {
@@ -24,7 +25,7 @@ public interface BetaTestAPI {
     Observable<BetaTestProgressResponseVO> getBetaTestProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
 
     @GET("/beta-tests/finished")
-    Observable<List<BetaTest>> getFinishedBetaTests(@Header("x-access-token") String accessToken);
+    Observable<List<BetaTest>> getFinishedBetaTests(@Header("x-access-token") String accessToken, @Query("verbose") Boolean isVerbose);
 
     @GET("/beta-tests/detail/{id}")
     Observable<BetaTest> getDetailBetaTest(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
