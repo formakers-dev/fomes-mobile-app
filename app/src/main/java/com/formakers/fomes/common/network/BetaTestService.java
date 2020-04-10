@@ -72,8 +72,8 @@ public class BetaTestService extends AbstractService {
                 .toCompletable();
     }
 
-    public Single<BetaTestAPI.BetaTestProgressResponseVO> getBetaTestProgress(String betaTestId) {
-        return Observable.defer(() -> betaTestAPI.getBetaTestProgress(sharedPreferencesHelper.getAccessToken(), betaTestId))
+    public Single<BetaTestAPI.BetaTestProgressResponseVO> getBetaTestProgress(String betaTestId, Boolean isVerbose) {
+        return Observable.defer(() -> betaTestAPI.getBetaTestProgress(sharedPreferencesHelper.getAccessToken(), betaTestId, isVerbose))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();

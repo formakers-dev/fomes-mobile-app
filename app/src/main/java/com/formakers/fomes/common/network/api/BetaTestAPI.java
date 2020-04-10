@@ -22,7 +22,7 @@ public interface BetaTestAPI {
     }
 
     @GET("/beta-tests/{id}/progress")
-    Observable<BetaTestProgressResponseVO> getBetaTestProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
+    Observable<BetaTestProgressResponseVO> getBetaTestProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId, @Query("verbose") Boolean isVerbose);
 
     @GET("/beta-tests/finished")
     Observable<List<BetaTest>> getFinishedBetaTests(@Header("x-access-token") String accessToken, @Query("verbose") Boolean isVerbose);

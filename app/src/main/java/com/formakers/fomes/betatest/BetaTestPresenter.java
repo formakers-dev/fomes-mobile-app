@@ -126,7 +126,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     @Override
     public void requestBetaTestProgress(final String betaTestId) {
         compositeSubscription.add(
-                betaTestService.getBetaTestProgress(betaTestId)
+                betaTestService.getBetaTestProgress(betaTestId, false)
                         .observeOn(Schedulers.io())
                         .map(responseVO -> {
                             int position = betaTestListAdapterModel.getPositionById(betaTestId);

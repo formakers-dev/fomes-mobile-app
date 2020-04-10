@@ -200,7 +200,7 @@ public class BetaTestPresenterTest {
         responseVO.isAttended = true;
         responseVO.isCompleted = false;
 
-        when(mockBetaTestService.getBetaTestProgress("1"))
+        when(mockBetaTestService.getBetaTestProgress("1", false))
                 .thenReturn(Single.just(responseVO));
 
         subject.requestBetaTestProgress("1");
@@ -213,7 +213,7 @@ public class BetaTestPresenterTest {
         responseVO.isAttended = true;
         responseVO.isCompleted = false;
 
-        when(mockBetaTestService.getBetaTestProgress("99999999999"))
+        when(mockBetaTestService.getBetaTestProgress("99999999999", false))
                 .thenReturn(Single.just(responseVO));
 
         subject.requestBetaTestProgress("99999999999");
