@@ -61,9 +61,9 @@ android {
         // DEV
         development {
             debuggable true
-            shrinkResources false
-            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-dev.herokuapp.com/"'
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.debug

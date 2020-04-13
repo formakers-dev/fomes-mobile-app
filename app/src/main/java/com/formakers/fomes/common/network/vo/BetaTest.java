@@ -35,20 +35,11 @@ public class BetaTest implements Parcelable {
 
     Rewards rewards;
 
-    boolean isAttended;
-    boolean isCompleted;
+    Boolean isAttended;
+    Boolean isCompleted;
 
-    boolean isGroup;
     Epilogue epilogue;
     List<String> similarApps = new ArrayList<>();
-
-    @Deprecated boolean isOpened;
-    @Deprecated String subTitle;
-    @Deprecated long requiredTime;
-    @Deprecated String amount;
-    @Deprecated String reward;
-    @Deprecated String actionType;
-    @Deprecated String action;
 
     public static class ProgressText implements Parcelable {
         String ready;
@@ -615,15 +606,6 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public boolean isGroup() {
-        return isGroup;
-    }
-
-    public BetaTest setGroup(boolean group) {
-        isGroup = group;
-        return this;
-    }
-
     public Epilogue getEpilogue() {
         return epilogue;
     }
@@ -664,52 +646,6 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
-    public boolean isOpened() {
-        return isOpened;
-    }
-
-    public BetaTest setOpened(boolean opened) {
-        isOpened = opened;
-        return this;
-    }
-
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public BetaTest setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
-        return this;
-    }
-
-    // convertType : DateUtil.CONVERT_TYPE_.*
-    public float getRequiredTime(int convertType) {
-        return DateUtil.convertDurationFromMilliseconds(convertType, requiredTime, 0);
-    }
-
-    public BetaTest setRequiredTime(long requiredTime) {
-        this.requiredTime = requiredTime;
-        return this;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public BetaTest setAmount(String amount) {
-        this.amount = amount;
-        return this;
-    }
-
-    public String getReward() {
-        return reward;
-    }
-
-    public BetaTest setReward(String reward) {
-        this.reward = reward;
-        return this;
-    }
-
     @Deprecated
     public String getBugReportUrl() {
         if (this.bugReport != null) {
@@ -717,28 +653,6 @@ public class BetaTest implements Parcelable {
         } else {
             return null;
         }
-    }
-
-    public long getRequiredTime() {
-        return requiredTime;
-    }
-
-    public String getActionType() {
-        return actionType;
-    }
-
-    public BetaTest setActionType(String actionType) {
-        this.actionType = actionType;
-        return this;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public BetaTest setAction(String action) {
-        this.action = action;
-        return this;
     }
 
     @Override
@@ -762,16 +676,8 @@ public class BetaTest implements Parcelable {
                 ", rewards=" + rewards +
                 ", isAttended=" + isAttended +
                 ", isCompleted=" + isCompleted +
-                ", isGroup=" + isGroup +
                 ", epilogue=" + epilogue +
                 ", similarApps=" + similarApps +
-                ", isOpened=" + isOpened +
-                ", subTitle='" + subTitle + '\'' +
-                ", requiredTime=" + requiredTime +
-                ", amount='" + amount + '\'' +
-                ", reward='" + reward + '\'' +
-                ", actionType='" + actionType + '\'' +
-                ", action='" + action + '\'' +
                 '}';
     }
 
@@ -799,16 +705,8 @@ public class BetaTest implements Parcelable {
         dest.writeParcelable(rewards, 0);
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isAttended ? 1 : 0);
-        dest.writeInt(isGroup ? 1 : 0);
         dest.writeParcelable(epilogue, 0);
         dest.writeStringList(similarApps);
-        dest.writeInt(isOpened ? 1 : 0);
-        dest.writeString(subTitle);
-        dest.writeLong(requiredTime);
-        dest.writeString(amount);
-        dest.writeString(reward);
-        dest.writeString(actionType);
-        dest.writeString(action);
     }
 
     private void readFromParcel(Parcel in) {
@@ -830,16 +728,8 @@ public class BetaTest implements Parcelable {
         rewards = in.readParcelable(null);
         isCompleted = (in.readInt() == 1);
         isAttended = (in.readInt() == 1);
-        isGroup = (in.readInt() == 1);
         epilogue = in.readParcelable(null);
         in.readStringList(similarApps);
-        isOpened = (in.readInt() == 1);
-        subTitle = in.readString();
-        requiredTime = in.readLong();
-        amount = in.readString();
-        reward = in.readString();
-        actionType = in.readString();
-        action = in.readString();
     }
 
     @Override

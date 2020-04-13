@@ -12,9 +12,9 @@ public class RecommendApp {
     public static final int RECOMMEND_TYPE_FAVORITE_CATEGORY = 3;
     public static final int RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC = 4;
 
-    int recommendType;
+    Integer recommendType;
     List<String> criteria;
-    int rank;
+    Integer rank;
     @SerializedName("app") AppInfo appInfo;
 
     public RecommendApp() {

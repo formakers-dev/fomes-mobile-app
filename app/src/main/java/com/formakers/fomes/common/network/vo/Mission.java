@@ -17,10 +17,10 @@ public class Mission implements Parcelable {
     String actionType;
     String action;
 
-    boolean isCompleted;
-    boolean isRepeatable;
-    boolean isMandatory;
-    boolean isRecheckable;
+    Boolean isCompleted;
+    Boolean isRepeatable;
+    Boolean isMandatory;
+    Boolean isRecheckable;
 
     // For view
     Boolean isLocked;

@@ -5,7 +5,7 @@ import java.util.List;
 public class RecentReport {
     List<Rank> totalUsedTimeRank;
     List<UsageGroup> usages;
-    long totalUserCount;
+    Long totalUserCount;
 
     public RecentReport() {
     }
