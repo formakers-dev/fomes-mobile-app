@@ -129,6 +129,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                 betaTestService.getBetaTestProgress(betaTestId, false)
                         .observeOn(Schedulers.io())
                         .map(responseVO -> {
+                            Log.d(TAG, String.valueOf(responseVO));
                             int position = betaTestListAdapterModel.getPositionById(betaTestId);
 
                             if (position < 0) {
