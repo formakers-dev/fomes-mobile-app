@@ -61,6 +61,7 @@ public interface FomesConstants {
         String EXTRA_TITLE = "EXTRA_TITLE";
         String EXTRA_CONTENTS = "EXTRA_CONTENTS";
         String EXTRA_IS_PREVENT_BACK_PRESSED = "EXTRA_IS_PREVENT_BACK_PRESSED";
+        String EXTRA_MISSION_ID = "EXTRA_MISSION_ID";
     }
 
     interface Notification {

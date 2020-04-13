@@ -49,6 +49,8 @@ import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.C
 public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTestDetailContract.View {
 
     private static final String TAG = "BetaTestDetailActivity";
+
+    public static final int REQUEST_CODE_MISSION = 1001;
     private static final int DEFAULT_REWARDS_MINIMUM_DELAY = 7;
 
     @BindView(R.id.action_bar) Toolbar actionBar;
@@ -127,6 +129,25 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         presenter.sendEventLog(BETA_TEST_DETAIL_ENTER, id);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+
+        if (requestCode == REQUEST_CODE_MISSION) {
+            if (data != null) {
+                String missionId = data.getStringExtra(FomesConstants.WebView.EXTRA_MISSION_ID);
+
+                this.presenter.refreshMissionProgress(missionId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(mission -> {
+                            this.missionListAdapter.getItem(missionId).setCompleted(mission.isCompleted());
+                            this.refreshMissionItem(missionId);
+                        }, e -> Log.e(TAG, String.valueOf(e)));
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -340,12 +361,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
-    public void startWebViewActivity(String title, String url) {
+    public void startSurveyWebViewActivity(String missionId, String title, String url) {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(FomesConstants.WebView.EXTRA_TITLE, title);
         intent.putExtra(FomesConstants.WebView.EXTRA_CONTENTS, url);
         intent.putExtra(FomesConstants.WebView.EXTRA_IS_PREVENT_BACK_PRESSED, true);
-        startActivity(intent);
+        intent.putExtra(FomesConstants.WebView.EXTRA_MISSION_ID, missionId);
+        startActivityForResult(intent, REQUEST_CODE_MISSION);
     }
 
     @Override

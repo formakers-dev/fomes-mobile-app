@@ -48,7 +48,7 @@ public interface BetaTestDetailContract {
         void refreshMissionItem(String missionItemId);
 
         android.view.View inflate(@LayoutRes int layoutResId);
-        void startWebViewActivity(String title, String url);
+        void startSurveyWebViewActivity(String missionId, String title, String url);
         void startByDeeplink(Uri deeplinkUri);
         void startActivity(Intent intent);
 

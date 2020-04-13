@@ -256,6 +256,21 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return missionList.size();
     }
 
+    public Mission getItem(int position) {
+        return missionList.get(position);
+    }
+
+    public Mission getItem(String missionId) {
+        for (int position = 0; position < missionList.size(); position++) {
+            Mission mission = missionList.get(position);
+            if (missionId.equals(mission.getId())) {
+                return mission;
+            }
+        }
+
+        return null;
+    }
+
     public int getPositionByMissionItemId(String missionItemId) {
         for (int position = 0; position < missionList.size(); position++) {
             Mission mission = missionList.get(position);

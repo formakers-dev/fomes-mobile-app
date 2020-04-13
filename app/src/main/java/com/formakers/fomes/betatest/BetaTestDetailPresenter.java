@@ -157,7 +157,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(missionItem.getActionType())
                 || (uri.getQueryParameter("internal_web") != null
                 && uri.getQueryParameter("internal_web").equals("true"))) {
-            view.startWebViewActivity(missionItem.getTitle(), url);
+            view.startSurveyWebViewActivity(missionItem.getId(), missionItem.getTitle(), url);
         } else {
             // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
             view.startByDeeplink(Uri.parse(url));

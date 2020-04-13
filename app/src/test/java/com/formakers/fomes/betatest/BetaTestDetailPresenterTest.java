@@ -152,7 +152,7 @@ public class BetaTestDetailPresenterTest {
         // 인앱웹뷰
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(0));
 
-        verify(mockView).startWebViewActivity(eq("의견을 작성하라!"), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
+        verify(mockView).startSurveyWebViewActivity(eq(getDummyBetaTestDetail().getMissions().get(0).getId()), eq("의견을 작성하라!"), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
 
     }
 

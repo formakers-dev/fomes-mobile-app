@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.view.webview;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +25,7 @@ import androidx.annotation.RequiresApi;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.betatest.FomesNoticeDialog;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.DeeplinkActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -117,6 +119,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
     @Override
     protected boolean isDifferentBetweenUpAndBack() {
+        setResultForSurvey();
         return true;
     }
 
@@ -135,6 +138,8 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
     @Override
     public void onBackPressed() {
+        setResultForSurvey();
+
         if (isDoubleCheckBackPressed) {
             FomesNoticeDialog fomesNoticeDialog = new FomesNoticeDialog();
 
@@ -151,6 +156,14 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
         } else {
             goBack();
         }
+    }
+
+    // survey 인 경우에만 해당되는 로직으로서 리팩토링시 분리될 필요있음
+    private void setResultForSurvey() {
+        Intent intent = new Intent();
+        intent.putExtra(FomesConstants.WebView.EXTRA_MISSION_ID, getIntent().getStringExtra(FomesConstants.WebView.EXTRA_MISSION_ID));
+        setResult(Activity.RESULT_OK, intent);
+
     }
 
     @Override
