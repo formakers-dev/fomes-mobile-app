@@ -171,9 +171,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public Observable<List<Mission>> getDisplayedMissionList() {
-        return getMissionListWithLockingSequence()
-                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getType()))
-                .toList();
+        return getMissionListWithLockingSequence().toList();
     }
 
     @Override

@@ -116,12 +116,11 @@ public class BetaTestDetailPresenterTest {
         assertThat(actualBetaTest.getRewards().getList().get(0).getOrder()).isEqualTo(1);
         assertThat(actualBetaTest.getRewards().getList().get(1).getOrder()).isEqualTo(2);
         assertThat(actualBetaTest.getRewards().getList().get(2).getOrder()).isEqualTo(3);
-        assertThat(actualBetaTest.getMissions().size()).isEqualTo(5);
+        assertThat(actualBetaTest.getMissions().size()).isEqualTo(4);
         assertThat(actualBetaTest.getMissions().get(0).getOrder()).isEqualTo(1);
         assertThat(actualBetaTest.getMissions().get(1).getOrder()).isEqualTo(2);
         assertThat(actualBetaTest.getMissions().get(2).getOrder()).isEqualTo(3);
-        assertThat(actualBetaTest.getMissions().get(3).getOrder()).isEqualTo(4);
-        assertThat(actualBetaTest.getMissions().get(4).getOrder()).isEqualTo(5);
+        assertThat(actualBetaTest.getMissions().get(3).getOrder()).isEqualTo(5);
     }
 
     @Test
@@ -203,7 +202,7 @@ public class BetaTestDetailPresenterTest {
 
         assertThat(displayedMissionList.size()).isEqualTo(4);
 
-        // 순서 정렬 & hidden 타입 제외
+        // 순서 정렬
         assertThat(displayedMissionList.get(0).getOrder()).isEqualTo(1);
         assertThat(displayedMissionList.get(1).getOrder()).isEqualTo(2);
         assertThat(displayedMissionList.get(2).getOrder()).isEqualTo(3);
@@ -379,17 +378,6 @@ public class BetaTestDetailPresenterTest {
                 "        \"action\": \"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty\",\n" +
                 "        \"_id\": \"5d1ec8194400311578e996b1\",\n" +
                 "        \"isCompleted\": false\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"order\": 4,\n" +
-                "      \"description\": \"[이리와 고양아] 히든 미션\",\n" +
-                "      \"descriptionImageUrl\": \"\",\n" +
-                "      \"guide\": \"* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
-                "      \"_id\": \"5d1ec8024400311578e996bb\",\n" +
-                "        \"title\": \"히든\",\n" +
-                "        \"type\": \"hidden\",\n" +
-                "        \"_id\": \"5d1ec8194400311578e996b2\",\n" +
-                "        \"isCompleted\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"order\": 5,\n" +
