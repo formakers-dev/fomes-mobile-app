@@ -35,8 +35,8 @@ public class BetaTest implements Parcelable {
 
     Rewards rewards;
 
-    Boolean isAttended;
-    Boolean isCompleted;
+    boolean isAttended;
+    boolean isCompleted;
 
     Epilogue epilogue;
     List<String> similarApps = new ArrayList<>();
