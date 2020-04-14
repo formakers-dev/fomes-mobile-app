@@ -48,6 +48,15 @@ android {
             buildConfigField 'String', 'SERVER_BASE_URL', "\"http://${localhostAddress}:8080/\""
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.debug
+
+            // crashlytics 실행하지 않음
+            manifestPlaceholders = [enableCrashReporting:"false"]
+
+            // crashlytics 플러그인을 사용하지 않음
+            ext.enableCrashlytics = false
+
+            // crashlytics 빌드 ID 업데이트 막기
+            ext.alwaysUpdateBuildId = false
         }
         // DEV
         development {
@@ -59,6 +68,7 @@ android {
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.debug
 //            signingConfig signingConfigs.release
+            manifestPlaceholders = [enableCrashReporting:"true"]
         }
         // STG
         staging {
@@ -69,6 +79,7 @@ android {
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-stg.herokuapp.com/"'
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
+            manifestPlaceholders = [enableCrashReporting:"false"]
         }
         // PRD
         release {
@@ -78,6 +89,7 @@ android {
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee.xyz/"'
             buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
+            manifestPlaceholders = [enableCrashReporting:"true"]
         }
     }
     compileOptions {

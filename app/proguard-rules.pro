@@ -143,6 +143,10 @@
 -keep class com.formakers.fomes.common.repository.model.** { *; }
 -dontwarn com.formakers.fomes.common.repository.model.**
 
+-keep class com.formakers.fomes.common.network.api.** { *; }
+-keep class com.formakers.fomes.common.network.api.**$* { *; }
+-dontwarn com.formakers.fomes.common.network.api.**
+
 # Constants
 -keep class com.formakers.fomes.common.constant.FomesConstants.** { *; }
 -keep class com.formakers.fomes.common.constant.FomesConstants.$* { *; }

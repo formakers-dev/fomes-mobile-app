@@ -79,7 +79,7 @@
 
     <style name="FomesMainTabTheme.BetaTestDivider">
         <item name="divider_width">@dimen/match_constraint</item>
-        <item name="divider_height">12dp</item>
+        <item name="divider_height">16dp</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>
 
@@ -212,6 +212,10 @@
         <item name="item_stroke_width">0dp</item>
     </style>
 
+    <style name="BetaTestTheme.CardBackground.Mission">
+        <item name="item_solid_color">@color/fomes_charcoal_gray</item>
+    </style>
+
     <!--<style name="BetaTestTheme.CardGradient">-->
         <!--<item name="item_gradient_start_color">@color/fomes_content_card_background</item>-->
         <!--<item name="item_gradient_end_color">@android:color/transparent</item>-->
@@ -249,29 +253,6 @@
         <item name="item_stroke_width">1dp</item>
     </style>
 
-
-    <style name="BetaTestTheme.ProjectStatusBackground">
-        <item name="android:paddingStart">7dp</item>
-        <item name="android:paddingEnd">7dp</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
-        <item name="item_background_radius">7.5dp</item>
-        <item name="item_solid_color">@color/fomes_dark_gray</item>
-        <item name="item_stroke_width">1dp</item>
-    </style>
-
-    <style name="BetaTestTheme.ProjectStatusBackground.Normal" parent="BetaTestTheme.ProjectStatusBackground">
-        <item name="item_stroke_color">@color/colorPrimary</item>
-    </style>
-
-    <style name="BetaTestTheme.ProjectStatusBackground.Yellow" parent="BetaTestTheme.ProjectStatusBackground">
-        <item name="item_stroke_color">@color/fomes_squash</item>
-    </style>
-
-    <style name="BetaTestTheme.ProjectStatusBackground.Red" parent="BetaTestTheme.ProjectStatusBackground">
-        <item name="item_stroke_color">@color/fomes_red</item>
-    </style>
-
     <style name="BetaTestTheme.OldTagBackground">
         <item name="android:paddingStart">7dp</item>
         <item name="android:paddingEnd">7dp</item>
@@ -290,7 +271,7 @@
         <item name="android:paddingBottom">8dp</item>
         <item name="item_background_radius">6dp</item>
         <item name="item_solid_color">@android:color/transparent</item>
-        <item name="item_stroke_color">#979797</item>
+        <item name="item_stroke_color">@color/fomes_white_alpha_60</item>
         <item name="item_stroke_width">1dp</item>
     </style>
 
@@ -325,18 +306,34 @@
         <item name="item_stroke_color">@color/beta_test_finished_group_epilogue_button</item>
     </style>
 
-    <style name="BetaTestTheme.LegacyDisableBackground">
-        <item name="item_background_radius">10dp</item>
-        <item name="item_solid_color">@color/fomes_content_disable_card_background</item>
-        <item name="item_stroke_color">@color/item_inner_divider</item>
+    <style name="BetaTestTheme.TypeTag">
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingEnd">6dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BetaTestTheme.MyStatus">
+        <item name="item_background_radius">3dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_75</item>
+        <item name="item_stroke_width">1dp</item>
+        <item name="item_stroke_color">@color/fomes_white_alpha_75</item>
+    </style>
+
+    <style name="BetaTestTheme.Plan">
+        <item name="item_background_radius">3dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_75</item>
         <item name="item_stroke_width">1dp</item>
     </style>
 
-    <style name="BetaTestTheme.CompletedLabelBackground">
-        <item name="item_background_radius">0dp</item>
-        <item name="item_solid_color">@color/beta_test_label_disable_background</item>
+    <style name="BetaTestTheme.Plan.Lite">
         <item name="item_stroke_color">@color/colorPrimary</item>
-        <item name="item_stroke_width">4dp</item>
+    </style>
+
+    <style name="BetaTestTheme.Plan.Premium">
+        <item name="item_stroke_color">@color/fomes_orange</item>
     </style>
 
     <style name="BetaTestTheme.Notice"/>
@@ -366,20 +363,6 @@
         <item name="item_solid_color">@android:color/transparent</item>
         <item name="item_stroke_width">1dp</item>
         <item name="item_stroke_color">#979797</item>
-    </style>
-
-    <style name="BetaTestTheme.ProgressLabelBackground">
-        <item name="item_background_radius">2dp</item>
-        <item name="item_solid_color">@color/fomes_black</item>
-        <item name="item_stroke_width">0dp</item>
-        <item name="android:textColor">@color/fomes_warm_gray_2</item>
-    </style>
-
-    <style name="BetaTestTheme.ProgressLabelBackground.Doing">
-        <item name="item_background_radius">2dp</item>
-        <item name="item_solid_color">@color/colorPrimary</item>
-        <item name="item_stroke_width">0dp</item>
-        <item name="android:textColor">@color/fomes_dark_gray</item>
     </style>
 
     <style name="BetaTestOpenTheme"/>

@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/main_tab_background"
-                android:elevation="4dp" />
+                android:elevation="0dp" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/main_contents_view_pager"

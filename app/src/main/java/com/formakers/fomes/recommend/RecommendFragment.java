@@ -2,6 +2,7 @@ package com.formakers.fomes.recommend;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.MainActivity;
 import com.formakers.fomes.wishList.WishListActivity;
-import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class RecommendFragment extends BaseFragment implements RecommendContract.View,
-        MainActivity.FragmentCommunicator, AppInfoDetailDialogFragment.Communicator {
+        MainActivity.FragmentCommunicator {
 
     public static final String TAG = "RecommendFragment";
 
@@ -132,16 +132,9 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void onShowDetailEvent(RecommendApp recommendApp) {
-        AppInfoDetailDialogFragment appInfoDetailDialogFragment = new AppInfoDetailDialogFragment();
-        appInfoDetailDialogFragment.setCommunicator(this);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(FomesConstants.EXTRA.PACKAGE_NAME, recommendApp.getAppInfo().getPackageName());
-        bundle.putInt(FomesConstants.EXTRA.RECOMMEND_TYPE, recommendApp.getRecommendType());
-        bundle.putStringArrayList(FomesConstants.EXTRA.RECOMMEND_CRITERIA, Lists.newArrayList(recommendApp.getCriteria()));
-        appInfoDetailDialogFragment.setArguments(bundle);
-
-        appInfoDetailDialogFragment.show(getChildFragmentManager(), AppInfoDetailDialogFragment.TAG);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=" + recommendApp.getAppInfo().getPackageName()));
+        startActivity(intent);
     }
 
     @Override
@@ -169,12 +162,6 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void refreshRecommendList() {
         recommendListAdapterView.notifyDataSetChanged();
-    }
-
-    @Override
-    public void emitUpdateWishedStatusEvent(String packageName, boolean isWished) {
-        this.presenter.updateWishedStatus(packageName, isWished);
-        this.recommendListAdapterView.notifyItemChanged(packageName);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class BetaTestServiceTest extends AbstractServiceTest {
     public void getFinishedBetaTestList_호출시__참여가능한_리스트를_요청한다() {
         subject.getFinishedBetaTestList().subscribe(new TestSubscriber<>());
 
-        verify(mockBetaTestAPI).getFinishedBetaTests(eq("TEST_ACCESS_TOKEN"));
+        verify(mockBetaTestAPI).getFinishedBetaTests(eq("TEST_ACCESS_TOKEN"), eq(true));
     }
 
     @Test
@@ -56,13 +56,6 @@ public class BetaTestServiceTest extends AbstractServiceTest {
         subject.postCompleteBetaTest("1234id").subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestAPI).postCompleteBetaTest(eq("TEST_ACCESS_TOKEN"), eq("1234id"));
-    }
-
-    @Test
-    public void getMissionProgress_호출시_해당미션의_진행상황을_요청한다() {
-        subject.getMissionProgress("1234id").subscribe(new TestSubscriber<>());
-
-        verify(mockBetaTestAPI).getMissionProgress(eq("TEST_ACCESS_TOKEN"), eq("1234id"));
     }
 
 }

@@ -158,7 +158,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     }
 
     @Override
-    public void emitRecheckMyAnswer(Mission.MissionItem missionItem) {
+    public void emitRecheckMyAnswer(Mission missionItem) {
         this.view.showNoticePopup(R.string.finished_betatest_recheck_my_answer_popup_title,
                 R.string.finished_betatest_recheck_my_answer_popup_subtitle,
                 R.drawable.notice_recheck_my_answer,
@@ -166,7 +166,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                 v -> processMissionItemAction(missionItem));
     }
 
-    private void processMissionItemAction(Mission.MissionItem missionItem) {
+    private void processMissionItemAction(Mission missionItem) {
         // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
         String action = missionItem.getAction();
 

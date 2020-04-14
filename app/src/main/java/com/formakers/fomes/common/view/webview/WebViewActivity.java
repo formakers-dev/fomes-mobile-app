@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.view.webview;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +25,7 @@ import androidx.annotation.RequiresApi;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.betatest.FomesNoticeDialog;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.DeeplinkActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -117,6 +119,7 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
     @Override
     protected boolean isDifferentBetweenUpAndBack() {
+        setResultForSurvey();
         return true;
     }
 
@@ -135,22 +138,32 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
 
     @Override
     public void onBackPressed() {
+        setResultForSurvey();
+
         if (isDoubleCheckBackPressed) {
             FomesNoticeDialog fomesNoticeDialog = new FomesNoticeDialog();
 
             Bundle bundle = new Bundle();
-            bundle.putString(FomesNoticeDialog.EXTRA_TITLE, "이전 화면으로 돌아가시겠어요?");
-            bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, "설문을 작성 중이셨다면 내용이 저장되지 않을 수 있습니다.\n현재 내용을 저장하고 싶으시다면, 팝업 종료 후 설문 하단의 [제출] 버튼을 클릭해주세요.\n제출 후 응답을 수정할 수 있습니다.\n\n이전 화면으로 이동하시려면 [확인] 버튼을 눌러주세요.");
-            bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, "* 실수 방지를 위한 팝업입니다.");
+            bundle.putString(FomesNoticeDialog.EXTRA_TITLE, "설문을 중단하시겠어요?");
+            bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, "설문 중단 시, 작성하신 내용은 저장되지 않습니다.");
+            bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, "* 작성 내용을 저장하려면 설문으로 돌아가서 하단의 [제출] 버튼을 클릭하세요.");
 
             fomesNoticeDialog.setArguments(bundle);
-            fomesNoticeDialog.setPositiveButton("확인", v -> {
+            fomesNoticeDialog.setPositiveButton("네, 중단할래요.", v -> {
                 goBack();
             });
             fomesNoticeDialog.show(this.getSupportFragmentManager(), "Test");
         } else {
             goBack();
         }
+    }
+
+    // survey 인 경우에만 해당되는 로직으로서 리팩토링시 분리될 필요있음
+    private void setResultForSurvey() {
+        Intent intent = new Intent();
+        intent.putExtra(FomesConstants.WebView.EXTRA_MISSION_ID, getIntent().getStringExtra(FomesConstants.WebView.EXTRA_MISSION_ID));
+        setResult(Activity.RESULT_OK, intent);
+
     }
 
     @Override

@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true">
-
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/betatest_cardview"
@@ -27,7 +25,7 @@
             android:paddingBottom="17dp"
             android:background="@drawable/item_rect_rounded_corner_background"
             android:foreground="@drawable/item_rect_rounded_corner_stroke_background"
-            android:theme="@style/BetaTestTheme.CardBackground">
+            android:theme="@style/BetaTestTheme.CardBackground.Mission">
 
             <ImageView android:id="@+id/mission_refresh_button"
                 android:layout_width="25dp"
@@ -63,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="6dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/fomes_white"
@@ -218,7 +216,6 @@
         android:theme="@style/BetaTestTheme.CardBackground.Lock"
         android:orientation="vertical"
         android:visibility="gone"
-        android:clickable="true"
         android:foreground="@drawable/ripple"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

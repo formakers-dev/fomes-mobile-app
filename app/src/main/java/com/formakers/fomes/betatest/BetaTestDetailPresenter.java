@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Completable;
 import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
@@ -94,24 +95,24 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         .doOnSubscribe(() -> this.view.showLoading())
                         .doAfterTerminate(() -> this.view.hideLoading())
                         .map(betaTest -> {
-                            // 진행상태 체크 (progress)
-                            int total = betaTest.getMissions().size();
-                            int completed = 0;
-
-                            for (Mission mission : betaTest.getMissions()) {
-                                if (mission.getItem().isCompleted()) {
-                                     completed++;
-                                }
-                            }
-
-                            betaTest.setTotalItemCount(total);
-                            betaTest.setCompletedItemCount(completed);
+//                            // 진행상태 체크 (progress)
+//                            int total = betaTest.getMissions().size();
+//                            int completed = 0;
+//
+//                            for (Mission mission : betaTest.getMissions()) {
+//                                if (mission.isCompleted()) {
+//                                     completed++;
+//                                }
+//                            }
+//
+//                            betaTest.setTotalItemCount(total);
+//                            betaTest.setCompletedItemCount(completed);
 
                             // 정렬 (order)
                             Collections.sort(betaTest.getRewards().getList(), (o1, o2) -> o1.getOrder() - o2.getOrder());
                             Collections.sort(betaTest.getMissions(), (o1, o2) -> {
                                 if (o1.getOrder().equals(o2.getOrder())) {
-                                    return o1.getItem().getOrder() - o2.getItem().getOrder();
+                                    return o1.getOrder() - o2.getOrder();
                                 } else {
                                     return o1.getOrder() - o2.getOrder();
                                 }
@@ -127,12 +128,12 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Observable<Mission.MissionItem> refreshMissionProgress(String missionId) {
-        return this.betaTestService.getMissionProgress(missionId);
+    public Single<Mission> refreshMissionProgress(String missionId) {
+        return this.betaTestService.getMissionProgress(betaTest.getId(), missionId);
     }
 
     @Override
-    public void processMissionItemAction(Mission.MissionItem missionItem) {
+    public void processMissionItemAction(Mission missionItem) {
         // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
         String action = missionItem.getAction();
 
@@ -156,7 +157,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(missionItem.getActionType())
                 || (uri.getQueryParameter("internal_web") != null
                 && uri.getQueryParameter("internal_web").equals("true"))) {
-            view.startWebViewActivity(missionItem.getTitle(), url);
+            view.startSurveyWebViewActivity(missionItem.getId(), missionItem.getTitle(), url);
         } else {
             // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
             view.startByDeeplink(Uri.parse(url));
@@ -170,33 +171,31 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public Observable<List<Mission>> getDisplayedMissionList() {
-        return getMissionListWithLockingSequence()
-                .filter(mission -> !FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(mission.getItem().getType()))
-                .toList();
+        return getMissionListWithLockingSequence().toList();
     }
 
     @Override
     public void requestToAttendBetaTest() {
+        Log.d(TAG, "requestToAttendBetaTest");
         view.getCompositeSubscription().add(
-                this.getMissionListWithLockingSequence()
-                .filter(mission -> {
-                    String missionType = mission.getItem().getType();
-                    return FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionType)
-                            || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(missionType);
-                })
-                .flatMapCompletable(mission -> this.betaTestService.postCompleteBetaTest(mission.getItem().getId()))
-                .toCompletable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    for (Mission mission : betaTest.getMissions()) {
-                        String missionType = mission.getItem().getType();
-                        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionType) || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(missionType)) {
-                            mission.getItem().setCompleted(true);
-                        }
-                    }
-                    this.view.refreshMissionList();
-                }, e -> Log.e(TAG, String.valueOf(e)))
+                betaTestService.postAttendBetaTest(this.betaTest.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .concatWith(completePlayTypeMission())
+                        .subscribe(() -> {
+                            this.betaTest.setAttended(true);
+                            this.view.refreshMissionList();
+                        }, e -> Log.e(TAG, String.valueOf(e)))
         );
+    }
+
+    private Completable completePlayTypeMission() {
+        List<Completable> missions = Observable.from(this.betaTest.getMissions())
+                .filter(mission -> FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType()))
+                .map(mission -> betaTestService.postCompleteMission(this.betaTest.getId(), mission.getId())
+                        .doOnCompleted(() -> mission.setCompleted(true)))
+                .toList().toBlocking().single();
+
+        return Completable.concat(missions);
     }
 
     @Override
@@ -217,10 +216,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 })
                 .toSingle()
                 .zipWith(Observable.from(betaTest.getMissions())
-                        .filter(mission -> missionItemId.equals(mission.getItem().getId()))
+                        .filter(mission -> missionItemId.equals(mission.getId()))
                         .toSingle(), Pair::new)
                 .map(pair -> {
-                    pair.second.getItem().setTotalPlayTime(pair.first);
+                    pair.second.setTotalPlayTime(pair.first);
                     return pair.first;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -246,15 +245,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                 })
                 .flatMap(reducedMissionList -> {
                     // 첫 번째 미션 락에 대한 예외처리
-                    if (reducedMissionList.get(0).isLocked()) {
-                        for (Mission lockedMission : reducedMissionList) {
-                            Mission.MissionItem lockedMissionItem = lockedMission.getItem();
-
-                            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(lockedMissionItem.getType())
-                                    || FomesConstants.BetaTest.Mission.TYPE_HIDDEN.equals(lockedMissionItem.getType())) {
-                                reducedMissionList.get(0).setLocked(!lockedMissionItem.isCompleted());
-                            }
-                        }
+                    if (betaTest.isAttended()) {
+                        reducedMissionList.get(0).setLocked(false);
                     }
 
                     // 가장 먼저 발견된 락 이후로는 모두 락으로 셋팅

@@ -29,9 +29,9 @@ public interface BetaTestDetailContract {
 
         void load(String id);
 
-        Observable<Mission.MissionItem> refreshMissionProgress(String missionId);
+        Single<Mission> refreshMissionProgress(String missionId);
 
-        void processMissionItemAction(Mission.MissionItem missionItem);
+        void processMissionItemAction(Mission missionItem);
         String getInterpretedUrl(String originalUrl);
 
         Observable<List<Mission>> getDisplayedMissionList();
@@ -48,7 +48,7 @@ public interface BetaTestDetailContract {
         void refreshMissionItem(String missionItemId);
 
         android.view.View inflate(@LayoutRes int layoutResId);
-        void startWebViewActivity(String title, String url);
+        void startSurveyWebViewActivity(String missionId, String title, String url);
         void startByDeeplink(Uri deeplinkUri);
         void startActivity(Intent intent);
 

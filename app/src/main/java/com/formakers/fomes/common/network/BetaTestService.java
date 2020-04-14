@@ -1,10 +1,10 @@
 package com.formakers.fomes.common.network;
 
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.api.BetaTestAPI;
+import com.formakers.fomes.common.network.helper.APIHelper;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
-import com.formakers.fomes.common.network.helper.APIHelper;
-import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class BetaTestService extends AbstractService {
     }
 
     public Single<List<BetaTest>> getFinishedBetaTestList() {
-        return Observable.defer(() -> betaTestAPI.getFinishedBetaTests(sharedPreferencesHelper.getAccessToken()))
+        return Observable.defer(() -> betaTestAPI.getFinishedBetaTests(sharedPreferencesHelper.getAccessToken(), true))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();
@@ -58,6 +58,13 @@ public class BetaTestService extends AbstractService {
                 .toSingle();
     }
 
+    public Completable postCompleteMission(String betaTestId, String missionId) {
+        return Observable.defer(() -> betaTestAPI.postCompleteMission(sharedPreferencesHelper.getAccessToken(), betaTestId, missionId))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
+    }
+
     public Completable postCompleteBetaTest(String id) {
         return Observable.defer(() -> betaTestAPI.postCompleteBetaTest(sharedPreferencesHelper.getAccessToken(), id))
                 .subscribeOn(Schedulers.io())
@@ -65,17 +72,24 @@ public class BetaTestService extends AbstractService {
                 .toCompletable();
     }
 
-    public Single<BetaTest> getBetaTestProgress(String betaTestId) {
-        return Observable.defer(() -> betaTestAPI.getBetaTestProgress(sharedPreferencesHelper.getAccessToken(), betaTestId))
+    public Single<BetaTestAPI.BetaTestProgressResponseVO> getBetaTestProgress(String betaTestId, Boolean isVerbose) {
+        return Observable.defer(() -> betaTestAPI.getBetaTestProgress(sharedPreferencesHelper.getAccessToken(), betaTestId, isVerbose))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();
     }
 
-    public Observable<Mission.MissionItem> getMissionProgress(String missionId) {
-        return Observable.defer(() -> betaTestAPI.getMissionProgress(sharedPreferencesHelper.getAccessToken(), missionId))
-                .flatMap(Observable::from)
+    public Single<Mission> getMissionProgress(String betaTestId, String missionId) {
+        return Observable.defer(() -> betaTestAPI.getMissionProgress(sharedPreferencesHelper.getAccessToken(), betaTestId, missionId))
                 .subscribeOn(Schedulers.io())
-                .compose(apiHelper.refreshExpiredToken());
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
+    }
+
+    public Completable postAttendBetaTest(String betaTestId) {
+        return Observable.defer(() -> betaTestAPI.postAttend(sharedPreferencesHelper.getAccessToken(), betaTestId))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
     }
 }

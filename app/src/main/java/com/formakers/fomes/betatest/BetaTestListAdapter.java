@@ -1,20 +1,22 @@
 package com.formakers.fomes.betatest;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -56,99 +58,96 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_betatest, parent, false));
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Resources res = context.getResources();
-        BetaTest item = betaTests.get(position);
+        BetaTest betaTest = betaTests.get(position);
 
         ViewHolder viewHolder = (ViewHolder) holder;
 
-        viewHolder.titleTextView.setText(item.getTitle());
+        viewHolder.titleTextView.setText(betaTest.getTitle());
 
-        viewHolder.subTitleTextView.setText(item.getDisplayDescription());
+        viewHolder.subTitleTextView.setText(betaTest.getDisplayDescription());
 
         viewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
 
         // 디데이
-        long remainDays = item.getRemainDays();
+        viewHolder.projectStatusTextView.setBackgroundResource(R.drawable.label_betatest_dday);
+        long remainDays = betaTest.getRemainDays();
 
         String projectStatus;
         if (remainDays > 0) {
-            projectStatus = String.format("D - %d", remainDays);
-        } else if (remainDays == 0) {
-            projectStatus = "오늘 마감";
+            projectStatus = String.format("%d 일\n남음", remainDays + 1);
         } else {
-            projectStatus = context.getString(R.string.common_close);
+            projectStatus = "오늘\n마감";
+            viewHolder.projectStatusTextView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.fomes_orange));
         }
 
         viewHolder.projectStatusTextView.setText(projectStatus);
 
-        @ColorRes int projectStatusColorId;
-        @StyleRes int projectStatusStyleResId;
-        if (remainDays < 2) {
-            projectStatusColorId = R.color.fomes_red;
-            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Red;
-        } else if (remainDays < 4) {
-            projectStatusColorId = R.color.fomes_squash;
-            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Yellow;
-        } else {
-            projectStatusColorId = R.color.colorPrimary;
-            projectStatusStyleResId = R.style.BetaTestTheme_ProjectStatusBackground_Normal;
-        }
-
         viewHolder.projectStatusTextView.setVisibility(View.VISIBLE);
-        viewHolder.projectStatusTextView.setTextColor(res.getColor(projectStatusColorId));
-        viewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new ContextThemeWrapper(context, projectStatusStyleResId).getTheme()));
+
+//        viewHolder.projectStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+//                new ContextThemeWrapper(context, projectStatusStyleResId).getTheme()));
 
         // end of 디데이
 
         this.presenter.getImageLoader().loadImage(
                 viewHolder.overviewImageView,
-                item.getCoverImageUrl(),
+                betaTest.getCoverImageUrl(),
                 new RequestOptions()
                 .centerCrop()
                 .transform(new RoundedCorners(4))
         );
 
-        if (TextUtils.isEmpty(item.getBugReportUrl())) {
+        if (TextUtils.isEmpty(betaTest.getBugReportUrl())) {
             viewHolder.reportBugButton.setVisibility(View.GONE);
         } else {
             viewHolder.reportBugButton.setVisibility(View.VISIBLE);
             viewHolder.reportBugButton.setOnClickListener(v -> {
                 context.startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(presenter.getInterpretedUrl(item.getBugReportUrl()))));
+                        Uri.parse(presenter.getInterpretedUrl(betaTest.getBugReportUrl()))));
 
-                this.presenter.sendEventLog(BETA_TEST_FRAGMENT_TAP_BUG_REPORT, item.getId());
+                this.presenter.sendEventLog(BETA_TEST_FRAGMENT_TAP_BUG_REPORT, betaTest.getId());
             });
         }
 
-        int progressRate = Math.round(item.getCompletedItemCount() * 100 / item.getTotalItemCount());
-        viewHolder.progressBar.setProgress(progressRate);
+        viewHolder.completedLabelImageView.setVisibility(betaTest.isAttended() && betaTest.isCompleted() ? View.VISIBLE : View.GONE);
 
-        if (item.isCompleted()) {
-            viewHolder.progressLabelTextView.setVisibility(View.GONE);
-            viewHolder.progressTextView.setText(item.getProgressText().getDone());
+        if (betaTest.isAttended()) {
+            viewHolder.myStatusTextView.setVisibility(View.VISIBLE);
+
+            if (betaTest.isCompleted()) {
+                viewHolder.myStatusTextView.setText(R.string.betatest_my_status_completed);
+            } else {
+                viewHolder.myStatusTextView.setText(R.string.betatest_my_status_attend);
+            }
         } else {
-            viewHolder.progressLabelTextView.setVisibility(View.VISIBLE);
-            viewHolder.progressLabelTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                    new ContextThemeWrapper(context, progressRate > 0 ? R.style.BetaTestTheme_ProgressLabelBackground_Doing : R.style.BetaTestTheme_ProgressLabelBackground).getTheme()));
-            viewHolder.progressLabelTextView.setTextColor(progressRate > 0 ? res.getColor(R.color.fomes_dark_gray) : res.getColor(R.color.fomes_warm_gray_2));
-            viewHolder.progressLabelTextView.setText(progressRate > 0 ? R.string.betatest_progress_attend_label_doing : R.string.betatest_progress_attend_label);
-            viewHolder.progressTextView.setText(progressRate > 0 ? item.getProgressText().getDoing() : item.getProgressText().getReady());
+            viewHolder.myStatusTextView.setVisibility(View.GONE);
         }
 
-        viewHolder.attendLabelImageView.setVisibility(item.isCompleted() ? View.VISIBLE : View.GONE);
+        viewHolder.titleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_title_text_color));
+        viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_subtitle_text_color));
 
-        viewHolder.titleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_white));
-        viewHolder.subTitleTextView.setTextColor(item.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_light_gray));
-
-        // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우만 표시
-        if ("standard".equals(item.getPlan()) || "simple".equals(item.getPlan())) {
-            viewHolder.premiumBadgeImageView.setVisibility(View.VISIBLE);
+        // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우에 표시
+        @StyleRes int planStyleResId;
+        @StringRes int planNameStringId;
+        @ColorRes int planNameColorId;
+        if ("standard".equals(betaTest.getPlan()) || "simple".equals(betaTest.getPlan())) {
+            planStyleResId = R.style.BetaTestTheme_Plan_Premium;
+            planNameStringId = R.string.betatest_plan_premium;
+            planNameColorId = R.color.fomes_orange;
         } else {
-            viewHolder.premiumBadgeImageView.setVisibility(View.GONE);
+            planStyleResId = R.style.BetaTestTheme_Plan_Lite;
+            planNameStringId = R.string.betatest_plan_lite;
+            planNameColorId = R.color.colorPrimary;
         }
+
+        viewHolder.planTextView.setText(planNameStringId);
+        viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
+        viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                new ContextThemeWrapper(context, planStyleResId).getTheme()));
 
     }
 
@@ -206,12 +205,10 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView titleTextView;
         TextView subTitleTextView;
         TextView projectStatusTextView;
-        ImageView premiumBadgeImageView;
+        TextView planTextView;
+        TextView myStatusTextView;
         ImageView overviewImageView;
-        TextView progressTextView;
-        TextView progressLabelTextView;
-        ProgressBar progressBar;
-        ImageView attendLabelImageView;
+        ImageView completedLabelImageView;
         TextView reportBugButton;
 
         public ViewHolder(View itemView) {
@@ -219,12 +216,10 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
-            premiumBadgeImageView = itemView.findViewById(R.id.betatest_premium_badge);
+            planTextView = itemView.findViewById(R.id.betatest_plan);
+            myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
-            progressTextView = itemView.findViewById(R.id.betatest_progress_textview);
-            progressLabelTextView = itemView.findViewById(R.id.betatest_progress_label);
-            progressBar = itemView.findViewById(R.id.betatest_progress_bar);
-            attendLabelImageView = itemView.findViewById(R.id.betatest_label);
+            completedLabelImageView = itemView.findViewById(R.id.betatest_label);
             reportBugButton = itemView.findViewById(R.id.betatest_bug_button);
         }
     }

@@ -1,7 +1,5 @@
 package com.formakers.fomes.betatest;
 
-import android.util.Pair;
-
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
@@ -126,41 +124,25 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     }
 
     @Override
-    public void requestBetaTestProgress(String betaTestId) {
+    public void requestBetaTestProgress(final String betaTestId) {
         compositeSubscription.add(
-                betaTestService.getBetaTestProgress(betaTestId)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .map(newBetaTest -> {
-                            int position = betaTestListAdapterModel.getPositionById(newBetaTest.getId());
+                betaTestService.getBetaTestProgress(betaTestId, false)
+                        .observeOn(Schedulers.io())
+                        .map(responseVO -> {
+                            Log.d(TAG, String.valueOf(responseVO));
+                            int position = betaTestListAdapterModel.getPositionById(betaTestId);
 
                             if (position < 0) {
                                 throw new IllegalStateException("There isn't the betatest in list. It might be initialized by system.");
                             }
 
-                            return new Pair<>(newBetaTest, position);
-                        })
-                        .subscribe(betaTestPair -> {
-                            BetaTest newBetaTest = betaTestPair.first;
-                            int position = betaTestPair.second;
-
                             BetaTest originalBetaTest = ((BetaTest) betaTestListAdapterModel.getItem(position));
-
-                            // TODO : 로직 최적화 필요. 플래그 사용 지양!
-                            boolean isUpdated = false;
-                            if (!originalBetaTest.getCompletedItemCount().equals(newBetaTest.getCompletedItemCount())) {
-                                originalBetaTest.setCompletedItemCount(newBetaTest.getCompletedItemCount());
-                                isUpdated = true;
-                            }
-
-                            if (!originalBetaTest.getTotalItemCount().equals(newBetaTest.getTotalItemCount())) {
-                                originalBetaTest.setTotalItemCount(newBetaTest.getTotalItemCount());
-                                isUpdated = true;
-                            }
-
-                            if (isUpdated) {
-                                view.refreshBetaTestProgress(position);
-                            }
-                        }, e -> Log.e(TAG, String.valueOf(e)))
+                            originalBetaTest.setAttended(responseVO.isAttended);
+                            originalBetaTest.setCompleted(responseVO.isCompleted);
+                            return position;
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(position -> view.refreshBetaTestProgress(position), e -> Log.e(TAG, String.valueOf(e)))
         );
     }
 
