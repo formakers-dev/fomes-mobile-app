@@ -319,7 +319,14 @@
         <item name="item_background_radius">3dp</item>
         <item name="item_solid_color">@color/fomes_black_alpha_75</item>
         <item name="item_stroke_width">1dp</item>
-        <item name="item_stroke_color">@color/fomes_white_alpha_75</item>
+        <item name="item_stroke_color">@color/fomes_white</item>
+    </style>
+
+    <style name="BetaTestTheme.MyStatus.Completed">
+        <item name="item_background_radius">3dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_75</item>
+        <item name="item_stroke_width">1dp</item>
+        <item name="item_stroke_color">@color/colorPrimary</item>
     </style>
 
     <style name="BetaTestTheme.Plan">

@@ -115,18 +115,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         viewHolder.completedLabelImageView.setVisibility(betaTest.isAttended() && betaTest.isCompleted() ? View.VISIBLE : View.GONE);
 
-        if (betaTest.isAttended()) {
-            viewHolder.myStatusTextView.setVisibility(View.VISIBLE);
-
-            if (betaTest.isCompleted()) {
-                viewHolder.myStatusTextView.setText(R.string.betatest_my_status_completed);
-            } else {
-                viewHolder.myStatusTextView.setText(R.string.betatest_my_status_attend);
-            }
-        } else {
-            viewHolder.myStatusTextView.setVisibility(View.GONE);
-        }
-
         viewHolder.titleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_title_text_color));
         viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_subtitle_text_color));
 
@@ -148,6 +136,17 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
         viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
                 new ContextThemeWrapper(context, planStyleResId).getTheme()));
+
+        // 참여정보 표시 정책
+        int myStatusVisibilty = betaTest.isAttended() ? View.VISIBLE : View.GONE;
+        @StyleRes int myStatusStyleResId = betaTest.isCompleted() ? R.style.BetaTestTheme_MyStatus_Completed : R.style.BetaTestTheme_MyStatus;
+        @StringRes int myStatusStringId = betaTest.isCompleted() ? R.string.betatest_my_status_completed : R.string.betatest_my_status_attend;
+        @ColorRes int myStatusTextColorId = betaTest.isCompleted() ? R.color.colorPrimary : R.color.fomes_white;
+
+        viewHolder.myStatusTextView.setVisibility(myStatusVisibilty);
+        viewHolder.myStatusTextView.setText(myStatusStringId);
+        viewHolder.myStatusTextView.setTextColor(res.getColor(myStatusTextColorId));
+        viewHolder.myStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,  new ContextThemeWrapper(context, myStatusStyleResId).getTheme()));
 
     }
 
