@@ -172,12 +172,12 @@
     <string name="betatest_progress_attend_label_doing">참여 중</string>
     <string name="betatest_plan_premium">프리미엄 테스트</string>
     <string name="betatest_plan_lite">간단 테스트</string>
-    <string name="betatest_my_status_completed">내가 참여 완료</string>
-    <string name="betatest_my_status_attend">내가 참여 중</string>
+    <string name="betatest_my_status_completed">참여 완료</string>
+    <string name="betatest_my_status_attend">참여 중</string>
 
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">종료된 테스트가 궁금해!</string>
-    <string name="finished_betatest_subtitle">테스트 참여 및 시상 결과를 확인해보세요.</string>
+    <string name="finished_betatest_subtitle">종료된 테스트의 참여 및 수상 결과를 볼 수 있어요.</string>
     <string name="finished_betatest_complete_switch_text">참여목록 보기</string>
     <string name="finished_beta_test_empty_text_format">아직 완료하신 테스트가 없으시군요!\n지금 테스트를 진행해보시면 어떨까요?</string>
     <string name="finished_betatest_recheck_my_answer_button_text_format">내 답변 다시 보기 (%s)</string>
