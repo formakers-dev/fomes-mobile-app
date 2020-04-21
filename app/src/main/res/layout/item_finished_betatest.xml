@@ -122,26 +122,55 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/betatest_icon_imageview">
 
+                <ImageView
+                    android:id="@+id/betatest_finished_progress_processing_check_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/round_check"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
                 <TextView
                     android:id="@+id/betatest_finished_progress_processing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:textSize="10dp"
                     android:textColor="@color/colorPrimary"
                     android:text="테스트 결과 정리 및 취합 중"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintTop_toTopOf="@+id/betatest_finished_progress_processing_check_image"
+                    app:layout_constraintBottom_toBottomOf="@+id/betatest_finished_progress_processing_check_image"
+                    app:layout_constraintStart_toEndOf="@+id/betatest_finished_progress_processing_check_image"/>
+
+                <View
+                    android:id="@+id/betatest_finished_progress_divider"
+                    android:layout_width="1dp"
+                    android:layout_height="9dp"
+                    android:background="@color/fomes_white_alpha_60"
+                    app:layout_constraintStart_toStartOf="@+id/betatest_finished_progress_processing_check_image"
+                    app:layout_constraintEnd_toEndOf="@+id/betatest_finished_progress_processing_check_image"
+                    app:layout_constraintTop_toBottomOf="@+id/betatest_finished_progress_processing_check_image"
+                    app:layout_constraintBottom_toTopOf="@+id/betatest_finished_progress_end_check_image"/>
+
+                <ImageView
+                    android:id="@+id/betatest_finished_progress_end_check_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/round_uncheck"
+                    app:layout_constraintTop_toBottomOf="@+id/betatest_finished_progress_divider"
+                    app:layout_constraintStart_toStartOf="@+id/betatest_finished_progress_processing_check_image"/>
 
                 <TextView
                     android:id="@+id/betatest_finished_progress_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="8dp"
                     android:textSize="10dp"
                     android:textColor="@color/fomes_white_alpha_60"
                     android:text="수석 발표 &amp; 게임사 소감 등록 완료"
-                    app:layout_constraintTop_toBottomOf="@+id/betatest_finished_progress_processing"
-                    app:layout_constraintStart_toStartOf="@+id/betatest_finished_progress_processing"/>
+                    app:layout_constraintTop_toTopOf="@+id/betatest_finished_progress_end_check_image"
+                    app:layout_constraintBottom_toBottomOf="@+id/betatest_finished_progress_end_check_image"
+                    app:layout_constraintStart_toEndOf="@+id/betatest_finished_progress_end_check_image"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

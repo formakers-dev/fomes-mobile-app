@@ -79,10 +79,15 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                 context.startActivity(intent);
             });
 
+            viewHolder.progressDivider.setBackgroundColor(completedTextColor);
+            viewHolder.progressEndImageView.setImageResource(R.drawable.round_check);
             viewHolder.progressEndTextView.setTextColor(completedTextColor);
         } else {
             viewHolder.itemView.setEnabled(false);
             viewHolder.itemView.setOnClickListener(null);
+
+            viewHolder.progressDivider.setBackgroundColor(normalTextColor);
+            viewHolder.progressEndImageView.setImageResource(R.drawable.round_uncheck);
             viewHolder.progressEndTextView.setTextColor(normalTextColor);
         }
 
@@ -165,6 +170,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         TextView subTitleTextView;
         TextView planTextView;
         TextView myStatusTextView;
+        View progressDivider;
+        ImageView progressEndImageView;
         TextView progressEndTextView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -175,6 +182,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             planTextView = itemView.findViewById(R.id.betatest_plan);
             myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
+            progressDivider = itemView.findViewById(R.id.betatest_finished_progress_divider);
+            progressEndImageView = itemView.findViewById(R.id.betatest_finished_progress_end_check_image);
             progressEndTextView = itemView.findViewById(R.id.betatest_finished_progress_end);
         }
     }
