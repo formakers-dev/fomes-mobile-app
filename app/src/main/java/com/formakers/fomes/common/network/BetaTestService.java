@@ -45,7 +45,7 @@ public class BetaTestService extends AbstractService {
     }
 
     public Single<List<BetaTest>> getFinishedBetaTestList() {
-        return Observable.defer(() -> betaTestAPI.getFinishedBetaTests(sharedPreferencesHelper.getAccessToken(), true))
+        return Observable.defer(() -> betaTestAPI.getFinishedBetaTests(sharedPreferencesHelper.getAccessToken(), false))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();

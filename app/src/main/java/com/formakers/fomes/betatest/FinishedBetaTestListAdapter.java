@@ -66,17 +66,15 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         viewHolder.subTitleTextView.setText(item.getDisplayDescription());
 
 
-        BetaTest.Epilogue epilogue = item.getEpilogue();
-
         int completedTextColor = res.getColor(R.color.colorPrimary);
         int normalTextColor = res.getColor(R.color.fomes_white_alpha_60);
 
-        if (epilogue != null) {
+        if (item.isRegisteredEpilogue()) {
             viewHolder.itemView.setEnabled(true);
             viewHolder.itemView.setOnClickListener(v -> {
                 presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
 
-                Uri uri = Uri.parse(epilogue.getDeeplink());
+                Uri uri = Uri.parse(item.getEpilogue().getDeeplink());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 context.startActivity(intent);
             });

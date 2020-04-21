@@ -26,7 +26,7 @@
             android:paddingStart="20dp"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:paddingEnd="18dp"
+            android:paddingEnd="20dp"
             android:background="@drawable/item_rect_rounded_corner_background"
             android:theme="@style/BetaTestTheme.CardBackground">
 
@@ -114,10 +114,10 @@
                 android:layout_marginStart="14dp"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:theme="@style/BetaTestTheme.FinishedAwardBackground"
-                android:paddingTop="7dp"
-                android:paddingBottom="7dp"
-                android:paddingStart="13dp"
-                android:paddingEnd="13dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 app:layout_constraintStart_toEndOf="@+id/betatest_icon_imageview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/betatest_icon_imageview">
@@ -136,7 +136,7 @@
                     android:id="@+id/betatest_finished_progress_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:textSize="10dp"
                     android:textColor="@color/fomes_white_alpha_60"
                     android:text="수석 발표 &amp; 게임사 소감 등록 완료"
