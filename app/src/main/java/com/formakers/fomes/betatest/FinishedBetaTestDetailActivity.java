@@ -2,6 +2,7 @@ package com.formakers.fomes.betatest;
 
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -13,11 +14,14 @@ import com.formakers.fomes.common.view.FomesBaseActivity;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import rx.subscriptions.CompositeSubscription;
 
 public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements FinishedBetaTestDetailContract.View {
 
     private static final String TAG = "FinishedBetaTestDetailActivity";
+
+    @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
 
     @Inject FinishedBetaTestDetailContract.Presenter presenter;
 
@@ -41,6 +45,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        awardsNickNameTextView.setSelected(true);
     }
 
     @Override
