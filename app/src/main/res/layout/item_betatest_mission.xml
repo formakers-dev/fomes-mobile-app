@@ -174,7 +174,7 @@
                 android:layout_marginBottom="30dp"
                 app:layout_goneMarginTop="33dp"
                 android:lineSpacingExtra="3dp"
-                android:textSize="11dp"
+                android:textSize="@dimen/betatest_detail_guide_text_size"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintTop_toBottomOf="@+id/mission_description_layout"
@@ -187,7 +187,7 @@
                 android:id="@+id/mission_item_button"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:textSize="13dp"
+                android:textSize="@dimen/betatest_detail_section_content_text_size"
                 android:textColor="@color/fomes_white"
                 android:textStyle="bold"
                 android:foreground="@drawable/ripple"
@@ -233,7 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:gravity="center"
-            android:textSize="15dp"
+            android:textSize="@dimen/betatest_detail_title_text_size"
             android:textColor="@color/colorPrimary"
             tools:text="1단계 미션"/>
         <TextView
@@ -242,7 +242,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:gravity="center"
-            android:textSize="15dp"
+            android:textSize="@dimen/betatest_detail_title_text_size"
             android:textColor="@color/fomes_white"
             android:textStyle="bold"
             tools:text="게임을 플레이 하라!"/>
@@ -252,7 +252,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:gravity="center"
-            android:textSize="12dp"
+            android:textSize="@dimen/betatest_detail_guide_text_size"
             android:textColor="@color/fomes_warm_gray"
             tools:text="참여하려면 터치해 주세요."/>
     </LinearLayout>

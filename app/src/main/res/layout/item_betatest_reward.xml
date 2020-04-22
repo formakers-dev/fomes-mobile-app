@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:layout_marginStart="3dp"
-        android:textSize="11dp"
+        android:textSize="@dimen/betatest_detail_guide_text_size"
         android:textColor="@color/fomes_light_pale_gray"
         tools:text="문화상품권 1만원 ( 1명 선정 )" />
 </LinearLayout>
