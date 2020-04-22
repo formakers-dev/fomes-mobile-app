@@ -1,9 +1,7 @@
 package com.formakers.fomes.betatest;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +24,12 @@ import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemCli
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.Code.FINISHED_BETA_TEST_TAP_EPILOGUE;
-
-public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements FinishedBetaTestListAdapterContract.Model, FinishedBetaTestListAdapterContract.View {
+public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements FinishedBetaTestListAdapterContract.Model, FinishedBetaTestListAdapterContract.View {
 
     Context context;
 
-    List<BetaTest> betaTestList = new ArrayList<>();
+    List<BetaTest> displayedList = new ArrayList<>();
 
     OnRecyclerItemClickListener itemClickListener;
     FinishedBetaTestContract.Presenter presenter;
@@ -47,7 +44,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        BetaTest item = betaTestList.get(position);
+        BetaTest item = displayedList.get(position);
         Resources res = context.getResources();
 
         ViewHolder viewHolder = (ViewHolder) holder;
@@ -70,21 +67,21 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         int normalTextColor = res.getColor(R.color.fomes_white_alpha_60);
 
         if (item.isRegisteredEpilogue()) {
-            viewHolder.itemView.setEnabled(true);
-            viewHolder.itemView.setOnClickListener(v -> {
-                presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
-
-                Uri uri = Uri.parse(item.getEpilogue().getDeeplink());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                context.startActivity(intent);
-            });
+//            viewHolder.itemView.setEnabled(true);
+//            viewHolder.itemView.setOnClickListener(v -> {
+//                presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
+//
+//                Uri uri = Uri.parse(item.getEpilogue().getDeeplink());
+//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                context.startActivity(intent);
+//            });
 
             viewHolder.progressDivider.setBackgroundColor(completedTextColor);
             viewHolder.progressEndImageView.setImageResource(R.drawable.round_check);
             viewHolder.progressEndTextView.setTextColor(completedTextColor);
         } else {
-            viewHolder.itemView.setEnabled(false);
-            viewHolder.itemView.setOnClickListener(null);
+//            viewHolder.itemView.setEnabled(false);
+//            viewHolder.itemView.setOnClickListener(null);
 
             viewHolder.progressDivider.setBackgroundColor(normalTextColor);
             viewHolder.progressEndImageView.setImageResource(R.drawable.round_uncheck);
@@ -121,36 +118,40 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
         viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
                 new ContextThemeWrapper(context, planStyleResId).getTheme()));
+
+        viewHolder.itemView.setOnClickListener(v -> {
+            itemClickListener.onItemClick(position);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return betaTestList.size();
+        return displayedList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return betaTestList.get(position);
+        return displayedList.get(position);
     }
 
     @Override
     public List<BetaTest> getAllItems() {
-        return betaTestList;
+        return displayedList;
     }
 
     @Override
     public void add(BetaTest item) {
-        betaTestList.add(item);
+        displayedList.add(item);
     }
 
     @Override
     public void addAll(List<BetaTest> items) {
-        betaTestList.addAll(items);
+        displayedList.addAll(items);
     }
 
     @Override
     public void clear() {
-        betaTestList.clear();
+        displayedList.clear();
     }
 
     @Override

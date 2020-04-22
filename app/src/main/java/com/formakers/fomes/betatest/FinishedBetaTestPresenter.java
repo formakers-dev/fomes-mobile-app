@@ -48,7 +48,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    private List<BetaTest> finishedList = new ArrayList<>();
+    private List<BetaTest> finishedBetaTestList = new ArrayList<>();
 
     @Inject
     public FinishedBetaTestPresenter(FinishedBetaTestContract.View view,
@@ -104,9 +104,9 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                     Comparator<BetaTest> comparator = (o1, o2) -> compareByCloseDate(o1, o2, new Date());
                     Collections.sort(betaTests, comparator);
 
-                    finishedList.clear();
-                    finishedList.addAll(betaTests);
-                    updateDisplayedList(filterCompletedList(finishedList, view.isNeedAppliedCompletedFilter()));
+                    finishedBetaTestList.clear();
+                    finishedBetaTestList.addAll(betaTests);
+                    updateDisplayedList(filterCompletedList(finishedBetaTestList, view.isNeedAppliedCompletedFilter()));
 
                     Log.v(TAG, "load) onSuccess = " + betaTests);
                 })
@@ -125,7 +125,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
 
     @Override
     public void applyCompletedFilter(boolean isNeedFilter) {
-        updateDisplayedList(filterCompletedList(finishedList, isNeedFilter));
+        updateDisplayedList(filterCompletedList(finishedBetaTestList, isNeedFilter));
     }
 
     private List<BetaTest> filterCompletedList(List<BetaTest> originalList, boolean isFilteredCompleted) {

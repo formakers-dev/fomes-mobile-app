@@ -1,5 +1,6 @@
 package com.formakers.fomes.betatest;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,7 +45,14 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
 
     FinishedBetaTestListAdapterContract.View adapterView;
 
+    private Context context;
     private FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Nullable
     @Override
@@ -78,6 +86,11 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
 
         FinishedBetaTestListAdapter adapter = new FinishedBetaTestListAdapter();
         adapter.setPresenter(presenter);
+        adapter.setOnItemClickListener(position -> {
+            Intent intent = new Intent(context, FinishedBetaTestDetailActivity.class);
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, presenter.getItem(position).getId());
+            startActivity(intent);
+        });
 
         finishedBetatestRecyclerView.setAdapter(adapter);
         presenter.setAdapterModel(adapter);
