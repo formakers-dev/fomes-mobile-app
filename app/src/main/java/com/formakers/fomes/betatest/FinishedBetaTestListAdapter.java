@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,21 +99,17 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.subTitleTextView.setTextColor(normalTextColor);
         }
 
-        // NOTE : 프리미엄 뱃지 표시 정책 - standard, simple plan인 경우에 표시
         @StyleRes int planStyleResId;
-        @StringRes int planNameStringId;
         @ColorRes int planNameColorId;
-        if ("standard".equals(item.getPlan()) || "simple".equals(item.getPlan())) {
+        if (item.isPremiumPlan()) {
             planStyleResId = R.style.BetaTestTheme_Plan_Premium;
-            planNameStringId = R.string.betatest_plan_premium;
             planNameColorId = R.color.fomes_orange;
         } else {
             planStyleResId = R.style.BetaTestTheme_Plan_Lite;
-            planNameStringId = R.string.betatest_plan_lite;
             planNameColorId = R.color.colorPrimary;
         }
 
-        viewHolder.planTextView.setText(planNameStringId);
+        viewHolder.planTextView.setText(item.getPlanStringResId());
         viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
         viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
                 new ContextThemeWrapper(context, planStyleResId).getTheme()));

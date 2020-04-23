@@ -120,7 +120,7 @@
                 tools:text="자밥 스튜디오" />
 
             <TextView
-                android:id="@+id/betatest_compnay_says"
+                android:id="@+id/betatest_company_says"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -146,7 +146,7 @@
                 android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_compnay_says" />
+                app:layout_constraintTop_toBottomOf="@+id/betatest_company_says" />
 
             <TextView
                 android:id="@+id/betatest_title_awards"

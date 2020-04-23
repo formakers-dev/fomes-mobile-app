@@ -4,6 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import androidx.annotation.StringRes;
+
+import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.DateUtil;
 import com.google.gson.annotations.SerializedName;
 
@@ -122,6 +126,7 @@ public class BetaTest implements Parcelable {
 
     public static class Epilogue implements Parcelable {
         String deeplink;
+        String companyName;
         String companySays;
         String awards;
 
@@ -137,6 +142,15 @@ public class BetaTest implements Parcelable {
 
         public Epilogue setDeeplink(String deeplink) {
             this.deeplink = deeplink;
+            return this;
+        }
+
+        public String getCompanyName() {
+            return companyName;
+        }
+
+        public Epilogue setCompanyName(String companyName) {
+            this.companyName = companyName;
             return this;
         }
 
@@ -162,6 +176,7 @@ public class BetaTest implements Parcelable {
         public String toString() {
             return "Epilogue{" +
                     "deeplink='" + deeplink + '\'' +
+                    ", companyName='" + companyName + '\'' +
                     ", companySays='" + companySays + '\'' +
                     ", awards='" + awards + '\'' +
                     '}';
@@ -174,12 +189,14 @@ public class BetaTest implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(deeplink);
+            dest.writeString(companyName);
             dest.writeString(companySays);
             dest.writeString(awards);
         }
 
         private void readFromParcel(Parcel in) {
             deeplink = in.readString();
+            companyName = in.readString();
             companySays = in.readString();
             awards = in.readString();
         }
@@ -503,6 +520,19 @@ public class BetaTest implements Parcelable {
     public BetaTest setPlan(String plan) {
         this.plan = plan;
         return this;
+    }
+
+    public boolean isPremiumPlan() {
+        return FomesConstants.BetaTest.Plan.STANDARD.equals(getPlan())
+                || FomesConstants.BetaTest.Plan.SIMPLE.equals(getPlan());
+    }
+
+    public @StringRes int getPlanStringResId() {
+        if (isPremiumPlan()) {
+            return R.string.betatest_plan_premium;
+        } else {
+            return R.string.betatest_plan_lite;
+        }
     }
 
     public String getStatus() {

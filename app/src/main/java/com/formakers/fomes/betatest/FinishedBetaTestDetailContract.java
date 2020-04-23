@@ -16,7 +16,8 @@ public interface FinishedBetaTestDetailContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void bind(BetaTest betaTest);
+        void bindEpilogue(BetaTest.Epilogue epilogue);
+        void bindAwards(String nickName);
         void showLoading();
         void hideLoading();
 

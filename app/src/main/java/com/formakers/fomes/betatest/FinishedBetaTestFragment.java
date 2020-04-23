@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
@@ -88,7 +89,16 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
         adapter.setPresenter(presenter);
         adapter.setOnItemClickListener(position -> {
             Intent intent = new Intent(context, FinishedBetaTestDetailActivity.class);
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, presenter.getItem(position).getId());
+            BetaTest betaTest = presenter.getItem(position);
+
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID,betaTest.getId());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL, betaTest.getCoverImageUrl());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_TITLE, betaTest.getTitle());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_SUBTITLE, betaTest.getTagsString());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_PLAN, betaTest.getPlanStringResId());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, betaTest.isPremiumPlan());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, betaTest.isCompleted());
+
             startActivity(intent);
         });
 
