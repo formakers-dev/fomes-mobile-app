@@ -10,6 +10,8 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface FinishedBetaTestDetailContract {
     interface Presenter {
+        void requestEpilogue(String betaTestId);
+
         //Base
         AnalyticsModule.Analytics getAnalytics();
         ImageLoader getImageLoader();

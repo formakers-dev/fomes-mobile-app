@@ -126,6 +126,7 @@ public class BetaTest implements Parcelable {
 
     public static class Epilogue implements Parcelable {
         String deeplink;
+        String companyImageUrl;
         String companyName;
         String companySays;
         String awards;
@@ -142,6 +143,15 @@ public class BetaTest implements Parcelable {
 
         public Epilogue setDeeplink(String deeplink) {
             this.deeplink = deeplink;
+            return this;
+        }
+
+        public String getCompanyImageUrl() {
+            return companyImageUrl;
+        }
+
+        public Epilogue setCompanyImageUrl(String companyImageUrl) {
+            this.companyImageUrl = companyImageUrl;
             return this;
         }
 
@@ -176,6 +186,7 @@ public class BetaTest implements Parcelable {
         public String toString() {
             return "Epilogue{" +
                     "deeplink='" + deeplink + '\'' +
+                    ", companyImageUrl='" + companyImageUrl + '\'' +
                     ", companyName='" + companyName + '\'' +
                     ", companySays='" + companySays + '\'' +
                     ", awards='" + awards + '\'' +
@@ -189,6 +200,7 @@ public class BetaTest implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(deeplink);
+            dest.writeString(companyImageUrl);
             dest.writeString(companyName);
             dest.writeString(companySays);
             dest.writeString(awards);
@@ -196,6 +208,7 @@ public class BetaTest implements Parcelable {
 
         private void readFromParcel(Parcel in) {
             deeplink = in.readString();
+            companyImageUrl = in.readString();
             companyName = in.readString();
             companySays = in.readString();
             awards = in.readString();

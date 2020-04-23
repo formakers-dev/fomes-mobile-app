@@ -16,6 +16,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -38,6 +39,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
     @BindView(R.id.betatest_subtitle_textview) TextView subTitleTextView;
 
+    @BindView(R.id.betatest_company_image) ImageView companyImageView;
     @BindView(R.id.betatest_company_name) TextView companyNameTextView;
     @BindView(R.id.betatest_company_says) TextView companySaysTextView;
     @BindView(R.id.betatest_epilogue_button) Button epilogueButton;
@@ -71,11 +73,15 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
             return;
         }
 
-        bind(getIntent().getExtras());
+        Bundle bundle = getIntent().getExtras();
+        bind(bundle);
+
+        String betaTestId = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
+
+        this.presenter.requestEpilogue(betaTestId);
     }
 
     public void bind(Bundle bundle) {
-        String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         String title = bundle.getString(FomesConstants.BetaTest.EXTRA_TITLE);
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
         String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
@@ -118,6 +124,15 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
             intent.setData(Uri.parse(epilogue.getDeeplink()));
             startActivity(intent);
         } : null);
+
+        String imageUrl = epilogue.getCompanyImageUrl();
+
+        if (!TextUtils.isEmpty(imageUrl)) {
+            this.presenter.getImageLoader().loadImage(companyImageView, imageUrl,
+                    RequestOptions.circleCropTransform(), false, true);
+        }
+
+        companySaysTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
