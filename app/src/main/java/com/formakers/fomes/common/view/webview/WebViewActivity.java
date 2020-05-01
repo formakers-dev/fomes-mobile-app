@@ -149,8 +149,14 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
             bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, "* 작성 내용을 저장하려면 설문으로 돌아가서 하단의 [제출] 버튼을 클릭하세요.");
 
             fomesNoticeDialog.setArguments(bundle);
-            fomesNoticeDialog.setPositiveButton("네, 중단할래요.", v -> {
+            fomesNoticeDialog.setPositiveButton("뒤로 가기", v -> {
                 goBack();
+            });
+            fomesNoticeDialog.setNeutralButton("종료", v -> {
+                finish();
+            });
+            fomesNoticeDialog.setNegativeButton("취소", v -> {
+                fomesNoticeDialog.dismiss();
             });
             fomesNoticeDialog.show(this.getSupportFragmentManager(), "Test");
         } else {
