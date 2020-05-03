@@ -45,6 +45,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_epilogue_button) Button epilogueButton;
 
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
+    @BindView(R.id.betatest_my_certificates_button) Button certificateButton;
 
     @Inject FinishedBetaTestDetailContract.Presenter presenter;
 
@@ -82,6 +83,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     public void bind(Bundle bundle) {
+        String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         String title = bundle.getString(FomesConstants.BetaTest.EXTRA_TITLE);
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
         String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
@@ -110,6 +112,12 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
 
         awardsNickNameTextView.setSelected(true);
+
+        certificateButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BetaTestCertificateActivity.class);
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, id);
+            startActivity(intent);
+        });
     }
 
     @Override
