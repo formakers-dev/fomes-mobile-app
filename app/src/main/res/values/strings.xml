@@ -246,4 +246,9 @@
     <string name="finished_betatest_detail_faq_rewards">보상 지급은 어떻게 이루어지나요?</string>
     <string name="finished_betatest_detail_faq_good_feedback">테스트 응답을 잘 쓰려면 어떻게 해야하나요?</string>
     <string name="finished_betatest_detail_faq_completed">참여했는데 결과에서 미참여로 나와요.</string>
+
+    <!-- Beta Test Certificate -->
+    <string name="betatest_certificate_nick_name">%s 님</string>
+    <string name="betatest_certificate_description_for_participant">포메스의 게임 테스트에 참여하여 게임사에 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_fomes_feedback_for_participant">아쉽게도 수상은 못하셨지만,\n다음 테스트에서 좋은 결과 기대할게요❤️</string>
 </resources>
