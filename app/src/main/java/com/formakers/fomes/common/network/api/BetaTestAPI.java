@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.network.api;
 
+import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 
@@ -32,6 +33,9 @@ public interface BetaTestAPI {
 
     @GET("/beta-tests/{id}/missions/{missionId}/progress")
     Observable<Mission> getMissionProgress(@Header("x-access-token") String accessToken, @Path("id") String betaTestId, @Path("missionId") String missionId);
+
+    @GET("/beta-tests/{id}/award-record")
+    Observable<AwardRecord> getAwardRecord(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);
 
     @GET("/beta-tests/{id}/epilogue")
     Observable<BetaTest.Epilogue> getEpilogue(@Header("x-access-token") String accessToken, @Path("id") String betaTestId);

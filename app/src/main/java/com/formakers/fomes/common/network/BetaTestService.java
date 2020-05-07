@@ -3,6 +3,7 @@ package com.formakers.fomes.common.network;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.network.api.BetaTestAPI;
 import com.formakers.fomes.common.network.helper.APIHelper;
+import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 
@@ -91,6 +92,13 @@ public class BetaTestService extends AbstractService {
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
+    }
+
+    public Single<AwardRecord> getAwardRecord(String betaTestId) {
+        return Observable.defer(() -> betaTestAPI.getAwardRecord(sharedPreferencesHelper.getAccessToken(), betaTestId))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
     }
 
     public Single<BetaTest.Epilogue> getEpilogue(String betaTestId) {
