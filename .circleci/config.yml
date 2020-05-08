@@ -31,7 +31,7 @@ aliases:
       mkdir -p app/src/release
       echo $FOMES_RELEASE_GOOGLE_SERVICE | base64 --decode --ignore-garbage > app/src/release/google-services.json
       cat app/src/release/google-services.json > app/src/staging/google-services.json
-      aws s3 cp s3://girlapp/fomes.jks app/fomes.jks
+      aws s3 cp s3://fomes-dev/fomes.jks app/fomes.jks
 
 
 defaults: &defaults
