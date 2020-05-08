@@ -1,8 +1,12 @@
 package com.formakers.fomes.betatest;
 
+import android.util.Pair;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.vo.AwardRecord;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
@@ -49,9 +53,22 @@ class BetaTestCertificatePresenter implements BetaTestCertificateContract.Presen
     @Override
     public void requestBetaTestDetail(String betaTestId) {
         this.betaTestService.getDetailBetaTest(betaTestId)
+                .zipWith(this.betaTestService.getAwardRecord(betaTestId)
+                        .onErrorReturn(throwable -> null), Pair::new)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(betaTest -> this.view.bindBetaTest(betaTest),
-                        e -> Log.e(TAG, String.valueOf(e)));
+                .subscribe(pair -> {
+                        BetaTest betaTest = pair.first;
+                        AwardRecord awardRecord = pair.second;
+
+                        if (betaTest.isCompleted()) {
+                            this.view.bindBetaTestDetail(betaTest);
+                            this.view.bindCertificate(betaTest, awardRecord);
+                        } else {
+                            //TODO : 잘못된 접근 - 참여완료기록 없음
+                        }
+                    },
+                    e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

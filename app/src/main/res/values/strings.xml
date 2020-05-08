@@ -249,6 +249,10 @@
 
     <!-- Beta Test Certificate -->
     <string name="betatest_certificate_nick_name">%s 님</string>
-    <string name="betatest_certificate_description_for_participant">포메스의 게임 테스트에 참여하여 게임사에 피드백을 전달해주셨습니다!</string>
-    <string name="betatest_certificate_fomes_feedback_for_participant">아쉽게도 수상은 못하셨지만,\n다음 테스트에서 좋은 결과 기대할게요❤️</string>
+    <string name="betatest_certificate_description_for_best">포메스의 %s에 참여하여 날카로운 통찰력으로 게임사에 가장 큰 도움이 되는 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_description_for_good">포메스의 %s에 참여하여 날카로운 통찰력으로 게임사에 큰 도움이 되는 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_description_for_normal">포메스의 %s에 성실히 참여하여 게임사에 도움이 되는 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_description">포메스의 %s에 참여하여 게임사에 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_fomes_feedback">앞으로도 좋은 피드백 기대할게요❤️</string>
+    <string name="betatest_certificate_fomes_feedback_for_better_try">아쉽게도 수상은 못하셨지만,\n다음 테스트에서 좋은 결과 기대할게요❤️</string>
 </resources>

@@ -4,6 +4,7 @@ package com.formakers.fomes.betatest;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
+import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 
 import rx.subscriptions.CompositeSubscription;
@@ -19,7 +20,8 @@ public interface BetaTestCertificateContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void bindBetaTest(BetaTest betaTest);
+        void bindBetaTestDetail(BetaTest betaTest);
+        void bindCertificate(BetaTest betaTest, AwardRecord awardRecord);
         void bindUserNickName(String nickName);
         void showLoading();
         void hideLoading();
