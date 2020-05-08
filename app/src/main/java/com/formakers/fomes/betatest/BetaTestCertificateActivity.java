@@ -1,10 +1,13 @@
 package com.formakers.fomes.betatest;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -28,6 +31,8 @@ import rx.subscriptions.CompositeSubscription;
 public class BetaTestCertificateActivity extends FomesBaseActivity implements BetaTestCertificateContract.View {
     private static final String TAG = "BetaTestCertificateActivity";
 
+    @BindView(R.id.loading) ProgressBar loadingProgressBar;
+    @BindView(R.id.betatest_awards_layout) NestedScrollView betaTestAwardsLayout;
     @BindView(R.id.betatest_app_icon) ImageView betaTestAppIcon;
     @BindView(R.id.betatest_game_title) TextView betaTestGameTitle;
     @BindView(R.id.betatest_period) TextView betaTestPeriod;
@@ -149,12 +154,13 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
 
     @Override
     public void showLoading() {
-
+        loadingProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        loadingProgressBar.setVisibility(View.GONE);
+        betaTestAwardsLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

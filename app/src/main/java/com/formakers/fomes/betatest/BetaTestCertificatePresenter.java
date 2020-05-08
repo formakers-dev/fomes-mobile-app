@@ -57,6 +57,8 @@ class BetaTestCertificatePresenter implements BetaTestCertificateContract.Presen
                         .onErrorReturn(throwable -> null), Pair::new)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> view.showLoading())
+                .doAfterTerminate(() -> view.hideLoading())
                 .subscribe(pair -> {
                         BetaTest betaTest = pair.first;
                         AwardRecord awardRecord = pair.second;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,195 +7,208 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constrainedHeight="true">
+        android:layout_gravity="center"/>
 
-        <View
-            android:id="@+id/betatest_certificate_border"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:background="@drawable/item_rect_background"
-            android:theme="@style/BetaTestCertificateTheme.Border"
-            android:layout_margin="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/betatest_awards_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:visibility="gone">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/betatest_cercificate_guideline_start"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="25dp" />
+            app:layout_constrainedHeight="true">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/betatest_cercificate_guideline_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_end="25dp" />
+            <View
+                android:id="@+id/betatest_certificate_border"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/match_constraint"
+                android:background="@drawable/item_rect_background"
+                android:theme="@style/BetaTestCertificateTheme.Border"
+                android:layout_margin="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <ImageView
-            android:id="@+id/betatest_app_icon"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginTop="40dp"
-            android:foreground="@drawable/item_rect_rounded_corner_background"
-            android:theme="@style/BetaTestCertificateTheme.IconForeground"
-            android:src="@drawable/fomes_face_smile"
-            app:layout_constraintStart_toStartOf="@id/betatest_cercificate_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/betatest_cercificate_guideline_end"
-            app:layout_constraintTop_toTopOf="@id/betatest_certificate_border"/>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/betatest_certificate_guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_begin="25dp" />
 
-        <ImageView
-            android:id="@+id/betatest_certificate_nominated_start"
-            android:layout_width="49dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/betatest_certificate_nominated"
-            app:layout_constraintStart_toStartOf="@id/betatest_cercificate_guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/betatest_app_icon"/>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/betatest_certificate_guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_end="25dp" />
 
-        <ImageView
-            android:id="@+id/betatest_certificate_nominated_end"
-            android:layout_width="49dp"
-            android:layout_height="80dp"
-            android:scaleX="-1"
-            android:src="@drawable/betatest_certificate_nominated"
-            app:layout_constraintEnd_toEndOf="@id/betatest_cercificate_guideline_end"
-            app:layout_constraintTop_toTopOf="@id/betatest_certificate_nominated_start"/>
+            <ImageView
+                android:id="@+id/betatest_app_icon"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="40dp"
+                android:foreground="@drawable/item_rect_rounded_corner_background"
+                android:theme="@style/BetaTestCertificateTheme.IconForeground"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_guideline_start"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_guideline_end"
+                app:layout_constraintTop_toTopOf="@id/betatest_certificate_border"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/betatest_awards_title"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:textColor="@color/fomes_warm_gray"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            tools:text="테스터"
-            app:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="12dp"
-            android:autoSizeMaxTextSize="24dp"
-            android:autoSizeStepGranularity="2dp"
-            app:layout_constraintStart_toEndOf="@id/betatest_certificate_nominated_start"
-            app:layout_constraintEnd_toStartOf="@id/betatest_certificate_nominated_end"
-            app:layout_constraintTop_toTopOf="@id/betatest_certificate_nominated_start"/>
+            <ImageView
+                android:id="@+id/betatest_certificate_nominated_start"
+                android:layout_width="49dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/betatest_certificate_nominated"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/betatest_app_icon"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/betatest_awards_nickname"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:gravity="center"
-            android:textColor="@color/fomes_black"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            tools:text="포메스닉네임 님"
-            app:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="16dp"
-            android:autoSizeMaxTextSize="30dp"
-            android:autoSizeStepGranularity="2dp"
-            app:layout_constraintStart_toEndOf="@id/betatest_certificate_nominated_start"
-            app:layout_constraintEnd_toStartOf="@id/betatest_certificate_nominated_end"
-            app:layout_constraintTop_toBottomOf="@id/betatest_awards_title"
-            app:layout_constraintBottom_toBottomOf="@id/betatest_certificate_nominated_start"/>
+            <ImageView
+                android:id="@+id/betatest_certificate_nominated_end"
+                android:layout_width="49dp"
+                android:layout_height="80dp"
+                android:scaleX="-1"
+                android:src="@drawable/betatest_certificate_nominated"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_guideline_end"
+                app:layout_constraintTop_toTopOf="@id/betatest_certificate_nominated_start"/>
 
-        <TextView
-            android:id="@+id/betatest_game_title"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:textColor="@color/fomes_dark_gray"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            tools:text="[쿠키런] 게임테스트"
-            app:layout_constraintStart_toStartOf="@id/betatest_cercificate_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/betatest_cercificate_guideline_end"
-            app:layout_constraintTop_toBottomOf="@id/betatest_certificate_nominated_start"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/betatest_awards_title"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textColor="@color/fomes_warm_gray"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                tools:text="테스터"
+                app:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="12dp"
+                android:autoSizeMaxTextSize="24dp"
+                android:autoSizeStepGranularity="2dp"
+                app:layout_constraintStart_toEndOf="@id/betatest_certificate_nominated_start"
+                app:layout_constraintEnd_toStartOf="@id/betatest_certificate_nominated_end"
+                app:layout_constraintTop_toTopOf="@id/betatest_certificate_nominated_start"/>
 
-        <TextView
-            android:id="@+id/betatest_period"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="15dp"
-            android:textColor="@color/fomes_black_alpha_75"
-            android:textAlignment="center"
-            tools:text="2020.03.03 ~ 03.16"
-            app:layout_constraintStart_toStartOf="@id/betatest_cercificate_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/betatest_cercificate_guideline_end"
-            app:layout_constraintTop_toBottomOf="@id/betatest_game_title"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/betatest_awards_nickname"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/match_constraint"
+                android:gravity="center"
+                android:textColor="@color/fomes_black"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                tools:text="포메스닉네임 님"
+                app:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="16dp"
+                android:autoSizeMaxTextSize="30dp"
+                android:autoSizeStepGranularity="2dp"
+                app:layout_constraintStart_toEndOf="@id/betatest_certificate_nominated_start"
+                app:layout_constraintEnd_toStartOf="@id/betatest_certificate_nominated_end"
+                app:layout_constraintTop_toBottomOf="@id/betatest_awards_title"
+                app:layout_constraintBottom_toBottomOf="@id/betatest_certificate_nominated_start"/>
 
-        <View
-            android:id="@+id/betatest_awards_divider"
-            android:layout_width="50dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="30dp"
-            android:background="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="@id/betatest_certificate_border"
-            app:layout_constraintEnd_toEndOf="@id/betatest_certificate_border"
-            app:layout_constraintTop_toBottomOf="@id/betatest_period"/>
+            <TextView
+                android:id="@+id/betatest_game_title"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:textColor="@color/fomes_dark_gray"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                tools:text="[쿠키런] 게임테스트"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_guideline_start"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_guideline_end"
+                app:layout_constraintTop_toBottomOf="@id/betatest_certificate_nominated_start"/>
 
-        <TextView
-            android:id="@+id/betatest_certificate_description"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:paddingStart="25dp"
-            android:paddingEnd="25dp"
-            android:layout_marginTop="20dp"
-            android:textSize="14dp"
-            android:textColor="@color/fomes_black_alpha_75"
-            android:textAlignment="center"
-            tools:text="@string/betatest_certificate_description"
-            app:layout_constraintStart_toStartOf="@id/betatest_cercificate_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/betatest_cercificate_guideline_end"
-            app:layout_constraintTop_toBottomOf="@id/betatest_awards_divider"/>
+            <TextView
+                android:id="@+id/betatest_period"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="15dp"
+                android:textColor="@color/fomes_black_alpha_75"
+                android:textAlignment="center"
+                tools:text="2020.03.03 ~ 03.16"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_guideline_start"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_guideline_end"
+                app:layout_constraintTop_toBottomOf="@id/betatest_game_title"/>
 
-        <TextView
-            android:id="@+id/betatest_certificate_fomes_feedback"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:paddingStart="25dp"
-            android:paddingEnd="25dp"
-            android:layout_marginTop="20dp"
-            android:textSize="14dp"
-            android:textColor="@color/fomes_black_alpha_75"
-            android:textAlignment="center"
-            tools:text="@string/betatest_certificate_fomes_feedback_for_better_try"
-            app:layout_constraintStart_toStartOf="@id/betatest_cercificate_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/betatest_cercificate_guideline_end"
-            app:layout_constraintTop_toBottomOf="@id/betatest_certificate_description"/>
+            <View
+                android:id="@+id/betatest_awards_divider"
+                android:layout_width="50dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_border"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_border"
+                app:layout_constraintTop_toBottomOf="@id/betatest_period"/>
 
-        <View
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="60dp"
-            app:layout_constraintStart_toStartOf="@id/betatest_cercificate_guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/betatest_cercificate_guideline_end"
-            app:layout_constraintTop_toBottomOf="@id/betatest_certificate_fomes_feedback"/>
+            <TextView
+                android:id="@+id/betatest_certificate_description"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:layout_marginTop="20dp"
+                android:textSize="14dp"
+                android:textColor="@color/fomes_black_alpha_75"
+                android:textAlignment="center"
+                tools:text="@string/betatest_certificate_description"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_guideline_start"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_guideline_end"
+                app:layout_constraintTop_toBottomOf="@id/betatest_awards_divider"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text="게임테스트 앱 포메스"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15dp"
-            android:background="@color/fomes_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/betatest_certificate_fomes_feedback"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:layout_marginTop="20dp"
+                android:textSize="14dp"
+                android:textColor="@color/fomes_black_alpha_75"
+                android:textAlignment="center"
+                tools:text="@string/betatest_certificate_fomes_feedback_for_better_try"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_guideline_start"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_guideline_end"
+                app:layout_constraintTop_toBottomOf="@id/betatest_certificate_description"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <View
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="60dp"
+                app:layout_constraintStart_toStartOf="@id/betatest_certificate_guideline_start"
+                app:layout_constraintEnd_toEndOf="@id/betatest_certificate_guideline_end"
+                app:layout_constraintTop_toBottomOf="@id/betatest_certificate_fomes_feedback"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="게임테스트 앱 포메스"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"
+                android:background="@color/fomes_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>
