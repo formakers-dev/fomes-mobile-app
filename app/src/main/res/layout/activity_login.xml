@@ -13,52 +13,41 @@
         android:src="@drawable/login_background" />
 
     <ImageView
-        android:id="@+id/login_beta_label"
-        android:layout_width="76dp"
-        android:layout_height="22dp"
+        android:id="@+id/login_logo_emphasis"
+        android:layout_width="251dp"
+        android:layout_height="55dp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/login_logo"
-        app:srcCompat="@drawable/login_beta_label" />
+        app:srcCompat="@drawable/logo_emphasis" />
 
     <ImageView
         android:id="@+id/login_logo"
         android:layout_width="188dp"
         android:layout_height="61dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="13dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_beta_label"
-        app:layout_constraintBottom_toTopOf="@+id/login_game_logo"
-        app:srcCompat="@drawable/fomes_logo" />
-
-    <ImageView
-        android:id="@+id/login_game_logo"
-        android:layout_width="185dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="14dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_logo"
+        app:layout_constraintTop_toBottomOf="@id/login_logo_emphasis"
         app:layout_constraintBottom_toTopOf="@+id/login_subtitle"
-        app:srcCompat="@drawable/login_logo" />
+        app:srcCompat="@drawable/fomes_logo" />
 
     <TextView
         android:id="@+id/login_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="50dp"
         android:gravity="center_horizontal"
         android:text="@string/login_subtitle"
         android:textColor="@color/fomes_white"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_game_logo"
+        app:layout_constraintTop_toBottomOf="@id/login_logo"
         app:layout_constraintBottom_toTopOf="@+id/login_google_button"/>
 
     <Button
