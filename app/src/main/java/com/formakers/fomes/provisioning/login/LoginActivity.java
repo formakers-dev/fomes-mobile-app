@@ -117,6 +117,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void showLoginButton() {
         loginButton.setVisibility(View.VISIBLE);
+        loginTncTextView.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.login_google_button)
