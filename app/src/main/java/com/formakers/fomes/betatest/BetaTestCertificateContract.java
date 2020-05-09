@@ -11,7 +11,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface BetaTestCertificateContract {
     interface Presenter {
-        void requestBetaTestDetail(String betaTestId);
+        void requestBetaTestCertificate(String betaTestId);
         void requestUserNickName();
 
         //Base
@@ -20,11 +20,11 @@ public interface BetaTestCertificateContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void bindBetaTestDetail(BetaTest betaTest);
-        void bindCertificate(BetaTest betaTest, AwardRecord awardRecord);
+        void bindBetaTestCertificate(BetaTest betaTest, AwardRecord awardRecord);
         void bindUserNickName(String nickName);
         void showLoading();
         void hideLoading();
+        void showErrorView();
 
         // TODO : BaseView 로 이동 고려
         CompositeSubscription getCompositeSubscription();

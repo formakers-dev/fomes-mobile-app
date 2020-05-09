@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -32,7 +31,8 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
     private static final String TAG = "BetaTestCertificateActivity";
 
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
-    @BindView(R.id.betatest_awards_layout) NestedScrollView betaTestAwardsLayout;
+    @BindView(R.id.betatest_certificate_layout) View betaTestCertificateLayout;
+    @BindView(R.id.betatest_certificate_error_layout) View betaTestCertificateErrorLayout;
     @BindView(R.id.betatest_app_icon) ImageView betaTestAppIcon;
     @BindView(R.id.betatest_game_title) TextView betaTestGameTitle;
     @BindView(R.id.betatest_period) TextView betaTestPeriod;
@@ -51,7 +51,7 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
 
         this.setContentView(R.layout.activity_betatest_certificate);
 
-        getSupportActionBar().setTitle("테스트 참여 확인증");
+        getSupportActionBar().setTitle(getString(R.string.betatest_certificate_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         DaggerBetaTestCertificateDagger_Component.builder()
@@ -73,12 +73,23 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
 
         String betaTestId = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
 
-        this.presenter.requestBetaTestDetail(betaTestId);
+        this.presenter.requestBetaTestCertificate(betaTestId);
         this.presenter.requestUserNickName();
     }
 
     @Override
-    public void bindBetaTestDetail(BetaTest betaTest) {
+    public void bindBetaTestCertificate(BetaTest betaTest, AwardRecord awardRecord) {
+        bindBetaTestDetail(betaTest);
+        bindCertificate(betaTest, awardRecord);
+        showCertificateView();
+    }
+
+    @Override
+    public void bindUserNickName(String nickName) {
+        betaTestAwardsNickName.setText(getString(R.string.betatest_certificate_nick_name, nickName));
+    }
+
+    private void bindBetaTestDetail(BetaTest betaTest) {
         this.presenter.getImageLoader().loadImage(betaTestAppIcon, betaTest.getIconImageUrl(),
                 new RequestOptions().override(120, 120)
                         .centerCrop()
@@ -103,8 +114,7 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
         }
     }
 
-    @Override
-    public void bindCertificate(BetaTest betaTest, AwardRecord awardRecord) {
+    private void bindCertificate(BetaTest betaTest, AwardRecord awardRecord) {
         String awardType = (awardRecord != null) ? awardRecord.getType() : "";
         switch(awardType) {
             case "best" :
@@ -145,13 +155,6 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
         }
     }
 
-
-    @Override
-    public void bindUserNickName(String nickName) {
-        betaTestAwardsNickName.setText(getString(R.string.betatest_certificate_nick_name, nickName));
-    }
-
-
     @Override
     public void showLoading() {
         loadingProgressBar.setVisibility(View.VISIBLE);
@@ -160,7 +163,17 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
     @Override
     public void hideLoading() {
         loadingProgressBar.setVisibility(View.GONE);
-        betaTestAwardsLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showCertificateView() {
+        betaTestCertificateLayout.setVisibility(View.VISIBLE);
+        betaTestCertificateErrorLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorView() {
+        betaTestCertificateErrorLayout.setVisibility(View.VISIBLE);
+        betaTestCertificateLayout.setVisibility(View.GONE);
     }
 
     @Override

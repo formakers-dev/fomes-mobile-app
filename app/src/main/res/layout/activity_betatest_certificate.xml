@@ -13,8 +13,40 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/betatest_certificate_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/betatest_certificate_error_icon"
+            android:layout_width="38dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="@dimen/provision_padding_start_end"
+            android:layout_marginTop="37dp"
+            android:src="@drawable/fomes_face_cry_colored"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:lineSpacingExtra="6dp"
+            android:text="@string/betatest_certificate_error_message"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/betatest_certificate_error_icon"
+            app:layout_constraintStart_toStartOf="@id/betatest_certificate_error_icon"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/betatest_awards_layout"
+        android:id="@+id/betatest_certificate_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"

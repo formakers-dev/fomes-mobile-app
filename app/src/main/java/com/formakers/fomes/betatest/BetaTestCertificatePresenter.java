@@ -51,7 +51,7 @@ class BetaTestCertificatePresenter implements BetaTestCertificateContract.Presen
     }
 
     @Override
-    public void requestBetaTestDetail(String betaTestId) {
+    public void requestBetaTestCertificate(String betaTestId) {
         this.betaTestService.getDetailBetaTest(betaTestId)
                 .zipWith(this.betaTestService.getAwardRecord(betaTestId)
                         .onErrorReturn(throwable -> null), Pair::new)
@@ -64,13 +64,15 @@ class BetaTestCertificatePresenter implements BetaTestCertificateContract.Presen
                         AwardRecord awardRecord = pair.second;
 
                         if (betaTest.isCompleted()) {
-                            this.view.bindBetaTestDetail(betaTest);
-                            this.view.bindCertificate(betaTest, awardRecord);
+                            this.view.bindBetaTestCertificate(betaTest, awardRecord);
                         } else {
-                            //TODO : 잘못된 접근 - 참여완료기록 없음
+                            this.view.showErrorView();
                         }
                     },
-                    e -> Log.e(TAG, String.valueOf(e)));
+                    e -> {
+                        Log.e(TAG, String.valueOf(e));
+                        this.view.showErrorView();
+                    });
     }
 
     @Override
