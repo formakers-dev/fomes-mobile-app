@@ -10,6 +10,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface FinishedBetaTestDetailContract {
     interface Presenter {
+        void requestAwardRecordOfBest(String betaTestId);
         void requestEpilogue(String betaTestId);
 
         //Base

@@ -3,10 +3,12 @@ package com.formakers.fomes.betatest;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
 @FinishedBetaTestDetailDagger.Scope
@@ -38,6 +40,16 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     @Override
     public ImageLoader getImageLoader() {
         return imageLoader;
+    }
+
+    @Override
+    public void requestAwardRecordOfBest(String betaTestId) {
+        this.betaTestService.getAwardRecords(betaTestId)
+                .toObservable()
+                .flatMap(Observable::from)
+                .filter(awardRecord -> AwardRecord.TYPE_BEST.equals(awardRecord.getType()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(awardRecord -> this.view.bindAwards(awardRecord.getNickName()));
     }
 
     @Override

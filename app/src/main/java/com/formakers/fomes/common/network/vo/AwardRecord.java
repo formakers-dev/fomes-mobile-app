@@ -4,7 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class AwardRecord implements Parcelable {
+    public static final String TYPE_BEST = "best";
+
     String userId;
+    String nickName;
     String type;
 
     Reward reward;
@@ -15,6 +18,15 @@ public class AwardRecord implements Parcelable {
 
     public AwardRecord setUserId(String userId) {
         this.userId = userId;
+        return this;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public AwardRecord setNickName(String nickName) {
+        this.nickName = nickName;
         return this;
     }
 
@@ -105,6 +117,7 @@ public class AwardRecord implements Parcelable {
     public String toString() {
         return "AwardRecord{" +
                 "userId='" + userId + '\'' +
+                ", nickName='" + nickName + '\'' +
                 ", type='" + type + '\'' +
                 ", reward=" + reward +
                 '}';
@@ -123,12 +136,14 @@ public class AwardRecord implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(userId);
+        dest.writeString(nickName);
         dest.writeString(type);
         dest.writeParcelable(reward, 0);
     }
 
     private void readFromParcel(Parcel in) {
         userId = in.readString();
+        nickName = in.readString();
         type = in.readString();
         reward = in.readParcelable(null);
     }

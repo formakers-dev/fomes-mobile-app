@@ -94,8 +94,15 @@ public class BetaTestService extends AbstractService {
                 .toCompletable();
     }
 
-    public Single<AwardRecord> getAwardRecord(String betaTestId) {
-        return Observable.defer(() -> betaTestAPI.getAwardRecord(sharedPreferencesHelper.getAccessToken(), betaTestId))
+    public Single<List<AwardRecord>> getAwardRecords(String betaTestId) {
+        return Observable.defer(() -> betaTestAPI.getAwardRecords(sharedPreferencesHelper.getAccessToken(), betaTestId))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle();
+    }
+
+    public Single<AwardRecord> getMyAwardRecord(String betaTestId) {
+        return Observable.defer(() -> betaTestAPI.getMyAwardRecord(sharedPreferencesHelper.getAccessToken(), betaTestId))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();

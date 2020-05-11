@@ -63,7 +63,7 @@ public class BetaTestCertificatePresenterTest {
                 .setType("best");
 
         when(mockBetaTestService.getDetailBetaTest("betaTestId")).thenReturn(Single.just(betaTest));
-        when(mockBetaTestService.getAwardRecord("betaTestId")).thenReturn(Single.just(awardRecord));
+        when(mockBetaTestService.getMyAwardRecord("betaTestId")).thenReturn(Single.just(awardRecord));
 
         subject = new BetaTestCertificatePresenter(mockView, Single.just("dummyNickName"), mockAnalytics, mockImageLoader, mockBetaTestService);
     }
@@ -73,7 +73,7 @@ public class BetaTestCertificatePresenterTest {
         subject.requestBetaTestCertificate("betaTestId");
 
         verify(mockBetaTestService).getDetailBetaTest("betaTestId");
-        verify(mockBetaTestService).getAwardRecord("betaTestId");
+        verify(mockBetaTestService).getMyAwardRecord("betaTestId");
 
         ArgumentCaptor<BetaTest> betaTestArgumentCaptor = ArgumentCaptor.forClass(BetaTest.class);
         ArgumentCaptor<AwardRecord> awardRecordArgumentCaptor = ArgumentCaptor.forClass(AwardRecord.class);
@@ -94,7 +94,7 @@ public class BetaTestCertificatePresenterTest {
         subject.requestBetaTestCertificate("betaTestId");
 
         verify(mockBetaTestService).getDetailBetaTest("betaTestId");
-        verify(mockBetaTestService).getAwardRecord("betaTestId");
+        verify(mockBetaTestService).getMyAwardRecord("betaTestId");
 
         verify(mockView, never()).bindBetaTestCertificate(any(), any());
         verify(mockView).showErrorView();

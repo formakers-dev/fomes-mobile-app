@@ -53,7 +53,7 @@ class BetaTestCertificatePresenter implements BetaTestCertificateContract.Presen
     @Override
     public void requestBetaTestCertificate(String betaTestId) {
         this.betaTestService.getDetailBetaTest(betaTestId)
-                .zipWith(this.betaTestService.getAwardRecord(betaTestId)
+                .zipWith(this.betaTestService.getMyAwardRecord(betaTestId)
                         .onErrorReturn(throwable -> null), Pair::new)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

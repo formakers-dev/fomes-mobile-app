@@ -80,6 +80,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String betaTestId = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
 
         this.presenter.requestEpilogue(betaTestId);
+        this.presenter.requestAwardRecordOfBest(betaTestId);
     }
 
     public void bind(Bundle bundle) {
