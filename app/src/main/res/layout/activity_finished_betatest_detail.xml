@@ -273,7 +273,7 @@
                 android:layout_marginTop="35dp"
                 android:background="@drawable/betatest_mission_item_button_selector"
                 android:foreground="@drawable/ripple"
-                android:textColor="@color/fomes_white"
+                android:textColor="@color/button_text_color_selector"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:text="@string/finished_betatest_detail_go_to_epilogue"

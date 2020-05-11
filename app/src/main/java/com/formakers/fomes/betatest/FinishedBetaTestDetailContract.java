@@ -22,6 +22,7 @@ public interface FinishedBetaTestDetailContract {
     interface View extends BaseView<Presenter> {
         void bindEpilogue(BetaTest.Epilogue epilogue);
         void bindAwards(AwardRecord awardRecord);
+        void disableEpilogue();
         void showLoading();
         void hideLoading();
 

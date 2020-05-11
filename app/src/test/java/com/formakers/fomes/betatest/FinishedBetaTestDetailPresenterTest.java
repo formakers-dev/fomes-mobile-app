@@ -15,6 +15,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Scheduler;
 import rx.Single;
 import rx.android.plugins.RxAndroidPlugins;
@@ -75,6 +78,17 @@ public class FinishedBetaTestDetailPresenterTest {
         assertThat(actualEpilogue.getCompanySays()).isEqualTo("게임사소감");
         assertThat(actualEpilogue.getCompanyImageUrl()).isEqualTo("게임사이미지링크");
         assertThat(actualEpilogue.getDeeplink()).isEqualTo("에필로그링크");
+    }
+
+    @Test
+    public void requestEpilogue_호출시__해당_베타테스트의_에필로그_정보가_없으면__뷰를_비활성화한다() {
+        when(mockBetaTestService.getEpilogue("betaTestId"))
+                .thenReturn(Single.error(new HttpException(Response.error(404, ResponseBody.create(null, "")))));
+
+        subject.requestEpilogue("betaTestId");
+
+        verify(mockBetaTestService).getEpilogue("betaTestId");
+        verify(mockView).disableEpilogue();
     }
 
     @Test

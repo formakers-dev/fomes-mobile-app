@@ -88,6 +88,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     public void bind(Bundle bundle) {
+        // 프레젠터로 데이터 넘기고 뷰에서 표출해줘야 하지 않으려나.. 싶긴함
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         String title = bundle.getString(FomesConstants.BetaTest.EXTRA_TITLE);
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
@@ -156,6 +157,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     public void bindAwards(AwardRecord bestAwardRecord) {
         awardsNickNameTextView.setText(bestAwardRecord.getNickName());
         awardsPriceTextView.setText(bestAwardRecord.getReward().getDescription());
+    }
+
+    @Override
+    public void disableEpilogue() {
+        epilogueButton.setEnabled(false);
     }
 
     @Override
