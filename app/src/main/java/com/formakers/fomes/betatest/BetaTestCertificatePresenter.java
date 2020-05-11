@@ -12,6 +12,7 @@ import com.formakers.fomes.common.util.Log;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -52,27 +53,32 @@ class BetaTestCertificatePresenter implements BetaTestCertificateContract.Presen
 
     @Override
     public void requestBetaTestCertificate(String betaTestId) {
-        this.betaTestService.getDetailBetaTest(betaTestId)
-                .zipWith(this.betaTestService.getMyAwardRecord(betaTestId)
-                        .onErrorReturn(throwable -> null), Pair::new)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(() -> view.showLoading())
-                .doAfterTerminate(() -> view.hideLoading())
-                .subscribe(pair -> {
-                        BetaTest betaTest = pair.first;
-                        AwardRecord awardRecord = pair.second;
+        Observable.zip(
+                this.betaTestService.getDetailBetaTest(betaTestId).toObservable(),
+                this.betaTestService.getMyAwardRecord(betaTestId).onErrorReturn(e -> null).toObservable(),
+                this.betaTestService.getEpilogue(betaTestId).onErrorReturn(e -> null).toObservable(),
+                (betaTest, awardRecord, epilogue) -> {
+                    betaTest.setEpilogue(epilogue);
+                    return Pair.create(betaTest, awardRecord);
+                }
+        ).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(() -> view.showLoading())
+        .doAfterTerminate(() -> view.hideLoading())
+        .subscribe(pair -> {
+                BetaTest betaTest = pair.first;
+                AwardRecord awardRecord = pair.second;
 
-                        if (betaTest.isCompleted()) {
-                            this.view.bindBetaTestCertificate(betaTest, awardRecord);
-                        } else {
-                            this.view.showErrorView();
-                        }
-                    },
-                    e -> {
-                        Log.e(TAG, String.valueOf(e));
-                        this.view.showErrorView();
-                    });
+                if (betaTest.isCompleted()) {
+                    this.view.bindBetaTestCertificate(betaTest, awardRecord);
+                } else {
+                    this.view.showErrorView();
+                }
+        },
+        e -> {
+            Log.e(TAG, String.valueOf(e));
+            this.view.showErrorView();
+        });
     }
 
     @Override

@@ -150,7 +150,10 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
                 betaTestAwardsTitle.setText("테스터");
                 betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_warm_gray));
                 betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description, betaTest.getTitle()));
-                betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback_for_better_try));
+                betaTestCertificateFomesFeedback.setText(
+                    (betaTest.getEpilogue() != null) ?
+                        getString(R.string.betatest_certificate_fomes_feedback_for_better_try) :
+                        getString(R.string.betatest_certificate_fomes_feedback));
                 break;
         }
     }

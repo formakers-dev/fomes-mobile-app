@@ -59,21 +59,20 @@ public class BetaTestCertificatePresenterTest {
                 .setIconImageUrl("아이콘링크")
                 .setCompleted(true);
 
-        AwardRecord awardRecord = new AwardRecord()
-                .setType("best");
-
         when(mockBetaTestService.getDetailBetaTest("betaTestId")).thenReturn(Single.just(betaTest));
-        when(mockBetaTestService.getMyAwardRecord("betaTestId")).thenReturn(Single.just(awardRecord));
+        when(mockBetaTestService.getMyAwardRecord("betaTestId")).thenReturn(Single.just(new AwardRecord().setType("best")));
+        when(mockBetaTestService.getEpilogue("betaTestId")).thenReturn(Single.just(new BetaTest.Epilogue().setAwards("테스트 수석")));
 
         subject = new BetaTestCertificatePresenter(mockView, Single.just("dummyNickName"), mockAnalytics, mockImageLoader, mockBetaTestService);
     }
 
     @Test
-    public void requestBetaTestCertificate_호출시__베타테스트의_상세_정보와_수상_정보를_요청하고__뷰에_바인딩한다() {
+    public void requestBetaTestCertificate_호출시__베타테스트의_상세_정보와_에필로그_및_수상_정보를_요청하고__뷰에_바인딩한다() {
         subject.requestBetaTestCertificate("betaTestId");
 
         verify(mockBetaTestService).getDetailBetaTest("betaTestId");
         verify(mockBetaTestService).getMyAwardRecord("betaTestId");
+        verify(mockBetaTestService).getEpilogue("betaTestId");
 
         ArgumentCaptor<BetaTest> betaTestArgumentCaptor = ArgumentCaptor.forClass(BetaTest.class);
         ArgumentCaptor<AwardRecord> awardRecordArgumentCaptor = ArgumentCaptor.forClass(AwardRecord.class);
@@ -85,6 +84,8 @@ public class BetaTestCertificatePresenterTest {
         assertThat(actualBetaTest.getTitle()).isEqualTo("[테스트] 게임 테스트");
         assertThat(actualBetaTest.getIconImageUrl()).isEqualTo("아이콘링크");
         assertThat(actualAwardRecord.getType()).isEqualTo("best");
+        assertThat(actualBetaTest.getEpilogue()).isNotNull();
+        assertThat(actualBetaTest.getEpilogue().getAwards()).isEqualTo("테스트 수석");
     }
 
     @Test
@@ -107,6 +108,20 @@ public class BetaTestCertificatePresenterTest {
         subject.requestBetaTestCertificate("betaTestId");
 
         verify(mockView).showErrorView();
+    }
+
+    @Test
+    public void requestBetaTestCertificate_호출시__에필로그_조회중_오류가_발생하면_에필로그_정보없이__뷰에_바인딩한다() {
+        when(mockBetaTestService.getEpilogue(any())).thenReturn(Single.error(new Error("Error")));
+
+        subject.requestBetaTestCertificate("betaTestId");
+
+        ArgumentCaptor<BetaTest> betaTestArgumentCaptor = ArgumentCaptor.forClass(BetaTest.class);
+        verify(mockView).bindBetaTestCertificate(betaTestArgumentCaptor.capture(), any());
+
+        BetaTest actualBetaTest = betaTestArgumentCaptor.getValue();
+
+        assertThat(actualBetaTest.getEpilogue()).isNull();
     }
 
     @Test
