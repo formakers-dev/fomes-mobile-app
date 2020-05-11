@@ -4,6 +4,7 @@ package com.formakers.fomes.betatest;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
+import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 
 import rx.subscriptions.CompositeSubscription;
@@ -20,7 +21,7 @@ public interface FinishedBetaTestDetailContract {
 
     interface View extends BaseView<Presenter> {
         void bindEpilogue(BetaTest.Epilogue epilogue);
-        void bindAwards(String nickName);
+        void bindAwards(AwardRecord awardRecord);
         void showLoading();
         void hideLoading();
 

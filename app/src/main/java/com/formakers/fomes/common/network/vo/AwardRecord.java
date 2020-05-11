@@ -52,6 +52,9 @@ public class AwardRecord implements Parcelable {
         String description;
         Long price;
 
+        public Reward() {
+        }
+
         public String getDescription() {
             return description;
         }

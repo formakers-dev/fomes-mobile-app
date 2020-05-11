@@ -49,7 +49,7 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
                 .flatMap(Observable::from)
                 .filter(awardRecord -> AwardRecord.TYPE_BEST.equals(awardRecord.getType()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(awardRecord -> this.view.bindAwards(awardRecord.getNickName()));
+                .subscribe(awardRecord -> this.view.bindAwards(awardRecord));
     }
 
     @Override

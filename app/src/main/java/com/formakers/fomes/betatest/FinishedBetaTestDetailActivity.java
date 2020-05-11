@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -44,6 +45,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_company_says) TextView companySaysTextView;
     @BindView(R.id.betatest_epilogue_button) Button epilogueButton;
 
+    @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
     @BindView(R.id.betatest_my_certificates_button) Button certificateButton;
 
@@ -145,8 +147,9 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void bindAwards(String nickName) {
-        awardsNickNameTextView.setText(nickName);
+    public void bindAwards(AwardRecord bestAwardRecord) {
+        awardsNickNameTextView.setText(bestAwardRecord.getNickName());
+        awardsPriceTextView.setText(bestAwardRecord.getReward().getDescription());
     }
 
     @Override
