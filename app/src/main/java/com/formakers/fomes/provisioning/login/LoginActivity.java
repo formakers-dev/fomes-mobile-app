@@ -111,6 +111,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void startActivityAndFinish(Class<?> destActivity) {
         Intent intent = new Intent(this, destActivity);
         this.startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();
     }
 
