@@ -47,6 +47,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
+
+    @BindView(R.id.betatest_subtitle_my_results) TextView myResultSubTitleTextView;
     @BindView(R.id.betatest_my_certificates_button) Button certificateButton;
 
     @Inject FinishedBetaTestDetailContract.Presenter presenter;
@@ -115,6 +117,10 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
 
         awardsNickNameTextView.setSelected(true);
+
+        myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
+
+        certificateButton.setEnabled(isCompleted);
 
         certificateButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, BetaTestCertificateActivity.class);

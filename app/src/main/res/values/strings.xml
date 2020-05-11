@@ -242,6 +242,7 @@
     <string name="finished_betatest_detail_go_to_epilogue">자세한 테스트 결과 구경하기</string>
     <string name="finished_betatest_detail_my_results_title">나의 테스트 참여 결과</string>
     <string name="finished_betatest_detail_my_results_subtitle">%s에 참여하셨군요!</string>
+    <string name="finished_betatest_detail_my_results_subtitle_not_completed">%s에 참여하지 않으셨군요!</string>
     <string name="finished_betatest_detail_go_to_certificates">테스트 참여 확인증 보기</string>
     <string name="finished_betatest_detail_faq_rewards">보상 지급은 어떻게 이루어지나요?</string>
     <string name="finished_betatest_detail_faq_good_feedback">테스트 응답을 잘 쓰려면 어떻게 해야하나요?</string>
