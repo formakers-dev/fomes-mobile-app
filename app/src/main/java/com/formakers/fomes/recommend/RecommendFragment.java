@@ -17,13 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.wishList.WishListActivity;
 
 import java.util.ArrayList;
 
@@ -74,7 +74,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         super.onViewCreated(view, savedInstanceState);
 
         optionMenuView.setOnClickListener(v -> {
-            startActivityForResult(new Intent(getActivity(), WishListActivity.class), MainActivity.REQUEST_CODE_WISHLIST);
+            startActivityForResult(new Intent(getActivity(), RecentAnalysisReportActivity.class), MainActivity.REQUEST_CODE_ANALYSIS);
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

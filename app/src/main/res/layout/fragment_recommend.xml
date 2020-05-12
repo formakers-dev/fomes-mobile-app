@@ -19,13 +19,14 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/main_tab_title_margin_start"
+            android:layout_marginEnd="@dimen/main_tab_title_margin_start"
             android:layout_marginTop="@dimen/main_tab_title_margin_top"
             android:text="@string/recommend_title"
             android:textColor="@color/fomes_pale_gray"
             android:textSize="@dimen/main_tab_title_text_size"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -39,26 +40,25 @@
             android:textColor="@color/fomes_light_gray"
             android:textSize="@dimen/main_tab_subtitle_text_size"
             app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
-            app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
+            app:layout_constraintEnd_toEndOf="@id/betatest_list_textview"
             app:layout_constraintTop_toBottomOf="@id/betatest_list_textview" />
 
         <TextView android:id="@+id/title_option_menu"
             android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginEnd="11dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@string/recommend_option_menu_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/main_tab_subtitle_text_size"
+            android:textSize="14dp"
             android:focusable="true"
             android:clickable="true"
             android:foreground="@drawable/ripple"
             android:background="@drawable/item_rect_rounded_corner_stroke_background"
-            android:theme="@style/RecommendTheme.WishListButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/betatest_list_textview"
-            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview" />
+            android:theme="@style/RecommendTheme.MoveToAnalyticsButton"
+            app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
+            app:layout_constraintEnd_toEndOf="@id/betatest_list_textview"
+            app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recommend_recyclerview"
@@ -69,7 +69,7 @@
             android:overScrollMode="never"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview"/>
+            app:layout_constraintTop_toBottomOf="@id/title_option_menu"/>
 
         <include
             android:id="@+id/recommend_error_layout"
