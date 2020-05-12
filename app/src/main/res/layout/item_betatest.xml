@@ -64,7 +64,7 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="오늘\n마감" />
+                tools:text="오늘\n종료" />
 
             <TextView
                 android:id="@+id/betatest_plan"

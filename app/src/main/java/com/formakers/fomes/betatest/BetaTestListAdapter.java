@@ -80,7 +80,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (remainDays > 0) {
             projectStatus = String.format("%d 일\n남음", remainDays + 1);
         } else {
-            projectStatus = "오늘\n마감";
+            projectStatus = "오늘\n종료";
             viewHolder.projectStatusTextView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.fomes_orange));
         }
 

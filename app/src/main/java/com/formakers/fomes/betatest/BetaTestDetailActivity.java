@@ -214,7 +214,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         if (remainDays > 0) {
             projectStatus = String.format("D - %d", remainDays);
         } else if (remainDays == 0) {
-            projectStatus = "오늘 마감";
+            projectStatus = "오늘 종료";
         } else {
             projectStatus = getString(R.string.common_close);
         }
