@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
@@ -39,6 +40,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @BindView(R.id.title_option_menu) View optionMenuView;
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
     @BindView(R.id.recommend_nested_scrollview) NestedScrollView recommendContentsLayout;
+    @BindView(R.id.recommend_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
     @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
 
@@ -91,13 +93,16 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         presenter.setAdapterModel(recommendListAdapter);
         recommendListAdapterView = recommendListAdapter;
 
+
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.reloadRecommendApps(presenter.CATEGORY_GAME));
+
         recommendContentsLayout.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (isEndOfRecommendList()) {
-                presenter.loadRecommendApps("GAME");
+                presenter.loadRecommendApps(presenter.CATEGORY_GAME);
             }
         });
 
-        presenter.loadRecommendApps("GAME");
+        presenter.loadRecommendApps(presenter.CATEGORY_GAME);
     }
 
     @Override
@@ -119,7 +124,8 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
                 break;
 
             case MainActivity.REQUEST_CODE_ANALYSIS :
-                this.presenter.reloadRecommendApps("GAME");
+                swipeRefreshLayout.setRefreshing(true);
+                this.presenter.reloadRecommendApps(presenter.CATEGORY_GAME);
                 break;
         }
     }
@@ -163,6 +169,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void hideLoading() {
         recommendLoadingProgressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

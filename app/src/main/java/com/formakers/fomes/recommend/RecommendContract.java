@@ -8,6 +8,8 @@ import rx.Completable;
 
 public interface RecommendContract {
     interface Presenter {
+        String CATEGORY_GAME = "GAME";
+
         //Base
         AnalyticsModule.Analytics getAnalytics();
 
