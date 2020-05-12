@@ -303,7 +303,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_WISHLIST) {
+        if (requestCode == REQUEST_CODE_WISHLIST || requestCode == REQUEST_CODE_ANALYSIS) {
             Fragment fragment = ((FragmentPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);

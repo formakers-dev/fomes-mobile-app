@@ -105,16 +105,22 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            ArrayList<String> unwishedPackageNames = data.getExtras().getStringArrayList(FomesConstants.EXTRA.UNWISHED_APPS);
+        switch (requestCode) {
+            case MainActivity.REQUEST_CODE_WISHLIST :
+                ArrayList<String> unwishedPackageNames = data.getExtras().getStringArrayList(FomesConstants.EXTRA.UNWISHED_APPS);
 
-            for (String packageName : unwishedPackageNames) {
-                try {
-                    this.presenter.updateWishedStatus(packageName, false);
-                    this.recommendListAdapterView.notifyItemChanged(packageName);
-                } catch (IllegalArgumentException e) {
+                for (String packageName : unwishedPackageNames) {
+                    try {
+                        this.presenter.updateWishedStatus(packageName, false);
+                        this.recommendListAdapterView.notifyItemChanged(packageName);
+                    } catch (IllegalArgumentException e) {
+                    }
                 }
-            }
+                break;
+
+            case MainActivity.REQUEST_CODE_ANALYSIS :
+                this.presenter.reloadRecommendApps("GAME");
+                break;
         }
     }
 
