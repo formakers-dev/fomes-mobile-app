@@ -234,7 +234,7 @@
     <string name="betatest_detail_mission_item_lock_level_format">%d단계 미션</string>
 
     <!-- Finished Beta Test Detail -->
-    <string name="finished_betatest_detail_company_says_title">게임사 소감 및 계획</string>
+    <string name="finished_betatest_detail_company_says_title">테스트 소감 및 계획</string>
     <string name="finished_betatest_detail_awards_title">테스트 시상식</string>
     <string name="finished_betatest_detail_awards_best">테스트 수석</string>
     <string name="finished_betatest_detail_awards_nickname_sir">님</string>
