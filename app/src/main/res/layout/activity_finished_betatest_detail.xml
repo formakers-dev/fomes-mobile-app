@@ -356,44 +356,54 @@
                 android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_my_certificates_button" />
+                app:layout_constraintTop_toBottomOf="@+id/betatest_my_certificates_button"
+                app:layout_constraintBottom_toTopOf="@+id/betatest_detail_guideline_bottom" />
 
-            <TextView
-                android:id="@+id/betatest_faq_rewards"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="38dp"
-                android:textSize="@dimen/betatest_detail_section_content_text_size"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/finished_betatest_detail_faq_rewards"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_my_results_divider" />
+<!--            <TextView-->
+<!--                android:id="@+id/betatest_faq_rewards"-->
+<!--                android:layout_width="@dimen/match_constraint"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="38dp"-->
+<!--                android:drawableStart="@drawable/icon_question"-->
+<!--                android:drawablePadding="10dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textSize="@dimen/betatest_detail_section_content_text_size"-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:text="@string/finished_betatest_detail_faq_rewards"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/betatest_my_results_divider" />-->
 
-            <TextView
-                android:id="@+id/betatest_faq_good_feedback"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="@dimen/betatest_detail_section_content_text_size"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/finished_betatest_detail_faq_good_feedback"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_faq_rewards" />
+<!--            <TextView-->
+<!--                android:id="@+id/betatest_faq_good_feedback"-->
+<!--                android:layout_width="@dimen/match_constraint"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:drawableStart="@drawable/icon_question"-->
+<!--                android:drawablePadding="10dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textSize="@dimen/betatest_detail_section_content_text_size"-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:text="@string/finished_betatest_detail_faq_good_feedback"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/betatest_faq_rewards" />-->
 
-            <TextView
-                android:id="@+id/betatest_faq_completed"
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="@dimen/betatest_detail_section_content_text_size"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/finished_betatest_detail_faq_completed"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_faq_good_feedback"
-                app:layout_constraintBottom_toTopOf="@+id/betatest_detail_guideline_bottom"/>
+<!--            <TextView-->
+<!--                android:id="@+id/betatest_faq_completed"-->
+<!--                android:layout_width="@dimen/match_constraint"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:drawableStart="@drawable/icon_question"-->
+<!--                android:drawablePadding="10dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textSize="@dimen/betatest_detail_section_content_text_size"-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:text="@string/finished_betatest_detail_faq_completed"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/betatest_faq_good_feedback"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/betatest_detail_guideline_bottom"/>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
