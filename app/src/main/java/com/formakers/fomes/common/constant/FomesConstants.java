@@ -34,6 +34,7 @@ public interface FomesConstants {
         String EXTRA_TITLE = "EXTRA_TITLE";
         String EXTRA_SUBTITLE = "EXTRA_SUBTITLE";
         String EXTRA_PLAN = "EXTRA_PLAN";
+        String EXTRA_REWARD_BEST_DESCRIPTION = "EXTRA_REWARD_BEST_DESCRIPTION";
         String EXTRA_IS_COMPLETED = "EXTRA_IS_COMPLETED";
         String EXTRA_IS_PREMIUM_PLAN = "EXTRA_IS_PREMIUM_PLAN";
 

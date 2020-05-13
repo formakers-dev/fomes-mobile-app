@@ -112,6 +112,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
         String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
         @StringRes int planStringResId = bundle.getInt(FomesConstants.BetaTest.EXTRA_PLAN);
+        String rewardBestDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_REWARD_BEST_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
 
@@ -136,6 +137,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
 
         awardsNickNameTextView.setSelected(true);
+        awardsPriceTextView.setText(rewardBestDescription);
         awardsWonderTextView.setText(isCompleted ? R.string.finished_betatest_detail_awards_wonder : R.string.finished_betatest_detail_awards_wonder_etc);
 
         myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
@@ -175,7 +177,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Override
     public void bindAwards(AwardRecord bestAwardRecord) {
         awardsNickNameTextView.setText(bestAwardRecord.getNickName());
-        awardsPriceTextView.setText(bestAwardRecord.getReward().getDescription());
         awardsNickNameEndTextView.setVisibility(View.VISIBLE);
     }
 
