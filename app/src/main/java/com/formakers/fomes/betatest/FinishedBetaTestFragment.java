@@ -165,19 +165,6 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     }
 
     @Override
-    public void showNoticePopup(int titleResId, int subTitleResId, int imageResId,
-                                int positiveButtonTextResId, View.OnClickListener positiveButtonClickListener) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FomesNoticeDialog.EXTRA_TITLE, getString(titleResId));
-        bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, getString(subTitleResId));
-        bundle.putInt(FomesNoticeDialog.EXTRA_IMAGE_RES_ID, imageResId);
-
-        noticeDialog.setArguments(bundle);
-        noticeDialog.setPositiveButton(getString(positiveButtonTextResId), positiveButtonClickListener);
-        noticeDialog.show(this.getFragmentManager(), "Test");
-    }
-
-    @Override
     public void refresh() {
         adapterView.notifyDataSetChanged();
     }

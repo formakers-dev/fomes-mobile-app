@@ -4,6 +4,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/betatest_mission_item_button_selector"
     android:foreground="@drawable/ripple"
-    android:textColor="@color/fomes_white"
-    android:textSize="13dp"
+    android:textColor="@color/button_text_color_selector"
+    android:textSize="20dp"
     android:textStyle="bold" />

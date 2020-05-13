@@ -322,13 +322,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
                 android:orientation="vertical"
-                android:visibility="gone"
                 android:divider="@drawable/divider"
                 android:showDividers="middle"
                 android:theme="@style/FomesMainTabTheme.FinishedBetaTestRecheckAnswerDivider"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_subtitle_my_results"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start" />
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"/>
 
             <Button
                 android:id="@+id/betatest_my_certificates_button"

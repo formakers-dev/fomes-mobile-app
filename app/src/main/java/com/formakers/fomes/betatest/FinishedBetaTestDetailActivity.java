@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,8 +24,12 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
+import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.webview.WebViewActivity;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,9 +55,12 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
 
     @BindView(R.id.betatest_subtitle_my_results) TextView myResultSubTitleTextView;
+    @BindView(R.id.layout_recheck_my_answers) ViewGroup recheckMyAnswerLayout;
     @BindView(R.id.betatest_my_certificates_button) Button certificateButton;
 
     @Inject FinishedBetaTestDetailContract.Presenter presenter;
+
+    private FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,8 +92,15 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         String betaTestId = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
 
+        initViews();
+
         this.presenter.requestEpilogue(betaTestId);
         this.presenter.requestAwardRecordOfBest(betaTestId);
+        this.presenter.requestRecheckableMissions(betaTestId);
+    }
+
+    private void initViews() {
+        disableMyAnswers();
     }
 
     public void bind(Bundle bundle) {
@@ -160,8 +176,58 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
+    public void bindMyAnswers(List<Mission> missions) {
+        recheckMyAnswerLayout.removeAllViews();
+        for (Mission mission : missions) {
+            if (mission.isCompleted() && mission.isRecheckable()) {
+                Button recheckableButton = (Button) LayoutInflater.from(this).inflate(R.layout.item_button, null);
+                recheckableButton.setText(String.format(getString(R.string.finished_betatest_recheck_my_answer_button_text_format), mission.getTitle()));
+                recheckableButton.setOnClickListener(v -> this.presenter.emitRecheckMyAnswer(mission));
+                recheckMyAnswerLayout.addView(recheckableButton);
+            }
+        }
+    }
+
+    @Override
+    public void showNoticePopup(int titleResId, int subTitleResId, int imageResId,
+                                int positiveButtonTextResId, View.OnClickListener positiveButtonClickListener) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesNoticeDialog.EXTRA_TITLE, getString(titleResId));
+        bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, getString(subTitleResId));
+        bundle.putInt(FomesNoticeDialog.EXTRA_IMAGE_RES_ID, imageResId);
+
+        noticeDialog.setArguments(bundle);
+        noticeDialog.setPositiveButton(getString(positiveButtonTextResId), positiveButtonClickListener);
+        noticeDialog.show(getSupportFragmentManager(), "Test");
+    }
+
+    @Override
+    public void startWebViewActivity(String title, String url) {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(FomesConstants.WebView.EXTRA_TITLE, title);
+        intent.putExtra(FomesConstants.WebView.EXTRA_CONTENTS, url);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startByDeeplink(Uri deeplinkUri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(deeplinkUri);
+        startActivity(intent);
+    }
+
+    @Override
     public void disableEpilogue() {
         epilogueButton.setEnabled(false);
+    }
+
+    @Override
+    public void disableMyAnswers() {
+        recheckMyAnswerLayout.removeAllViews();
+        Button recheckableButton = (Button) LayoutInflater.from(this).inflate(R.layout.item_button, null);
+        recheckableButton.setText(R.string.finished_betatest_recheck_my_answer_title);
+        recheckableButton.setEnabled(false);
+        recheckMyAnswerLayout.addView(recheckableButton);
     }
 
     @Override

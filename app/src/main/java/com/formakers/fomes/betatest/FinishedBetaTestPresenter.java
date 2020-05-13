@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
@@ -155,15 +154,6 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     @Override
     public BetaTest getItem(int position) {
         return (BetaTest) this.adapterModel.getItem(position);
-    }
-
-    @Override
-    public void emitRecheckMyAnswer(Mission missionItem) {
-        this.view.showNoticePopup(R.string.finished_betatest_recheck_my_answer_popup_title,
-                R.string.finished_betatest_recheck_my_answer_popup_subtitle,
-                R.drawable.notice_recheck_my_answer,
-                R.string.finished_betatest_recheck_my_answer_popup_positive_button_text,
-                v -> processMissionItemAction(missionItem));
     }
 
     private void processMissionItemAction(Mission missionItem) {
