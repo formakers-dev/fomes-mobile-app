@@ -53,6 +53,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
+    @BindView(R.id.betatest_awards_nickname_end) TextView awardsNickNameEndTextView;
 
     @BindView(R.id.betatest_subtitle_my_results) TextView myResultSubTitleTextView;
     @BindView(R.id.layout_recheck_my_answers) ViewGroup recheckMyAnswerLayout;
@@ -173,6 +174,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     public void bindAwards(AwardRecord bestAwardRecord) {
         awardsNickNameTextView.setText(bestAwardRecord.getNickName());
         awardsPriceTextView.setText(bestAwardRecord.getReward().getDescription());
+        awardsNickNameEndTextView.setVisibility(View.VISIBLE);
     }
 
     @Override

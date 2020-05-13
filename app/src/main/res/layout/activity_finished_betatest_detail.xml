@@ -239,6 +239,7 @@
                     android:textColor="@color/fomes_text_dark"
                     android:textSize="18dp"
                     android:textStyle="bold"
+                    android:text="시상식 준비중"
                     tools:text="회는 살안찔까 과연 그럴까 궁금하다 궁금해" />
 
                 <TextView
@@ -246,6 +247,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:textColor="@color/fomes_text_dark"
                     android:textSize="@dimen/betatest_detail_section_content_text_size"
                     android:text="@string/finished_betatest_detail_awards_nickname_sir"/>
@@ -272,6 +274,7 @@
                 android:layout_marginTop="35dp"
                 android:background="@drawable/betatest_mission_item_button_selector"
                 android:foreground="@drawable/ripple"
+                android:enabled="false"
                 android:textColor="@color/button_text_color_selector"
                 android:textSize="20dp"
                 android:textStyle="bold"
