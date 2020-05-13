@@ -54,6 +54,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
     @BindView(R.id.betatest_awards_nickname_end) TextView awardsNickNameEndTextView;
+    @BindView(R.id.betatest_awards_wonder) TextView awardsWonderTextView;
 
     @BindView(R.id.betatest_subtitle_my_results) TextView myResultSubTitleTextView;
     @BindView(R.id.layout_recheck_my_answers) ViewGroup recheckMyAnswerLayout;
@@ -135,6 +136,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
 
         awardsNickNameTextView.setSelected(true);
+        awardsWonderTextView.setText(isCompleted ? R.string.finished_betatest_detail_awards_wonder : R.string.finished_betatest_detail_awards_wonder_etc);
 
         myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
 
