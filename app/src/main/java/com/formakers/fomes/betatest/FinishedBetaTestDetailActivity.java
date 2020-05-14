@@ -227,6 +227,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         companyNameTextView.setText("게임사 소감 준비중");
         companySaysTextView.setText("조금만 기다려주세요 🙏");
         companySaysTextView.setVisibility(View.VISIBLE);
+        awardsWonderTextView.setVisibility(View.GONE);
     }
 
     @Override
