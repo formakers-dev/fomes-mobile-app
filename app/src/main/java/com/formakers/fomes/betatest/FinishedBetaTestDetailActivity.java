@@ -235,10 +235,15 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Override
     public void disableEpilogue() {
         epilogueButton.setEnabled(false);
+
+        awardsWonderTextView.setVisibility(View.GONE);
+
         companyNameTextView.setText("게임사 소감 준비중");
         companySaysTextView.setText("조금만 기다려주세요 🙏");
         companySaysTextView.setVisibility(View.VISIBLE);
-        awardsWonderTextView.setVisibility(View.GONE);
+
+        companySaysTextView.startAnimation(getFadeInAnimation(1000));
+        companyNameTextView.startAnimation(getFadeInAnimation(1000));
     }
 
     @Override
