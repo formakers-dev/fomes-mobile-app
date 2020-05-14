@@ -60,6 +60,9 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecyclerView.View
         viewHolder.itemView.setOnClickListener(v -> this.presenter.emitShowDetailEvent(recommendApp));
 
         viewHolder.recommendAppItemView.setOnWishListCheckedChangeListener((v, isChecked) -> {
+            if(!v.isPressed())
+                return;
+
             String packageName = recommendApp.getAppInfo().getPackageName();
 
             Completable requestUpdateWishList = isChecked ? this.presenter.requestSaveToWishList(packageName) : this.presenter.requestRemoveFromWishList(packageName);

@@ -198,7 +198,7 @@
     <!-- Recommend -->
     <string name="recommend_title">데이터 기반 추천</string>
     <string name="recommend_subtitle">당신의 게임 플레이 데이터를 분석해서 게임을 추천합니다.</string>
-    <string name="recommend_option_menu_title">관심게임\n리스트</string>
+    <string name="recommend_option_menu_title">나의 게임 플레이 데이터 분석 보기</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
     <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
     <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>

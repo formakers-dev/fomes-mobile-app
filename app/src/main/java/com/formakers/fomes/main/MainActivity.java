@@ -58,6 +58,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private static final String TAG = "MainActivity";
 
     public static final int REQUEST_CODE_WISHLIST = 1000;
+    public static final int REQUEST_CODE_ANALYSIS = 2000;
 
     public static final int EVENT_AUTO_SLIDE_MILLISECONDS = 3000;
 
@@ -302,7 +303,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_WISHLIST) {
+        if (requestCode == REQUEST_CODE_WISHLIST || requestCode == REQUEST_CODE_ANALYSIS) {
             Fragment fragment = ((FragmentPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);

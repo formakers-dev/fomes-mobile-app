@@ -14,16 +14,17 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.RecommendApp;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.wishList.WishListActivity;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @BindView(R.id.title_option_menu) View optionMenuView;
     @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
     @BindView(R.id.recommend_nested_scrollview) NestedScrollView recommendContentsLayout;
+    @BindView(R.id.recommend_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
     @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
 
@@ -74,7 +76,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         super.onViewCreated(view, savedInstanceState);
 
         optionMenuView.setOnClickListener(v -> {
-            startActivityForResult(new Intent(getActivity(), WishListActivity.class), MainActivity.REQUEST_CODE_WISHLIST);
+            startActivityForResult(new Intent(getActivity(), RecentAnalysisReportActivity.class), MainActivity.REQUEST_CODE_ANALYSIS);
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -91,13 +93,16 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         presenter.setAdapterModel(recommendListAdapter);
         recommendListAdapterView = recommendListAdapter;
 
+
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.reloadRecommendApps(presenter.CATEGORY_GAME));
+
         recommendContentsLayout.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (isEndOfRecommendList()) {
-                presenter.loadRecommendApps("GAME");
+                presenter.loadRecommendApps(presenter.CATEGORY_GAME);
             }
         });
 
-        presenter.loadRecommendApps("GAME");
+        presenter.loadRecommendApps(presenter.CATEGORY_GAME);
     }
 
     @Override
@@ -105,16 +110,23 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            ArrayList<String> unwishedPackageNames = data.getExtras().getStringArrayList(FomesConstants.EXTRA.UNWISHED_APPS);
+        switch (requestCode) {
+            case MainActivity.REQUEST_CODE_WISHLIST :
+                ArrayList<String> unwishedPackageNames = data.getExtras().getStringArrayList(FomesConstants.EXTRA.UNWISHED_APPS);
 
-            for (String packageName : unwishedPackageNames) {
-                try {
-                    this.presenter.updateWishedStatus(packageName, false);
-                    this.recommendListAdapterView.notifyItemChanged(packageName);
-                } catch (IllegalArgumentException e) {
+                for (String packageName : unwishedPackageNames) {
+                    try {
+                        this.presenter.updateWishedStatus(packageName, false);
+                        this.recommendListAdapterView.notifyItemChanged(packageName);
+                    } catch (IllegalArgumentException e) {
+                    }
                 }
-            }
+                break;
+
+            case MainActivity.REQUEST_CODE_ANALYSIS :
+                swipeRefreshLayout.setRefreshing(true);
+                this.presenter.reloadRecommendApps(presenter.CATEGORY_GAME);
+                break;
         }
     }
 
@@ -157,6 +169,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void hideLoading() {
         recommendLoadingProgressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

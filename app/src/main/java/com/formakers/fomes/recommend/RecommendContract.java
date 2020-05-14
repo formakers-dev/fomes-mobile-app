@@ -8,12 +8,15 @@ import rx.Completable;
 
 public interface RecommendContract {
     interface Presenter {
+        String CATEGORY_GAME = "GAME";
+
         //Base
         AnalyticsModule.Analytics getAnalytics();
 
         void setAdapterModel(RecommendListAdapterContract.Model adapterModel);
         void emitShowDetailEvent(RecommendApp recommendApp);
         void loadRecommendApps(String categoryId);
+        void reloadRecommendApps(String categoryId);
 
         Completable requestSaveToWishList(String packageName);
         Completable requestRemoveFromWishList(String packageName);

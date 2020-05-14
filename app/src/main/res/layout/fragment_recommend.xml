@@ -1,95 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView android:id="@+id/recommend_nested_scrollview"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/recommend_swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:scrollbarStyle="insideOverlay"
-    android:scrollbars="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/recommend_nested_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fomes_content_background_dark"
-        android:descendantFocusability="blocksDescendants">
+        android:fillViewport="true"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/betatest_list_textview"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/main_tab_title_margin_start"
-            android:layout_marginTop="@dimen/main_tab_title_margin_top"
-            android:text="@string/recommend_title"
-            android:textColor="@color/fomes_pale_gray"
-            android:textSize="@dimen/main_tab_title_text_size"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fomes_content_background_dark"
+            android:descendantFocusability="blocksDescendants">
 
-        <TextView
-            android:id="@+id/betatest_notice_textview"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/main_tab_subtitle_top_margin"
-            android:text="@string/recommend_subtitle"
-            android:textColor="@color/fomes_light_gray"
-            android:textSize="@dimen/main_tab_subtitle_text_size"
-            app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
-            app:layout_constraintEnd_toStartOf="@+id/title_option_menu"
-            app:layout_constraintTop_toBottomOf="@id/betatest_list_textview" />
+            <TextView
+                android:id="@+id/betatest_list_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_tab_title_margin_start"
+                android:layout_marginEnd="@dimen/main_tab_title_margin_start"
+                android:layout_marginTop="@dimen/main_tab_title_margin_top"
+                android:text="@string/recommend_title"
+                android:textColor="@color/fomes_pale_gray"
+                android:textSize="@dimen/main_tab_title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView android:id="@+id/title_option_menu"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginEnd="11dp"
-            android:gravity="center"
-            android:text="@string/recommend_option_menu_title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/main_tab_subtitle_text_size"
-            android:focusable="true"
-            android:clickable="true"
-            android:foreground="@drawable/ripple"
-            android:background="@drawable/item_rect_rounded_corner_stroke_background"
-            android:theme="@style/RecommendTheme.WishListButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/betatest_list_textview"
-            app:layout_constraintBottom_toBottomOf="@id/betatest_notice_textview" />
+            <TextView
+                android:id="@+id/betatest_notice_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_tab_subtitle_top_margin"
+                android:text="@string/recommend_subtitle"
+                android:textColor="@color/fomes_light_gray"
+                android:textSize="@dimen/main_tab_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
+                app:layout_constraintEnd_toEndOf="@id/betatest_list_textview"
+                app:layout_constraintTop_toBottomOf="@id/betatest_list_textview" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recommend_recyclerview"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/main_tab_listview_top_margin"
-            android:visibility="gone"
-            android:overScrollMode="never"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview"/>
+            <TextView android:id="@+id/title_option_menu"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/recommend_option_menu_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="@drawable/ripple"
+                android:background="@drawable/item_rect_rounded_corner_stroke_background"
+                android:theme="@style/RecommendTheme.MoveToAnalyticsButton"
+                app:layout_constraintStart_toStartOf="@id/betatest_list_textview"
+                app:layout_constraintEnd_toEndOf="@id/betatest_list_textview"
+                app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview" />
 
-        <include
-            android:id="@+id/recommend_error_layout"
-            layout="@layout/fragment_recommend_error"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recommend_recyclerview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_tab_listview_top_margin"
+                android:visibility="gone"
+                android:overScrollMode="never"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_option_menu"/>
 
-        <ProgressBar
-            android:id="@+id/recommend_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <include
+                android:id="@+id/recommend_error_layout"
+                layout="@layout/fragment_recommend_error"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/match_constraint"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/betatest_notice_textview" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <ProgressBar
+                android:id="@+id/recommend_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

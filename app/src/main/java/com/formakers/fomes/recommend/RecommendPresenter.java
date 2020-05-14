@@ -128,6 +128,13 @@ public class RecommendPresenter implements RecommendContract.Presenter {
     }
 
     @Override
+    public void reloadRecommendApps(String categoryId) {
+        setCurrentPage(0);
+        adapterModel.clear();
+        loadRecommendApps(categoryId);
+    }
+
+    @Override
     public Completable requestSaveToWishList(String packageName) {
         return userService.requestSaveAppToWishList(packageName);
     }
