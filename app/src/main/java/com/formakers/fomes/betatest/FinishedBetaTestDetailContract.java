@@ -44,6 +44,7 @@ public interface FinishedBetaTestDetailContract {
 
         void showLoading();
         void hideLoading();
+        void hideAwardsView();
         void showNoticePopup(@StringRes int titleResId, @StringRes int subTitleResId, @DrawableRes int imageResId,
                              @StringRes int positiveButtonTextResId, android.view.View.OnClickListener positiveButtonClickListener);
 

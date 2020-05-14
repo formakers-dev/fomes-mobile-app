@@ -15,6 +15,8 @@ import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 
+import java.util.NoSuchElementException;
+
 import javax.inject.Inject;
 
 import retrofit2.adapter.rxjava.HttpException;
@@ -63,10 +65,19 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
         this.betaTestService.getAwardRecords(betaTestId)
                 .toObservable()
                 .flatMap(Observable::from)
-                .filter(awardRecord -> AwardRecord.TYPE_BEST.equals(awardRecord.getType()))
+                .filter(awardRecord -> {
+                    Log.d(TAG, String.valueOf(awardRecord));
+                    return AwardRecord.TYPE_BEST.equals(awardRecord.getType());
+                })
+                .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(awardRecord -> this.view.bindAwards(awardRecord),
-                        e -> Log.e(TAG, String.valueOf(e)));
+                        e -> {
+                            Log.e(TAG, "requestAwardRecordOfBest) " + e);
+                            if (e instanceof NoSuchElementException) {
+                                this.view.hideAwardsView();
+                            }
+                        });
     }
 
     @Override

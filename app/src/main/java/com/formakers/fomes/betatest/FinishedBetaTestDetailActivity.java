@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.constraintlayout.widget.Group;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
@@ -51,6 +52,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_company_says) TextView companySaysTextView;
     @BindView(R.id.betatest_epilogue_button) Button epilogueButton;
 
+    @BindView(R.id.betatest_awards_group) Group awardGroup;
     @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
     @BindView(R.id.betatest_awards_nickname_end) TextView awardsNickNameEndTextView;
@@ -138,7 +140,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         awardsNickNameTextView.setSelected(true);
         awardsPriceTextView.setText(rewardBestDescription);
-        awardsWonderTextView.setText(isCompleted ? R.string.finished_betatest_detail_awards_wonder : R.string.finished_betatest_detail_awards_wonder_etc);
 
         myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
 
@@ -247,6 +248,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Override
     public void hideLoading() {
 
+    }
+
+    @Override
+    public void hideAwardsView() {
+        awardGroup.setVisibility(View.GONE);
     }
 
     @Override

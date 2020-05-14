@@ -238,8 +238,7 @@
     <string name="finished_betatest_detail_awards_title">테스트 시상식</string>
     <string name="finished_betatest_detail_awards_best">테스트 수석</string>
     <string name="finished_betatest_detail_awards_nickname_sir">님</string>
-    <string name="finished_betatest_detail_awards_wonder">나의 수상 결과가 궁금하다면?</string>
-    <string name="finished_betatest_detail_awards_wonder_etc">그 외 뒷 이야기가 궁금하다면?</string>
+    <string name="finished_betatest_detail_awards_wonder">테스트 뒷 이야기가 궁금하다면?</string>
     <string name="finished_betatest_detail_go_to_epilogue">자세한 테스트 결과 구경하기</string>
     <string name="finished_betatest_detail_my_results_title">나의 테스트 참여 결과</string>
     <string name="finished_betatest_detail_my_results_subtitle">%s에 참여하셨군요!</string>
