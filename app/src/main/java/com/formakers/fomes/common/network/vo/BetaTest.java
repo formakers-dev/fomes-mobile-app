@@ -304,7 +304,8 @@ public class BetaTest implements Parcelable {
             String iconImageUrl;
             String title;
             String content;
-            List<String> userIds;
+            String type;
+            Integer count;
 
             public Integer getOrder() {
                 return order == null ? 0 : order;
@@ -342,12 +343,21 @@ public class BetaTest implements Parcelable {
                 return this;
             }
 
-            public List<String> getUserIds() {
-                return userIds;
+            public String getType() {
+                return type;
             }
 
-            public RewardItem setUserIds(List<String> userIds) {
-                this.userIds = userIds;
+            public RewardItem setType(String type) {
+                this.type = type;
+                return this;
+            }
+
+            public Integer getCount() {
+                return count;
+            }
+
+            public RewardItem setCount(Integer count) {
+                this.count = count;
                 return this;
             }
 
@@ -358,7 +368,8 @@ public class BetaTest implements Parcelable {
                         ", iconImageUrl='" + iconImageUrl + '\'' +
                         ", title='" + title + '\'' +
                         ", content='" + content + '\'' +
-                        ", userIds=" + userIds +
+                        ", type='" + type + '\'' +
+                        ", count=" + count +
                         '}';
             }
 
@@ -376,7 +387,8 @@ public class BetaTest implements Parcelable {
                 dest.writeString(iconImageUrl);
                 dest.writeString(title);
                 dest.writeString(content);
-                dest.writeStringList(userIds);
+                dest.writeString(type);
+                dest.writeInt(count);
             }
 
             private void readFromParcel(Parcel in) {
@@ -384,7 +396,8 @@ public class BetaTest implements Parcelable {
                 iconImageUrl = in.readString();
                 title = in.readString();
                 content = in.readString();
-                in.readStringList(userIds);
+                type = in.readString();
+                count = in.readInt();
             }
 
             @Override
