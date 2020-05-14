@@ -405,6 +405,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                         if (code == 401 || code == 403) {
                             Log.d(TAG, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.");
                             startActivity(LoginActivity.class);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             finish();
                             return;
                         }
