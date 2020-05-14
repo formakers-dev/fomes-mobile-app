@@ -133,6 +133,7 @@
                 android:id="@+id/betatest_company_says"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:minHeight="50dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/speech_bubble_reverse"
                 android:gravity="center"
