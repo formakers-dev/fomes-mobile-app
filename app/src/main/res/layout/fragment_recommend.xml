@@ -82,6 +82,7 @@
                 layout="@layout/fragment_recommend_error"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="@dimen/match_constraint"
+                android:layout_marginTop="30dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
