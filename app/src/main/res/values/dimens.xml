@@ -57,16 +57,19 @@
     <dimen name="main_tab_listview_top_margin">21dp</dimen>
 
     <!-- Beta Test List -->
+    <dimen name="betatest_title_text_size">18dp</dimen>
+    <dimen name="betatest_subtitle_text_size">12dp</dimen>
     <dimen name="betatest_list_item_padding_start_end">16dp</dimen>
-    <dimen name="betatest_list_item_content_margin_start_end">25dp</dimen>
+    <dimen name="betatest_list_item_content_margin_start_end">20dp</dimen>
 
     <!-- Beta Test Detail -->
     <dimen name="betatest_detail_items_margin_top">45dp</dimen>
     <dimen name="betatest_detail_items_description_margin_top">10dp</dimen>
     <dimen name="betatest_detail_items_list_margin_top">21dp</dimen>
     <dimen name="betatest_detail_divider_margin_top">45dp</dimen>
-    <dimen name="betatest_detail_title_text_size">16dp</dimen>
+    <dimen name="betatest_detail_title_text_size">18dp</dimen>
     <dimen name="betatest_detail_subtitle_text_size">12dp</dimen>
-    <dimen name="betatest_detail_section_title_text_size">16dp</dimen>
-    <dimen name="betatest_detail_section_content_text_size">12dp</dimen>
+    <dimen name="betatest_detail_section_title_text_size">18dp</dimen>
+    <dimen name="betatest_detail_section_content_text_size">14dp</dimen>
+    <dimen name="betatest_detail_guide_text_size">12dp</dimen>
 </resources>

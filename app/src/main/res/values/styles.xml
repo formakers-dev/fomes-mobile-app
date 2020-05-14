@@ -85,7 +85,7 @@
 
     <style name="FomesMainTabTheme.FinishedBetaTestRecheckAnswerDivider">
         <item name="divider_width">@dimen/match_constraint</item>
-        <item name="divider_height">10dp</item>
+        <item name="divider_height">20dp</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>
 
@@ -431,5 +431,17 @@
 
     <style name="BetaTestDetailTheme.actionBarAppearance" parent="Base.TextAppearance.AppCompat">
         <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
+    <style name="BetaTestCertificateTheme"/>
+    <style name="BetaTestCertificateTheme.Border">
+        <item name="item_stroke_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">2dp</item>
+    </style>
+    <style name="BetaTestCertificateTheme.IconForeground">
+        <item name="item_background_radius">8dp</item>
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_width">1dp</item>
+        <item name="item_stroke_color">#979797</item>
     </style>
 </resources>

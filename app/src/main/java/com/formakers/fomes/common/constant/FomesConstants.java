@@ -30,13 +30,24 @@ public interface FomesConstants {
     interface BetaTest {
         String EXTRA_ID = "EXTRA_ID";
         String EXTRA_REMAIN_DAYS = "EXTRA_REMAIN_DAYS";
-        String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
+        String EXTRA_COVER_IMAGE_URL = "EXTRA_COVER_IMAGE_URL";
+        String EXTRA_TITLE = "EXTRA_TITLE";
+        String EXTRA_SUBTITLE = "EXTRA_SUBTITLE";
+        String EXTRA_PLAN = "EXTRA_PLAN";
+        String EXTRA_REWARD_BEST_DESCRIPTION = "EXTRA_REWARD_BEST_DESCRIPTION";
+        String EXTRA_IS_COMPLETED = "EXTRA_IS_COMPLETED";
+        String EXTRA_IS_PREMIUM_PLAN = "EXTRA_IS_PREMIUM_PLAN";
 
         // TODO : Log? Analytic? Tracking? 네이밍 고민
         interface Log {
             String TARGET_ITEM = "BetaTest_Item";
             String TARGET_DETAIL_DIALOG_JOIN_BUTTON = "BetaTest_DetailDialog_JoinButton";
             String TARGET_EPILOGUE_BUTTON = "BetaTest_Epilogue_Button";
+        }
+
+        interface Plan {
+            String STANDARD = "standard";
+            String SIMPLE = "simple";
         }
 
         interface Mission {

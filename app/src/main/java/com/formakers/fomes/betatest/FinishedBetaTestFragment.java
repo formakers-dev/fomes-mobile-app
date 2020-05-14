@@ -1,5 +1,6 @@
 package com.formakers.fomes.betatest;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
@@ -44,7 +46,14 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
 
     FinishedBetaTestListAdapterContract.View adapterView;
 
+    private Context context;
     private FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Nullable
     @Override
@@ -78,6 +87,21 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
 
         FinishedBetaTestListAdapter adapter = new FinishedBetaTestListAdapter();
         adapter.setPresenter(presenter);
+        adapter.setOnItemClickListener(position -> {
+            Intent intent = new Intent(context, FinishedBetaTestDetailActivity.class);
+            BetaTest betaTest = presenter.getItem(position);
+
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID,betaTest.getId());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL, betaTest.getCoverImageUrl());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_TITLE, betaTest.getTitle());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_SUBTITLE, betaTest.getTagsString());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_PLAN, betaTest.getPlanStringResId());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_REWARD_BEST_DESCRIPTION, betaTest.getRewards().getList().get(0).getContent());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, betaTest.isPremiumPlan());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, betaTest.isCompleted());
+
+            startActivity(intent);
+        });
 
         finishedBetatestRecyclerView.setAdapter(adapter);
         presenter.setAdapterModel(adapter);
@@ -139,19 +163,6 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     public void showListView() {
         finishedBetatestRecyclerView.setVisibility(View.VISIBLE);
         finishedBetatestEmptyView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showNoticePopup(int titleResId, int subTitleResId, int imageResId,
-                                int positiveButtonTextResId, View.OnClickListener positiveButtonClickListener) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FomesNoticeDialog.EXTRA_TITLE, getString(titleResId));
-        bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, getString(subTitleResId));
-        bundle.putInt(FomesNoticeDialog.EXTRA_IMAGE_RES_ID, imageResId);
-
-        noticeDialog.setArguments(bundle);
-        noticeDialog.setPositiveButton(getString(positiveButtonTextResId), positiveButtonClickListener);
-        noticeDialog.show(this.getFragmentManager(), "Test");
     }
 
     @Override

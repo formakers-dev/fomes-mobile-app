@@ -4,6 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import androidx.annotation.StringRes;
+
+import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.DateUtil;
 import com.google.gson.annotations.SerializedName;
 
@@ -37,6 +41,7 @@ public class BetaTest implements Parcelable {
 
     boolean isAttended;
     boolean isCompleted;
+    boolean isRegisteredEpilogue;
 
     Epilogue epilogue;
     List<String> similarApps = new ArrayList<>();
@@ -121,6 +126,8 @@ public class BetaTest implements Parcelable {
 
     public static class Epilogue implements Parcelable {
         String deeplink;
+        String companyImageUrl;
+        String companyName;
         String companySays;
         String awards;
 
@@ -136,6 +143,24 @@ public class BetaTest implements Parcelable {
 
         public Epilogue setDeeplink(String deeplink) {
             this.deeplink = deeplink;
+            return this;
+        }
+
+        public String getCompanyImageUrl() {
+            return companyImageUrl;
+        }
+
+        public Epilogue setCompanyImageUrl(String companyImageUrl) {
+            this.companyImageUrl = companyImageUrl;
+            return this;
+        }
+
+        public String getCompanyName() {
+            return companyName;
+        }
+
+        public Epilogue setCompanyName(String companyName) {
+            this.companyName = companyName;
             return this;
         }
 
@@ -161,6 +186,8 @@ public class BetaTest implements Parcelable {
         public String toString() {
             return "Epilogue{" +
                     "deeplink='" + deeplink + '\'' +
+                    ", companyImageUrl='" + companyImageUrl + '\'' +
+                    ", companyName='" + companyName + '\'' +
                     ", companySays='" + companySays + '\'' +
                     ", awards='" + awards + '\'' +
                     '}';
@@ -173,12 +200,16 @@ public class BetaTest implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(deeplink);
+            dest.writeString(companyImageUrl);
+            dest.writeString(companyName);
             dest.writeString(companySays);
             dest.writeString(awards);
         }
 
         private void readFromParcel(Parcel in) {
             deeplink = in.readString();
+            companyImageUrl = in.readString();
+            companyName = in.readString();
             companySays = in.readString();
             awards = in.readString();
         }
@@ -273,7 +304,8 @@ public class BetaTest implements Parcelable {
             String iconImageUrl;
             String title;
             String content;
-            List<String> userIds;
+            String type;
+            Integer count;
 
             public Integer getOrder() {
                 return order == null ? 0 : order;
@@ -311,12 +343,21 @@ public class BetaTest implements Parcelable {
                 return this;
             }
 
-            public List<String> getUserIds() {
-                return userIds;
+            public String getType() {
+                return type;
             }
 
-            public RewardItem setUserIds(List<String> userIds) {
-                this.userIds = userIds;
+            public RewardItem setType(String type) {
+                this.type = type;
+                return this;
+            }
+
+            public Integer getCount() {
+                return count;
+            }
+
+            public RewardItem setCount(Integer count) {
+                this.count = count;
                 return this;
             }
 
@@ -327,7 +368,8 @@ public class BetaTest implements Parcelable {
                         ", iconImageUrl='" + iconImageUrl + '\'' +
                         ", title='" + title + '\'' +
                         ", content='" + content + '\'' +
-                        ", userIds=" + userIds +
+                        ", type='" + type + '\'' +
+                        ", count=" + count +
                         '}';
             }
 
@@ -345,7 +387,8 @@ public class BetaTest implements Parcelable {
                 dest.writeString(iconImageUrl);
                 dest.writeString(title);
                 dest.writeString(content);
-                dest.writeStringList(userIds);
+                dest.writeString(type);
+                dest.writeInt(count);
             }
 
             private void readFromParcel(Parcel in) {
@@ -353,7 +396,8 @@ public class BetaTest implements Parcelable {
                 iconImageUrl = in.readString();
                 title = in.readString();
                 content = in.readString();
-                in.readStringList(userIds);
+                type = in.readString();
+                count = in.readInt();
             }
 
             @Override
@@ -504,6 +548,19 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public boolean isPremiumPlan() {
+        return FomesConstants.BetaTest.Plan.STANDARD.equals(getPlan())
+                || FomesConstants.BetaTest.Plan.SIMPLE.equals(getPlan());
+    }
+
+    public @StringRes int getPlanStringResId() {
+        if (isPremiumPlan()) {
+            return R.string.betatest_plan_premium;
+        } else {
+            return R.string.betatest_plan_lite;
+        }
+    }
+
     public String getStatus() {
         return status;
     }
@@ -606,6 +663,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public boolean isRegisteredEpilogue() {
+        return isRegisteredEpilogue;
+    }
+
+    public BetaTest setRegisteredEpilogue(boolean registeredEpilogue) {
+        isRegisteredEpilogue = registeredEpilogue;
+        return this;
+    }
+
     public Epilogue getEpilogue() {
         return epilogue;
     }
@@ -676,6 +742,7 @@ public class BetaTest implements Parcelable {
                 ", rewards=" + rewards +
                 ", isAttended=" + isAttended +
                 ", isCompleted=" + isCompleted +
+                ", isRegisteredEpilogue=" + isRegisteredEpilogue +
                 ", epilogue=" + epilogue +
                 ", similarApps=" + similarApps +
                 '}';
@@ -705,6 +772,7 @@ public class BetaTest implements Parcelable {
         dest.writeParcelable(rewards, 0);
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isAttended ? 1 : 0);
+        dest.writeInt(isRegisteredEpilogue ? 1 : 0);
         dest.writeParcelable(epilogue, 0);
         dest.writeStringList(similarApps);
     }
@@ -728,6 +796,7 @@ public class BetaTest implements Parcelable {
         rewards = in.readParcelable(null);
         isCompleted = (in.readInt() == 1);
         isAttended = (in.readInt() == 1);
+        isRegisteredEpilogue = (in.readInt() == 1);
         epilogue = in.readParcelable(null);
         in.readStringList(similarApps);
     }

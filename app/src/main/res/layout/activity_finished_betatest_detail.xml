@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/betatest_detail_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/beta_test_detail_background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/betatest_detail_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/beta_test_detail_background"
+            app:contentScrim="@color/beta_test_detail_background"
+            app:expandedTitleGravity="top"
+            app:expandedTitleTextAppearance="@style/BetaTestDetailTheme.actionBarAppearance"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:statusBarScrim="@android:color/transparent">
+
+            <include
+                android:id="@+id/betatest_overview_info"
+                layout="@layout/layout_betatest_overview_info"
+                app:layout_collapseMode="parallax"/>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/action_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/PopupOverlay" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/betatest_detail_guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_begin="25dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/betatest_detail_guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_end="25dp"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/betatest_detail_guideline_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_end="150dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/betatest_overview_info_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/betatest_title_company_says"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="@string/finished_betatest_detail_company_says_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/betatest_detail_section_title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_info_divider" />
+
+            <ImageView
+                android:id="@+id/betatest_company_image"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/fomes_profile_default"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_title_company_says"/>
+
+            <TextView
+                android:id="@+id/betatest_company_name"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/fomes_white"
+                android:textSize="@dimen/betatest_detail_section_content_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_company_image"
+                tools:text="자밥 스튜디오" />
+
+            <TextView
+                android:id="@+id/betatest_company_says"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/speech_bubble_reverse"
+                android:gravity="center"
+                android:lineSpacingExtra="5dp"
+                android:paddingStart="20dp"
+                android:paddingTop="25dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/fomes_white"
+                android:textSize="@dimen/betatest_detail_section_content_text_size"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_company_name"
+                tools:text="쿠키런을 열정적으로 플레이해주시고, 피드백도 열성적으로 작성해주셔서 모든 개발팀 분들이 감동했습니다. 모든 것을 한번에 고치지는 못하겠으나, 차근차근 심사숙고하며 개발하여 더 '흥'할 수 있는 게임을 만들겠습니다. 감사합니다."
+                tools:visibility="visible"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/betatest_awards_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="betatest_overview_company_says_divider,betatest_title_awards,betatest_title_awards_best,betatest_awards_price,betatest_awards_medal,betatest_awards_medal_contents_layout"/>
+
+            <View
+                android:id="@+id/betatest_overview_company_says_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="40dp"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_company_says" />
+
+            <TextView
+                android:id="@+id/betatest_title_awards"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="@string/finished_betatest_detail_awards_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/betatest_detail_section_title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_company_says_divider" />
+
+            <TextView
+                android:id="@+id/betatest_title_awards_best"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/finished_betatest_detail_awards_best"
+                android:textColor="@color/fomes_white"
+                android:textSize="@dimen/betatest_detail_section_content_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards" />
+
+            <TextView
+                android:id="@+id/betatest_awards_price"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textColor="@color/fomes_white_alpha_60"
+                android:textSize="@dimen/betatest_detail_section_content_text_size"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards_best"
+                tools:text="문화 상품권 10,000원" />
+
+
+            <ImageView
+                android:id="@+id/betatest_awards_medal"
+                android:layout_width="297dp"
+                android:layout_height="185dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/analysis_rank_medal"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_price" />
+
+            <LinearLayout
+                android:id="@+id/betatest_awards_medal_contents_layout"
+                android:layout_width="111dp"
+                android:layout_height="112dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_awards_medal"
+                app:layout_constraintStart_toStartOf="@+id/betatest_awards_medal"
+                app:layout_constraintTop_toTopOf="@+id/betatest_awards_medal"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_awards_medal">
+
+                <TextView
+                    android:id="@+id/betatest_awards_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:textColor="@color/fomes_text_dark"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:text="시상식 준비중"
+                    tools:text="회는 살안찔까 과연 그럴까 궁금하다 궁금해" />
+
+                <TextView
+                    android:id="@+id/betatest_awards_nickname_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:textColor="@color/fomes_text_dark"
+                    android:textSize="@dimen/betatest_detail_section_content_text_size"
+                    android:text="@string/finished_betatest_detail_awards_nickname_sir"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/betatest_awards_wonder"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_goneMarginTop="35dp"
+                android:gravity="center"
+                android:textColor="@color/fomes_white_alpha_60"
+                android:textSize="@dimen/betatest_detail_section_content_text_size"
+                android:text="@string/finished_betatest_detail_awards_wonder"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_medal" />
+
+            <Button
+                android:id="@+id/betatest_epilogue_button"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/betatest_mission_item_button_selector"
+                android:foreground="@drawable/ripple"
+                android:enabled="false"
+                android:textColor="@color/button_text_color_selector"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:text="@string/finished_betatest_detail_go_to_epilogue"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_wonder"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                />
+
+            <View
+                android:id="@+id/betatest_awards_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="40dp"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_epilogue_button" />
+
+            <TextView
+                android:id="@+id/betatest_title_my_results"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="@string/finished_betatest_detail_my_results_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/betatest_detail_section_title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_divider" />
+
+            <TextView
+                android:id="@+id/betatest_subtitle_my_results"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/fomes_white_alpha_60"
+                android:textSize="@dimen/betatest_detail_section_content_text_size"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_title_my_results"
+                tools:text="[쿠키런] 게임 테스트에 참여하셨군요!"/>
+
+            <LinearLayout
+                android:id="@+id/layout_recheck_my_answers"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:orientation="vertical"
+                android:divider="@drawable/divider"
+                android:showDividers="middle"
+                android:theme="@style/FomesMainTabTheme.FinishedBetaTestRecheckAnswerDivider"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_subtitle_my_results"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"/>
+
+            <Button
+                android:id="@+id/betatest_my_certificates_button"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/betatest_mission_item_button_selector"
+                android:foreground="@drawable/ripple"
+                android:textColor="@color/button_text_color_selector"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:text="@string/finished_betatest_detail_go_to_certificates"
+                app:layout_constraintTop_toBottomOf="@+id/layout_recheck_my_answers"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start" />
+
+            <View
+                android:id="@+id/betatest_my_results_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="40dp"
+                app:layout_goneMarginTop="0dp"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_my_certificates_button"
+                app:layout_constraintBottom_toTopOf="@+id/betatest_detail_guideline_bottom" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/betatest_faq_rewards"-->
+<!--                android:layout_width="@dimen/match_constraint"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="38dp"-->
+<!--                android:drawableStart="@drawable/icon_question"-->
+<!--                android:drawablePadding="10dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textSize="@dimen/betatest_detail_section_content_text_size"-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:text="@string/finished_betatest_detail_faq_rewards"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/betatest_my_results_divider" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/betatest_faq_good_feedback"-->
+<!--                android:layout_width="@dimen/match_constraint"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:drawableStart="@drawable/icon_question"-->
+<!--                android:drawablePadding="10dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textSize="@dimen/betatest_detail_section_content_text_size"-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:text="@string/finished_betatest_detail_faq_good_feedback"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/betatest_faq_rewards" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/betatest_faq_completed"-->
+<!--                android:layout_width="@dimen/match_constraint"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:drawableStart="@drawable/icon_question"-->
+<!--                android:drawablePadding="10dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textSize="@dimen/betatest_detail_section_content_text_size"-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:text="@string/finished_betatest_detail_faq_completed"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/betatest_faq_good_feedback"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/betatest_detail_guideline_bottom"/>-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
