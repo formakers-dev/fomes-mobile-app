@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -38,7 +39,8 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     public static final int REQUEST_CODE_DETAIL = 1002;
 
-    @BindView(R.id.feedback_recyclerview) RecyclerView recyclerView;
+    @BindView(R.id.feedback_recyclerview_shimmer) ShimmerFrameLayout betaTestRecyclerViewShimmer;
+    @BindView(R.id.feedback_recyclerview) RecyclerView betaTestRecyclerView;
     @BindView(R.id.loading) ProgressBar loadingBar;
     @BindView(R.id.betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.betatest_empty_view) View emptyView;
@@ -73,16 +75,16 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        betaTestRecyclerView.setLayoutManager(linearLayoutManager);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(getContext(), ContentDividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,
                 new ContextThemeWrapper(getContext(), R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        betaTestRecyclerView.addItemDecoration(dividerItemDecoration);
 
         BetaTestListAdapter betaTestListAdapter = new BetaTestListAdapter();
         betaTestListAdapter.setPresenter(presenter);
-        recyclerView.setAdapter(betaTestListAdapter);
+        betaTestRecyclerView.setAdapter(betaTestListAdapter);
         presenter.setAdapterModel(betaTestListAdapter);
         this.setAdapterView(betaTestListAdapter);
 
@@ -130,7 +132,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
             if (!TextUtils.isEmpty(betaTestId)) {
                 int position = presenter.getBetaTestPostitionById(betaTestId);
                 if (position >= 0) {
-                    recyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+                    betaTestRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
                 } else {
                     Toast.makeText(getContext(), "없어용", Toast.LENGTH_SHORT).show();
                 }
@@ -171,24 +173,27 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     @Override
     public void showLoading() {
-        loadingBar.setVisibility(View.VISIBLE);
+        betaTestRecyclerViewShimmer.startShimmer();
+//        loadingBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        loadingBar.setVisibility(View.GONE);
+        betaTestRecyclerViewShimmer.stopShimmer();
+        betaTestRecyclerView.setVisibility(View.VISIBLE);
+//        loadingBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showEmptyView() {
         emptyView.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
+        betaTestRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void showBetaTestListView() {
         emptyView.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        betaTestRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

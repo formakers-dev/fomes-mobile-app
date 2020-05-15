@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:background="@color/beta_test_detail_background">
+    
+    <ImageView
+        android:id="@+id/betatest_overview_imageview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="184dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/analysis_rank_medal"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/betatest_overview_contents_guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/betatest_list_item_content_margin_start_end"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/betatest_overview_contents_guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/betatest_list_item_content_margin_start_end"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/betatest_overview_contents_guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/betatest_list_item_content_margin_start_end"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <!-- 이것도 공통화 시킬 수 있을 것 같다 -->
+    <TextView
+        android:id="@+id/betatest_plan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/betatest_list_item_content_margin_start_end"
+        android:background="@drawable/item_rect_rounded_corner_background"
+        android:theme="@style/BetaTestTheme.Plan.Premium"
+        android:textColor="@color/fomes_orange"
+        style="@style/BetaTestTheme.TypeTag"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
+        app:layout_constraintStart_toStartOf="@+id/betatest_overview_contents_guideline_start"
+        tools:text="프리미엄 테스트"/>
+
+    <TextView
+        android:id="@+id/betatest_my_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/item_rect_rounded_corner_background"
+        android:theme="@style/BetaTestTheme.MyStatus.Completed"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/betatest_my_status_completed"
+        style="@style/BetaTestTheme.TypeTag"
+        app:layout_constraintTop_toTopOf="@+id/betatest_plan"
+        app:layout_constraintBottom_toBottomOf="@+id/betatest_plan"
+        app:layout_constraintStart_toEndOf="@+id/betatest_plan"
+        app:layout_constraintEnd_toEndOf="@+id/betatest_overview_contents_guideline_end"
+        app:layout_constraintHorizontal_bias="0"
+        />
+    <!-- end of 이것도 공통화 시킬 수 있을 것 같다 -->
+
+    <TextView
+        android:id="@+id/betatest_title_textview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/fomes_white"
+        android:textStyle="bold"
+        android:textSize="@dimen/betatest_title_text_size"
+        app:layout_constraintStart_toStartOf="@+id/betatest_plan"
+        app:layout_constraintEnd_toEndOf="@+id/betatest_overview_contents_guideline_end"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_plan"
+        tools:text="[낚시 천국] 게임 테스트" />
+
+    <TextView
+        android:id="@+id/betatest_subtitle_textview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="2dp"
+        android:textColor="@color/fomes_white_alpha_60"
+        android:textSize="@dimen/betatest_subtitle_text_size"
+        app:layout_constraintStart_toStartOf="@+id/betatest_title_textview"
+        app:layout_constraintEnd_toEndOf="@+id/betatest_overview_contents_guideline_end"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
+        app:layout_constraintBottom_toTopOf="@+id/betatest_overview_contents_guideline_bottom"
+        app:layout_constraintVertical_bias="0"
+        tools:text="#레트로 #그래픽 #감동 #스토리 #어드벤처 #낚시게임" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

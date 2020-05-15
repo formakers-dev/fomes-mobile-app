@@ -11,6 +11,8 @@ public class DateUtil {
     private static final String MINUITES_DURATION_STRING_FORMAT = "%d분 %d초";
     public static final String YYYY_MM_DD = "yyyy/MM/dd";
     public static final String YY_DOT_MM_DOT_DD = "yy.MM.dd";
+    public static final String YYYY_DOT_MM_DOT_DD = "yyyy.MM.dd";
+    public static final String MM_DOT_DD = "MM.dd";
 
     public static final int CONVERT_TYPE_SECONDS = 1;
     public static final int CONVERT_TYPE_MINUTES = 2;

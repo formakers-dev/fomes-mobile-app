@@ -34,7 +34,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/analysis_rank_medal"
+                tools:src="@drawable/analysis_rank_medal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +64,7 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="오늘\n마감" />
+                tools:text="오늘\n종료" />
 
             <TextView
                 android:id="@+id/betatest_plan"
@@ -99,10 +99,10 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/fomes_white"
                 android:textStyle="bold"
-                android:textSize="18dp"
+                android:textSize="@dimen/betatest_title_text_size"
                 app:layout_constraintStart_toEndOf="@+id/betatest_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_plan"

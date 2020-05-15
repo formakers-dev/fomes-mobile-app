@@ -51,7 +51,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     private static final String TAG = "BetaTestDetailActivity";
 
     public static final int REQUEST_CODE_MISSION = 1001;
-    private static final int DEFAULT_REWARDS_MINIMUM_DELAY = 7;
+    private static final int DEFAULT_REWARDS_MINIMUM_DELAY = 5;
 
     @BindView(R.id.action_bar) Toolbar actionBar;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
@@ -214,7 +214,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         if (remainDays > 0) {
             projectStatus = String.format("D - %d", remainDays);
         } else if (remainDays == 0) {
-            projectStatus = "오늘 마감";
+            projectStatus = "오늘 종료";
         } else {
             projectStatus = getString(R.string.common_close);
         }

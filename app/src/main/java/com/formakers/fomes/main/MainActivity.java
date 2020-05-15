@@ -58,6 +58,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private static final String TAG = "MainActivity";
 
     public static final int REQUEST_CODE_WISHLIST = 1000;
+    public static final int REQUEST_CODE_ANALYSIS = 2000;
 
     public static final int EVENT_AUTO_SLIDE_MILLISECONDS = 3000;
 
@@ -302,7 +303,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_WISHLIST) {
+        if (requestCode == REQUEST_CODE_WISHLIST || requestCode == REQUEST_CODE_ANALYSIS) {
             Fragment fragment = ((FragmentPagerAdapter) contentsViewPager.getAdapter()).getItem(RecommendFragment.TAG);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);
@@ -405,6 +406,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                         if (code == 401 || code == 403) {
                             Log.d(TAG, "인증 오류가 발생하였습니다. 재로그인이 필요합니다.");
                             startActivity(LoginActivity.class);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             finish();
                             return;
                         }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
@@ -48,7 +47,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    private List<BetaTest> finishedList = new ArrayList<>();
+    private List<BetaTest> finishedBetaTestList = new ArrayList<>();
 
     @Inject
     public FinishedBetaTestPresenter(FinishedBetaTestContract.View view,
@@ -104,9 +103,9 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                     Comparator<BetaTest> comparator = (o1, o2) -> compareByCloseDate(o1, o2, new Date());
                     Collections.sort(betaTests, comparator);
 
-                    finishedList.clear();
-                    finishedList.addAll(betaTests);
-                    updateDisplayedList(filterCompletedList(finishedList, view.isNeedAppliedCompletedFilter()));
+                    finishedBetaTestList.clear();
+                    finishedBetaTestList.addAll(betaTests);
+                    updateDisplayedList(filterCompletedList(finishedBetaTestList, view.isNeedAppliedCompletedFilter()));
 
                     Log.v(TAG, "load) onSuccess = " + betaTests);
                 })
@@ -125,7 +124,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
 
     @Override
     public void applyCompletedFilter(boolean isNeedFilter) {
-        updateDisplayedList(filterCompletedList(finishedList, isNeedFilter));
+        updateDisplayedList(filterCompletedList(finishedBetaTestList, isNeedFilter));
     }
 
     private List<BetaTest> filterCompletedList(List<BetaTest> originalList, boolean isFilteredCompleted) {
@@ -155,15 +154,6 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     @Override
     public BetaTest getItem(int position) {
         return (BetaTest) this.adapterModel.getItem(position);
-    }
-
-    @Override
-    public void emitRecheckMyAnswer(Mission missionItem) {
-        this.view.showNoticePopup(R.string.finished_betatest_recheck_my_answer_popup_title,
-                R.string.finished_betatest_recheck_my_answer_popup_subtitle,
-                R.drawable.notice_recheck_my_answer,
-                R.string.finished_betatest_recheck_my_answer_popup_positive_button_text,
-                v -> processMissionItemAction(missionItem));
     }
 
     private void processMissionItemAction(Mission missionItem) {

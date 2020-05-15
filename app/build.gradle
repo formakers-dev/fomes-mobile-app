@@ -213,6 +213,8 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     // PagerIndicators
     implementation 'com.romandanylyk:pageindicatorview:1.0.3@aar'
+    // Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     // test
     testImplementation 'junit:junit:4.12'

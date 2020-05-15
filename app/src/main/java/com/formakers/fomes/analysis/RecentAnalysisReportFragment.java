@@ -542,8 +542,10 @@ public class RecentAnalysisReportFragment extends BaseFragment implements Recent
     @OnClick(R.id.current_analysis_exit_button)
     public void onConfirmButtonClick() {
         // TODO : 추후 일반 종료로 변경해야 함
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        startActivity(intent);
+        if (this.getActivity().isTaskRoot()) {
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+        }
         this.getActivity().finish();
     }
 

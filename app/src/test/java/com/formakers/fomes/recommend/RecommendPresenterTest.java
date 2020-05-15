@@ -267,4 +267,17 @@ public class RecommendPresenterTest {
 
         verify(mockAdapterModel).updateWishedStatus(eq("com.test.pkg"), eq(true));
     }
+
+    @Test
+    public void reloadRecommendApps__추천_앱_리스트_갱신시__기존목록데이터를_초기화하고_해당_서버에_첫번째_페이지를_요청한다() {
+        subject.setCurrentPage(3);
+
+        when(mockRecommendService.requestRecommendApps(anyString(), anyInt())).thenReturn(Observable.just(Lists.newArrayList(new RecommendApp().setAppInfo(new AppInfo("com.test1")).setRecommendType(RecommendApp.RECOMMEND_TYPE_SIMILAR_DEMOGRAPHIC))));
+
+        subject.reloadRecommendApps("GAME");
+
+        verify(mockAdapterModel).clear();
+        assertEquals(subject.getCurrentPage(), 1);
+        verify(mockRecommendService).requestRecommendApps("GAME", 1);
+    }
 }

@@ -111,12 +111,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void startActivityAndFinish(Class<?> destActivity) {
         Intent intent = new Intent(this, destActivity);
         this.startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();
     }
 
     @Override
     public void showLoginButton() {
         loginButton.setVisibility(View.VISIBLE);
+        loginTncTextView.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.login_google_button)

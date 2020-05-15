@@ -112,7 +112,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             viewHolder.titleIconImageView.setImageResource(R.drawable.icon_mission_type_survey);
         }
 
-        viewHolder.titleTextView.setText(String.format(Locale.getDefault(), "%d번째 미션", mission.getOrder()));
+        viewHolder.titleTextView.setText(String.format(Locale.getDefault(), context.getString(R.string.betatest_detail_mission_item_lock_level_format), mission.getOrder()));
         viewHolder.descriptionTextView.setText(mission.getDescription());
         viewHolder.guideTextView.setText(mission.getGuide());
         viewHolder.guideTextView.setTextColor(context.getResources().getColor(R.color.colorPrimary));

@@ -109,6 +109,11 @@
         <activity android:name=".betatest.BetaTestDetailActivity"
             android:theme="@style/BetaTestDetailTheme"
             android:label="@string/common_empty_string"/>
+        <activity android:name=".betatest.FinishedBetaTestDetailActivity"
+            android:theme="@style/BetaTestDetailTheme"
+            android:label="@string/common_empty_string"/>
+        <activity android:name=".betatest.BetaTestCertificateActivity"/>
+
     </application>
 
 </manifest>

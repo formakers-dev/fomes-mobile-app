@@ -50,7 +50,7 @@
     <string name="update_dialog_message">Fomes의 신규 버전이 업데이트 되었습니다.\n마켓에서 업데이트 진행 후 이용 부탁드립니다.</string>
 
     <!-- Login -->
-    <string name="login_subtitle">플레이하고, 피드백주고, 리워드받자!</string>
+    <string name="login_subtitle">신작게임 놀이터, 포메스!</string>
     <string name="login_tnc">버튼을 누르시면 <![CDATA[<a href="https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing">사용약관</a>]]> 및 <![CDATA[<a href="https://docs.google.com/document/d/1QxWuv2zlKYsGYglUTiP5d5IFxZUy6HwKGObXC8x0034/edit?usp=sharing">개인정보 취급방침</a>]]>에 동의됩니다.</string>
 
     <!-- Provisioning -->
@@ -172,16 +172,16 @@
     <string name="betatest_progress_attend_label_doing">참여 중</string>
     <string name="betatest_plan_premium">프리미엄 테스트</string>
     <string name="betatest_plan_lite">간단 테스트</string>
-    <string name="betatest_my_status_completed">내가 참여 완료</string>
-    <string name="betatest_my_status_attend">내가 참여 중</string>
+    <string name="betatest_my_status_completed">참여 완료</string>
+    <string name="betatest_my_status_attend">참여 중</string>
 
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">종료된 테스트가 궁금해!</string>
-    <string name="finished_betatest_subtitle">테스트 참여 및 시상 결과를 확인해보세요.</string>
+    <string name="finished_betatest_subtitle">종료된 테스트의 참여 및 수상 결과를 볼 수 있어요.</string>
     <string name="finished_betatest_complete_switch_text">참여목록 보기</string>
     <string name="finished_beta_test_empty_text_format">아직 완료하신 테스트가 없으시군요!\n지금 테스트를 진행해보시면 어떨까요?</string>
     <string name="finished_betatest_recheck_my_answer_button_text_format">내 답변 다시 보기 (%s)</string>
-    <string name="finished_betatest_recheck_my_answer_popup_title">내 답변 다시 보기</string>
+    <string name="finished_betatest_recheck_my_answer_title">내 답변 다시 보기</string>
     <string name="finished_betatest_recheck_my_answer_popup_subtitle">[내 답변 다시 보기] 가 베타 오픈되었습니다!\n[응답 수정] 버튼을 클릭하시면 다시 볼 수 있습니다.</string>
     <string name="finished_betatest_recheck_my_answer_popup_positive_button_text">내 답변 다시 보러 가기</string>
     <string name="finished_betatest_show_award_button_text">시상식 보기</string>
@@ -198,7 +198,7 @@
     <!-- Recommend -->
     <string name="recommend_title">데이터 기반 추천</string>
     <string name="recommend_subtitle">당신의 게임 플레이 데이터를 분석해서 게임을 추천합니다.</string>
-    <string name="recommend_option_menu_title">관심게임\n리스트</string>
+    <string name="recommend_option_menu_title">나의 게임 플레이 데이터 분석 보기</string>
     <string name="download_to_googleplay">구글플레이 다운로드</string>
     <string name="recommend_label_format_favorite_game">%s 게이머들이 즐겨하는 게임</string>
     <string name="recommend_label_format_favorite_developer">%s 개발사가 만든 다른 게임</string>
@@ -222,7 +222,7 @@
     <string name="betatest_detail_game_description_title">게임 소개</string>
     <string name="betatest_detail_howto_title">테스트 방법</string>
     <string name="betatest_detail_howto_description">어렵지 않아요. 게임을 즐기고 의견을 주면 끝!</string>
-    <string name="betatest_detail_howto_guide">* 마감후 %d일 이내에 시상식이 열리고, 보상이 지급됩니다.\n* 시상식은 [종료된 테스트] 탭에서 확인 가능합니다.</string>
+    <string name="betatest_detail_howto_guide">* 마감 후 %d영업일 이내에 시상식이 열리고, 보상이 지급됩니다.\n* 시상식은 [종료된 테스트] 탭에서 확인 가능합니다.</string>
     <string name="betatest_detail_rewards_title">테스트 보상</string>
     <string name="betatest_detail_rewards_description">[종료된 테스트] 탭의 시상식을 통해 선정자를 안내해드립니다.</string>
     <string name="betatest_detail_mission_list_title">테스트 참여</string>
@@ -232,4 +232,30 @@
     <string name="betatest_detail_mission_play_time_desc_playing">플레이 하셨어요. 화이팅!</string>
     <!--<string name="betatest_detail_mission_play_time_desc_over">화이팅!</string>-->
     <string name="betatest_detail_mission_item_lock_level_format">%d단계 미션</string>
+
+    <!-- Finished Beta Test Detail -->
+    <string name="finished_betatest_detail_company_says_title">테스트 소감 및 계획</string>
+    <string name="finished_betatest_detail_awards_title">테스트 시상식</string>
+    <string name="finished_betatest_detail_awards_best">테스트 수석</string>
+    <string name="finished_betatest_detail_awards_nickname_sir">님</string>
+    <string name="finished_betatest_detail_awards_wonder">테스트 뒷 이야기가 궁금하다면?</string>
+    <string name="finished_betatest_detail_go_to_epilogue">자세한 테스트 결과 구경하기</string>
+    <string name="finished_betatest_detail_my_results_title">나의 테스트 참여 결과</string>
+    <string name="finished_betatest_detail_my_results_subtitle">%s에 참여하셨군요!</string>
+    <string name="finished_betatest_detail_my_results_subtitle_not_completed">%s에 참여하지 않으셨군요!\n아쉽지만, 테스트에 참여하셔야 확인하실 수 있어요!ㅠㅠ</string>
+    <string name="finished_betatest_detail_go_to_certificates">테스트 참여 확인증 보기</string>
+    <string name="finished_betatest_detail_faq_rewards">보상 지급은 어떻게 이루어지나요?</string>
+    <string name="finished_betatest_detail_faq_good_feedback">테스트 응답을 잘 쓰려면 어떻게 해야하나요?</string>
+    <string name="finished_betatest_detail_faq_completed">참여했는데 결과에서 미참여로 나와요.</string>
+
+    <!-- Beta Test Certificate -->
+    <string name="betatest_certificate_title">테스트 참여 확인증</string>
+    <string name="betatest_certificate_nick_name">%s 님</string>
+    <string name="betatest_certificate_description_for_best">포메스의 %s에 참여하여 날카로운 통찰력으로 게임사에 가장 큰 도움이 되는 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_description_for_good">포메스의 %s에 참여하여 날카로운 통찰력으로 게임사에 큰 도움이 되는 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_description_for_normal">포메스의 %s에 성실히 참여하여 게임사에 도움이 되는 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_description">포메스의 %s에 참여하여 게임사에 피드백을 전달해주셨습니다!</string>
+    <string name="betatest_certificate_fomes_feedback">앞으로도 좋은 피드백 기대할게요❤️</string>
+    <string name="betatest_certificate_fomes_feedback_for_better_try">아쉽게도 수상은 못하셨지만,\n다음 테스트에서 좋은 결과 기대할게요❤️</string>
+    <string name="betatest_certificate_error_message">테스트 참여 정보 조회에 문제가 발생했습니다.\n\n테스트의 참여 완료 확인 후, 다시 시도해주세요.️</string>
 </resources>
