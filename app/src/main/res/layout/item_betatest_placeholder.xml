@@ -34,7 +34,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/analysis_rank_medal"
+                android:background="@color/fomes_greyish_brown"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,9 +51,10 @@
 
             <TextView
                 android:id="@+id/betatest_project_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="54dp"
                 android:background="@drawable/label_betatest_dday"
+                android:backgroundTint="@color/fomes_black_alpha_75"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -64,34 +65,30 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="오늘\n종료" />
+                />
 
             <TextView
                 android:id="@+id/betatest_plan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="67dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
                 android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.Plan.Premium"
-                android:textColor="@color/fomes_orange"
+                android:theme="@style/BetaTestTheme.Plan.PlaceHolder"
                 style="@style/BetaTestTheme.TypeTag"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
-                app:layout_constraintStart_toStartOf="@+id/betatest_overview_imageview"
-                tools:text="프리미엄 테스트"/>
+                app:layout_constraintStart_toStartOf="@+id/betatest_overview_imageview" />
 
             <TextView
                 android:id="@+id/betatest_my_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="47dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.MyStatus"
-                android:textColor="@color/fomes_white_alpha_75"
+                android:theme="@style/BetaTestTheme.Plan.PlaceHolder"
                 style="@style/BetaTestTheme.TypeTag"
                 app:layout_constraintTop_toTopOf="@+id/betatest_plan"
                 app:layout_constraintBottom_toBottomOf="@+id/betatest_plan"
-                app:layout_constraintStart_toEndOf="@+id/betatest_plan"
-                tools:text="내가 참여중"/>
+                app:layout_constraintStart_toEndOf="@+id/betatest_plan" />
 
 
             <TextView
@@ -100,13 +97,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/fomes_white"
-                android:textStyle="bold"
+                android:background="@color/fomes_black_alpha_75"
                 android:textSize="@dimen/betatest_title_text_size"
                 app:layout_constraintStart_toEndOf="@+id/betatest_label"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_plan"
-                tools:text="서랍에서 찾은 또 다른 설문지" />
+                app:layout_constraintTop_toBottomOf="@+id/betatest_plan" />
 
             <ImageView
                 android:id="@+id/betatest_label"
@@ -114,7 +109,7 @@
                 android:layout_height="19.2dp"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/label_attend"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="@+id/betatest_title_textview"
@@ -128,12 +123,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="2dp"
-                android:textColor="@color/fomes_white_alpha_60"
+                android:background="@color/fomes_black_alpha_75"
                 android:textSize="12dp"
                 app:layout_constraintStart_toStartOf="@+id/betatest_label"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_title_textview"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
-                tools:text="주변을 더듬거리다가 서랍을 찾아냈다. 드르륵 열어보니 설문이 놓여져 있다. 완료하면 보상이 있다는데 한번 해볼까…? " />
+                app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview" />
 
             <TextView
                 android:id="@+id/betatest_bug_button"
@@ -144,7 +138,6 @@
                 android:clickable="true"
                 android:foreground="@drawable/ripple"
                 android:background="@drawable/item_rect_rounded_corner_background"
-                android:text="버그 제보"
                 android:textColor="@color/fomes_white_alpha_60"
                 android:textSize="12dp"
                 android:gravity="center"
