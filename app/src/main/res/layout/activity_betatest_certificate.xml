@@ -51,7 +51,8 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:fillViewport="true"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -234,9 +235,11 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:layout_marginBottom="3dp"
                 android:text="게임테스트 앱 포메스"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15dp"
+                android:textStyle="bold"
                 android:background="@color/fomes_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
