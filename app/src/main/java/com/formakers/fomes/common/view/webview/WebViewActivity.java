@@ -209,11 +209,10 @@ public class WebViewActivity extends FomesBaseActivity implements WebViewConstra
             }
 
             selectedFilePathCallback = filePathCallback;
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/*");
-            startActivityForResult(Intent.createChooser(intent, "File Chooser"), REQUEST_CODE_FILE_CHOOSER);
 
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/* video/*");
+            startActivityForResult(Intent.createChooser(intent, "File Chooser"), REQUEST_CODE_FILE_CHOOSER);
 
             return true;
         }
