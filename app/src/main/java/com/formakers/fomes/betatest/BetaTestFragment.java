@@ -7,7 +7,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +40,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
 
     @BindView(R.id.feedback_recyclerview_shimmer) ShimmerFrameLayout betaTestRecyclerViewShimmer;
     @BindView(R.id.feedback_recyclerview) RecyclerView betaTestRecyclerView;
-    @BindView(R.id.loading) ProgressBar loadingBar;
     @BindView(R.id.betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.betatest_empty_view) View emptyView;
     @BindView(R.id.betatest_empty_textview) TextView emptyTextView;
@@ -174,7 +172,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Override
     public void showLoading() {
         betaTestRecyclerViewShimmer.startShimmer();
-//        loadingBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -182,7 +179,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
         betaTestRecyclerViewShimmer.stopShimmer();
         betaTestRecyclerViewShimmer.setVisibility(View.GONE);
         betaTestRecyclerView.setVisibility(View.VISIBLE);
-//        loadingBar.setVisibility(View.GONE);
     }
 
     @Override

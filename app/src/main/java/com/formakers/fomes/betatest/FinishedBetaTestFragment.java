@@ -8,7 +8,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -39,7 +38,6 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     @BindView(R.id.finished_betatest_recyclerview_shimmer) ShimmerFrameLayout finishedBetatestRecyclerViewShimmer;
     @BindView(R.id.finished_betatest_recyclerview) RecyclerView finishedBetatestRecyclerView;
     @BindView(R.id.finished_betatest_empty_view) View finishedBetatestEmptyView;
-    @BindView(R.id.loading) ProgressBar loadingProgressBar;
     @BindView(R.id.finished_betatest_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.title_option_menu_switch) Switch completedFilterSwitch;
     @BindView(R.id.title_option_menu) TextView completedFilterTextView;
@@ -148,14 +146,12 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
     @Override
     public void showLoading() {
         finishedBetatestRecyclerViewShimmer.startShimmer();
-        loadingProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
         finishedBetatestRecyclerViewShimmer.stopShimmer();
         finishedBetatestRecyclerViewShimmer.setVisibility(View.GONE);
-        loadingProgressBar.setVisibility(View.GONE);
     }
 
     @Override
