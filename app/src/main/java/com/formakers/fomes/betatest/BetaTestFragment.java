@@ -180,6 +180,7 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Override
     public void hideLoading() {
         betaTestRecyclerViewShimmer.stopShimmer();
+        betaTestRecyclerViewShimmer.setVisibility(View.GONE);
         betaTestRecyclerView.setVisibility(View.VISIBLE);
 //        loadingBar.setVisibility(View.GONE);
     }
