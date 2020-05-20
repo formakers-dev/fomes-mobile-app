@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -35,6 +36,7 @@ import butterknife.BindView;
 public class FinishedBetaTestFragment extends BaseFragment implements MainActivity.FragmentCommunicator, FinishedBetaTestContract.View {
     public static final String TAG = "FinishedBetaTestFragment";
 
+    @BindView(R.id.finished_betatest_recyclerview_shimmer) ShimmerFrameLayout finishedBetatestRecyclerViewShimmer;
     @BindView(R.id.finished_betatest_recyclerview) RecyclerView finishedBetatestRecyclerView;
     @BindView(R.id.finished_betatest_empty_view) View finishedBetatestEmptyView;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
@@ -145,11 +147,14 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
 
     @Override
     public void showLoading() {
+        finishedBetatestRecyclerViewShimmer.startShimmer();
         loadingProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
+        finishedBetatestRecyclerViewShimmer.stopShimmer();
+        finishedBetatestRecyclerViewShimmer.setVisibility(View.GONE);
         loadingProgressBar.setVisibility(View.GONE);
     }
 

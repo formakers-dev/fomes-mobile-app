@@ -66,6 +66,33 @@
                 app:layout_constraintTop_toBottomOf="@id/title_option_menu_switch"
                 app:layout_constraintBottom_toBottomOf="@id/finished_betatest_notice_textview" />
 
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/finished_betatest_recyclerview_shimmer"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_tab_listview_top_margin"
+                app:shimmer_duration="800"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_option_menu">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@drawable/divider"
+                    android:theme="@style/FomesMainTabTheme.BetaTestDivider"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_finished_betatest_placeholder" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/betatest_list_divider_height"/>
+                    <include layout="@layout/item_finished_betatest_placeholder" />
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/finished_betatest_recyclerview"
                 android:layout_width="@dimen/match_constraint"

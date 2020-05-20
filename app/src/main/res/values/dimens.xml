@@ -57,6 +57,7 @@
     <dimen name="main_tab_listview_top_margin">21dp</dimen>
 
     <!-- Beta Test List -->
+    <dimen name="betatest_list_divider_height">16dp</dimen>
     <dimen name="betatest_title_text_size">18dp</dimen>
     <dimen name="betatest_subtitle_text_size">12dp</dimen>
     <dimen name="betatest_list_item_padding_start_end">16dp</dimen>
