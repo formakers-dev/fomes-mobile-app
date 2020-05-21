@@ -345,15 +345,17 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:padding="8dp"
                 android:background="@drawable/betatest_mission_item_button_selector"
                 android:foreground="@drawable/ripple"
-                android:textColor="@color/button_text_color_selector"
+                android:drawableStart="@drawable/icon_new_selector"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:text="@string/finished_betatest_detail_go_to_certificates"
+                android:textColor="@color/button_text_color_selector"
                 app:layout_constraintTop_toBottomOf="@+id/layout_recheck_my_answers"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start" />
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"/>
 
             <View
                 android:id="@+id/betatest_my_results_divider"
