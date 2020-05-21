@@ -119,7 +119,8 @@ public class LoginPresenter implements LoginContract.Presenter {
                         }
                     }
                     view.showToast("로그인에 실패하였습니다. 재시도 고고");
-                    view.showLoginButton();
+                    view.hideFomesLogo();
+                    view.showLoginView();
                 });
     }
 
@@ -173,6 +174,23 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void unsubscribe() {
         if (compositeSubscription != null) {
             compositeSubscription.clear();
+        }
+    }
+
+    @Override
+    public void init() {
+        if (this.isProvisioningProgress()) {
+            this.view.hideFomesLogo();
+            this.view.showLoginView();
+        } else {
+            this.view.addToCompositeSubscription(
+                this.googleSilentSignIn()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::signUpOrSignIn, e -> {
+                            this.view.hideFomesLogo();
+                            this.view.showLoginView();
+                        })
+            );
         }
     }
 

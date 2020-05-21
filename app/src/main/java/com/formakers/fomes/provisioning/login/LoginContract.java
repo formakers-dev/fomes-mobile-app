@@ -6,6 +6,7 @@ import com.formakers.fomes.common.mvp.BaseView;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import rx.Single;
+import rx.Subscription;
 
 public interface LoginContract {
     interface Presenter {
@@ -18,11 +19,16 @@ public interface LoginContract {
         boolean isProvisioningProgress();
 
         void unsubscribe();
+
+        void init();
     }
 
     interface View extends BaseView<Presenter> {
         void showToast(String toastMessage);
         void startActivityAndFinish(Class<?> destActivity);
-        void showLoginButton();
+        void showLoginView();
+        void hideFomesLogo();
+
+        void addToCompositeSubscription(Subscription subscription);
     }
 }

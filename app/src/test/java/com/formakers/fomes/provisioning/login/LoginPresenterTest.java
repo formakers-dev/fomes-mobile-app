@@ -277,7 +277,7 @@ public class LoginPresenterTest {
         verify(mockUserService).signIn(eq("testIdToken"));
         verify(mockSharedPreferencesHelper).resetProvisioningProgressStatus();
         verify(mockView).showToast(contains("실패"));
-        verify(mockView).showLoginButton();
+        verify(mockView).showLoginView();
     }
 
     @Test

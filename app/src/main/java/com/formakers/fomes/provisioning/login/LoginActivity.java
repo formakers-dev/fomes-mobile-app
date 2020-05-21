@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +25,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Subscription;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
@@ -30,6 +33,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private static final int REQUEST_CODE_SIGN_IN = 9001;
 
+    @BindView(R.id.fomes_logo_layout) ViewGroup logoLayout;
     @BindView(R.id.login_tnc) TextView loginTncTextView;
     @BindView(R.id.login_google_button) Button loginButton;
 
@@ -62,17 +66,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         loginTncTextView.setText(Html.fromHtml(getString(R.string.login_tnc)));
         loginTncTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        if (presenter.isProvisioningProgress()) {
-            this.showLoginButton();
-        } else {
-            addToCompositeSubscription(
-                    presenter.googleSilentSignIn()
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(googleSignInResult -> {
-                                this.presenter.signUpOrSignIn(googleSignInResult);
-                            }, e -> this.showLoginButton())
-            );
-        }
+        presenter.init();
     }
 
     @Override
@@ -116,14 +110,47 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     @Override
-    public void showLoginButton() {
+    public void showLoginView() {
         loginButton.setVisibility(View.VISIBLE);
         loginTncTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideFomesLogo() {
+        Animation fadeOutAnimation = getFadeOutAnimation(1000);
+        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                logoLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        logoLayout.startAnimation(fadeOutAnimation);
+    }
+
+    @Override
+    public void addToCompositeSubscription(Subscription subscription) {
+        super.addToCompositeSubscription(subscription);
     }
 
     @OnClick(R.id.login_google_button)
     public void onLoginButtonClick(View view) {
         Intent signInIntent = this.presenter.getGoogleSignInIntent();
         startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
+    }
+
+    private Animation getFadeOutAnimation(long durationMills) {
+        Animation out = new AlphaAnimation(1.0f, 0.0f);
+        out.setDuration(durationMills);
+        return out;
     }
 }
