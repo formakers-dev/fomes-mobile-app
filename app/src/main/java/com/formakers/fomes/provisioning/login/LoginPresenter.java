@@ -17,9 +17,12 @@ import com.formakers.fomes.provisioning.ProvisioningActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Completable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -108,6 +111,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private Single<User> signIn(String idToken, boolean isSignUp) {
         return userService.signIn(idToken).toSingle()
+                .delay(500, TimeUnit.MILLISECONDS)
                 .doOnSuccess(user -> sharedPreferencesHelper.setProvisioningProgressStatus(isSignUp ? FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION : FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(user -> view.startActivityAndFinish(MainActivity.class))
@@ -119,8 +123,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         }
                     }
                     view.showToast("로그인에 실패하였습니다. 재시도 고고");
-                    view.hideFomesLogo();
-                    view.showLoginView();
+                    view.hideFomesLogoAndShowLoginView();
                 });
     }
 
@@ -180,16 +183,15 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void init() {
         if (this.isProvisioningProgress()) {
-            this.view.hideFomesLogo();
-            this.view.showLoginView();
+            Completable.complete().delay(1000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> this.view.hideFomesLogoAndShowLoginView(), e -> Log.e(TAG, String.valueOf(e)));
         } else {
             this.view.addToCompositeSubscription(
                 this.googleSilentSignIn()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::signUpOrSignIn, e -> {
-                            this.view.hideFomesLogo();
-                            this.view.showLoginView();
-                        })
+                        .subscribe(this::signUpOrSignIn, e -> this.view.hideFomesLogoAndShowLoginView())
             );
         }
     }

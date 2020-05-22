@@ -13,7 +13,21 @@
         android:src="@drawable/login_background" />
 
     <include android:id="@+id/fomes_logo_layout"
-        layout="@layout/activity_splash"/>
+        layout="@layout/activity_splash" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/login_description_view_pager"
+        android:layout_width="289dp"
+        android:layout_height="386dp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/betatest_list_divider_height"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/login_google_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/login_google_button"
@@ -31,7 +45,8 @@
         app:layout_constraintBottom_toTopOf="@+id/login_tnc"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/login_tnc"
@@ -49,5 +64,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="tnctnctnc" />
+        tools:text="tnctnctnc"
+        tools:visibility="visible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
