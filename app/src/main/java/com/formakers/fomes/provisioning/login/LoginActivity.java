@@ -28,6 +28,8 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @BindView(R.id.fomes_logo_layout) ViewGroup logoLayout;
     @BindView(R.id.login_description_view_pager) ViewPager2 loginViewPager;
+    @BindView(R.id.login_description_view_pager_indicator) TabLayout loginViewPagerIndicator;
     @BindView(R.id.login_tnc) TextView loginTncTextView;
     @BindView(R.id.login_google_button) Button loginButton;
 
@@ -121,6 +124,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,
                 new ContextThemeWrapper(this, R.style.LoginTheme_CardDivider).getTheme()));
         this.loginViewPager.addItemDecoration(dividerItemDecoration);
+
+        new TabLayoutMediator(loginViewPagerIndicator, loginViewPager, (tab, position) -> {
+        }).attach();
     }
 
     @Override
