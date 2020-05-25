@@ -47,8 +47,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private static final int REQUEST_CODE_SIGN_IN = 9001;
 
     @BindView(R.id.fomes_logo_layout) ViewGroup logoLayout;
+    @BindView(R.id.login_description_layout) ViewGroup loginDescriptionLayout;
     @BindView(R.id.login_description_view_pager) ViewPager2 loginViewPager;
     @BindView(R.id.login_description_view_pager_indicator) TabLayout loginViewPagerIndicator;
+    @BindView(R.id.login_button_layout) ViewGroup loginButtonLayout;
     @BindView(R.id.login_tnc) TextView loginTncTextView;
     @BindView(R.id.login_google_button) Button loginButton;
 
@@ -146,13 +148,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Animation fadeInAnimation = getFadeInAnimation(1000);
 
         loginViewPager.startAnimation(fadeInAnimation);
-        loginViewPager.setVisibility(View.VISIBLE);
+        loginDescriptionLayout.setVisibility(View.VISIBLE);
 
         loginButton.startAnimation(fadeInAnimation);
-        loginButton.setVisibility(View.VISIBLE);
-
         loginTncTextView.startAnimation(fadeInAnimation);
-        loginTncTextView.setVisibility(View.VISIBLE);
+        loginButtonLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
