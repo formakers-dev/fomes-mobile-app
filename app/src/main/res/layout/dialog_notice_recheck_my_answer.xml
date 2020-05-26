@@ -50,6 +50,12 @@
             android:visibility="visible"
             tools:visibility="visible" />
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/dialog_image_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp" />
+
         <TextView
             android:id="@+id/dialog_message"
             android:layout_width="match_parent"

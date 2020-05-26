@@ -23,7 +23,7 @@ import com.formakers.fomes.common.noti.MessagingService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.view.BaseActivity;
 import com.formakers.fomes.common.view.FomesBaseActivity;
-import com.formakers.fomes.common.view.NoticeMigrationActivity;
+import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import javax.inject.Named;
@@ -66,7 +66,7 @@ public interface ApplicationComponent {
     void inject(LocalBroadcastReceiver localBroadcastReceiver);
 
     // fomes
-    void inject(NoticeMigrationActivity activity);
+    void inject(FomesNoticeDialog fomesNoticeDialog);
 
     void inject(FomesBaseActivity activity);
     void inject(BaseActivity activity);

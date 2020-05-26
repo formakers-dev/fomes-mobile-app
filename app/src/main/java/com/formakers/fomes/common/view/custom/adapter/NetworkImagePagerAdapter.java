@@ -14,6 +14,7 @@ import com.formakers.fomes.common.helper.ImageLoader;
 
 import java.util.List;
 
+@Deprecated
 public class NetworkImagePagerAdapter extends PagerAdapter {
 
     List<String> imageUrlList;
