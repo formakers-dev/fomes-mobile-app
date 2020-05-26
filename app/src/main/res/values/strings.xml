@@ -42,6 +42,7 @@
     <string name="common_number_three">3</string>
     <string name="common_dash">-</string>
     <string name="common_close">종료</string>
+    <string name="common_cancel">취소</string>
     <string name="common_modify_complete">수정 완료</string>
 
     <!-- Fomes - locality strings -->
@@ -232,4 +233,12 @@
     <string name="betatest_detail_mission_play_time_desc_playing">플레이 하셨어요. 화이팅!</string>
     <!--<string name="betatest_detail_mission_play_time_desc_over">화이팅!</string>-->
     <string name="betatest_detail_mission_item_lock_level_format">%d단계 미션</string>
+
+    <!-- Survey -->
+    <string name="survey_back_dialog_title">화면을 이동하시겠어요?</string>
+    <string name="survey_back_dialog_contents">이동 시, 작성중인 내용은 저장되지 않습니다.</string>
+    <string name="survey_back_dialog_guide">* 작성 내용을 저장하려면 설문으로 돌아가서 하단의 [제출] 버튼을 클릭하세요.</string>
+    <string name="survey_back_dialog_back">뒤로 가기</string>
+    <string name="survey_back_dialog_finish">설문 종료</string>
+    <string name="survey_back_dialog_cancel">@string/common_cancel</string>
 </resources>
