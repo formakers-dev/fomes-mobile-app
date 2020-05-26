@@ -315,14 +315,14 @@
 
             <TextView
                 android:id="@+id/betatest_reward_description_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 style="@style/BetaTestDetailTheme.SectionContent"
                 android:layout_marginTop="@dimen/betatest_detail_items_description_margin_top"
                 android:text="@string/betatest_detail_rewards_description"
-                app:layout_constraintTop_toBottomOf="@id/betatest_reward_title_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_title_textview"
                 app:layout_constraintStart_toStartOf="@+id/betatest_reward_title_textview"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintEnd_toEndOf="@+id/betatest_reward_title_textview" />
 
             <LinearLayout
                 android:id="@+id/betatest_reward_items_layout"
