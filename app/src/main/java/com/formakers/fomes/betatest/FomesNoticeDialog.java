@@ -35,7 +35,9 @@ public class FomesNoticeDialog extends DialogFragment {
     @BindView(R.id.dialog_subtitle) TextView subTitleTextView;
     @BindView(R.id.dialog_image) ImageView imageView;
     @BindView(R.id.dialog_message) TextView descriptionTextView;
-    @BindView(R.id.dialog_positive_button) Button postivieButton;
+    @BindView(R.id.dialog_positive_button) Button positiveButton;
+    @BindView(R.id.dialog_neutral_button) Button neutralButton;
+    @BindView(R.id.dialog_negative_button) Button negativeButton;
 
     private Unbinder unbinder;
 
@@ -43,6 +45,8 @@ public class FomesNoticeDialog extends DialogFragment {
     private View.OnClickListener positiveButtonClickListener;
     private String negativeButtonText;
     private View.OnClickListener negativeButtonClickListener;
+    private String neutralButtonText;
+    private View.OnClickListener neutralButtonClickListener;
 
     @Nullable
     @Override
@@ -84,11 +88,32 @@ public class FomesNoticeDialog extends DialogFragment {
             descriptionTextView.setVisibility(View.VISIBLE);
         }
 
-        postivieButton.setText(positiveButtonText);
-        postivieButton.setOnClickListener(v -> {
-            positiveButtonClickListener.onClick(v);
-            dismiss();
-        });
+        if (!TextUtils.isEmpty(positiveButtonText)) {
+            positiveButton.setText(positiveButtonText);
+            positiveButton.setOnClickListener(v -> {
+                positiveButtonClickListener.onClick(v);
+                dismiss();
+            });
+            positiveButton.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(neutralButtonText)) {
+            neutralButton.setText(neutralButtonText);
+            neutralButton.setOnClickListener(v -> {
+                neutralButtonClickListener.onClick(v);
+                dismiss();
+            });
+            neutralButton.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(negativeButtonText)) {
+            negativeButton.setText(negativeButtonText);
+            negativeButton.setOnClickListener(v -> {
+                negativeButtonClickListener.onClick(v);
+                dismiss();
+            });
+            negativeButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -126,5 +151,10 @@ public class FomesNoticeDialog extends DialogFragment {
     public void setNegativeButton(String buttonText, View.OnClickListener clickListener) {
         this.negativeButtonText = buttonText;
         this.negativeButtonClickListener = clickListener;
+    }
+
+    public void setNeutralButton(String buttonText, View.OnClickListener clickListener) {
+        this.neutralButtonText = buttonText;
+        this.neutralButtonClickListener = clickListener;
     }
 }
