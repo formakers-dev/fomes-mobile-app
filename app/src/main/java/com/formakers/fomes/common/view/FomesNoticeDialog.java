@@ -1,4 +1,4 @@
-package com.formakers.fomes.betatest;
+package com.formakers.fomes.common.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;

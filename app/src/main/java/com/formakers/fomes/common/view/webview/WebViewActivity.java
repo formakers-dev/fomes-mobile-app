@@ -24,7 +24,7 @@ import androidx.annotation.RequiresApi;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.betatest.FomesNoticeDialog;
+import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.DeeplinkActivity;

@@ -24,6 +24,7 @@ import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
+import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.main.MainActivity;

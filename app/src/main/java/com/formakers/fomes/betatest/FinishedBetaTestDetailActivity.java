@@ -30,6 +30,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 
 import java.util.List;
