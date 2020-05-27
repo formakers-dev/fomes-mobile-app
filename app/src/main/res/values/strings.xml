@@ -133,6 +133,7 @@
     <string name="main_menu_my_wish_list">@string/wish_list</string>
     <string name="main_menu_my_recent_analysis">게임 성향 분석</string>
     <string name="main_menu_my_info">프로필 수정</string>
+    <string name="main_menu_fomes_pc_version_guide">포메스 PC 버전 안내</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_donation">후원하기</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>

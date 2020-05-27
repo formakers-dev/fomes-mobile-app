@@ -1,6 +1,7 @@
 package com.formakers.fomes.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -278,6 +279,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             }
             case R.id.my_wish_list: {
                 startActivityForResult(new Intent(this, WishListActivity.class), REQUEST_CODE_WISHLIST);
+                break;
+            }
+            case R.id.fomes_pc_version_guide: {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.notion.so/formakers/PC-4e409af0c2df4dfa9734328c9817f317"));
+                startActivity(intent);
                 break;
             }
             case R.id.settings: {

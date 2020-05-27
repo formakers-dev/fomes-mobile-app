@@ -31,6 +31,13 @@
 
     <group android:id="@+id/menu_group4" android:checkableBehavior="none">
         <item
+            android:id="@+id/fomes_pc_version_guide"
+            android:title="@string/main_menu_fomes_pc_version_guide"
+            android:icon="@drawable/icon_amount"/>
+    </group>
+
+    <group android:id="@+id/menu_group5" android:checkableBehavior="none">
+        <item
             android:id="@+id/settings"
             android:title="@string/main_menu_settings"
             android:icon="@drawable/icon_settings"/>
