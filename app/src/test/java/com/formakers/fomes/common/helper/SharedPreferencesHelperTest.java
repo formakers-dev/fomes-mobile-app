@@ -105,17 +105,6 @@ public class SharedPreferencesHelperTest {
     }
 
     @Test
-    public void getOldLatestMigrationVersion호출시__가장최근의마이그레이션버전을_리턴한다() {
-        assertThat(subject.getOldLatestMigrationVersion()).isEqualTo(1);
-    }
-
-    @Test
-    public void setOldLatestMigrationVersion호출시__해당버전을_저장한다() {
-        subject.setOldLatestMigrationVersion(2);
-        assertThat(sf.getInt("OLD_LATEST_MIGRATION_VERSION", 0)).isEqualTo(2);
-    }
-
-    @Test
     public void resetProvisioningProgressStatus호출시_프로비저닝상태를_초기화한다() {
         subject.resetProvisioningProgressStatus();
 
