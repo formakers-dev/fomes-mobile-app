@@ -114,7 +114,7 @@ public class BaseActivity extends AppCompatActivity {
         fomesAlertDialog.show();
     }
 
-    private void moveToPlayStore() {
+    public void moveToPlayStore() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("market://details?id=com.formakers.fomes"));
         startActivity(intent);
