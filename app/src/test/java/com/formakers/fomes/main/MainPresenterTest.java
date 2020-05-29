@@ -147,7 +147,7 @@ public class MainPresenterTest {
                 "    \"https://i.imgur.com/SA8ZtA9.jpg\",\n" +
                 "    \"https://i.imgur.com/8efXcqY.png\"\n" +
                 "  ],\n" +
-                "  \"versionCode\": 999,\n" +
+                "  \"versionCode\": -1,\n" +
                 "  \"noticeVersion\": 3\n" +
                 "}";
 
@@ -172,7 +172,7 @@ public class MainPresenterTest {
     public void checkNeedToShowMigrationDialog_호출시__공지팝업의_하단버튼_클릭시__공지팝업_버전을_업데이트한다() {
         String migrationNotice = "{\n" +
                 "  \"title\": \"그냥 버튼 로직만 체크할거야\",\n" +
-                "  \"versionCode\": 999,\n" +
+                "  \"versionCode\": -1,\n" +
                 "  \"noticeVersion\": 3\n" +
                 "}";
 
@@ -218,7 +218,7 @@ public class MainPresenterTest {
     public void checkNeedToShowMigrationDialog_호출시__공지버전이_높고_앱버전이_같거나_높으면__확인_플로우를_지정한다() {
         String migrationNotice = "{\n" +
                 "  \"title\": \"업데이트 플로우만 체크할거야\",\n" +
-                "  \"versionCode\": 999,\n" +
+                "  \"versionCode\": -1,\n" +
                 "  \"noticeVersion\": 3\n" +
                 "}";
 
@@ -242,7 +242,7 @@ public class MainPresenterTest {
     public void checkNeedToShowMigrationDialog_호출시__공지버전이_낮으면__공지팝업을_띄우지_않는다() {
         String migrationNotice = "{\n" +
                 "  \"title\": \"이건 안뜰거야\",\n" +
-                "  \"versionCode\": 999,\n" +
+                "  \"versionCode\": -1,\n" +
                 "  \"noticeVersion\": 3\n" +
                 "}";
 
