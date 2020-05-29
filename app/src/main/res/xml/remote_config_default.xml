@@ -8,4 +8,11 @@
         <key>signup_provision_analysis_screen_is_visible</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>migration_notice</key>
+        <value>{
+            "versionCode": 1,
+            "noticeVersion": -999
+            }</value>
+    </entry>
 </defaultsMap>
