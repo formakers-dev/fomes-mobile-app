@@ -1,16 +1,24 @@
 package com.formakers.fomes.main;
 
+import android.os.Bundle;
 import android.util.Pair;
 
+import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.PostService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.EventLog;
+import com.formakers.fomes.common.network.vo.RemoteConfigVO;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.FomesNoticeDialog;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,6 +41,8 @@ public class MainPresenter implements MainContract.Presenter {
     private EventLogService eventLogService;
     private AnalyticsModule.Analytics analytics;
     private ImageLoader imageLoader;
+    private FirebaseRemoteConfig remoteConfig;
+    private SharedPreferencesHelper sharedPreferencesHelper;
 
     private JobManager jobManager;
     private FomesUrlHelper fomesUrlHelper;
@@ -52,7 +62,9 @@ public class MainPresenter implements MainContract.Presenter {
                   JobManager jobManager,
                   FomesUrlHelper fomesUrlHelper,
                   AnalyticsModule.Analytics analytics,
-                  ImageLoader imageLoader) {
+                  ImageLoader imageLoader,
+                  FirebaseRemoteConfig remoteConfig,
+                  SharedPreferencesHelper sharedPreferencesHelper) {
         this.view = view;
         this.userEmail = userEmail;
         this.userNickName = userNickName;
@@ -63,6 +75,8 @@ public class MainPresenter implements MainContract.Presenter {
         this.fomesUrlHelper = fomesUrlHelper;
         this.analytics = analytics;
         this.imageLoader = imageLoader;
+        this.remoteConfig = remoteConfig;
+        this.sharedPreferencesHelper = sharedPreferencesHelper;
     }
 
     @Override
@@ -103,6 +117,33 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public boolean checkRegisteredSendDataJob() {
         return jobManager.isRegisteredJob(JobManager.JOB_ID_SEND_DATA);
+    }
+
+    @Override
+    public void checkNeedToShowMigrationDialog() {
+        String migrationNoticeString = this.remoteConfig.getString(FomesConstants.RemoteConfig.MIGRATION_NOTICE);
+
+        Log.v(TAG, "[RemoteConfig] MIGRATION_NOTICE=" + this.remoteConfig.getString(FomesConstants.RemoteConfig.MIGRATION_NOTICE));
+
+        RemoteConfigVO.MigrationNotice migrationNotice = new Gson().fromJson(migrationNoticeString, RemoteConfigVO.MigrationNotice.class);
+        if (migrationNotice.getNoticeVersion() > sharedPreferencesHelper.getMigrationNoticeVersion()) {
+            boolean isNeedToUpdate = migrationNotice.getVersionCode() >= BuildConfig.VERSION_CODE;
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FomesNoticeDialog.EXTRA_TITLE, migrationNotice.getTitle());
+            bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, migrationNotice.getDescription());
+            bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, migrationNotice.getGuide());
+            bundle.putStringArrayList(FomesNoticeDialog.EXTRA_IMAGE_URL_LIST, migrationNotice.getDescriptionImages());
+            bundle.putBoolean("IS_NEED_TO_UPDATE", isNeedToUpdate);
+            bundle.putString("POSITIVE_BUTTON_TEXT", isNeedToUpdate ? "업데이트 하러가기" : "확인");
+
+            this.view.showMigrationNoticeDialog(bundle, v -> {
+                if (isNeedToUpdate) {
+                    this.view.moveToPlayStore();
+                }
+                this.sharedPreferencesHelper.setMigrationNoticeVersion(migrationNotice.getNoticeVersion());
+            });
+        }
     }
 
     @Override

@@ -44,8 +44,6 @@ public abstract class FomesBaseActivityTest<T extends FomesBaseActivity> extends
 
         when(mockSharedPreferencesHelper.getProvisioningProgressStatus())
                 .thenReturn(FomesConstants.PROVISIONING.PROGRESS_STATUS.COMPLETED);
-        when(mockSharedPreferencesHelper.getOldLatestMigrationVersion())
-                .thenReturn(FomesConstants.MIGRATION_VERSION);
 
         when(mockAndroidNativeHelper.hasUsageStatsPermission()).thenReturn(true);
     }

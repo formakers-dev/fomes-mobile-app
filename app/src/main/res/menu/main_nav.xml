@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group  android:id="@+id/menu_group0" android:checkableBehavior="none">
+    <group android:id="@+id/menu_group0" android:checkableBehavior="none">
+        <item
+            android:id="@+id/fomes_pc_version_guide"
+            android:title="@string/main_menu_fomes_pc_version_guide"
+            android:icon="@drawable/icon_new"/>
+    </group>
+
+    <group  android:id="@+id/menu_group1" android:checkableBehavior="none">
         <item
             android:id="@+id/my_info"
             android:title="@string/main_menu_my_info"
             android:icon="@drawable/icon_my_info"/>
     </group>
 
-    <group  android:id="@+id/menu_group1" android:checkableBehavior="none">
+    <group  android:id="@+id/menu_group2" android:checkableBehavior="none">
         <item
             android:id="@+id/my_recent_analysis"
             android:title="@string/main_menu_my_recent_analysis"
             android:icon="@drawable/icon_my_recent_analysis"/>
     </group>
 
-    <group android:id="@+id/menu_group2" android:checkableBehavior="none">
+    <group android:id="@+id/menu_group3" android:checkableBehavior="none">
         <item
             android:id="@+id/my_wish_list"
             android:title="@string/main_menu_my_wish_list"
             android:icon="@drawable/icon_bookmark"/>
     </group>
 
-    <group android:id="@+id/menu_group3" android:checkableBehavior="none"
+    <group android:id="@+id/menu_group4" android:checkableBehavior="none"
         android:visible="false">
         <item
             android:id="@+id/my_betatest"
@@ -29,7 +36,7 @@
             android:icon="@drawable/icon_my_betatest"/>
     </group>
 
-    <group android:id="@+id/menu_group4" android:checkableBehavior="none">
+    <group android:id="@+id/menu_group5" android:checkableBehavior="none">
         <item
             android:id="@+id/settings"
             android:title="@string/main_menu_settings"

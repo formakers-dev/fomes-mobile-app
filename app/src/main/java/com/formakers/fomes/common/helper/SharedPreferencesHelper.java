@@ -31,6 +31,7 @@ public class SharedPreferencesHelper {
     private static final String KEY_NICK_NAME = "NICK_NAME";
     private static final String KEY_LAST_UPDATE_APP_USAGE_TIMESTAMP = "LAST_UPDATE_STAT_TIMESTAMP";
     private static final String KEY_LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP = "LAST_UPDATE_SHORT_TERM_STAT_TIMESTAMP";
+    private static final String KEY_MIGRATION_NOTICE_VERSION = "MIGRATION_NOTICE_VERSION";
 
     private static final String KEY_PROVISIONING_PROGRESS_STATUS = "PROVISIONING_PROGRESS_STATUS";
     private static final String KEY_OLD_LATEST_MIGRATION_VERSION = "OLD_LATEST_MIGRATION_VERSION";
@@ -160,11 +161,11 @@ public class SharedPreferencesHelper {
         this.reset(KEY_PROVISIONING_PROGRESS_STATUS);
     }
 
-    public int getOldLatestMigrationVersion() {
-        return getInt(KEY_OLD_LATEST_MIGRATION_VERSION, 0);
+    public int getMigrationNoticeVersion() {
+        return getInt(KEY_MIGRATION_NOTICE_VERSION, -1);
     }
 
-    public void setOldLatestMigrationVersion(int version) {
-        putInt(KEY_OLD_LATEST_MIGRATION_VERSION, version);
+    public void setMigrationNoticeVersion(int version) {
+        putInt(KEY_MIGRATION_NOTICE_VERSION, version);
     }
 }

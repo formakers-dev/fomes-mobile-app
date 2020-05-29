@@ -37,6 +37,20 @@
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Fomes -->
+    <style name="LoginTheme" parent="FomesTheme.NoActionBar">
+    </style>
+
+    <style name="LoginTheme.CardBackground">
+        <item name="item_background_radius">14dp</item>
+        <item name="item_solid_color">@color/fomes_white</item>
+    </style>
+
+    <style name="LoginTheme.CardDivider">
+        <item name="divider_width">@dimen/betatest_list_divider_height</item>
+        <item name="divider_height">@dimen/match_constraint</item>
+        <item name="divider_color">@android:color/transparent</item>
+    </style>
+
     <style name="ProvisioningTheme" parent="FomesTheme.NoActionBar">
     </style>
 
@@ -79,7 +93,7 @@
 
     <style name="FomesMainTabTheme.BetaTestDivider">
         <item name="divider_width">@dimen/match_constraint</item>
-        <item name="divider_height">16dp</item>
+        <item name="divider_height">@dimen/betatest_list_divider_height</item>
         <item name="divider_color">@android:color/transparent</item>
     </style>
 

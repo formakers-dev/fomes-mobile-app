@@ -1,6 +1,7 @@
 package com.formakers.fomes.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import com.formakers.fomes.betatest.FinishedBetaTestFragment;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.common.view.custom.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
@@ -113,6 +115,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         Log.v(TAG,"onPostCreate");
+
+        this.presenter.checkNeedToShowMigrationDialog();
 
         boolean isRegisteredSendDataJob = presenter.checkRegisteredSendDataJob();
         Log.i(TAG, "isRegisteredSendDataJob=" + isRegisteredSendDataJob);
@@ -280,6 +284,12 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 startActivityForResult(new Intent(this, WishListActivity.class), REQUEST_CODE_WISHLIST);
                 break;
             }
+            case R.id.fomes_pc_version_guide: {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.notion.so/formakers/PC-4e409af0c2df4dfa9734328c9817f317"));
+                startActivity(intent);
+                break;
+            }
             case R.id.settings: {
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
@@ -361,6 +371,18 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public void refreshEventPager() {
         this.eventPagerAdapterView.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showMigrationNoticeDialog(Bundle migrationNoticeDialogBundle, View.OnClickListener clickListener) {
+        FomesNoticeDialog migrationNoticeDialog = new FomesNoticeDialog();
+
+        String positiveButtonText = migrationNoticeDialogBundle.getString("POSITIVE_BUTTON_TEXT");
+
+        migrationNoticeDialog.setArguments(migrationNoticeDialogBundle);
+        migrationNoticeDialog.setPositiveButton(positiveButtonText, clickListener);
+
+        migrationNoticeDialog.show(getSupportFragmentManager(), "MigrationNoticeDialog");
     }
 
     /*** start of 사실상 프래그먼트 페이저를 가지는 모든 액티비티에서 쓰이는 코드...ㅋㅋ ***/

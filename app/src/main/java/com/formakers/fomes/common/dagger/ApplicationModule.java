@@ -17,6 +17,7 @@ import dagger.Provides;
 
 @Module
 public class ApplicationModule {
+    private static final String TAG = "ApplicationModule";
     private final FomesApplication application;
 
     public ApplicationModule(FomesApplication application) {
@@ -32,6 +33,7 @@ public class ApplicationModule {
     @Singleton
     @Provides
     FirebaseRemoteConfig firebaseRemoteConfig(Context context) {
+        Log.i(TAG, "firebaseRemoteConfig");
         FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setMinimumFetchIntervalInSeconds(3600)
@@ -45,6 +47,7 @@ public class ApplicationModule {
                 boolean updated = task.getResult();
                 Log.d("FirebaseRemoteConfig", "Config params updated: " + updated);
                 if (BuildConfig.DEBUG) {
+                    Log.v("FirebaseRemoteConfig", "Config params updated: " + remoteConfig.getAll());
                     Toast.makeText(context, "[Firebase Remote Config] Fetch and activate succeeded", Toast.LENGTH_SHORT).show();
                 }
             } else {

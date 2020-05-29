@@ -1,5 +1,7 @@
 package com.formakers.fomes.main;
 
+import android.os.Bundle;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
@@ -23,6 +25,7 @@ public interface MainContract {
 
         int registerSendDataJob();
         boolean checkRegisteredSendDataJob();
+        void checkNeedToShowMigrationDialog();
 
         void unsubscribe();
     }
@@ -30,5 +33,7 @@ public interface MainContract {
     interface View extends BaseView<Presenter> {
         void setUserInfoToNavigationView(String email, String nickName);
         void refreshEventPager();
+        void showMigrationNoticeDialog(Bundle migrationNoticeDialogBundle, android.view.View.OnClickListener onClickListener);
+        void moveToPlayStore();
     }
 }

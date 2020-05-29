@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/item_rect_rounded_corner_background"
+    android:theme="@style/LoginTheme.CardBackground">
+
+    <TextView
+        android:id="@+id/login_description_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:textColor="@color/fomes_black_alpha_75"
+        tools:text="사전예약 없는!\n신작 게임 플레이"/>
+
+    <TextView
+        android:id="@+id/login_description_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:gravity="center"
+        android:textSize="14dp"
+        android:textColor="@color/fomes_black_alpha_75"
+        tools:text="바로 플레이 하세요."/>
+
+    <ImageView
+        android:id="@+id/login_description_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/analysis_rank_medal"/>
+
+
+</LinearLayout>

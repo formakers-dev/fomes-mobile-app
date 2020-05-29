@@ -42,6 +42,7 @@
     <string name="common_number_three">3</string>
     <string name="common_dash">-</string>
     <string name="common_close">종료</string>
+    <string name="common_cancel">취소</string>
     <string name="common_modify_complete">수정 완료</string>
 
     <!-- Fomes - locality strings -->
@@ -132,6 +133,7 @@
     <string name="main_menu_my_wish_list">@string/wish_list</string>
     <string name="main_menu_my_recent_analysis">게임 성향 분석</string>
     <string name="main_menu_my_info">프로필 수정</string>
+    <string name="main_menu_fomes_pc_version_guide">PC로 설문 참여하려면?</string>
     <string name="main_menu_settings">설정</string>
     <string name="main_menu_donation">후원하기</string>
     <string name="main_menu_my_ignore_games">관심 없음 처리된 게임들 보기</string>
@@ -258,4 +260,12 @@
     <string name="betatest_certificate_fomes_feedback">앞으로도 좋은 피드백 기대할게요❤️</string>
     <string name="betatest_certificate_fomes_feedback_for_better_try">아쉽게도 수상은 못하셨지만,\n다음 테스트에서 좋은 결과 기대할게요❤️</string>
     <string name="betatest_certificate_error_message">테스트 참여 정보 조회에 문제가 발생했습니다.\n\n테스트의 참여 완료 확인 후, 다시 시도해주세요.️</string>
+
+    <!-- Survey -->
+    <string name="survey_back_dialog_title">화면을 이동하시겠어요?</string>
+    <string name="survey_back_dialog_contents">이동 시, 작성중인 내용은 저장되지 않습니다.</string>
+    <string name="survey_back_dialog_guide">* 작성 내용을 저장하려면 [팝업 닫기] 후 작성 중인 설문 하단의 [제출] 버튼을 클릭하세요.</string>
+    <string name="survey_back_dialog_back">뒤로 가기</string>
+    <string name="survey_back_dialog_finish">설문 종료</string>
+    <string name="survey_back_dialog_cancel">팝업 닫기</string>
 </resources>

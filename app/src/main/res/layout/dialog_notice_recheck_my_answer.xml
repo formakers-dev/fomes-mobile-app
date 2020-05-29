@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/fomes_charcoal_gray"
     android:gravity="center"
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/dialog_contents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/dialog_title"
@@ -46,12 +50,19 @@
             android:visibility="visible"
             tools:visibility="visible" />
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/dialog_image_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp" />
+
         <TextView
             android:id="@+id/dialog_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:lineSpacingExtra="6dp"
+            android:gravity="center"
             android:text="* 임시로 오픈한 기능이라 어색하더라도 양해 부탁드려요 😭\n* 최대한 빨리 정식 기능으로 도입하겠습니다!"
             android:textColor="@color/colorPrimary"
             android:textSize="12dp"
@@ -59,7 +70,7 @@
     </LinearLayout>
     <Button
         android:id="@+id/dialog_positive_button"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="56dp"
         android:layout_marginTop="2dp"
         android:background="@color/colorPrimary"
@@ -67,5 +78,42 @@
         android:text="내 답변 다시보러 가기"
         android:textColor="@color/fomes_white"
         android:textSize="18dp"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_contents"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dialog_neutral_button"
+        tools:visibility="visible" />
+    <Button
+        android:id="@+id/dialog_neutral_button"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="56dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/colorPrimary"
+        android:foreground="@drawable/ripple"
+        android:text="중립"
+        android:textColor="@color/fomes_white"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_contents"
+        app:layout_constraintStart_toEndOf="@+id/dialog_positive_button"
+        app:layout_constraintEnd_toStartOf="@+id/dialog_negative_button"
+        tools:visibility="visible" />
+    <Button
+        android:id="@+id/dialog_negative_button"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="56dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/colorPrimary"
+        android:foreground="@drawable/ripple"
+        android:text="취소"
+        android:textColor="@color/fomes_white"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_contents"
+        app:layout_constraintStart_toEndOf="@+id/dialog_neutral_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

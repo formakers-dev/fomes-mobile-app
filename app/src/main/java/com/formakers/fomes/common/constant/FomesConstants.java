@@ -130,6 +130,7 @@ public interface FomesConstants {
 
     interface RemoteConfig {
         String SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE ="signup_analysis_screen_is_visible";
+        String MIGRATION_NOTICE ="migration_notice";
     }
 
     interface DeepLink {

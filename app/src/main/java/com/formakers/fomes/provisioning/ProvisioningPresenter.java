@@ -148,6 +148,7 @@ public class ProvisioningPresenter implements ProvisioningContract.Presenter {
     }
 
     private boolean isMoveToAnalysisReport() {
+        Log.d(TAG, "[RemoteConfig] SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE=" + this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE));
         return isProvisiongProgress()
                 && this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE);
     }
