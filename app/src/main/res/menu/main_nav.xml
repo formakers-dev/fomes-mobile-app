@@ -4,7 +4,7 @@
         <item
             android:id="@+id/fomes_pc_version_guide"
             android:title="@string/main_menu_fomes_pc_version_guide"
-            android:icon="@drawable/icon_amount"/>
+            android:icon="@drawable/icon_new"/>
     </group>
 
     <group  android:id="@+id/menu_group1" android:checkableBehavior="none">
