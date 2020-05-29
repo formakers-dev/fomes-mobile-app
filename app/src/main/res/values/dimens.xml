@@ -6,6 +6,9 @@
     <dimen name="match_constraint">0dp</dimen>
     <dimen name="progress_round_size">40dp</dimen>
 
+    <!-- Dialog -->
+    <dimen name="fomes_dialog_image_view_pager_hieght">300dp</dimen>
+
     <!-- Provisioning -->
     <dimen name="provision_pager_margin_top">53dp</dimen>
     <dimen name="provision_image_margin_top">37dp</dimen>

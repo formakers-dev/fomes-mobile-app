@@ -22,6 +22,8 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.view.custom.adapter.NetworkImageViewPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
@@ -45,6 +47,7 @@ public class FomesNoticeDialog extends DialogFragment {
     @BindView(R.id.dialog_subtitle) TextView subTitleTextView;
     @BindView(R.id.dialog_image) ImageView imageView;
     @BindView(R.id.dialog_image_view_pager) ViewPager2 imageViewPager;
+    @BindView(R.id.dialog_image_view_pager_indicator) TabLayout imageViewPagerIndicator;
     @BindView(R.id.dialog_message) TextView descriptionTextView;
     @BindView(R.id.dialog_positive_button) Button positiveButton;
     @BindView(R.id.dialog_neutral_button) Button neutralButton;
@@ -94,6 +97,7 @@ public class FomesNoticeDialog extends DialogFragment {
 
         if (imageUrls == null || imageUrls.size() <= 0) {
             imageViewPager.setVisibility(View.GONE);
+            imageViewPagerIndicator.setVisibility(View.GONE);
 
             if (!TextUtils.isEmpty(imageUrl)) {
                 imageLoader.loadImage(imageView, imageUrl);
@@ -104,6 +108,8 @@ public class FomesNoticeDialog extends DialogFragment {
             }
         } else {
             imageViewPager.setAdapter(new NetworkImageViewPagerAdapter(imageLoader, imageUrls));
+            new TabLayoutMediator(imageViewPagerIndicator, imageViewPager, (tab, position) -> {
+            }).attach();
             imageView.setVisibility(View.GONE);
         }
 
