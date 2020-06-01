@@ -34,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:lineSpacingExtra="6dp"
             android:text="[내 답변 다시보기] 기능을 임시 오픈하였습니다!\n[응답 수정] 버튼을 클릭하시면 응답을 확인할 수 있습니다."
             android:textAlignment="center"
             android:textColor="@color/fomes_white"
@@ -53,8 +52,17 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/dialog_image_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/fomes_dialog_image_view_pager_hieght"
             android:layout_marginTop="18dp" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/dialog_image_view_pager_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabBackground="@drawable/tab_pager_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"/>
 
         <TextView
             android:id="@+id/dialog_message"
