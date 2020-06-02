@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
@@ -55,12 +56,14 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @BindView(R.id.action_bar) Toolbar actionBar;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
-    @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
-    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
-    @BindView(R.id.betatest_detail_title) TextView titleTextView;
-    @BindView(R.id.betatest_detail_subtitle) TextView subTitleTextView;
-    @BindView(R.id.betatest_detail_period) TextView periodTextView;
-    @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
+    @BindView(R.id.betatest_overview_imageview) ImageView overviewImageView;
+//    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
+    @BindView(R.id.betatest_plan) TextView planTextView;
+    @BindView(R.id.betatest_my_status) TextView myStatusTextView;
+    @BindView(R.id.betatest_title_textview) TextView titleTextView;
+    @BindView(R.id.betatest_subtitle_textview) TextView subTitleTextView;
+//    @BindView(R.id.betatest_detail_period) TextView periodTextView;
+//    @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
     @BindView(R.id.betatest_contents_layout) ViewGroup contentsLayout;
     @BindView(R.id.betatest_game_description_group) Group gameDescriptionGroup;
     @BindView(R.id.betatest_detail_game_description_textview) TextView descriptionTextView;
@@ -173,24 +176,45 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         this.presenter.getImageLoader().loadImage(overviewImageView, betaTest.getCoverImageUrl(),
                 new RequestOptions().centerCrop());
 
-        this.presenter.getImageLoader().loadImage(iconImageView, betaTest.getIconImageUrl(),
-                new RequestOptions().override(120, 120)
-                .centerCrop()
-                .transform(new RoundedCorners(16))
-        , false);
+//        this.presenter.getImageLoader().loadImage(iconImageView, betaTest.getIconImageUrl(),
+//                new RequestOptions().override(120, 120)
+//                .centerCrop()
+//                .transform(new RoundedCorners(16))
+//        , false);
 
         if (actionBar != null) {
             actionBar.setTitle(betaTest.getTitle());
         }
 
         titleTextView.setText(betaTest.getTitle());
+        subTitleTextView.setText(betaTest.getDisplayDescription());
 
-        String tagsString = betaTest.getTagsString();
-        if (!TextUtils.isEmpty(tagsString)) {
-            subTitleTextView.setText(tagsString);
+        //플랜 표시
+        @StyleRes int planStyleResId;
+        @ColorRes int planNameColorId;
+        if (betaTest.isPremiumPlan()) {
+            planStyleResId = R.style.BetaTestTheme_Plan_Premium;
+            planNameColorId = R.color.fomes_orange;
         } else {
-            subTitleTextView.setVisibility(View.GONE);
+            planStyleResId = R.style.BetaTestTheme_Plan_Lite;
+            planNameColorId = R.color.colorPrimary;
         }
+
+        planTextView.setText(betaTest.getPlanStringResId());
+        planTextView.setTextColor(getResources().getColor(planNameColorId));
+        planTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
+                new androidx.appcompat.view.ContextThemeWrapper(this, planStyleResId).getTheme()));
+
+        // 참여정보 표시 정책
+        int myStatusVisibility = betaTest.isAttended() ? View.VISIBLE : View.GONE;
+        @StyleRes int myStatusStyleResId = betaTest.isCompleted() ? R.style.BetaTestTheme_MyStatus_Completed : R.style.BetaTestTheme_MyStatus;
+        @StringRes int myStatusStringId = betaTest.isCompleted() ? R.string.betatest_my_status_completed : R.string.betatest_my_status_attend;
+        @ColorRes int myStatusTextColorId = betaTest.isCompleted() ? R.color.colorPrimary : R.color.fomes_white;
+
+        myStatusTextView.setVisibility(myStatusVisibility);
+        myStatusTextView.setText(myStatusStringId);
+        myStatusTextView.setTextColor(getResources().getColor(myStatusTextColorId));
+        myStatusTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,  new androidx.appcompat.view.ContextThemeWrapper(this, myStatusStyleResId).getTheme()));
 
         String description = betaTest.getDescription();
         if (!TextUtils.isEmpty(description)) {
@@ -199,7 +223,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         } else {
             gameDescriptionGroup.setVisibility(View.GONE);
         }
-
+/*
         SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YY_DOT_MM_DOT_DD, Locale.getDefault());
 
         periodTextView.setText(String.format("%s ~ %s",
@@ -239,6 +263,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         dDayTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
                 new ContextThemeWrapper(this, projectStatusStyleId).getTheme()));
         dDayTextView.setTextColor(getResources().getColor(projectStatusColorId));
+*/
 
         // 테스트 목적
         if (TextUtils.isEmpty(betaTest.getPurpose())) {
