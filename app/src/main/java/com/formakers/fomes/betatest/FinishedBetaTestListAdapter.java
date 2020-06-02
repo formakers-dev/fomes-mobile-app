@@ -59,7 +59,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
         viewHolder.labelImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
 
-        viewHolder.subTitleTextView.setText(item.getDisplayDescription());
+        viewHolder.subTitleTextView.setText(item.getTagsString());
 
 
         int completedTextColor = res.getColor(R.color.colorPrimary);

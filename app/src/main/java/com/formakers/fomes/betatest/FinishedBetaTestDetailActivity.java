@@ -120,6 +120,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String rewardBestDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_REWARD_BEST_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
+        String tagsString = bundle.getString(FomesConstants.BetaTest.EXTRA_TAGS_STRING);
 
         presenter.getImageLoader().loadImage(coverIamgeView, coverImageUrl);
         titleTextView.setText(title);
