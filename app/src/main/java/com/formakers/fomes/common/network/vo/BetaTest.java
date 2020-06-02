@@ -36,6 +36,7 @@ public class BetaTest implements Parcelable {
     BugReport bugReport;
 
     List<Mission> missions;
+    String missionsSummary;
 
     Rewards rewards;
 
@@ -521,8 +522,8 @@ public class BetaTest implements Parcelable {
     }
 
     public String getDisplayDescription() {
-        // 태그가 있으면 태그를, 없으면 description을 보여주기
-        String result = getTagsString();
+        // 미션 요약정보가 있으면 미션 요약정보를, 없으면 description을 보여주기
+        String result = getMissionsSummary();
         if (!TextUtils.isEmpty(result)) {
             return result;
         } else {
@@ -703,6 +704,14 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public String getMissionsSummary() {
+        return missionsSummary;
+    }
+
+    public void setMissionsSummary(String missionsSummary) {
+        this.missionsSummary = missionsSummary;
+    }
+
     public Rewards getRewards() {
         return rewards;
     }
@@ -739,6 +748,7 @@ public class BetaTest implements Parcelable {
                 ", currentDate=" + currentDate +
                 ", bugReport=" + bugReport +
                 ", missions=" + missions +
+                ", missionsSummary='" + missionsSummary + '\'' +
                 ", rewards=" + rewards +
                 ", isAttended=" + isAttended +
                 ", isCompleted=" + isCompleted +
@@ -769,6 +779,7 @@ public class BetaTest implements Parcelable {
         dest.writeLong(currentDate.getTime());
         dest.writeParcelable(bugReport, 0);
         dest.writeTypedList(missions);
+        dest.writeString(missionsSummary);
         dest.writeParcelable(rewards, 0);
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isAttended ? 1 : 0);
@@ -793,6 +804,7 @@ public class BetaTest implements Parcelable {
         currentDate = new Date(in.readLong());
         bugReport = in.readParcelable(null);
         in.readTypedList(missions, Mission.CREATOR);
+        missionsSummary = in.readString();
         rewards = in.readParcelable(null);
         isCompleted = (in.readInt() == 1);
         isAttended = (in.readInt() == 1);
