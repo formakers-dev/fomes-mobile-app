@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -44,7 +45,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     private static final String TAG = "FinishedBetaTestDetailActivity";
 
-    @BindView(R.id.betatest_overview_imageview) ImageView coverIamgeView;
+    @BindView(R.id.action_bar) Toolbar actionBar;
+    @BindView(R.id.betatest_overview_imageview) ImageView coverImageView;
     @BindView(R.id.betatest_plan) TextView planTextView;
     @BindView(R.id.betatest_my_status) TextView myStatusTextView;
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
@@ -97,6 +99,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         Bundle bundle = getIntent().getExtras();
         bind(bundle);
 
+        setActionBar();
+
         String betaTestId = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
 
         initViews();
@@ -104,6 +108,23 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         this.presenter.requestEpilogue(betaTestId);
         this.presenter.requestAwardRecordOfBest(betaTestId);
         this.presenter.requestRecheckableMissions(betaTestId);
+    }
+
+    private void setActionBar() {
+        if (actionBar != null) {
+            int statusBarHeight = 0;
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            setSupportActionBar(actionBar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            actionBar.setNavigationIcon(R.drawable.ic_home_as_up);
+            actionBar.setPadding(0, statusBarHeight, 0, 0);
+            actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
+            actionBar.setLayoutParams(actionBar.getLayoutParams());
+        }
     }
 
     private void initViews() {
@@ -122,7 +143,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
         String tagsString = bundle.getString(FomesConstants.BetaTest.EXTRA_TAGS_STRING);
 
-        presenter.getImageLoader().loadImage(coverIamgeView, coverImageUrl);
+        presenter.getImageLoader().loadImage(coverImageView, coverImageUrl);
         titleTextView.setText(title);
         subTitleTextView.setText(subTitle);
 
