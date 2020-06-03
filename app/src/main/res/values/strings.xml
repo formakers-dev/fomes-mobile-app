@@ -179,7 +179,7 @@
 
     <!-- Finshed Beta Test -->
     <string name="finished_betatest_title">종료된 테스트가 궁금해!</string>
-    <string name="finished_betatest_subtitle">종료된 테스트의 참여 및 수상 결과를 볼 수 있어요.</string>
+    <string name="finished_betatest_subtitle">누가 상을 받았을까? 게임사에는 도움이 되었을까?</string>
     <string name="finished_betatest_complete_switch_text">참여목록 보기</string>
     <string name="finished_beta_test_empty_text_format">아직 완료하신 테스트가 없으시군요!\n지금 테스트를 진행해보시면 어떨까요?</string>
     <string name="finished_betatest_recheck_my_answer_button_text_format">내 답변 다시 보기 (%s)</string>

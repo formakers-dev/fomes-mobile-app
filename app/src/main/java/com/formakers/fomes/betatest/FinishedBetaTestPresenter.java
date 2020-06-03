@@ -111,6 +111,10 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                 })
                 .doOnError(e -> {
                     Log.e(TAG, "load) onError e=" + e);
+                    Log.e(TAG, "load) onError e=" + e.getCause());
+                    for (StackTraceElement stack : e.getStackTrace()) {
+                        Log.e(TAG, stack.toString());
+                    }
                     view.showEmptyView();
                 });
     }

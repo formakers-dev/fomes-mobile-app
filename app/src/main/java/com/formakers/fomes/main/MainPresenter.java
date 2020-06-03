@@ -127,7 +127,7 @@ public class MainPresenter implements MainContract.Presenter {
 
         RemoteConfigVO.MigrationNotice migrationNotice = new Gson().fromJson(migrationNoticeString, RemoteConfigVO.MigrationNotice.class);
         if (migrationNotice.getNoticeVersion() > sharedPreferencesHelper.getMigrationNoticeVersion()) {
-            boolean isNeedToUpdate = migrationNotice.getVersionCode() >= BuildConfig.VERSION_CODE;
+            boolean isNeedToUpdate = migrationNotice.getVersionCode() > BuildConfig.VERSION_CODE;
 
             Bundle bundle = new Bundle();
             bundle.putString(FomesNoticeDialog.EXTRA_TITLE, migrationNotice.getTitle());

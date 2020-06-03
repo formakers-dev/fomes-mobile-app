@@ -113,8 +113,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         }
 
-        viewHolder.completedLabelImageView.setVisibility(betaTest.isAttended() && betaTest.isCompleted() ? View.VISIBLE : View.GONE);
-
         viewHolder.titleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_title_text_color));
         viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_subtitle_text_color));
 
@@ -203,7 +201,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView planTextView;
         TextView myStatusTextView;
         ImageView overviewImageView;
-        ImageView completedLabelImageView;
         TextView reportBugButton;
 
         public ViewHolder(View itemView) {
@@ -214,7 +211,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             planTextView = itemView.findViewById(R.id.betatest_plan);
             myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
-            completedLabelImageView = itemView.findViewById(R.id.betatest_label);
             reportBugButton = itemView.findViewById(R.id.betatest_bug_button);
         }
     }
