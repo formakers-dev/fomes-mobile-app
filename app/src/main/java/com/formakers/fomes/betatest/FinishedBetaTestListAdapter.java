@@ -57,8 +57,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                         .transform(new RoundedCorners(16))
         );
 
-        viewHolder.labelImageView.setImageResource(item.isCompleted() ? R.drawable.label_attend : R.drawable.label_absent);
-
         viewHolder.subTitleTextView.setText(item.getDisplayDescription());
 
 
@@ -88,12 +86,10 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         if (item.isCompleted()) {
-            viewHolder.labelImageView.setVisibility(View.VISIBLE);
             viewHolder.myStatusTextView.setVisibility(View.VISIBLE);
             viewHolder.titleTextView.setTextColor(completedTextColor);
             viewHolder.subTitleTextView.setTextColor(completedTextColor);
         } else {
-            viewHolder.labelImageView.setVisibility(View.GONE);
             viewHolder.myStatusTextView.setVisibility(View.GONE);
             viewHolder.titleTextView.setTextColor(res.getColor(R.color.fomes_white));
             viewHolder.subTitleTextView.setTextColor(normalTextColor);
@@ -160,7 +156,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView labelImageView;
         ImageView iconImageView;
         TextView titleTextView;
         TextView subTitleTextView;
@@ -173,7 +168,6 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
-            labelImageView = itemView.findViewById(R.id.betatest_label);
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             planTextView = itemView.findViewById(R.id.betatest_plan);
