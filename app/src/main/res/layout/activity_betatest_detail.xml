@@ -65,13 +65,74 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
+                android:id="@+id/betatest_detail_period_title_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                style="@style/BetaTestDetailTheme.SectionTitle"
+                android:text="@string/betatest_detail_period_title"
+                android:layout_marginTop="@dimen/betatest_detail_first_item_margin_top"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_contents_layout_top_divider"
+                app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview" />
+
+            <View
+                android:id="@+id/betatest_detail_period_background_view"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="58dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/item_rect_rounded_corner_background"
+                android:theme="@style/BetaTestDetailTheme.MissionItem"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_period_title_textview"
+                app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"/>
+
+            <TextView
+                android:id="@+id/betatest_detail_period_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:textSize="14dp"
+                android:textColor="@color/fomes_white_alpha_60"
+                tools:text="2020.03.04 ~ 2020.03.07"
+                app:layout_constraintVertical_bias="0.5"
+                app:layout_constraintTop_toTopOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_period_background_view" />
+
+            <TextView
+                android:id="@+id/betatest_detail_d_day_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="22dp"
+                android:textAlignment="textEnd"
+                android:textSize="16dp"
+                android:textColor="@color/fomes_white"
+                android:textStyle="bold"
+                tools:text="3일 남음"
+                app:layout_constraintVertical_bias="0.5"
+                app:layout_constraintTop_toTopOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintStart_toEndOf="@+id/betatest_detail_period_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_period_background_view" />
+
+            <View
+                android:id="@+id/betatest_detail_period_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
                 android:id="@+id/betatest_detail_game_description_title_textview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 style="@style/BetaTestDetailTheme.SectionTitle"
                 android:text="@string/betatest_detail_game_description_title"
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_contents_layout_top_divider"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_period_divider"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview" />
 

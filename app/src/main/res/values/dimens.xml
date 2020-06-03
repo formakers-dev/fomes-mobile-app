@@ -67,6 +67,7 @@
     <dimen name="betatest_list_item_content_margin_start_end">20dp</dimen>
 
     <!-- Beta Test Detail -->
+    <dimen name="betatest_detail_first_item_margin_top">30dp</dimen>
     <dimen name="betatest_detail_items_margin_top">45dp</dimen>
     <dimen name="betatest_detail_items_description_margin_top">10dp</dimen>
     <dimen name="betatest_detail_items_list_margin_top">21dp</dimen>

@@ -62,8 +62,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_my_status) TextView myStatusTextView;
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
     @BindView(R.id.betatest_subtitle_textview) TextView subTitleTextView;
-//    @BindView(R.id.betatest_detail_period) TextView periodTextView;
-//    @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
+    @BindView(R.id.betatest_detail_period_textview) TextView periodTextView;
+    @BindView(R.id.betatest_detail_d_day_textview) TextView dDayTextView;
     @BindView(R.id.betatest_contents_layout) ViewGroup contentsLayout;
     @BindView(R.id.betatest_game_description_group) Group gameDescriptionGroup;
     @BindView(R.id.betatest_detail_game_description_textview) TextView descriptionTextView;
@@ -223,8 +223,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         } else {
             gameDescriptionGroup.setVisibility(View.GONE);
         }
-/*
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YY_DOT_MM_DOT_DD, Locale.getDefault());
+
+        // 테스트 기간
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YYYY_DOT_MM_DOT_DD, Locale.getDefault());
 
         periodTextView.setText(String.format("%s ~ %s",
                 dateFormat.format(betaTest.getOpenDate()),
@@ -236,34 +237,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         String projectStatus;
         if (remainDays > 0) {
-            projectStatus = String.format("D - %d", remainDays);
-        } else if (remainDays == 0) {
-            projectStatus = "오늘 종료";
+            projectStatus = String.format("%d일 남음", remainDays + 1);
         } else {
-            projectStatus = getString(R.string.common_close);
+            projectStatus = "오늘 종료";
         }
 
-        dDayTextView.setVisibility(View.VISIBLE);
         dDayTextView.setText(projectStatus);
 
-        @StyleRes int projectStatusStyleId;
-        @ColorRes int projectStatusColorId;
-        if (remainDays < 2) {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Red;
-            projectStatusColorId = R.color.fomes_red;
-        } else if (remainDays < 4) {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Squash;
-            projectStatusColorId = R.color.fomes_squash;
-        } else {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground;
-            projectStatusColorId = R.color.colorPrimary;
-        }
-
-        dDayTextView.setVisibility(View.VISIBLE);
-        dDayTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new ContextThemeWrapper(this, projectStatusStyleId).getTheme()));
-        dDayTextView.setTextColor(getResources().getColor(projectStatusColorId));
-*/
 
         // 테스트 목적
         if (TextUtils.isEmpty(betaTest.getPurpose())) {
