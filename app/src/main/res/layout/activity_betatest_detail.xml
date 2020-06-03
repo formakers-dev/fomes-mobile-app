@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/fomes_deep_gray">
+    android:background="@color/beta_test_detail_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -44,7 +44,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/fomes_deep_gray"
         android:fillViewport="true"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -56,6 +55,15 @@
             android:visibility="gone"
             android:descendantFocusability="blocksDescendants">
 
+            <View
+                android:id="@+id/betatest_contents_layout_top_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <TextView
                 android:id="@+id/betatest_detail_game_description_title_textview"
                 android:layout_width="@dimen/match_constraint"
@@ -63,7 +71,7 @@
                 style="@style/BetaTestDetailTheme.SectionTitle"
                 android:text="@string/betatest_detail_game_description_title"
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_contents_layout_top_divider"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview" />
 
@@ -82,7 +90,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_detail_game_description_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -147,7 +155,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_from_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -219,7 +227,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_howto_guide_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -265,7 +273,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_reward_items_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
