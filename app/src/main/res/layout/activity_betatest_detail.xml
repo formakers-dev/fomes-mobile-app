@@ -27,7 +27,8 @@
             <include
                 android:id="@+id/betatest_overview_info"
                 layout="@layout/layout_betatest_overview_info"
-                app:layout_collapseMode="parallax"/>
+                app:layout_collapseMode="parallax"
+                android:visibility="invisible"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/action_bar"

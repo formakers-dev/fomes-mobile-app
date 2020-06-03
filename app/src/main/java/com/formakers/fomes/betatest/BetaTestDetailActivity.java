@@ -56,6 +56,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @BindView(R.id.action_bar) Toolbar actionBar;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
+    @BindView(R.id.betatest_overview_info) ViewGroup betatestOverviewInfoViewGroup;
     @BindView(R.id.betatest_overview_imageview) ImageView overviewImageView;
 //    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
     @BindView(R.id.betatest_plan) TextView planTextView;
@@ -223,6 +224,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         } else {
             gameDescriptionGroup.setVisibility(View.GONE);
         }
+
+        betatestOverviewInfoViewGroup.setVisibility(View.VISIBLE);
 
         // 테스트 기간
         SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YYYY_DOT_MM_DOT_DD, Locale.getDefault());
