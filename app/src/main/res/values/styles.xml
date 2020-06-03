@@ -213,6 +213,12 @@
 
     <style name="BetaTestTheme"/>
 
+    <style name="BetaTestTheme.Card" parent="Theme.MaterialComponents.Light"/>
+
+    <style name="BetaTestTheme.Card.TagTextAppreance">
+        <item name="android:textSize">11dp</item>
+    </style>
+
     <style name="BetaTestTheme.CardBackground">
         <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/fomes_content_card_background</item>
