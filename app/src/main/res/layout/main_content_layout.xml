@@ -65,6 +65,7 @@
                 android:layout_marginStart="50dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/label_beta"
+                android:tint="@color/fomes_text_dark"
                 app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

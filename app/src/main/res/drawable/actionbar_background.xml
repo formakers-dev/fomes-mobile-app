@@ -6,6 +6,9 @@
         </shape>
     </item>
     <item>
-        <bitmap android:src="@drawable/fomes_actionbar" android:gravity="center" />
+        <bitmap
+            android:src="@drawable/fomes_actionbar"
+            android:gravity="center"
+            android:tint="@color/fomes_text_dark" />
     </item>
 </layer-list>
