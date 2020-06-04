@@ -265,7 +265,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     new RequestOptions().fitCenter());
 
             rewardItemTitleTextView.setText(rewardItem.getTitle());
-            rewardItemDescriptionTextView.setText(rewardItem.getContent());
+
+            String rewardCountString = (rewardItem.getCount() == null)? "참여자 전원" : rewardItem.getCount() + "명 선정";
+            rewardItemDescriptionTextView.setText(getString(R.string.betatest_detail_reward_description, rewardItem.getContent(), rewardCountString));
 
             rewardViewGroup.addView(rewardItemView);
         }
