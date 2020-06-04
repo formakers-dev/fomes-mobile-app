@@ -110,6 +110,7 @@ public interface FomesConstants {
         interface Code {
             String MAIN_ACTIVITY_ENTER = "MAIN_ENT";
             String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAP_BETA";
+            String MAIN_ACTIVITY_TAP_FINISHED_BETA_TEST = "MAIN_TAP_FINISHED_BETA";
             String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAP_RCMD";
             String BETA_TEST_FRAGMENT_TAP_ITEM = "BETA_TAP_ITEM";
             String BETA_TEST_FRAGMENT_TAP_BUG_REPORT = "BETA_TAP_BUG_REPORT";

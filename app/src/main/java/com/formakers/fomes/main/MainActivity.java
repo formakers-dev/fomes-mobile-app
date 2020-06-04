@@ -17,7 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
@@ -37,8 +36,8 @@ import com.formakers.fomes.recommend.RecommendFragment;
 import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.concurrent.TimeUnit;
 
@@ -55,7 +54,7 @@ import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_C
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_TITLE;
 
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
-        NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener, TabLayout.OnTabSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
     private static final String TAG = "MainActivity";
 
@@ -68,10 +67,10 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
     @BindView(R.id.main_event_view_pager)       SwipeViewPager eventViewPager;
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
-    @BindView(R.id.main_tab_layout)             TabLayout tabLayout;
-    @BindView(R.id.main_contents_view_pager)    ViewPager contentsViewPager;
+    @BindView(R.id.main_bottom_navigation)      BottomNavigationView bottomNavigationView;
+    @BindView(R.id.main_contents_view_pager)    SwipeViewPager contentsViewPager;
 
-    private FragmentPagerAdapter tabPagerAdapter;
+    private FragmentPagerAdapter contentsViewPagerAdapter;
 
     private Subscription eventPagerAutoSlideSubscription;
     private EventPagerAdapterContract.View eventPagerAdapterView;
@@ -139,22 +138,45 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.presenter.bindUserInfo();
 
         // for Main Tab Pager
-        tabPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
+        contentsViewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
         BetaTestFragment betaTestFragment = new BetaTestFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("IS_DEFAULT_PAGE", true);
         betaTestFragment.setArguments(bundle);
 
-        tabPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
-        tabPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, new FinishedBetaTestFragment(), getString(R.string.main_tab_finished_betatest));
-        tabPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        contentsViewPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
+        contentsViewPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, new FinishedBetaTestFragment(), getString(R.string.main_tab_finished_betatest));
+        contentsViewPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
 
-        contentsViewPager.setAdapter(tabPagerAdapter);
+        contentsViewPager.setAdapter(contentsViewPagerAdapter);
         contentsViewPager.setOffscreenPageLimit(3);
+        contentsViewPager.setEnableSwipe(false);
 
-        this.tabLayout.setupWithViewPager(contentsViewPager);
-        this.tabLayout.addOnTabSelectedListener(this);
+        this.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_betatest: {
+                    presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST);
+                    contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(BetaTestFragment.TAG));
+                    return true;
+                }
+                case R.id.action_awards: {
+                    presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_FINISHED_BETA_TEST);
+                    contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(FinishedBetaTestFragment.TAG));
+                    return true;
+                }
+                case R.id.action_recommend: {
+                    presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
+                    contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(RecommendFragment.TAG));
+                    return true;
+                }
+                case R.id.action_more: {
+                    return true;
+                }
+            }
+
+            return false;
+        });
 
         // for Main Event Banner Pager
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
@@ -341,23 +363,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        presenter.sendEventLog((tab.getPosition() == 0) ?
-                FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST :
-                FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
-
     private void showNextEventBanner() {
         if (eventViewPager == null || presenter.getPromotionCount() < 2)
             return;
@@ -454,7 +459,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         String selectedItemId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
 
         if (!TextUtils.isEmpty(selectedTab)) {
-            Fragment selectedFragment = tabPagerAdapter.getItem(selectedTab);
+            Fragment selectedFragment = contentsViewPagerAdapter.getItem(selectedTab);
 
             Bundle arguemnts = new Bundle();
             arguemnts.putString("EXTRA_SELECTED_ITEM_ID", selectedItemId);
@@ -462,7 +467,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
             selectedFragment.setArguments(arguemnts);
 
             contentsViewPager.postDelayed(() -> {
-                Log.d(TAG, "contentsViewPager.postDelayed) contentsViewPager = " + contentsViewPager + ", selectedFragment = " + selectedFragment + ", tagPagerAdapter = " + tabPagerAdapter);
+                Log.d(TAG, "contentsViewPager.postDelayed) contentsViewPager = " + contentsViewPager + ", selectedFragment = " + selectedFragment + ", tagPagerAdapter = " + contentsViewPagerAdapter);
 
                 if (contentsViewPager == null) {
                     return;
@@ -470,7 +475,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
                 Log.d(TAG, "contentsViewPager.postDelayed) contentsViewPager.getAdapter() = " + contentsViewPager.getAdapter());
 
-                contentsViewPager.setCurrentItem(tabPagerAdapter.getPosition(selectedFragment));
+                contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(selectedFragment));
                 contentsViewPager.getAdapter().notifyDataSetChanged();
             }, 100);
         }

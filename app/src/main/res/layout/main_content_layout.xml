@@ -83,21 +83,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.viewpager.widget.ViewPager
+            <com.formakers.fomes.common.view.custom.SwipeViewPager
                 android:id="@+id/main_contents_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/main_tab_layout"
-        style="@style/FomesMainTabTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/main_tab_background"
-        android:elevation="0dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_bottom_navigation"
