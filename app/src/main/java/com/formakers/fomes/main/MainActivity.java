@@ -170,9 +170,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                     contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(RecommendFragment.TAG));
                     return true;
                 }
-//                case R.id.action_more: {
-//                    return true;
-//                }
+                case R.id.action_more: {
+                    return true;
+                }
             }
 
             return false;
@@ -279,9 +279,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.fomes_postbox).setVisible(true);
+        menu.findItem(R.id.fomes_postbox).getIcon().setTint(getResources().getColor(R.color.fomes_text_dark));
         menu.findItem(R.id.my_wish_list).setVisible(false);
         menu.findItem(R.id.my_recent_analysis).setVisible(false);
-        menu.findItem(R.id.my_wish_list).getIcon().setTint(getResources().getColor(R.color.fomes_white));
 
         return true;
     }
