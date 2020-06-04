@@ -65,8 +65,13 @@
     <dimen name="betatest_subtitle_text_size">12dp</dimen>
     <dimen name="betatest_list_item_padding_start_end">16dp</dimen>
     <dimen name="betatest_list_item_content_margin_start_end">20dp</dimen>
+    <dimen name="betatest_list_item_tag_radius">10dp</dimen>
+    <dimen name="betatest_list_item_tag_height">20dp</dimen>
+    <dimen name="betatest_list_item_tag_divider_width">8dp</dimen>
+    <dimen name="betatest_list_item_tag_divider_height">5dp</dimen>
 
     <!-- Beta Test Detail -->
+    <dimen name="betatest_detail_first_item_margin_top">30dp</dimen>
     <dimen name="betatest_detail_items_margin_top">45dp</dimen>
     <dimen name="betatest_detail_items_description_margin_top">10dp</dimen>
     <dimen name="betatest_detail_items_list_margin_top">21dp</dimen>

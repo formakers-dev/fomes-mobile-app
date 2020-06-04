@@ -24,6 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,10 +68,17 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ViewHolder viewHolder = (ViewHolder) holder;
 
         viewHolder.titleTextView.setText(betaTest.getTitle());
-
         viewHolder.subTitleTextView.setText(betaTest.getDisplayDescription());
 
         viewHolder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(position));
+
+        // 태그
+        viewHolder.tagViewGroup.removeAllViews();
+        for (String tag : betaTest.getTags()) {
+            Chip tagView = (Chip) LayoutInflater.from(context).inflate(R.layout.item_betatest_tag, null);
+            tagView.setText(tag);
+            viewHolder.tagViewGroup.addView(tagView);
+        }
 
         // 디데이
         viewHolder.projectStatusTextView.setBackgroundResource(R.drawable.label_betatest_dday);
@@ -202,6 +210,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView myStatusTextView;
         ImageView overviewImageView;
         TextView reportBugButton;
+        ViewGroup tagViewGroup;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -212,6 +221,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
             reportBugButton = itemView.findViewById(R.id.betatest_bug_button);
+            tagViewGroup = itemView.findViewById(R.id.betatest_tag_layout);
         }
     }
 }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/fomes_deep_gray">
+    android:background="@color/beta_test_detail_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -17,94 +17,18 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:expandedTitleTextAppearance="@style/BetaTestDetailTheme.actionBarAppearance"
+            android:background="@color/beta_test_detail_background"
+            app:contentScrim="@color/beta_test_detail_background"
             app:expandedTitleGravity="top"
-            app:statusBarScrim="@android:color/transparent"
-            app:contentScrim="@color/fomes_deep_gray"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:expandedTitleTextAppearance="@style/BetaTestDetailTheme.actionBarAppearance"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:statusBarScrim="@android:color/transparent">
 
-            <ImageView
-                android:id="@+id/betatest_detail_overview_image"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:src="@color/fomes_greyish_brown"
-                app:layout_collapseMode="parallax" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@drawable/betatest_detail_gradient"
-                app:layout_collapseMode="pin"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:layout_collapseMode="parallax">
-
-                <ImageView android:id="@+id/betatest_detail_app_icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="31dp"
-                    android:layout_marginBottom="16dp"
-                    android:foreground="@drawable/item_rect_rounded_corner_background"
-                    android:theme="@style/BetaTestTheme.FinishedIconForeground"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/betatest_detail_title"/>
-
-                <TextView android:id="@+id/betatest_detail_title"
-                    android:layout_width="@dimen/match_constraint"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:textSize="@dimen/betatest_detail_title_text_size"
-                    android:textStyle="bold"
-                    android:textColor="@color/fomes_white"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    tools:text="고양이 숲 - 캠핌장 이야기"
-                    app:layout_constraintStart_toEndOf="@+id/betatest_detail_app_icon"
-                    app:layout_constraintTop_toTopOf="@+id/betatest_detail_app_icon"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <TextView android:id="@+id/betatest_detail_subtitle"
-                    android:layout_width="@dimen/match_constraint"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textSize="@dimen/betatest_detail_subtitle_text_size"
-                    android:textColor="@color/fomes_white"
-                    tools:text="#시뮬레이션#보상없음#고양이#캠핑장두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄두줄세줄세줄세줄세줄세줄세줄세줄세줄세줄세줄"
-                    app:layout_constraintStart_toStartOf="@+id/betatest_detail_title"
-                    app:layout_constraintEnd_toEndOf="@+id/betatest_detail_title"
-                    app:layout_constraintTop_toBottomOf="@+id/betatest_detail_title"/>
-
-                <TextView android:id="@+id/betatest_detail_period"
-                    android:layout_width="@dimen/match_constraint"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    app:layout_goneMarginTop="5dp"
-                    android:textSize="@dimen/betatest_detail_subtitle_text_size"
-                    android:textColor="@color/fomes_light_pale_gray"
-                    tools:text="2019.06.01 ~ 06.08"
-                    app:layout_constraintStart_toStartOf="@+id/betatest_detail_title"
-                    app:layout_constraintTop_toBottomOf="@+id/betatest_detail_subtitle"/>
-
-                <TextView android:id="@+id/betatest_detail_d_day"
-                    android:layout_width="@dimen/match_constraint"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/item_rect_rounded_corner_stroke_background"
-                    android:textSize="8dp"
-                    android:textColor="@color/colorPrimary"
-                    android:theme="@style/BetaTestTheme.TagBackground"
-                    android:visibility="gone"
-                    tools:text="D - 7"
-                    app:layout_constraintTop_toTopOf="@+id/betatest_detail_period"
-                    app:layout_constraintBottom_toBottomOf="@+id/betatest_detail_period"
-                    app:layout_constraintStart_toEndOf="@+id/betatest_detail_period"
-                    tools:visibility="visible"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/betatest_overview_info"
+                layout="@layout/layout_betatest_overview_info"
+                app:layout_collapseMode="parallax"
+                android:visibility="invisible"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/action_bar"
@@ -121,7 +45,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/fomes_deep_gray"
         android:fillViewport="true"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -133,6 +56,76 @@
             android:visibility="gone"
             android:descendantFocusability="blocksDescendants">
 
+            <View
+                android:id="@+id/betatest_contents_layout_top_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/betatest_detail_period_title_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                style="@style/BetaTestDetailTheme.SectionTitle"
+                android:text="@string/betatest_detail_period_title"
+                android:layout_marginTop="@dimen/betatest_detail_first_item_margin_top"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_contents_layout_top_divider"
+                app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview" />
+
+            <View
+                android:id="@+id/betatest_detail_period_background_view"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="58dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/item_rect_rounded_corner_background"
+                android:theme="@style/BetaTestDetailTheme.MissionItem"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_period_title_textview"
+                app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"/>
+
+            <TextView
+                android:id="@+id/betatest_detail_period_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:textSize="14dp"
+                android:textColor="@color/fomes_white_alpha_60"
+                tools:text="2020.03.04 ~ 2020.03.07"
+                app:layout_constraintVertical_bias="0.5"
+                app:layout_constraintTop_toTopOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_period_background_view" />
+
+            <TextView
+                android:id="@+id/betatest_detail_d_day_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="22dp"
+                android:textAlignment="textEnd"
+                android:textSize="16dp"
+                android:textColor="@color/fomes_white"
+                android:textStyle="bold"
+                tools:text="3일 남음"
+                app:layout_constraintVertical_bias="0.5"
+                app:layout_constraintTop_toTopOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintBottom_toBottomOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintStart_toEndOf="@+id/betatest_detail_period_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_period_background_view" />
+
+            <View
+                android:id="@+id/betatest_detail_period_divider"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
+                android:background="@color/fomes_black_alpha_75"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_period_background_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <TextView
                 android:id="@+id/betatest_detail_game_description_title_textview"
                 android:layout_width="@dimen/match_constraint"
@@ -140,7 +133,7 @@
                 style="@style/BetaTestDetailTheme.SectionTitle"
                 android:text="@string/betatest_detail_game_description_title"
                 android:layout_marginTop="@dimen/betatest_detail_items_margin_top"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_detail_period_divider"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview" />
 
@@ -159,7 +152,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_detail_game_description_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -224,7 +217,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_purpose_from_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -296,7 +289,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_howto_guide_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -342,7 +335,7 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
-                android:background="@color/fomes_dark_gray"
+                android:background="@color/fomes_black_alpha_75"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_reward_items_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
