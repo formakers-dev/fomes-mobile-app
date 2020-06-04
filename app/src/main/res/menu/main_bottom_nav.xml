@@ -9,7 +9,7 @@
     <item android:id="@+id/action_recommend"
         android:title="추천"
         android:icon="@drawable/icon_puzzle" />
-    <item android:id="@+id/action_more"
-        android:title="더보기"
-        android:icon="@drawable/icon_hamburger" />
+<!--    <item android:id="@+id/action_more"-->
+<!--        android:title="더보기"-->
+<!--        android:icon="@drawable/icon_hamburger" />-->
 </menu>

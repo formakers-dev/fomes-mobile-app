@@ -170,9 +170,9 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                     contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(RecommendFragment.TAG));
                     return true;
                 }
-                case R.id.action_more: {
-                    return true;
-                }
+//                case R.id.action_more: {
+//                    return true;
+//                }
             }
 
             return false;
