@@ -23,7 +23,6 @@ import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
@@ -112,20 +111,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             return;
         }
 
-        int statusBarHeight = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        }
-
-        if (actionBar != null) {
-            setSupportActionBar(actionBar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            actionBar.setNavigationIcon(R.drawable.ic_home_as_up);
-            actionBar.setPadding(0, statusBarHeight, 0, 0);
-            actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
-            actionBar.setLayoutParams(actionBar.getLayoutParams());
-        }
+        setActionBar();
 
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         this.presenter.load(id);
@@ -170,6 +156,23 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Override
     public void setPresenter(BetaTestDetailContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    private void setActionBar() {
+        if (actionBar != null) {
+            int statusBarHeight = 0;
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            setSupportActionBar(actionBar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            actionBar.setNavigationIcon(R.drawable.ic_home_as_up);
+            actionBar.setPadding(0, statusBarHeight, 0, 0);
+            actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
+            actionBar.setLayoutParams(actionBar.getLayoutParams());
+        }
     }
 
     @Override
