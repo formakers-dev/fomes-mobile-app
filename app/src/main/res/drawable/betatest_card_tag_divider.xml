@@ -3,6 +3,6 @@
     android:shape="rectangle">
     <size
         android:width="@dimen/betatest_list_item_tag_divider_width"
-        android:height="@dimen/match_constraint" />
+        android:height="@dimen/betatest_list_item_tag_divider_height" />
     <solid android:color="@android:color/transparent" />
 </shape>

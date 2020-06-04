@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/BetaTestTheme.Card"
+    style="@style/BetaTestTheme.CardTag"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/betatest_list_item_tag_height"
+    android:paddingBottom="1dp"
+    android:textAlignment="center"
+    android:textColor="@color/fomes_white"
+    android:clickable="false"
+    app:chipBackgroundColor="@color/fomes_black_alpha_75"
+    app:chipMinTouchTargetSize="0dp"
+    app:chipSurfaceColor="@android:color/transparent"
+    app:textStartPadding="3dp"
+    app:textEndPadding="1dp" />
+

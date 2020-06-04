@@ -215,6 +215,12 @@
 
     <style name="BetaTestTheme.Card" parent="Theme.MaterialComponents.Light"/>
 
+    <style name="BetaTestTheme.CardTag" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipCornerRadius">@dimen/betatest_list_item_tag_radius</item>
+        <item name="chipMinHeight">@dimen/betatest_list_item_tag_height</item>
+        <item name="android:textAppearance">@style/BetaTestTheme.Card.TagTextAppreance</item>
+    </style>
+
     <style name="BetaTestTheme.Card.TagTextAppreance">
         <item name="android:textSize">11dp</item>
     </style>
