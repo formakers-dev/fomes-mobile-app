@@ -83,19 +83,35 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/main_tab_layout"
-                style="@style/FomesMainTabTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/main_tab_background"
-                android:elevation="0dp" />
-
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/main_contents_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/main_tab_layout"
+        style="@style/FomesMainTabTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/main_tab_background"
+        android:elevation="0dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_bottom_navigation"
+        style="@style/FomesMainTabTheme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/main_bottom_nav_gradient"
+        android:elevation="10dp"
+        app:labelVisibilityMode="labeled"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@color/main_bottom_nav_item_color_selector"
+        app:itemTextColor="@color/main_bottom_nav_item_color_selector"
+        app:itemTextAppearanceActive="@style/FomesMainTabTheme.BottomNavigationView.TextAppearance.Active"
+        app:itemTextAppearanceInactive="@style/FomesMainTabTheme.BottomNavigationView.TextAppearance"
+        app:menu="@menu/main_bottom_nav"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
