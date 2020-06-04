@@ -184,7 +184,7 @@
                 android:id="@+id/betatest_title_awards_best"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="35dp"
                 android:gravity="center"
                 android:text="@string/finished_betatest_detail_awards_best"
                 android:textColor="@color/fomes_white"
@@ -207,12 +207,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards_best"
                 tools:text="문화 상품권 10,000원" />
 
+            <ImageView
+                android:id="@+id/betatest_awards_crowded_people"
+                android:layout_width="297dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="147dp"
+                android:background="@drawable/crowded_people"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_price" />
 
             <ImageView
                 android:id="@+id/betatest_awards_medal"
                 android:layout_width="297dp"
                 android:layout_height="185dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="18dp"
                 android:background="@drawable/analysis_rank_medal"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
