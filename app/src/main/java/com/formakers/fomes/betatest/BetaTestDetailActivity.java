@@ -33,6 +33,7 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
+import com.google.android.material.chip.Chip;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -62,6 +63,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_my_status) TextView myStatusTextView;
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
     @BindView(R.id.betatest_subtitle_textview) TextView subTitleTextView;
+    @BindView(R.id.betatest_tag_layout) ViewGroup tagViewGroup;
     @BindView(R.id.betatest_detail_period_textview) TextView periodTextView;
     @BindView(R.id.betatest_detail_d_day_textview) TextView dDayTextView;
     @BindView(R.id.betatest_contents_layout) ViewGroup contentsLayout;
@@ -192,6 +194,14 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         titleTextView.setText(betaTest.getTitle());
         subTitleTextView.setText(betaTest.getDisplayDescription());
+
+        // 태그
+        tagViewGroup.removeAllViews();
+        for (String tag : betaTest.getTags()) {
+            Chip tagView = (Chip) getLayoutInflater().inflate(R.layout.item_betatest_tag, null);
+            tagView.setText(tag);
+            tagViewGroup.addView(tagView);
+        }
 
         //플랜 표시
         @StyleRes int planStyleResId;

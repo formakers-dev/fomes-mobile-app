@@ -38,6 +38,7 @@ public interface FomesConstants {
         String EXTRA_IS_COMPLETED = "EXTRA_IS_COMPLETED";
         String EXTRA_IS_PREMIUM_PLAN = "EXTRA_IS_PREMIUM_PLAN";
         String EXTRA_TAGS_STRING = "EXTRA_TAGS_STRING";
+        String EXTRA_TAG_LIST = "EXTRA_TAG_LIST";
 
         // TODO : Log? Analytic? Tracking? 네이밍 고민
         interface Log {

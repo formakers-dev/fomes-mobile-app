@@ -33,7 +33,9 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
+import com.google.android.material.chip.Chip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,6 +53,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_my_status) TextView myStatusTextView;
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
     @BindView(R.id.betatest_subtitle_textview) TextView subTitleTextView;
+    @BindView(R.id.betatest_tag_layout) ViewGroup tagViewGroup;
 
     @BindView(R.id.betatest_company_image) ImageView companyImageView;
     @BindView(R.id.betatest_company_name) TextView companyNameTextView;
@@ -141,11 +144,19 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String rewardBestDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_REWARD_BEST_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
-        String tagsString = bundle.getString(FomesConstants.BetaTest.EXTRA_TAGS_STRING);
+        ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
 
         presenter.getImageLoader().loadImage(coverImageView, coverImageUrl);
         titleTextView.setText(title);
         subTitleTextView.setText(subTitle);
+
+        // 태그
+        tagViewGroup.removeAllViews();
+        for (String tag : tagList) {
+            Chip tagView = (Chip) getLayoutInflater().inflate(R.layout.item_betatest_tag, null);
+            tagView.setText(tag);
+            tagViewGroup.addView(tagView);
+        }
 
         @StyleRes int planStyleResId;
         @ColorRes int planNameColorId;

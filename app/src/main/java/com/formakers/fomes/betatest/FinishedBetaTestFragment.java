@@ -28,6 +28,7 @@ import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.main.MainActivity;
+import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 
@@ -100,7 +101,7 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
             intent.putExtra(FomesConstants.BetaTest.EXTRA_REWARD_BEST_DESCRIPTION, betaTest.getRewards().getList().get(0).getContent());
             intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, betaTest.isPremiumPlan());
             intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, betaTest.isCompleted());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_TAGS_STRING, betaTest.getTagsString());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_TAG_LIST, Lists.newArrayList(betaTest.getTags()));
 
             startActivity(intent);
         });
