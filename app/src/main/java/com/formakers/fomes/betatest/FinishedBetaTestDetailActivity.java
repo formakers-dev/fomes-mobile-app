@@ -146,6 +146,10 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
         ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
 
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
+
         presenter.getImageLoader().loadImage(coverImageView, coverImageUrl);
         titleTextView.setText(title);
         subTitleTextView.setText(subTitle);
