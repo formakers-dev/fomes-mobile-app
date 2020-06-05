@@ -59,7 +59,7 @@
     <color name="label_background_dark">@color/fomes_gray_4</color>
 
     <!-- for main -->
-    <color name="main_tab_background">@color/fomes_deep_dark_gray</color>
+    <color name="main_tab_background">#3f3f3f</color>
     <color name="main_tab_unselected_text_color">@color/fomes_white_alpha_60</color>
     <color name="main_tab_selected_text_color">@color/colorPrimary</color>
     <color name="main_tab_indicator_color">@color/colorPrimary</color>

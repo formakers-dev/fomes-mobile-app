@@ -48,6 +48,11 @@ public class FragmentPagerAdapter extends androidx.fragment.app.FragmentPagerAda
         return -1;
     }
 
+    public int getPosition(String tag) {
+        ArrayList<ContentsFragment> contents = new ArrayList<>(contentsMap.values());
+        return contents.indexOf(contentsMap.get(tag));
+    }
+
     @Override
     public int getCount() {
         return contentsMap.values().size();
@@ -58,7 +63,7 @@ public class FragmentPagerAdapter extends androidx.fragment.app.FragmentPagerAda
         if (object instanceof BaseFragment) {
             List<ContentsFragment> contentsList = new ArrayList<>(contentsMap.values());
 
-            for (ContentsFragment contentsFragment: contentsList) {
+            for (ContentsFragment contentsFragment : contentsList) {
                 if (contentsFragment.fragment == object) {
                     return contentsList.indexOf(contentsFragment);
                 }

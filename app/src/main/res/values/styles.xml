@@ -67,6 +67,17 @@
         <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
     </style>
 
+    <style name="FomesMainTabTheme.BottomNavigationView">
+    </style>
+
+    <style name="FomesMainTabTheme.BottomNavigationView.TextAppearance" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">8dp</item>
+    </style>
+
+    <style name="FomesMainTabTheme.BottomNavigationView.TextAppearance.Active" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">10dp</item>
+    </style>
+
     <style name="FomesMainTabTheme.TextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/main_tab_unselected_text_color</item>
@@ -213,6 +224,18 @@
 
     <style name="BetaTestTheme"/>
 
+    <style name="BetaTestTheme.Card" parent="Theme.MaterialComponents.Light"/>
+
+    <style name="BetaTestTheme.CardTag" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipCornerRadius">@dimen/betatest_list_item_tag_radius</item>
+        <item name="chipMinHeight">@dimen/betatest_list_item_tag_height</item>
+        <item name="android:textAppearance">@style/BetaTestTheme.Card.TagTextAppreance</item>
+    </style>
+
+    <style name="BetaTestTheme.Card.TagTextAppreance">
+        <item name="android:textSize">11dp</item>
+    </style>
+
     <style name="BetaTestTheme.CardBackground">
         <item name="item_background_radius">10dp</item>
         <item name="item_solid_color">@color/fomes_content_card_background</item>
@@ -227,7 +250,8 @@
     </style>
 
     <style name="BetaTestTheme.CardBackground.Mission">
-        <item name="item_solid_color">@color/fomes_charcoal_gray</item>
+        <item name="item_solid_color">@color/fomes_content_card_background</item>
+        <item name="item_stroke_color">@color/fomes_greyish_brown</item>
     </style>
 
     <!--<style name="BetaTestTheme.CardGradient">-->
@@ -435,7 +459,7 @@
 
     <style name="BetaTestDetailTheme.MissionItem">
         <item name="item_background_radius">10dp</item>
-        <item name="item_solid_color">@color/fomes_charcoal_gray</item>
+        <item name="item_solid_color">@color/fomes_deep_gray</item>
         <item name="item_stroke_width">0dp</item>
     </style>
 

@@ -39,6 +39,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/betatest_tag_layout"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_end"
+                app:alignContent="flex_end"
+                app:alignItems="flex_end"
+                app:showDivider="beginning|middle|end"
+                app:dividerDrawable="@drawable/betatest_card_tag_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/betatest_project_status"
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <View
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="@dimen/match_constraint"

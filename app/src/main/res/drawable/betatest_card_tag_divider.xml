@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <size
+        android:width="@dimen/betatest_list_item_tag_divider_width"
+        android:height="@dimen/betatest_list_item_tag_divider_height" />
+    <solid android:color="@android:color/transparent" />
+</shape>

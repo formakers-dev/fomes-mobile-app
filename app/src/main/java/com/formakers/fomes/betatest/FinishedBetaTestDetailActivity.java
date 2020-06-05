@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -32,7 +33,9 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
+import com.google.android.material.chip.Chip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,11 +47,13 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     private static final String TAG = "FinishedBetaTestDetailActivity";
 
-    @BindView(R.id.betatest_overview_imageview) ImageView coverIamgeView;
+    @BindView(R.id.action_bar) Toolbar actionBar;
+    @BindView(R.id.betatest_overview_imageview) ImageView coverImageView;
     @BindView(R.id.betatest_plan) TextView planTextView;
     @BindView(R.id.betatest_my_status) TextView myStatusTextView;
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
     @BindView(R.id.betatest_subtitle_textview) TextView subTitleTextView;
+    @BindView(R.id.betatest_tag_layout) ViewGroup tagViewGroup;
 
     @BindView(R.id.betatest_company_image) ImageView companyImageView;
     @BindView(R.id.betatest_company_name) TextView companyNameTextView;
@@ -97,6 +102,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         Bundle bundle = getIntent().getExtras();
         bind(bundle);
 
+        setActionBar();
+
         String betaTestId = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
 
         initViews();
@@ -104,6 +111,23 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         this.presenter.requestEpilogue(betaTestId);
         this.presenter.requestAwardRecordOfBest(betaTestId);
         this.presenter.requestRecheckableMissions(betaTestId);
+    }
+
+    private void setActionBar() {
+        if (actionBar != null) {
+            int statusBarHeight = 0;
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            setSupportActionBar(actionBar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            actionBar.setNavigationIcon(R.drawable.ic_home_as_up);
+            actionBar.setPadding(0, statusBarHeight, 0, 0);
+            actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
+            actionBar.setLayoutParams(actionBar.getLayoutParams());
+        }
     }
 
     private void initViews() {
@@ -120,10 +144,23 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String rewardBestDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_REWARD_BEST_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
+        ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
 
-        presenter.getImageLoader().loadImage(coverIamgeView, coverImageUrl);
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
+
+        presenter.getImageLoader().loadImage(coverImageView, coverImageUrl);
         titleTextView.setText(title);
         subTitleTextView.setText(subTitle);
+
+        // 태그
+        tagViewGroup.removeAllViews();
+        for (String tag : tagList) {
+            Chip tagView = (Chip) getLayoutInflater().inflate(R.layout.item_betatest_tag, null);
+            tagView.setText(tag);
+            tagViewGroup.addView(tagView);
+        }
 
         @StyleRes int planStyleResId;
         @ColorRes int planNameColorId;

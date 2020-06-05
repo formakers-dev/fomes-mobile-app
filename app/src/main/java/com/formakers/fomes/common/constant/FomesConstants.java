@@ -37,6 +37,8 @@ public interface FomesConstants {
         String EXTRA_REWARD_BEST_DESCRIPTION = "EXTRA_REWARD_BEST_DESCRIPTION";
         String EXTRA_IS_COMPLETED = "EXTRA_IS_COMPLETED";
         String EXTRA_IS_PREMIUM_PLAN = "EXTRA_IS_PREMIUM_PLAN";
+        String EXTRA_TAGS_STRING = "EXTRA_TAGS_STRING";
+        String EXTRA_TAG_LIST = "EXTRA_TAG_LIST";
 
         // TODO : Log? Analytic? Tracking? 네이밍 고민
         interface Log {
@@ -110,6 +112,7 @@ public interface FomesConstants {
         interface Code {
             String MAIN_ACTIVITY_ENTER = "MAIN_ENT";
             String MAIN_ACTIVITY_TAP_BETA_TEST = "MAIN_TAP_BETA";
+            String MAIN_ACTIVITY_TAP_FINISHED_BETA_TEST = "MAIN_TAP_FINISHED_BETA";
             String MAIN_ACTIVITY_TAP_RECOMMEND = "MAIN_TAP_RCMD";
             String BETA_TEST_FRAGMENT_TAP_ITEM = "BETA_TAP_ITEM";
             String BETA_TEST_FRAGMENT_TAP_BUG_REPORT = "BETA_TAP_BUG_REPORT";

@@ -16,13 +16,13 @@ import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
@@ -33,6 +33,7 @@ import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
+import com.google.android.material.chip.Chip;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -55,12 +56,16 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @BindView(R.id.action_bar) Toolbar actionBar;
     @BindView(R.id.loading) ProgressBar loadingProgressBar;
-    @BindView(R.id.betatest_detail_overview_image) ImageView overviewImageView;
-    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
-    @BindView(R.id.betatest_detail_title) TextView titleTextView;
-    @BindView(R.id.betatest_detail_subtitle) TextView subTitleTextView;
-    @BindView(R.id.betatest_detail_period) TextView periodTextView;
-    @BindView(R.id.betatest_detail_d_day) TextView dDayTextView;
+    @BindView(R.id.betatest_overview_info) ViewGroup betatestOverviewInfoViewGroup;
+    @BindView(R.id.betatest_overview_imageview) ImageView overviewImageView;
+//    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
+    @BindView(R.id.betatest_plan) TextView planTextView;
+    @BindView(R.id.betatest_my_status) TextView myStatusTextView;
+    @BindView(R.id.betatest_title_textview) TextView titleTextView;
+    @BindView(R.id.betatest_subtitle_textview) TextView subTitleTextView;
+    @BindView(R.id.betatest_tag_layout) ViewGroup tagViewGroup;
+    @BindView(R.id.betatest_detail_period_textview) TextView periodTextView;
+    @BindView(R.id.betatest_detail_d_day_textview) TextView dDayTextView;
     @BindView(R.id.betatest_contents_layout) ViewGroup contentsLayout;
     @BindView(R.id.betatest_game_description_group) Group gameDescriptionGroup;
     @BindView(R.id.betatest_detail_game_description_textview) TextView descriptionTextView;
@@ -108,20 +113,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             return;
         }
 
-        int statusBarHeight = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        }
-
-        if (actionBar != null) {
-            setSupportActionBar(actionBar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            actionBar.setNavigationIcon(R.drawable.ic_home_as_up);
-            actionBar.setPadding(0, statusBarHeight, 0, 0);
-            actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
-            actionBar.setLayoutParams(actionBar.getLayoutParams());
-        }
+        setActionBar();
 
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         this.presenter.load(id);
@@ -168,29 +160,75 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         this.presenter = presenter;
     }
 
+    private void setActionBar() {
+        if (actionBar != null) {
+            int statusBarHeight = 0;
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            setSupportActionBar(actionBar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            actionBar.setNavigationIcon(R.drawable.ic_home_as_up);
+            actionBar.setPadding(0, statusBarHeight, 0, 0);
+            actionBar.getLayoutParams().height = actionBar.getLayoutParams().height + statusBarHeight;
+            actionBar.setLayoutParams(actionBar.getLayoutParams());
+        }
+    }
+
     @Override
     public void bind(BetaTest betaTest) {
         this.presenter.getImageLoader().loadImage(overviewImageView, betaTest.getCoverImageUrl(),
                 new RequestOptions().centerCrop());
 
-        this.presenter.getImageLoader().loadImage(iconImageView, betaTest.getIconImageUrl(),
-                new RequestOptions().override(120, 120)
-                .centerCrop()
-                .transform(new RoundedCorners(16))
-        , false);
+//        this.presenter.getImageLoader().loadImage(iconImageView, betaTest.getIconImageUrl(),
+//                new RequestOptions().override(120, 120)
+//                .centerCrop()
+//                .transform(new RoundedCorners(16))
+//        , false);
 
         if (actionBar != null) {
             actionBar.setTitle(betaTest.getTitle());
         }
 
         titleTextView.setText(betaTest.getTitle());
+        subTitleTextView.setText(betaTest.getDisplayDescription());
 
-        String tagsString = betaTest.getTagsString();
-        if (!TextUtils.isEmpty(tagsString)) {
-            subTitleTextView.setText(tagsString);
-        } else {
-            subTitleTextView.setVisibility(View.GONE);
+        // 태그
+        tagViewGroup.removeAllViews();
+        for (String tag : betaTest.getTags()) {
+            Chip tagView = (Chip) getLayoutInflater().inflate(R.layout.item_betatest_tag, null);
+            tagView.setText(tag);
+            tagViewGroup.addView(tagView);
         }
+
+        //플랜 표시
+        @StyleRes int planStyleResId;
+        @ColorRes int planNameColorId;
+        if (betaTest.isPremiumPlan()) {
+            planStyleResId = R.style.BetaTestTheme_Plan_Premium;
+            planNameColorId = R.color.fomes_orange;
+        } else {
+            planStyleResId = R.style.BetaTestTheme_Plan_Lite;
+            planNameColorId = R.color.colorPrimary;
+        }
+
+        planTextView.setText(betaTest.getPlanStringResId());
+        planTextView.setTextColor(getResources().getColor(planNameColorId));
+        planTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
+                new androidx.appcompat.view.ContextThemeWrapper(this, planStyleResId).getTheme()));
+
+        // 참여정보 표시 정책
+        int myStatusVisibility = betaTest.isAttended() ? View.VISIBLE : View.GONE;
+        @StyleRes int myStatusStyleResId = betaTest.isCompleted() ? R.style.BetaTestTheme_MyStatus_Completed : R.style.BetaTestTheme_MyStatus;
+        @StringRes int myStatusStringId = betaTest.isCompleted() ? R.string.betatest_my_status_completed : R.string.betatest_my_status_attend;
+        @ColorRes int myStatusTextColorId = betaTest.isCompleted() ? R.color.colorPrimary : R.color.fomes_white;
+
+        myStatusTextView.setVisibility(myStatusVisibility);
+        myStatusTextView.setText(myStatusStringId);
+        myStatusTextView.setTextColor(getResources().getColor(myStatusTextColorId));
+        myStatusTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,  new androidx.appcompat.view.ContextThemeWrapper(this, myStatusStyleResId).getTheme()));
 
         String description = betaTest.getDescription();
         if (!TextUtils.isEmpty(description)) {
@@ -200,7 +238,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             gameDescriptionGroup.setVisibility(View.GONE);
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YY_DOT_MM_DOT_DD, Locale.getDefault());
+        betatestOverviewInfoViewGroup.setVisibility(View.VISIBLE);
+
+        // 테스트 기간
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.YYYY_DOT_MM_DOT_DD, Locale.getDefault());
 
         periodTextView.setText(String.format("%s ~ %s",
                 dateFormat.format(betaTest.getOpenDate()),
@@ -212,33 +253,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         String projectStatus;
         if (remainDays > 0) {
-            projectStatus = String.format("D - %d", remainDays);
-        } else if (remainDays == 0) {
-            projectStatus = "오늘 종료";
+            projectStatus = String.format("%d일 남음", remainDays + 1);
         } else {
-            projectStatus = getString(R.string.common_close);
+            projectStatus = "오늘 종료";
         }
 
-        dDayTextView.setVisibility(View.VISIBLE);
         dDayTextView.setText(projectStatus);
 
-        @StyleRes int projectStatusStyleId;
-        @ColorRes int projectStatusColorId;
-        if (remainDays < 2) {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Red;
-            projectStatusColorId = R.color.fomes_red;
-        } else if (remainDays < 4) {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground_Squash;
-            projectStatusColorId = R.color.fomes_squash;
-        } else {
-            projectStatusStyleId = R.style.BetaTestTheme_TagBackground;
-            projectStatusColorId = R.color.colorPrimary;
-        }
-
-        dDayTextView.setVisibility(View.VISIBLE);
-        dDayTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new ContextThemeWrapper(this, projectStatusStyleId).getTheme()));
-        dDayTextView.setTextColor(getResources().getColor(projectStatusColorId));
 
         // 테스트 목적
         if (TextUtils.isEmpty(betaTest.getPurpose())) {
@@ -265,7 +286,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     new RequestOptions().fitCenter());
 
             rewardItemTitleTextView.setText(rewardItem.getTitle());
-            rewardItemDescriptionTextView.setText(rewardItem.getContent());
+
+            String rewardCountString = (rewardItem.getCount() == null)? "참여자 전원" : rewardItem.getCount() + "명 선정";
+            rewardItemDescriptionTextView.setText(getString(R.string.betatest_detail_reward_description, rewardItem.getContent(), rewardCountString));
 
             rewardViewGroup.addView(rewardItemView);
         }

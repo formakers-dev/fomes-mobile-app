@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_betatest"
+        android:title="게임 테스트"
+        android:icon="@drawable/icon_betatest"/>
+    <item android:id="@+id/action_awards"
+        android:title="시상식"
+        android:icon="@drawable/icon_chair" />
+    <item android:id="@+id/action_recommend"
+        android:title="추천"
+        android:icon="@drawable/icon_puzzle" />
+<!--    <item android:id="@+id/action_more"-->
+<!--        android:title="더보기"-->
+<!--        android:icon="@drawable/icon_hamburger" />-->
+</menu>

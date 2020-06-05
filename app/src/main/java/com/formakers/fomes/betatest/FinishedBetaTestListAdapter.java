@@ -57,7 +57,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
                         .transform(new RoundedCorners(16))
         );
 
-        viewHolder.subTitleTextView.setText(item.getDisplayDescription());
+        viewHolder.subTitleTextView.setText(item.getTagsString());
 
 
         int completedTextColor = res.getColor(R.color.colorPrimary);
