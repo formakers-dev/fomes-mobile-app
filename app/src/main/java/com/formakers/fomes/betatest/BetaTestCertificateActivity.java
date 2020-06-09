@@ -115,31 +115,31 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
     }
 
     private void bindCertificate(BetaTest betaTest, AwardRecord awardRecord) {
-        String awardType = (awardRecord != null) ? awardRecord.getType() : "";
-        switch(awardType) {
-            case "best" :
+        Integer awardTypeCode = (awardRecord != null) ? awardRecord.getTypeCode() : 0;
+        switch(awardTypeCode) {
+            case 9000 :
                 betaTestAwardsTitle.setText("수석 테스터");
                 betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.colorPrimary));
                 betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_best, betaTest.getTitle()));
                 betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
                 break;
 
-            case "good" :
+            case 7000 :
                 betaTestAwardsTitle.setText("차석 테스터");
                 betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_squash));
                 betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_good, betaTest.getTitle()));
                 betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
                 break;
 
-            case "normal" :
+            case 5000 :
                 betaTestAwardsTitle.setText("성실 테스터");
                 betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_blush_pink));
                 betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_normal, betaTest.getTitle()));
                 betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
                 break;
 
-            case "participated" :
-            case "etc" :
+            case 3000 :
+            case 1000 :
                 betaTestAwardsTitle.setText("테스터");
                 betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_warm_gray));
                 betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description, betaTest.getTitle()));

@@ -70,7 +70,7 @@ public class FinishedBetaTestDetailPresenterTest {
         BetaTest.Epilogue epilogue = new BetaTest.Epilogue().setCompanyName("게임사이름")
                 .setCompanySays("게임사소감").setCompanyImageUrl("게임사이미지링크").setDeeplink("에필로그링크");
         when(mockBetaTestService.getEpilogue("betaTestId")).thenReturn(Single.just(epilogue));
-        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.just(Lists.newArrayList(new AwardRecord().setNickName("닉네임").setType("best").setRewards(new AwardRecord.Reward().setDescription("description")))));
+        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.just(Lists.newArrayList(new AwardRecord().setNickName("닉네임").setTypeCode(9000).setRewards(new AwardRecord.Reward().setDescription("description")))));
         when(mockBetaTestService.getCompletedMissions("betaTestId"))
                 .thenReturn(Single.just(
                         Lists.newArrayList(
@@ -118,7 +118,7 @@ public class FinishedBetaTestDetailPresenterTest {
         AwardRecord actual = argumentCaptor.getValue();
 
         assertThat(actual.getNickName()).isEqualTo("닉네임");
-        assertThat(actual.getType()).isEqualTo("best");
+        assertThat(actual.getTypeCode()).isEqualTo(9000);
         assertThat(actual.getReward().getDescription()).isEqualTo("description");
     }
 
