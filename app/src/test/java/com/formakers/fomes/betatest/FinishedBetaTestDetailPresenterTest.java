@@ -113,13 +113,40 @@ public class FinishedBetaTestDetailPresenterTest {
 
         verify(mockBetaTestService).getAwardRecords("betaTestId");
 
-        ArgumentCaptor<AwardRecord> argumentCaptor = ArgumentCaptor.forClass(AwardRecord.class);
+        ArgumentCaptor<List<AwardRecord>> argumentCaptor = ArgumentCaptor.forClass(List.class);
         verify(mockView).bindAwards(argumentCaptor.capture());
-        AwardRecord actual = argumentCaptor.getValue();
+        List<AwardRecord> actual = argumentCaptor.getValue();
 
-        assertThat(actual.getNickName()).isEqualTo("닉네임");
-        assertThat(actual.getTypeCode()).isEqualTo(9000);
-        assertThat(actual.getReward().getDescription()).isEqualTo("description");
+        assertThat(actual.get(0).getNickName()).isEqualTo("닉네임");
+        assertThat(actual.get(0).getTypeCode()).isEqualTo(9000);
+        assertThat(actual.get(0).getReward().getDescription()).isEqualTo("description");
+    }
+
+    @Test
+    public void requestAwardRecordOfBest_호출시__여러_수상정보가_존재하는_경우_차상위_수상목록만_뷰에_바인딩한다() {
+        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(
+                Single.just(Lists.newArrayList(
+                        new AwardRecord().setNickName("성실유저1").setTypeCode(3000).setRewards(new AwardRecord.Reward().setDescription("문상1000원")),
+                        new AwardRecord().setNickName("성실유저2").setTypeCode(3000).setRewards(new AwardRecord.Reward().setDescription("문상1000원")),
+                        new AwardRecord().setNickName("참여유저1").setTypeCode(1000).setRewards(new AwardRecord.Reward().setDescription("아이템")),
+                        new AwardRecord().setNickName("참여유저2").setTypeCode(1000).setRewards(new AwardRecord.Reward().setDescription("아이템"))
+                )));
+
+        subject.requestAwardRecordOfBest("betaTestId");
+
+        verify(mockBetaTestService).getAwardRecords("betaTestId");
+
+        ArgumentCaptor<List<AwardRecord>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockView).bindAwards(argumentCaptor.capture());
+        List<AwardRecord> actual = argumentCaptor.getValue();
+
+        assertThat(actual.size()).isEqualTo(2);
+        assertThat(actual.get(0).getNickName()).isEqualTo("성실유저1");
+        assertThat(actual.get(0).getTypeCode()).isEqualTo(3000);
+        assertThat(actual.get(0).getReward().getDescription()).isEqualTo("문상1000원");
+        assertThat(actual.get(1).getNickName()).isEqualTo("성실유저2");
+        assertThat(actual.get(1).getTypeCode()).isEqualTo(3000);
+        assertThat(actual.get(1).getReward().getDescription()).isEqualTo("문상1000원");
     }
 
     @Test

@@ -61,6 +61,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_epilogue_button) Button epilogueButton;
 
     @BindView(R.id.betatest_awards_group) Group awardGroup;
+    @BindView(R.id.betatest_title_awards_best) TextView bestAwardsTitleTextView;
     @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
     @BindView(R.id.betatest_awards_nickname_end) TextView awardsNickNameEndTextView;
@@ -218,9 +219,16 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void bindAwards(AwardRecord bestAwardRecord) {
-        awardsNickNameTextView.setText(bestAwardRecord.getNickName());
-        awardsNickNameEndTextView.setVisibility(View.VISIBLE);
+    public void bindAwards(List<AwardRecord> awardRecords) {
+        if (awardRecords != null) {
+            if (awardRecords.size() == 1) {
+                awardsNickNameTextView.setText(awardRecords.get(0).getNickName());
+                awardsNickNameEndTextView.setVisibility(View.VISIBLE);
+            } else {
+                awardsNickNameTextView.setText(getString(R.string.finished_betatest_awardee_count_text, awardRecords.size()));
+                bestAwardsTitleTextView.setText(getString(R.string.finished_betatest_multiple_awardee_title_text));
+            }
+        }
     }
 
     @Override

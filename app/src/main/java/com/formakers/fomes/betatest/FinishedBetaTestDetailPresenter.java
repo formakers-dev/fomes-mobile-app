@@ -15,6 +15,7 @@ import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
@@ -65,9 +66,13 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
         this.betaTestService.getAwardRecords(betaTestId)
                 .toObservable()
                 .flatMap(Observable::from)
-                .filter(awardRecord -> {
-                    Log.d(TAG, String.valueOf(awardRecord));
-                    return AwardRecord.TYPE_BEST.equals(awardRecord.getTypeCode());
+                .reduce(new ArrayList<AwardRecord>(), (topAwardRecords, awardRecord) -> {
+                    if (topAwardRecords.isEmpty() ||
+                            awardRecord.getTypeCode().equals(topAwardRecords.get(topAwardRecords.size() - 1).getTypeCode())) {
+                        topAwardRecords.add(awardRecord);
+                    }
+
+                    return topAwardRecords;
                 })
                 .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
