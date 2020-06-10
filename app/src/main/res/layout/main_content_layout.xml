@@ -19,16 +19,16 @@
             app:contentScrim="@android:color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-            <FrameLayout
+            <FrameLayout android:id="@+id/main_event_view_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize"
                 app:layout_collapseMode="parallax">
 
                 <com.formakers.fomes.common.view.custom.SwipeViewPager
                     android:id="@+id/main_event_view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:layout_marginTop="?attr/actionBarSize"
                     android:background="@color/main_tab_background"
                     android:scaleType="centerCrop" />
 
@@ -72,12 +72,17 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <com.formakers.fomes.common.view.custom.SwipeViewPager
         android:id="@+id/main_contents_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <FrameLayout android:id="@+id/main_contents_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:visibility="visible"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_bottom_navigation"

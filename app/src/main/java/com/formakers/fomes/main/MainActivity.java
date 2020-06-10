@@ -17,6 +17,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
@@ -26,11 +28,13 @@ import com.formakers.fomes.betatest.BetaTestFragment;
 import com.formakers.fomes.betatest.FinishedBetaTestFragment;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.custom.SwipeViewPager;
 import com.formakers.fomes.common.view.custom.adapter.FragmentPagerAdapter;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
+import com.formakers.fomes.more.MenuListFragment;
 import com.formakers.fomes.provisioning.login.LoginActivity;
 import com.formakers.fomes.recommend.RecommendFragment;
 import com.formakers.fomes.settings.MyInfoActivity;
@@ -39,6 +43,7 @@ import com.formakers.fomes.wishList.WishListActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -76,6 +81,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     private EventPagerAdapterContract.View eventPagerAdapterView;
 
     @Inject MainContract.Presenter presenter;
+
+    private HashMap<Integer, BaseFragment> contentsFragmentHashMap = new HashMap<>();
 
     public interface FragmentCommunicator {
         void onSelectedPage();
@@ -153,24 +160,35 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         contentsViewPager.setOffscreenPageLimit(3);
         contentsViewPager.setEnableSwipe(false);
 
+        // for Bottom Menu
+        contentsFragmentHashMap.put(R.id.action_more, new MenuListFragment());
+
         this.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_betatest: {
                     presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST);
                     contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(BetaTestFragment.TAG));
+                    showContentsViewPager(true);
                     return true;
                 }
                 case R.id.action_awards: {
                     presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_FINISHED_BETA_TEST);
                     contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(FinishedBetaTestFragment.TAG));
+                    showContentsViewPager(true);
                     return true;
                 }
                 case R.id.action_recommend: {
                     presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
                     contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(RecommendFragment.TAG));
+                    showContentsViewPager(true);
                     return true;
                 }
                 case R.id.action_more: {
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.main_contents_container, contentsFragmentHashMap.get(R.id.action_more));
+                    fragmentTransaction.commit();
+                    showContentsViewPager(false);
                     return true;
                 }
             }
@@ -203,6 +221,13 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         // for Deeplink
         handleDeeplink(getIntent().getExtras());
+    }
+
+    // TODO : [임시코드] 프래그먼트화 리팩토링 이후 제거예정
+    private void showContentsViewPager(boolean isShow) {
+        this.findViewById(R.id.main_contents_container).setVisibility(isShow? View.GONE : View.VISIBLE);
+        this.findViewById(R.id.main_event_view_container).setVisibility(isShow ? View.VISIBLE : View.GONE);
+        this.contentsViewPager.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
     @Override
