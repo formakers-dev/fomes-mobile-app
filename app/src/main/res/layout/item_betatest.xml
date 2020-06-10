@@ -32,7 +32,7 @@
             <ImageView
                 android:id="@+id/betatest_overview_imageview"
                 android:layout_width="@dimen/match_constraint"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/analysis_rank_medal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,14 +54,14 @@
                 app:layout_constraintStart_toEndOf="@+id/betatest_project_status"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <View
-                android:layout_width="@dimen/match_constraint"
-                android:layout_height="@dimen/match_constraint"
-                android:background="@drawable/betatest_list_item_gradient"
-                app:layout_constraintStart_toStartOf="@id/betatest_overview_imageview"
-                app:layout_constraintEnd_toEndOf="@id/betatest_overview_imageview"
-                app:layout_constraintTop_toTopOf="@id/betatest_overview_imageview"
-                app:layout_constraintBottom_toBottomOf="@id/betatest_overview_imageview" />
+<!--            <View-->
+<!--                android:layout_width="@dimen/match_constraint"-->
+<!--                android:layout_height="@dimen/match_constraint"-->
+<!--                android:background="@drawable/betatest_list_item_gradient"-->
+<!--                app:layout_constraintStart_toStartOf="@id/betatest_overview_imageview"-->
+<!--                app:layout_constraintEnd_toEndOf="@id/betatest_overview_imageview"-->
+<!--                app:layout_constraintTop_toTopOf="@id/betatest_overview_imageview"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/betatest_overview_imageview" />-->
 
 
             <TextView
@@ -85,6 +85,7 @@
                 android:id="@+id/betatest_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:theme="@style/BetaTestTheme.Plan.Premium"
