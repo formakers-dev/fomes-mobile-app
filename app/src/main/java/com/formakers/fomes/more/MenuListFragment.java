@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -13,7 +14,13 @@ import com.formakers.fomes.common.view.BaseFragment;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 public class MenuListFragment extends BaseFragment implements MenuListContract.View {
+
+    @BindView(R.id.more_email) TextView emailTextView;
+    @BindView(R.id.more_nickname) TextView nickNameTextView;
+    @BindView(R.id.more_participation_count) TextView participationCountTextView;
 
     @Inject MenuListContract.Presenter presenter;
 
@@ -34,10 +41,17 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        this.presenter.bindUserInfo();
     }
 
     @Override
     public void setPresenter(MenuListContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void setUserInfo(String email, String nickName) {
+        emailTextView.setText(email);
+        nickNameTextView.setText(nickName);
     }
 }

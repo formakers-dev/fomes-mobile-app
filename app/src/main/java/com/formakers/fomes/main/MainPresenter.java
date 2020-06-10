@@ -130,6 +130,7 @@ public class MainPresenter implements MainContract.Presenter {
             boolean isNeedToUpdate = migrationNotice.getVersionCode() > BuildConfig.VERSION_CODE;
 
             Bundle bundle = new Bundle();
+
             bundle.putString(FomesNoticeDialog.EXTRA_TITLE, migrationNotice.getTitle());
             bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, migrationNotice.getDescription());
             bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, migrationNotice.getGuide());

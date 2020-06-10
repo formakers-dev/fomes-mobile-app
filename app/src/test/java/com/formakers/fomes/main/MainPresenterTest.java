@@ -3,9 +3,6 @@ package com.formakers.fomes.main;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.test.core.app.ApplicationProvider;
-
-import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
@@ -32,8 +29,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import rx.Completable;
 import rx.Scheduler;
 import rx.Single;
@@ -54,15 +49,15 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class MainPresenterTest {
 
-    @Inject UserService mockUserService;
-    @Inject JobManager mockJobManager;
-    @Inject EventLogService mockEventLogService;
-    @Inject PostService mockPostService;
-    @Inject FomesUrlHelper mockFomesUrlHelper;
-    @Inject AnalyticsModule.Analytics mockAnalytics;
-    @Inject ImageLoader mockImageLoader;
-    @Inject FirebaseRemoteConfig mockFirebaseRemoteConfig;
-    @Inject SharedPreferencesHelper mockSharedPreferencesHelper;
+    @Mock UserService mockUserService;
+    @Mock JobManager mockJobManager;
+    @Mock EventLogService mockEventLogService;
+    @Mock PostService mockPostService;
+    @Mock FomesUrlHelper mockFomesUrlHelper;
+    @Mock AnalyticsModule.Analytics mockAnalytics;
+    @Mock ImageLoader mockImageLoader;
+    @Mock FirebaseRemoteConfig mockFirebaseRemoteConfig;
+    @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
 
     @Mock EventPagerAdapterContract.Model mockEventPagerAdapterModel;
 
@@ -91,7 +86,6 @@ public class MainPresenterTest {
         });
 
         MockitoAnnotations.initMocks(this);
-        ((TestFomesApplication) ApplicationProvider.getApplicationContext()).getComponent().inject(this);
 
         when(mockPostService.getPromotions()).thenReturn(Single.just(Lists.newArrayList(new Post())));
         when(mockEventPagerAdapterModel.getCount()).thenReturn(3);
