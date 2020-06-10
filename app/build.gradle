@@ -29,6 +29,7 @@ android {
         versionCode 9999
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
     }
     signingConfigs {
         debug {
@@ -46,11 +47,14 @@ android {
             debuggable true
             testCoverageEnabled true
             buildConfigField 'String', 'SERVER_BASE_URL', "\"http://${localhostAddress}:8080/\""
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
+
             signingConfig signingConfigs.debug
 
             // crashlytics 실행하지 않음
-            manifestPlaceholders = [enableCrashReporting:"false"]
+            manifestPlaceholders = [
+                    enableCrashReporting:"false",
+                    kakaoAppKey: rootProject.ext.kakaoApiKey.debug,
+            ]
 
             // crashlytics 플러그인을 사용하지 않음
             ext.enableCrashlytics = false
@@ -65,10 +69,12 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-dev.herokuapp.com/"'
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.debug
 //            signingConfig signingConfigs.release
-            manifestPlaceholders = [enableCrashReporting:"true"]
+            manifestPlaceholders = [
+                    enableCrashReporting:"true",
+                    kakaoAppKey: rootProject.ext.kakaoApiKey.debug,
+            ]
         }
         // STG
         staging {
@@ -77,9 +83,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee-server-stg.herokuapp.com/"'
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
-            manifestPlaceholders = [enableCrashReporting:"false"]
+            manifestPlaceholders = [
+                    enableCrashReporting:"false",
+                    kakaoAppKey: rootProject.ext.kakaoApiKey.debug,
+            ]
         }
         // PRD
         release {
@@ -87,9 +95,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee.xyz/"'
-            buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
             signingConfig signingConfigs.release
-            manifestPlaceholders = [enableCrashReporting:"true"]
+            manifestPlaceholders = [
+                    enableCrashReporting:"true",
+                    kakaoAppKey: rootProject.ext.kakaoApiKey.release,
+            ]
         }
     }
     compileOptions {
@@ -210,6 +220,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:5.11.0'
     // youtube player api
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    // KaKao
+    implementation'com.kakao.sdk:kakaolink:1.29.0'
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     // PagerIndicators

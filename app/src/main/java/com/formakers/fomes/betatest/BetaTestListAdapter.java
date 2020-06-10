@@ -150,6 +150,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.myStatusTextView.setTextColor(res.getColor(myStatusTextColorId));
         viewHolder.myStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,  new ContextThemeWrapper(context, myStatusStyleResId).getTheme()));
 
+        viewHolder.shareButton.setOnClickListener(v -> presenter.shareToKaKao(betaTest));
     }
 
     @Override
@@ -210,6 +211,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView myStatusTextView;
         ImageView overviewImageView;
         TextView reportBugButton;
+        TextView shareButton;
         ViewGroup tagViewGroup;
 
         public ViewHolder(View itemView) {
@@ -222,6 +224,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
             reportBugButton = itemView.findViewById(R.id.betatest_bug_button);
             tagViewGroup = itemView.findViewById(R.id.betatest_tag_layout);
+            shareButton = itemView.findViewById(R.id.betatest_share_button);
         }
     }
 }

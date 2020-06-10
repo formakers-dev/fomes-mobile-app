@@ -1,0 +1,6 @@
+ext {
+    kakaoApiKey = [
+            debug  : "cd256f9691948b7bdf7ffb58e6155151",
+            release: "f6a13c6b574afb1c67d9864054032de9"
+    ]
+};

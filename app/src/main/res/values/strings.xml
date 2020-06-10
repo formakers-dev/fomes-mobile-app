@@ -45,6 +45,9 @@
     <string name="common_cancel">취소</string>
     <string name="common_modify_complete">수정 완료</string>
 
+    <!-- Fomes - share strings -->
+    <string name="share_kakao">카카오톡 공유</string>
+
     <!-- Fomes - locality strings -->
     <!-- Base -->
     <string name="update_dialog_title">신규 버전 업데이트</string>
