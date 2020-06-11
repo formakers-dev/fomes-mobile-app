@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/fomes_content_background_dark"
     tools:context="com.formakers.fomes.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
