@@ -1,21 +1,16 @@
 package com.formakers.fomes.main;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
-import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.betatest.BetaTestFragment;
 import com.formakers.fomes.betatest.FinishedBetaTestFragment;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -37,9 +31,6 @@ import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.more.MenuListFragment;
 import com.formakers.fomes.provisioning.login.LoginActivity;
 import com.formakers.fomes.recommend.RecommendFragment;
-import com.formakers.fomes.settings.MyInfoActivity;
-import com.formakers.fomes.settings.SettingsActivity;
-import com.formakers.fomes.wishList.WishListActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -59,7 +50,7 @@ import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_C
 import static com.formakers.fomes.common.constant.FomesConstants.WebView.EXTRA_TITLE;
 
 public class MainActivity extends FomesBaseActivity implements MainContract.View,
-        NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
+        NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
 
@@ -68,8 +59,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     public static final int EVENT_AUTO_SLIDE_MILLISECONDS = 3000;
 
-    @BindView(R.id.main_drawer_layout)          DrawerLayout drawerLayout;
-    @BindView(R.id.main_side_bar_layout)        NavigationView navigationView;
     @BindView(R.id.main_event_view_pager)       SwipeViewPager eventViewPager;
     @BindView(R.id.main_toolbar)                Toolbar toolbar;
     @BindView(R.id.main_bottom_navigation)      BottomNavigationView bottomNavigationView;
@@ -132,18 +121,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
         setSupportActionBar(toolbar);
 
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        drawerToggle.setDrawerSlideAnimationEnabled(true);
-        drawerToggle.syncState();
-
-        // for NavigationView
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().clear();
-        navigationView.inflateMenu(R.menu.main_nav);
-        this.presenter.bindUserInfo();
-
         // for Main Tab Pager
         contentsViewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager());
 
@@ -163,38 +140,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         // for Bottom Menu
         contentsFragmentHashMap.put(R.id.action_more, new MenuListFragment());
 
-        this.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_betatest: {
-                    presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST);
-                    contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(BetaTestFragment.TAG));
-                    showContentsViewPager(true);
-                    return true;
-                }
-                case R.id.action_awards: {
-                    presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_FINISHED_BETA_TEST);
-                    contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(FinishedBetaTestFragment.TAG));
-                    showContentsViewPager(true);
-                    return true;
-                }
-                case R.id.action_recommend: {
-                    presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
-                    contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(RecommendFragment.TAG));
-                    showContentsViewPager(true);
-                    return true;
-                }
-                case R.id.action_more: {
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                    fragmentTransaction.replace(R.id.main_contents_container, contentsFragmentHashMap.get(R.id.action_more));
-                    fragmentTransaction.commit();
-                    showContentsViewPager(false);
-                    return true;
-                }
-            }
-
-            return false;
-        });
+        this.bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         // for Main Event Banner Pager
         EventPagerAdapter eventPagerAdapter = new EventPagerAdapter(this);
@@ -228,14 +174,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         this.findViewById(R.id.main_contents_container).setVisibility(isShow? View.GONE : View.VISIBLE);
         this.findViewById(R.id.main_event_view_container).setVisibility(isShow ? View.VISIBLE : View.GONE);
         this.contentsViewPager.setVisibility(isShow ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void setUserInfoToNavigationView(String email, String nickName) {
-        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email))
-                .setText(email);
-        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_nickname))
-                .setText(nickName);
     }
 
     private void startEventPagerAutoSlide(long additionalInitDelay) {
@@ -286,12 +224,8 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
 //            super.onBackPressed();
             finishAffinity();
-        }
     }
 
     @Override
@@ -305,8 +239,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.fomes_postbox).setVisible(true);
         menu.findItem(R.id.fomes_postbox).getIcon().setTint(getResources().getColor(R.color.fomes_text_dark));
-        menu.findItem(R.id.my_wish_list).setVisible(false);
-        menu.findItem(R.id.my_recent_analysis).setVisible(false);
 
         return true;
     }
@@ -319,28 +251,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.my_info: {
-                startActivity(new Intent(this, MyInfoActivity.class));
-                break;
-            }
-            case R.id.my_recent_analysis: {
-                startActivity(new Intent(this, RecentAnalysisReportActivity.class));
-                break;
-            }
-            case R.id.my_wish_list: {
-                startActivityForResult(new Intent(this, WishListActivity.class), REQUEST_CODE_WISHLIST);
-                break;
-            }
-            case R.id.fomes_pc_version_guide: {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://www.notion.so/formakers/PC-4e409af0c2df4dfa9734328c9817f317"));
-                startActivity(intent);
-                break;
-            }
-            case R.id.settings: {
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            }
             case R.id.fomes_postbox: {
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(EXTRA_TITLE, getString(R.string.postbox_title));
@@ -349,9 +259,34 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                         : "https://docs.google.com/forms/d/e/1FAIpQLSf2qOJq-YpCBP-S16RLAmPGN3Geaj7g8-eiIpsMrwzvgX-hNQ/viewform?usp=pp_url&entry.1223559684={email}"));
                 startActivity(intent);
             }
+            case R.id.action_betatest: {
+                presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_BETA_TEST);
+                contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(BetaTestFragment.TAG));
+                showContentsViewPager(true);
+                return true;
+            }
+            case R.id.action_awards: {
+                presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_FINISHED_BETA_TEST);
+                contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(FinishedBetaTestFragment.TAG));
+                showContentsViewPager(true);
+                return true;
+            }
+            case R.id.action_recommend: {
+                presenter.sendEventLog(FomesConstants.FomesEventLog.Code.MAIN_ACTIVITY_TAP_RECOMMEND);
+                contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(RecommendFragment.TAG));
+                showContentsViewPager(true);
+                return true;
+            }
+            case R.id.action_more: {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.main_contents_container, contentsFragmentHashMap.get(R.id.action_more));
+                fragmentTransaction.commit();
+                showContentsViewPager(false);
+                return true;
+            }
         }
 
-        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -366,26 +301,6 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 fragment.onActivityResult(requestCode, resultCode, data);
             }
         }
-    }
-
-    @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {
-
-    }
-
-    @Override
-    public void onDrawerOpened(View drawerView) {
-
-    }
-
-    @Override
-    public void onDrawerClosed(View drawerView) {
-
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-
     }
 
     private void showNextEventBanner() {

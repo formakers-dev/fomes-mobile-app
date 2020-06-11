@@ -100,13 +100,6 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void bindUserInfo_호출시__유저정보를_가져와서__네비게이션뷰에_셋팅한다() {
-        subject.bindUserInfo();
-
-        verify(this.mockView).setUserInfoToNavigationView(eq("email"), eq("nickName"));
-    }
-
-    @Test
     public void requestVerifyAccessToken_호출시__토큰_검증을_요청한다() {
         subject.requestVerifyAccessToken();
 
