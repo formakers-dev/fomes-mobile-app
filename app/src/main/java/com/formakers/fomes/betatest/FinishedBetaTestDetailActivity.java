@@ -61,6 +61,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_epilogue_button) Button epilogueButton;
 
     @BindView(R.id.betatest_awards_group) Group awardGroup;
+    @BindView(R.id.betatest_title_awards_best) TextView bestAwardsTitleTextView;
     @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
     @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
     @BindView(R.id.betatest_awards_nickname_end) TextView awardsNickNameEndTextView;
@@ -141,7 +142,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
         String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
         @StringRes int planStringResId = bundle.getInt(FomesConstants.BetaTest.EXTRA_PLAN);
-        String rewardBestDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_REWARD_BEST_DESCRIPTION);
+        int topRewardTypeCode = bundle.getInt(FomesConstants.BetaTest.EXTRA_TOP_REWARD_TYPE_CODE);
+        String topRewardDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_TOP_REWARD_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
         ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
@@ -178,8 +180,9 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
 
+        setBestAwardsTitle(topRewardTypeCode);
         awardsNickNameTextView.setSelected(true);
-        awardsPriceTextView.setText(rewardBestDescription);
+        awardsPriceTextView.setText(topRewardDescription);
 
         myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
 
@@ -218,9 +221,23 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void bindAwards(AwardRecord bestAwardRecord) {
-        awardsNickNameTextView.setText(bestAwardRecord.getNickName());
-        awardsNickNameEndTextView.setVisibility(View.VISIBLE);
+    public void bindAwards(List<AwardRecord> awardRecords) {
+        if (awardRecords != null && !awardRecords.isEmpty()) {
+            if (awardRecords.size() > 1) {
+                awardsNickNameEndTextView.setText(getString(R.string.finished_betatest_detail_awards_nickname_sir_and_count, awardRecords.size() - 1));
+            }
+
+            setBestAwardsTitle(awardRecords.get(0).getTypeCode());
+
+            awardsNickNameTextView.setText(awardRecords.get(0).getNickName());
+            awardsNickNameEndTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setBestAwardsTitle(int typeCode) {
+        if (AwardRecord.TYPE_BEST.equals(typeCode)) {
+            bestAwardsTitleTextView.setText(getString(R.string.finished_betatest_detail_awards_best));
+        }
     }
 
     @Override
