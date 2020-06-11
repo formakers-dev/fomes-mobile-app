@@ -13,6 +13,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class SettingsActivity extends FomesBaseActivity implements SettingsListAdapter.OnItemClickListener {
+public class SettingsActivity extends FomesBaseActivity implements MenuListAdapter.OnItemClickListener {
 
     @BindView(R.id.settings_recyclerview) RecyclerView settingsRecyclerView;
 
@@ -46,24 +47,24 @@ public class SettingsActivity extends FomesBaseActivity implements SettingsListA
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_GrayDivider).getTheme()));
         settingsRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        SettingsListAdapter settingsListAdapter = new SettingsListAdapter(createSettingsList(), this);
+        MenuListAdapter settingsListAdapter = new MenuListAdapter(createSettingsList(), R.layout.item_settings, this);
         settingsRecyclerView.setAdapter(settingsListAdapter);
     }
 
-    private List<SettingsItem> createSettingsList() {
-        List<SettingsItem> settingsItems = new ArrayList<>();
+    private List<MenuListAdapter.MenuItem> createSettingsList() {
+        List<MenuListAdapter.MenuItem> settingsItems = new ArrayList<>();
 
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.VERSION).setTitle(getString(R.string.settings_menu_version))
-                .setSideInfo(BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE).setClickable(false).build());
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_USAGE).setTitle(getString(R.string.settings_menu_usage)).build());
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.TNC_PRIVATE).setTitle(getString(R.string.settings_menu_private)).build());
-        settingsItems.add(new SettingsItem.Builder().setId(Menu.CONTACTS_US).setTitle(getString(R.string.settings_menu_contact_us)).build());
+        settingsItems.add(new MenuListAdapter.MenuItem(Menu.VERSION).setTitle(getString(R.string.settings_menu_version))
+                .setSideInfo(BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE).setClickable(false));
+        settingsItems.add(new MenuListAdapter.MenuItem(Menu.TNC_USAGE).setTitle(getString(R.string.settings_menu_usage)));
+        settingsItems.add(new MenuListAdapter.MenuItem(Menu.TNC_PRIVATE).setTitle(getString(R.string.settings_menu_private)));
+        settingsItems.add(new MenuListAdapter.MenuItem(Menu.CONTACTS_US).setTitle(getString(R.string.settings_menu_contact_us)));
 
         return settingsItems;
     }
 
     @Override
-    public void onItemClick(SettingsItem item) {
+    public void onItemClick(MenuListAdapter.MenuItem item) {
         switch (item.getId()) {
             case Menu.TNC_USAGE: {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing"));

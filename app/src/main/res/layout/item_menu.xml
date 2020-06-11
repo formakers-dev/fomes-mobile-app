@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="17dp"
+    android:paddingBottom="17dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?android:attr/selectableItemBackground"
+    tools:background="@color/fomes_black">
+
+    <ImageView android:id="@+id/icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:tint="@color/fomes_white_alpha_87"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/title"
+        tools:src="@drawable/icon_hamburger"/>
+
+    <TextView android:id="@+id/title"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:textSize="16dp"
+        android:textColor="@color/fomes_white_alpha_87"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon"
+        app:layout_constraintEnd_toStartOf="@+id/side_info"
+        tools:text="포메스 정보" />
+
+    <TextView android:id="@+id/side_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textSize="14dp"
+        android:textColor="@color/fomes_warm_gray_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/title"
+        tools:text="0.1.23 Release"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

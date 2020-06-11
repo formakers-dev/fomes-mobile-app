@@ -16,7 +16,6 @@ public interface MainContract {
 
         void setEventPagerAdapterModel(EventPagerAdapterContract.Model eventPagerAdapterModel);
 
-        void bindUserInfo();
         Completable requestVerifyAccessToken();
         void sendEventLog(String code);
         void requestPromotions();
@@ -31,7 +30,6 @@ public interface MainContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void setUserInfoToNavigationView(String email, String nickName);
         void refreshEventPager();
         void showMigrationNoticeDialog(Bundle migrationNoticeDialogBundle, android.view.View.OnClickListener onClickListener);
         void moveToPlayStore();

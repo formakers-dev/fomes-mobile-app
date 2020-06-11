@@ -3,17 +3,13 @@ package com.formakers.fomes.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
-import androidx.core.view.GravityCompat;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.core.view.MotionEventBuilder;
 import androidx.viewpager.widget.ViewPager;
 
 import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
-import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.model.User;
@@ -21,8 +17,6 @@ import com.formakers.fomes.common.network.vo.Post;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.provisioning.login.LoginActivity;
-import com.formakers.fomes.settings.SettingsActivity;
-import com.formakers.fomes.wishList.WishListActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -147,75 +141,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.Sha
     }
 
     @Test
-    public void MainActivity_시작시__유저정보를_바인딩한다() {
-        launchActivity();
-
-        verify(mockPresenter).bindUserInfo();
-    }
-
-    @Test
-    public void setUserInfoToNavigationView_호출시__사이드메뉴에_유저정보가_셋팅된다() {
-        launchActivity();
-
-        subject.setUserInfoToNavigationView("test@email.com", "testUserNickName");
-
-        View sideHeaderView = subject.navigationView.getHeaderView(0);
-        assertThat(((TextView) sideHeaderView.findViewById(R.id.user_nickname)).getText())
-                .isEqualTo("testUserNickName");
-        assertThat(((TextView) sideHeaderView.findViewById(R.id.user_email)).getText())
-                .isEqualTo("test@email.com");
-    }
-
-    @Test
-    public void 사이드메뉴의_아이템_클릭시__열려있는_사이드_메뉴를_닫는다() {
-        MenuItem item = mock(MenuItem.class);
-        when(item.getTitle()).thenReturn("사이드메뉴아이템1");
-
-        launchActivity();
-        subject.onNavigationItemSelected(item);
-
-        assertThat(subject.drawerLayout.isDrawerOpen(GravityCompat.START)).isFalse();
-    }
-
-    @Test
-    public void 사이드메뉴의_분석화면_클릭시__분석화면으로_이동한다() {
-        MenuItem item = mock(MenuItem.class);
-        when(item.getItemId()).thenReturn(R.id.my_recent_analysis);
-        when(item.getTitle()).thenReturn("게임 성향 분석");
-
-        launchActivity();
-        subject.onNavigationItemSelected(item);
-
-        Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(RecentAnalysisReportActivity.class.getSimpleName());
-    }
-
-    @Test
-    public void 사이드메뉴의_설정화면_클릭시__설정화면으로_이동한다() {
-        MenuItem item = mock(MenuItem.class);
-        when(item.getItemId()).thenReturn(R.id.settings);
-        when(item.getTitle()).thenReturn("설정");
-
-        launchActivity();
-        subject.onNavigationItemSelected(item);
-
-        Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(SettingsActivity.class.getSimpleName());
-    }
-
-    @Test
-    public void 사이드메뉴의_즐겨찾기_클릭시__즐겨찾기화면으로_이동한다() {
-        MenuItem item = mock(MenuItem.class);
-        when(item.getItemId()).thenReturn(R.id.my_wish_list);
-
-        launchActivity();
-        subject.onNavigationItemSelected(item);
-
-        Intent intent = shadowOf(subject).getNextStartedActivity();
-        assertThat(intent.getComponent().getClassName()).contains(WishListActivity.class.getSimpleName());
-    }
-
-    @Test
     public void 메뉴의_우체통_클릭시__우체통_화면으로_이동한다() {
         MenuItem item = mock(MenuItem.class);
         when(item.getItemId()).thenReturn(R.id.fomes_postbox);
@@ -227,15 +152,6 @@ public class MainActivityTest extends FomesBaseActivityTest<MainActivityTest.Sha
         assertThat(intent.getComponent().getClassName()).contains(WebViewActivity.class.getSimpleName());
         assertThat(intent.getStringExtra(FomesConstants.WebView.EXTRA_TITLE)).isEqualTo("포메스 우체통");
         assertThat(intent.getStringExtra(FomesConstants.WebView.EXTRA_CONTENTS)).startsWith("http");
-    }
-
-    @Test
-    public void 백버튼클릭시__사이드메뉴가_열려있을경우__사이드메뉴를_닫는다() {
-        launchActivity();
-        subject.drawerLayout.openDrawer(GravityCompat.START);
-        subject.onBackPressed();
-
-        assertThat(subject.drawerLayout.isDrawerOpen(GravityCompat.START)).isFalse();
     }
 
     @Test

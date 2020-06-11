@@ -27,6 +27,14 @@ public interface FomesConstants {
         }
     }
 
+    interface More {
+        int MENU_HOW_TO_PC = 1;
+        int MENU_PROFILE = 2;
+        int MENU_GAME_ANALYSIS = 3;
+        int MENU_WISH_LIST = 4;
+        int MENU_SETTINGS = 5;
+    }
+
     interface BetaTest {
         String EXTRA_ID = "EXTRA_ID";
         String EXTRA_REMAIN_DAYS = "EXTRA_REMAIN_DAYS";
