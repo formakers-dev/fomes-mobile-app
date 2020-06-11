@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="21dp"
+            android:paddingBottom="@dimen/betatest_list_item_content_margin_top_bottom"
             android:background="@drawable/item_rect_rounded_corner_background"
             android:foreground="@drawable/item_rect_rounded_corner_stroke_background"
             android:theme="@style/BetaTestTheme.CardBackground"
@@ -85,7 +85,7 @@
                 android:id="@+id/betatest_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/betatest_list_item_content_margin_top_bottom"
                 android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
                 android:background="@drawable/item_rect_rounded_corner_background"
                 android:theme="@style/BetaTestTheme.Plan.Premium"
