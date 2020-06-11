@@ -80,7 +80,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         menuListView.setLayoutManager(linearLayoutManager);
 
-        this.menuListAdapter = new MenuListAdapter(createMenuList(), this);
+        this.menuListAdapter = new MenuListAdapter(createMenuList(), R.layout.item_menu, this);
         this.menuListView.setAdapter(menuListAdapter);
     }
 

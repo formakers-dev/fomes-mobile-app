@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.formakers.fomes.R;
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    @LayoutRes private int itemLayoutResId;
+
     List<MenuItem> menuList;
     OnItemClickListener onItemClickListener;
 
@@ -22,14 +25,15 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void onItemClick(MenuItem item);
     }
 
-    public MenuListAdapter(List<MenuItem> list, OnItemClickListener onItemClickListener) {
+    public MenuListAdapter(List<MenuItem> list, @LayoutRes int itemLayoutResId, OnItemClickListener onItemClickListener) {
         this.menuList = list;
         this.onItemClickListener = onItemClickListener;
+        this.itemLayoutResId = itemLayoutResId;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(itemLayoutResId, parent, false);
         return new ViewHolder(itemView);
     }
 

@@ -11,6 +11,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.TestFomesApplication;
 import com.formakers.fomes.common.constant.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivityTest;
+import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class SettingsActivityTest extends FomesBaseActivityTest<SettingsActivity
     public void 설정메뉴에__버전정보와_빌드타입이_나타난다() throws Exception  {
         launchActivity();
 
-        SettingsItem settingsItem = ((SettingsListAdapter) ((RecyclerView) subject.findViewById(R.id.settings_recyclerview)).getAdapter()).getItem(0);
+        MenuListAdapter.MenuItem settingsItem = ((MenuListAdapter) ((RecyclerView) subject.findViewById(R.id.settings_recyclerview)).getAdapter()).getItem(0);
         assertThat(settingsItem.getSideInfo()).contains(BuildConfig.VERSION_NAME);
         assertThat(settingsItem.getSideInfo()).contains(BuildConfig.BUILD_TYPE);
     }
