@@ -221,13 +221,16 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Override
     public void bindAwards(List<AwardRecord> awardRecords) {
         if (awardRecords != null) {
-            if (awardRecords.size() == 1) {
-                awardsNickNameTextView.setText(awardRecords.get(0).getNickName());
-                awardsNickNameEndTextView.setVisibility(View.VISIBLE);
-            } else {
-                awardsNickNameTextView.setText(getString(R.string.finished_betatest_awardee_count_text, awardRecords.size()));
-                bestAwardsTitleTextView.setText(getString(R.string.finished_betatest_multiple_awardee_title_text));
+            if (awardRecords.size() > 1) {
+                awardsNickNameEndTextView.setText(getString(R.string.finished_betatest_detail_awards_nickname_sir_and_count, awardRecords.size() - 1));
             }
+
+            if (AwardRecord.TYPE_BEST.equals(awardRecords.get(0).getTypeCode())) {
+                bestAwardsTitleTextView.setText(getString(R.string.finished_betatest_detail_awards_best));
+            }
+
+            awardsNickNameTextView.setText(awardRecords.get(0).getNickName());
+            awardsNickNameEndTextView.setVisibility(View.VISIBLE);
         }
     }
 
