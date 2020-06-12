@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     android:scrollbarStyle="insideOverlay"
     android:scrollbars="vertical">
@@ -19,12 +20,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
             android:layout_marginTop="23dp"
-            android:text="회는살안쪄"
             android:textColor="@color/fomes_white"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="회는살안쪄"/>
 
         <TextView
             android:id="@+id/more_nickname_divider"
@@ -47,7 +48,8 @@
             android:textColor="@color/fomes_white_alpha_75"
             android:textSize="18dp"
             app:layout_constraintStart_toEndOf="@+id/more_nickname_divider"
-            app:layout_constraintTop_toTopOf="@+id/more_nickname" />
+            app:layout_constraintTop_toTopOf="@+id/more_nickname"
+            tools:text="8회 참여"/>
 
         <TextView
             android:id="@+id/more_email"
@@ -55,12 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="23dp"
-            android:text="bolim.lee@formakers.net"
             android:textColor="@color/fomes_white_alpha_75"
             android:textSize="12dp"
             app:layout_constraintBottom_toTopOf="@+id/more_menu_list"
             app:layout_constraintStart_toStartOf="@+id/more_nickname"
-            app:layout_constraintTop_toBottomOf="@+id/more_nickname" />
+            app:layout_constraintTop_toBottomOf="@+id/more_nickname"
+            tools:text="bolim.lee@formakers.net"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/more_menu_list"
