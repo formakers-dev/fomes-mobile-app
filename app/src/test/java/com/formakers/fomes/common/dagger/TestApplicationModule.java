@@ -10,6 +10,7 @@ import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.helper.ResourceHelper;
+import com.formakers.fomes.common.helper.ShareHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.helper.TimeHelper;
 import com.formakers.fomes.common.job.JobManager;
@@ -215,6 +216,12 @@ public class TestApplicationModule {
     @Provides
     ChannelManager channelManager() {
         return mock(ChannelManager.class);
+    }
+
+    @Singleton
+    @Provides
+    ShareHelper shareHelper() {
+        return mock(ShareHelper.class);
     }
 
     /**

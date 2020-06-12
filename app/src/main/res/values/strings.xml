@@ -45,6 +45,9 @@
     <string name="common_cancel">취소</string>
     <string name="common_modify_complete">수정 완료</string>
 
+    <!-- Fomes - share strings -->
+    <string name="share_kakao">카카오톡 공유</string>
+
     <!-- Fomes - locality strings -->
     <!-- Base -->
     <string name="update_dialog_title">신규 버전 업데이트</string>
@@ -141,6 +144,9 @@
 
     <!-- Post Box -->
     <string name="postbox_title">포메스 우체통</string>
+
+    <!-- More -->
+    <string name="my_completed_betatest_count_format">%d회 참여</string>
 
     <!-- Beta Test -->
     <string name="betatest_title">이 게임 테스트 어때요?</string>
@@ -242,6 +248,7 @@
     <string name="finished_betatest_detail_awards_title">테스트 시상식</string>
     <string name="finished_betatest_detail_awards_best">테스트 수석</string>
     <string name="finished_betatest_detail_awards_nickname_sir">님</string>
+    <string name="finished_betatest_detail_awards_nickname_sir_and_count">님 외 %d명</string>
     <string name="finished_betatest_detail_awards_wonder">테스트 뒷 이야기가 궁금하다면?</string>
     <string name="finished_betatest_detail_go_to_epilogue">자세한 테스트 결과 구경하기</string>
     <string name="finished_betatest_detail_my_results_title">나의 테스트 참여 결과</string>
@@ -251,6 +258,7 @@
     <string name="finished_betatest_detail_faq_rewards">보상 지급은 어떻게 이루어지나요?</string>
     <string name="finished_betatest_detail_faq_good_feedback">테스트 응답을 잘 쓰려면 어떻게 해야하나요?</string>
     <string name="finished_betatest_detail_faq_completed">참여했는데 결과에서 미참여로 나와요.</string>
+    <string name="finished_betatest_detail_default_awards_title">게임 개선에 큰 도움이 되신 분</string>
 
     <!-- Beta Test Certificate -->
     <string name="betatest_certificate_title">테스트 참여 확인증</string>

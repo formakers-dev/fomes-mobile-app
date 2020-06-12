@@ -313,6 +313,11 @@
         <item name="item_stroke_width">1dp</item>
     </style>
 
+    <style name="BetaTestTheme.KaKaoButtonBackground" parent="BetaTestTheme.BugButtonBackground">
+        <item name="item_solid_color">@android:color/transparent</item>
+        <item name="item_stroke_color">@color/kakao_color_alpha_75</item>
+    </style>
+
     <style name="BetaTestTheme.InfoBackground">
         <item name="item_solid_color">@android:color/transparent</item>
         <item name="item_stroke_color">@color/fomes_light_gray</item>

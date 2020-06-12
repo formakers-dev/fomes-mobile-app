@@ -305,7 +305,8 @@ public class BetaTest implements Parcelable {
             String iconImageUrl;
             String title;
             String content;
-            String type;
+            @Deprecated String type;
+            Integer typeCode;
             Integer count;
 
             public Integer getOrder() {
@@ -344,12 +345,23 @@ public class BetaTest implements Parcelable {
                 return this;
             }
 
+            @Deprecated
             public String getType() {
                 return type;
             }
 
+            @Deprecated
             public RewardItem setType(String type) {
                 this.type = type;
+                return this;
+            }
+
+            public Integer getTypeCode() {
+                return typeCode;
+            }
+
+            public RewardItem setTypeCode(Integer typeCode) {
+                this.typeCode = typeCode;
                 return this;
             }
 
@@ -370,6 +382,7 @@ public class BetaTest implements Parcelable {
                         ", title='" + title + '\'' +
                         ", content='" + content + '\'' +
                         ", type='" + type + '\'' +
+                        ", typeCode=" + typeCode +
                         ", count=" + count +
                         '}';
             }
@@ -389,6 +402,7 @@ public class BetaTest implements Parcelable {
                 dest.writeString(title);
                 dest.writeString(content);
                 dest.writeString(type);
+                dest.writeInt(typeCode);
                 dest.writeInt(count);
             }
 
@@ -398,6 +412,7 @@ public class BetaTest implements Parcelable {
                 title = in.readString();
                 content = in.readString();
                 type = in.readString();
+                typeCode = in.readInt();
                 count = in.readInt();
             }
 

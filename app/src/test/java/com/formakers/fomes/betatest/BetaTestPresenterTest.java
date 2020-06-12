@@ -3,6 +3,7 @@ package com.formakers.fomes.betatest;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
+import com.formakers.fomes.common.helper.ShareHelper;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
@@ -54,6 +55,7 @@ public class BetaTestPresenterTest {
     @Mock private AnalyticsModule.Analytics mockAnalytics;
     @Mock private FomesUrlHelper mockFomesUrlHelper;
     @Mock private ImageLoader mockImageLoader;
+    @Mock private ShareHelper mockShareHelper;
 
     private User dummyUser;
     private List<BetaTest> betaTests = new ArrayList<>();
@@ -88,7 +90,7 @@ public class BetaTestPresenterTest {
         when(mockAdapterModel.getPositionById("1")).thenReturn(0);
         when(mockAdapterModel.getPositionById("2")).thenReturn(1);
 
-        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockFomesUrlHelper, mockImageLoader, Single.just(dummyUser.getNickName()));
+        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockFomesUrlHelper, mockImageLoader, mockShareHelper, Single.just(dummyUser.getNickName()));
         subject.setAdapterModel(mockAdapterModel);
     }
 
@@ -219,5 +221,14 @@ public class BetaTestPresenterTest {
         subject.requestBetaTestProgress("99999999999");
 
         verify(mockView, never()).refreshBetaTestProgress(anyInt());
+    }
+
+    @Test
+    public void shareToKakao_호출시__베타테스트_정보를_공유한다() {
+        BetaTest betaTest = new BetaTest();
+
+        subject.shareToKaKao(betaTest);
+
+        verify(mockShareHelper).sendBetaTestToKaKao(eq(betaTest));
     }
 }

@@ -5,7 +5,10 @@
             <solid android:color="@color/colorPrimary"/>
         </shape>
     </item>
-    <item>
-        <bitmap android:src="@drawable/fomes_actionbar" android:gravity="center" />
+    <item android:start="16dp">
+        <bitmap
+            android:src="@drawable/fomes_actionbar"
+            android:gravity="start"
+            android:tint="@color/fomes_text_dark" />
     </item>
 </layer-list>

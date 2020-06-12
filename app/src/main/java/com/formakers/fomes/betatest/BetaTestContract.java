@@ -27,6 +27,8 @@ public interface BetaTestContract {
         int getBetaTestPostitionById(String id);
         String getInterpretedUrl(String originalUrl);
         void sendEventLog(String code, String ref);
+        void shareToKaKao(BetaTest betaTest);
+
         void unsubscribe();
     }
 

@@ -45,6 +45,10 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="${enableCrashReporting}"/>
 
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="${kakaoAppKey}" />
+
     <!-- 백그라운드 앱의 알림 수신 -->
         <service android:name=".common.noti.MessagingService"
             android:exported="true">
@@ -74,7 +78,15 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="kakao${kakaoAppKey}"
+                    android:host="kakaolink"/>
+            </intent-filter>
         </activity>
+        <activity android:name=".more.MenuListFragment"/>
         <activity android:name=".settings.SettingsActivity"/>
         <activity android:name=".settings.MyInfoActivity"/>
         <activity android:name=".wishList.WishListActivity"/>

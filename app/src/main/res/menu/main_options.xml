@@ -3,19 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/fomes_postbox"
         android:icon="@drawable/icon_fomes_postbox"
-        android:iconTint="@color/fomes_white"
+        android:iconTint="@color/fomes_text_dark"
         android:title="@string/main_option_menu_fomes_postbox"
-        app:showAsAction="always"/>
-
-    <item android:id="@+id/my_recent_analysis"
-        android:icon="@drawable/icon_my_recent_analysis_option"
-        android:iconTint="@color/fomes_white"
-        android:title="@string/main_menu_my_recent_analysis"
-        app:showAsAction="always"/>
-
-    <item android:id="@+id/my_wish_list"
-        android:icon="@drawable/icon_bookmark"
-        android:iconTint="@color/fomes_white"
-        android:title="@string/main_menu_my_wish_list"
         app:showAsAction="always"/>
 </menu>

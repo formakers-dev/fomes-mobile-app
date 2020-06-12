@@ -3,6 +3,7 @@ package com.formakers.fomes.betatest;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
+import com.formakers.fomes.common.helper.ShareHelper;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
@@ -37,6 +38,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private FomesUrlHelper fomesUrlHelper;
     private ImageLoader imageLoader;
     private Single<String> userNickName;
+    private ShareHelper shareHelper;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
@@ -47,6 +49,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                              AnalyticsModule.Analytics analytics,
                              FomesUrlHelper fomesUrlHelper,
                              ImageLoader imageLoader,
+                             ShareHelper shareHelper,
                              @Named("userNickName") Single<String> userNickName) {
         this.view = view;
         this.betaTestService = betaTestService;
@@ -55,6 +58,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
         this.analytics = analytics;
         this.fomesUrlHelper = fomesUrlHelper;
         this.imageLoader = imageLoader;
+        this.shareHelper = shareHelper;
     }
 
     @Override
@@ -175,6 +179,11 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                         .subscribe(() -> Log.d(TAG, "Event log is sent successfully!!"),
                                 (e) -> Log.e(TAG, String.valueOf(e)))
         );
+    }
+
+    @Override
+    public void shareToKaKao(BetaTest betaTest) {
+        this.shareHelper.sendBetaTestToKaKao(betaTest);
     }
 
     @Override

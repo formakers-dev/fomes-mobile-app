@@ -33,7 +33,7 @@ public interface FinishedBetaTestDetailContract {
 
     interface View extends BaseView<Presenter> {
         void bindEpilogue(BetaTest.Epilogue epilogue);
-        void bindAwards(AwardRecord awardRecord);
+        void bindAwards(List<AwardRecord> awardRecords);
         void bindMyAnswers(List<Mission> missions);
 
         void startWebViewActivity(String title, String url);

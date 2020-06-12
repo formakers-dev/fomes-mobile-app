@@ -38,6 +38,10 @@
     <color name="fomes_red">#d0021b</color>
     <color name="fomes_yellow">#FFCD00</color>
 
+    <!-- other colors -->
+    <color name="kakao_color">#ffe812</color>
+    <color name="kakao_color_alpha_75">#c0ffe812</color>
+
     <!-- for Views -->
 
     <color name="fomes_content_background">@color/fomes_white_2</color>

@@ -60,7 +60,7 @@ public class BetaTestCertificatePresenterTest {
                 .setCompleted(true);
 
         when(mockBetaTestService.getDetailBetaTest("betaTestId")).thenReturn(Single.just(betaTest));
-        when(mockBetaTestService.getMyAwardRecord("betaTestId")).thenReturn(Single.just(new AwardRecord().setType("best")));
+        when(mockBetaTestService.getMyAwardRecord("betaTestId")).thenReturn(Single.just(new AwardRecord().setTypeCode(9000)));
         when(mockBetaTestService.getEpilogue("betaTestId")).thenReturn(Single.just(new BetaTest.Epilogue().setAwards("테스트 수석")));
 
         subject = new BetaTestCertificatePresenter(mockView, Single.just("dummyNickName"), mockAnalytics, mockImageLoader, mockBetaTestService);
@@ -83,7 +83,7 @@ public class BetaTestCertificatePresenterTest {
 
         assertThat(actualBetaTest.getTitle()).isEqualTo("[테스트] 게임 테스트");
         assertThat(actualBetaTest.getIconImageUrl()).isEqualTo("아이콘링크");
-        assertThat(actualAwardRecord.getType()).isEqualTo("best");
+        assertThat(actualAwardRecord.getTypeCode()).isEqualTo(9000);
         assertThat(actualBetaTest.getEpilogue()).isNotNull();
         assertThat(actualBetaTest.getEpilogue().getAwards()).isEqualTo("테스트 수석");
     }

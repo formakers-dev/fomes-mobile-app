@@ -7,6 +7,7 @@ import com.formakers.fomes.common.helper.AppUsageDataHelper;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.GoogleSignInAPIHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
+import com.formakers.fomes.common.helper.ShareHelper;
 import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.common.job.JobManager;
 import com.formakers.fomes.common.job.SendDataJobService;
@@ -33,7 +34,7 @@ import dagger.Component;
 import rx.Single;
 
 @Singleton
-@Component(modules = { NetworkModule.class, GlideModule.class, AnalyticsModule.class, DataModule.class })
+@Component(modules = { NetworkModule.class, GlideModule.class, AnalyticsModule.class, DataModule.class, ShareModule.class })
 public interface ApplicationComponent {
     AppStatService appStatService();
     UserService userService();
@@ -49,6 +50,7 @@ public interface ApplicationComponent {
     SharedPreferencesHelper sharedPreferencesHelper();
     AndroidNativeHelper androidNativeHelper();
     AppUsageDataHelper appUsageDataHelper();
+    ShareHelper shareHelper();
 
     UserDAO userDAO();
     RequestManager requestManager();
