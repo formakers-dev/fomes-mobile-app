@@ -65,7 +65,7 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     public void requestAwardRecordOfBest(String betaTestId) {
         this.betaTestService.getAwardRecords(betaTestId)
                 .toObservable()
-                .flatMap(Observable::from)
+                .concatMap(Observable::from)
                 .reduce(new ArrayList<AwardRecord>(), (topAwardRecords, awardRecord) -> {
                     if (topAwardRecords.isEmpty() ||
                             awardRecord.getTypeCode().equals(topAwardRecords.get(topAwardRecords.size() - 1).getTypeCode())) {
