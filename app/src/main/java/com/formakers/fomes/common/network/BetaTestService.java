@@ -121,4 +121,12 @@ public class BetaTestService extends AbstractService {
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle();
     }
+
+    public Single<Integer> getCompletedBetaTestsCount() {
+        return Observable.defer(() -> betaTestAPI.getCompletedBetaTestsCount(sharedPreferencesHelper.getAccessToken()))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle()
+                .map(count -> count.count);
+    }
 }

@@ -145,6 +145,9 @@
     <!-- Post Box -->
     <string name="postbox_title">포메스 우체통</string>
 
+    <!-- More -->
+    <string name="my_completed_betatest_count_format">%d회 참여</string>
+
     <!-- Beta Test -->
     <string name="betatest_title">이 게임 테스트 어때요?</string>
     <string name="betatest_subtitle">재미있어 보이는 게임의 테스트에 참여해보세요.</string>

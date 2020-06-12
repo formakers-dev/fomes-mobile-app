@@ -61,6 +61,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         super.onViewCreated(view, savedInstanceState);
 
         this.presenter.bindUserInfo();
+        this.presenter.bindCompletedBetaTestsCount();
         this.setMenuListView();
     }
 
@@ -100,6 +101,12 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     public void setUserInfo(String email, String nickName) {
         emailTextView.setText(email);
         nickNameTextView.setText(nickName);
+    }
+
+    @Override
+    public void setCompletedBetaTestsCount(int count) {
+        participationCountTextView.setText(String.format(getString(R.string.my_completed_betatest_count_format), count));
+        participationCountTextView.startAnimation(getFadeInAnimation(300));
     }
 
     @Override

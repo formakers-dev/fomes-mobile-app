@@ -1,10 +1,13 @@
 package com.formakers.fomes.common.view;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.view.View;
 
 import com.formakers.fomes.common.util.Log;
 
@@ -45,5 +48,11 @@ public class BaseFragment extends Fragment {
         } else {
             Log.e(getTag(), error.getMessage());
         }
+    }
+
+    protected Animation getFadeInAnimation(long durationMills) {
+        Animation in = new AlphaAnimation(0.0f, 1.0f);
+        in.setDuration(durationMills);
+        return in;
     }
 }

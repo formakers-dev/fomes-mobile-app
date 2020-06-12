@@ -35,7 +35,6 @@
             android:textColor="@color/fomes_white"
             android:textSize="18dp"
             android:textStyle="bold"
-            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/more_participation_count"
             app:layout_constraintStart_toEndOf="@+id/more_nickname"
             app:layout_constraintTop_toTopOf="@+id/more_nickname" />
@@ -45,10 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-            android:text="8회 참여"
             android:textColor="@color/fomes_white_alpha_75"
             android:textSize="18dp"
-            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/more_nickname_divider"
             app:layout_constraintTop_toTopOf="@+id/more_nickname" />
 
