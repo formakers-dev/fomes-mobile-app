@@ -99,13 +99,21 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
     @Override
     public void setUserInfo(String email, String nickName) {
+        if (context == null) {
+            return;
+        }
+
         emailTextView.setText(email);
         nickNameTextView.setText(nickName);
     }
 
     @Override
     public void setCompletedBetaTestsCount(int count) {
-        participationCountTextView.setText(String.format(getString(R.string.my_completed_betatest_count_format), count));
+        if (context == null) {
+            return;
+        }
+
+        participationCountTextView.setText(String.format(context.getString(R.string.my_completed_betatest_count_format), count));
         participationCountTextView.startAnimation(getFadeInAnimation(300));
     }
 
