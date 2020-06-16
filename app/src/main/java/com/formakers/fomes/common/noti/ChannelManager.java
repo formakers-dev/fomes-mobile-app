@@ -23,6 +23,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.LocalBroadcastReceiver;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.main.MainActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Date;
@@ -122,6 +123,10 @@ public class ChannelManager {
     }
 
     public void sendNotification(Bundle notiDataBundle) {
+        if (notiDataBundle == null) {
+            return;
+        }
+
         // mandatory
         Channel channel = (ChannelManager.Channel) notiDataBundle.getSerializable(FomesConstants.Notification.CHANNEL);
         String title = notiDataBundle.getString(FomesConstants.Notification.TITLE);
@@ -194,6 +199,10 @@ public class ChannelManager {
     }
 
     public Intent onNotificationClick(Bundle notificationDataBundle) {
+        if ( notificationDataBundle ==  null) {
+            return new Intent(context, MainActivity.class);
+        }
+
         Channel channel = (Channel) notificationDataBundle.getSerializable(FomesConstants.Notification.CHANNEL);
         String title = notificationDataBundle.getString(FomesConstants.Notification.TITLE);
         Class destActivity = (Class) notificationDataBundle.getSerializable(FomesConstants.Notification.DESTINATION_ACTIVITY);
@@ -214,6 +223,10 @@ public class ChannelManager {
     }
 
     public void onNotificationCancel(Bundle notificationDataBundle) {
+        if (notificationDataBundle == null) {
+            return;
+        }
+
         ChannelManager.Channel channel = (ChannelManager.Channel) notificationDataBundle.getSerializable(FomesConstants.Notification.CHANNEL);
         String title = notificationDataBundle.getString(FomesConstants.Notification.TITLE);
 
