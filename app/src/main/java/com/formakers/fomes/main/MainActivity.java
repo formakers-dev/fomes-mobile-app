@@ -22,7 +22,6 @@ import com.formakers.fomes.betatest.BetaTestFragment;
 import com.formakers.fomes.betatest.FinishedBetaTestFragment;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.util.Log;
-import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.custom.SwipeViewPager;
@@ -35,6 +34,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -71,7 +72,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
     @Inject MainContract.Presenter presenter;
 
-    private HashMap<Integer, BaseFragment> contentsFragmentHashMap = new HashMap<>();
+    private HashMap<Integer, Fragment> contentsFragmentHashMap = new HashMap<>();
 
     public interface FragmentCommunicator {
         void onSelectedPage();
@@ -129,15 +130,21 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         bundle.putBoolean("IS_DEFAULT_PAGE", true);
         betaTestFragment.setArguments(bundle);
 
+        FinishedBetaTestFragment finishedBetaTestFragment = new FinishedBetaTestFragment();
+        RecommendFragment recommendFragment = new RecommendFragment();
+
         contentsViewPagerAdapter.addFragment(BetaTestFragment.TAG, betaTestFragment, getString(R.string.main_tab_betatest));
-        contentsViewPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, new FinishedBetaTestFragment(), getString(R.string.main_tab_finished_betatest));
-        contentsViewPagerAdapter.addFragment(RecommendFragment.TAG, new RecommendFragment(), getString(R.string.main_tab_recommend));
+        contentsViewPagerAdapter.addFragment(FinishedBetaTestFragment.TAG, finishedBetaTestFragment, getString(R.string.main_tab_finished_betatest));
+        contentsViewPagerAdapter.addFragment(RecommendFragment.TAG, recommendFragment, getString(R.string.main_tab_recommend));
 
         contentsViewPager.setAdapter(contentsViewPagerAdapter);
         contentsViewPager.setOffscreenPageLimit(3);
         contentsViewPager.setEnableSwipe(false);
 
         // for Bottom Menu
+        contentsFragmentHashMap.put(R.id.action_betatest, betaTestFragment);
+        contentsFragmentHashMap.put(R.id.action_awards, finishedBetaTestFragment);
+        contentsFragmentHashMap.put(R.id.action_recommend, recommendFragment);
         contentsFragmentHashMap.put(R.id.action_more, new MenuListFragment());
 
         this.bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -415,9 +422,21 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
 
                 Log.d(TAG, "contentsViewPager.postDelayed) contentsViewPager.getAdapter() = " + contentsViewPager.getAdapter());
 
+                Integer bottomNavItemId = getKeyByValue(contentsFragmentHashMap, selectedFragment);
+                bottomNavigationView.setSelectedItemId(bottomNavItemId == null ? 0 : bottomNavItemId);
                 contentsViewPager.setCurrentItem(contentsViewPagerAdapter.getPosition(selectedFragment));
                 contentsViewPager.getAdapter().notifyDataSetChanged();
             }, 100);
         }
+    }
+
+    // TODO : go to common/utils
+    private <T, E> T getKeyByValue(Map<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

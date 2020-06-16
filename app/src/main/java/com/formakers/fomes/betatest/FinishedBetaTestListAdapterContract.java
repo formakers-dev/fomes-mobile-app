@@ -17,6 +17,7 @@ public interface FinishedBetaTestListAdapterContract {
     interface Model {
         int getItemCount();
         Object getItem(int position);
+        int getPositionById(String id);
         List<BetaTest> getAllItems();
         void add(BetaTest item);
         void addAll(List<BetaTest> items);

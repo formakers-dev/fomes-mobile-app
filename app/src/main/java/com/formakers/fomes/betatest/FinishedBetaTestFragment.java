@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -188,5 +190,25 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(deeplinkUri);
         startActivity(intent);
+    }
+
+    // TODO : 네이밍 고민..
+    @Override
+    public void selectBetaTestIfExist() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String betaTestId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+            Log.d(TAG, "selected betaTestId=" + betaTestId);
+
+            if (!TextUtils.isEmpty(betaTestId)) {
+                int position = presenter.getPostitionById(betaTestId);
+                if (position >= 0) {
+                    finishedBetatestRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+                } else {
+                    Toast.makeText(getContext(), "없어용", Toast.LENGTH_SHORT).show();
+                }
+                bundle.remove("EXTRA_SELECTED_ITEM_ID");
+            }
+        }
     }
 }

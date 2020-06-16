@@ -88,7 +88,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                 .doOnSubscribe(() -> view.showLoading())
                 .doAfterTerminate(() -> view.hideLoading())
                 .toCompletable()
-                .subscribe(() -> { }, e -> Log.e(TAG, String.valueOf(e))));
+                .subscribe(() -> view.selectBetaTestIfExist(), e -> Log.e(TAG, String.valueOf(e))));
     }
 
     @Override
@@ -158,6 +158,11 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     @Override
     public BetaTest getItem(int position) {
         return (BetaTest) this.adapterModel.getItem(position);
+    }
+
+    @Override
+    public int getPostitionById(String id) {
+        return this.adapterModel.getPositionById(id);
     }
 
     private void processMissionItemAction(Mission missionItem) {
