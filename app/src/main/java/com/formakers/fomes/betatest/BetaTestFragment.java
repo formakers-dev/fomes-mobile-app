@@ -122,21 +122,6 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     @Override
     public void onResume() {
         super.onResume();
-
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String betaTestId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
-
-            if (!TextUtils.isEmpty(betaTestId)) {
-                int position = presenter.getBetaTestPostitionById(betaTestId);
-                if (position >= 0) {
-                    betaTestRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
-                } else {
-                    Toast.makeText(getContext(), "없어용", Toast.LENGTH_SHORT).show();
-                }
-                bundle.remove("EXTRA_SELECTED_ITEM_ID");
-            }
-        }
     }
 
     @Override
@@ -216,6 +201,26 @@ public class BetaTestFragment extends BaseFragment implements BetaTestContract.V
     public void onSelectedPage() {
         if (this.presenter != null) {
             presenter.getAnalytics().setCurrentScreen(this);
+        }
+    }
+
+    // TODO : 네이밍 고민..
+    @Override
+    public void selectBetaTestIfExist() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String betaTestId = bundle.getString("EXTRA_SELECTED_ITEM_ID");
+            Log.d(TAG, "selected betaTestId=" + betaTestId);
+
+            if (!TextUtils.isEmpty(betaTestId)) {
+                int position = presenter.getBetaTestPostitionById(betaTestId);
+                if (position >= 0) {
+                    betaTestRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+                } else {
+                    Toast.makeText(getContext(), "없어용", Toast.LENGTH_SHORT).show();
+                }
+                bundle.remove("EXTRA_SELECTED_ITEM_ID");
+            }
         }
     }
 }

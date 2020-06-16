@@ -89,7 +89,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> view.showLoading())
                 .doAfterTerminate(() -> view.hideLoading())
-                .toCompletable().subscribe(() -> { }, e -> Log.e(TAG, String.valueOf(e))));
+                .subscribe(list -> view.selectBetaTestIfExist(), e -> Log.e(TAG, String.valueOf(e))));
     }
 
     @Override
