@@ -82,6 +82,10 @@ public class FomesBaseActivity extends BaseActivity {
         return false;
     }
 
+    protected boolean isUnavailableViewControl() {
+        return isFinishing() || isDestroyed();
+    }
+
     private boolean isShouldUpRecreateTask(Activity from) {
         return from.getIntent().getBooleanExtra(FomesConstants.EXTRA.IS_FROM_NOTIFICATION, false);
     }

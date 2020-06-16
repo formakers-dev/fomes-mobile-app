@@ -76,7 +76,7 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
                 })
                 .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(awardRecord -> this.view.bindAwards(awardRecord),
+                .subscribe(awardRecord -> this.view.bindAwardsView(awardRecord),
                         e -> {
                             Log.e(TAG, "requestAwardRecordOfBest) " + e);
                             if (e instanceof NoSuchElementException) {
@@ -89,13 +89,13 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     public void requestEpilogue(String betaTestId) {
         this.betaTestService.getEpilogue(betaTestId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(epilogue -> this.view.bindEpilogue(epilogue),
+                .subscribe(epilogue -> this.view.bindEpilogueView(epilogue),
                         e -> {
                             Log.e(TAG, String.valueOf(e));
                             if (e instanceof HttpException) {
                                 HttpException httpException = (HttpException) e;
                                 if (httpException.code() == 404) {
-                                    this.view.disableEpilogue();
+                                    this.view.disableEpilogueView();
                                 }
                             }
                         });
@@ -112,14 +112,14 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
                 .subscribe(missions -> {
                     Log.i(TAG, String.valueOf(missions));
                     if (missions != null && missions.size() > 0) {
-                        this.view.bindMyAnswers(missions);
+                        this.view.bindMyAnswersView(missions);
                     }
                 }, e -> Log.e(TAG, "getRecheckableMissions) " + e));
     }
 
     @Override
     public void emitRecheckMyAnswer(Mission mission) {
-        this.view.showNoticePopup(R.string.finished_betatest_recheck_my_answer_title,
+        this.view.showNoticePopupView(R.string.finished_betatest_recheck_my_answer_title,
                 R.string.finished_betatest_recheck_my_answer_popup_subtitle,
                 R.drawable.notice_recheck_my_answer,
                 R.string.finished_betatest_recheck_my_answer_popup_positive_button_text,

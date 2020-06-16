@@ -230,6 +230,9 @@ dependencies {
     // Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
+    // Java 8 - Stream, Optional
+    implementation 'com.annimon:stream:1.2.1'
+
     // test
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.23.4'
