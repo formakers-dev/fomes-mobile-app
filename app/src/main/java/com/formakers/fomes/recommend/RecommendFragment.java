@@ -1,6 +1,5 @@
 package com.formakers.fomes.recommend;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,14 +36,21 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     public static final String TAG = "RecommendFragment";
 
-    @BindView(R.id.title_option_menu) View optionMenuView;
-    @BindView(R.id.recommend_recyclerview) RecyclerView recommendRecyclerView;
-    @BindView(R.id.recommend_nested_scrollview) NestedScrollView recommendContentsLayout;
-    @BindView(R.id.recommend_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.recommend_error_layout) ViewGroup recommendErrorLayout;
-    @BindView(R.id.recommend_loading) ProgressBar recommendLoadingProgressBar;
+    @BindView(R.id.title_option_menu)
+    View optionMenuView;
+    @BindView(R.id.recommend_recyclerview)
+    RecyclerView recommendRecyclerView;
+    @BindView(R.id.recommend_nested_scrollview)
+    NestedScrollView recommendContentsLayout;
+    @BindView(R.id.recommend_swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recommend_error_layout)
+    ViewGroup recommendErrorLayout;
+    @BindView(R.id.recommend_loading)
+    ProgressBar recommendLoadingProgressBar;
 
-    @Inject RecommendContract.Presenter presenter;
+    @Inject
+    RecommendContract.Presenter presenter;
 
     RecommendListAdapterContract.View recommendListAdapterView;
 
@@ -111,7 +117,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         Log.d(TAG, "onActivityResult requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
 
         switch (requestCode) {
-            case MainActivity.REQUEST_CODE_WISHLIST :
+            case MainActivity.REQUEST_CODE_WISHLIST:
                 ArrayList<String> unwishedPackageNames = data.getExtras().getStringArrayList(FomesConstants.EXTRA.UNWISHED_APPS);
 
                 for (String packageName : unwishedPackageNames) {
@@ -123,7 +129,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
                 }
                 break;
 
-            case MainActivity.REQUEST_CODE_ANALYSIS :
+            case MainActivity.REQUEST_CODE_ANALYSIS:
                 swipeRefreshLayout.setRefreshing(true);
                 this.presenter.reloadRecommendApps(presenter.CATEGORY_GAME);
                 break;
@@ -179,8 +185,10 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void onSelectedPage() {
-        if (this.presenter != null) {
-            presenter.getAnalytics().setCurrentScreen(this);
+        if (this.presenter == null) {
+            return;
         }
+
+        presenter.getAnalytics().setCurrentScreen(this);
     }
 }
