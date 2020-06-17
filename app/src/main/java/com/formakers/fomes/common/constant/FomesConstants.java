@@ -62,6 +62,7 @@ public interface FomesConstants {
         }
 
         interface Mission {
+            String TYPE_INSTALL = "install";
             String TYPE_PLAY = "play";
             String TYPE_DEFAULT = "default";
 
