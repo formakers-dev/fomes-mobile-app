@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
@@ -128,7 +129,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public Single<Mission> refreshMissionProgress(String missionId) {
+    public Single<Mission> getMissionProgress(String missionId) {
         return this.betaTestService.getMissionProgress(betaTest.getId(), missionId);
     }
 
@@ -144,8 +145,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         String url = getInterpretedUrl(action);
         Uri uri = Uri.parse(url);
 
-        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(missionItem.getType())) {
-            Intent intent = this.androidNativeHelper.getLaunchableIntent(missionItem.getPackageName());
+        if (FomesConstants.BetaTest.Mission.TYPE_INSTALL.equals(missionItem.getType())) {
+            Intent intent = this.getIntentIfAppIsInstalled(missionItem.getPackageName());
 
             if (intent != null) {
                 view.startActivity(intent);
@@ -164,6 +165,12 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         }
     }
 
+    @Nullable
+    @Override
+    public Intent getIntentIfAppIsInstalled(String pacakgeName) {
+        return this.androidNativeHelper.getLaunchableIntent(pacakgeName);
+    }
+
     @Override
     public String getInterpretedUrl(String originalUrl) {
         return fomesUrlHelper.interpretUrlParams(originalUrl);
@@ -180,12 +187,21 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         view.getCompositeSubscription().add(
                 betaTestService.postAttendBetaTest(this.betaTest.getId())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .concatWith(completePlayTypeMission())
+//                        .concatWith(completePlayTypeMission())
                         .subscribe(() -> {
                             this.betaTest.setAttended(true);
                             this.view.refreshMissionList();
                         }, e -> Log.e(TAG, String.valueOf(e)))
         );
+    }
+
+    @Override
+    public Completable requestToCompleteMission(Mission mission) {
+        return betaTestService.postCompleteMission(this.betaTest.getId(), mission.getId())
+                .doOnCompleted(() -> {
+                    mission.setCompleted(true);
+                    this.view.refreshMissionItem(mission.getId());
+                });
     }
 
     private Completable completePlayTypeMission() {
