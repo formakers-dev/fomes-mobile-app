@@ -126,13 +126,18 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.itemButton.setTextColor(res.getColor(R.color.fomes_white));
 
         // 디스크립션 레이아웃
-        if (TextUtils.isEmpty(mission.getDescriptionImageUrl())) {
-            viewHolder.descriptionImageView.setVisibility(View.GONE);
-        } else {
+        if (FomesConstants.BetaTest.Mission.TYPE_INSTALL.equals(mission.getType()) && mission.isCompleted()) {
             viewHolder.descriptionImageView.setVisibility(View.VISIBLE);
-            this.presenter.getImageLoader().loadImage(
-                    viewHolder.descriptionImageView,
-                    mission.getDescriptionImageUrl(), null, false);
+            viewHolder.descriptionImageView.setImageDrawable(res.getDrawable(R.drawable.mission_after_install, null));
+        } else {
+            if (TextUtils.isEmpty(mission.getDescriptionImageUrl())) {
+                viewHolder.descriptionImageView.setVisibility(View.GONE);
+            } else {
+                viewHolder.descriptionImageView.setVisibility(View.VISIBLE);
+                this.presenter.getImageLoader().loadImage(
+                        viewHolder.descriptionImageView,
+                        mission.getDescriptionImageUrl(), null, false);
+            }
         }
 
         // 참여상태
