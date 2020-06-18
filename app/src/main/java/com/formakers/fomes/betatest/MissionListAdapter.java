@@ -206,7 +206,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(missionList -> {
                                     setMissionList(missionList);
-                                    notifyItemRangeChanged(position, missionList.size() - position);
+                                    this.notifyItemBelowAllChanged(position);
                                 }, e -> Log.e(TAG, String.valueOf(e)));
                     }, e -> Log.e(TAG, String.valueOf(e)));
         });
@@ -260,6 +260,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         mission.setCompleted(newMission.isCompleted());
                     }
                 }).toCompletable();
+    }
+
+    // 특정 포지션 이하의 모든 아이템을 새로고침
+    public void notifyItemBelowAllChanged(int position) {
+        notifyItemRangeChanged(position, missionList.size() - position);
     }
 
     @Override

@@ -378,7 +378,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(missionList -> {
                     missionListAdapter.setMissionList(missionList);
-                    missionListAdapter.notifyItemChanged(missionListAdapter.getPositionByMissionId(missionItemId));
+                    missionListAdapter.notifyItemBelowAllChanged(missionListAdapter.getPositionByMissionId(missionItemId));
                 }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
