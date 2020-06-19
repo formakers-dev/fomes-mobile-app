@@ -3,6 +3,7 @@ package com.formakers.fomes.betatest;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -33,7 +34,7 @@ public interface BetaTestDetailContract {
         Single<Mission> getMissionProgress(String missionId);
 
         void processMissionItemAction(Mission missionItem);
-        String getInterpretedUrl(String originalUrl);
+        String getInterpretedUrl(String originalUrl, Bundle params);
 
         Observable<List<Mission>> getDisplayedMissionList();
         void requestToAttendBetaTest();

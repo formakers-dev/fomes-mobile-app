@@ -2,6 +2,7 @@ package com.formakers.fomes.betatest;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -134,19 +135,23 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public void processMissionItemAction(Mission missionItem) {
+    public void processMissionItemAction(Mission mission) {
         // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
-        String action = missionItem.getAction();
+        String action = mission.getAction();
 
         if (TextUtils.isEmpty(action)) {
             return;
         }
 
-        String url = getInterpretedUrl(action);
+        Bundle params = new Bundle();
+        params.putString(FomesUrlHelper.EXTRA_BETA_TEST_ID, betaTest.getId());
+        params.putString(FomesUrlHelper.EXTRA_MISSION_ID, mission.getId());
+
+        String url = getInterpretedUrl(action, params);
         Uri uri = Uri.parse(url);
 
-        if (FomesConstants.BetaTest.Mission.TYPE_INSTALL.equals(missionItem.getType())) {
-            Intent intent = this.getIntentIfAppIsInstalled(missionItem.getPackageName());
+        if (FomesConstants.BetaTest.Mission.TYPE_INSTALL.equals(mission.getType())) {
+            Intent intent = this.getIntentIfAppIsInstalled(mission.getPackageName());
 
             if (intent != null) {
                 view.startActivity(intent);
@@ -155,10 +160,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         }
 
         // below condition logic should be move to URL Manager(or Parser and so on..)
-        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(missionItem.getActionType())
+        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())
                 || (uri.getQueryParameter("internal_web") != null
                 && uri.getQueryParameter("internal_web").equals("true"))) {
-            view.startSurveyWebViewActivity(missionItem.getId(), missionItem.getTitle(), url);
+            view.startSurveyWebViewActivity(mission.getId(), mission.getTitle(), url);
         } else {
             // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
             view.startByDeeplink(Uri.parse(url));
@@ -172,8 +177,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public String getInterpretedUrl(String originalUrl) {
-        return fomesUrlHelper.interpretUrlParams(originalUrl);
+    public String getInterpretedUrl(String originalUrl, Bundle params) {
+        return fomesUrlHelper.interpretUrlParams(originalUrl, params);
     }
 
     @Override
