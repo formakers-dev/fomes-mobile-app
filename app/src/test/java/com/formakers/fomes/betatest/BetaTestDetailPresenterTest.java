@@ -2,8 +2,8 @@ package com.formakers.fomes.betatest;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 
-import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
 import com.formakers.fomes.common.helper.AppUsageDataHelper;
@@ -126,17 +126,18 @@ public class BetaTestDetailPresenterTest {
     @Test
     public void refreshMissionProgress_호출시__해당_미션의_진행상태를_요청한다() {
         subject.load("5d1c5e695c20ca481f27a4ab");
-        subject.refreshMissionProgress("5d1ec8094400311578e996bc");
+        subject.getMissionProgress("5d1ec8094400311578e996bc");
 
         verify(mockBetaTestService).getMissionProgress(eq("5d1c5e695c20ca481f27a4ab"), eq("5d1ec8094400311578e996bc"));
     }
 
     @Test
     public void processMissionItemAction_호출시__딥링크를_호출한다() {
-        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"))
+        when(mockFomesUrlHelper.interpretUrlParams(eq("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"), any(Bundle.class)))
                 .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty");
 
         // 디폴트
+        subject.load("5d1c5e695c20ca481f27a4ab");
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(2));
 
         verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"));
@@ -145,19 +146,20 @@ public class BetaTestDetailPresenterTest {
 
     @Test
     public void processMissionItemAction_호출시__인앱웹뷰인_경우__인앱웹뷰를_띄우도록_호출한다() {
-        when(mockFomesUrlHelper.interpretUrlParams("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}"))
+        when(mockFomesUrlHelper.interpretUrlParams(eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}"), any(Bundle.class)))
                 .thenReturn("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com");
 
         // 인앱웹뷰
+        subject.load("5d1c5e695c20ca481f27a4ab");
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(0));
 
-        verify(mockView).startSurveyWebViewActivity(eq(getDummyBetaTestDetail().getMissions().get(0).getId()), eq("의견을 작성하라!"), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
+        verify(mockView).startSurveyWebViewActivity(eq(getDummyBetaTestDetail().getMissions().get(0).getId()), anyString(), eq("https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232=test@gmail.com"));
 
     }
 
     @Test
-    public void processMissionItemAction_호출시__플레이_타입인_경우__설치되어있으면__앱을_실행시킨다 () {
-        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"))
+    public void processMissionItemAction_호출시__인스톨_타입인_경우__설치되어있으면__앱을_실행시킨다 () {
+        when(mockFomesUrlHelper.interpretUrlParams(eq("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"), any(Bundle.class)))
                 .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty");
 
         // 플레이
@@ -165,6 +167,8 @@ public class BetaTestDetailPresenterTest {
         when(mockAndroidNativeHelper.getLaunchableIntent("com.goodcircle.comeonkitty"))
                 .thenReturn(expectedIntent);
 
+        // 디폴트
+        subject.load("5d1c5e695c20ca481f27a4ab");
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1));
 
         verify(mockAndroidNativeHelper).getLaunchableIntent("com.goodcircle.comeonkitty");
@@ -173,13 +177,15 @@ public class BetaTestDetailPresenterTest {
 
     @Test
     public void processMissionItemAction_호출시__플레이_타입인_경우__설치되어있지않으면__디폴트_플로우를_탄다() {
-        when(mockFomesUrlHelper.interpretUrlParams("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"))
+        when(mockFomesUrlHelper.interpretUrlParams(eq("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"), any(Bundle.class)))
                 .thenReturn("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty");
 
         // 플레이 - 디폴트
         when(mockAndroidNativeHelper.getLaunchableIntent("com.goodcircle.comeonkitty"))
                 .thenReturn(null);
 
+        // 디폴트
+        subject.load("5d1c5e695c20ca481f27a4ab");
         subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1));
 
         verify(mockAndroidNativeHelper).getLaunchableIntent("com.goodcircle.comeonkitty");
@@ -188,9 +194,9 @@ public class BetaTestDetailPresenterTest {
 
     @Test
     public void getInterpretedUrl_호출시__예약어를_해석한_새로운_URL을_반환한다() {
-        subject.getInterpretedUrl("http://www.naver.com?email={email}");
+        subject.getInterpretedUrl("http://www.naver.com?email={email}&ids={b-m-ids}", new Bundle());
 
-        verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}"));
+        verify(mockFomesUrlHelper).interpretUrlParams(eq("http://www.naver.com?email={email}&ids={b-m-ids}"), any(Bundle.class));
     }
 
     @Test
@@ -230,11 +236,19 @@ public class BetaTestDetailPresenterTest {
         subject.requestToAttendBetaTest();
 
         verify(mockBetaTestService).postAttendBetaTest("5d1c5e695c20ca481f27a4ab");
-        verify(mockBetaTestService).postCompleteMission("5d1c5e695c20ca481f27a4ab", "5d1ec8194400311578e996bd");
         assertThat(subject.betaTest.isAttended()).isTrue();
-        assertThat(subject.betaTest.getMissions().get(0).getType()).isEqualTo(FomesConstants.BetaTest.Mission.TYPE_PLAY);
-        assertThat(subject.betaTest.getMissions().get(0).isCompleted()).isTrue();
         verify(mockView).refreshMissionList();
+    }
+
+    @Test
+    public void requestToCompleteMission_호출시__해당_미션_완료요청을_보낸다() {
+        subject.load("5d1c5e695c20ca481f27a4ab");
+        subject.requestToCompleteMission(new Mission().setId("5d1ec8194400311578e996bd"))
+                .subscribe(new TestSubscriber<>());
+
+        verify(mockBetaTestService).postCompleteMission("5d1c5e695c20ca481f27a4ab", "5d1ec8194400311578e996bd");
+        assertThat(subject.betaTest.getMissions().get(0).isCompleted()).isTrue();
+        verify(mockView).refreshMissionItem("5d1ec8194400311578e996bd");
     }
 
     @Test
@@ -341,10 +355,11 @@ public class BetaTestDetailPresenterTest {
                 "  \"missions\": [\n" +
                 "    {\n" +
                 "      \"order\": 2,\n" +
-                "      \"description\": \"[이리와 고양아] 에 대한 구체적인 의견을 작성해주세요.\",\n" +
+                "      \"description\": \"[이리와 고양아] 플레이 인증\",\n" +
                 "      \"descriptionImageUrl\": \"\",\n" +
+                "        \"type\": \"play\",\n" +
                 "      \"guide\": \"* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다.\",\n" +
-                "        \"title\": \"의견을 작성하라!\",\n" +
+                "        \"title\": \"스샷 인증하라!\",\n" +
                 "        \"actionType\": \"link\",\n" +
                 "        \"action\": \"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}\",\n" +
                 "        \"_id\": \"5d1ec8254400311578e996be\",\n" +
@@ -358,7 +373,7 @@ public class BetaTestDetailPresenterTest {
                 "      \"descriptionImageUrl\": \"\",\n" +
                 "      \"guide\": \"* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
                 "      \"_id\": \"5d1ec8024400311578e996bb\",\n" +
-                "        \"type\": \"play\",\n" +
+                "        \"type\": \"install\",\n" +
                 "        \"title\": \"게임을 플레이 하라!\",\n" +
                 "        \"actionType\": \"link\",\n" +
                 "        \"action\": \"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty\",\n" +

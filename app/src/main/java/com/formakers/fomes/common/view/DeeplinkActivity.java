@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.formakers.fomes.betatest.FinishedBetaTestFragment;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.betatest.BetaTestFragment;
 import com.formakers.fomes.main.MainActivity;
@@ -71,6 +72,14 @@ public class DeeplinkActivity extends Activity {
 
                     destIntent.setClass(this, MainActivity.class);
                     destIntent.putExtra("EXTRA_SELECTED_TAB", BetaTestFragment.TAG);
+                    destIntent.putExtra("EXTRA_SELECTED_ITEM_ID", id);
+                    break;
+                }
+                case "finished-betatest": {
+                    String id = uri.getQueryParameter("id");
+
+                    destIntent.setClass(this, MainActivity.class);
+                    destIntent.putExtra("EXTRA_SELECTED_TAB", FinishedBetaTestFragment.TAG);
                     destIntent.putExtra("EXTRA_SELECTED_ITEM_ID", id);
                     break;
                 }

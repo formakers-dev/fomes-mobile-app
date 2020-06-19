@@ -62,6 +62,10 @@ public class ProvisioningPermissionFragment extends BaseFragment implements Prov
 
     @Override
     public void onSelectedPage() {
+        if (this.presenter == null) {
+            return;
+        }
+
         this.presenter.setProvisioningProgressStatus(FomesConstants.PROVISIONING.PROGRESS_STATUS.PERMISSION);
         this.presenter.getAnalytics().setCurrentScreen(this);
 

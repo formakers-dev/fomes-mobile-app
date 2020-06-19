@@ -87,7 +87,7 @@ public class FinishedBetaTestDetailPresenterTest {
         verify(mockBetaTestService).getEpilogue("betaTestId");
 
         ArgumentCaptor<BetaTest.Epilogue> epilogueArgumentCaptor = ArgumentCaptor.forClass(BetaTest.Epilogue.class);
-        verify(mockView).bindEpilogue(epilogueArgumentCaptor.capture());
+        verify(mockView).bindEpilogueView(epilogueArgumentCaptor.capture());
         BetaTest.Epilogue actualEpilogue = epilogueArgumentCaptor.getValue();
 
         assertThat(actualEpilogue.getCompanyName()).isEqualTo("게임사이름");
@@ -104,7 +104,7 @@ public class FinishedBetaTestDetailPresenterTest {
         subject.requestEpilogue("betaTestId");
 
         verify(mockBetaTestService).getEpilogue("betaTestId");
-        verify(mockView).disableEpilogue();
+        verify(mockView).disableEpilogueView();
     }
 
     @Test
@@ -114,7 +114,7 @@ public class FinishedBetaTestDetailPresenterTest {
         verify(mockBetaTestService).getAwardRecords("betaTestId");
 
         ArgumentCaptor<List<AwardRecord>> argumentCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindAwards(argumentCaptor.capture());
+        verify(mockView).bindAwardsView(argumentCaptor.capture());
         List<AwardRecord> actual = argumentCaptor.getValue();
 
         assertThat(actual.get(0).getNickName()).isEqualTo("닉네임");
@@ -137,7 +137,7 @@ public class FinishedBetaTestDetailPresenterTest {
         verify(mockBetaTestService).getAwardRecords("betaTestId");
 
         ArgumentCaptor<List<AwardRecord>> argumentCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindAwards(argumentCaptor.capture());
+        verify(mockView).bindAwardsView(argumentCaptor.capture());
         List<AwardRecord> actual = argumentCaptor.getValue();
 
         assertThat(actual.size()).isEqualTo(2);
@@ -156,7 +156,7 @@ public class FinishedBetaTestDetailPresenterTest {
         verify(mockBetaTestService).getCompletedMissions("betaTestId");
 
         ArgumentCaptor<List<Mission>> argumentCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindMyAnswers(argumentCaptor.capture());
+        verify(mockView).bindMyAnswersView(argumentCaptor.capture());
         List<Mission> actual = argumentCaptor.getValue();
 
         assertThat(actual.size()).isEqualTo(1);
@@ -173,7 +173,7 @@ public class FinishedBetaTestDetailPresenterTest {
         subject.requestRecheckableMissions("betaTestId");
 
         verify(mockBetaTestService).getCompletedMissions("betaTestId");
-        verify(mockView, never()).bindMyAnswers(any());
+        verify(mockView, never()).bindMyAnswersView(any());
     }
 
     @Test
@@ -182,7 +182,7 @@ public class FinishedBetaTestDetailPresenterTest {
 
         subject.emitRecheckMyAnswer(missionItem);
 
-        verify(mockView).showNoticePopup(eq(R.string.finished_betatest_recheck_my_answer_title),
+        verify(mockView).showNoticePopupView(eq(R.string.finished_betatest_recheck_my_answer_title),
                 eq(R.string.finished_betatest_recheck_my_answer_popup_subtitle),
                 eq(R.drawable.notice_recheck_my_answer),
                 eq(R.string.finished_betatest_recheck_my_answer_popup_positive_button_text),

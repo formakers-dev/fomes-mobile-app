@@ -129,7 +129,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             if (data != null) {
                 String missionId = data.getStringExtra(FomesConstants.WebView.EXTRA_MISSION_ID);
 
-                this.presenter.refreshMissionProgress(missionId)
+                this.presenter.getMissionProgress(missionId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(mission -> {
                             this.missionListAdapter.getItem(missionId).setCompleted(mission.isCompleted());
@@ -304,7 +304,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                     TextView missionTitleTextView = missionItemView.findViewById(R.id.mission_title);
                     TextView missionItemTitleTextView = missionItemView.findViewById(R.id.mission_item_title);
 
-                    if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(displayedMission.getType())) {
+                    if (FomesConstants.BetaTest.Mission.TYPE_INSTALL.equals(displayedMission.getType())) {
                         missionImageView.setImageResource(R.drawable.icon_mission_type_play);
                     } else {
                         missionImageView.setImageResource(R.drawable.icon_mission_type_survey);
@@ -374,7 +374,12 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @Override
     public void refreshMissionItem(String missionItemId) {
-        missionListAdapter.notifyItemChanged(missionListAdapter.getPositionByMissionItemId(missionItemId));
+        presenter.getDisplayedMissionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionList -> {
+                    missionListAdapter.setMissionList(missionList);
+                    missionListAdapter.notifyItemBelowAllChanged(missionListAdapter.getPositionByMissionId(missionItemId));
+                }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override

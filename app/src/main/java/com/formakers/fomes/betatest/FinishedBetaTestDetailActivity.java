@@ -132,10 +132,14 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     private void initViews() {
-        disableMyAnswers();
+        disableMyAnswersView();
     }
 
     public void bind(Bundle bundle) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         // 프레젠터로 데이터 넘기고 뷰에서 표출해줘야 하지 않으려나.. 싶긴함
         String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
         String title = bundle.getString(FomesConstants.BetaTest.EXTRA_TITLE);
@@ -180,7 +184,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
 
-        setBestAwardsTitle(topRewardTypeCode);
+        setBestAwardsTitleView(topRewardTypeCode);
         awardsNickNameTextView.setSelected(true);
         awardsPriceTextView.setText(topRewardDescription);
 
@@ -196,7 +200,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void bindEpilogue(BetaTest.Epilogue epilogue) {
+    public void bindEpilogueView(BetaTest.Epilogue epilogue) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         boolean isEnabledEpilogue = !TextUtils.isEmpty(epilogue.getDeeplink());
         epilogueButton.setEnabled(isEnabledEpilogue);
         epilogueButton.setOnClickListener(isEnabledEpilogue ? v -> {
@@ -221,27 +229,39 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void bindAwards(List<AwardRecord> awardRecords) {
+    public void bindAwardsView(List<AwardRecord> awardRecords) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         if (awardRecords != null && !awardRecords.isEmpty()) {
             if (awardRecords.size() > 1) {
                 awardsNickNameEndTextView.setText(getString(R.string.finished_betatest_detail_awards_nickname_sir_and_count, awardRecords.size() - 1));
             }
 
-            setBestAwardsTitle(awardRecords.get(0).getTypeCode());
+            setBestAwardsTitleView(awardRecords.get(0).getTypeCode());
 
             awardsNickNameTextView.setText(awardRecords.get(0).getNickName());
             awardsNickNameEndTextView.setVisibility(View.VISIBLE);
         }
     }
 
-    private void setBestAwardsTitle(int typeCode) {
+    private void setBestAwardsTitleView(int typeCode) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         if (AwardRecord.TYPE_BEST.equals(typeCode)) {
             bestAwardsTitleTextView.setText(getString(R.string.finished_betatest_detail_awards_best));
         }
     }
 
     @Override
-    public void bindMyAnswers(List<Mission> missions) {
+    public void bindMyAnswersView(List<Mission> missions) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         recheckMyAnswerLayout.removeAllViews();
         for (Mission mission : missions) {
             if (mission.isCompleted() && mission.isRecheckable()) {
@@ -260,8 +280,12 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void showNoticePopup(int titleResId, int subTitleResId, int imageResId,
-                                int positiveButtonTextResId, View.OnClickListener positiveButtonClickListener) {
+    public void showNoticePopupView(int titleResId, int subTitleResId, int imageResId,
+                                    int positiveButtonTextResId, View.OnClickListener positiveButtonClickListener) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         Bundle bundle = new Bundle();
         bundle.putString(FomesNoticeDialog.EXTRA_TITLE, getString(titleResId));
         bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, getString(subTitleResId));
@@ -274,6 +298,10 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     @Override
     public void startWebViewActivity(String title, String url) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(FomesConstants.WebView.EXTRA_TITLE, title);
         intent.putExtra(FomesConstants.WebView.EXTRA_CONTENTS, url);
@@ -288,7 +316,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void disableEpilogue() {
+    public void disableEpilogueView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         epilogueButton.setEnabled(false);
 
         awardsWonderTextView.setVisibility(View.GONE);
@@ -302,7 +334,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void disableMyAnswers() {
+    public void disableMyAnswersView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         recheckMyAnswerLayout.removeAllViews();
         Button recheckableButton = (Button) LayoutInflater.from(this).inflate(R.layout.item_button, null);
         recheckableButton.setText(R.string.finished_betatest_recheck_my_answer_title);
@@ -311,17 +347,25 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void showLoading() {
-
+    public void showLoadingView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
     }
 
     @Override
-    public void hideLoading() {
-
+    public void hideLoadingView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
     }
 
     @Override
     public void hideAwardsView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         awardGroup.setVisibility(View.GONE);
     }
 

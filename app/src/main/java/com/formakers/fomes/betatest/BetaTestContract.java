@@ -44,5 +44,7 @@ public interface BetaTestContract {
 
         void refreshBetaTestList();
         void refreshBetaTestProgress(int position);
+
+        void selectBetaTestIfExist();
     }
 }

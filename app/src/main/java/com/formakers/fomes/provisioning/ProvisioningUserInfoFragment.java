@@ -79,6 +79,11 @@ public class ProvisioningUserInfoFragment extends BaseFragment implements Provis
     @Override
     public void onSelectedPage() {
         Log.v(TAG, "onSelectedPage");
+
+        if (this.presenter == null) {
+            return;
+        }
+
         this.presenter.getAnalytics().setCurrentScreen(this);
 
         if (getView() != null && this.isVisible()) {

@@ -27,6 +27,7 @@ public interface FinishedBetaTestContract {
         Single<List<BetaTest>> load();
         void applyCompletedFilter(boolean isNeedFilter);
         BetaTest getItem(int position);
+        int getPostitionById(String id);
 
         void unsubscribe();
     }
@@ -47,5 +48,7 @@ public interface FinishedBetaTestContract {
         void startActivity(Intent intent);
         void startWebViewActivity(String title, String url);
         void startByDeeplink(Uri deeplink);
+
+        void selectBetaTestIfExist();
     }
 }

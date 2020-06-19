@@ -1,7 +1,6 @@
 package com.formakers.fomes.main;
 
 import android.os.Bundle;
-import android.util.Pair;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -26,7 +25,6 @@ import javax.inject.Named;
 import rx.Completable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 @MainDagger.Scope
@@ -116,6 +114,11 @@ public class MainPresenter implements MainContract.Presenter {
         Log.v(TAG, "[RemoteConfig] MIGRATION_NOTICE=" + this.remoteConfig.getString(FomesConstants.RemoteConfig.MIGRATION_NOTICE));
 
         RemoteConfigVO.MigrationNotice migrationNotice = new Gson().fromJson(migrationNoticeString, RemoteConfigVO.MigrationNotice.class);
+
+        if (migrationNotice == null) {
+            return;
+        }
+
         if (migrationNotice.getNoticeVersion() > sharedPreferencesHelper.getMigrationNoticeVersion()) {
             boolean isNeedToUpdate = migrationNotice.getVersionCode() > BuildConfig.VERSION_CODE;
 

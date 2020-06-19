@@ -32,21 +32,21 @@ public interface FinishedBetaTestDetailContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void bindEpilogue(BetaTest.Epilogue epilogue);
-        void bindAwards(List<AwardRecord> awardRecords);
-        void bindMyAnswers(List<Mission> missions);
+        void bindEpilogueView(BetaTest.Epilogue epilogue);
+        void bindAwardsView(List<AwardRecord> awardRecords);
+        void bindMyAnswersView(List<Mission> missions);
 
         void startWebViewActivity(String title, String url);
         void startByDeeplink(Uri parse);
 
-        void disableEpilogue();
-        void disableMyAnswers();
+        void disableEpilogueView();
+        void disableMyAnswersView();
 
-        void showLoading();
-        void hideLoading();
+        void showLoadingView();
+        void hideLoadingView();
         void hideAwardsView();
-        void showNoticePopup(@StringRes int titleResId, @StringRes int subTitleResId, @DrawableRes int imageResId,
-                             @StringRes int positiveButtonTextResId, android.view.View.OnClickListener positiveButtonClickListener);
+        void showNoticePopupView(@StringRes int titleResId, @StringRes int subTitleResId, @DrawableRes int imageResId,
+                                 @StringRes int positiveButtonTextResId, android.view.View.OnClickListener positiveButtonClickListener);
 
         // TODO : BaseView 로 이동 고려
 

@@ -2,6 +2,7 @@ package com.formakers.fomes.betatest;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,6 +124,17 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public Object getItem(int position) {
         return displayedList.get(position);
+    }
+
+    @Override
+    public int getPositionById(String id) {
+        for (BetaTest betaTest : displayedList) {
+            if (TextUtils.equals(id, betaTest.getId())) {
+                return displayedList.indexOf(betaTest);
+            }
+        }
+
+        return -1;
     }
 
     @Override
