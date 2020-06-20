@@ -191,8 +191,6 @@ dependencies {
     // guava
     api 'com.google.guava:guava:27.1-android'
     implementation 'com.google.guava:guava:27.1-jre'
-    // typekit
-    implementation 'com.github.katoro:typekit:1.0.1'
     // Glide
     annotationProcessor 'androidx.annotation:annotation:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'

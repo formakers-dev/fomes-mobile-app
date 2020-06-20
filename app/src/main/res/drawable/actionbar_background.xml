@@ -5,7 +5,7 @@
             <solid android:color="@color/colorPrimary"/>
         </shape>
     </item>
-    <item android:start="16dp">
+    <item android:left="16dp">
         <bitmap
             android:src="@drawable/fomes_actionbar"
             android:gravity="start"

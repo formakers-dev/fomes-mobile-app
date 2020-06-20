@@ -1,6 +1,5 @@
 package com.formakers.fomes.common.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -16,7 +15,6 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.custom.FomesAlertDialog;
-import com.tsengvn.typekit.TypekitContextWrapper;
 
 import javax.inject.Inject;
 
@@ -41,10 +39,10 @@ public class BaseActivity extends AppCompatActivity {
         compositeSubscription.add(subscription);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+//    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

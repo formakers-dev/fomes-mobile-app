@@ -57,6 +57,8 @@
     <color name="fomes_content_card_title_text_color">@color/fomes_white</color>
     <color name="fomes_content_card_subtitle_text_color">@color/fomes_white_alpha_60</color>
 
+    <color name="fomes_menu_icon_color">#dfdfdf</color>
+
     <color name="app_label_background">@color/fomes_dark_gray</color>
     <color name="item_inner_divider">@color/fomes_gray_3</color>
 
