@@ -8,7 +8,6 @@ import com.formakers.fomes.common.dagger.ApplicationModule;
 import com.formakers.fomes.common.dagger.DaggerApplicationComponent;
 import com.formakers.fomes.common.repository.model.UserRealmObject;
 import com.formakers.fomes.common.util.Log;
-import com.tsengvn.typekit.Typekit;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -33,10 +32,10 @@ public class FomesApplication extends Application {
     }
 
     protected void initFont() {
-        Typekit.getInstance()
-                .addNormal(Typekit.createFromAsset(this, "NotoSans-Regular.otf"))
-                .addBold(Typekit.createFromAsset(this, "NotoSans-Bold.otf"))
-                .add(getString(R.string.font_medium), Typekit.createFromAsset(this, "NotoSans-Medium.otf"));
+//        Typekit.getInstance()
+//                .addNormal(Typekit.createFromAsset(this, "font/noto_sans_regular.otf"))
+//                .addBold(Typekit.createFromAsset(this, "font/noto_sans_bold.otf"))
+//                .add(getString(R.string.font_medium), Typekit.createFromAsset(this, "font/noto_sans_medium.otf"));
     }
 
     protected void initRealm() {

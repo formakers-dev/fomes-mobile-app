@@ -108,7 +108,7 @@ public class FomesAlertDialog {
         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        positiveButton.setTypeface(Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_medium_path)));
+        positiveButton.setTypeface(Typeface.DEFAULT_BOLD);
         positiveButton.setTextSize(20);
         positiveButton.setTextColor(new ResourceHelper(context).getColorValue(R.color.fomes_warm_gray));
         positiveButton.setLayoutParams(lp);

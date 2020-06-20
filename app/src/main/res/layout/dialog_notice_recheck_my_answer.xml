@@ -7,7 +7,8 @@
     android:background="@color/fomes_charcoal_gray"
     android:gravity="center"
     android:orientation="vertical"
-    tools:ignore="MissingPrefix">
+    tools:ignore="MissingPrefix"
+    android:theme="@style/FomesTheme">
 
     <LinearLayout android:id="@+id/dialog_contents"
         android:layout_width="match_parent"
