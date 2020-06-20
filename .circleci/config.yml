@@ -37,7 +37,7 @@ aliases:
 defaults: &defaults
     working_directory: ~/girlapp
     docker:
-      - image: circleci/android:api-28-alpha    # https://circleci.com/docs/2.0/circleci-images/#android
+      - image: circleci/android:api-29    # https://circleci.com/docs/2.0/circleci-images/#android
     environment:
         ADB_INSTALL_TIMEOUT: 60
         JVM_OPTS: -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2
