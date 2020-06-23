@@ -43,6 +43,7 @@ public class BetaTest implements Parcelable {
     boolean isAttended;
     boolean isCompleted;
     boolean isRegisteredEpilogue;
+    boolean isRegisteredAwards;
 
     Epilogue epilogue;
     List<String> similarApps = new ArrayList<>();
@@ -688,6 +689,15 @@ public class BetaTest implements Parcelable {
         return this;
     }
 
+    public boolean isRegisteredAwards() {
+        return isRegisteredAwards;
+    }
+
+    public BetaTest setRegisteredAwards(boolean registeredAwards) {
+        isRegisteredAwards = registeredAwards;
+        return this;
+    }
+
     public Epilogue getEpilogue() {
         return epilogue;
     }
@@ -768,6 +778,7 @@ public class BetaTest implements Parcelable {
                 ", isAttended=" + isAttended +
                 ", isCompleted=" + isCompleted +
                 ", isRegisteredEpilogue=" + isRegisteredEpilogue +
+                ", isRegisteredAwards=" + isRegisteredAwards +
                 ", epilogue=" + epilogue +
                 ", similarApps=" + similarApps +
                 '}';
@@ -799,6 +810,7 @@ public class BetaTest implements Parcelable {
         dest.writeInt(isCompleted ? 1 : 0);
         dest.writeInt(isAttended ? 1 : 0);
         dest.writeInt(isRegisteredEpilogue ? 1 : 0);
+        dest.writeInt(isRegisteredAwards ? 1 : 0);
         dest.writeParcelable(epilogue, 0);
         dest.writeStringList(similarApps);
     }
@@ -824,6 +836,7 @@ public class BetaTest implements Parcelable {
         isCompleted = (in.readInt() == 1);
         isAttended = (in.readInt() == 1);
         isRegisteredEpilogue = (in.readInt() == 1);
+        isRegisteredAwards = (in.readInt() == 1);
         epilogue = in.readParcelable(null);
         in.readStringList(similarApps);
     }

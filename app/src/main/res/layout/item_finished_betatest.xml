@@ -155,7 +155,7 @@
                     android:layout_marginStart="8dp"
                     android:textSize="10dp"
                     android:textColor="@color/fomes_white_alpha_60"
-                    android:text="수석 발표 &amp; 게임사 소감 등록 완료"
+                    android:text="테스트 결과 등록 완료"
                     app:layout_constraintTop_toTopOf="@+id/betatest_finished_progress_end_check_image"
                     app:layout_constraintBottom_toBottomOf="@+id/betatest_finished_progress_end_check_image"
                     app:layout_constraintStart_toEndOf="@+id/betatest_finished_progress_end_check_image"/>
