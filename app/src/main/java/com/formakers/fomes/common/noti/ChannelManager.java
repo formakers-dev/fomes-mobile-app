@@ -20,9 +20,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.LocalBroadcastReceiver;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.MainActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -31,8 +32,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import static com.formakers.fomes.common.constant.FomesConstants.Notification.TOPIC_NOTICE_ALL;
 
 @Singleton
 public class ChannelManager {
@@ -76,11 +75,18 @@ public class ChannelManager {
 
     private Context context;
     private AnalyticsModule.Analytics analytics;
+    private SharedPreferencesHelper sharedPreferencesHelper;
+    private FirebaseMessaging firebaseMessaging;
 
     @Inject
-    public ChannelManager(Context context, AnalyticsModule.Analytics analytics) {
+    public ChannelManager(Context context,
+                          AnalyticsModule.Analytics analytics,
+                          SharedPreferencesHelper sharedPreferencesHelper,
+                          FirebaseMessaging firebaseMessaging) {
         this.context = context;
         this.analytics = analytics;
+        this.sharedPreferencesHelper = sharedPreferencesHelper;
+        this.firebaseMessaging = firebaseMessaging;
     }
 
     @TargetApi(26)
@@ -194,8 +200,19 @@ public class ChannelManager {
         }
     }
 
-    public void subscribePublicTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC_NOTICE_ALL);
+    // TODO : 셋팅 매니저를 만들어서 관리할지 고민되네..
+    public void subscribeTopic(String topic) {
+        firebaseMessaging.subscribeToTopic(topic);
+        sharedPreferencesHelper.setSettingNotificationTopic(topic, true);
+    }
+
+    public void unsubscribeTopic(String topic) {
+        firebaseMessaging.unsubscribeFromTopic(topic);
+        sharedPreferencesHelper.setSettingNotificationTopic(topic, false);
+    }
+
+    public boolean isSubscribedTopic(String topic) {
+        return sharedPreferencesHelper.getSettingNotificationTopic(topic);
     }
 
     public Intent onNotificationClick(Bundle notificationDataBundle) {

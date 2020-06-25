@@ -36,6 +36,8 @@ public class SharedPreferencesHelper {
     private static final String KEY_PROVISIONING_PROGRESS_STATUS = "PROVISIONING_PROGRESS_STATUS";
     private static final String KEY_OLD_LATEST_MIGRATION_VERSION = "OLD_LATEST_MIGRATION_VERSION";
 
+    private static final String KEY_SETTING_NOTIFICATION = "KEY_SETTING_NOTIFICATION";
+
     private SharedPreferences sharedPreferences;
 
     @Inject
@@ -61,6 +63,10 @@ public class SharedPreferencesHelper {
         return sharedPreferences.getInt(key, defaultValue);
     }
 
+    private boolean getBoolean(String key, boolean defaultValue) {
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
     private void putString(String key, String value) {
         Log.v(TAG, "putString) key=" + key + ", value=" + value);
         SharedPreferences.Editor edit = sharedPreferences.edit();
@@ -79,6 +85,13 @@ public class SharedPreferencesHelper {
         Log.v(TAG, "putInt) key=" + key + ", value=" + value);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(key, value);
+        edit.apply();
+    }
+
+    private void putBoolean(String key, boolean value) {
+        Log.v(TAG, "putBoolean) key=" + key + ", value=" + value);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putBoolean(key, value);
         edit.apply();
     }
 
@@ -167,5 +180,13 @@ public class SharedPreferencesHelper {
 
     public void setMigrationNoticeVersion(int version) {
         putInt(KEY_MIGRATION_NOTICE_VERSION, version);
+    }
+
+    public boolean getSettingNotificationTopic(String topic) {
+        return getBoolean(KEY_SETTING_NOTIFICATION + topic, false);
+    }
+
+    public void setSettingNotificationTopic(String topic, boolean version) {
+        putBoolean(KEY_SETTING_NOTIFICATION + topic, version);
     }
 }

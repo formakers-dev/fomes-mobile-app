@@ -174,7 +174,7 @@ public class LoginPresenterTest {
         verify(mockSharedPreferencesHelper).setAccessToken(eq("testFomesToken"));
 
         // 공지 채널 등록
-        verify(mockChannelManager).subscribePublicTopic();
+        verify(mockChannelManager).subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
 
         // 단기 통계 데이터 작업 등록
         verify(mockJobManager).registerSendDataJob(eq(JobManager.JOB_ID_SEND_DATA));

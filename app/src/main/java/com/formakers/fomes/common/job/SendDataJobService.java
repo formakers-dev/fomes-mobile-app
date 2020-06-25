@@ -5,6 +5,7 @@ import android.app.job.JobService;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
@@ -62,7 +63,7 @@ public class SendDataJobService extends JobService {
         completableList.add(userService.notifyActivated());
 
         // 1. 공지용 전체 채널 구독시키기
-        channelManager.subscribePublicTopic();
+        channelManager.subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
 
         // 2. 백업용 : 유저정보 서버로 올리기
         completableList.add(userDAO.getUserInfo().map(user -> {

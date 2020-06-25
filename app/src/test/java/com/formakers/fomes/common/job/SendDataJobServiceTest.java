@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
@@ -118,7 +119,7 @@ public class SendDataJobServiceTest {
     public void onStartJob_실행시__공지용_전체채널을_구독시킨다() {
         subject_onStartJob();
 
-        verify(mockChannelManager).subscribePublicTopic();
+        verify(mockChannelManager).subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
     }
 
     @Test

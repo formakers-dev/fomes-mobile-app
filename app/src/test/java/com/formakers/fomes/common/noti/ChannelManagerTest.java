@@ -7,7 +7,9 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
+import com.formakers.fomes.common.helper.SharedPreferencesHelper;
 import com.formakers.fomes.main.MainActivity;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -34,6 +36,8 @@ import static org.mockito.Mockito.verify;
 public class ChannelManagerTest {
 
     @Mock AnalyticsModule.Analytics mockAnalytics;
+    @Mock SharedPreferencesHelper mockSharedPreferencesHelper;
+    @Mock FirebaseMessaging mockFirebaseMessaging;
 
     ChannelManager subject;
 
@@ -55,7 +59,7 @@ public class ChannelManagerTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new ChannelManager(ApplicationProvider.getApplicationContext(), mockAnalytics);
+        subject = new ChannelManager(ApplicationProvider.getApplicationContext(), mockAnalytics, mockSharedPreferencesHelper, mockFirebaseMessaging);
     }
 
     @Ignore
@@ -143,5 +147,28 @@ public class ChannelManagerTest {
                 eq(ChannelManager.Channel.BETATEST),
                 eq("타이틀")
         );
+    }
+
+    @Test
+    public void subscribeTopic_호출시__특정_주제를_구독한다() {
+        subject.subscribeTopic("anyTopic");
+
+        verify(mockFirebaseMessaging).subscribeToTopic(eq("anyTopic"));
+        verify(mockSharedPreferencesHelper).setSettingNotificationTopic(eq("anyTopic"), eq(true));
+    }
+
+    @Test
+    public void unSubscribeTopic_호출시__특정_주제를_구독_해제한다() {
+        subject.unsubscribeTopic("anyTopic");
+
+        verify(mockFirebaseMessaging).unsubscribeFromTopic(eq("anyTopic"));
+        verify(mockSharedPreferencesHelper).setSettingNotificationTopic(eq("anyTopic"), eq(false));
+    }
+
+    @Test
+    public void isSubscribedTopic_호출시_특정_주제가_구독중인지_체크한다() {
+        subject.isSubscribedTopic("anyTopic");
+
+        verify(mockSharedPreferencesHelper).getSettingNotificationTopic(eq("anyTopic"));
     }
 }
