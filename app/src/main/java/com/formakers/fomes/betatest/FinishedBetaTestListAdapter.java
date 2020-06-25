@@ -64,7 +64,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         int completedTextColor = res.getColor(R.color.colorPrimary);
         int normalTextColor = res.getColor(R.color.fomes_white_alpha_60);
 
-        if (item.isRegisteredEpilogue() && item.isRegisteredAwards()) {
+        if (item.isRegisteredEpilogue()) {
 //            viewHolder.itemView.setEnabled(true);
 //            viewHolder.itemView.setOnClickListener(v -> {
 //                presenter.sendEventLog(FINISHED_BETA_TEST_TAP_EPILOGUE, item.getId());
