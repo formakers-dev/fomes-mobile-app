@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
+import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -51,14 +53,22 @@ public class SettingsActivity extends FomesBaseActivity implements MenuListAdapt
         settingsRecyclerView.setAdapter(settingsListAdapter);
     }
 
-    private List<MenuListAdapter.MenuItem> createSettingsList() {
-        List<MenuListAdapter.MenuItem> settingsItems = new ArrayList<>();
+    private List<MenuItem> createSettingsList() {
+        List<MenuItem> settingsItems = new ArrayList<>();
 
-        settingsItems.add(new MenuListAdapter.MenuItem(Menu.VERSION).setTitle(getString(R.string.settings_menu_version))
-                .setSideInfo(BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE).setClickable(false));
-        settingsItems.add(new MenuListAdapter.MenuItem(Menu.TNC_USAGE).setTitle(getString(R.string.settings_menu_usage)));
-        settingsItems.add(new MenuListAdapter.MenuItem(Menu.TNC_PRIVATE).setTitle(getString(R.string.settings_menu_private)));
-        settingsItems.add(new MenuListAdapter.MenuItem(Menu.CONTACTS_US).setTitle(getString(R.string.settings_menu_contact_us)));
+        settingsItems.add(new MenuItem(Menu.VERSION, MenuItem.MENU_TYPE_PLAIN)
+                .setTitle(getString(R.string.settings_menu_version))
+                .setSideInfo(BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE)
+                .setClickable(false));
+        settingsItems.add(new MenuItem(Menu.NOTIFICATION_PUBLIC, MenuItem.MENU_TYPE_SWITCH)
+                .setTitle(getString(R.string.settings_menu_notification_topic_all))
+                .setSwitchChecked(false));
+        settingsItems.add(new MenuItem(Menu.TNC_USAGE, MenuItem.MENU_TYPE_PLAIN)
+                .setTitle(getString(R.string.settings_menu_usage)));
+        settingsItems.add(new MenuItem(Menu.TNC_PRIVATE, MenuItem.MENU_TYPE_PLAIN)
+                .setTitle(getString(R.string.settings_menu_private)));
+        settingsItems.add(new MenuItem(Menu.CONTACTS_US, MenuItem.MENU_TYPE_PLAIN)
+                .setTitle(getString(R.string.settings_menu_contact_us)));
 
         return settingsItems;
     }
@@ -83,6 +93,10 @@ public class SettingsActivity extends FomesBaseActivity implements MenuListAdapt
                 intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]");
                 intent.putExtra(Intent.EXTRA_TEXT, "포메스 팀에게 문의해주세요");
                 startActivity(intent);
+                break;
+            }
+            case Menu.NOTIFICATION_PUBLIC: {
+                Toast.makeText(this, "notice-all 알림 : " + item.isSwitchChecked(), Toast.LENGTH_SHORT).show();
                 break;
             }
         }

@@ -27,9 +27,20 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:textColor="@color/fomes_warm_gray_2"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="0.1.23 Release"/>
+        tools:text="0.1.23 Release"
+        tools:visibility="visible"/>
+
+    <Switch android:id="@+id/setting_switch"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

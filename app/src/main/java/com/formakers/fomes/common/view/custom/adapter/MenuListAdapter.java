@@ -1,10 +1,12 @@
 package com.formakers.fomes.common.view.custom.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -55,6 +57,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ImageView iconImageView;
         TextView titleTextView;
         TextView sideInfoTextView;
+        Switch sideSwitch;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,6 +65,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             iconImageView = itemView.findViewById(R.id.icon);
             titleTextView = itemView.findViewById(R.id.title);
             sideInfoTextView = itemView.findViewById(R.id.side_info);
+            sideSwitch = itemView.findViewById(R.id.setting_switch);
         }
 
         public void bind(MenuItem item, OnItemClickListener listener) {
@@ -69,23 +73,48 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 iconImageView.setImageDrawable(item.getIconImageDrawable());
                 iconImageView.setVisibility(View.VISIBLE);
             }
+
             titleTextView.setText(item.getTitle());
-            sideInfoTextView.setText(item.getSideInfo());
-            itemView.setOnClickListener(v -> listener.onItemClick(item));
+
+            if (!TextUtils.isEmpty(item.getSideInfo())) {
+                sideInfoTextView.setText(item.getSideInfo());
+                sideInfoTextView.setVisibility(View.VISIBLE);
+            }
+
+            if (item.getType().equals(MenuItem.MENU_TYPE_SWITCH)) {
+                sideSwitch.setChecked(item.isSwitchChecked());
+                sideSwitch.setVisibility(View.VISIBLE);
+                sideSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    item.setSwitchChecked(isChecked);
+                    listener.onItemClick(item);
+                });
+                itemView.setOnClickListener(v -> sideSwitch.setChecked(!sideSwitch.isChecked()));
+            } else {
+                itemView.setOnClickListener(v -> listener.onItemClick(item));
+            }
+
             itemView.setClickable(item.isClickable());
             itemView.setTag(item.getId());
         }
     }
 
     public static class MenuItem {
+        public static final String MENU_TYPE_PLAIN = "plain";
+        public static final String MENU_TYPE_SWITCH = "switch";
+
         int id;
         Drawable iconImageDrawable;
         String title;
         String sideInfo;
         boolean isClickable = true;
+        String type;
 
-        public MenuItem(int id) {
+        // for Switch Type
+        boolean isSwitchChecked;
+
+        public MenuItem(int id, String type) {
             this.id = id;
+            this.type = type;
         }
 
         public int getId() {
@@ -128,14 +157,29 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return this;
         }
 
+        public String getType() {
+            return type;
+        }
+
+        public boolean isSwitchChecked() {
+            return isSwitchChecked;
+        }
+
+        public MenuItem setSwitchChecked(boolean switchChecked) {
+            isSwitchChecked = switchChecked;
+            return this;
+        }
+
         @Override
         public String toString() {
             return "MenuItem{" +
-                    "id='" + id + '\'' +
+                    "id=" + id +
                     ", iconImageDrawable=" + iconImageDrawable +
                     ", title='" + title + '\'' +
                     ", sideInfo='" + sideInfo + '\'' +
                     ", isClickable=" + isClickable +
+                    ", type='" + type + '\'' +
+                    ", isSwitchChecked=" + isSwitchChecked +
                     '}';
         }
     }

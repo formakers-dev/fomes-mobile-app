@@ -76,6 +76,7 @@ public interface FomesConstants {
             int TNC_USAGE = 2;
             int TNC_PRIVATE = 3;
             int CONTACTS_US = 4;
+            int NOTIFICATION_PUBLIC = 5;
         }
     }
 

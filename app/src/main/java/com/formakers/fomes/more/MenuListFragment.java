@@ -20,6 +20,7 @@ import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants.More;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
+import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
 import com.formakers.fomes.main.MainActivity;
 import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
@@ -88,11 +89,11 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     private List<MenuListAdapter.MenuItem> createMenuList() {
         List<MenuListAdapter.MenuItem> menuItemList = new ArrayList<>();
 
-        menuItemList.add(new MenuListAdapter.MenuItem(More.MENU_HOW_TO_PC).setTitle("PC로 설문 참여하려면?").setIconImageDrawable(context.getDrawable(R.drawable.icon_new)));
-        menuItemList.add(new MenuListAdapter.MenuItem(More.MENU_PROFILE).setTitle("프로필 수정").setIconImageDrawable(context.getDrawable(R.drawable.icon_my_info)));
-        menuItemList.add(new MenuListAdapter.MenuItem(More.MENU_GAME_ANALYSIS).setTitle("게임 성향 분석").setIconImageDrawable(context.getDrawable(R.drawable.icon_my_recent_analysis)));
-        menuItemList.add(new MenuListAdapter.MenuItem(More.MENU_WISH_LIST).setTitle("관심 게임 리스트").setIconImageDrawable(context.getDrawable(R.drawable.icon_bookmark)));
-        menuItemList.add(new MenuListAdapter.MenuItem(More.MENU_SETTINGS).setTitle("설정").setIconImageDrawable(context.getDrawable(R.drawable.icon_settings)));
+        menuItemList.add(new MenuItem(More.MENU_HOW_TO_PC, MenuItem.MENU_TYPE_PLAIN).setTitle("PC로 설문 참여하려면?").setIconImageDrawable(context.getDrawable(R.drawable.icon_new)));
+        menuItemList.add(new MenuItem(More.MENU_PROFILE, MenuItem.MENU_TYPE_PLAIN).setTitle("프로필 수정").setIconImageDrawable(context.getDrawable(R.drawable.icon_my_info)));
+        menuItemList.add(new MenuItem(More.MENU_GAME_ANALYSIS, MenuItem.MENU_TYPE_PLAIN).setTitle("게임 성향 분석").setIconImageDrawable(context.getDrawable(R.drawable.icon_my_recent_analysis)));
+        menuItemList.add(new MenuItem(More.MENU_WISH_LIST, MenuItem.MENU_TYPE_PLAIN).setTitle("관심 게임 리스트").setIconImageDrawable(context.getDrawable(R.drawable.icon_bookmark)));
+        menuItemList.add(new MenuItem(More.MENU_SETTINGS, MenuItem.MENU_TYPE_PLAIN).setTitle("설정").setIconImageDrawable(context.getDrawable(R.drawable.icon_settings)));
 
         return menuItemList;
     }
