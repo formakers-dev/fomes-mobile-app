@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.formakers.fomes.BuildConfig;
+import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.constant.FomesConstants.Settings.Menu;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
@@ -21,11 +23,16 @@ import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecora
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
-public class SettingsActivity extends FomesBaseActivity implements MenuListAdapter.OnItemClickListener {
+public class SettingsActivity extends FomesBaseActivity
+        implements SettingsContract.View, MenuListAdapter.OnItemClickListener {
 
     @BindView(R.id.settings_recyclerview) RecyclerView settingsRecyclerView;
+
+    @Inject SettingsContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +42,12 @@ public class SettingsActivity extends FomesBaseActivity implements MenuListAdapt
 
         getSupportActionBar().setTitle("설정");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        DaggerSettingsDagger_Component.builder()
+                .applicationComponent(FomesApplication.get(this).getComponent())
+                .module(new SettingsDagger.Module(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -62,7 +75,7 @@ public class SettingsActivity extends FomesBaseActivity implements MenuListAdapt
                 .setClickable(false));
         settingsItems.add(new MenuItem(Menu.NOTIFICATION_PUBLIC, MenuItem.MENU_TYPE_SWITCH)
                 .setTitle(getString(R.string.settings_menu_notification_topic_all))
-                .setSwitchChecked(false));
+                .setSwitchChecked(this.presenter.isSubscribedTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL)));
         settingsItems.add(new MenuItem(Menu.TNC_USAGE, MenuItem.MENU_TYPE_PLAIN)
                 .setTitle(getString(R.string.settings_menu_usage)));
         settingsItems.add(new MenuItem(Menu.TNC_PRIVATE, MenuItem.MENU_TYPE_PLAIN)
@@ -96,9 +109,15 @@ public class SettingsActivity extends FomesBaseActivity implements MenuListAdapt
                 break;
             }
             case Menu.NOTIFICATION_PUBLIC: {
-                Toast.makeText(this, "notice-all 알림 : " + item.isSwitchChecked(), Toast.LENGTH_SHORT).show();
+                this.presenter.toggleNotification(FomesConstants.Notification.TOPIC_NOTICE_ALL);
+                Toast.makeText(this, "notice-all 알림 : " + this.presenter.isSubscribedTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL), Toast.LENGTH_SHORT).show();
                 break;
             }
         }
+    }
+
+    @Override
+    public void setPresenter(SettingsContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 }

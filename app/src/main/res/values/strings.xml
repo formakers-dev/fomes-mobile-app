@@ -191,7 +191,7 @@
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>
-    <string name="settings_menu_notification_topic_all">알림~_~</string>
+    <string name="settings_menu_notification_topic_all">전체유저들을 대상으로 하는 알림!!!!</string>
     <string name="settings_menu_usage">이용약관</string>
     <string name="settings_menu_private">개인정보 취급 방침</string>
     <string name="settings_menu_contact_us">이메일로 문의하기</string>

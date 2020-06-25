@@ -62,8 +62,10 @@ public class SendDataJobService extends JobService {
         // 0. 활성화 시각 업데이트 요청하기
         completableList.add(userService.notifyActivated());
 
-        // 1. 공지용 전체 채널 구독시키기
-        channelManager.subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
+        // 1. (설정이 켜져있으면) 공지용 전체 채널 구독시키기
+        if (channelManager.isSubscribedTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL)) {
+            channelManager.subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
+        }
 
         // 2. 백업용 : 유저정보 서버로 올리기
         completableList.add(userDAO.getUserInfo().map(user -> {

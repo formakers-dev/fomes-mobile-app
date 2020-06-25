@@ -200,7 +200,7 @@ public class ChannelManager {
         }
     }
 
-    // TODO : 셋팅 매니저를 만들어서 관리할지 고민되네..
+    // TODO : 뭔가 설정 관련 같은데... 셋팅 매니저를 만들어서 관리할지 고민되네..
     public void subscribeTopic(String topic) {
         firebaseMessaging.subscribeToTopic(topic);
         sharedPreferencesHelper.setSettingNotificationTopic(topic, true);
@@ -214,6 +214,7 @@ public class ChannelManager {
     public boolean isSubscribedTopic(String topic) {
         return sharedPreferencesHelper.getSettingNotificationTopic(topic);
     }
+    // TODO : end of 뭔가 설정 관련 같은데... 셋팅 매니저를 만들어서 관리할지 고민되네..
 
     public Intent onNotificationClick(Bundle notificationDataBundle) {
         if ( notificationDataBundle ==  null) {
