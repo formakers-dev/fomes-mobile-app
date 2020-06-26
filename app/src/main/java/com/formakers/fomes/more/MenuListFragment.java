@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -119,7 +120,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     }
 
     @Override
-    public void onItemClick(MenuListAdapter.MenuItem item) {
+    public void onItemClick(MenuListAdapter.MenuItem item, View view) {
         Intent intent = new Intent();
 
         switch(item.getId()) {
@@ -148,5 +149,10 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         }
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onSwitchClick(MenuItem item, CompoundButton switchView, boolean isChecked) {
+
     }
 }

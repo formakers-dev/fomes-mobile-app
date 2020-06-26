@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,7 +25,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(MenuItem item);
+        void onItemClick(MenuItem item, View view);
+        void onSwitchClick(MenuItem item, CompoundButton switchView, boolean isChecked);
     }
 
     public MenuListAdapter(List<MenuItem> list, @LayoutRes int itemLayoutResId, OnItemClickListener onItemClickListener) {
@@ -56,6 +58,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iconImageView;
         TextView titleTextView;
+        TextView subTitleTextView;
         TextView sideInfoTextView;
         Switch sideSwitch;
 
@@ -64,6 +67,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             iconImageView = itemView.findViewById(R.id.icon);
             titleTextView = itemView.findViewById(R.id.title);
+            subTitleTextView = itemView.findViewById(R.id.subtitle);
             sideInfoTextView = itemView.findViewById(R.id.side_info);
             sideSwitch = itemView.findViewById(R.id.setting_switch);
         }
@@ -76,6 +80,11 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             titleTextView.setText(item.getTitle());
 
+            if (!TextUtils.isEmpty(item.getSubTitle())) {
+                subTitleTextView.setText(item.getSubTitle());
+                subTitleTextView.setVisibility(View.VISIBLE);
+            }
+
             if (!TextUtils.isEmpty(item.getSideInfo())) {
                 sideInfoTextView.setText(item.getSideInfo());
                 sideInfoTextView.setVisibility(View.VISIBLE);
@@ -84,13 +93,10 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (item.getType().equals(MenuItem.MENU_TYPE_SWITCH)) {
                 sideSwitch.setChecked(item.isSwitchChecked());
                 sideSwitch.setVisibility(View.VISIBLE);
-                sideSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    item.setSwitchChecked(isChecked);
-                    listener.onItemClick(item);
-                });
+                sideSwitch.setOnClickListener(v -> listener.onSwitchClick(item, (CompoundButton) v, item.isSwitchChecked()));
                 itemView.setOnClickListener(v -> sideSwitch.setChecked(!sideSwitch.isChecked()));
             } else {
-                itemView.setOnClickListener(v -> listener.onItemClick(item));
+                itemView.setOnClickListener(v -> listener.onItemClick(item, v));
             }
 
             itemView.setClickable(item.isClickable());
@@ -105,6 +111,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int id;
         Drawable iconImageDrawable;
         String title;
+        String subTitle;
         String sideInfo;
         boolean isClickable = true;
         String type;
@@ -170,12 +177,22 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return this;
         }
 
+        public String getSubTitle() {
+            return subTitle;
+        }
+
+        public MenuItem setSubTitle(String subTitle) {
+            this.subTitle = subTitle;
+            return this;
+        }
+
         @Override
         public String toString() {
             return "MenuItem{" +
                     "id=" + id +
                     ", iconImageDrawable=" + iconImageDrawable +
                     ", title='" + title + '\'' +
+                    ", subTitle='" + subTitle + '\'' +
                     ", sideInfo='" + sideInfo + '\'' +
                     ", isClickable=" + isClickable +
                     ", type='" + type + '\'' +

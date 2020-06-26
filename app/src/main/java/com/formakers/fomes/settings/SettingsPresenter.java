@@ -25,8 +25,10 @@ public class SettingsPresenter implements SettingsContract.Presenter {
     public void toggleNotification(String topic) {
         if (this.isSubscribedTopic(topic)) {
             this.channelManager.unsubscribeTopic(topic);
+            this.view.showToast("전체 알림이 수신 거부되었습니다");
         } else {
             this.channelManager.subscribeTopic(topic);
+            this.view.showToast("전체 알림이 수신 허용되었습니다");
         }
     }
 }

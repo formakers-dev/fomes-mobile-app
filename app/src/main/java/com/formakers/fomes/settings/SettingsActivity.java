@@ -1,9 +1,13 @@
 package com.formakers.fomes.settings;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -34,6 +38,8 @@ public class SettingsActivity extends FomesBaseActivity
 
     @Inject SettingsContract.Presenter presenter;
 
+    private MenuListAdapter settingsListAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +68,7 @@ public class SettingsActivity extends FomesBaseActivity
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_GrayDivider).getTheme()));
         settingsRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        MenuListAdapter settingsListAdapter = new MenuListAdapter(createSettingsList(), R.layout.item_settings, this);
+        settingsListAdapter = new MenuListAdapter(createSettingsList(), R.layout.item_settings, this);
         settingsRecyclerView.setAdapter(settingsListAdapter);
     }
 
@@ -75,6 +81,7 @@ public class SettingsActivity extends FomesBaseActivity
                 .setClickable(false));
         settingsItems.add(new MenuItem(Menu.NOTIFICATION_PUBLIC, MenuItem.MENU_TYPE_SWITCH)
                 .setTitle(getString(R.string.settings_menu_notification_topic_all))
+                .setSubTitle(getString(R.string.settings_menu_notification_topic_all_message))
                 .setSwitchChecked(this.presenter.isSubscribedTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL)));
         settingsItems.add(new MenuItem(Menu.TNC_USAGE, MenuItem.MENU_TYPE_PLAIN)
                 .setTitle(getString(R.string.settings_menu_usage)));
@@ -87,7 +94,7 @@ public class SettingsActivity extends FomesBaseActivity
     }
 
     @Override
-    public void onItemClick(MenuListAdapter.MenuItem item) {
+    public void onItemClick(MenuListAdapter.MenuItem item, View view) {
         switch (item.getId()) {
             case Menu.TNC_USAGE: {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/1hcU3MQvJf0L2ZNl3T3H1n21C4E82FM2ppesDwjo-Wy4/edit?usp=sharing"));
@@ -108,9 +115,28 @@ public class SettingsActivity extends FomesBaseActivity
                 startActivity(intent);
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onSwitchClick(MenuItem item, CompoundButton switchView, boolean isChecked) {
+        switch (item.getId()) {
             case Menu.NOTIFICATION_PUBLIC: {
-                this.presenter.toggleNotification(FomesConstants.Notification.TOPIC_NOTICE_ALL);
-                Toast.makeText(this, "notice-all 알림 : " + this.presenter.isSubscribedTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL), Toast.LENGTH_SHORT).show();
+                if (isChecked) {
+                    // TODO : 흠... 이런 방법말고 뭔가 더 편한 방법이 있었는데... 기억이......
+                    item.setSwitchChecked(true);
+                    switchView.setChecked(true);
+                    this.showAlertDialog("더 이상 게임 테스트 오픈, 종료 및 각종 이벤트 소식들을 전달받으실 수 없습니다.\n수신 거부 하시겠습니까?",
+                            (dialog, which) -> {
+                                this.presenter.toggleNotification(FomesConstants.Notification.TOPIC_NOTICE_ALL);
+                                item.setSwitchChecked(false);
+                                switchView.setChecked(false);
+                            }, (dialog, which) -> dialog.dismiss());
+                } else {
+                    this.presenter.toggleNotification(FomesConstants.Notification.TOPIC_NOTICE_ALL);
+                    item.setSwitchChecked(true);
+                    switchView.setChecked(true);
+                }
                 break;
             }
         }
@@ -119,5 +145,19 @@ public class SettingsActivity extends FomesBaseActivity
     @Override
     public void setPresenter(SettingsContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showAlertDialog(String message, DialogInterface.OnClickListener positiveClickListener, DialogInterface.OnClickListener negativeClickListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("확인", positiveClickListener)
+                .setNegativeButton("취소", negativeClickListener)
+                .show();
     }
 }

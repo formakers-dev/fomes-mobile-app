@@ -1,5 +1,7 @@
 package com.formakers.fomes.settings;
 
+import android.content.DialogInterface;
+
 import com.formakers.fomes.common.mvp.BaseView;
 
 public interface SettingsContract {
@@ -10,5 +12,9 @@ public interface SettingsContract {
     }
 
     interface View extends BaseView<Presenter> {
+        void showToast(String message);
+        void showAlertDialog(String message,
+                             DialogInterface.OnClickListener positiveClickListener,
+                             DialogInterface.OnClickListener negativeClickListener);
     }
 }

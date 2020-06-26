@@ -191,7 +191,9 @@
 
     <!-- Settings -->
     <string name="settings_menu_version">포메스 정보</string>
-    <string name="settings_menu_notification_topic_all">전체유저들을 대상으로 하는 알림!!!!</string>
+    <string name="settings_menu_notification_topic_all">전체 알림 수신 허용하기</string>
+    <string name="settings_menu_notification_topic_all_message">수신 거부시에도 개별적으로 전달되는 알림은 수신됩니다</string>
+    <string name="settings_menu_notification_topic_all_off_notice">더이상 게임 테스트 오픈, 종료 및 각종 이벤트 소식들을 전달받으실 수 없습니다. OFF 하시겠습니까?</string>
     <string name="settings_menu_usage">이용약관</string>
     <string name="settings_menu_private">개인정보 취급 방침</string>
     <string name="settings_menu_contact_us">이메일로 문의하기</string>
