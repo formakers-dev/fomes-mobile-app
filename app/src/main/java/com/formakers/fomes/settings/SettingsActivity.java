@@ -126,7 +126,7 @@ public class SettingsActivity extends FomesBaseActivity
                     // TODO : 흠... 이런 방법말고 뭔가 더 편한 방법이 있었는데... 기억이......
                     item.setSwitchChecked(true);
                     switchView.setChecked(true);
-                    this.showAlertDialog("더 이상 게임 테스트 오픈, 종료 및 각종 이벤트 소식들을 전달받으실 수 없습니다.\n수신 거부 하시겠습니까?",
+                    this.showAlertDialog("더 이상 게임 테스트 오픈, 종료 및 보상 수령 관련 등의 메시지들을 전달받으실 수 없습니다.\n수신 거부하시겠습니까?",
                             (dialog, which) -> {
                                 this.presenter.toggleNotification(FomesConstants.Notification.TOPIC_NOTICE_ALL);
                                 item.setSwitchChecked(false);
