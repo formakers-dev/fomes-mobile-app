@@ -116,6 +116,14 @@ public class SettingsActivity extends FomesBaseActivity
                 break;
             }
         }
+
+        sendClickEventLog(item, null);
+    }
+
+    private void sendClickEventLog(MenuItem item, Long value) {
+        if (this.presenter != null && this.presenter.getAnalytics() != null && item != null) {
+            this.presenter.getAnalytics().sendClickEventLog(FomesConstants.Settings.Log.TARGET, String.valueOf(item.getId()), item.getTitle(), value);
+        }
     }
 
     @Override
@@ -131,11 +139,16 @@ public class SettingsActivity extends FomesBaseActivity
                                 this.presenter.toggleNotification(FomesConstants.Notification.TOPIC_NOTICE_ALL);
                                 item.setSwitchChecked(false);
                                 switchView.setChecked(false);
-                            }, (dialog, which) -> dialog.dismiss());
+
+                                sendClickEventLog(item, FomesConstants.Settings.Log.VALUE_UNCHECKED);
+                            },
+                            (dialog, which) -> dialog.dismiss());
                 } else {
                     this.presenter.toggleNotification(FomesConstants.Notification.TOPIC_NOTICE_ALL);
                     item.setSwitchChecked(true);
                     switchView.setChecked(true);
+
+                    sendClickEventLog(item, FomesConstants.Settings.Log.VALUE_CHECKED);
                 }
                 break;
             }

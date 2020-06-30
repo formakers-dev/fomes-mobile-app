@@ -78,6 +78,14 @@ public interface FomesConstants {
             int CONTACTS_US = 4;
             int NOTIFICATION_PUBLIC = 5;
         }
+
+        // TODO : Log? Analytic? Tracking? 네이밍 고민
+        interface Log {
+            String TARGET = "configuration";
+
+            long VALUE_UNCHECKED = 0L;
+            long VALUE_CHECKED = 1L;
+        }
     }
 
     interface WebView {

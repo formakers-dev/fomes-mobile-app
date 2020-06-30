@@ -39,6 +39,7 @@ public class AnalyticsModule {
         void setCurrentScreen(Fragment fragment);
         void sendClickEventLog(String contentType, String id);
         void sendClickEventLog(String contentType, String id, String name);
+        void sendClickEventLog(String contentType, String id, String name, Long value);
         void sendNotificationEventLog(String action, ChannelManager.Channel channel, String title);
     }
 
@@ -68,6 +69,11 @@ public class AnalyticsModule {
 
         @Override
         public void sendClickEventLog(String target, String id, String name) {
+            sendClickEventLog(target, id, name, null);
+        }
+
+        @Override
+        public void sendClickEventLog(String target, String id, String name, Long value) {
             Bundle params = new Bundle();
             if (!Strings.isNullOrEmpty(target)) {
                 params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, target);
@@ -77,6 +83,9 @@ public class AnalyticsModule {
             }
             if (!Strings.isNullOrEmpty(name)) {
                 params.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+            }
+            if (value != null) {
+                params.putLong(FirebaseAnalytics.Param.VALUE, value);
             }
 
             sendClickEvent(params);

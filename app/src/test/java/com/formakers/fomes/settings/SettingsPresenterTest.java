@@ -1,5 +1,6 @@
 package com.formakers.fomes.settings;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.noti.ChannelManager;
 
 import org.junit.Before;
@@ -20,6 +21,7 @@ public class SettingsPresenterTest {
 
     @Mock SettingsContract.View mockView;
     @Mock ChannelManager mockChannerManager;
+    @Mock AnalyticsModule.Analytics mockAnalytics;
 
     SettingsPresenter subject;
 
@@ -40,7 +42,7 @@ public class SettingsPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        subject = new SettingsPresenter(mockView, mockChannerManager);
+        subject = new SettingsPresenter(mockView, mockChannerManager, mockAnalytics);
     }
 
     @Test

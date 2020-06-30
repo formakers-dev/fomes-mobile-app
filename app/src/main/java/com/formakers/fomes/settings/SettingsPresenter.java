@@ -1,5 +1,6 @@
 package com.formakers.fomes.settings;
 
+import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.noti.ChannelManager;
 
 import javax.inject.Inject;
@@ -9,11 +10,20 @@ public class SettingsPresenter implements SettingsContract.Presenter {
 
     private SettingsContract.View view;
     private ChannelManager channelManager;
+    private AnalyticsModule.Analytics analytics;
 
     @Inject
-    public SettingsPresenter(SettingsContract.View view, ChannelManager channelManager) {
+    public SettingsPresenter(SettingsContract.View view,
+                             ChannelManager channelManager,
+                             AnalyticsModule.Analytics analytics) {
         this.view = view;
         this.channelManager = channelManager;
+        this.analytics = analytics;
+    }
+
+    @Override
+    public AnalyticsModule.Analytics getAnalytics() {
+        return this.analytics;
     }
 
     @Override
