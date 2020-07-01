@@ -94,7 +94,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 sideSwitch.setChecked(item.isSwitchChecked());
                 sideSwitch.setVisibility(View.VISIBLE);
                 sideSwitch.setOnClickListener(v -> listener.onSwitchClick(item, (CompoundButton) v, item.isSwitchChecked()));
-                itemView.setOnClickListener(v -> sideSwitch.setChecked(!sideSwitch.isChecked()));
+                itemView.setOnClickListener(v -> sideSwitch.performClick());
             } else {
                 itemView.setOnClickListener(v -> listener.onItemClick(item, v));
             }
