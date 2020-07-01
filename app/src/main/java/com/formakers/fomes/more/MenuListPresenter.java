@@ -3,6 +3,7 @@ package com.formakers.fomes.more;
 import android.util.Pair;
 
 import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.PointService;
 import com.formakers.fomes.common.util.Log;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ public class MenuListPresenter implements MenuListContract.Presenter {
     private Single<String> userEmail;
     private Single<String> userNickName;
     private BetaTestService betaTestService;
+    private PointService pointService;
 
     private MenuListContract.View view;
 
@@ -27,11 +29,13 @@ public class MenuListPresenter implements MenuListContract.Presenter {
     public MenuListPresenter(MenuListContract.View view,
                              @Named("userEmail") Single<String> userEmail,
                              @Named("userNickName") Single<String> userNickName,
-                             BetaTestService betaTestService) {
+                             BetaTestService betaTestService,
+                             PointService pointService) {
         this.view = view;
         this.userEmail = userEmail;
         this.userNickName = userNickName;
         this.betaTestService = betaTestService;
+        this.pointService = pointService;
     }
 
     @Override
@@ -52,6 +56,8 @@ public class MenuListPresenter implements MenuListContract.Presenter {
 
     @Override
     public void bindAvailablePoint() {
-
+        this.pointService.getAvailablePoint()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(point -> view.setAvailablePoint(point), e -> Log.e(TAG, String.valueOf(e)));
     }
 }

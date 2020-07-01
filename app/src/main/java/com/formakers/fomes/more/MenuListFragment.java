@@ -66,6 +66,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
         this.presenter.bindUserInfo();
         this.presenter.bindCompletedBetaTestsCount();
+        this.presenter.bindAvailablePoint();
         this.setMenuListView();
     }
 

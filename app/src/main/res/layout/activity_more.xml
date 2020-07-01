@@ -122,7 +122,7 @@
                 app:layout_constraintStart_toStartOf="@+id/my_available_point_title"
                 app:layout_constraintTop_toBottomOf="@+id/my_available_point_title"
                 app:layout_constraintEnd_toEndOf="@+id/my_available_point_title"
-                android:text="30,000 P"/>
+                tools:text="30,000 P"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
