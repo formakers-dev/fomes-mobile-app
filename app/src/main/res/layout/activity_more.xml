@@ -119,6 +119,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="30dp"
                 android:textStyle="bold"
+                android:clickable="true"
                 app:layout_constraintStart_toStartOf="@+id/my_available_point_title"
                 app:layout_constraintTop_toBottomOf="@+id/my_available_point_title"
                 app:layout_constraintEnd_toEndOf="@+id/my_available_point_title"

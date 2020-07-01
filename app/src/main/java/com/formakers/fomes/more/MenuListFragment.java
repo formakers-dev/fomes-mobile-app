@@ -23,6 +23,7 @@ import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
 import com.formakers.fomes.main.MainActivity;
+import com.formakers.fomes.point.PointHistoryActivity;
 import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
@@ -68,6 +69,11 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         this.presenter.bindCompletedBetaTestsCount();
         this.presenter.bindAvailablePoint();
         this.setMenuListView();
+
+        availablePointTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PointHistoryActivity.class);
+            context.startActivity(intent);
+        });
     }
 
     @Override
