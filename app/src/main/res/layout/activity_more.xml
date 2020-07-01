@@ -59,21 +59,102 @@
             android:layout_marginBottom="23dp"
             android:textColor="@color/fomes_white_alpha_75"
             android:textSize="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/more_menu_list"
+            app:layout_constraintBottom_toTopOf="@+id/profile_divider"
             app:layout_constraintStart_toStartOf="@+id/more_nickname"
             app:layout_constraintTop_toBottomOf="@+id/more_nickname"
             tools:text="bolim.lee@formakers.net"/>
 
+        <View
+            android:id="@+id/profile_divider"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:layout_marginTop="23dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/more_email"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/my_point_layout"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:paddingTop="23dp"
+            android:paddingBottom="23dp"
+            android:paddingStart="22dp"
+            android:paddingEnd="22dp"
+            android:background="@color/fomes_deep_dark_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_divider"
+            >
+            <TextView
+                android:id="@+id/my_point_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/fomes_white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="나의 포메스 포인트"/>
+
+            <TextView
+                android:id="@+id/my_available_point_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/fomes_white_alpha_87"
+                android:textSize="18dp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_point_title"
+                android:text="가용 포인트"/>
+
+            <TextView
+                android:id="@+id/my_available_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/my_available_point_title"
+                app:layout_constraintTop_toBottomOf="@+id/my_available_point_title"
+                app:layout_constraintEnd_toEndOf="@+id/my_available_point_title"
+                android:text="30,000 P"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/my_point_divider"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_point_layout"
+            />
+
+        <View
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            android:background="@color/fomes_deep_dark_gray"
+            app:layout_constraintTop_toTopOf="@+id/more_menu_list"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/more_menu_list"
             android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:overScrollMode="never"
+            android:layout_height="wrap_content"
+            android:paddingBottom="50dp"
+            android:nestedScrollingEnabled="false"
             android:background="@color/fomes_deep_dark_gray"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/more_email" />
+            app:layout_constraintTop_toBottomOf="@+id/my_point_divider" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

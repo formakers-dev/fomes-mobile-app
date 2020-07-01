@@ -49,4 +49,9 @@ public class MenuListPresenter implements MenuListContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(count -> this.view.setCompletedBetaTestsCount(count), e -> Log.e(TAG, String.valueOf(e)));
     }
+
+    @Override
+    public void bindAvailablePoint() {
+
+    }
 }

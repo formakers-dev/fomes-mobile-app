@@ -27,6 +27,7 @@ import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @BindView(R.id.more_email) TextView emailTextView;
     @BindView(R.id.more_nickname) TextView nickNameTextView;
     @BindView(R.id.more_participation_count) TextView participationCountTextView;
+    @BindView(R.id.my_available_point) TextView availablePointTextView;
     @BindView(R.id.more_menu_list) RecyclerView menuListView;
 
     @Inject MenuListContract.Presenter presenter;
@@ -117,6 +119,11 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
         participationCountTextView.setText(String.format(context.getString(R.string.my_completed_betatest_count_format), count));
         participationCountTextView.startAnimation(getFadeInAnimation(300));
+    }
+
+    @Override
+    public void setAvailablePoint(long point) {
+        availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
     }
 
     @Override
