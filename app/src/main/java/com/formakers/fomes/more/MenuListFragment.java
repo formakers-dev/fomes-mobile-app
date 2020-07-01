@@ -125,6 +125,8 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @Override
     public void setAvailablePoint(long point) {
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
+
+        availablePointTextView.startAnimation(getFadeInAnimation(300));
     }
 
     @Override
