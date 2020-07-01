@@ -9,7 +9,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -170,20 +169,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void onLoginButtonClick(View view) {
         Intent signInIntent = this.presenter.getGoogleSignInIntent();
         startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
-    }
-
-    /*** 애니메이션 관련 로직 => 공통화 고려 필요 ***/
-
-    private Animation getFadeOutAnimation(long durationMills) {
-        Animation out = new AlphaAnimation(1.0f, 0.0f);
-        out.setDuration(durationMills);
-        return out;
-    }
-
-    private Animation getFadeInAnimation(long durationMills) {
-        Animation in = new AlphaAnimation(0.0f, 1.0f);
-        in.setDuration(durationMills);
-        return in;
     }
 
     /*** 로그인 설명 뷰페이저 관련 뷰 로직 ***/

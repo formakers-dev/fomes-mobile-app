@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -117,5 +119,17 @@ public class BaseActivity extends AppCompatActivity {
         intent.setData(Uri.parse("market://details?id=com.formakers.fomes"));
         startActivity(intent);
         finishAffinity();
+    }
+
+    protected Animation getFadeInAnimation(long durationMills) {
+        Animation in = new AlphaAnimation(0.0f, 1.0f);
+        in.setDuration(durationMills);
+        return in;
+    }
+
+    protected Animation getFadeOutAnimation(long durationMills) {
+        Animation out = new AlphaAnimation(1.0f, 0.0f);
+        out.setDuration(durationMills);
+        return out;
     }
 }
