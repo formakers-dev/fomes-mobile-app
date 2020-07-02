@@ -97,4 +97,14 @@ public class PointHistoryPresenterTest {
         verify(mockView).showLoading();
         verify(mockView).hideLoading();
     }
+
+    @Test
+    public void bindHistory_호출시__포인트내역이_없으면__내역없음_화면을_보여준다() {
+        when(mockPointService.getPointHistory()).thenReturn(Observable.empty());
+
+        subject.bindHistory();
+
+        verify(mockView).hideLoading();
+        verify(mockView).showEmpty();
+    }
 }

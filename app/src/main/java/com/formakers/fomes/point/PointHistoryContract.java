@@ -15,6 +15,7 @@ public interface PointHistoryContract {
 
         void showLoading();
         void hideLoading();
+        void showEmpty();
 
         void refreshHistory();
     }

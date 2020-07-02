@@ -44,8 +44,12 @@ public class PointHistoryPresenter implements PointHistoryContract.Presenter {
                 .doOnSubscribe(() -> this.view.showLoading())
                 .doAfterTerminate(() -> this.view.hideLoading())
                 .subscribe(points -> {
-                    this.adapterModel.addAll(points);
-                    this.view.refreshHistory();
+                    if (points.isEmpty()) {
+                        this.view.showEmpty();
+                    } else {
+                        this.adapterModel.addAll(points);
+                        this.view.refreshHistory();
+                    }
                 }, e -> Log.e(TAG, String.valueOf(e)));
     }
 }

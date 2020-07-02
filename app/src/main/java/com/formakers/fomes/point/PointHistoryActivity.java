@@ -27,6 +27,8 @@ public class PointHistoryActivity extends FomesBaseActivity
     @BindView(R.id.available_point) TextView availablePointTextView;
     @BindView(R.id.point_history_recyclerview) RecyclerView historyRecyclerView;
     @BindView(R.id.point_history_recyclerview_placeholder) ShimmerFrameLayout loadingLayout;
+    @BindView(R.id.point_history_empty) View pointHistoryEmptyView;
+
 
     @Inject PointHistoryContract.Presenter presenter;
 
@@ -94,6 +96,11 @@ public class PointHistoryActivity extends FomesBaseActivity
         loadingLayout.stopShimmer();
         loadingLayout.setVisibility(View.GONE);
         historyRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showEmpty() {
+        pointHistoryEmptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
