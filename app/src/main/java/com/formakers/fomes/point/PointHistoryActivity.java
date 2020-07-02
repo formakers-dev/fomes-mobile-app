@@ -2,12 +2,14 @@ package com.formakers.fomes.point;
 
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -24,6 +26,7 @@ public class PointHistoryActivity extends FomesBaseActivity
 
     @BindView(R.id.available_point) TextView availablePointTextView;
     @BindView(R.id.point_history_recyclerview) RecyclerView historyRecyclerView;
+    @BindView(R.id.point_history_recyclerview_placeholder) ShimmerFrameLayout loadingLayout;
 
     @Inject PointHistoryContract.Presenter presenter;
 
@@ -79,6 +82,18 @@ public class PointHistoryActivity extends FomesBaseActivity
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
 
         availablePointTextView.startAnimation(getFadeInAnimation(300));
+    }
+
+    @Override
+    public void showLoading() {
+        loadingLayout.startShimmer();
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingLayout.stopShimmer();
+        loadingLayout.setVisibility(View.GONE);
+        historyRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

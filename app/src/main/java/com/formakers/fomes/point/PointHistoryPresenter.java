@@ -41,6 +41,8 @@ public class PointHistoryPresenter implements PointHistoryContract.Presenter {
                 .observeOn(Schedulers.io())
                 .toSortedList((p1, p2) -> p2.getDate().compareTo(p1.getDate()))
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> this.view.showLoading())
+                .doAfterTerminate(() -> this.view.hideLoading())
                 .subscribe(points -> {
                     this.adapterModel.addAll(points);
                     this.view.refreshHistory();

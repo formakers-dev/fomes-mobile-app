@@ -13,6 +13,9 @@ public interface PointHistoryContract {
     interface View extends BaseView<Presenter> {
         void setAvailablePoint(long point);
 
+        void showLoading();
+        void hideLoading();
+
         void refreshHistory();
     }
 }

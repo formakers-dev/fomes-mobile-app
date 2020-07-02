@@ -89,4 +89,12 @@ public class PointHistoryPresenterTest {
 
         verify(mockView).refreshHistory();
     }
+
+    @Test
+    public void bindHistory_호출시__로딩상태를_표시한다() {
+        subject.bindHistory();
+
+        verify(mockView).showLoading();
+        verify(mockView).hideLoading();
+    }
 }
