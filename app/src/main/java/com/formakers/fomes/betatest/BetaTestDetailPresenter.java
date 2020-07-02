@@ -131,6 +131,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public Single<Mission> getMissionProgress(String missionId) {
+        if (this.betaTest == null) {
+            return Single.error(new IllegalArgumentException("BetaTest is null"));
+        }
+
         return this.betaTestService.getMissionProgress(betaTest.getId(), missionId);
     }
 
