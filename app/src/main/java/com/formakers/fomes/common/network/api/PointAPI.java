@@ -1,12 +1,16 @@
 package com.formakers.fomes.common.network.api;
 
+import com.formakers.fomes.common.model.FomesPoint;
+
+import java.util.List;
+
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import rx.Observable;
 
 public interface PointAPI {
-//    @GET("/points")
-//    Observable<List<BetaTest>> getBetaTests(@Header("x-access-token") String accessToken);
+    @GET("/points")
+    Observable<List<FomesPoint>> getPointHistory(@Header("x-access-token") String accessToken);
 
     class PointResponseVO {
         public long point;
