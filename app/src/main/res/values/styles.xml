@@ -155,6 +155,12 @@
         <item name="divider_color">@android:color/transparent</item>
     </style>
 
+    <style name="FomesMainTabTheme.TransparentDivider">
+        <item name="divider_width">@dimen/match_constraint</item>
+        <item name="divider_height">1dp</item>
+        <item name="divider_color">@android:color/transparent</item>
+    </style>
+
     <style name="FomesTheme.TurquoiseItem">
         <item name="item_color">@color/colorPrimary</item>
         <item name="item_number">@string/common_number_one</item>

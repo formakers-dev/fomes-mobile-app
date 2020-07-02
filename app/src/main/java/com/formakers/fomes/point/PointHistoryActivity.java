@@ -1,13 +1,17 @@
 package com.formakers.fomes.point;
 
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 
 import java.text.NumberFormat;
 
@@ -19,8 +23,11 @@ public class PointHistoryActivity extends FomesBaseActivity
         implements PointHistoryContract.View {
 
     @BindView(R.id.available_point) TextView availablePointTextView;
+    @BindView(R.id.point_history_recyclerview) RecyclerView historyRecyclerView;
 
     @Inject PointHistoryContract.Presenter presenter;
+
+    PointHistoryListAdapterContract.View adapterView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +49,24 @@ public class PointHistoryActivity extends FomesBaseActivity
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        // set View
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        this.historyRecyclerView.setLayoutManager(linearLayoutManager);
+
+        ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(this, ContentDividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider, new ContextThemeWrapper(this, R.style.FomesMainTabTheme_TransparentDivider).getTheme()));
+        this.historyRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        PointHistoryListAdapter pointHistoryListAdapter = new PointHistoryListAdapter(this.presenter);
+        adapterView = pointHistoryListAdapter;
+        this.presenter.setAdapterModel(pointHistoryListAdapter);
+
+        this.historyRecyclerView.setAdapter(pointHistoryListAdapter);
+
+        // bind View
         this.presenter.bindAvailablePoint();
+        this.presenter.bindHistory();
     }
 
     @Override
@@ -55,5 +79,10 @@ public class PointHistoryActivity extends FomesBaseActivity
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
 
         availablePointTextView.startAnimation(getFadeInAnimation(300));
+    }
+
+    @Override
+    public void refreshHistory() {
+        this.adapterView.refresh();
     }
 }
