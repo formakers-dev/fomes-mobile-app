@@ -1,6 +1,10 @@
 package com.formakers.fomes.betatest;
 
+import android.content.Context;
+
 import com.formakers.fomes.common.dagger.ApplicationComponent;
+
+import javax.inject.Named;
 
 public class BetaTestDagger {
 
@@ -9,9 +13,11 @@ public class BetaTestDagger {
     @dagger.Module
     public static class Module {
         private BetaTestContract.View view;
+        private Context context;
 
-        public Module(BetaTestContract.View view) {
+        public Module(BetaTestFragment view) {
             this.view = view;
+            this.context = view.getActivity();
         }
 
         @Scope
@@ -24,6 +30,13 @@ public class BetaTestDagger {
         @dagger.Provides
         BetaTestContract.View view() {
             return this.view;
+        }
+
+        @Scope
+        @dagger.Provides
+        @Named("activityContext")
+        Context context() {
+            return this.context;
         }
     }
 

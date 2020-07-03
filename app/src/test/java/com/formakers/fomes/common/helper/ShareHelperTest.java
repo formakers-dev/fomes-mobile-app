@@ -40,7 +40,7 @@ public class ShareHelperTest {
         };
         BetaTest betaTest = new BetaTest().setTitle("제목").setCoverImageUrl("coverImageLink").setDescription("설명");
 
-        subject.sendBetaTestToKaKao(betaTest);
+        subject.sendBetaTestToKaKao(mockContext, betaTest);
 
         ArgumentCaptor<FeedTemplate> argumentCaptor = ArgumentCaptor.forClass(FeedTemplate.class);
         verify(mockKakaoLinkService).sendDefault(eq(mockContext), argumentCaptor.capture(), any());

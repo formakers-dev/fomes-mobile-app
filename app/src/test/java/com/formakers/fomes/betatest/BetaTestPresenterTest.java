@@ -1,5 +1,7 @@
 package com.formakers.fomes.betatest;
 
+import android.content.Context;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
@@ -48,6 +50,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class BetaTestPresenterTest {
 
+    @Mock private Context mockContext;
     @Mock private BetaTestContract.View mockView;
     @Mock private BetaTestListAdapter mockAdapterModel;
     @Mock private BetaTestService mockBetaTestService;
@@ -90,7 +93,7 @@ public class BetaTestPresenterTest {
         when(mockAdapterModel.getPositionById("1")).thenReturn(0);
         when(mockAdapterModel.getPositionById("2")).thenReturn(1);
 
-        subject = new BetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockFomesUrlHelper, mockImageLoader, mockShareHelper, Single.just(dummyUser.getNickName()));
+        subject = new BetaTestPresenter(mockContext, mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockFomesUrlHelper, mockImageLoader, mockShareHelper, Single.just(dummyUser.getNickName()));
         subject.setAdapterModel(mockAdapterModel);
     }
 
@@ -229,6 +232,6 @@ public class BetaTestPresenterTest {
 
         subject.shareToKaKao(betaTest);
 
-        verify(mockShareHelper).sendBetaTestToKaKao(eq(betaTest));
+        verify(mockShareHelper).sendBetaTestToKaKao(eq(mockContext), eq(betaTest));
     }
 }
