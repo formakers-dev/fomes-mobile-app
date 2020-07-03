@@ -43,7 +43,6 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
     @Inject MenuListContract.Presenter presenter;
     private MenuListAdapter menuListAdapter;
-    private Context context;
 
     @Nullable
     @Override
@@ -78,7 +77,11 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         this.presenter = presenter;
     }
 
-    public void setMenuListView() {
+    private void setMenuListView() {
+        if (this.isNotAvailableWidget()) {
+            return;
+        }
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         menuListView.setLayoutManager(linearLayoutManager);
@@ -101,7 +104,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
     @Override
     public void setUserInfo(String email, String nickName) {
-        if (context == null) {
+        if (this.isNotAvailableWidget()) {
             return;
         }
 
@@ -111,7 +114,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
     @Override
     public void setCompletedBetaTestsCount(int count) {
-        if (context == null) {
+        if (this.isNotAvailableWidget()) {
             return;
         }
 
