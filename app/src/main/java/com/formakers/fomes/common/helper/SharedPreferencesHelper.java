@@ -183,10 +183,10 @@ public class SharedPreferencesHelper {
     }
 
     public boolean getSettingNotificationTopic(String topic) {
-        return getBoolean(KEY_SETTING_NOTIFICATION + topic, false);
+        return getBoolean(KEY_SETTING_NOTIFICATION + topic, true);
     }
 
-    public void setSettingNotificationTopic(String topic, boolean version) {
-        putBoolean(KEY_SETTING_NOTIFICATION + topic, version);
+    public void setSettingNotificationTopic(String topic, boolean isSubscribed) {
+        putBoolean(KEY_SETTING_NOTIFICATION + topic, isSubscribed);
     }
 }
