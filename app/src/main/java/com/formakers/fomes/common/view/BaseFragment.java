@@ -1,5 +1,6 @@
 package com.formakers.fomes.common.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -18,8 +19,9 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 public class BaseFragment extends Fragment {
-    Unbinder unbinder;
 
+    protected Context context;
+    Unbinder unbinder;
     final CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     protected void addCompositeSubscription(@NonNull final Subscription subscription) {
@@ -33,6 +35,12 @@ public class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
     public void onDestroyView() {
         compositeSubscription.clear();
 
@@ -40,6 +48,13 @@ public class BaseFragment extends Fragment {
             unbinder.unbind();
         }
         super.onDestroyView();
+    }
+
+    protected boolean isNotAvailableWidget() {
+        return context == null
+                || !this.isVisible()    // isAdded로 할지 고민이 되는군...
+                || this.isDetached()
+                || this.isRemoving();
     }
 
     public void logError(Throwable error) {

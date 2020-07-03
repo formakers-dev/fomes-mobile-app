@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.TestFomesApplication;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.noti.ChannelManager;
@@ -115,10 +116,23 @@ public class SendDataJobServiceTest {
     }
 
     @Test
-    public void onStartJob_실행시__공지용_전체채널을_구독시킨다() {
+    public void onStartJob_실행시__설정이_켜져있다면__공지용_전체채널을_구독시킨다() {
+        when(mockChannelManager.isSubscribedTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL))
+                .thenReturn(true);
+
         subject_onStartJob();
 
-        verify(mockChannelManager).subscribePublicTopic();
+        verify(mockChannelManager).subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
+    }
+
+    @Test
+    public void onStartJob_실행시__설정이_꺼져있다면___공지용_전체채널을_구독하지않는다() {
+        when(mockChannelManager.isSubscribedTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL))
+                .thenReturn(false);
+
+        subject_onStartJob();
+
+        verify(mockChannelManager, never()).subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
     }
 
     @Test

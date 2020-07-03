@@ -168,7 +168,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         Log.d(TAG, "registerForInit");
 
         int jobRegisteredResult = jobManager.registerSendDataJob(JobManager.JOB_ID_SEND_DATA);
-        channelManager.subscribePublicTopic();
+        channelManager.subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
 
         Log.d(TAG, "job registered result=" + jobRegisteredResult);
     }

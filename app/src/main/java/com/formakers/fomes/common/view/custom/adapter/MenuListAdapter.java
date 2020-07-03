@@ -1,10 +1,13 @@
 package com.formakers.fomes.common.view.custom.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -22,7 +25,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(MenuItem item);
+        void onItemClick(MenuItem item, View view);
+        void onSwitchClick(MenuItem item, CompoundButton switchView, boolean isChecked);
     }
 
     public MenuListAdapter(List<MenuItem> list, @LayoutRes int itemLayoutResId, OnItemClickListener onItemClickListener) {
@@ -54,14 +58,18 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iconImageView;
         TextView titleTextView;
+        TextView subTitleTextView;
         TextView sideInfoTextView;
+        Switch sideSwitch;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             iconImageView = itemView.findViewById(R.id.icon);
             titleTextView = itemView.findViewById(R.id.title);
+            subTitleTextView = itemView.findViewById(R.id.subtitle);
             sideInfoTextView = itemView.findViewById(R.id.side_info);
+            sideSwitch = itemView.findViewById(R.id.setting_switch);
         }
 
         public void bind(MenuItem item, OnItemClickListener listener) {
@@ -69,23 +77,51 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 iconImageView.setImageDrawable(item.getIconImageDrawable());
                 iconImageView.setVisibility(View.VISIBLE);
             }
+
             titleTextView.setText(item.getTitle());
-            sideInfoTextView.setText(item.getSideInfo());
-            itemView.setOnClickListener(v -> listener.onItemClick(item));
+
+            if (!TextUtils.isEmpty(item.getSubTitle())) {
+                subTitleTextView.setText(item.getSubTitle());
+                subTitleTextView.setVisibility(View.VISIBLE);
+            }
+
+            if (!TextUtils.isEmpty(item.getSideInfo())) {
+                sideInfoTextView.setText(item.getSideInfo());
+                sideInfoTextView.setVisibility(View.VISIBLE);
+            }
+
+            if (item.getType().equals(MenuItem.MENU_TYPE_SWITCH)) {
+                sideSwitch.setChecked(item.isSwitchChecked());
+                sideSwitch.setVisibility(View.VISIBLE);
+                sideSwitch.setOnClickListener(v -> listener.onSwitchClick(item, (CompoundButton) v, item.isSwitchChecked()));
+                itemView.setOnClickListener(v -> sideSwitch.performClick());
+            } else {
+                itemView.setOnClickListener(v -> listener.onItemClick(item, v));
+            }
+
             itemView.setClickable(item.isClickable());
             itemView.setTag(item.getId());
         }
     }
 
     public static class MenuItem {
+        public static final String MENU_TYPE_PLAIN = "plain";
+        public static final String MENU_TYPE_SWITCH = "switch";
+
         int id;
         Drawable iconImageDrawable;
         String title;
+        String subTitle;
         String sideInfo;
         boolean isClickable = true;
+        String type;
 
-        public MenuItem(int id) {
+        // for Switch Type
+        boolean isSwitchChecked;
+
+        public MenuItem(int id, String type) {
             this.id = id;
+            this.type = type;
         }
 
         public int getId() {
@@ -128,14 +164,39 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return this;
         }
 
+        public String getType() {
+            return type;
+        }
+
+        public boolean isSwitchChecked() {
+            return isSwitchChecked;
+        }
+
+        public MenuItem setSwitchChecked(boolean switchChecked) {
+            isSwitchChecked = switchChecked;
+            return this;
+        }
+
+        public String getSubTitle() {
+            return subTitle;
+        }
+
+        public MenuItem setSubTitle(String subTitle) {
+            this.subTitle = subTitle;
+            return this;
+        }
+
         @Override
         public String toString() {
             return "MenuItem{" +
-                    "id='" + id + '\'' +
+                    "id=" + id +
                     ", iconImageDrawable=" + iconImageDrawable +
                     ", title='" + title + '\'' +
+                    ", subTitle='" + subTitle + '\'' +
                     ", sideInfo='" + sideInfo + '\'' +
                     ", isClickable=" + isClickable +
+                    ", type='" + type + '\'' +
+                    ", isSwitchChecked=" + isSwitchChecked +
                     '}';
         }
     }

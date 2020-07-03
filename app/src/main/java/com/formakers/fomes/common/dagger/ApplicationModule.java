@@ -7,6 +7,7 @@ import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -58,5 +59,11 @@ public class ApplicationModule {
         });
 
         return remoteConfig;
+    }
+
+    @Singleton
+    @Provides
+    FirebaseMessaging firebaseMessaging() {
+        return FirebaseMessaging.getInstance();
     }
 }

@@ -35,7 +35,7 @@ public class ShareHelper {
         this.kakaoLinkService = kakaoLinkService;
     }
 
-    public void sendBetaTestToKaKao(BetaTest betaTest) {
+    public void sendBetaTestToKaKao(Context activityContext, BetaTest betaTest) {
         List<String> descriptions = Arrays.asList(
                 "💰문상 득템! 개이득 게임 테스트 한판 어때?",
                 "🎮핵꿀잼! 신박한 게임 테스트 한판 어때?",
@@ -61,7 +61,8 @@ public class ShareHelper {
                                 .build()))
                 .build();
 
-        this.kakaoLinkService.sendDefault(context, feedTemplate, new ResponseCallback<KakaoLinkResponse>() {
+        Log.v(TAG, activityContext + "\n" + context);
+        this.kakaoLinkService.sendDefault(activityContext, feedTemplate, new ResponseCallback<KakaoLinkResponse>() {
             @Override
             public void onFailure(ErrorResult errorResult) {
                 Log.e(TAG, "카톡 공유하기 에러 발생!\n" + errorResult);

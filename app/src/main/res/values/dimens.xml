@@ -63,6 +63,7 @@
     <dimen name="betatest_list_divider_height">16dp</dimen>
     <dimen name="betatest_title_text_size">18dp</dimen>
     <dimen name="betatest_subtitle_text_size">12dp</dimen>
+    <dimen name="betatest_list_item_height">180dp</dimen>
     <dimen name="betatest_list_item_padding_start_end">16dp</dimen>
     <dimen name="betatest_list_item_content_margin_start_end">20dp</dimen>
     <dimen name="betatest_list_item_content_margin_top_bottom">15dp</dimen>
@@ -72,6 +73,7 @@
     <dimen name="betatest_list_item_tag_divider_height">5dp</dimen>
 
     <!-- Beta Test Detail -->
+    <dimen name="betatest_detail_overview_image_height">200dp</dimen>
     <dimen name="betatest_detail_first_item_margin_top">30dp</dimen>
     <dimen name="betatest_detail_items_margin_top">45dp</dimen>
     <dimen name="betatest_detail_items_description_margin_top">10dp</dimen>

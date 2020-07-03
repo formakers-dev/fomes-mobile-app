@@ -323,7 +323,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
                     missionImageView.setImageResource(R.drawable.icon_test_awards);
                     missionTitleTextView.setText("시상식");
-                    missionItemTitleTextView.setText("대상사 선정 & 보상 지급");
+                    missionItemTitleTextView.setText("대상자 선정 & 보상 지급");
 
                     howtoViewGroup.addView(missionItemView);
                 });

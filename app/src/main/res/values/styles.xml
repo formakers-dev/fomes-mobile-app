@@ -8,6 +8,8 @@
         <item name="android:textColorHint">@color/textColorHint</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:actionMenuTextAppearance">@style/actionMenuTextAppearance</item>
+
+        <!-- for Widgets -->
         <item name="android:fontFamily">@font/default_font</item>
         <item name="fontFamily">@font/default_font</item>
         <item name="android:textViewStyle">@style/TextViewStyle</item>
@@ -15,10 +17,26 @@
         <item name="android:editTextStyle">@style/EditTextStyle</item>
         <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
         <item name="android:checkboxStyle">@style/CheckboxStyle</item>
-        <!--<item name="android:windowNoTitle">true</item>-->
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowActionModeOverlay">true</item>-->
-        <!--<item name="actionBarStyle">@style/FomesTheme.ActionBarStyle</item>-->
+    </style>
+
+    <style name="FomesTheme.NoActionBar" parent="FomesTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="FomesTheme.CollapseActionBar"  parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <!-- for Widgets -->
+        <item name="android:fontFamily">@font/default_font</item>
+        <item name="fontFamily">@font/default_font</item>
+        <item name="android:textViewStyle">@style/TextViewStyle</item>
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
+        <item name="android:checkboxStyle">@style/CheckboxStyle</item>
     </style>
 
     <!-- Custom font style 일괄적용 -->
@@ -46,11 +64,6 @@
     <!--<style name="FomesTheme.ActionBarStyle" parent="Widget.AppCompat.ActionBar">-->
         <!--<item name="displayOptions">showHome|homeAsUp|showTitle</item>-->
     <!--</style>-->
-
-    <style name="FomesTheme.NoActionBar" parent="FomesTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 
     <style name="actionMenuTextAppearance" parent="Base.TextAppearance.AppCompat">
         <item name="android:textColor">@android:color/white</item>
@@ -458,16 +471,7 @@
         <item name="item_solid_color">@color/fomes_white_2</item>
     </style>
 
-    <style name="BetaTestDetailTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
-<!--        <item name="android:actionBarStyle">@style/TransparentActionBar</item>-->
-<!--        <item name="actionBarStyle">@style/TransparentActionBar</item>-->
-<!--        <item name="android:windowActionBarOverlay">true</item>-->
-<!--        <item name="windowActionBarOverlay">true</item>-->
-    </style>
+    <style name="BetaTestDetailTheme" parent="FomesTheme.CollapseActionBar"/>
 
     <style name="BetaTestDetailTheme.SectionTitle">
         <item name="android:textSize">@dimen/betatest_detail_section_title_text_size</item>

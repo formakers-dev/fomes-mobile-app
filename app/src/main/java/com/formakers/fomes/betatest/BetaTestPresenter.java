@@ -1,5 +1,7 @@
 package com.formakers.fomes.betatest;
 
+import android.content.Context;
+
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
@@ -31,6 +33,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
 
     private BetaTestListAdapterContract.Model betaTestListAdapterModel;
 
+    private Context context;
     private BetaTestContract.View view;
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
@@ -43,7 +46,8 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
-    public BetaTestPresenter(BetaTestContract.View view,
+    public BetaTestPresenter(@Named("activityContext") Context context,
+                              BetaTestContract.View view,
                              BetaTestService betaTestService,
                              EventLogService eventLogService,
                              AnalyticsModule.Analytics analytics,
@@ -51,6 +55,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                              ImageLoader imageLoader,
                              ShareHelper shareHelper,
                              @Named("userNickName") Single<String> userNickName) {
+        this.context = context;
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
@@ -183,7 +188,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
 
     @Override
     public void shareToKaKao(BetaTest betaTest) {
-        this.shareHelper.sendBetaTestToKaKao(betaTest);
+        this.shareHelper.sendBetaTestToKaKao(context, betaTest);
     }
 
     @Override

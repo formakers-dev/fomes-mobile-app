@@ -70,6 +70,10 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     public void onNextButtonClick() {
         String nickName = nickNameEditText.getText().toString();
 
+        if (this.presenter == null) {
+            return;
+        }
+
         addCompositeSubscription(
             this.presenter.requestVerifyUserNickName(nickName)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -108,6 +112,10 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
             nickNameWarningTextView.setVisibility(View.VISIBLE);
         } else {
             nickNameWarningTextView.setVisibility(View.GONE);
+        }
+
+        if (this.presenter == null) {
+            return;
         }
 
         this.presenter.emitFilledUpEvent(this, !isVisible);
