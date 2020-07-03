@@ -109,7 +109,7 @@ public class SettingsActivity extends FomesBaseActivity
             case Menu.CONTACTS_US: {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@formakers.net"});
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"support@formakers.net"});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]");
                 intent.putExtra(Intent.EXTRA_TEXT, "포메스 팀에게 문의해주세요");
                 startActivity(intent);
