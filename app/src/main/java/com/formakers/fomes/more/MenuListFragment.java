@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,13 +40,21 @@ import butterknife.BindView;
 
 public class MenuListFragment extends BaseFragment implements MenuListContract.View, MenuListAdapter.OnItemClickListener {
 
-    @BindView(R.id.more_email) TextView emailTextView;
-    @BindView(R.id.more_nickname) TextView nickNameTextView;
-    @BindView(R.id.more_participation_count) TextView participationCountTextView;
-    @BindView(R.id.my_available_point) TextView availablePointTextView;
-    @BindView(R.id.more_menu_list) RecyclerView menuListView;
+    @BindView(R.id.more_email)
+    TextView emailTextView;
+    @BindView(R.id.more_nickname)
+    TextView nickNameTextView;
+    @BindView(R.id.more_participation_count)
+    TextView participationCountTextView;
+    @BindView(R.id.my_available_point)
+    TextView availablePointTextView;
+    @BindView(R.id.more_menu_list)
+    RecyclerView menuListView;
+    @BindView(R.id.withdraw_point_button)
+    Button withdrawPointButton;
 
-    @Inject MenuListContract.Presenter presenter;
+    @Inject
+    MenuListContract.Presenter presenter;
     private MenuListAdapter menuListAdapter;
     private Context context;
 
@@ -73,6 +83,10 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         availablePointTextView.setOnClickListener(v -> {
             Intent intent = new Intent(context, PointHistoryActivity.class);
             context.startActivity(intent);
+        });
+
+        withdrawPointButton.setOnClickListener(v -> {
+            Toast.makeText(context, "클릭드", Toast.LENGTH_LONG).show();
         });
     }
 
@@ -131,15 +145,16 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @Override
     public void setAvailablePoint(long point) {
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
-
         availablePointTextView.startAnimation(getFadeInAnimation(300));
+
+        withdrawPointButton.setEnabled(point >= 5000L);
     }
 
     @Override
     public void onItemClick(MenuListAdapter.MenuItem item, View view) {
         Intent intent = new Intent();
 
-        switch(item.getId()) {
+        switch (item.getId()) {
             case More.MENU_HOW_TO_PC: {
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("https://www.notion.so/formakers/PC-4e409af0c2df4dfa9734328c9817f317"));
