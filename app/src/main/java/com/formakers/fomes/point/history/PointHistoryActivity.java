@@ -1,4 +1,4 @@
-package com.formakers.fomes.point;
+package com.formakers.fomes.point.history;
 
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;

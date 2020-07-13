@@ -2,6 +2,9 @@ package com.formakers.fomes.point;
 
 import com.formakers.fomes.common.model.FomesPoint;
 import com.formakers.fomes.common.network.PointService;
+import com.formakers.fomes.point.history.PointHistoryContract;
+import com.formakers.fomes.point.history.PointHistoryListAdapterContract;
+import com.formakers.fomes.point.history.PointHistoryPresenter;
 
 import org.junit.Before;
 import org.junit.Test;

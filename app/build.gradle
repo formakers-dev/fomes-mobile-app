@@ -221,8 +221,11 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     // KaKao
     implementation'com.kakao.sdk:kakaolink:1.29.0'
+
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    // NumberPicker
+    implementation 'com.shawnlin:number-picker:2.4.10'
     // PagerIndicators
     implementation 'com.romandanylyk:pageindicatorview:1.0.3@aar'
     // Shimmer

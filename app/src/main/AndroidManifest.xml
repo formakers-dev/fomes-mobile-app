@@ -122,7 +122,8 @@
             android:theme="@style/BetaTestDetailTheme"
             android:label="@string/common_empty_string"/>
         <activity android:name=".betatest.BetaTestCertificateActivity"/>
-        <activity android:name=".point.PointHistoryActivity"/>
+        <activity android:name=".point.history.PointHistoryActivity"/>
+        <activity android:name=".point.withdraw.PointWithdrawActivity"/>
 
     </application>
 

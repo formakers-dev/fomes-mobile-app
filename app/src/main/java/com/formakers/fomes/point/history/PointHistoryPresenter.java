@@ -1,4 +1,4 @@
-package com.formakers.fomes.point;
+package com.formakers.fomes.point.history;
 
 import com.formakers.fomes.common.network.PointService;
 import com.formakers.fomes.common.util.Log;

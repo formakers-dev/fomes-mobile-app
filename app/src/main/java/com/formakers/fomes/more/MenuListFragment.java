@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +24,8 @@ import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
 import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.point.PointHistoryActivity;
+import com.formakers.fomes.point.history.PointHistoryActivity;
+import com.formakers.fomes.point.withdraw.PointWithdrawActivity;
 import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
@@ -86,7 +86,8 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         });
 
         withdrawPointButton.setOnClickListener(v -> {
-            Toast.makeText(context, "클릭드", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(context, PointWithdrawActivity.class);
+            startActivity(intent);
         });
     }
 
