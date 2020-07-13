@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/betatest_title_awards_best"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/finished_betatest_detail_default_awards_title"
+        android:textColor="@color/fomes_white"
+        android:textSize="@dimen/betatest_detail_section_content_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="테스트 수석"/>
+
+    <TextView
+        android:id="@+id/betatest_awards_price"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textColor="@color/fomes_white_alpha_60"
+        android:textSize="@dimen/betatest_detail_section_content_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards_best"
+        tools:text="문화 상품권 10,000원" />
+
+    <ImageView
+        android:id="@+id/betatest_awards_crowded_people"
+        android:layout_width="297dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="147dp"
+        android:background="@drawable/crowded_people"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_awards_price" />
+
+    <ImageView
+        android:id="@+id/betatest_awards_medal"
+        android:layout_width="297dp"
+        android:layout_height="185dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/analysis_rank_medal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_awards_price" />
+
+    <LinearLayout
+        android:id="@+id/betatest_awards_medal_contents_layout"
+        android:layout_width="111dp"
+        android:layout_height="112dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/betatest_awards_medal"
+        app:layout_constraintStart_toStartOf="@+id/betatest_awards_medal"
+        app:layout_constraintTop_toTopOf="@+id/betatest_awards_medal"
+        app:layout_constraintBottom_toBottomOf="@+id/betatest_awards_medal">
+
+        <TextView
+            android:id="@+id/betatest_awards_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:focusable="true"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:textColor="@color/fomes_text_dark"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="시상식 준비중"
+            tools:text="회는 살안찔까 과연 그럴까 궁금하다 궁금해" />
+
+        <TextView
+            android:id="@+id/betatest_awards_nickname_end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/fomes_text_dark"
+            android:textSize="@dimen/betatest_detail_section_content_text_size"
+            android:text="@string/finished_betatest_detail_awards_nickname_sir"/>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
