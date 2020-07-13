@@ -1,13 +1,11 @@
 package com.formakers.fomes.point.withdraw;
 
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.shawnlin.numberpicker.NumberPicker;
 
@@ -15,8 +13,6 @@ import butterknife.BindView;
 
 public class PointWithdrawActivity extends FomesBaseActivity {
 
-    @BindView(R.id.layout)
-    ViewGroup view;
     @BindView(R.id.withdraw_count) NumberPicker withdrawCountNumberPicker;
     @BindView(R.id.withdraw_phone_number) EditText phoneNumberEditText;
 
@@ -33,9 +29,7 @@ public class PointWithdrawActivity extends FomesBaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        Log.i("====", String.valueOf(view.findFocus()));
 
-        phoneNumberEditText.requestFocus();
         //        bind
         withdrawCountNumberPicker.setMaxValue(2);
     }
