@@ -78,7 +78,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Inject FinishedBetaTestDetailContract.Presenter presenter;
 
     private FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
-    private FinishedBetaTestRewardPagerAdapter pagerAdapter = null;
+    private FinishedBetaTestAwardPagerAdapter awardPagerAdapter = null;
+    private FinishedBetaTestAwardPagerAdapterContract.View awardPagerAdapterView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,9 +106,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
             return;
         }
 
-        pagerAdapter = new FinishedBetaTestRewardPagerAdapter(this) ;
-        pagerAdapter.setPresenter(presenter);
-        awardsViewPager.setAdapter(pagerAdapter);
+        setAwardPagerAdapter();
 
         Bundle bundle = getIntent().getExtras();
         bind(bundle);
@@ -121,6 +120,14 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         this.presenter.requestEpilogue(betaTestId);
         this.presenter.requestAwardRecordOfBest(betaTestId);
         this.presenter.requestRecheckableMissions(betaTestId);
+    }
+
+    private void setAwardPagerAdapter() {
+        awardPagerAdapter = new FinishedBetaTestAwardPagerAdapter(this) ;
+        awardPagerAdapter.setPresenter(presenter);
+        awardsViewPager.setAdapter(awardPagerAdapter);
+        this.presenter.setFinishedBetaTestAwardPagerAdapterModel(awardPagerAdapter);
+        this.awardPagerAdapterView = awardPagerAdapter;
     }
 
     private void setActionBar() {
@@ -155,8 +162,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
         String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
         @StringRes int planStringResId = bundle.getInt(FomesConstants.BetaTest.EXTRA_PLAN);
-        int topRewardTypeCode = bundle.getInt(FomesConstants.BetaTest.EXTRA_TOP_REWARD_TYPE_CODE);
-        String topRewardDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_TOP_REWARD_DESCRIPTION);
+//        int topRewardTypeCode = bundle.getInt(FomesConstants.BetaTest.EXTRA_TOP_REWARD_TYPE_CODE);
+//        String topRewardDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_TOP_REWARD_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
         ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
@@ -207,6 +214,13 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
             intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, id);
             startActivity(intent);
         });
+
+        List<BetaTest.Rewards.RewardItem> rewardItems = bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS);
+
+        if(rewardItems != null) {
+            awardPagerAdapter.addAllFromRewardItems(rewardItems);
+            this.awardPagerAdapterView.notifyDataSetChanged();
+        }
     }
 
     @Override

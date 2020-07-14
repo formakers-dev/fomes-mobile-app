@@ -35,6 +35,7 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     private BetaTestService betaTestService;
     private FomesUrlHelper fomesUrlHelper;
     private AndroidNativeHelper androidNativeHelper;
+    private FinishedBetaTestAwardPagerAdapterContract.Model finishedBetaTestAwardPagerModel;
 
     @Inject
     public FinishedBetaTestDetailPresenter(FinishedBetaTestDetailContract.View view,
@@ -59,6 +60,11 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     @Override
     public ImageLoader getImageLoader() {
         return imageLoader;
+    }
+
+    @Override
+    public void setFinishedBetaTestAwardPagerAdapterModel(FinishedBetaTestAwardPagerAdapterContract.Model model) {
+        this.finishedBetaTestAwardPagerModel = model;
     }
 
     @Override

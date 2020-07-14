@@ -4,14 +4,15 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 
 import java.util.List;
 
-public interface FinishedBetaTestRewardPagerAdapterContract {
+public interface FinishedBetaTestAwardPagerAdapterContract {
     interface View {
         void setPresenter(FinishedBetaTestDetailContract.Presenter presenter);
         void notifyDataSetChanged();
     }
 
     interface Model {
-        void addAll(List<BetaTest.Rewards.RewardItem> rewardItems);
+        void addAll(List<FinishedBetaTestAwardPagerAdapter.AwardItem> awardItems);
+        void addAllFromRewardItems(List<BetaTest.Rewards.RewardItem> rewardItems);
         int getCount();
     }
 }

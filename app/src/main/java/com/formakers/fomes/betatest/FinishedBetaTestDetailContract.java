@@ -29,6 +29,8 @@ public interface FinishedBetaTestDetailContract {
         ImageLoader getImageLoader();
 
         void emitRecheckMyAnswer(Mission mission);
+
+        void setFinishedBetaTestAwardPagerAdapterModel(FinishedBetaTestAwardPagerAdapterContract.Model model);
     }
 
     interface View extends BaseView<Presenter> {
