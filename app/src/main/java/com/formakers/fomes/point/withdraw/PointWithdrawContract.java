@@ -9,5 +9,7 @@ public interface PointWithdrawContract {
 
     interface View extends BaseView<Presenter> {
         void setAvailablePoint(long point);
+        void setMaxWithdrawCount(int maxWithdrawCount);
+        void setInputComponentsEnabled(boolean enabled);
     }
 }

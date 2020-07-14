@@ -1,6 +1,7 @@
 package com.formakers.fomes.point.withdraw;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
     @BindView(R.id.withdraw_count) NumberPicker withdrawCountNumberPicker;
     @BindView(R.id.withdraw_phone_number) EditText phoneNumberEditText;
     @BindView(R.id.my_available_point) TextView availablePointTextView;
+    @BindView(R.id.withdraw_button) Button withdrawButton;
 
     @Inject PointWithdrawContract.Presenter presenter;
 
@@ -54,6 +56,18 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
 
         availablePointTextView.startAnimation(getFadeInAnimation(300));
+    }
+
+    @Override
+    public void setMaxWithdrawCount(int maxWithdrawCount) {
+        withdrawCountNumberPicker.setMaxValue(Math.max(1, maxWithdrawCount));
+    }
+
+    @Override
+    public void setInputComponentsEnabled(boolean enabled) {
+        withdrawCountNumberPicker.setEnabled(enabled);
+        phoneNumberEditText.setEnabled(enabled);
+        withdrawButton.setEnabled(enabled);
     }
 
     @Override

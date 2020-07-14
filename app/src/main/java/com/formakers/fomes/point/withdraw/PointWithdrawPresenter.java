@@ -24,7 +24,13 @@ public class PointWithdrawPresenter implements PointWithdrawContract.Presenter {
     public void bindAvailablePoint() {
         this.pointService.getAvailablePoint()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(point -> view.setAvailablePoint(point), e -> Log.e(TAG, String.valueOf(e)));
+                .subscribe(point -> {
+                    view.setAvailablePoint(point);
+
+                    int maxWithdrawCount = (int)(point / 5000l);
+                    view.setMaxWithdrawCount(maxWithdrawCount);
+                    view.setInputComponentsEnabled(maxWithdrawCount > 0);
+                }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
 }
