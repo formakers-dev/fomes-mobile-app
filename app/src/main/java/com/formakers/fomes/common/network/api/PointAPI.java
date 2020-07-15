@@ -4,8 +4,10 @@ import com.formakers.fomes.common.model.FomesPoint;
 
 import java.util.List;
 
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PUT;
 import rx.Observable;
 
 public interface PointAPI {
@@ -22,4 +24,7 @@ public interface PointAPI {
 
     @GET("/points/available")
     Observable<PointResponseVO> getAvailablePoint(@Header("x-access-token") String accessToken);
+
+    @PUT("/points/withdraw")
+    Observable<Void> putPointWithdraw(@Header("x-access-token") String accessToken, @Body FomesPoint point);
 }

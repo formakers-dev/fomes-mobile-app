@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -49,6 +50,11 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
 
         // bind View
         this.presenter.bindAvailablePoint();
+
+        this.withdrawButton.setOnClickListener(v -> {
+            this.presenter.withdraw(this.withdrawCountNumberPicker.getValue(),
+                    String.valueOf(this.phoneNumberEditText.getText()));
+        });
     }
 
     @Override
@@ -68,6 +74,11 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
         withdrawCountNumberPicker.setEnabled(enabled);
         phoneNumberEditText.setEnabled(enabled);
         withdrawButton.setEnabled(enabled);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override

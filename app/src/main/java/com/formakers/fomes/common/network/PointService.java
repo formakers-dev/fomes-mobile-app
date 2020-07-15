@@ -8,6 +8,7 @@ import com.formakers.fomes.common.network.helper.APIHelper;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import rx.Completable;
 import rx.Observable;
 import rx.Single;
 import rx.schedulers.Schedulers;
@@ -46,5 +47,12 @@ public class PointService extends AbstractService {
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .flatMap(Observable::from);
+    }
+
+    public Completable requestWithdraw(FomesPoint point) {
+        return Observable.defer(() -> pointAPI.putPointWithdraw(sharedPreferencesHelper.getAccessToken(), point))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toCompletable();
     }
 }

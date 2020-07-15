@@ -9,6 +9,9 @@ public class FomesPoint {
     String status;
     String description;
 
+    // for withdraw type
+    String phoneNumber;
+
     public FomesPoint() {
     }
 
@@ -57,14 +60,25 @@ public class FomesPoint {
         return this;
     }
 
+    public String getPhoneNumber() {
+
+        return phoneNumber;
+    }
+
+    public FomesPoint setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "Point{" +
+        return "FomesPoint{" +
                 "date=" + date +
                 ", point=" + point +
                 ", type='" + type + '\'' +
                 ", status='" + status + '\'' +
                 ", description='" + description + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }
