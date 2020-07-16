@@ -12,7 +12,10 @@ public class StringFormatUtil {
     private static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("M월 d일 (E)", Locale.KOREA);
     private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yy.M.d (E)", Locale.KOREA);
 
+    private static final String PHONE_NUMBER_REGEX = "\\s*\\d{3}-\\d{3,4}-\\d{4}\\s*";
+
     private static final String YOUTUBE_ID_REGEX = "(http[s]?:\\/\\/)?(www\\\\.)?youtu[\\\\.]?be([\\\\.]com)?\\/(watch\\?v=)?([^&?]*)";
+
 
     public static String parseEmailName(String email) {
         return email.split("@")[0];
@@ -45,5 +48,9 @@ public class StringFormatUtil {
         } else {
             return null;
         }
+    }
+
+    public static boolean verifyPhoneNumberFormat(String phoneNumber) {
+       return Pattern.matches(PHONE_NUMBER_REGEX, phoneNumber);
     }
 }

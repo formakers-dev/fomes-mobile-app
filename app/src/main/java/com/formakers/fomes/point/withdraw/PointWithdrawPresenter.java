@@ -3,6 +3,7 @@ package com.formakers.fomes.point.withdraw;
 import com.formakers.fomes.common.model.FomesPoint;
 import com.formakers.fomes.common.network.PointService;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.util.StringFormatUtil;
 
 import javax.inject.Inject;
 
@@ -16,6 +17,7 @@ public class PointWithdrawPresenter implements PointWithdrawContract.Presenter {
 
     private PointWithdrawContract.View view;
     private PointService pointService;
+    private int maxWithdrawCount = 0;
 
     @Inject
     public PointWithdrawPresenter(PointWithdrawContract.View view, PointService pointService) {
@@ -30,10 +32,17 @@ public class PointWithdrawPresenter implements PointWithdrawContract.Presenter {
                 .subscribe(point -> {
                     view.setAvailablePoint(point);
 
-                    int maxWithdrawCount = (int)(point / BASE_WITHDRAW_POINT);
+                    maxWithdrawCount = (int)(point / BASE_WITHDRAW_POINT);
                     view.setMaxWithdrawCount(maxWithdrawCount);
                     view.setInputComponentsEnabled(maxWithdrawCount > 0);
                 }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
+    public boolean isAvailableToWithdraw(int currentWithdrawCount, String phoneNumber) {
+        boolean isMatched = StringFormatUtil.verifyPhoneNumberFormat(phoneNumber);
+
+        return isMatched && currentWithdrawCount > 0 && currentWithdrawCount <= maxWithdrawCount;
     }
 
     @Override

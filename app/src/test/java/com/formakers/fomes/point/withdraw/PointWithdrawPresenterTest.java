@@ -49,7 +49,7 @@ public class PointWithdrawPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        when(mockPointService.getAvailablePoint()).thenReturn(Single.just(3000L));
+        when(mockPointService.getAvailablePoint()).thenReturn(Single.just(5000L));
         when(mockPointService.requestWithdraw(any(FomesPoint.class))).thenReturn(Completable.complete());
 
         subject = new PointWithdrawPresenter(mockView, mockPointService);
@@ -59,13 +59,11 @@ public class PointWithdrawPresenterTest {
     public void bindAvailablePoint_호출시__총_가용_포인트를_가져와서__뷰에_셋팅한다() {
         subject.bindAvailablePoint();
 
-        verify(this.mockView).setAvailablePoint(3000L);
+        verify(this.mockView).setAvailablePoint(5000L);
     }
 
     @Test
     public void bindAvailablePoint_호출시__총_가용_포인트가_5000원이상이면__뷰의_입력컴포넌트를_활성화한다() {
-        when(mockPointService.getAvailablePoint()).thenReturn(Single.just(5000L));
-
         subject.bindAvailablePoint();
 
         verify(this.mockView).setInputComponentsEnabled(true);
@@ -73,6 +71,8 @@ public class PointWithdrawPresenterTest {
 
     @Test
     public void bindAvailablePoint_호출시__총_가용_포인트가_5000원미만이면__뷰의_입력컴포넌트를_비활성화한다() {
+        when(mockPointService.getAvailablePoint()).thenReturn(Single.just(3000L));
+
         subject.bindAvailablePoint();
 
         verify(this.mockView).setInputComponentsEnabled(false);
@@ -116,5 +116,26 @@ public class PointWithdrawPresenterTest {
 
         verify(mockView).showToast(contains("실패"));
         verify(mockView, never()).finish();
+    }
+
+    @Test
+    public void isAvailableToWithdraw_호출시__출금가능여부를_반환한다() {
+        subject.bindAvailablePoint();
+
+        boolean actual = subject.isAvailableToWithdraw(1, "010-111-2222");
+
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    public void isAvailableToWithdraw_호출시__출금가능여부를_반환한다__예외상황() {
+        subject.bindAvailablePoint();
+
+        // currentWithdrawCount <= min
+        assertThat(subject.isAvailableToWithdraw(0, "010-111-2222")).isFalse();
+        // currentWithdrawCount > max
+        assertThat(subject.isAvailableToWithdraw(2, "010-111-2222")).isFalse();
+        // wrong phone number
+        assertThat(subject.isAvailableToWithdraw(1, "99")).isFalse();
     }
 }

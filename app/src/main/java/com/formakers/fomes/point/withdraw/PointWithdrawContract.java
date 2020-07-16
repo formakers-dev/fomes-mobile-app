@@ -6,6 +6,7 @@ public interface PointWithdrawContract {
     interface Presenter {
         void bindAvailablePoint();
         void withdraw(int withdrawCount, String phoneNumber);
+        boolean isAvailableToWithdraw(int currentWithdrawCount, String phoneNumber);
     }
 
     interface View extends BaseView<Presenter> {

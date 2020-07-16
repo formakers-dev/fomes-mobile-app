@@ -1,6 +1,7 @@
 package com.formakers.fomes.point.withdraw;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.util.StringFormatUtil;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.shawnlin.numberpicker.NumberPicker;
 
@@ -18,11 +20,14 @@ import java.text.NumberFormat;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnTextChanged;
 
 public class PointWithdrawActivity extends FomesBaseActivity implements PointWithdrawContract.View {
+    private static final String TAG = "PointWithdrawActivity";
 
     @BindView(R.id.withdraw_count) NumberPicker withdrawCountNumberPicker;
     @BindView(R.id.withdraw_phone_number) EditText phoneNumberEditText;
+    @BindView(R.id.phone_number_format_warning_textview) TextView phoneNumberFormatWarningTextView;
     @BindView(R.id.my_available_point) TextView availablePointTextView;
     @BindView(R.id.withdraw_button) Button withdrawButton;
 
@@ -57,6 +62,17 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
         });
     }
 
+    @OnTextChanged(value = R.id.withdraw_phone_number, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onPhoneNumberTextChanged(CharSequence text, int start, int before, int count) {
+        if (StringFormatUtil.verifyPhoneNumberFormat(String.valueOf(text))) {
+            phoneNumberFormatWarningTextView.setVisibility(View.GONE);
+        } else {
+            phoneNumberFormatWarningTextView.setVisibility(View.VISIBLE);
+        }
+
+        changeWithdrawStatusView();
+    }
+
     @Override
     public void setAvailablePoint(long point) {
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
@@ -73,7 +89,7 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
     public void setInputComponentsEnabled(boolean enabled) {
         withdrawCountNumberPicker.setEnabled(enabled);
         phoneNumberEditText.setEnabled(enabled);
-        withdrawButton.setEnabled(enabled);
+        changeWithdrawStatusView();
     }
 
     @Override
@@ -84,5 +100,9 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
     @Override
     public void setPresenter(PointWithdrawContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    private void changeWithdrawStatusView() {
+        withdrawButton.setEnabled(this.presenter.isAvailableToWithdraw(this.withdrawCountNumberPicker.getValue(), String.valueOf(this.phoneNumberEditText.getText())));
     }
 }
