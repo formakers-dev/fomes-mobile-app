@@ -3,10 +3,17 @@ package com.formakers.fomes.common.model;
 import java.util.Date;
 
 public class FomesPoint {
+
+    public static final int TYPE_SAVE = 1;
+    public static final int TYPE_WITHDRAW = 2;
+
+    public static final int STATUS_COMPLETED = 1;
+    public static final int STATUS_REQUEST = 10;
+
     Date date;
     Long point;
-    String type;
-    String status;
+    Integer type;
+    Integer status;
     String description;
 
     // for withdraw type
@@ -33,20 +40,20 @@ public class FomesPoint {
         return this;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public FomesPoint setType(String type) {
+    public FomesPoint setType(Integer type) {
         this.type = type;
         return this;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public FomesPoint setStatus(String status) {
+    public FomesPoint setStatus(Integer status) {
         this.status = status;
         return this;
     }

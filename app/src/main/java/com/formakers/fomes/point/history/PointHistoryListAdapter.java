@@ -51,9 +51,16 @@ public class PointHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         viewHolder.pointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(item.getPoint())));
 
-        viewHolder.pointTextView.setTextColor("save".equals(item.getType()) ?
+        viewHolder.pointTextView.setTextColor(item.getType() == FomesPoint.TYPE_SAVE ?
                 context.getResources().getColor(R.color.colorPrimary) :
                 context.getResources().getColor(R.color.fomes_white_alpha_87));
+
+        if(item.getStatus() == FomesPoint.STATUS_REQUEST &&
+                item.getType() == FomesPoint.TYPE_WITHDRAW) {
+            viewHolder.pointStatusTextView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.pointStatusTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -107,6 +114,7 @@ public class PointHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView descriptionTextView;
         TextView dateTextView;
         TextView pointTextView;
+        TextView pointStatusTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -114,6 +122,7 @@ public class PointHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
             descriptionTextView = itemView.findViewById(R.id.description);
             dateTextView = itemView.findViewById(R.id.date);
             pointTextView = itemView.findViewById(R.id.point);
+            pointStatusTextView = itemView.findViewById(R.id.point_status);
         }
     }
 }
