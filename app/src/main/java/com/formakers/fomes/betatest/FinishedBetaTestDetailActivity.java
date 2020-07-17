@@ -118,7 +118,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         initViews();
 
         this.presenter.requestEpilogue(betaTestId);
-        this.presenter.requestAwardRecordOfBest(betaTestId);
+        this.presenter.requestAwardRecords(betaTestId, bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS));
         this.presenter.requestRecheckableMissions(betaTestId);
     }
 
@@ -214,13 +214,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
             intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, id);
             startActivity(intent);
         });
-
-        List<BetaTest.Rewards.RewardItem> rewardItems = bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS);
-
-        if(rewardItems != null) {
-            awardPagerAdapter.addAllFromRewardItems(rewardItems);
-            this.awardPagerAdapterView.notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -368,6 +361,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         recheckableButton.setText(R.string.finished_betatest_recheck_my_answer_title);
         recheckableButton.setEnabled(false);
         recheckMyAnswerLayout.addView(recheckableButton);
+    }
+
+    @Override
+    public void refreshAwardPagerView() {
+        this.awardPagerAdapterView.notifyDataSetChanged();
     }
 
     @Override

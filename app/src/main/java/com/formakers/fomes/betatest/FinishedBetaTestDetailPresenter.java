@@ -11,11 +11,11 @@ import com.formakers.fomes.common.helper.AndroidNativeHelper;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
-import com.formakers.fomes.common.network.vo.AwardRecord;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
@@ -68,27 +68,21 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     }
 
     @Override
-    public void requestAwardRecordOfBest(String betaTestId) {
+    public void requestAwardRecords(String betaTestId, List<BetaTest.Rewards.RewardItem> rewardItems) {
         this.betaTestService.getAwardRecords(betaTestId)
-                .toObservable()
-                .concatMap(Observable::from)
-                .reduce(new ArrayList<AwardRecord>(), (topAwardRecords, awardRecord) -> {
-                    if (topAwardRecords.isEmpty() ||
-                            awardRecord.getTypeCode().equals(topAwardRecords.get(topAwardRecords.size() - 1).getTypeCode())) {
-                        topAwardRecords.add(awardRecord);
-                    }
-
-                    return topAwardRecords;
-                })
-                .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(awardRecord -> this.view.bindAwardsView(awardRecord),
-                        e -> {
-                            Log.e(TAG, "requestAwardRecordOfBest) " + e);
-                            if (e instanceof NoSuchElementException) {
-                                this.view.hideAwardsView();
-                            }
-                        });
+                .subscribe(awardRecords -> {
+                    this.finishedBetaTestAwardPagerModel.addAll(awardRecords);
+                    this.view.refreshAwardPagerView();
+                }, e -> {
+                    Log.e(TAG, "requestAwardRecordOfBest) " + e);
+                    if (e instanceof HttpException && ((HttpException)e).code() == 404) {
+                        this.finishedBetaTestAwardPagerModel.addAllFromRewardItems(rewardItems);
+                        this.view.refreshAwardPagerView();
+                    } else if (e instanceof NoSuchElementException) {
+                        this.view.hideAwardsView();
+                    }
+                });
     }
 
     @Override

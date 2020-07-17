@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.annimon.stream.Stream;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 
 import java.util.ArrayList;
@@ -31,14 +33,35 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
     public void setPresenter(FinishedBetaTestDetailContract.Presenter presenter) { this.presenter = presenter; }
 
     @Override
-    public void addAll(List<AwardItem> awardItems) {
-        Collections.sort(awardItems, (item1, item2) -> item2.typeCode - item1.typeCode);
-        this.awardItems = awardItems;
+    public void addAll(List<AwardRecord> awardRecords) {
+        this.awardItems = Stream.of(awardRecords)
+                .sorted((item1, item2) -> item2.getTypeCode() - item1.getTypeCode())
+                .reduce(new ArrayList<>(), (awardItems, awardRecord) -> {
+                    if (awardItems.isEmpty() ||
+                            !awardRecord.getTypeCode().equals(awardItems.get(awardItems.size() - 1).typeCode)) {
+                        List<String> nickNames = new ArrayList();
+                        nickNames.add(awardRecord.getNickName());
+
+                        awardItems.add(new AwardItem(awardRecord.getTypeCode(),
+                                null,
+                                awardRecord.getReward().getDescription(),
+                                1,
+                                nickNames));
+                    } else {
+                        AwardItem awardItem = awardItems.get(awardItems.size() - 1);
+                        awardItem.count += 1;
+                        awardItem.nickNames.add(awardRecord.getNickName());
+                    }
+
+                    return awardItems;
+                });
     }
 
     @Override
     public void addAllFromRewardItems(List<BetaTest.Rewards.RewardItem> rewardItems) {
         List<AwardItem> awardItems = new ArrayList<>();
+
+        Collections.sort(rewardItems, (item1, item2) -> item2.getTypeCode() - item1.getTypeCode());
 
         for (BetaTest.Rewards.RewardItem rewardItem : rewardItems) {
             awardItems.add(new AwardItem(rewardItem.getTypeCode(),
@@ -48,7 +71,7 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
                     null));
         }
 
-        addAll(awardItems);
+        this.awardItems = awardItems;
     }
 
     @Override
@@ -65,11 +88,29 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.item_finish_betatest_awards, container, false);
 
-            ((TextView)view.findViewById(R.id.betatest_title_awards_best)).setText(awardItem.title);
-            ((TextView)view.findViewById(R.id.betatest_awards_price)).setText(awardItem.description);
+            ((TextView)view.findViewById(R.id.betatest_title_awards_best)).setText(awardItem.getTitle());
 
+            TextView awardsPriceTextView = view.findViewById(R.id.betatest_awards_price);
             TextView awardsNickNameTextView = view.findViewById(R.id.betatest_awards_nickname);
+            TextView awardsNickNameEndTextView = view.findViewById(R.id.betatest_awards_nickname_end);
             awardsNickNameTextView.setSelected(true);
+
+            if(!awardItem.hasNoNickNames()) {
+                int nickNamesSize = awardItem.nickNames.size();
+                awardsNickNameTextView.setText(awardItem.nickNames.get(0));
+
+                if(nickNamesSize > 1) {
+                    awardsNickNameEndTextView.setText(context.getString(R.string.finished_betatest_detail_awards_nickname_sir_and_count, nickNamesSize - 1));
+                }
+
+                awardsNickNameEndTextView.setVisibility(View.VISIBLE);
+
+                awardsPriceTextView.setText(awardItem.description);
+            } else {
+                String rewardCountText = (awardItem.count == null || awardItem.count == 0)? "참여자 전원" : awardItem.count + "명 선정";
+                awardsPriceTextView.setText(awardItem.description + " (" + rewardCountText + ")");
+            }
+
         }
 
         container.addView(view);
@@ -105,6 +146,29 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
             this.description = description;
             this.count = count;
             this.nickNames = nickNames;
+        }
+
+        public boolean hasNoNickNames() {
+            return nickNames == null || nickNames.isEmpty();
+        }
+
+        public String getTitle() {
+            if(title == null) {
+                switch(typeCode) {
+                    case 9000:
+                        return "테스트 수석";
+                    case 7000:
+                        return "테스트 차석";
+                    case 5000:
+                        return "성실상";
+                    case 3000:
+                        return "참가상";
+                    default :
+                        return "기타";
+                }
+            } else {
+                return title;
+            }
         }
     }
 }

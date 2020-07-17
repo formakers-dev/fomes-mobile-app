@@ -19,7 +19,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface FinishedBetaTestDetailContract {
     interface Presenter {
-        void requestAwardRecordOfBest(String betaTestId);
+        void requestAwardRecords(String betaTestId, List<BetaTest.Rewards.RewardItem> rewardItems);
         void requestEpilogue(String betaTestId);
         void requestRecheckableMissions(String betaTestId);
 
@@ -44,6 +44,7 @@ public interface FinishedBetaTestDetailContract {
         void disableEpilogueView();
         void disableMyAnswersView();
 
+        void refreshAwardPagerView();
         void showLoadingView();
         void hideLoadingView();
         void hideAwardsView();

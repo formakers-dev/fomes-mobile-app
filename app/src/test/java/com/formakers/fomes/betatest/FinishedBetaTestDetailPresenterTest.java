@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
@@ -47,6 +48,7 @@ public class FinishedBetaTestDetailPresenterTest {
     @Mock BetaTestService mockBetaTestService;
     @Mock FomesUrlHelper mockFomesUrlHelper;
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
+    @Mock FinishedBetaTestAwardPagerAdapterContract.Model mockFinishedBetaTestAwardPagerModel;
 
     FinishedBetaTestDetailPresenter subject;
 
@@ -70,14 +72,22 @@ public class FinishedBetaTestDetailPresenterTest {
         BetaTest.Epilogue epilogue = new BetaTest.Epilogue().setCompanyName("게임사이름")
                 .setCompanySays("게임사소감").setCompanyImageUrl("게임사이미지링크").setDeeplink("에필로그링크");
         when(mockBetaTestService.getEpilogue("betaTestId")).thenReturn(Single.just(epilogue));
-        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.just(Lists.newArrayList(new AwardRecord().setNickName("닉네임").setTypeCode(9000).setRewards(new AwardRecord.Reward().setDescription("description")))));
         when(mockBetaTestService.getCompletedMissions("betaTestId"))
                 .thenReturn(Single.just(
                         Lists.newArrayList(
                                 new Mission().setTitle("미션1").setRecheckable(true).setCompleted(true),
                                 new Mission().setTitle("미션2").setRecheckable(false).setCompleted(true))));
 
+        List<AwardRecord> awardRecords = Lists.newArrayList(
+                new AwardRecord().setNickName("닉네임1").setTypeCode(9000).setRewards(new AwardRecord.Reward().setDescription("문화상품권 30000원")),
+                new AwardRecord().setNickName("닉네임2").setTypeCode(7000).setRewards(new AwardRecord.Reward().setDescription("문화상품권 5000원")),
+                new AwardRecord().setNickName("닉네임3").setTypeCode(5000).setRewards(new AwardRecord.Reward().setDescription("문화상품권 1000원")),
+                new AwardRecord().setNickName("닉네임4").setTypeCode(5000).setRewards(new AwardRecord.Reward().setDescription("문화상품권 1000원"))
+        );
+        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.just(awardRecords));
+
         subject = new FinishedBetaTestDetailPresenter(mockView, mockAnalytics, mockImageLoader, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper);
+        subject.setFinishedBetaTestAwardPagerAdapterModel(mockFinishedBetaTestAwardPagerModel);
     }
 
     @Test
@@ -108,45 +118,50 @@ public class FinishedBetaTestDetailPresenterTest {
     }
 
     @Test
-    public void requestAwardRecordOfBest_호출시__해당_베타테스트의_최고수상자_정보를_요청하고__뷰에_바인딩한다() {
-        subject.requestAwardRecordOfBest("betaTestId");
+    public void requestAwardRecords_호출시__해당_베타테스트의_수상_정보를_요청하고__뷰에_바인딩한다() {
+        subject.requestAwardRecords("betaTestId", null);
 
         verify(mockBetaTestService).getAwardRecords("betaTestId");
 
         ArgumentCaptor<List<AwardRecord>> argumentCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindAwardsView(argumentCaptor.capture());
-        List<AwardRecord> actual = argumentCaptor.getValue();
+        verify(mockFinishedBetaTestAwardPagerModel).addAll(argumentCaptor.capture());
+        verify(mockView).refreshAwardPagerView();
 
-        assertThat(actual.get(0).getNickName()).isEqualTo("닉네임");
+        List<AwardRecord> actual = argumentCaptor.getValue();
+        assertThat(actual.size()).isEqualTo(4);
+
+        assertThat(actual.get(0).getNickName()).isEqualTo("닉네임1");
         assertThat(actual.get(0).getTypeCode()).isEqualTo(9000);
-        assertThat(actual.get(0).getReward().getDescription()).isEqualTo("description");
+        assertThat(actual.get(0).getReward().getDescription()).isEqualTo("문화상품권 30000원");
+
+        assertThat(actual.get(1).getNickName()).isEqualTo("닉네임2");
+        assertThat(actual.get(1).getTypeCode()).isEqualTo(7000);
+        assertThat(actual.get(1).getReward().getDescription()).isEqualTo("문화상품권 5000원");
+
+        assertThat(actual.get(2).getNickName()).isEqualTo("닉네임3");
+        assertThat(actual.get(2).getTypeCode()).isEqualTo(5000);
+        assertThat(actual.get(2).getReward().getDescription()).isEqualTo("문화상품권 1000원");
+
+        assertThat(actual.get(3).getNickName()).isEqualTo("닉네임4");
+        assertThat(actual.get(3).getTypeCode()).isEqualTo(5000);
+        assertThat(actual.get(3).getReward().getDescription()).isEqualTo("문화상품권 1000원");
     }
 
     @Test
-    public void requestAwardRecordOfBest_호출시__여러_수상정보가_존재하는_경우_차상위_수상목록만_뷰에_바인딩한다() {
-        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(
-                Single.just(Lists.newArrayList(
-                        new AwardRecord().setNickName("성실유저1").setTypeCode(3000).setRewards(new AwardRecord.Reward().setDescription("문상1000원")),
-                        new AwardRecord().setNickName("성실유저2").setTypeCode(3000).setRewards(new AwardRecord.Reward().setDescription("문상1000원")),
-                        new AwardRecord().setNickName("참여유저1").setTypeCode(1000).setRewards(new AwardRecord.Reward().setDescription("아이템")),
-                        new AwardRecord().setNickName("참여유저2").setTypeCode(1000).setRewards(new AwardRecord.Reward().setDescription("아이템"))
-                )));
+    public void requestAwardRecord_호출시__수상정보가_없는_경우__기본_보상정보를_뷰에_바인딩한다() {
+        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.error(new HttpException(Response.error(404, ResponseBody.create(null, "")))));
+        List<BetaTest.Rewards.RewardItem> mockRewardItems = Mockito.mock(List.class);
 
-        subject.requestAwardRecordOfBest("betaTestId");
+        subject.requestAwardRecords("betaTestId", mockRewardItems);
 
         verify(mockBetaTestService).getAwardRecords("betaTestId");
 
-        ArgumentCaptor<List<AwardRecord>> argumentCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockView).bindAwardsView(argumentCaptor.capture());
-        List<AwardRecord> actual = argumentCaptor.getValue();
+        ArgumentCaptor<List<BetaTest.Rewards.RewardItem>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockFinishedBetaTestAwardPagerModel).addAllFromRewardItems(argumentCaptor.capture());
+        verify(mockView).refreshAwardPagerView();
 
-        assertThat(actual.size()).isEqualTo(2);
-        assertThat(actual.get(0).getNickName()).isEqualTo("성실유저1");
-        assertThat(actual.get(0).getTypeCode()).isEqualTo(3000);
-        assertThat(actual.get(0).getReward().getDescription()).isEqualTo("문상1000원");
-        assertThat(actual.get(1).getNickName()).isEqualTo("성실유저2");
-        assertThat(actual.get(1).getTypeCode()).isEqualTo(3000);
-        assertThat(actual.get(1).getReward().getDescription()).isEqualTo("문상1000원");
+        List<BetaTest.Rewards.RewardItem> actual = argumentCaptor.getValue();
+        assertThat(actual).isEqualTo(mockRewardItems);
     }
 
     @Test
