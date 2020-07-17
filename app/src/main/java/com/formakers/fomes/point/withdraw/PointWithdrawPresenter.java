@@ -55,7 +55,7 @@ public class PointWithdrawPresenter implements PointWithdrawContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     this.view.showToast("교환 신청이 완료되었습니다!");
-                    this.view.finish();
+                    this.view.successfullyFinish();
                 }, e -> {
                     Log.e(TAG, String.valueOf(e));
                     this.view.showToast("교환 신청이 실패하였습니다. 다시 시도해주세요 🙏");

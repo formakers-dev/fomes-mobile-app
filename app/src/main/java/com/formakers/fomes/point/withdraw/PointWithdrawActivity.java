@@ -1,5 +1,6 @@
 package com.formakers.fomes.point.withdraw;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -100,6 +101,12 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
     @Override
     public void setPresenter(PointWithdrawContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void successfullyFinish() {
+        this.setResult(Activity.RESULT_OK);
+        this.finish();
     }
 
     private void changeWithdrawStatusView() {

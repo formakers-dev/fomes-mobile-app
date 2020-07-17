@@ -105,7 +105,7 @@ public class PointWithdrawPresenterTest {
         assertThat(actualPoint.getPhoneNumber()).isEqualTo("010-1111-2222");
 
         verify(mockView).showToast(contains("완료"));
-        verify(mockView).finish();
+        verify(mockView).successfullyFinish();
     }
 
     @Test
@@ -115,7 +115,7 @@ public class PointWithdrawPresenterTest {
         subject.withdraw(2, "010-1111-2222");
 
         verify(mockView).showToast(contains("실패"));
-        verify(mockView, never()).finish();
+        verify(mockView, never()).successfullyFinish();
     }
 
     @Test

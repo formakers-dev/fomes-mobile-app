@@ -1,5 +1,6 @@
 package com.formakers.fomes.more;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants.More;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
@@ -39,6 +41,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class MenuListFragment extends BaseFragment implements MenuListContract.View, MenuListAdapter.OnItemClickListener {
+
+    private static final String TAG = "MenuListFragment";
+
+    private static final int REQUEST_CODE_WITHDRAW = 1001;
 
     @BindView(R.id.more_email)
     TextView emailTextView;
@@ -87,7 +93,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
         withdrawPointButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, PointWithdrawActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE_WITHDRAW);
         });
     }
 
@@ -95,6 +101,18 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+
+        if (requestCode == REQUEST_CODE_WITHDRAW
+                && resultCode == Activity.RESULT_OK) {
+            this.presenter.bindAvailablePoint();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

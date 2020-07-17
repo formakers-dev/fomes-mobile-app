@@ -15,6 +15,6 @@ public interface PointWithdrawContract {
         void setInputComponentsEnabled(boolean enabled);
 
         void showToast(String message);
-        void finish();
+        void successfullyFinish();
     }
 }
