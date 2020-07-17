@@ -48,7 +48,7 @@ public class PointWithdrawPresenter implements PointWithdrawContract.Presenter {
     @Override
     public void withdraw(int withdrawCount, String phoneNumber) {
         FomesPoint fomesPoint = new FomesPoint().setPoint(BASE_WITHDRAW_POINT * withdrawCount)
-                .setDescription(BASE_WITHDRAW_POINT + "원권 " + withdrawCount + "장 교환")
+                .setDescription("문화상품권 " + BASE_WITHDRAW_POINT + "원권 " + withdrawCount + "장 교환")
                 .setPhoneNumber(phoneNumber);
 
         this.pointService.requestWithdraw(fomesPoint)

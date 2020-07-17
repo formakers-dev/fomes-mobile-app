@@ -101,7 +101,7 @@ public class PointWithdrawPresenterTest {
 
         FomesPoint actualPoint = captor.getValue();
         assertThat(actualPoint.getPoint()).isEqualTo(10000);
-        assertThat(actualPoint.getDescription()).isEqualTo("5000원권 2장 교환");
+        assertThat(actualPoint.getDescription()).isEqualTo("문화상품권 5000원권 2장 교환");
         assertThat(actualPoint.getPhoneNumber()).isEqualTo("010-1111-2222");
 
         verify(mockView).showToast(contains("완료"));

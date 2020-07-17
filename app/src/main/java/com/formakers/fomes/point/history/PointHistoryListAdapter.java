@@ -50,6 +50,10 @@ public class PointHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
         viewHolder.dateTextView.setText(dateFormat.format(item.getDate()));
 
         viewHolder.pointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(item.getPoint())));
+
+        viewHolder.pointTextView.setTextColor("save".equals(item.getType()) ?
+                context.getResources().getColor(R.color.colorPrimary) :
+                context.getResources().getColor(R.color.fomes_white_alpha_87));
     }
 
     @Override
