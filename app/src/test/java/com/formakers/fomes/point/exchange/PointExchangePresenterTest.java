@@ -1,4 +1,4 @@
-package com.formakers.fomes.point.withdraw;
+package com.formakers.fomes.point.exchange;
 
 import com.formakers.fomes.common.model.FomesPoint;
 import com.formakers.fomes.common.network.PointService;
@@ -25,12 +25,12 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class PointWithdrawPresenterTest {
+public class PointExchangePresenterTest {
 
-    @Mock PointWithdrawContract.View mockView;
+    @Mock PointExchangeContract.View mockView;
     @Mock PointService mockPointService;
 
-    PointWithdrawPresenter subject;
+    PointExchangePresenter subject;
 
     @Before
     public void setUp() throws Exception {
@@ -50,9 +50,9 @@ public class PointWithdrawPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         when(mockPointService.getAvailablePoint()).thenReturn(Single.just(5000L));
-        when(mockPointService.requestWithdraw(any(FomesPoint.class))).thenReturn(Completable.complete());
+        when(mockPointService.requestExchange(any(FomesPoint.class))).thenReturn(Completable.complete());
 
-        subject = new PointWithdrawPresenter(mockView, mockPointService);
+        subject = new PointExchangePresenter(mockView, mockPointService);
     }
 
     @Test
@@ -88,16 +88,16 @@ public class PointWithdrawPresenterTest {
             subject.bindAvailablePoint();
 
             int expectedMaxCount = (int)(availablePoint / 5000);
-            verify(this.mockView).setMaxWithdrawCount(expectedMaxCount);
+            verify(this.mockView).setMaxExchangeCount(expectedMaxCount);
         }
     }
 
     @Test
-    public void withdraw_호출시__입력된_수만큼의_문상_교환을_신청하는_API를_호출한다() {
-        subject.withdraw(2, "010-1111-2222");
+    public void exchange_호출시__입력된_수만큼의_문상_교환을_신청하는_API를_호출한다() {
+        subject.exchange(2, "010-1111-2222");
 
         ArgumentCaptor<FomesPoint> captor = ArgumentCaptor.forClass(FomesPoint.class);
-        verify(mockPointService).requestWithdraw(captor.capture());
+        verify(mockPointService).requestExchange(captor.capture());
 
         FomesPoint actualPoint = captor.getValue();
         assertThat(actualPoint.getPoint()).isEqualTo(10000);
@@ -109,33 +109,33 @@ public class PointWithdrawPresenterTest {
     }
 
     @Test
-    public void withdraw_호출시__API요청에_실패하면__에러메시지를_view에_띄운다() {
-        when(mockPointService.requestWithdraw(any(FomesPoint.class))).thenReturn(Completable.error(new IllegalArgumentException()));
+    public void exchange_호출시__API요청에_실패하면__에러메시지를_view에_띄운다() {
+        when(mockPointService.requestExchange(any(FomesPoint.class))).thenReturn(Completable.error(new IllegalArgumentException()));
 
-        subject.withdraw(2, "010-1111-2222");
+        subject.exchange(2, "010-1111-2222");
 
         verify(mockView).showToast(contains("실패"));
         verify(mockView, never()).successfullyFinish();
     }
 
     @Test
-    public void isAvailableToWithdraw_호출시__출금가능여부를_반환한다() {
+    public void isAvailableToExchange_호출시__출금가능여부를_반환한다() {
         subject.bindAvailablePoint();
 
-        boolean actual = subject.isAvailableToWithdraw(1, "010-111-2222");
+        boolean actual = subject.isAvailableToExchange(1, "010-111-2222");
 
         assertThat(actual).isTrue();
     }
 
     @Test
-    public void isAvailableToWithdraw_호출시__출금가능여부를_반환한다__예외상황() {
+    public void isAvailableToExchange_호출시__출금가능여부를_반환한다__예외상황() {
         subject.bindAvailablePoint();
 
-        // currentWithdrawCount <= min
-        assertThat(subject.isAvailableToWithdraw(0, "010-111-2222")).isFalse();
-        // currentWithdrawCount > max
-        assertThat(subject.isAvailableToWithdraw(2, "010-111-2222")).isFalse();
+        // currentExchangeCount <= min
+        assertThat(subject.isAvailableToExchange(0, "010-111-2222")).isFalse();
+        // currentExchangeCount > max
+        assertThat(subject.isAvailableToExchange(2, "010-111-2222")).isFalse();
         // wrong phone number
-        assertThat(subject.isAvailableToWithdraw(1, "99")).isFalse();
+        assertThat(subject.isAvailableToExchange(1, "99")).isFalse();
     }
 }

@@ -25,6 +25,6 @@ public interface PointAPI {
     @GET("/points/available")
     Observable<PointResponseVO> getAvailablePoint(@Header("x-access-token") String accessToken);
 
-    @PUT("/points/withdraw")
-    Observable<Void> putPointWithdraw(@Header("x-access-token") String accessToken, @Body FomesPoint point);
+    @PUT("/points/exchange")
+    Observable<Void> putPointExchange(@Header("x-access-token") String accessToken, @Body FomesPoint point);
 }

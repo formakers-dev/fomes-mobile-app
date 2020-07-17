@@ -49,8 +49,8 @@ public class PointService extends AbstractService {
                 .flatMap(Observable::from);
     }
 
-    public Completable requestWithdraw(FomesPoint point) {
-        return Observable.defer(() -> pointAPI.putPointWithdraw(sharedPreferencesHelper.getAccessToken(), point))
+    public Completable requestExchange(FomesPoint point) {
+        return Observable.defer(() -> pointAPI.putPointExchange(sharedPreferencesHelper.getAccessToken(), point))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();

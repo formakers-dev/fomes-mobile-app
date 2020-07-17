@@ -1,28 +1,28 @@
-package com.formakers.fomes.point.withdraw;
+package com.formakers.fomes.point.exchange;
 
 import com.formakers.fomes.common.dagger.ApplicationComponent;
 
-public class PointWithdrawDagger {
+public class PointExchangeDagger {
 
     @javax.inject.Scope public @interface Scope { }
 
     @dagger.Module
     public static class Module {
-        private PointWithdrawContract.View view;
+        private PointExchangeContract.View view;
 
-        public Module(PointWithdrawContract.View view) {
+        public Module(PointExchangeContract.View view) {
             this.view = view;
         }
 
         @Scope
         @dagger.Provides
-        PointWithdrawContract.Presenter presenter(PointWithdrawPresenter presenter) {
+        PointExchangeContract.Presenter presenter(PointExchangePresenter presenter) {
             return presenter;
         }
 
         @Scope
         @dagger.Provides
-        PointWithdrawContract.View view() {
+        PointExchangeContract.View view() {
             return this.view;
         }
     }
@@ -30,6 +30,6 @@ public class PointWithdrawDagger {
     @Scope
     @dagger.Component(modules = Module.class, dependencies = ApplicationComponent.class)
     public interface Component {
-        void inject(PointWithdrawActivity activity);
+        void inject(PointExchangeActivity activity);
     }
 }

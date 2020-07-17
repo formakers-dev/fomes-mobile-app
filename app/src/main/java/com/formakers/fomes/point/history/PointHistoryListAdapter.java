@@ -56,7 +56,7 @@ public class PointHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 context.getResources().getColor(R.color.fomes_white_alpha_87));
 
         if(item.getStatus() == FomesPoint.STATUS_REQUEST &&
-                item.getType() == FomesPoint.TYPE_WITHDRAW) {
+                item.getType() == FomesPoint.TYPE_EXCHANGE) {
             viewHolder.pointStatusTextView.setVisibility(View.VISIBLE);
         } else {
             viewHolder.pointStatusTextView.setVisibility(View.GONE);

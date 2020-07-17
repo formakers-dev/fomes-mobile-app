@@ -126,7 +126,7 @@
                 tools:text="30,000 P"/>
 
             <Button
-                android:id="@+id/withdraw_point_button"
+                android:id="@+id/exchange_point_button"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -151,7 +151,7 @@
                 android:textColor="@color/colorPrimary"
                 android:text="※ 가용포인트 5,000P 부터 문화상품권으로 교환할 수 있습니다."
                 app:layout_constraintVertical_bias="1.0"
-                app:layout_constraintTop_toBottomOf="@+id/withdraw_point_button"
+                app:layout_constraintTop_toBottomOf="@+id/exchange_point_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

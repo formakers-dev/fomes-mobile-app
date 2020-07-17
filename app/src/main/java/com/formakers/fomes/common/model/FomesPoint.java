@@ -5,7 +5,7 @@ import java.util.Date;
 public class FomesPoint {
 
     public static final int TYPE_SAVE = 1;
-    public static final int TYPE_WITHDRAW = 2;
+    public static final int TYPE_EXCHANGE = 2;
 
     public static final int STATUS_COMPLETED = 1;
     public static final int STATUS_REQUEST = 10;
@@ -16,7 +16,7 @@ public class FomesPoint {
     Integer status;
     String description;
 
-    // for withdraw type
+    // for exchange type
     String phoneNumber;
 
     public FomesPoint() {

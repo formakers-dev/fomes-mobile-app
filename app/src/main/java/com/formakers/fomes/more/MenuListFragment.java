@@ -27,7 +27,7 @@ import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
 import com.formakers.fomes.main.MainActivity;
 import com.formakers.fomes.point.history.PointHistoryActivity;
-import com.formakers.fomes.point.withdraw.PointWithdrawActivity;
+import com.formakers.fomes.point.exchange.PointExchangeActivity;
 import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
@@ -44,7 +44,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
     private static final String TAG = "MenuListFragment";
 
-    private static final int REQUEST_CODE_WITHDRAW = 1001;
+    private static final int REQUEST_CODE_EXCHANGE = 1001;
 
     @BindView(R.id.more_email)
     TextView emailTextView;
@@ -56,8 +56,8 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     TextView availablePointTextView;
     @BindView(R.id.more_menu_list)
     RecyclerView menuListView;
-    @BindView(R.id.withdraw_point_button)
-    Button withdrawPointButton;
+    @BindView(R.id.exchange_point_button)
+    Button exchangePointButton;
 
     @Inject
     MenuListContract.Presenter presenter;
@@ -91,9 +91,9 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
             context.startActivity(intent);
         });
 
-        withdrawPointButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PointWithdrawActivity.class);
-            startActivityForResult(intent, REQUEST_CODE_WITHDRAW);
+        exchangePointButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PointExchangeActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_EXCHANGE);
         });
     }
 
@@ -107,7 +107,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 
-        if (requestCode == REQUEST_CODE_WITHDRAW
+        if (requestCode == REQUEST_CODE_EXCHANGE
                 && resultCode == Activity.RESULT_OK) {
             this.presenter.bindAvailablePoint();
         } else {
@@ -166,7 +166,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
         availablePointTextView.startAnimation(getFadeInAnimation(300));
 
-        withdrawPointButton.setEnabled(point >= 5000L);
+        exchangePointButton.setEnabled(point >= 5000L);
     }
 
     @Override

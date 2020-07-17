@@ -1,4 +1,4 @@
-package com.formakers.fomes.point.withdraw;
+package com.formakers.fomes.point.exchange;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -23,29 +23,29 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnTextChanged;
 
-public class PointWithdrawActivity extends FomesBaseActivity implements PointWithdrawContract.View {
-    private static final String TAG = "PointWithdrawActivity";
+public class PointExchangeActivity extends FomesBaseActivity implements PointExchangeContract.View {
+    private static final String TAG = "PointExchangeActivity";
 
-    @BindView(R.id.withdraw_count) NumberPicker withdrawCountNumberPicker;
-    @BindView(R.id.withdraw_phone_number) EditText phoneNumberEditText;
+    @BindView(R.id.exchange_count) NumberPicker exchangeCountNumberPicker;
+    @BindView(R.id.exchange_phone_number) EditText phoneNumberEditText;
     @BindView(R.id.phone_number_format_warning_textview) TextView phoneNumberFormatWarningTextView;
     @BindView(R.id.my_available_point) TextView availablePointTextView;
-    @BindView(R.id.withdraw_button) Button withdrawButton;
+    @BindView(R.id.exchange_button) Button exchangeButton;
 
-    @Inject PointWithdrawContract.Presenter presenter;
+    @Inject PointExchangeContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_point_withdraw);
+        setContentView(R.layout.activity_point_exchange);
 
         getSupportActionBar().setTitle("문화상품권 교환 신청");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        DaggerPointWithdrawDagger_Component.builder()
+        DaggerPointExchangeDagger_Component.builder()
                 .applicationComponent(FomesApplication.get(this).getComponent())
-                .module(new PointWithdrawDagger.Module(this))
+                .module(new PointExchangeDagger.Module(this))
                 .build()
                 .inject(this);
     }
@@ -57,13 +57,13 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
         // bind View
         this.presenter.bindAvailablePoint();
 
-        this.withdrawButton.setOnClickListener(v -> {
-            this.presenter.withdraw(this.withdrawCountNumberPicker.getValue(),
+        this.exchangeButton.setOnClickListener(v -> {
+            this.presenter.exchange(this.exchangeCountNumberPicker.getValue(),
                     String.valueOf(this.phoneNumberEditText.getText()));
         });
     }
 
-    @OnTextChanged(value = R.id.withdraw_phone_number, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    @OnTextChanged(value = R.id.exchange_phone_number, callback = OnTextChanged.Callback.TEXT_CHANGED)
     public void onPhoneNumberTextChanged(CharSequence text, int start, int before, int count) {
         if (StringFormatUtil.verifyPhoneNumberFormat(String.valueOf(text))) {
             phoneNumberFormatWarningTextView.setVisibility(View.GONE);
@@ -71,7 +71,7 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
             phoneNumberFormatWarningTextView.setVisibility(View.VISIBLE);
         }
 
-        changeWithdrawStatusView();
+        changeExchangeStatusView();
     }
 
     @Override
@@ -82,15 +82,15 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
     }
 
     @Override
-    public void setMaxWithdrawCount(int maxWithdrawCount) {
-        withdrawCountNumberPicker.setMaxValue(Math.max(1, maxWithdrawCount));
+    public void setMaxExchangeCount(int maxExchangeCount) {
+        exchangeCountNumberPicker.setMaxValue(Math.max(1, maxExchangeCount));
     }
 
     @Override
     public void setInputComponentsEnabled(boolean enabled) {
-        withdrawCountNumberPicker.setEnabled(enabled);
+        exchangeCountNumberPicker.setEnabled(enabled);
         phoneNumberEditText.setEnabled(enabled);
-        changeWithdrawStatusView();
+        changeExchangeStatusView();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
     }
 
     @Override
-    public void setPresenter(PointWithdrawContract.Presenter presenter) {
+    public void setPresenter(PointExchangeContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -109,7 +109,7 @@ public class PointWithdrawActivity extends FomesBaseActivity implements PointWit
         this.finish();
     }
 
-    private void changeWithdrawStatusView() {
-        withdrawButton.setEnabled(this.presenter.isAvailableToWithdraw(this.withdrawCountNumberPicker.getValue(), String.valueOf(this.phoneNumberEditText.getText())));
+    private void changeExchangeStatusView() {
+        exchangeButton.setEnabled(this.presenter.isAvailableToExchange(this.exchangeCountNumberPicker.getValue(), String.valueOf(this.phoneNumberEditText.getText())));
     }
 }

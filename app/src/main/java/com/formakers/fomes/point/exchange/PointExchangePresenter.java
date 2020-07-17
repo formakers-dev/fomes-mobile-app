@@ -1,4 +1,4 @@
-package com.formakers.fomes.point.withdraw;
+package com.formakers.fomes.point.exchange;
 
 import com.formakers.fomes.common.model.FomesPoint;
 import com.formakers.fomes.common.network.PointService;
@@ -9,18 +9,18 @@ import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 
-@PointWithdrawDagger.Scope
-public class PointWithdrawPresenter implements PointWithdrawContract.Presenter {
-    public static final String TAG = "PointWithdrawPresenter";
+@PointExchangeDagger.Scope
+public class PointExchangePresenter implements PointExchangeContract.Presenter {
+    public static final String TAG = "PointExchangePresenter";
 
-    private static final long BASE_WITHDRAW_POINT = 5000L;
+    private static final long BASE_EXCHANGE_POINT = 5000L;
 
-    private PointWithdrawContract.View view;
+    private PointExchangeContract.View view;
     private PointService pointService;
-    private int maxWithdrawCount = 0;
+    private int maxExchangeCount = 0;
 
     @Inject
-    public PointWithdrawPresenter(PointWithdrawContract.View view, PointService pointService) {
+    public PointExchangePresenter(PointExchangeContract.View view, PointService pointService) {
         this.view = view;
         this.pointService = pointService;
     }
@@ -32,26 +32,26 @@ public class PointWithdrawPresenter implements PointWithdrawContract.Presenter {
                 .subscribe(point -> {
                     view.setAvailablePoint(point);
 
-                    maxWithdrawCount = (int)(point / BASE_WITHDRAW_POINT);
-                    view.setMaxWithdrawCount(maxWithdrawCount);
-                    view.setInputComponentsEnabled(maxWithdrawCount > 0);
+                    maxExchangeCount = (int)(point / BASE_EXCHANGE_POINT);
+                    view.setMaxExchangeCount(maxExchangeCount);
+                    view.setInputComponentsEnabled(maxExchangeCount > 0);
                 }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
     @Override
-    public boolean isAvailableToWithdraw(int currentWithdrawCount, String phoneNumber) {
+    public boolean isAvailableToExchange(int currentExchangeCount, String phoneNumber) {
         boolean isMatched = StringFormatUtil.verifyPhoneNumberFormat(phoneNumber);
 
-        return isMatched && currentWithdrawCount > 0 && currentWithdrawCount <= maxWithdrawCount;
+        return isMatched && currentExchangeCount > 0 && currentExchangeCount <= maxExchangeCount;
     }
 
     @Override
-    public void withdraw(int withdrawCount, String phoneNumber) {
-        FomesPoint fomesPoint = new FomesPoint().setPoint(BASE_WITHDRAW_POINT * withdrawCount)
-                .setDescription("문화상품권 " + BASE_WITHDRAW_POINT + "원권 " + withdrawCount + "장 교환")
+    public void exchange(int exchangeCount, String phoneNumber) {
+        FomesPoint fomesPoint = new FomesPoint().setPoint(BASE_EXCHANGE_POINT * exchangeCount)
+                .setDescription("문화상품권 " + BASE_EXCHANGE_POINT + "원권 " + exchangeCount + "장 교환")
                 .setPhoneNumber(phoneNumber);
 
-        this.pointService.requestWithdraw(fomesPoint)
+        this.pointService.requestExchange(fomesPoint)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     this.view.showToast("교환 신청이 완료되었습니다!");
