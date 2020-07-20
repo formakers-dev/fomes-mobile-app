@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/betatest_title_awards_best"
         android:layout_width="@dimen/match_constraint"
@@ -95,4 +94,39 @@
             android:text="@string/finished_betatest_detail_awards_nickname_sir"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/betatest_awards_none_medal_contents_layout"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="@dimen/match_constraint"
+        android:background="@drawable/item_rect_rounded_corner_background"
+        android:theme="@style/BetaTestDetailTheme.MissionItem"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/betatest_awards_price"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="14dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/betatest_awards_nicknames"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/fomes_white_alpha_60"
+                android:textSize="14dp"
+                />
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

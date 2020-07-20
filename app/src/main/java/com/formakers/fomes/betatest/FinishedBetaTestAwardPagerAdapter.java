@@ -4,10 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.network.vo.AwardRecord;
@@ -90,27 +92,35 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
 
             ((TextView)view.findViewById(R.id.betatest_title_awards_best)).setText(awardItem.getTitle());
 
+            ImageView crowdedPeopleImageView = view.findViewById(R.id.betatest_awards_crowded_people);
+            ImageView awardsMedalImageView = view.findViewById(R.id.betatest_awards_medal);
+            ViewGroup awardsMedalContentsLayout = view.findViewById(R.id.betatest_awards_medal_contents_layout);
             TextView awardsPriceTextView = view.findViewById(R.id.betatest_awards_price);
             TextView awardsNickNameTextView = view.findViewById(R.id.betatest_awards_nickname);
             TextView awardsNickNameEndTextView = view.findViewById(R.id.betatest_awards_nickname_end);
+            TextView awardsNickNamesTextView = view.findViewById(R.id.betatest_awards_nicknames);
+            ViewGroup awardsNoneMedalContentsLayout = view.findViewById(R.id.betatest_awards_none_medal_contents_layout);
             awardsNickNameTextView.setSelected(true);
 
             if(position > 0) {
-                view.findViewById(R.id.betatest_awards_crowded_people).setVisibility(View.GONE);
+                crowdedPeopleImageView.setVisibility(View.GONE);
             }
 
             if(awardItem.hasNickNames()) {
-                int nickNamesSize = awardItem.nickNames.size();
+                if(awardItem.nickNames.size() == 1) {
+                    awardsNickNameTextView.setText(awardItem.nickNames.get(0));
+                    awardsNickNameEndTextView.setVisibility(View.VISIBLE);
+                } else {
+                    awardsMedalImageView.setVisibility(View.GONE);
+                    crowdedPeopleImageView.setVisibility(View.GONE);
+                    awardsMedalContentsLayout.setVisibility(View.GONE);
 
-                awardsNickNameTextView.setText(awardItem.nickNames.get(0));
-
-                if(nickNamesSize > 1) {
-                    awardsNickNameEndTextView.setText(context.getString(R.string.finished_betatest_detail_awards_nickname_sir_and_count, nickNamesSize - 1));
+                    awardsNickNamesTextView.setText(Stream.of(awardItem.nickNames).collect(Collectors.joining(", ")));
+                    awardsNoneMedalContentsLayout.setVisibility(View.VISIBLE);
                 }
 
-                awardsNickNameEndTextView.setVisibility(View.VISIBLE);
-
                 awardsPriceTextView.setText(awardItem.description);
+
             } else {
                 String rewardCountText = (awardItem.count == null || awardItem.count == 0)? "참여자 전원" : awardItem.count + "명 선정";
                 awardsPriceTextView.setText(awardItem.description + " (" + rewardCountText + ")");
