@@ -27,7 +27,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
-import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
@@ -35,6 +34,7 @@ import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +63,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     @BindView(R.id.betatest_awards_group) Group awardGroup;
 
-//    @BindView(R.id.betatest_title_awards_best) TextView bestAwardsTitleTextView;
-//    @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
-//    @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
-//    @BindView(R.id.betatest_awards_nickname_end) TextView awardsNickNameEndTextView;
-
     @BindView(R.id.item_awards_viewpager) ViewPager awardsViewPager;
+    @BindView(R.id.item_awards_view_pager_indicator) TabLayout awardsViewPagerIndicator;
     @BindView(R.id.betatest_awards_wonder) TextView awardsWonderTextView;
 
     @BindView(R.id.betatest_subtitle_my_results) TextView myResultSubTitleTextView;
@@ -128,6 +124,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         awardsViewPager.setAdapter(awardPagerAdapter);
         this.presenter.setFinishedBetaTestAwardPagerAdapterModel(awardPagerAdapter);
         this.awardPagerAdapterView = awardPagerAdapter;
+
+        awardsViewPagerIndicator.setupWithViewPager(awardsViewPager, true);
     }
 
     private void setActionBar() {
@@ -162,8 +160,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
         String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
         @StringRes int planStringResId = bundle.getInt(FomesConstants.BetaTest.EXTRA_PLAN);
-//        int topRewardTypeCode = bundle.getInt(FomesConstants.BetaTest.EXTRA_TOP_REWARD_TYPE_CODE);
-//        String topRewardDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_TOP_REWARD_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
         ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
@@ -199,11 +195,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         planTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background, new ContextThemeWrapper(this, planStyleResId).getTheme()));
 
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
-
-//        setBestAwardsTitleView(topRewardTypeCode);
-
-//        awardsNickNameTextView.setSelected(true);
-//        awardsPriceTextView.setText(topRewardDescription);
 
         myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
 
@@ -244,34 +235,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         companyNameTextView.setText(epilogue.getCompanyName());
         companyNameTextView.startAnimation(getFadeInAnimation(1000));
     }
-
-    @Override
-    public void bindAwardsView(List<AwardRecord> awardRecords) {
-        if (isUnavailableViewControl()) {
-            return;
-        }
-
-        if (awardRecords != null && !awardRecords.isEmpty()) {
-//            if (awardRecords.size() > 1) {
-//                awardsNickNameEndTextView.setText(getString(R.string.finished_betatest_detail_awards_nickname_sir_and_count, awardRecords.size() - 1));
-//            }
-//
-//            setBestAwardsTitleView(awardRecords.get(0).getTypeCode());
-//
-//            awardsNickNameTextView.setText(awardRecords.get(0).getNickName());
-//            awardsNickNameEndTextView.setVisibility(View.VISIBLE);
-        }
-    }
-
-//    private void setBestAwardsTitleView(int typeCode) {
-//        if (isUnavailableViewControl()) {
-//            return;
-//        }
-//
-//        if (AwardRecord.TYPE_BEST.equals(typeCode)) {
-//            bestAwardsTitleTextView.setText(getString(R.string.finished_betatest_detail_awards_best));
-//        }
-//    }
 
     @Override
     public void bindMyAnswersView(List<Mission> missions) {
@@ -366,20 +329,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Override
     public void refreshAwardPagerView() {
         this.awardPagerAdapterView.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showLoadingView() {
-        if (isUnavailableViewControl()) {
-            return;
-        }
-    }
-
-    @Override
-    public void hideLoadingView() {
-        if (isUnavailableViewControl()) {
-            return;
-        }
     }
 
     @Override

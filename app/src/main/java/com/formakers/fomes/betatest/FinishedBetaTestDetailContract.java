@@ -35,7 +35,6 @@ public interface FinishedBetaTestDetailContract {
 
     interface View extends BaseView<Presenter> {
         void bindEpilogueView(BetaTest.Epilogue epilogue);
-        void bindAwardsView(List<AwardRecord> awardRecords);
         void bindMyAnswersView(List<Mission> missions);
 
         void startWebViewActivity(String title, String url);
@@ -45,8 +44,6 @@ public interface FinishedBetaTestDetailContract {
         void disableMyAnswersView();
 
         void refreshAwardPagerView();
-        void showLoadingView();
-        void hideLoadingView();
         void hideAwardsView();
         void showNoticePopupView(@StringRes int titleResId, @StringRes int subTitleResId, @DrawableRes int imageResId,
                                  @StringRes int positiveButtonTextResId, android.view.View.OnClickListener positiveButtonClickListener);

@@ -155,7 +155,7 @@
                 android:id="@+id/betatest_awards_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="betatest_overview_company_says_divider,betatest_title_awards,item_awards_viewpager"/>
+                app:constraint_referenced_ids="betatest_overview_company_says_divider,betatest_title_awards,item_awards_viewpager,item_awards_view_pager_indicator"/>
 
             <View
                 android:id="@+id/betatest_overview_company_says_divider"
@@ -189,6 +189,18 @@
                 app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards"/>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/item_awards_view_pager_indicator"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabBackground="@drawable/tab_pager_selector"
+                app:layout_constraintStart_toStartOf="@+id/item_awards_viewpager"
+                app:layout_constraintEnd_toEndOf="@+id/item_awards_viewpager"
+                app:layout_constraintTop_toBottomOf="@+id/item_awards_viewpager"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"/>
+
             <TextView
                 android:id="@+id/betatest_awards_wonder"
                 android:layout_width="@dimen/match_constraint"
@@ -201,7 +213,7 @@
                 android:text="@string/finished_betatest_detail_awards_wonder"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/item_awards_viewpager" />
+                app:layout_constraintTop_toBottomOf="@+id/item_awards_view_pager_indicator" />
 
             <Button
                 android:id="@+id/betatest_epilogue_button"
