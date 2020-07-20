@@ -95,8 +95,13 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
             TextView awardsNickNameEndTextView = view.findViewById(R.id.betatest_awards_nickname_end);
             awardsNickNameTextView.setSelected(true);
 
-            if(!awardItem.hasNoNickNames()) {
+            if(position > 0) {
+                view.findViewById(R.id.betatest_awards_crowded_people).setVisibility(View.GONE);
+            }
+
+            if(awardItem.hasNickNames()) {
                 int nickNamesSize = awardItem.nickNames.size();
+
                 awardsNickNameTextView.setText(awardItem.nickNames.get(0));
 
                 if(nickNamesSize > 1) {
@@ -148,8 +153,8 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
             this.nickNames = nickNames;
         }
 
-        public boolean hasNoNickNames() {
-            return nickNames == null || nickNames.isEmpty();
+        public boolean hasNickNames() {
+            return nickNames != null && nickNames.size() > 0;
         }
 
         public String getTitle() {
@@ -160,7 +165,7 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
                     case 7000:
                         return "테스트 차석";
                     case 5000:
-                        return "성실상";
+                        return "테스트 성실상";
                     case 3000:
                         return "참가상";
                     default :
