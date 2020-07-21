@@ -21,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -91,10 +92,11 @@ public class FinishedBetaTestDetailPresenterTest {
     }
 
     @Test
-    public void requestEpilogue_호출시__해당_베타테스트의_에필로그_정보를_요청하고__뷰에_바인딩한다() {
-        subject.requestEpilogue("betaTestId");
+    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보를_요청하고__뷰에_바인딩한다() {
+        subject.requestEpilogueAndAwards("betaTestId");
 
         verify(mockBetaTestService).getEpilogue("betaTestId");
+        verify(mockBetaTestService).getAwardRecords("betaTestId");
 
         ArgumentCaptor<BetaTest.Epilogue> epilogueArgumentCaptor = ArgumentCaptor.forClass(BetaTest.Epilogue.class);
         verify(mockView).bindEpilogueView(epilogueArgumentCaptor.capture());
@@ -107,19 +109,20 @@ public class FinishedBetaTestDetailPresenterTest {
     }
 
     @Test
-    public void requestEpilogue_호출시__해당_베타테스트의_에필로그_정보가_없으면__뷰를_비활성화한다() {
+    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보가_없으면__뷰를_비활성화한다() {
         when(mockBetaTestService.getEpilogue("betaTestId"))
                 .thenReturn(Single.error(new HttpException(Response.error(404, ResponseBody.create(null, "")))));
 
-        subject.requestEpilogue("betaTestId");
+        subject.requestEpilogueAndAwards("betaTestId");
 
         verify(mockBetaTestService).getEpilogue("betaTestId");
         verify(mockView).disableEpilogueView();
+        verify(mockView).bindAwardRecordsWithRewardItems();
     }
 
     @Test
     public void requestAwardRecords_호출시__해당_베타테스트의_수상_정보를_요청하고__뷰에_바인딩한다() {
-        subject.requestAwardRecords("betaTestId", null);
+        subject.requestAwardRecords("betaTestId");
 
         verify(mockBetaTestService).getAwardRecords("betaTestId");
 
@@ -148,20 +151,14 @@ public class FinishedBetaTestDetailPresenterTest {
     }
 
     @Test
-    public void requestAwardRecord_호출시__수상정보가_없는_경우__기본_보상정보를_뷰에_바인딩한다() {
-        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.error(new HttpException(Response.error(404, ResponseBody.create(null, "")))));
+    public void requestAwardRecord_호출시__NoSuchElementException이_발생하면__수상_정보를_뷰에서_숨긴다() {
+        when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.error(new NoSuchElementException()));
         List<BetaTest.Rewards.RewardItem> mockRewardItems = Mockito.mock(List.class);
 
-        subject.requestAwardRecords("betaTestId", mockRewardItems);
+        subject.requestAwardRecords("betaTestId");
 
         verify(mockBetaTestService).getAwardRecords("betaTestId");
-
-        ArgumentCaptor<List<BetaTest.Rewards.RewardItem>> argumentCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockFinishedBetaTestAwardPagerModel).addAllFromRewardItems(argumentCaptor.capture());
-        verify(mockView).refreshAwardPagerView();
-
-        List<BetaTest.Rewards.RewardItem> actual = argumentCaptor.getValue();
-        assertThat(actual).isEqualTo(mockRewardItems);
+        verify(mockView).hideAwardsView();
     }
 
     @Test

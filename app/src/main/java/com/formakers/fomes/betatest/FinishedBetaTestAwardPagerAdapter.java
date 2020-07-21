@@ -115,7 +115,7 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
                     crowdedPeopleImageView.setVisibility(View.GONE);
                     awardsMedalContentsLayout.setVisibility(View.GONE);
 
-                    awardsNickNamesTextView.setText(Stream.of(awardItem.nickNames).collect(Collectors.joining(", ")));
+                    awardsNickNamesTextView.setText(Stream.of(awardItem.nickNames).collect(Collectors.joining(", ")) + " 님");
                     awardsNoneMedalContentsLayout.setVisibility(View.VISIBLE);
                 }
 

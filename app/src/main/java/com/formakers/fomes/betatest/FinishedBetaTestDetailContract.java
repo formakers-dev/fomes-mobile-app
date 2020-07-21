@@ -19,8 +19,8 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface FinishedBetaTestDetailContract {
     interface Presenter {
-        void requestAwardRecords(String betaTestId, List<BetaTest.Rewards.RewardItem> rewardItems);
-        void requestEpilogue(String betaTestId);
+        void requestAwardRecords(String betaTestId);
+        void requestEpilogueAndAwards(String betaTestId);
         void requestRecheckableMissions(String betaTestId);
 
         //Base
@@ -36,6 +36,7 @@ public interface FinishedBetaTestDetailContract {
     interface View extends BaseView<Presenter> {
         void bindEpilogueView(BetaTest.Epilogue epilogue);
         void bindMyAnswersView(List<Mission> missions);
+        void bindAwardRecordsWithRewardItems();
 
         void startWebViewActivity(String title, String url);
         void startByDeeplink(Uri parse);

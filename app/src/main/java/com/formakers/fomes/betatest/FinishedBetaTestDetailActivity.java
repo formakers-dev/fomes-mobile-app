@@ -113,8 +113,7 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         initViews();
 
-        this.presenter.requestEpilogue(betaTestId);
-        this.presenter.requestAwardRecords(betaTestId, bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS));
+        this.presenter.requestEpilogueAndAwards(betaTestId);
         this.presenter.requestRecheckableMissions(betaTestId);
     }
 
@@ -253,6 +252,19 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         }
     }
 
+    @Override
+    public void bindAwardRecordsWithRewardItems() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
+        Bundle bundle = getIntent().getExtras();
+        awardPagerAdapter.addAllFromRewardItems(
+                bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS));
+
+        refreshAwardPagerView();
+    }
+
     private Animation getFadeInAnimation(long durationMills) {
         Animation in = new AlphaAnimation(0.0f, 1.0f);
         in.setDuration(durationMills);
@@ -328,6 +340,10 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     @Override
     public void refreshAwardPagerView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         this.awardPagerAdapterView.notifyDataSetChanged();
     }
 

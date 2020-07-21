@@ -68,7 +68,7 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     }
 
     @Override
-    public void requestAwardRecords(String betaTestId, List<BetaTest.Rewards.RewardItem> rewardItems) {
+    public void requestAwardRecords(String betaTestId) {
         this.betaTestService.getAwardRecords(betaTestId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(awardRecords -> {
@@ -76,29 +76,29 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
                     this.view.refreshAwardPagerView();
                 }, e -> {
                     Log.e(TAG, "requestAwardRecordOfBest) " + e);
-                    if (e instanceof HttpException && ((HttpException)e).code() == 404) {
-                        this.finishedBetaTestAwardPagerModel.addAllFromRewardItems(rewardItems);
-                        this.view.refreshAwardPagerView();
-                    } else if (e instanceof NoSuchElementException) {
+                    if (e instanceof NoSuchElementException) {
                         this.view.hideAwardsView();
                     }
                 });
     }
 
     @Override
-    public void requestEpilogue(String betaTestId) {
+    public void requestEpilogueAndAwards(String betaTestId) {
         this.betaTestService.getEpilogue(betaTestId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(epilogue -> this.view.bindEpilogueView(epilogue),
-                        e -> {
-                            Log.e(TAG, String.valueOf(e));
-                            if (e instanceof HttpException) {
-                                HttpException httpException = (HttpException) e;
-                                if (httpException.code() == 404) {
-                                    this.view.disableEpilogueView();
-                                }
-                            }
-                        });
+                .subscribe(epilogue -> {
+                    this.view.bindEpilogueView(epilogue);
+                    requestAwardRecords(betaTestId);
+                }, e -> {
+                    Log.e(TAG, String.valueOf(e));
+                    if (e instanceof HttpException) {
+                        HttpException httpException = (HttpException) e;
+                        if (httpException.code() == 404) {
+                            this.view.disableEpilogueView();
+                            this.view.bindAwardRecordsWithRewardItems();
+                        }
+                    }
+                });
     }
 
     @Override
