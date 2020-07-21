@@ -218,6 +218,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         if (!TextUtils.isEmpty(imageUrl)) {
             this.presenter.getImageLoader().loadImage(companyImageView, imageUrl,
                     RequestOptions.circleCropTransform(), false, true);
+        } else {
+            companyImageView.setImageDrawable(getDrawable(R.drawable.fomes_profile_default));
         }
 
         companySaysTextView.setText(epilogue.getCompanySays());
@@ -328,9 +330,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         companyNameTextView.setText("게임사 소감 준비중");
         companySaysTextView.setText("조금만 기다려주세요 🙏");
         companySaysTextView.setVisibility(View.VISIBLE);
+        companyImageView.setImageDrawable(getDrawable(R.drawable.fomes_profile_default));
 
         companySaysTextView.startAnimation(getFadeInAnimation(1000));
         companyNameTextView.startAnimation(getFadeInAnimation(1000));
+        companyImageView.startAnimation(getFadeInAnimation(1000));
     }
 
     @Override

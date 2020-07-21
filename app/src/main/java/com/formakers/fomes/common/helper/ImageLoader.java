@@ -41,16 +41,16 @@ public class ImageLoader {
         loadImage(imageView, imageUrl, requestOptions, true, true);
     }
 
-    public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUsePlaceHolder) {
-        loadImage(imageView, imageUrl, requestOptions, isUsePlaceHolder, true);
+    public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUseDefaultPlaceHolder) {
+        loadImage(imageView, imageUrl, requestOptions, isUseDefaultPlaceHolder, true);
     }
 
     // 리팩토링 필요하다... 계속 플래그와 네이밍에 의존 할 수는 없어....
-    public void loadImageWithoutCrossFade(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUsePlaceHolder) {
-        loadImage(imageView, imageUrl, requestOptions, isUsePlaceHolder, false);
+    public void loadImageWithoutCrossFade(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isDefaultUsePlaceHolder) {
+        loadImage(imageView, imageUrl, requestOptions, isDefaultUsePlaceHolder, false);
     }
 
-    public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUsePlaceHolder, boolean isUseCrossFade) {
+    public void loadImage(ImageView imageView, String imageUrl, @Nullable RequestOptions requestOptions, boolean isUseDefaultPlaceHolder, boolean isUseCrossFade) {
         RequestBuilder<Drawable> requestBuilder = requestManager.load(imageUrl);
 
         // requestOption
@@ -58,7 +58,7 @@ public class ImageLoader {
             requestOptions = new RequestOptions();
         }
 
-        if (isUsePlaceHolder) {
+        if (isUseDefaultPlaceHolder) {
             requestOptions = requestOptions.placeholder(new ColorDrawable(context.getResources().getColor(R.color.fomes_deep_gray)));
         }
 

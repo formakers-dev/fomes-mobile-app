@@ -110,7 +110,7 @@
                 android:layout_width="92dp"
                 android:layout_height="92dp"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/fomes_profile_default"
+                tools:background="@drawable/fomes_profile_default"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_company_says"/>
