@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.annimon.stream.Collectors;
@@ -90,8 +91,9 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.item_finish_betatest_awards, container, false);
 
-            ((TextView)view.findViewById(R.id.betatest_title_awards_best)).setText(awardItem.getTitle());
+            ((TextView)view.findViewById(R.id.betatest_awards_title)).setText(awardItem.getTitle());
 
+            TextView awardsTitle = view.findViewById(R.id.betatest_awards_title);
             ImageView crowdedPeopleImageView = view.findViewById(R.id.betatest_awards_crowded_people);
             ImageView awardsMedalImageView = view.findViewById(R.id.betatest_awards_medal);
             ViewGroup awardsMedalContentsLayout = view.findViewById(R.id.betatest_awards_medal_contents_layout);
@@ -100,6 +102,9 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
             TextView awardsNickNameEndTextView = view.findViewById(R.id.betatest_awards_nickname_end);
             TextView awardsNickNamesTextView = view.findViewById(R.id.betatest_awards_nicknames);
             ViewGroup awardsNoneMedalContentsLayout = view.findViewById(R.id.betatest_awards_none_medal_contents_layout);
+
+            awardsTitle.setText(awardItem.getTitle());
+            awardsTitle.setTextColor(getTitleColor(awardItem));
             awardsNickNameTextView.setSelected(true);
 
             if(position > 0) {
@@ -131,6 +136,23 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
         container.addView(view);
 
         return view;
+    }
+
+    @ColorInt
+    private int getTitleColor(AwardItem awardItem) {
+        switch(awardItem.typeCode) {
+            case 9000:
+                return context.getResources().getColor(R.color.colorPrimary);
+
+            case 7000:
+                return context.getResources().getColor(R.color.fomes_squash);
+
+            case 5000:
+                return context.getResources().getColor(R.color.fomes_blush_pink);
+
+            default:
+                return context.getResources().getColor(R.color.fomes_white);
+        }
     }
 
     @Override
