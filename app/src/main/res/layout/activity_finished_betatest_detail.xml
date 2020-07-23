@@ -155,7 +155,7 @@
                 android:id="@+id/betatest_awards_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="betatest_overview_company_says_divider,betatest_title_awards,betatest_title_awards_best,betatest_awards_price,betatest_awards_medal,betatest_awards_medal_contents_layout"/>
+                app:constraint_referenced_ids="betatest_overview_company_says_divider,betatest_title_awards,item_awards_viewpager,item_awards_view_pager_indicator"/>
 
             <View
                 android:id="@+id/betatest_overview_company_says_divider"
@@ -180,95 +180,26 @@
                 app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_overview_company_says_divider" />
 
-            <TextView
-                android:id="@+id/betatest_title_awards_best"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/item_awards_viewpager"
                 android:layout_width="@dimen/match_constraint"
-                android:layout_height="wrap_content"
+                android:layout_height="260dp"
                 android:layout_marginTop="35dp"
-                android:gravity="center"
-                android:text="@string/finished_betatest_detail_default_awards_title"
-                android:textColor="@color/fomes_white"
-                android:textSize="@dimen/betatest_detail_section_content_text_size"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards" />
+                app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards"/>
 
-            <TextView
-                android:id="@+id/betatest_awards_price"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/item_awards_view_pager_indicator"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:textColor="@color/fomes_white_alpha_60"
-                android:textSize="@dimen/betatest_detail_section_content_text_size"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_title_awards_best"
-                tools:text="문화 상품권 10,000원" />
-
-            <ImageView
-                android:id="@+id/betatest_awards_crowded_people"
-                android:layout_width="297dp"
-                android:layout_height="49dp"
-                android:layout_marginTop="147dp"
-                android:background="@drawable/crowded_people"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_price" />
-
-            <ImageView
-                android:id="@+id/betatest_awards_medal"
-                android:layout_width="297dp"
-                android:layout_height="185dp"
-                android:layout_marginTop="18dp"
-                android:background="@drawable/analysis_rank_medal"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_price" />
-
-            <LinearLayout
-                android:id="@+id/betatest_awards_medal_contents_layout"
-                android:layout_width="111dp"
-                android:layout_height="112dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="@+id/betatest_awards_medal"
-                app:layout_constraintStart_toStartOf="@+id/betatest_awards_medal"
-                app:layout_constraintTop_toTopOf="@+id/betatest_awards_medal"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_awards_medal">
-
-                <TextView
-                    android:id="@+id/betatest_awards_nickname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:gravity="center"
-                    android:focusable="true"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:textColor="@color/fomes_text_dark"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:text="시상식 준비중"
-                    tools:text="회는 살안찔까 과연 그럴까 궁금하다 궁금해" />
-
-                <TextView
-                    android:id="@+id/betatest_awards_nickname_end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:textColor="@color/fomes_text_dark"
-                    android:textSize="@dimen/betatest_detail_section_content_text_size"
-                    android:text="@string/finished_betatest_detail_awards_nickname_sir"/>
-
-            </LinearLayout>
+                app:tabRippleColor="@android:color/transparent"
+                app:tabBackground="@drawable/tab_pager_selector"
+                app:layout_constraintStart_toStartOf="@+id/item_awards_viewpager"
+                app:layout_constraintEnd_toEndOf="@+id/item_awards_viewpager"
+                app:layout_constraintTop_toBottomOf="@+id/item_awards_viewpager"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"/>
 
             <TextView
                 android:id="@+id/betatest_awards_wonder"
@@ -282,7 +213,7 @@
                 android:text="@string/finished_betatest_detail_awards_wonder"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_detail_guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/betatest_detail_guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_awards_medal" />
+                app:layout_constraintTop_toBottomOf="@+id/item_awards_view_pager_indicator" />
 
             <Button
                 android:id="@+id/betatest_epilogue_button"

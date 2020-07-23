@@ -11,11 +11,11 @@ import com.formakers.fomes.common.helper.AndroidNativeHelper;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.network.BetaTestService;
-import com.formakers.fomes.common.network.vo.AwardRecord;
+import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
@@ -35,6 +35,7 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     private BetaTestService betaTestService;
     private FomesUrlHelper fomesUrlHelper;
     private AndroidNativeHelper androidNativeHelper;
+    private FinishedBetaTestAwardPagerAdapterContract.Model finishedBetaTestAwardPagerModel;
 
     @Inject
     public FinishedBetaTestDetailPresenter(FinishedBetaTestDetailContract.View view,
@@ -62,43 +63,42 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     }
 
     @Override
-    public void requestAwardRecordOfBest(String betaTestId) {
-        this.betaTestService.getAwardRecords(betaTestId)
-                .toObservable()
-                .concatMap(Observable::from)
-                .reduce(new ArrayList<AwardRecord>(), (topAwardRecords, awardRecord) -> {
-                    if (topAwardRecords.isEmpty() ||
-                            awardRecord.getTypeCode().equals(topAwardRecords.get(topAwardRecords.size() - 1).getTypeCode())) {
-                        topAwardRecords.add(awardRecord);
-                    }
-
-                    return topAwardRecords;
-                })
-                .toSingle()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(awardRecord -> this.view.bindAwardsView(awardRecord),
-                        e -> {
-                            Log.e(TAG, "requestAwardRecordOfBest) " + e);
-                            if (e instanceof NoSuchElementException) {
-                                this.view.hideAwardsView();
-                            }
-                        });
+    public void setFinishedBetaTestAwardPagerAdapterModel(FinishedBetaTestAwardPagerAdapterContract.Model model) {
+        this.finishedBetaTestAwardPagerModel = model;
     }
 
     @Override
-    public void requestEpilogue(String betaTestId) {
+    public void requestAwardRecords(String betaTestId) {
+        this.betaTestService.getAwardRecords(betaTestId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(awardRecords -> {
+                    this.finishedBetaTestAwardPagerModel.addAll(awardRecords);
+                    this.view.refreshAwardPagerView();
+                }, e -> {
+                    Log.e(TAG, "requestAwardRecordOfBest) " + e);
+                    if (e instanceof NoSuchElementException) {
+                        this.view.hideAwardsView();
+                    }
+                });
+    }
+
+    @Override
+    public void requestEpilogueAndAwards(String betaTestId) {
         this.betaTestService.getEpilogue(betaTestId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(epilogue -> this.view.bindEpilogueView(epilogue),
-                        e -> {
-                            Log.e(TAG, String.valueOf(e));
-                            if (e instanceof HttpException) {
-                                HttpException httpException = (HttpException) e;
-                                if (httpException.code() == 404) {
-                                    this.view.disableEpilogueView();
-                                }
-                            }
-                        });
+                .subscribe(epilogue -> {
+                    this.view.bindEpilogueView(epilogue);
+                    requestAwardRecords(betaTestId);
+                }, e -> {
+                    Log.e(TAG, String.valueOf(e));
+                    if (e instanceof HttpException) {
+                        HttpException httpException = (HttpException) e;
+                        if (httpException.code() == 404) {
+                            this.view.disableEpilogueView();
+                            this.view.bindAwardRecordsWithRewardItems();
+                        }
+                    }
+                });
     }
 
     @Override
