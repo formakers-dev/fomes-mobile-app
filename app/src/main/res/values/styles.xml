@@ -529,4 +529,12 @@
         <item name="item_stroke_width">1dp</item>
         <item name="item_stroke_color">#979797</item>
     </style>
+
+    <style name="PointTheme"/>
+
+    <style name="PointTheme.Box">
+        <item name="item_background_radius">6dp</item>
+        <item name="item_solid_color">@color/colorPrimary</item>
+        <item name="item_stroke_width">0dp</item>
+    </style>
 </resources>

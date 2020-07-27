@@ -112,35 +112,64 @@
                 app:layout_constraintTop_toBottomOf="@+id/my_point_title"
                 android:text="가용 포인트"/>
 
-            <TextView
-                android:id="@+id/my_available_point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="30dp"
-                android:textStyle="bold"
-                android:clickable="true"
-                app:layout_constraintStart_toStartOf="@+id/my_available_point_title"
-                app:layout_constraintTop_toBottomOf="@+id/my_available_point_title"
-                app:layout_constraintEnd_toEndOf="@+id/my_available_point_title"
-                tools:text="30,000 P"/>
-
-            <Button
-                android:id="@+id/exchange_point_button"
+            <LinearLayout
+                android:id="@+id/my_available_point_layout"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_marginTop="20dp"
-                android:textSize="@dimen/betatest_detail_section_content_text_size"
-                android:textColor="@color/fomes_white"
-                android:textStyle="bold"
-                android:foreground="@drawable/ripple"
-                android:background="@drawable/withdraw_point_button_selector"
-                app:layout_goneMarginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/my_available_point"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:theme="@style/PointTheme.Box"
+                android:background="@drawable/item_rect_rounded_corner_background"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="문화상품권으로 교환하기"
-                android:enabled="false"/>
+                app:layout_constraintTop_toBottomOf="@+id/my_point_title"
+                >
+
+                <TextView
+                    android:id="@+id/my_available_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/fomes_white"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    tools:text="30,000 P"/>
+
+                <TextView
+                    android:id="@+id/point_history_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/betatest_detail_section_content_text_size"
+                    android:textColor="@color/fomes_white"
+                    android:foreground="@drawable/ripple"
+                    android:text="내역"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="@dimen/betatest_detail_section_content_text_size"
+                    android:textColor="@color/fomes_white"
+                    android:foreground="@drawable/ripple"
+                    android:text="|"/>
+
+                <TextView
+                    android:id="@+id/exchange_point_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/betatest_detail_section_content_text_size"
+                    android:textColor="@color/white_text_color_selector"
+                    android:foreground="@drawable/ripple"
+                    android:text="교환"
+                    android:enabled="false"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/mission_guide"
@@ -151,7 +180,7 @@
                 android:textColor="@color/colorPrimary"
                 android:text="※ 가용포인트 5,000P 부터 문화상품권으로 교환할 수 있습니다."
                 app:layout_constraintVertical_bias="1.0"
-                app:layout_constraintTop_toBottomOf="@+id/exchange_point_button"
+                app:layout_constraintTop_toBottomOf="@+id/my_available_point_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

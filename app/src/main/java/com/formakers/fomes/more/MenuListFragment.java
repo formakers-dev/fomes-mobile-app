@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
@@ -26,8 +25,8 @@ import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
 import com.formakers.fomes.main.MainActivity;
-import com.formakers.fomes.point.history.PointHistoryActivity;
 import com.formakers.fomes.point.exchange.PointExchangeActivity;
+import com.formakers.fomes.point.history.PointHistoryActivity;
 import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
@@ -46,18 +45,13 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
     private static final int REQUEST_CODE_EXCHANGE = 1001;
 
-    @BindView(R.id.more_email)
-    TextView emailTextView;
-    @BindView(R.id.more_nickname)
-    TextView nickNameTextView;
-    @BindView(R.id.more_participation_count)
-    TextView participationCountTextView;
-    @BindView(R.id.my_available_point)
-    TextView availablePointTextView;
-    @BindView(R.id.more_menu_list)
-    RecyclerView menuListView;
-    @BindView(R.id.exchange_point_button)
-    Button exchangePointButton;
+    @BindView(R.id.more_email) TextView emailTextView;
+    @BindView(R.id.more_nickname) TextView nickNameTextView;
+    @BindView(R.id.more_participation_count) TextView participationCountTextView;
+    @BindView(R.id.my_available_point) TextView availablePointTextView;
+    @BindView(R.id.point_history_button) TextView pointHistoryButton;
+    @BindView(R.id.more_menu_list) RecyclerView menuListView;
+    @BindView(R.id.exchange_point_button) TextView exchangePointButton;
 
     @Inject
     MenuListContract.Presenter presenter;
@@ -86,10 +80,8 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         this.presenter.bindAvailablePoint();
         this.setMenuListView();
 
-        availablePointTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PointHistoryActivity.class);
-            context.startActivity(intent);
-        });
+        availablePointTextView.setOnClickListener(v -> this.startPointHistoryActivity());
+        pointHistoryButton.setOnClickListener(v -> this.startPointHistoryActivity());
 
         exchangePointButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, PointExchangeActivity.class);
@@ -139,6 +131,11 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         menuItemList.add(new MenuItem(More.MENU_SETTINGS, MenuItem.MENU_TYPE_PLAIN).setTitle("설정").setIconImageDrawable(context.getDrawable(R.drawable.icon_settings)));
 
         return menuItemList;
+    }
+
+    private void startPointHistoryActivity() {
+        Intent intent = new Intent(context, PointHistoryActivity.class);
+        context.startActivity(intent);
     }
 
     @Override
