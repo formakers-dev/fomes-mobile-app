@@ -100,8 +100,7 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
             intent.putExtra(FomesConstants.BetaTest.EXTRA_TITLE, betaTest.getTitle());
             intent.putExtra(FomesConstants.BetaTest.EXTRA_SUBTITLE, betaTest.getDisplayDescription());
             intent.putExtra(FomesConstants.BetaTest.EXTRA_PLAN, betaTest.getPlanStringResId());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_TOP_REWARD_TYPE_CODE, betaTest.getRewards().getList().get(0).getTypeCode());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_TOP_REWARD_DESCRIPTION, betaTest.getRewards().getList().get(0).getContent());
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS, Lists.newArrayList(betaTest.getRewards().getList()));
             intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, betaTest.isPremiumPlan());
             intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, betaTest.isCompleted());
             intent.putExtra(FomesConstants.BetaTest.EXTRA_TAG_LIST, Lists.newArrayList(betaTest.getTags()));

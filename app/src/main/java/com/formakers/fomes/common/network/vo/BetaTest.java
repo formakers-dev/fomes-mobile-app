@@ -404,7 +404,7 @@ public class BetaTest implements Parcelable {
                 dest.writeString(content);
                 dest.writeString(type);
                 dest.writeInt(typeCode);
-                dest.writeInt(count);
+                dest.writeInt(count == null ? 0 : count);
             }
 
             private void readFromParcel(Parcel in) {

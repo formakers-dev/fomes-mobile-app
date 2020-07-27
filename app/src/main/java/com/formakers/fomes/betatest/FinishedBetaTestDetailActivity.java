@@ -21,12 +21,12 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
-import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
@@ -34,6 +34,7 @@ import com.formakers.fomes.common.view.FomesBaseActivity;
 import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +62,9 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @BindView(R.id.betatest_epilogue_button) Button epilogueButton;
 
     @BindView(R.id.betatest_awards_group) Group awardGroup;
-    @BindView(R.id.betatest_title_awards_best) TextView bestAwardsTitleTextView;
-    @BindView(R.id.betatest_awards_price) TextView awardsPriceTextView;
-    @BindView(R.id.betatest_awards_nickname) TextView awardsNickNameTextView;
-    @BindView(R.id.betatest_awards_nickname_end) TextView awardsNickNameEndTextView;
+
+    @BindView(R.id.item_awards_viewpager) ViewPager awardsViewPager;
+    @BindView(R.id.item_awards_view_pager_indicator) TabLayout awardsViewPagerIndicator;
     @BindView(R.id.betatest_awards_wonder) TextView awardsWonderTextView;
 
     @BindView(R.id.betatest_subtitle_my_results) TextView myResultSubTitleTextView;
@@ -74,6 +74,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     @Inject FinishedBetaTestDetailContract.Presenter presenter;
 
     private FomesNoticeDialog noticeDialog = new FomesNoticeDialog();
+    private FinishedBetaTestAwardPagerAdapter awardPagerAdapter = null;
+    private FinishedBetaTestAwardPagerAdapterContract.View awardPagerAdapterView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +102,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
             return;
         }
 
+        setAwardPagerAdapter();
+
         Bundle bundle = getIntent().getExtras();
         bind(bundle);
 
@@ -109,9 +113,18 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         initViews();
 
-        this.presenter.requestEpilogue(betaTestId);
-        this.presenter.requestAwardRecordOfBest(betaTestId);
+        this.presenter.requestEpilogueAndAwards(betaTestId);
         this.presenter.requestRecheckableMissions(betaTestId);
+    }
+
+    private void setAwardPagerAdapter() {
+        awardPagerAdapter = new FinishedBetaTestAwardPagerAdapter(this) ;
+        awardPagerAdapter.setPresenter(presenter);
+        awardsViewPager.setAdapter(awardPagerAdapter);
+        this.presenter.setFinishedBetaTestAwardPagerAdapterModel(awardPagerAdapter);
+        this.awardPagerAdapterView = awardPagerAdapter;
+
+        awardsViewPagerIndicator.setupWithViewPager(awardsViewPager, true);
     }
 
     private void setActionBar() {
@@ -146,8 +159,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
         String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
         @StringRes int planStringResId = bundle.getInt(FomesConstants.BetaTest.EXTRA_PLAN);
-        int topRewardTypeCode = bundle.getInt(FomesConstants.BetaTest.EXTRA_TOP_REWARD_TYPE_CODE);
-        String topRewardDescription = bundle.getString(FomesConstants.BetaTest.EXTRA_TOP_REWARD_DESCRIPTION);
         boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
         boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
         ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
@@ -184,10 +195,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
 
-        setBestAwardsTitleView(topRewardTypeCode);
-        awardsNickNameTextView.setSelected(true);
-        awardsPriceTextView.setText(topRewardDescription);
-
         myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
 
         certificateButton.setEnabled(isCompleted);
@@ -218,6 +225,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         if (!TextUtils.isEmpty(imageUrl)) {
             this.presenter.getImageLoader().loadImage(companyImageView, imageUrl,
                     RequestOptions.circleCropTransform(), false, true);
+        } else {
+            companyImageView.setImageDrawable(getDrawable(R.drawable.fomes_profile_default));
         }
 
         companySaysTextView.setText(epilogue.getCompanySays());
@@ -226,34 +235,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
         companyNameTextView.setText(epilogue.getCompanyName());
         companyNameTextView.startAnimation(getFadeInAnimation(1000));
-    }
-
-    @Override
-    public void bindAwardsView(List<AwardRecord> awardRecords) {
-        if (isUnavailableViewControl()) {
-            return;
-        }
-
-        if (awardRecords != null && !awardRecords.isEmpty()) {
-            if (awardRecords.size() > 1) {
-                awardsNickNameEndTextView.setText(getString(R.string.finished_betatest_detail_awards_nickname_sir_and_count, awardRecords.size() - 1));
-            }
-
-            setBestAwardsTitleView(awardRecords.get(0).getTypeCode());
-
-            awardsNickNameTextView.setText(awardRecords.get(0).getNickName());
-            awardsNickNameEndTextView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void setBestAwardsTitleView(int typeCode) {
-        if (isUnavailableViewControl()) {
-            return;
-        }
-
-        if (AwardRecord.TYPE_BEST.equals(typeCode)) {
-            bestAwardsTitleTextView.setText(getString(R.string.finished_betatest_detail_awards_best));
-        }
     }
 
     @Override
@@ -271,6 +252,19 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
                 recheckMyAnswerLayout.addView(recheckableButton);
             }
         }
+    }
+
+    @Override
+    public void bindAwardRecordsWithRewardItems() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
+        Bundle bundle = getIntent().getExtras();
+        awardPagerAdapter.addAllFromRewardItems(
+                bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS));
+
+        refreshAwardPagerView();
     }
 
     private Animation getFadeInAnimation(long durationMills) {
@@ -328,9 +322,11 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         companyNameTextView.setText("게임사 소감 준비중");
         companySaysTextView.setText("조금만 기다려주세요 🙏");
         companySaysTextView.setVisibility(View.VISIBLE);
+        companyImageView.setImageDrawable(getDrawable(R.drawable.fomes_profile_default));
 
         companySaysTextView.startAnimation(getFadeInAnimation(1000));
         companyNameTextView.startAnimation(getFadeInAnimation(1000));
+        companyImageView.startAnimation(getFadeInAnimation(1000));
     }
 
     @Override
@@ -347,17 +343,12 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void showLoadingView() {
+    public void refreshAwardPagerView() {
         if (isUnavailableViewControl()) {
             return;
         }
-    }
 
-    @Override
-    public void hideLoadingView() {
-        if (isUnavailableViewControl()) {
-            return;
-        }
+        this.awardPagerAdapterView.notifyDataSetChanged();
     }
 
     @Override

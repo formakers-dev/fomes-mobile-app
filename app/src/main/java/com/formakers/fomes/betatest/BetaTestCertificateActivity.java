@@ -79,6 +79,10 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
 
     @Override
     public void bindBetaTestCertificate(BetaTest betaTest, AwardRecord awardRecord) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         bindBetaTestDetail(betaTest);
         bindCertificate(betaTest, awardRecord);
         showCertificateView();
@@ -86,10 +90,18 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
 
     @Override
     public void bindUserNickName(String nickName) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         betaTestAwardsNickName.setText(getString(R.string.betatest_certificate_nick_name, nickName));
     }
 
     private void bindBetaTestDetail(BetaTest betaTest) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         this.presenter.getImageLoader().loadImage(betaTestAppIcon, betaTest.getIconImageUrl(),
                 new RequestOptions().override(120, 120)
                         .centerCrop()
@@ -115,6 +127,10 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
     }
 
     private void bindCertificate(BetaTest betaTest, AwardRecord awardRecord) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         Integer awardTypeCode = (awardRecord != null) ? awardRecord.getTypeCode() : 0;
         switch(awardTypeCode) {
             case 9000 :
@@ -160,21 +176,37 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
 
     @Override
     public void showLoading() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         loadingProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         loadingProgressBar.setVisibility(View.GONE);
     }
 
     private void showCertificateView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         betaTestCertificateLayout.setVisibility(View.VISIBLE);
         betaTestCertificateErrorLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void showErrorView() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         betaTestCertificateErrorLayout.setVisibility(View.VISIBLE);
         betaTestCertificateLayout.setVisibility(View.GONE);
     }

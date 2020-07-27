@@ -19,8 +19,8 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface FinishedBetaTestDetailContract {
     interface Presenter {
-        void requestAwardRecordOfBest(String betaTestId);
-        void requestEpilogue(String betaTestId);
+        void requestAwardRecords(String betaTestId);
+        void requestEpilogueAndAwards(String betaTestId);
         void requestRecheckableMissions(String betaTestId);
 
         //Base
@@ -29,12 +29,14 @@ public interface FinishedBetaTestDetailContract {
         ImageLoader getImageLoader();
 
         void emitRecheckMyAnswer(Mission mission);
+
+        void setFinishedBetaTestAwardPagerAdapterModel(FinishedBetaTestAwardPagerAdapterContract.Model model);
     }
 
     interface View extends BaseView<Presenter> {
         void bindEpilogueView(BetaTest.Epilogue epilogue);
-        void bindAwardsView(List<AwardRecord> awardRecords);
         void bindMyAnswersView(List<Mission> missions);
+        void bindAwardRecordsWithRewardItems();
 
         void startWebViewActivity(String title, String url);
         void startByDeeplink(Uri parse);
@@ -42,8 +44,7 @@ public interface FinishedBetaTestDetailContract {
         void disableEpilogueView();
         void disableMyAnswersView();
 
-        void showLoadingView();
-        void hideLoadingView();
+        void refreshAwardPagerView();
         void hideAwardsView();
         void showNoticePopupView(@StringRes int titleResId, @StringRes int subTitleResId, @DrawableRes int imageResId,
                                  @StringRes int positiveButtonTextResId, android.view.View.OnClickListener positiveButtonClickListener);

@@ -500,6 +500,13 @@
         <item name="item_stroke_width">0dp</item>
     </style>
 
+    <style name="BetaTestDetailTheme.FinishedAwardBackground">
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_content_card_background</item>
+        <item name="item_stroke_color">@color/fomes_greyish_brown</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
     <!-- ActionBar -->
 <!--    <style name="TransparentActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">-->
 <!--        <item name="android:fitsSystemWindows">true</item>-->
