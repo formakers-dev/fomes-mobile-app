@@ -18,12 +18,13 @@ android:paddingBottom="23dp">
         android:layout_marginTop="20dp"
         android:textColor="@color/fomes_white_alpha_87"
         android:textSize="18dp"
+        android:textStyle="bold"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_point_title"
-        android:text="가용 포인트"/>
+        android:text="신청 가능 포인트"/>
 
     <TextView
         android:id="@+id/my_available_point"
