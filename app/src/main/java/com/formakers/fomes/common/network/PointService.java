@@ -55,4 +55,12 @@ public class PointService extends AbstractService {
                 .compose(apiHelper.refreshExpiredToken())
                 .toCompletable();
     }
+
+    public Single<Long> getRequestedExchangePoint() {
+        return Observable.defer(() -> pointAPI.getRequestedExchangePoint(sharedPreferencesHelper.getAccessToken()))
+                .subscribeOn(Schedulers.io())
+                .compose(apiHelper.refreshExpiredToken())
+                .toSingle()
+                .map(pointResponseVO -> pointResponseVO.point);
+    }
 }
