@@ -145,7 +145,7 @@
                     android:id="@+id/point_history_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/betatest_detail_section_content_text_size"
+                    android:textSize="@dimen/point_menu_text_size"
                     android:textColor="@color/fomes_white"
                     android:foreground="@drawable/ripple"
                     android:text="내역"/>
@@ -155,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:textSize="@dimen/betatest_detail_section_content_text_size"
+                    android:textSize="@dimen/point_menu_text_size"
                     android:textColor="@color/fomes_white"
                     android:foreground="@drawable/ripple"
                     android:text="|"/>
@@ -164,7 +164,7 @@
                     android:id="@+id/exchange_point_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/betatest_detail_section_content_text_size"
+                    android:textSize="@dimen/point_menu_text_size"
                     android:textColor="@color/white_text_color_selector"
                     android:foreground="@drawable/ripple"
                     android:text="교환"
