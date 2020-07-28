@@ -36,6 +36,13 @@ public class PointHistoryPresenter implements PointHistoryContract.Presenter {
     }
 
     @Override
+    public void bindTotalPoint() {
+        this.pointService.getAccumulatedPoint()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(point -> view.setTotalPoint(point), e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
     public void bindHistory() {
         this.pointService.getPointHistory()
                 .observeOn(Schedulers.io())

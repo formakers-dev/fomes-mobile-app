@@ -7,11 +7,13 @@ public interface PointHistoryContract {
         void setAdapterModel(PointHistoryListAdapterContract.Model adapterModel);
 
         void bindAvailablePoint();
+        void bindTotalPoint();
         void bindHistory();
     }
 
     interface View extends BaseView<Presenter> {
         void setAvailablePoint(long point);
+        void setTotalPoint(long point);
 
         void showLoading();
         void hideLoading();

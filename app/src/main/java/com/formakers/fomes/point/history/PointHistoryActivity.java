@@ -25,6 +25,7 @@ public class PointHistoryActivity extends FomesBaseActivity
         implements PointHistoryContract.View {
 
     @BindView(R.id.available_point) TextView availablePointTextView;
+    @BindView(R.id.total_point) TextView totalPointTextView;
     @BindView(R.id.point_history_recyclerview) RecyclerView historyRecyclerView;
     @BindView(R.id.point_history_recyclerview_placeholder) ShimmerFrameLayout loadingLayout;
     @BindView(R.id.point_history_empty) View pointHistoryEmptyView;
@@ -71,6 +72,7 @@ public class PointHistoryActivity extends FomesBaseActivity
 
         // bind View
         this.presenter.bindAvailablePoint();
+        this.presenter.bindTotalPoint();
         this.presenter.bindHistory();
     }
 
@@ -82,8 +84,13 @@ public class PointHistoryActivity extends FomesBaseActivity
     @Override
     public void setAvailablePoint(long point) {
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
-
         availablePointTextView.startAnimation(getFadeInAnimation(300));
+    }
+
+    @Override
+    public void setTotalPoint(long point) {
+        totalPointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
+        totalPointTextView.startAnimation(getFadeInAnimation(300));
     }
 
     @Override

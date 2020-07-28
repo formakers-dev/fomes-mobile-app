@@ -28,6 +28,6 @@ public interface PointAPI {
     @PUT("/points/exchange")
     Observable<Void> putPointExchange(@Header("x-access-token") String accessToken, @Body FomesPoint point);
 
-    @GET("/points/exchange/requested")
-    Observable<PointResponseVO> getRequestedExchangePoint(@Header("x-access-token") String accessToken);
+    @GET("/points/accumulated")
+    Observable<PointResponseVO> getAccumulatedPoint(@Header("x-access-token") String accessToken);
 }

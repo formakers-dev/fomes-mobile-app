@@ -56,8 +56,8 @@ public class PointService extends AbstractService {
                 .toCompletable();
     }
 
-    public Single<Long> getRequestedExchangePoint() {
-        return Observable.defer(() -> pointAPI.getRequestedExchangePoint(sharedPreferencesHelper.getAccessToken()))
+    public Single<Long> getAccumulatedPoint() {
+        return Observable.defer(() -> pointAPI.getAccumulatedPoint(sharedPreferencesHelper.getAccessToken()))
                 .subscribeOn(Schedulers.io())
                 .compose(apiHelper.refreshExpiredToken())
                 .toSingle()
