@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.constant.FomesConstants;
@@ -143,7 +144,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         // 참여상태
         viewHolder.missionCompletedImageView.setVisibility(mission.isCompleted() ? View.VISIBLE : View.GONE);
         viewHolder.refreshButton.setVisibility(mission.isCompleted() ? View.GONE : View.VISIBLE);
-        viewHolder.itemButton.setEnabled(mission.isRepeatable() || !mission.isCompleted());
+        viewHolder.itemButton.setEnabled(mission.isEnabled());
         viewHolder.guideTextView.setTextColor(viewHolder.itemButton.isEnabled() ?
                 res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_black_alpha_30));
         viewHolder.itemButton.setTextColor(viewHolder.itemButton.isEnabled() ?
@@ -202,12 +203,16 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.refreshMissionProgress(mission)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe(subscription -> {
+                        viewHolder.itemButton.setEnabled(false);
                         viewHolder.refreshButton.setVisibility(View.INVISIBLE);
-                        viewHolder.refreshProgress.setVisibility(View.VISIBLE);
+                        viewHolder.loadingShimmer.setVisibility(View.VISIBLE);
+                        viewHolder.loadingShimmer.startShimmer();
                     })
                     .doAfterTerminate(() -> {
+                        viewHolder.itemButton.setEnabled(mission.isEnabled());
                         viewHolder.refreshButton.setVisibility(View.VISIBLE);
-                        viewHolder.refreshProgress.setVisibility(View.GONE);
+                        viewHolder.loadingShimmer.setVisibility(View.GONE);
+                        viewHolder.loadingShimmer.stopShimmer();
                     })
                     .subscribe(() -> {
                         // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
@@ -315,8 +320,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView guideTextView;
         Button itemButton;
         View refreshButton;
-        View refreshProgress;
         View missionCompletedImageView;
+        ShimmerFrameLayout loadingShimmer;
 
         // Description Layout
         ViewGroup descriptionLayout;
@@ -351,7 +356,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             lockDescriptionTextView = itemView.findViewById(R.id.betatest_mission_lock_description_textview);
             itemButton = itemView.findViewById(R.id.mission_item_button);
             refreshButton = itemView.findViewById(R.id.mission_refresh_button);
-            refreshProgress = itemView.findViewById(R.id.mission_refresh_progress);
+            loadingShimmer = itemView.findViewById(R.id.shimmer);
         }
     }
 }

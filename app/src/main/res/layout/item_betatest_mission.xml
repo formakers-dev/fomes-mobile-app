@@ -35,16 +35,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <ProgressBar android:id="@+id/mission_refresh_progress"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:visibility="gone"
-                android:indeterminateTint="@color/fomes_white"
-                app:layout_constraintTop_toTopOf="@+id/mission_refresh_button"
-                app:layout_constraintBottom_toBottomOf="@+id/mission_refresh_button"
-                app:layout_constraintStart_toStartOf="@+id/mission_refresh_button"
-                app:layout_constraintEnd_toEndOf="@+id/mission_refresh_button"/>
-
             <ImageView
                 android:id="@+id/mission_title_icon"
                 android:layout_width="24dp"
@@ -199,7 +189,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="참여하기"
                 tools:backgroundTint="@color/colorPrimary"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView android:id="@+id/mission_completed_imageview"
@@ -207,6 +196,23 @@
             android:layout_height="wrap_content"
             android:src="@drawable/label_completed"
             android:layout_gravity="top|end"/>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:shimmer_auto_start="false"
+            app:shimmer_duration="800"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/fomes_black_alpha_50"/>
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </androidx.cardview.widget.CardView>
 
     <LinearLayout android:id="@+id/betatest_lock_layout"

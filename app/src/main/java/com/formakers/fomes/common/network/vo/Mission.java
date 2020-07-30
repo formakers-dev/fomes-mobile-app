@@ -86,6 +86,10 @@ public class Mission implements Parcelable {
         return this;
     }
 
+    public boolean isEnabled() {
+        return this.isRepeatable() || !this.isCompleted();
+    }
+
     public boolean isCompleted() {
         return isCompleted;
     }
