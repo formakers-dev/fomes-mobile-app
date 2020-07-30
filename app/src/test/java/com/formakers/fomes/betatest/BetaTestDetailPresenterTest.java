@@ -139,7 +139,7 @@ public class BetaTestDetailPresenterTest {
 
         // 디폴트
         subject.load("5d1c5e695c20ca481f27a4ab");
-        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(2));
+        subject.processMissionItemAction(getDummyBetaTestDetail().getMissions().get(1));
 
         verify(mockView).startByDeeplink(Uri.parse("https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty"));
     }
