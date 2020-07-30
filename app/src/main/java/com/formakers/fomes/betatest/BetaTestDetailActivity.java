@@ -133,7 +133,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(mission -> {
                             this.missionListAdapter.getItem(missionId).setCompleted(mission.isCompleted());
-                            this.refreshMissionItem(missionId);
+                            this.refreshMission(missionId);
                         }, e -> Log.e(TAG, String.valueOf(e)));
             }
         } else {
@@ -360,6 +360,11 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void refreshMissionList() {
         Log.d(TAG, "refreshMissionList");
 
@@ -373,7 +378,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
-    public void refreshMissionItem(String missionItemId) {
+    public void refreshMission(String missionItemId) {
         presenter.getDisplayedMissionList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(missionList -> {

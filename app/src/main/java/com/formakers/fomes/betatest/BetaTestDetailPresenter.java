@@ -9,6 +9,7 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
@@ -20,6 +21,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 
 import java.util.ArrayList;
@@ -152,7 +154,6 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         params.putString(FomesUrlHelper.EXTRA_MISSION_ID, mission.getId());
 
         String url = getInterpretedUrl(action, params);
-        Uri uri = Uri.parse(url);
 
         if (FomesConstants.BetaTest.Mission.TYPE_INSTALL.equals(mission.getType())) {
             Intent intent = this.getIntentIfAppIsInstalled(mission.getPackageName());
@@ -163,14 +164,28 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
             }
         }
 
-        // below condition logic should be move to URL Manager(or Parser and so on..)
-        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())
-                || (uri.getQueryParameter("internal_web") != null
-                && uri.getQueryParameter("internal_web").equals("true"))) {
-            view.startSurveyWebViewActivity(mission.getId(), mission.getTitle(), url);
+        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
+            this.updatePlayTime(mission.getId(), mission.getPackageName())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .flatMapCompletable(playTime -> {
+                        this.view.showToast(DateUtil.convertDurationToString(playTime));
+                        return requestToCompleteMission(mission);
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> this.view.refreshMission(mission.getId()),
+                            e -> {
+                                Log.e(TAG, String.valueOf(e));
+                                this.view.showToast("플레이 시간이 측정되지 않아요!");
+                            });
         } else {
-            // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
-            view.startByDeeplink(Uri.parse(url));
+            // below condition logic should be move to URL Manager(or Parser and so on..)
+            if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())) {
+                view.startSurveyWebViewActivity(mission.getId(), mission.getTitle(), url);
+            } else {
+                // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
+                view.startByDeeplink(Uri.parse(url));
+            }
         }
     }
 
@@ -209,7 +224,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         return betaTestService.postCompleteMission(this.betaTest.getId(), mission.getId())
                 .doOnCompleted(() -> {
                     mission.setCompleted(true);
-                    this.view.refreshMissionItem(mission.getId());
+                    this.view.refreshMission(mission.getId());
                 });
     }
 
@@ -225,12 +240,15 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName) {
-        return !TextUtils.isEmpty(packageName) ?
-                getPlayTimeAndUpdateView(missionItemId, packageName)
-                : Single.error(new IllegalArgumentException("packageName is null"));
+        if (!TextUtils.isEmpty(packageName)) {
+            return Feature.CALCULATE_PLAY_TIME ? getPlayTimeAndRefreshMissionView(missionItemId, packageName)
+                    : getPlayTime(packageName);
+        } else {
+            return Single.error(new IllegalArgumentException("packageName is null"));
+        }
     }
 
-    private Single<Long> getPlayTimeAndUpdateView(@NonNull String missionItemId, @NonNull String packageName) {
+    private Single<Long> getPlayTime(@NonNull String packageName) {
         return appUsageDataHelper.getUsageTime(packageName, betaTest.getOpenDate().getTime())
                 .map(playTime -> {
                     if (playTime > 0) {
@@ -239,16 +257,22 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         throw new IllegalStateException("playtime is under than 0");
                     }
                 })
-                .toSingle()
-                .zipWith(Observable.from(betaTest.getMissions())
-                        .filter(mission -> missionItemId.equals(mission.getId()))
-                        .toSingle(), Pair::new)
+                .toSingle();
+    }
+
+    private Single<Long> getPlayTimeAndRefreshMissionView(@NonNull String missionId, @NonNull String packageName) {
+        Single<Mission> findMissionSingle = Observable.from(betaTest.getMissions())
+                .filter(mission -> missionId.equals(mission.getId()))
+                .toSingle();
+
+        return this.getPlayTime(packageName)
+                .zipWith(findMissionSingle, Pair::new)
                 .map(pair -> {
                     pair.second.setTotalPlayTime(pair.first);
                     return pair.first;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(playTime -> this.view.refreshMissionItem(missionItemId));
+                .doOnSuccess(playTime -> this.view.refreshMission(missionId));
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {

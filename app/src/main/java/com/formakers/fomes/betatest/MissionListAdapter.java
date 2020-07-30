@@ -156,7 +156,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             }
             case FomesConstants.BetaTest.Mission.TYPE_PLAY: {
-                viewHolder.itemButton.setText(mission.isCompleted() ? "플레이 인증 완료" : "플레이 인증하러가기");
+                viewHolder.itemButton.setText(mission.isCompleted() ? "플레이 인증 완료" : "플레이 인증하기");
                 Long playtime = mission.getTotalPlayTime();
 
                 if (Feature.CALCULATE_PLAY_TIME) {
@@ -189,6 +189,10 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 }
             }
+        }
+
+        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
+            viewHolder.refreshButton.setVisibility(View.GONE);
         }
 
         // 미션 카드 새로고침 버튼

@@ -48,8 +48,9 @@ public interface BetaTestDetailContract {
         void bind(BetaTest betaTest);
         void showLoading();
         void hideLoading();
+        void showToast(String message);
         void refreshMissionList();
-        void refreshMissionItem(String missionItemId);
+        void refreshMission(String missionItemId);
 
         android.view.View inflate(@LayoutRes int layoutResId);
         void startSurveyWebViewActivity(String missionId, String title, String url);
