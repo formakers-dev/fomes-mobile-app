@@ -57,6 +57,7 @@ public class BetaTestDetailPresenterTest {
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
     @Mock AppUsageDataHelper mockAppUsageDataHelper;
     @Mock ImageLoader mockImageLoader;
+    @Mock MissionListAdapterContract.Model mockMissionListAdapterModel;
 
     BetaTestDetailPresenter subject;
 
@@ -90,6 +91,7 @@ public class BetaTestDetailPresenterTest {
         when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
 
         subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper, mockAppUsageDataHelper, mockImageLoader);
+        subject.setAdapterModel(mockMissionListAdapterModel);
     }
 
     @Test
@@ -231,6 +233,10 @@ public class BetaTestDetailPresenterTest {
 
         System.out.println(displayedMissionList);
 
+        assertDisplayMissionList(displayedMissionList);
+    }
+
+    private void assertDisplayMissionList(List<Mission> displayedMissionList) {
         assertThat(displayedMissionList.size()).isEqualTo(4);
 
         // 순서 정렬
@@ -267,13 +273,15 @@ public class BetaTestDetailPresenterTest {
 
     @Test
     public void requestToCompleteMission_호출시__해당_미션_완료요청을_보낸다() {
+        when(mockMissionListAdapterModel.getPositionById("5d1ec8194400311578e996bd")).thenReturn(1);
+
         subject.load("5d1c5e695c20ca481f27a4ab");
         subject.requestToCompleteMission(new Mission().setId("5d1ec8194400311578e996bd"))
                 .subscribe(new TestSubscriber<>());
 
         verify(mockBetaTestService).postCompleteMission("5d1c5e695c20ca481f27a4ab", "5d1ec8194400311578e996bd");
         assertThat(subject.betaTest.getMissions().get(0).isCompleted()).isTrue();
-        verify(mockView).refreshMission("5d1ec8194400311578e996bd");
+        verify(mockView).refreshMissionBelowAllChanged(1);
     }
 
     @Test
@@ -297,6 +305,7 @@ public class BetaTestDetailPresenterTest {
     @Test
     public void updatePlayTime_호출시__특정_앱의_플레이시간을_가져와_뷰를_업데이트_한다() {
         // given
+        when(mockMissionListAdapterModel.getPositionById("5d1ec8194400311578e996bd")).thenReturn(1);
         when(mockAppUsageDataHelper.getUsageTime("com.goodcircle.comeonkitty", 1562198400000L)) // 2019-07-04T00:00:00.000Z
                 .thenReturn(Observable.just(1000L));
 
@@ -313,7 +322,7 @@ public class BetaTestDetailPresenterTest {
 
         verify(mockAppUsageDataHelper).getUsageTime(eq("com.goodcircle.comeonkitty"), eq(1562198400000L)); // 2019-07-04T00:00:00.000Z
         assertThat(actualPlayTime).isEqualTo(1000L);
-        verify(mockView).refreshMission("5d1ec8194400311578e996bd");
+        verify(mockView).refreshMissionBelowAllChanged(1);
     }
 
     @Test
@@ -349,6 +358,32 @@ public class BetaTestDetailPresenterTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertError(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void displayMissionList_호출시__화면표시용_미션리스트를_다시_세팅하고__미션_리스트뷰를_새로고침한다() {
+        subject.load("5d1c5e695c20ca481f27a4ab");
+        subject.displayMissionList();
+
+        verify(mockMissionListAdapterModel).clear();
+        ArgumentCaptor<List<Mission>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockMissionListAdapterModel).addAll(argumentCaptor.capture());
+        assertDisplayMissionList(argumentCaptor.getValue());
+        verify(mockView).refreshMissionList();
+    }
+
+    @Test
+    public void displayMission_호출시__화면표시용_미션리스트를_다시_세팅하고__해당_미션_이하의_리스트뷰를_새로고침한다() {
+        when(mockMissionListAdapterModel.getPositionById("5d1ec8024400311578e996bb")).thenReturn(3);
+
+        subject.load("5d1c5e695c20ca481f27a4ab");
+        subject.displayMission("5d1ec8024400311578e996bb"); // 3번째 미션
+
+        verify(mockMissionListAdapterModel).clear();
+        ArgumentCaptor<List<Mission>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockMissionListAdapterModel).addAll(argumentCaptor.capture());
+        assertDisplayMissionList(argumentCaptor.getValue());
+        verify(mockView).refreshMissionBelowAllChanged(3);
     }
 
     private BetaTest getDummyBetaTestDetail() {

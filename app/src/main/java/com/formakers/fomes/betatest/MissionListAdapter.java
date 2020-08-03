@@ -21,6 +21,7 @@ import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
+import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,40 +35,19 @@ import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.C
 import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_MISSION_ITEM;
 import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_MISSION_REFRESH;
 
-public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements MissionListAdapterContract.View, MissionListAdapterContract.Model {
 
     private static final String TAG = "MissionListAdapter";
 
     private List<Mission> missionList = new ArrayList<>();
-    private View.OnClickListener missionItemClickListener;
+    private OnRecyclerItemClickListener missionItemClickListener;
     private Context context;
 
     private BetaTestDetailContract.Presenter presenter;
-    private BetaTestDetailContract.View view;
 
-    public MissionListAdapter(BetaTestDetailContract.Presenter presenter, BetaTestDetailContract.View view) {
+    public MissionListAdapter(BetaTestDetailContract.Presenter presenter) {
         this.presenter = presenter;
-        this.view = view;
-    }
-
-    public MissionListAdapter setPresenter(BetaTestDetailContract.Presenter presenter) {
-        this.presenter = presenter;
-        return this;
-    }
-
-    public MissionListAdapter setView(BetaTestDetailContract.View view) {
-        this.view = view;
-        return this;
-    }
-
-    public MissionListAdapter setMissionItemClickListener(View.OnClickListener missionItemClickListener) {
-        this.missionItemClickListener = missionItemClickListener;
-        return this;
-    }
-
-    public MissionListAdapter setMissionList(List<Mission> missionList) {
-        this.missionList = missionList;
-        return this;
     }
 
     @NonNull
@@ -214,15 +194,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         viewHolder.loadingShimmer.setVisibility(View.GONE);
                         viewHolder.loadingShimmer.stopShimmer();
                     })
-                    .subscribe(() -> {
-                        // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
-                        presenter.getDisplayedMissionList()
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(missionList -> {
-                                    setMissionList(missionList);
-                                    this.notifyItemBelowAllChanged(position);
-                                }, e -> Log.e(TAG, String.valueOf(e)));
-                    }, e -> Log.e(TAG, String.valueOf(e)));
+                    .subscribe(() -> this.presenter.displayMission(mission.getId()),
+                            e -> Log.e(TAG, String.valueOf(e)));
         });
 
         // 디스크립션 레이아웃 - Visibility 처리 (이미지나 플레이타임이 보여질때만 보여진다)
@@ -236,7 +209,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         });
 
         // 미션 아이템 클릭 리스너 등록 (보일러 플레이트 코드)
-        viewHolder.itemView.setOnClickListener(missionItemClickListener);
+//        viewHolder.itemView.setOnClickListener(v -> missionItemClickListener.onItemClick(position));
     }
 
     // TODO : Adapter Presenter 나오면 분리
@@ -286,11 +259,33 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return missionList.size();
     }
 
+    @Override
     public Mission getItem(int position) {
         return missionList.get(position);
     }
 
-    public Mission getItem(String missionId) {
+    @Override
+    public List<Mission> getAllItems() {
+        return this.missionList;
+    }
+
+    @Override
+    public void add(Mission item) {
+        this.missionList.add(item);
+    }
+
+    @Override
+    public void addAll(List<Mission> items) {
+        this.missionList.addAll(items);
+    }
+
+    @Override
+    public void clear() {
+        this.missionList.clear();
+    }
+
+    @Override
+    public Mission getItemById(String missionId) {
         for (int position = 0; position < missionList.size(); position++) {
             Mission mission = missionList.get(position);
             if (missionId.equals(mission.getId())) {
@@ -301,7 +296,8 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return null;
     }
 
-    public int getPositionByMissionId(String missionId) {
+    @Override
+    public int getPositionById(String missionId) {
         for (int position = 0; position < missionList.size(); position++) {
             Mission mission = missionList.get(position);
             if (missionId.equals(mission.getId())) {
@@ -310,6 +306,16 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         return -1;
+    }
+
+    @Override
+    public void setPresenter(BetaTestDetailContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void setOnItemClickListener(OnRecyclerItemClickListener listener) {
+        this.missionItemClickListener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

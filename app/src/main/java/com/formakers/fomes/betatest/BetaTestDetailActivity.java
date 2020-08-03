@@ -42,7 +42,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_ENTER;
@@ -82,7 +81,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     BetaTestDetailContract.Presenter presenter;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
-    private MissionListAdapter missionListAdapter;
+    private MissionListAdapterContract.View missionListAdapterView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,12 +128,9 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             if (data != null) {
                 String missionId = data.getStringExtra(FomesConstants.WebView.EXTRA_MISSION_ID);
 
-                this.presenter.getMissionProgress(missionId)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(mission -> {
-                            this.missionListAdapter.getItem(missionId).setCompleted(mission.isCompleted());
-                            this.refreshMission(missionId);
-                        }, e -> Log.e(TAG, String.valueOf(e)));
+                // 이걸 그냥 새로고침 버튼 눌렀을때 나오는 로직으로 태우면 어떨지? 이런 느낌으로...
+//                this.missionListAdapterView.clickRefreshButton(missionId);
+                this.presenter.updateMissionProgress(missionId);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -335,16 +331,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,
                 new ContextThemeWrapper(this, R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
-        missionListAdapter = new MissionListAdapter(presenter, this);
+
+        MissionListAdapter missionListAdapter = new MissionListAdapter(presenter);
+        missionListAdapterView = missionListAdapter;
+        this.presenter.setAdapterModel(missionListAdapter);
         missionRecyclerView.setAdapter(missionListAdapter);
 
-        // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
-        presenter.getDisplayedMissionList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(missionList -> {
-                    missionListAdapter.setMissionList(missionList);
-                    missionListAdapter.notifyDataSetChanged();
-                }, e -> Log.e(TAG, String.valueOf(e)));
+        this.presenter.displayMissionList();
 
         contentsLayout.setVisibility(View.VISIBLE);
     }
@@ -367,24 +360,12 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Override
     public void refreshMissionList() {
         Log.d(TAG, "refreshMissionList");
-
-        // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
-        presenter.getDisplayedMissionList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(missionList -> {
-                    missionListAdapter.setMissionList(missionList);
-                    missionListAdapter.notifyDataSetChanged();
-                }, e -> Log.e(TAG, String.valueOf(e)));
+        this.missionListAdapterView.notifyDataSetChanged();
     }
 
     @Override
-    public void refreshMission(String missionItemId) {
-        presenter.getDisplayedMissionList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(missionList -> {
-                    missionListAdapter.setMissionList(missionList);
-                    missionListAdapter.notifyItemBelowAllChanged(missionListAdapter.getPositionByMissionId(missionItemId));
-                }, e -> Log.e(TAG, String.valueOf(e)));
+    public void refreshMissionBelowAllChanged(int missionPosition) {
+        this.missionListAdapterView.notifyItemBelowAllChanged(missionPosition);
     }
 
     @Override

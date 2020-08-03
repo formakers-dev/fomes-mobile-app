@@ -50,6 +50,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private ImageLoader imageLoader;
 
     private BetaTestDetailContract.View view;
+    private MissionListAdapterContract.Model missionListAdapterModel;
 
     BetaTest betaTest;
 
@@ -82,6 +83,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         return this.imageLoader;
     }
 
+    @Override
+    public void setAdapterModel(MissionListAdapterContract.Model adapterModel) {
+        this.missionListAdapterModel = adapterModel;
+    }
 
     @Override
     public void sendEventLog(String code, String ref) {
@@ -141,6 +146,46 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
+    public void displayMissionList() {
+        this.getDisplayedMissionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionList -> {
+                    missionListAdapterModel.clear();
+                    missionListAdapterModel.addAll(missionList);
+                    this.view.refreshMissionList();
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
+    public void displayMission(String missionId) {
+        this.getDisplayedMissionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionList -> {
+                    missionListAdapterModel.clear();
+                    missionListAdapterModel.addAll(missionList);
+                    this.view.refreshMissionBelowAllChanged(missionListAdapterModel.getPositionById(missionId));
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
+    public void updateMissionProgress(String missionId) {
+        if (this.betaTest == null) {
+            return;
+        }
+
+        this.betaTestService.getMissionProgress(betaTest.getId(), missionId)
+                .observeOn(Schedulers.io())
+                .doOnSuccess(mission -> this.missionListAdapterModel.getItemById(missionId).setCompleted(mission.isCompleted()))
+                .flatMapObservable(mission -> this.getDisplayedMissionList())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(displayedMissionList -> {
+                    this.missionListAdapterModel.clear();
+                    this.missionListAdapterModel.addAll(displayedMissionList);
+                    this.view.refreshMissionBelowAllChanged(this.missionListAdapterModel.getPositionById(missionId));
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
     public void processMissionItemAction(Mission mission) {
         // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
         String action = mission.getAction();
@@ -173,7 +218,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> this.view.refreshMission(mission.getId()),
+                    .subscribe(() -> this.displayMission(mission.getId()),
                             e -> {
                                 Log.e(TAG, String.valueOf(e));
                                 this.view.showToast("플레이 시간이 측정되지 않아요!");
@@ -214,7 +259,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 //                        .concatWith(completePlayTypeMission())
                         .subscribe(() -> {
                             this.betaTest.setAttended(true);
-                            this.view.refreshMissionList();
+                            this.displayMissionList();
                         }, e -> Log.e(TAG, String.valueOf(e)))
         );
     }
@@ -224,7 +269,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         return betaTestService.postCompleteMission(this.betaTest.getId(), mission.getId())
                 .doOnCompleted(() -> {
                     mission.setCompleted(true);
-                    this.view.refreshMission(mission.getId());
+                    this.displayMission(mission.getId());
                 });
     }
 
@@ -272,7 +317,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     return pair.first;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(playTime -> this.view.refreshMission(missionId));
+                .doOnSuccess(playTime -> this.displayMission(missionId));
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {
