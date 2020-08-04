@@ -11,12 +11,16 @@ public interface MissionListAdapterContract {
 
         void setOnItemClickListener(OnRecyclerItemClickListener listener);
 
+        void clickRefreshButton(String missionId);
+
         void notifyDataSetChanged();
         void notifyItemChanged(int position);
         void notifyItemBelowAllChanged(int position);
     }
 
     interface Model {
+        void setLoading(String missionId, boolean isLoading);
+
         int getPositionById(String missionId);
 
         int getItemCount();

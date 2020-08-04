@@ -26,10 +26,12 @@ import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemCli
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import rx.Completable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_LOCK;
 import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_TAP_MISSION_ITEM;
@@ -123,7 +125,6 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 참여상태
         viewHolder.missionCompletedImageView.setVisibility(mission.isCompleted() ? View.VISIBLE : View.GONE);
-        viewHolder.refreshButton.setVisibility(mission.isCompleted() ? View.GONE : View.VISIBLE);
         viewHolder.itemButton.setEnabled(mission.isEnabled());
         viewHolder.guideTextView.setTextColor(viewHolder.itemButton.isEnabled() ?
                 res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_black_alpha_30));
@@ -172,30 +173,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         }
 
-        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
-            viewHolder.refreshButton.setVisibility(View.GONE);
-        }
-
         // 미션 카드 새로고침 버튼
         viewHolder.refreshButton.setOnClickListener(v -> {
             presenter.sendEventLog(BETA_TEST_DETAIL_TAP_MISSION_REFRESH, mission.getId());
 
-            this.refreshMissionProgress(mission)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(subscription -> {
-                        viewHolder.itemButton.setEnabled(false);
-                        viewHolder.refreshButton.setVisibility(View.INVISIBLE);
-                        viewHolder.loadingShimmer.setVisibility(View.VISIBLE);
-                        viewHolder.loadingShimmer.startShimmer();
-                    })
-                    .doAfterTerminate(() -> {
-                        viewHolder.itemButton.setEnabled(mission.isEnabled());
-                        viewHolder.refreshButton.setVisibility(View.VISIBLE);
-                        viewHolder.loadingShimmer.setVisibility(View.GONE);
-                        viewHolder.loadingShimmer.stopShimmer();
-                    })
-                    .subscribe(() -> this.presenter.displayMission(mission.getId()),
-                            e -> Log.e(TAG, String.valueOf(e)));
+            this.clickRefreshButton(mission.getId());
         });
 
         // 디스크립션 레이아웃 - Visibility 처리 (이미지나 플레이타임이 보여질때만 보여진다)
@@ -210,6 +192,34 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // 미션 아이템 클릭 리스너 등록 (보일러 플레이트 코드)
 //        viewHolder.itemView.setOnClickListener(v -> missionItemClickListener.onItemClick(position));
+
+        if (mission.isLoading()) {
+            viewHolder.itemButton.setEnabled(false);
+            viewHolder.loadingShimmer.setVisibility(View.VISIBLE);
+            viewHolder.loadingShimmer.startShimmer();
+        } else {
+            viewHolder.loadingShimmer.stopShimmer();
+            viewHolder.loadingShimmer.setVisibility(View.GONE);
+            viewHolder.itemButton.setEnabled(mission.isEnabled());
+        }
+
+        viewHolder.refreshButton.setVisibility(isDisableRefreshButton(mission) ? View.GONE : View.VISIBLE);
+    }
+
+    boolean isDisableRefreshButton(Mission mission) {
+        return FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())
+                || mission.isCompleted()
+                || mission.isLoading();
+    }
+
+    private void refreshMission(Mission mission) {
+        this.refreshMissionProgress(mission)
+                .delay(800, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(subscription -> this.setLoading(mission.getId(), true))
+                .doAfterTerminate(() -> this.setLoading(mission.getId(), false))
+                .subscribe(() -> this.presenter.displayMission(mission.getId()),
+                        e -> Log.e(TAG, String.valueOf(e)));
     }
 
     // TODO : Adapter Presenter 나오면 분리
@@ -242,6 +252,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         return getMissionProgressSingle
+                .observeOn(Schedulers.io())
                 .doOnSuccess(newMission -> {
                     if (mission.getId().equals(newMission.getId())) {
                         mission.setCompleted(newMission.isCompleted());
@@ -297,6 +308,14 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
+    public void setLoading(String missionId, boolean isLoading) {
+        getItemById(missionId).setLoading(isLoading);
+
+        // 사실 이건 뷰로 넘겨서 해야하는데....
+        notifyItemChanged(getPositionById(missionId));
+    }
+
+    @Override
     public int getPositionById(String missionId) {
         for (int position = 0; position < missionList.size(); position++) {
             Mission mission = missionList.get(position);
@@ -316,6 +335,11 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void setOnItemClickListener(OnRecyclerItemClickListener listener) {
         this.missionItemClickListener = listener;
+    }
+
+    @Override
+    public void clickRefreshButton(String missionId) {
+        this.refreshMission(this.getItemById(missionId));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

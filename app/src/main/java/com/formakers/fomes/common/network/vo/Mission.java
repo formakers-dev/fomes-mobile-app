@@ -24,6 +24,7 @@ public class Mission implements Parcelable {
 
     // For view
     Boolean isLocked;
+    boolean isLoading;
 
     // type - play
     String packageName;
@@ -177,6 +178,15 @@ public class Mission implements Parcelable {
 
     public Mission setLocked(boolean locked) {
         isLocked = locked;
+        return this;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public Mission setLoading(Boolean loading) {
+        isLoading = loading;
         return this;
     }
 

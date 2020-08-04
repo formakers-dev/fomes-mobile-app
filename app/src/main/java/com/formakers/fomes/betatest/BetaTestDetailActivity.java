@@ -127,10 +127,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         if (requestCode == REQUEST_CODE_MISSION) {
             if (data != null) {
                 String missionId = data.getStringExtra(FomesConstants.WebView.EXTRA_MISSION_ID);
-
-                // 이걸 그냥 새로고침 버튼 눌렀을때 나오는 로직으로 태우면 어떨지? 이런 느낌으로...
-//                this.missionListAdapterView.clickRefreshButton(missionId);
-                this.presenter.updateMissionProgress(missionId);
+                Log.v(TAG, "onActivityResult missionId=" + missionId);
+                this.missionListAdapterView.clickRefreshButton(missionId);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -326,6 +324,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
 
         missionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        missionRecyclerView.setHasFixedSize(true);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(this, ContentDividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,

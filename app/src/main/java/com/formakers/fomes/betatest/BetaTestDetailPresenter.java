@@ -218,6 +218,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(x -> this.missionListAdapterModel.setLoading(mission.getId(), true))
+                    .doOnTerminate(() -> this.missionListAdapterModel.setLoading(mission.getId(), false))
                     .subscribe(() -> this.displayMission(mission.getId()),
                             e -> {
                                 Log.e(TAG, String.valueOf(e));
