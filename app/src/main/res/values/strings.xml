@@ -276,4 +276,7 @@
     <string name="survey_back_dialog_back">뒤로 가기</string>
     <string name="survey_back_dialog_finish">설문 종료</string>
     <string name="survey_back_dialog_cancel">팝업 닫기</string>
+
+    <!-- Point -->
+    <string name="point_exchange_guide">* 교환 신청 후 3영업일 이내에 지급이 완료됩니다.\n* 핸드폰 MMS로 컬쳐랜드 문화상품권 5천원권을 신청 장 수만큼 보내드려요.</string>
 </resources>
