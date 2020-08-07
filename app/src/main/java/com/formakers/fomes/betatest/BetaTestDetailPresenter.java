@@ -9,6 +9,7 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
@@ -20,7 +21,9 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,8 +49,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private AndroidNativeHelper androidNativeHelper;
     private AppUsageDataHelper appUsageDataHelper;
     private ImageLoader imageLoader;
+    private FirebaseRemoteConfig remoteConfig;
 
     private BetaTestDetailContract.View view;
+    private MissionListAdapterContract.Model missionListAdapterModel;
 
     BetaTest betaTest;
 
@@ -59,7 +64,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                                    FomesUrlHelper fomesUrlHelper,
                                    AndroidNativeHelper androidNativeHelper,
                                    AppUsageDataHelper appUsageDataHelper,
-                                   ImageLoader imageLoader) {
+                                   ImageLoader imageLoader,
+                                   FirebaseRemoteConfig remoteConfig) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
@@ -68,6 +74,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         this.androidNativeHelper = androidNativeHelper;
         this.appUsageDataHelper = appUsageDataHelper;
         this.imageLoader = imageLoader;
+        this.remoteConfig = remoteConfig;
     }
 
     @Override
@@ -80,6 +87,10 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         return this.imageLoader;
     }
 
+    @Override
+    public void setAdapterModel(MissionListAdapterContract.Model adapterModel) {
+        this.missionListAdapterModel = adapterModel;
+    }
 
     @Override
     public void sendEventLog(String code, String ref) {
@@ -139,6 +150,51 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
+    public void displayMissionList() {
+        this.getDisplayedMissionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionList -> {
+                    missionListAdapterModel.clear();
+                    missionListAdapterModel.addAll(missionList);
+                    this.view.refreshMissionList();
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
+    public void displayMission(String missionId) {
+        this.getDisplayedMissionList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionList -> {
+                    missionListAdapterModel.clear();
+                    missionListAdapterModel.addAll(missionList);
+                    this.view.refreshMissionBelowAllChanged(missionListAdapterModel.getPositionById(missionId));
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
+    public boolean isPlaytimeFeatureEnabled() {
+        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_CALCULATE_PLAYTIME);
+    }
+
+    @Override
+    public void updateMissionProgress(String missionId) {
+        if (this.betaTest == null) {
+            return;
+        }
+
+        this.betaTestService.getMissionProgress(betaTest.getId(), missionId)
+                .observeOn(Schedulers.io())
+                .doOnSuccess(mission -> this.missionListAdapterModel.getItemById(missionId).setCompleted(mission.isCompleted()))
+                .flatMapObservable(mission -> this.getDisplayedMissionList())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(displayedMissionList -> {
+                    this.missionListAdapterModel.clear();
+                    this.missionListAdapterModel.addAll(displayedMissionList);
+                    this.view.refreshMissionBelowAllChanged(this.missionListAdapterModel.getPositionById(missionId));
+                }, e -> Log.e(TAG, String.valueOf(e)));
+    }
+
+    @Override
     public void processMissionItemAction(Mission mission) {
         // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
         String action = mission.getAction();
@@ -152,7 +208,6 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         params.putString(FomesUrlHelper.EXTRA_MISSION_ID, mission.getId());
 
         String url = getInterpretedUrl(action, params);
-        Uri uri = Uri.parse(url);
 
         if (FomesConstants.BetaTest.Mission.TYPE_INSTALL.equals(mission.getType())) {
             Intent intent = this.getIntentIfAppIsInstalled(mission.getPackageName());
@@ -163,10 +218,28 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
             }
         }
 
+        if (this.isPlaytimeFeatureEnabled()
+                && FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
+            this.updatePlayTime(mission.getId(), mission.getPackageName())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .flatMapCompletable(playTime -> {
+                        this.view.showToast(DateUtil.convertDurationToString(playTime));
+                        return requestToCompleteMission(mission);
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(x -> this.missionListAdapterModel.setLoading(mission.getId(), true))
+                    .doOnTerminate(() -> this.missionListAdapterModel.setLoading(mission.getId(), false))
+                    .subscribe(() -> this.displayMission(mission.getId()),
+                            e -> {
+                                Log.e(TAG, String.valueOf(e));
+                                this.view.showToast("플레이 시간이 측정되지 않아요!");
+                            });
+            return;
+        }
+
         // below condition logic should be move to URL Manager(or Parser and so on..)
-        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())
-                || (uri.getQueryParameter("internal_web") != null
-                && uri.getQueryParameter("internal_web").equals("true"))) {
+        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())) {
             view.startSurveyWebViewActivity(mission.getId(), mission.getTitle(), url);
         } else {
             // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
@@ -199,7 +272,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 //                        .concatWith(completePlayTypeMission())
                         .subscribe(() -> {
                             this.betaTest.setAttended(true);
-                            this.view.refreshMissionList();
+                            this.displayMissionList();
                         }, e -> Log.e(TAG, String.valueOf(e)))
         );
     }
@@ -209,7 +282,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         return betaTestService.postCompleteMission(this.betaTest.getId(), mission.getId())
                 .doOnCompleted(() -> {
                     mission.setCompleted(true);
-                    this.view.refreshMissionItem(mission.getId());
+                    this.displayMission(mission.getId());
                 });
     }
 
@@ -225,12 +298,15 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName) {
-        return !TextUtils.isEmpty(packageName) ?
-                getPlayTimeAndUpdateView(missionItemId, packageName)
-                : Single.error(new IllegalArgumentException("packageName is null"));
+        if (!TextUtils.isEmpty(packageName)) {
+            return Feature.CALCULATE_PLAY_TIME ? getPlayTimeAndRefreshMissionView(missionItemId, packageName)
+                    : getPlayTime(packageName);
+        } else {
+            return Single.error(new IllegalArgumentException("packageName is null"));
+        }
     }
 
-    private Single<Long> getPlayTimeAndUpdateView(@NonNull String missionItemId, @NonNull String packageName) {
+    private Single<Long> getPlayTime(@NonNull String packageName) {
         return appUsageDataHelper.getUsageTime(packageName, betaTest.getOpenDate().getTime())
                 .map(playTime -> {
                     if (playTime > 0) {
@@ -239,16 +315,22 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                         throw new IllegalStateException("playtime is under than 0");
                     }
                 })
-                .toSingle()
-                .zipWith(Observable.from(betaTest.getMissions())
-                        .filter(mission -> missionItemId.equals(mission.getId()))
-                        .toSingle(), Pair::new)
+                .toSingle();
+    }
+
+    private Single<Long> getPlayTimeAndRefreshMissionView(@NonNull String missionId, @NonNull String packageName) {
+        Single<Mission> findMissionSingle = Observable.from(betaTest.getMissions())
+                .filter(mission -> missionId.equals(mission.getId()))
+                .toSingle();
+
+        return this.getPlayTime(packageName)
+                .zipWith(findMissionSingle, Pair::new)
                 .map(pair -> {
                     pair.second.setTotalPlayTime(pair.first);
                     return pair.first;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(playTime -> this.view.refreshMissionItem(missionItemId));
+                .doOnSuccess(playTime -> this.displayMission(missionId));
     }
 
     private Observable<Mission> getMissionListWithLockingSequence() {

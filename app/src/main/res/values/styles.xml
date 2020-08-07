@@ -484,9 +484,17 @@
         <item name="android:textColor">@color/fomes_light_gray</item>
     </style>
 
+    <style name="BetaTestDetailTheme.SectionGuideContent">
+        <item name="android:textSize">@dimen/betatest_detail_section_content_text_size</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
     <style name="BetaTestDetailTheme.RewardDivider">
-        <item name="divider_height">12dp</item>
-        <item name="divider_color">@android:color/transparent</item>
+        <item name="divider_height">15dp</item>
+        <item name="divider_color">@color/fomes_deep_gray</item>
+        <item name="item_background_radius">10dp</item>
+        <item name="item_solid_color">@color/fomes_deep_gray</item>
+        <item name="item_stroke_width">0dp</item>
     </style>
 
     <style name="BetaTestDetailTheme.HowToDivider">

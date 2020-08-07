@@ -322,13 +322,25 @@
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:padding="15dp"
                 android:showDividers="middle"
                 android:divider="@drawable/divider"
                 android:theme="@style/BetaTestDetailTheme.RewardDivider"
+                android:background="@drawable/item_rect_rounded_corner_background"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_howto_title_textview"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_reward_description_textview"/>
+
+            <TextView
+                android:id="@+id/betatest_reward_guide_textview"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                style="@style/BetaTestDetailTheme.SectionGuideContent"
+                android:layout_marginTop="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_items_layout"
+                app:layout_constraintStart_toStartOf="@+id/betatest_reward_title_textview"
+                app:layout_constraintEnd_toEndOf="@+id/betatest_reward_title_textview" />
 
             <View
                 android:id="@+id/betatest_reward_divider"
@@ -336,7 +348,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/betatest_detail_divider_margin_top"
                 android:background="@color/fomes_black_alpha_75"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_items_layout"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_reward_guide_textview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

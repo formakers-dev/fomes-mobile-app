@@ -27,11 +27,14 @@ public interface BetaTestDetailContract {
         AnalyticsModule.Analytics getAnalytics();
         ImageLoader getImageLoader();
 
+        void setAdapterModel(MissionListAdapterContract.Model adapterModel);
+
         void sendEventLog(String code, String ref);
 
         void load(String id);
 
         Single<Mission> getMissionProgress(String missionId);
+        void updateMissionProgress(String missionId);
 
         void processMissionItemAction(Mission missionItem);
         String getInterpretedUrl(String originalUrl, Bundle params);
@@ -42,14 +45,20 @@ public interface BetaTestDetailContract {
 
         Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName);
         Intent getIntentIfAppIsInstalled(String packageName);
+
+        void displayMissionList();
+        void displayMission(String missionId);
+
+        boolean isPlaytimeFeatureEnabled();
     }
 
     interface View extends BaseView<Presenter> {
         void bind(BetaTest betaTest);
         void showLoading();
         void hideLoading();
+        void showToast(String message);
         void refreshMissionList();
-        void refreshMissionItem(String missionItemId);
+        void refreshMissionBelowAllChanged(int missionPosition);
 
         android.view.View inflate(@LayoutRes int layoutResId);
         void startSurveyWebViewActivity(String missionId, String title, String url);

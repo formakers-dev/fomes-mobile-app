@@ -49,6 +49,9 @@ public class ApplicationModule {
                 Log.d("FirebaseRemoteConfig", "Config params updated: " + updated);
                 if (BuildConfig.DEBUG) {
                     Log.v("FirebaseRemoteConfig", "Config params updated: " + remoteConfig.getAll());
+                    for (String key : remoteConfig.getAll().keySet()) {
+                        Log.v("FirebaseRemoteConfig", key + ": " + remoteConfig.getValue(key).asString());
+                    }
                     Toast.makeText(context, "[Firebase Remote Config] Fetch and activate succeeded", Toast.LENGTH_SHORT).show();
                 }
             } else {

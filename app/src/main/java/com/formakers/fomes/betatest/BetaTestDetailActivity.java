@@ -42,7 +42,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.formakers.fomes.common.constant.FomesConstants.FomesEventLog.Code.BETA_TEST_DETAIL_ENTER;
@@ -70,6 +69,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_game_description_group) Group gameDescriptionGroup;
     @BindView(R.id.betatest_detail_game_description_textview) TextView descriptionTextView;
     @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
+    @BindView(R.id.betatest_reward_guide_textview) TextView rewardGuideTextView;
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
     @BindView(R.id.betatest_purpose_group) Group purposeGroup;
     @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
@@ -82,7 +82,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     BetaTestDetailContract.Presenter presenter;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
-    private MissionListAdapter missionListAdapter;
+    private MissionListAdapterContract.View missionListAdapterView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,13 +128,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         if (requestCode == REQUEST_CODE_MISSION) {
             if (data != null) {
                 String missionId = data.getStringExtra(FomesConstants.WebView.EXTRA_MISSION_ID);
-
-                this.presenter.getMissionProgress(missionId)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(mission -> {
-                            this.missionListAdapter.getItem(missionId).setCompleted(mission.isCompleted());
-                            this.refreshMissionItem(missionId);
-                        }, e -> Log.e(TAG, String.valueOf(e)));
+                Log.v(TAG, "onActivityResult missionId=" + missionId);
+                this.missionListAdapterView.clickRefreshButton(missionId);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -293,8 +288,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             rewardViewGroup.addView(rewardItemView);
         }
 
+        int rewardDelayDays = betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY;
+
+        // 테스트 보상 지급일 가이드
+        rewardGuideTextView.setText(String.format(getString(R.string.betatest_detail_reward_date_guide), rewardDelayDays));
+
         // 테스트 방법
-        howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
+        howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), rewardDelayDays));
 
         Observable.from(betaTest.getMissions())
                 .subscribe(displayedMission -> {
@@ -330,21 +330,19 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
 
         missionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        missionRecyclerView.setHasFixedSize(true);
 
         ContentDividerItemDecoration dividerItemDecoration = new ContentDividerItemDecoration(this, ContentDividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider,
                 new ContextThemeWrapper(this, R.style.FomesMainTabTheme_BetaTestDivider).getTheme()));
         missionRecyclerView.addItemDecoration(dividerItemDecoration);
-        missionListAdapter = new MissionListAdapter(presenter, this);
+
+        MissionListAdapter missionListAdapter = new MissionListAdapter(presenter);
+        missionListAdapterView = missionListAdapter;
+        this.presenter.setAdapterModel(missionListAdapter);
         missionRecyclerView.setAdapter(missionListAdapter);
 
-        // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
-        presenter.getDisplayedMissionList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(missionList -> {
-                    missionListAdapter.setMissionList(missionList);
-                    missionListAdapter.notifyDataSetChanged();
-                }, e -> Log.e(TAG, String.valueOf(e)));
+        this.presenter.displayMissionList();
 
         contentsLayout.setVisibility(View.VISIBLE);
     }
@@ -360,26 +358,19 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
-    public void refreshMissionList() {
-        Log.d(TAG, "refreshMissionList");
-
-        // TODO : [Adapter MVP] 리팩토링 후 Presenter 로 로직 이동 필요.. 이름은 아마도 refresh? 혹은 reset..?? set..??
-        presenter.getDisplayedMissionList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(missionList -> {
-                    missionListAdapter.setMissionList(missionList);
-                    missionListAdapter.notifyDataSetChanged();
-                }, e -> Log.e(TAG, String.valueOf(e)));
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void refreshMissionItem(String missionItemId) {
-        presenter.getDisplayedMissionList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(missionList -> {
-                    missionListAdapter.setMissionList(missionList);
-                    missionListAdapter.notifyItemBelowAllChanged(missionListAdapter.getPositionByMissionId(missionItemId));
-                }, e -> Log.e(TAG, String.valueOf(e)));
+    public void refreshMissionList() {
+        Log.d(TAG, "refreshMissionList");
+        this.missionListAdapterView.notifyDataSetChanged();
+    }
+
+    @Override
+    public void refreshMissionBelowAllChanged(int missionPosition) {
+        this.missionListAdapterView.notifyItemBelowAllChanged(missionPosition);
     }
 
     @Override
