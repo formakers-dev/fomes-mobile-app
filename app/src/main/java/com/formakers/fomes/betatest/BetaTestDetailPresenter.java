@@ -23,6 +23,7 @@ import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +49,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private AndroidNativeHelper androidNativeHelper;
     private AppUsageDataHelper appUsageDataHelper;
     private ImageLoader imageLoader;
+    private FirebaseRemoteConfig remoteConfig;
 
     private BetaTestDetailContract.View view;
     private MissionListAdapterContract.Model missionListAdapterModel;
@@ -62,7 +64,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                                    FomesUrlHelper fomesUrlHelper,
                                    AndroidNativeHelper androidNativeHelper,
                                    AppUsageDataHelper appUsageDataHelper,
-                                   ImageLoader imageLoader) {
+                                   ImageLoader imageLoader,
+                                   FirebaseRemoteConfig remoteConfig) {
         this.view = view;
         this.analytics = analytics;
         this.betaTestService = betaTestService;
@@ -71,6 +74,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
         this.androidNativeHelper = androidNativeHelper;
         this.appUsageDataHelper = appUsageDataHelper;
         this.imageLoader = imageLoader;
+        this.remoteConfig = remoteConfig;
     }
 
     @Override
@@ -168,6 +172,11 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
+    public boolean isPlaytimeFeatureEnabled() {
+        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_CALCULATE_PLAYTIME);
+    }
+
+    @Override
     public void updateMissionProgress(String missionId) {
         if (this.betaTest == null) {
             return;
@@ -209,7 +218,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
             }
         }
 
-        if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
+        if (this.isPlaytimeFeatureEnabled()
+                && FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
             this.updatePlayTime(mission.getId(), mission.getPackageName())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMapCompletable(playTime -> {
@@ -225,14 +235,15 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                                 Log.e(TAG, String.valueOf(e));
                                 this.view.showToast("플레이 시간이 측정되지 않아요!");
                             });
+            return;
+        }
+
+        // below condition logic should be move to URL Manager(or Parser and so on..)
+        if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())) {
+            view.startSurveyWebViewActivity(mission.getId(), mission.getTitle(), url);
         } else {
-            // below condition logic should be move to URL Manager(or Parser and so on..)
-            if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())) {
-                view.startSurveyWebViewActivity(mission.getId(), mission.getTitle(), url);
-            } else {
-                // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
-                view.startByDeeplink(Uri.parse(url));
-            }
+            // Default가 딥링크인게 좋을 것 같음... 여러가지 방향으로 구현가능하니까
+            view.startByDeeplink(Uri.parse(url));
         }
     }
 

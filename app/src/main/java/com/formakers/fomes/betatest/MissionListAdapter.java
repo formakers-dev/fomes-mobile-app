@@ -207,7 +207,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     boolean isDisableRefreshButton(Mission mission) {
-        return FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())
+        return (this.presenter.isPlaytimeFeatureEnabled() && FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType()))
                 || mission.isCompleted()
                 || mission.isLoading();
     }

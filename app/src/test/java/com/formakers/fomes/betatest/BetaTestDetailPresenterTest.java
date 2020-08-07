@@ -14,6 +14,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.gson.Gson;
 
 import org.junit.Before;
@@ -57,6 +58,7 @@ public class BetaTestDetailPresenterTest {
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
     @Mock AppUsageDataHelper mockAppUsageDataHelper;
     @Mock ImageLoader mockImageLoader;
+    @Mock FirebaseRemoteConfig mockRemoteConfig;
     @Mock MissionListAdapterContract.Model mockMissionListAdapterModel;
 
     BetaTestDetailPresenter subject;
@@ -90,7 +92,7 @@ public class BetaTestDetailPresenterTest {
         when(mockEventLogService.sendEventLog(any(EventLog.class))).thenReturn(Completable.complete());
         when(mockView.getCompositeSubscription()).thenReturn(new CompositeSubscription());
 
-        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper, mockAppUsageDataHelper, mockImageLoader);
+        subject = new BetaTestDetailPresenter(mockView, mockAnalytics, mockEventLogService, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper, mockAppUsageDataHelper, mockImageLoader, mockRemoteConfig);
         subject.setAdapterModel(mockMissionListAdapterModel);
     }
 

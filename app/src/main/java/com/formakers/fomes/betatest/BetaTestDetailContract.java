@@ -48,6 +48,8 @@ public interface BetaTestDetailContract {
 
         void displayMissionList();
         void displayMission(String missionId);
+
+        boolean isPlaytimeFeatureEnabled();
     }
 
     interface View extends BaseView<Presenter> {
