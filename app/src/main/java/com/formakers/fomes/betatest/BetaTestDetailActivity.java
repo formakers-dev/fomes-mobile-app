@@ -69,6 +69,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_game_description_group) Group gameDescriptionGroup;
     @BindView(R.id.betatest_detail_game_description_textview) TextView descriptionTextView;
     @BindView(R.id.betatest_reward_items_layout) ViewGroup rewardViewGroup;
+    @BindView(R.id.betatest_reward_guide_textview) TextView rewardGuideTextView;
     @BindView(R.id.betatest_mission_list) RecyclerView missionRecyclerView;
     @BindView(R.id.betatest_purpose_group) Group purposeGroup;
     @BindView(R.id.betatest_purpose_title_textview) TextView purposeTitleTextView;
@@ -287,8 +288,13 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             rewardViewGroup.addView(rewardItemView);
         }
 
+        int rewardDelayDays = betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY;
+
+        // 테스트 보상 지급일 가이드
+        rewardGuideTextView.setText(String.format(getString(R.string.betatest_detail_reward_date_guide), rewardDelayDays));
+
         // 테스트 방법
-        howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), betaTest.getRewards().getMinimumDelay() != null ? betaTest.getRewards().getMinimumDelay() : DEFAULT_REWARDS_MINIMUM_DELAY));
+        howtoGuideTextView.setText(String.format(getString(R.string.betatest_detail_howto_guide), rewardDelayDays));
 
         Observable.from(betaTest.getMissions())
                 .subscribe(displayedMission -> {
