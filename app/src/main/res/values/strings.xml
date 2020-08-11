@@ -278,5 +278,12 @@
     <string name="survey_back_dialog_cancel">팝업 닫기</string>
 
     <!-- Point -->
-    <string name="point_exchange_guide">* 교환 신청 후 3영업일 이내에 지급이 완료됩니다.\n* 핸드폰 MMS로 컬쳐랜드 문화상품권 5천원권을 신청 장 수만큼 보내드려요.</string>
+    <string name="my_point">나의 포메스 포인트</string>
+    <string name="my_point_menu_history">내역</string>
+    <string name="my_point_menu_exchange">교환</string>
+    <string name="current_point">현재 포인트</string>
+    <string name="accumulated_point">누적 포인트</string>
+    <string name="point_history_empty">포인트 내역이 존재하지 않습니다</string>
+    <string name="point_exchange_limit_guide">※ 5,000P 부터 문화상품권으로 교환할 수 있습니다.</string>
+    <string name="point_exchange_guide">※ 교환 신청 후 3영업일 이내에 지급이 완료됩니다.\n※ 핸드폰 MMS로 컬쳐랜드 문화상품권 5천원권을 신청 장 수만큼 보내드려요.</string>
 </resources>

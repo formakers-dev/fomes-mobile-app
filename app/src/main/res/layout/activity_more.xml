@@ -97,20 +97,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="나의 포메스 포인트"/>
-
-            <TextView
-                android:id="@+id/my_available_point_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/fomes_white_alpha_87"
-                android:textSize="18dp"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/my_point_title"
-                android:text="가용 포인트"/>
+                android:text="@string/my_point"/>
 
             <LinearLayout
                 android:id="@+id/my_available_point_layout"
@@ -149,7 +136,7 @@
                     android:textSize="@dimen/point_menu_text_size"
                     android:textColor="@color/fomes_white"
                     android:foreground="@drawable/ripple"
-                    android:text="내역"/>
+                    android:text="@string/my_point_menu_history"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,7 +156,7 @@
                     android:textSize="@dimen/point_menu_text_size"
                     android:textColor="@color/white_text_color_selector"
                     android:foreground="@drawable/ripple"
-                    android:text="교환"
+                    android:text="@string/my_point_menu_exchange"
                     android:enabled="false"/>
             </LinearLayout>
 
@@ -180,7 +167,7 @@
                 android:layout_marginTop="15dp"
                 android:textSize="@dimen/betatest_detail_guide_text_size"
                 android:textColor="@color/colorPrimary"
-                android:text="※ 가용포인트 5,000P 부터 문화상품권으로 교환할 수 있습니다."
+                android:text="@string/point_exchange_limit_guide"
                 app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintTop_toBottomOf="@+id/my_available_point_layout"
                 app:layout_constraintStart_toStartOf="parent"

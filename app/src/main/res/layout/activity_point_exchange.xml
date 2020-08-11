@@ -37,7 +37,7 @@
                 android:textColor="@color/fomes_white_alpha_87"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:text="신청 가능 포인트"/>
+                android:text="@string/current_point"/>
 
             <TextView
                 android:id="@+id/my_available_point"

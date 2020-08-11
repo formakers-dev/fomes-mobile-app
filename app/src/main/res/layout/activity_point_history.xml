@@ -21,7 +21,7 @@
             android:layout_marginTop="30dp"
             android:textColor="@color/fomes_white"
             android:textSize="16dp"
-            android:text="교환 가능 포인트"
+            android:text="@string/current_point"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/summary_divider"/>
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/fomes_white"
             android:textSize="16dp"
-            android:text="누적 포인트"
+            android:text="@string/accumulated_point"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/summary_divider"
             app:layout_constraintTop_toTopOf="@+id/available_point_title"/>
@@ -121,7 +121,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="포인트 내역이 존재하지 않습니다."
+            android:text="@string/point_history_empty"
             />
 
         <com.facebook.shimmer.ShimmerFrameLayout
