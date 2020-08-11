@@ -122,7 +122,18 @@
             android:theme="@style/BetaTestDetailTheme"
             android:label="@string/common_empty_string"/>
         <activity android:name=".betatest.BetaTestCertificateActivity"/>
-        <activity android:name=".point.history.PointHistoryActivity"/>
+        <activity android:name=".point.history.PointHistoryActivity"
+            android:parentActivityName=".main.MainActivity"
+            android:label="@string/common_empty_string">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="fomes" android:host="point" android:path="/history"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main.MainActivity" />
+        </activity>
         <activity android:name=".point.exchange.PointExchangeActivity"/>
 
     </application>
