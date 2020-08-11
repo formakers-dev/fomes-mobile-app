@@ -42,7 +42,8 @@ public class ChannelManager {
     public enum Channel {
         DEFAULT("channel_default"),
         ANNOUNCE("channel_announce", "공지사항"),
-        BETATEST("channel_betatest", "테스트 관련");
+        BETATEST("channel_betatest", "테스트 관련"),
+        POINT("channel_point", "포인트 안내");
 
         final String id;
         final String title;
