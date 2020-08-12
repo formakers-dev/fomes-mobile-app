@@ -8,11 +8,16 @@ public interface MenuListContract {
         void bindUserInfo();
         void bindCompletedBetaTestsCount();
         void bindAvailablePoint();
+
+        boolean isActivatedPointSystem();
     }
 
     interface View extends BaseView<Presenter> {
         void setUserInfo(String email, String nickName);
         void setCompletedBetaTestsCount(int count);
         void setAvailablePoint(long point);
+
+        void showPointSystemViews();
+        void hidePointSystemViews();
     }
 }

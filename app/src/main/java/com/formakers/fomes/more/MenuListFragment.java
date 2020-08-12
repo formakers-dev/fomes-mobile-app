@@ -48,6 +48,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @BindView(R.id.more_email) TextView emailTextView;
     @BindView(R.id.more_nickname) TextView nickNameTextView;
     @BindView(R.id.more_participation_count) TextView participationCountTextView;
+    @BindView(R.id.my_point_layout) ViewGroup pointLayout;
     @BindView(R.id.my_available_point) TextView availablePointTextView;
     @BindView(R.id.point_history_button) TextView pointHistoryButton;
     @BindView(R.id.more_menu_list) RecyclerView menuListView;
@@ -164,6 +165,16 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         availablePointTextView.startAnimation(getFadeInAnimation(300));
 
         exchangePointButton.setEnabled(point >= 5000L);
+    }
+
+    @Override
+    public void showPointSystemViews() {
+        this.pointLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hidePointSystemViews() {
+        this.pointLayout.setVisibility(View.GONE);
     }
 
     @Override
