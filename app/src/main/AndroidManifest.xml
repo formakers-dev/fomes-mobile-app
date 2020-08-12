@@ -134,7 +134,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main.MainActivity" />
         </activity>
-        <activity android:name=".point.exchange.PointExchangeActivity"/>
+        <activity android:name=".point.exchange.PointExchangeActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
 
     </application>
 
