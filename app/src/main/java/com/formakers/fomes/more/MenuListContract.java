@@ -17,8 +17,6 @@ public interface MenuListContract {
         void setCompletedBetaTestsCount(int count);
         void setAvailablePoint(long point);
 
-        void showPointSystemViews();
-        void hidePointSystemViews();
         void showAvailablePointLoading();
         void hideAvailablePointLoading();
     }

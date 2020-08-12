@@ -88,6 +88,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_divider"
+            tools:visibility="visible"
             >
             <TextView
                 android:id="@+id/my_point_title"
@@ -189,10 +190,10 @@
                 android:visibility="gone"
                 app:shimmer_auto_start="false"
                 app:shimmer_duration="800"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintStart_toStartOf="@+id/my_available_point_layout"
+                app:layout_constraintEnd_toEndOf="@+id/my_available_point_layout"
+                app:layout_constraintTop_toTopOf="@+id/my_available_point_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/my_available_point_layout">
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

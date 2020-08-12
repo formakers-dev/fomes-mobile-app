@@ -68,10 +68,7 @@ public class MenuListPresenter implements MenuListContract.Presenter {
                     .doAfterTerminate(() -> this.view.hideAvailablePointLoading())
                     .subscribe(point -> {
                         this.view.setAvailablePoint(point);
-                        this.view.showPointSystemViews();
                     }, e -> Log.e(TAG, String.valueOf(e)));
-        } else {
-            this.view.hidePointSystemViews();
         }
     }
 

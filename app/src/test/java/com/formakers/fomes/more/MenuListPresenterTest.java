@@ -19,7 +19,9 @@ import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -81,15 +83,14 @@ public class MenuListPresenterTest {
         subject.bindAvailablePoint();
 
         verify(this.mockView).setAvailablePoint(3000L);
-        verify(this.mockView).showPointSystemViews();
     }
 
     @Test
-    public void bindAvailablePoint_호출시__포인트시스템_OFF이면__포인트관련_뷰를_감춘다() {
+    public void bindAvailablePoint_호출시__포인트시스템_OFF이면__아무것도_하지않는다() {
         when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM)).thenReturn(false);
 
         subject.bindAvailablePoint();
 
-        verify(this.mockView).hidePointSystemViews();
+        verify(this.mockView, never()).setAvailablePoint(anyLong());
     }
 }

@@ -78,6 +78,8 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        this.pointLayout.setVisibility(this.presenter.isActivatedPointSystem() ? View.VISIBLE : View.GONE);
+
         this.presenter.bindUserInfo();
         this.presenter.bindCompletedBetaTestsCount();
         this.presenter.bindAvailablePoint();
@@ -174,16 +176,6 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
 
         exchangePointButton.setEnabled(point >= 5000L);
-    }
-
-    @Override
-    public void showPointSystemViews() {
-        this.pointLayout.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hidePointSystemViews() {
-        this.pointLayout.setVisibility(View.GONE);
     }
 
     @Override
