@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -265,12 +263,6 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
                 bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS));
 
         refreshAwardPagerView();
-    }
-
-    private Animation getFadeInAnimation(long durationMills) {
-        Animation in = new AlphaAnimation(0.0f, 1.0f);
-        in.setDuration(durationMills);
-        return in;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.formakers.fomes.more;
 
 import com.formakers.fomes.common.network.BetaTestService;
+import com.formakers.fomes.common.network.PointService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,7 @@ public class MenuListPresenterTest {
 
     @Mock MenuListContract.View mockView;
     @Mock BetaTestService mockBetaTestService;
+    @Mock PointService mockPointService;
 
     MenuListPresenter subject;
 
@@ -46,8 +48,12 @@ public class MenuListPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         when(mockBetaTestService.getCompletedBetaTestsCount()).thenReturn(Single.just(3));
+        when(mockPointService.getAvailablePoint()).thenReturn(Single.just(3000L));
 
-        subject = new MenuListPresenter(mockView, Single.just("email"), Single.just("nickName"), mockBetaTestService);
+        subject = new MenuListPresenter(mockView,
+                Single.just("email"), Single.just("nickName"),
+                mockBetaTestService,
+                mockPointService);
     }
 
     @Test
@@ -62,5 +68,12 @@ public class MenuListPresenterTest {
         subject.bindCompletedBetaTestsCount();
 
         verify(this.mockView).setCompletedBetaTestsCount(3);
+    }
+
+    @Test
+    public void bindAvailablePoint_호출시__총_가용_포인트를_가져와서__뷰에_셋팅한다() {
+        subject.bindAvailablePoint();
+
+        verify(this.mockView).setAvailablePoint(3000L);
     }
 }

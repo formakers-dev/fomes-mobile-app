@@ -59,21 +59,152 @@
             android:layout_marginBottom="23dp"
             android:textColor="@color/fomes_white_alpha_75"
             android:textSize="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/more_menu_list"
+            app:layout_constraintBottom_toTopOf="@+id/profile_divider"
             app:layout_constraintStart_toStartOf="@+id/more_nickname"
             app:layout_constraintTop_toBottomOf="@+id/more_nickname"
             tools:text="bolim.lee@formakers.net"/>
 
+        <View
+            android:id="@+id/profile_divider"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:layout_marginTop="23dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/more_email"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/my_point_layout"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:paddingTop="23dp"
+            android:paddingBottom="23dp"
+            android:paddingStart="22dp"
+            android:paddingEnd="22dp"
+            android:background="@color/fomes_deep_dark_gray"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_divider"
+            >
+            <TextView
+                android:id="@+id/my_point_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/fomes_white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/my_point"/>
+
+            <LinearLayout
+                android:id="@+id/my_available_point_layout"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:theme="@style/PointTheme.Box"
+                android:background="@drawable/item_rect_rounded_corner_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_point_title"
+                >
+
+                <TextView
+                    android:id="@+id/my_available_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/fomes_white"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    tools:text="30,000 P"/>
+
+                <TextView
+                    android:id="@+id/point_history_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="@dimen/point_menu_text_size"
+                    android:textColor="@color/fomes_white"
+                    android:foreground="@drawable/ripple"
+                    android:text="@string/my_point_menu_history"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textSize="@dimen/point_menu_text_size"
+                    android:textColor="@color/fomes_white"
+                    android:foreground="@drawable/ripple"
+                    android:text="|"/>
+
+                <TextView
+                    android:id="@+id/exchange_point_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="@dimen/point_menu_text_size"
+                    android:textColor="@color/white_text_color_selector"
+                    android:foreground="@drawable/ripple"
+                    android:text="@string/my_point_menu_exchange"
+                    android:enabled="false"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mission_guide"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textSize="@dimen/betatest_detail_guide_text_size"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/point_exchange_limit_guide"
+                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/my_available_point_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/my_point_divider"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_point_layout"
+            />
+
+        <View
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            android:background="@color/fomes_deep_dark_gray"
+            app:layout_constraintTop_toTopOf="@+id/more_menu_list"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/more_menu_list"
             android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/match_constraint"
-            android:overScrollMode="never"
+            android:layout_height="wrap_content"
+            android:paddingBottom="50dp"
+            android:nestedScrollingEnabled="false"
             android:background="@color/fomes_deep_dark_gray"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/more_email" />
+            app:layout_constraintTop_toBottomOf="@+id/my_point_divider" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -1,5 +1,6 @@
 package com.formakers.fomes.more;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,14 +20,18 @@ import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants.More;
+import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter;
 import com.formakers.fomes.common.view.custom.adapter.MenuListAdapter.MenuItem;
 import com.formakers.fomes.main.MainActivity;
+import com.formakers.fomes.point.exchange.PointExchangeActivity;
+import com.formakers.fomes.point.history.PointHistoryActivity;
 import com.formakers.fomes.settings.MyInfoActivity;
 import com.formakers.fomes.settings.SettingsActivity;
 import com.formakers.fomes.wishList.WishListActivity;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +41,21 @@ import butterknife.BindView;
 
 public class MenuListFragment extends BaseFragment implements MenuListContract.View, MenuListAdapter.OnItemClickListener {
 
+    private static final String TAG = "MenuListFragment";
+
+    private static final int REQUEST_CODE_EXCHANGE = 1001;
+
     @BindView(R.id.more_email) TextView emailTextView;
     @BindView(R.id.more_nickname) TextView nickNameTextView;
     @BindView(R.id.more_participation_count) TextView participationCountTextView;
+    @BindView(R.id.my_point_layout) ViewGroup pointLayout;
+    @BindView(R.id.my_available_point) TextView availablePointTextView;
+    @BindView(R.id.point_history_button) TextView pointHistoryButton;
     @BindView(R.id.more_menu_list) RecyclerView menuListView;
+    @BindView(R.id.exchange_point_button) TextView exchangePointButton;
 
-    @Inject MenuListContract.Presenter presenter;
+    @Inject
+    MenuListContract.Presenter presenter;
     private MenuListAdapter menuListAdapter;
 
     @Nullable
@@ -63,13 +77,34 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
         this.presenter.bindUserInfo();
         this.presenter.bindCompletedBetaTestsCount();
+        this.presenter.bindAvailablePoint();
         this.setMenuListView();
+
+        availablePointTextView.setOnClickListener(v -> this.startPointHistoryActivity());
+        pointHistoryButton.setOnClickListener(v -> this.startPointHistoryActivity());
+
+        exchangePointButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PointExchangeActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_EXCHANGE);
+        });
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+
+        if (requestCode == REQUEST_CODE_EXCHANGE
+                && resultCode == Activity.RESULT_OK) {
+            this.presenter.bindAvailablePoint();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -102,6 +137,11 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         return menuItemList;
     }
 
+    private void startPointHistoryActivity() {
+        Intent intent = new Intent(context, PointHistoryActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
     public void setUserInfo(String email, String nickName) {
         if (this.isNotAvailableWidget()) {
@@ -123,10 +163,28 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     }
 
     @Override
+    public void setAvailablePoint(long point) {
+        availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
+        availablePointTextView.startAnimation(getFadeInAnimation(300));
+
+        exchangePointButton.setEnabled(point >= 5000L);
+    }
+
+    @Override
+    public void showPointSystemViews() {
+        this.pointLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hidePointSystemViews() {
+        this.pointLayout.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onItemClick(MenuListAdapter.MenuItem item, View view) {
         Intent intent = new Intent();
 
-        switch(item.getId()) {
+        switch (item.getId()) {
             case More.MENU_HOW_TO_PC: {
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("https://www.notion.so/formakers/PC-4e409af0c2df4dfa9734328c9817f317"));
