@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import rx.Observable;
+import rx.Single;
+import rx.observables.MathObservable;
+
 public class BetaTest implements Parcelable {
     @SerializedName("_id") String id;
 
@@ -309,6 +313,8 @@ public class BetaTest implements Parcelable {
             @Deprecated String type;
             Integer typeCode;
             Integer count;
+            Integer price;
+            String paymentType;
 
             public Integer getOrder() {
                 return order == null ? 0 : order;
@@ -375,6 +381,41 @@ public class BetaTest implements Parcelable {
                 return this;
             }
 
+            public Integer getPrice() {
+                return price;
+            }
+
+            public RewardItem setPrice(Integer price) {
+                this.price = price;
+                return this;
+            }
+
+            public String getPaymentType() {
+                return paymentType;
+            }
+
+            public RewardItem setPaymentType(String paymentType) {
+                this.paymentType = paymentType;
+                return this;
+            }
+
+            public String getPaymentTypeDisplayString() {
+                if (TextUtils.isEmpty(this.paymentType)) {
+                    return "문화상품권";
+                }
+
+                switch(this.paymentType) {
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT:
+                        return "포인트";
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_GAME_ITEM:
+                        return "게임아이템";
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_ETC:
+                        return "기타 보상";
+                    default:
+                        return "문화상품권";
+                }
+            }
+
             @Override
             public String toString() {
                 return "RewardItem{" +
@@ -385,6 +426,8 @@ public class BetaTest implements Parcelable {
                         ", type='" + type + '\'' +
                         ", typeCode=" + typeCode +
                         ", count=" + count +
+                        ", price=" + price +
+                        ", paymentType='" + paymentType + '\'' +
                         '}';
             }
 
@@ -403,8 +446,10 @@ public class BetaTest implements Parcelable {
                 dest.writeString(title);
                 dest.writeString(content);
                 dest.writeString(type);
-                dest.writeInt(typeCode);
+                dest.writeInt(typeCode == null ? 0 : typeCode);
                 dest.writeInt(count == null ? 0 : count);
+                dest.writeInt(price == null ? 0 : price);
+                dest.writeString(paymentType);
             }
 
             private void readFromParcel(Parcel in) {
@@ -415,6 +460,8 @@ public class BetaTest implements Parcelable {
                 type = in.readString();
                 typeCode = in.readInt();
                 count = in.readInt();
+                price = in.readInt();
+                paymentType = in.readString();
             }
 
             @Override
@@ -449,6 +496,36 @@ public class BetaTest implements Parcelable {
         public Rewards setList(List<RewardItem> list) {
             this.list = list;
             return this;
+        }
+
+        public RewardItem getMinReward() {
+            Observable<RewardItem> rewards = Observable.from(this.list);
+            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType()));
+
+            return getMinRewardItemByTypeCode(pointRewards)
+                    .onErrorResumeNext(e -> getMinRewardItemByTypeCode(rewards))
+                    .toBlocking().value();
+        }
+
+        private Single<RewardItem> getMinRewardItemByTypeCode(Observable<RewardItem> rewards) {
+            return MathObservable.from(rewards)
+                    .min((a, b) -> Integer.compare(a.getTypeCode(), b.getTypeCode()))
+                    .toSingle();
+        }
+
+        public RewardItem getMaxReward() {
+            Observable<RewardItem> rewards = Observable.from(this.list);
+            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType()));
+
+            return getMaxRewardItemByTypeCode(pointRewards)
+                    .onErrorResumeNext(e -> getMaxRewardItemByTypeCode(rewards))
+                    .toBlocking().value();
+        }
+
+        private Single<RewardItem> getMaxRewardItemByTypeCode(Observable<RewardItem> rewards) {
+            return MathObservable.from(rewards)
+                    .max((a, b) -> Integer.compare(a.getTypeCode(), b.getTypeCode()))
+                    .toSingle();
         }
 
         @Override

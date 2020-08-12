@@ -67,6 +67,12 @@ public interface FomesConstants {
 
             String ACTION_TYPE_INTERNAL_WEB = "internal_web";
         }
+
+        interface Reward {
+            String PAYMENT_TYPE_POINT = "point";
+            String PAYMENT_TYPE_GAME_ITEM = "game-item";
+            String PAYMENT_TYPE_ETC = "etc";
+        }
     }
 
     interface Settings {

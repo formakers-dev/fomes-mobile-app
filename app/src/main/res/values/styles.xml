@@ -437,6 +437,17 @@
         <item name="item_stroke_color">@color/fomes_black_alpha_75</item>
     </style>
 
+    <style name="BetaTestTheme.MainTag">
+        <item name="item_background_radius">3dp</item>
+        <item name="item_solid_color">@color/fomes_black_alpha_75</item>
+        <item name="item_stroke_width">1dp</item>
+    </style>
+
+    <style name="BetaTestTheme.MainTag.BlushPink">
+        <item name="item_stroke_color">@color/fomes_blush_pink</item>
+    </style>
+
+
     <style name="BetaTestTheme.Notice"/>
 
     <style name="BetaTestTheme.Notice.InnerBox">

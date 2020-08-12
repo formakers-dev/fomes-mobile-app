@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 import com.google.android.material.chip.Chip;
@@ -134,6 +135,15 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             planNameColorId = R.color.colorPrimary;
         }
 
+        BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
+        String rewardText;
+        if (FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(minRewardItem.getPaymentType())) {
+            rewardText = "최소 " + minRewardItem.getPrice() + "P";
+        } else {
+            rewardText = minRewardItem.getPaymentTypeDisplayString();
+        }
+        viewHolder.rewardTextView.setText(rewardText);
+
         viewHolder.planTextView.setText(betaTest.getPlanStringResId());
         viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
         viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
@@ -207,6 +217,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView titleTextView;
         TextView subTitleTextView;
         TextView projectStatusTextView;
+        TextView rewardTextView;
         TextView planTextView;
         TextView myStatusTextView;
         ImageView overviewImageView;
@@ -219,6 +230,7 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
             projectStatusTextView = itemView.findViewById(R.id.betatest_project_status);
+            rewardTextView = itemView.findViewById(R.id.betatest_reward);
             planTextView = itemView.findViewById(R.id.betatest_plan);
             myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
             overviewImageView = itemView.findViewById(R.id.betatest_overview_imageview);
