@@ -1,7 +1,9 @@
 package com.formakers.fomes.more;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.PointService;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +29,7 @@ public class MenuListPresenterTest {
     @Mock MenuListContract.View mockView;
     @Mock BetaTestService mockBetaTestService;
     @Mock PointService mockPointService;
+    @Mock FirebaseRemoteConfig mockRemoteConfig;
 
     MenuListPresenter subject;
 
@@ -53,7 +56,8 @@ public class MenuListPresenterTest {
         subject = new MenuListPresenter(mockView,
                 Single.just("email"), Single.just("nickName"),
                 mockBetaTestService,
-                mockPointService);
+                mockPointService,
+                mockRemoteConfig);
     }
 
     @Test
@@ -71,9 +75,21 @@ public class MenuListPresenterTest {
     }
 
     @Test
-    public void bindAvailablePoint_호출시__총_가용_포인트를_가져와서__뷰에_셋팅한다() {
+    public void bindAvailablePoint_호출시__포인트시스템_ON이면__총_가용_포인트를_가져와서__뷰에_셋팅한다() {
+        when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM)).thenReturn(true);
+
         subject.bindAvailablePoint();
 
         verify(this.mockView).setAvailablePoint(3000L);
+        verify(this.mockView).showPointSystemViews();
+    }
+
+    @Test
+    public void bindAvailablePoint_호출시__포인트시스템_OFF이면__포인트관련_뷰를_감춘다() {
+        when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM)).thenReturn(false);
+
+        subject.bindAvailablePoint();
+
+        verify(this.mockView).hidePointSystemViews();
     }
 }
