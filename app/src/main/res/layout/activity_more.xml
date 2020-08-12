@@ -100,6 +100,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/my_point"/>
 
+            <ImageView android:id="@+id/my_point_refresh_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_refresh"
+                android:tint="@color/fomes_white"
+                app:layout_constraintTop_toTopOf="@+id/my_point_title"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <LinearLayout
                 android:id="@+id/my_available_point_layout"
                 android:layout_width="@dimen/match_constraint"
@@ -174,6 +182,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/match_constraint"
+                android:visibility="gone"
+                app:shimmer_auto_start="false"
+                app:shimmer_duration="800"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/fomes_black_alpha_50"/>
+            </com.facebook.shimmer.ShimmerFrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View

@@ -19,5 +19,7 @@ public interface MenuListContract {
 
         void showPointSystemViews();
         void hidePointSystemViews();
+        void showAvailablePointLoading();
+        void hideAvailablePointLoading();
     }
 }
