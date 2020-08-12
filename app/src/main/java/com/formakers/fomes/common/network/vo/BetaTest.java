@@ -498,13 +498,24 @@ public class BetaTest implements Parcelable {
             return this;
         }
 
+        public RewardItem getMaxRewardForEveryone() {
+            Observable<RewardItem> rewards = Observable.from(this.list);
+            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> rewardItem.getCount() == null || rewardItem.getCount() <= 0);
+
+            return getMaxRewardItemByTypeCode(pointRewards)
+                    .onErrorResumeNext(e -> getMaxRewardItemByTypeCode(rewards))
+                    .toBlocking().value();
+        }
+
         public RewardItem getMinReward() {
             Observable<RewardItem> rewards = Observable.from(this.list);
-            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType()));
+//            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType()));
+//
+//            return getMinRewardItemByTypeCode(pointRewards)
+//                    .onErrorResumeNext(e -> getMinRewardItemByTypeCode(rewards))
+//                    .toBlocking().value();
 
-            return getMinRewardItemByTypeCode(pointRewards)
-                    .onErrorResumeNext(e -> getMinRewardItemByTypeCode(rewards))
-                    .toBlocking().value();
+            return getMinRewardItemByTypeCode(rewards).toBlocking().value();
         }
 
         private Single<RewardItem> getMinRewardItemByTypeCode(Observable<RewardItem> rewards) {

@@ -447,6 +447,10 @@
         <item name="item_stroke_color">@color/fomes_blush_pink</item>
     </style>
 
+    <style name="BetaTestTheme.MainTag.Primary">
+        <item name="item_stroke_color">@color/colorPrimary</item>
+    </style>
+
 
     <style name="BetaTestTheme.Notice"/>
 
