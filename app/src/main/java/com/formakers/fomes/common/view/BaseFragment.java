@@ -70,4 +70,10 @@ public class BaseFragment extends Fragment {
         in.setDuration(durationMills);
         return in;
     }
+
+    protected Animation getFadeOutAnimation(long durationMills) {
+        Animation out = new AlphaAnimation(1.0f, 0.0f);
+        out.setDuration(durationMills);
+        return out;
+    }
 }

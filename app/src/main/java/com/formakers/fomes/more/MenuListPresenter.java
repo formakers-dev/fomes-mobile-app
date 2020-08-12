@@ -64,6 +64,8 @@ public class MenuListPresenter implements MenuListContract.Presenter {
         if (this.isActivatedPointSystem()) {
             this.pointService.getAvailablePoint()
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(() -> this.view.showAvailablePointLoading())
+                    .doAfterTerminate(() -> this.view.hideAvailablePointLoading())
                     .subscribe(point -> {
                         this.view.setAvailablePoint(point);
                         this.view.showPointSystemViews();

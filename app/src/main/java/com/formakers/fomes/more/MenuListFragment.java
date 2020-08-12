@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
@@ -53,6 +54,8 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @BindView(R.id.point_history_button) TextView pointHistoryButton;
     @BindView(R.id.more_menu_list) RecyclerView menuListView;
     @BindView(R.id.exchange_point_button) TextView exchangePointButton;
+    @BindView(R.id.my_point_refresh_button) View myPointRefreshButton;
+    @BindView(R.id.shimmer) ShimmerFrameLayout loadingShimmer;
 
     @Inject
     MenuListContract.Presenter presenter;
@@ -86,6 +89,10 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         exchangePointButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, PointExchangeActivity.class);
             startActivityForResult(intent, REQUEST_CODE_EXCHANGE);
+        });
+
+        myPointRefreshButton.setOnClickListener(v -> {
+            presenter.bindAvailablePoint();
         });
     }
 
@@ -165,7 +172,6 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @Override
     public void setAvailablePoint(long point) {
         availablePointTextView.setText(String.format("%s P", NumberFormat.getInstance().format(point)));
-        availablePointTextView.startAnimation(getFadeInAnimation(300));
 
         exchangePointButton.setEnabled(point >= 5000L);
     }
@@ -178,6 +184,24 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @Override
     public void hidePointSystemViews() {
         this.pointLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showAvailablePointLoading() {
+        availablePointTextView.startAnimation(getFadeOutAnimation(300));
+        availablePointTextView.setVisibility(View.INVISIBLE);
+        myPointRefreshButton.setVisibility(View.GONE);
+        loadingShimmer.setVisibility(View.VISIBLE);
+        loadingShimmer.startShimmer();
+    }
+
+    @Override
+    public void hideAvailablePointLoading() {
+        availablePointTextView.startAnimation(getFadeInAnimation(300));
+        availablePointTextView.setVisibility(View.VISIBLE);
+        loadingShimmer.stopShimmer();
+        loadingShimmer.setVisibility(View.GONE);
+        myPointRefreshButton.setVisibility(View.VISIBLE);
     }
 
     @Override
