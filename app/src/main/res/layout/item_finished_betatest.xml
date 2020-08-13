@@ -42,14 +42,24 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/finished_betatest_reward"
+                    android:id="@+id/finished_betatest_reward_min"
                     style="@style/BetaTestTheme.TypeTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/item_rect_rounded_corner_background"
-                    android:theme="@style/BetaTestTheme.Plan.Premium"
-                    android:textColor="@color/fomes_orange"
-                    tools:text="포인트" />
+                    android:textColor="@color/fomes_blush_pink"
+                    android:theme="@style/BetaTestTheme.MainTag.BlushPink"
+                    tools:text="최소 1000P" />
+
+                <TextView
+                    android:id="@+id/finished_betatest_reward_max"
+                    style="@style/BetaTestTheme.TypeTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:textColor="@color/colorPrimary"
+                    android:theme="@style/BetaTestTheme.MainTag.Primary"
+                    tools:text="최대 30000P" />
 
                 <TextView
                     android:id="@+id/betatest_plan"

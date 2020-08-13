@@ -556,19 +556,6 @@ public class BetaTest implements Parcelable {
                     .toSingle();
         }
 
-        public RewardItem getMaxRewardByPaymentType() {
-            if(this.list == null || this.list.isEmpty()) {
-                return null;
-            }
-
-            Observable<RewardItem> rewards = Observable.from(this.list);
-
-            return MathObservable.from(rewards)
-                    .max((a,b) -> Integer.compare(a.getPaymentTypeDisplayOrder(), b.getPaymentTypeDisplayOrder()))
-                    .toBlocking()
-                    .single();
-        }
-
         @Override
         public String toString() {
             return "Rewards{" +
