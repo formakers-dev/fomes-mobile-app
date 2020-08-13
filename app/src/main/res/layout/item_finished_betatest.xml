@@ -30,31 +30,53 @@
             android:background="@drawable/item_rect_rounded_corner_background"
             android:theme="@style/BetaTestTheme.CardBackground">
 
-            <TextView
-                android:id="@+id/betatest_plan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.Plan.Premium"
-                android:textColor="@color/fomes_orange"
-                style="@style/BetaTestTheme.TypeTag"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="프리미엄 테스트"/>
 
-            <TextView
-                android:id="@+id/betatest_my_status"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/finished_betatest_main_tags_layout"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.MyStatus.Completed"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/betatest_my_status_completed"
-                style="@style/BetaTestTheme.TypeTag"
-                app:layout_constraintTop_toTopOf="@+id/betatest_plan"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_plan"
-                app:layout_constraintStart_toEndOf="@+id/betatest_plan" />
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                android:divider="@drawable/betatest_card_main_tag_divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/finished_betatest_reward"
+                    style="@style/BetaTestTheme.TypeTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:theme="@style/BetaTestTheme.Plan.Premium"
+                    android:textColor="@color/fomes_orange"
+                    tools:text="포인트" />
+
+                <TextView
+                    android:id="@+id/betatest_plan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:theme="@style/BetaTestTheme.Plan.Premium"
+                    android:textColor="@color/fomes_orange"
+                    style="@style/BetaTestTheme.TypeTag"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="프리미엄 테스트"/>
+
+                <TextView
+                    android:id="@+id/betatest_my_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:theme="@style/BetaTestTheme.MyStatus.Completed"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/betatest_my_status_completed"
+                    style="@style/BetaTestTheme.TypeTag"
+                    app:layout_constraintTop_toTopOf="@+id/betatest_plan"
+                    app:layout_constraintBottom_toBottomOf="@+id/betatest_plan"
+                    app:layout_constraintStart_toEndOf="@+id/betatest_plan" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/betatest_title_textview"
@@ -66,7 +88,7 @@
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:ellipsize="end"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_plan"
+                app:layout_constraintTop_toBottomOf="@+id/finished_betatest_main_tags_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="서랍에서 찾은 또 다른 설문지" />

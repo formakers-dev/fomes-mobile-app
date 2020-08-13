@@ -106,10 +106,27 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             planNameColorId = R.color.colorPrimary;
         }
 
-        viewHolder.planTextView.setText(item.getPlanStringResId());
-        viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
-        viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new ContextThemeWrapper(context, planStyleResId).getTheme()));
+        if (this.presenter.isActivatedPointSystem()) {
+            viewHolder.planTextView.setVisibility(View.GONE);
+
+            BetaTest.Rewards.RewardItem maxRewardByPaymentType = item.getRewards().getMaxRewardByPaymentType();
+
+            if(maxRewardByPaymentType == null) {
+                viewHolder.rewardTextView.setVisibility(View.GONE);
+            } else {
+                viewHolder.rewardTextView.setText(maxRewardByPaymentType.getPaymentTypeDisplayString());
+                viewHolder.rewardTextView.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            viewHolder.rewardTextView.setVisibility(View.GONE);
+
+            viewHolder.planTextView.setVisibility(View.VISIBLE);
+            viewHolder.planTextView.setText(item.getPlanStringResId());
+            viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
+            viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                    new ContextThemeWrapper(context, planStyleResId).getTheme()));
+        }
 
         viewHolder.itemView.setOnClickListener(v -> {
             itemClickListener.onItemClick(position);
@@ -171,6 +188,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageView iconImageView;
         TextView titleTextView;
         TextView subTitleTextView;
+        TextView rewardTextView;
         TextView planTextView;
         TextView myStatusTextView;
         View progressDivider;
@@ -182,6 +200,7 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
+            rewardTextView = itemView.findViewById(R.id.finished_betatest_reward);
             planTextView = itemView.findViewById(R.id.betatest_plan);
             myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
             progressDivider = itemView.findViewById(R.id.betatest_finished_progress_divider);

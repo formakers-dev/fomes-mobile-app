@@ -8,6 +8,7 @@ import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -47,6 +48,7 @@ public class FinishedBetaTestPresenterTest {
     @Mock private ImageLoader mockImageLoader;
     @Mock private FomesUrlHelper mockFomesUrlHelper;
     @Mock private AndroidNativeHelper mockAndroidNativeHelper;
+    @Mock private FirebaseRemoteConfig mockFirebaseRemoteConfig;
 
     private List<BetaTest> finishedBetaTests = new ArrayList<>();
     private FinishedBetaTestPresenter subject;
@@ -79,7 +81,7 @@ public class FinishedBetaTestPresenterTest {
         when(mockAdapterModel.getItem(0)).thenReturn(finishedBetaTests.get(1));
         when(mockAdapterModel.getItem(1)).thenReturn(finishedBetaTests.get(0));
 
-        subject = new FinishedBetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockImageLoader, mockFomesUrlHelper, mockAndroidNativeHelper);
+        subject = new FinishedBetaTestPresenter(mockView, mockBetaTestService, mockEventLogService, mockAnalytics, mockImageLoader, mockFomesUrlHelper, mockAndroidNativeHelper, mockFirebaseRemoteConfig);
         subject.setAdapterModel(mockAdapterModel);
     }
 

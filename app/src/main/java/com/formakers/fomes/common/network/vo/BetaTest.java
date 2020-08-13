@@ -416,6 +416,23 @@ public class BetaTest implements Parcelable {
                 }
             }
 
+            public int getPaymentTypeDisplayOrder() {
+                if (TextUtils.isEmpty(this.paymentType)) {
+                    return -1;
+                }
+
+                switch(this.paymentType) {
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT:
+                        return 900;
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_GAME_ITEM:
+                        return 500;
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_ETC:
+                        return 100;
+                    default:
+                        return -1;
+                }
+            }
+
             @Override
             public String toString() {
                 return "RewardItem{" +
@@ -537,6 +554,19 @@ public class BetaTest implements Parcelable {
             return MathObservable.from(rewards)
                     .max((a, b) -> Integer.compare(a.getTypeCode(), b.getTypeCode()))
                     .toSingle();
+        }
+
+        public RewardItem getMaxRewardByPaymentType() {
+            if(this.list == null || this.list.isEmpty()) {
+                return null;
+            }
+
+            Observable<RewardItem> rewards = Observable.from(this.list);
+
+            return MathObservable.from(rewards)
+                    .max((a,b) -> Integer.compare(a.getPaymentTypeDisplayOrder(), b.getPaymentTypeDisplayOrder()))
+                    .toBlocking()
+                    .single();
         }
 
         @Override
