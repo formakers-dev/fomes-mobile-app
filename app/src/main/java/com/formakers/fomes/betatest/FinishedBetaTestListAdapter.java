@@ -105,12 +105,10 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
 
             try {
                 BetaTest.Rewards.RewardItem minRewardItem = item.getRewards().getMinReward();
-                viewHolder.minRewardTextView.setText(getRewardText(minRewardItem,
-                        res.getString(R.string.betatest_main_tag_min_reward), res.getString(R.string.betatest_main_tag_min_reward_point)));
+                viewHolder.minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
 
                 BetaTest.Rewards.RewardItem maxRewardItem = item.getRewards().getMaxReward();
-                viewHolder.maxRewardTextView.setText(getRewardText(maxRewardItem,
-                        res.getString(R.string.betatest_main_tag_max_reward), res.getString(R.string.betatest_main_tag_max_reward_point)));
+                viewHolder.maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
             } catch (Exception e) {
                 viewHolder.minRewardTextView.setVisibility(View.GONE);
                 viewHolder.maxRewardTextView.setVisibility(View.GONE);

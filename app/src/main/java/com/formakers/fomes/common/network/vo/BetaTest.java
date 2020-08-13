@@ -39,7 +39,7 @@ public class BetaTest implements Parcelable {
 
     BugReport bugReport;
 
-    List<Mission> missions;
+    List<Mission> missions = new ArrayList<>();
     String missionsSummary;
 
     Rewards rewards;
@@ -303,7 +303,7 @@ public class BetaTest implements Parcelable {
 
     public static class Rewards implements Parcelable {
         Integer minimumDelay;
-        List<RewardItem> list;
+        List<RewardItem> list = new ArrayList<>();
 
         public static class RewardItem implements Parcelable {
             Integer order;
@@ -430,6 +430,15 @@ public class BetaTest implements Parcelable {
                         return 100;
                     default:
                         return -1;
+                }
+            }
+
+            // TODO : 더 좋은 네이밍 없을까?ㅠㅠ
+            public String getSummaryString() {
+                if (FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(getPaymentType())) {
+                    return getPrice() + "P";
+                } else {
+                    return getPaymentTypeDisplayString();
                 }
             }
 
@@ -574,12 +583,15 @@ public class BetaTest implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(minimumDelay);
+            dest.writeInt(minimumDelay == null ? -1 : minimumDelay);
             dest.writeTypedList(list);
         }
 
         private void readFromParcel(Parcel in) {
-            minimumDelay = in.readInt();
+            int minDelay = in.readInt();
+            if (minDelay >= 0) {
+                minimumDelay = minDelay;
+            }
             in.readTypedList(list, RewardItem.CREATOR);
         }
 
@@ -929,20 +941,20 @@ public class BetaTest implements Parcelable {
         plan = in.readString();
         status = in.readString();
         purpose = in.readString();
-        progressText = in.readParcelable(null);
+        progressText = in.readParcelable(getClass().getClassLoader());
         in.readStringList(tags);
         openDate = new Date(in.readLong());
         closeDate = new Date(in.readLong());
         currentDate = new Date(in.readLong());
-        bugReport = in.readParcelable(null);
+        bugReport = in.readParcelable(getClass().getClassLoader());
         in.readTypedList(missions, Mission.CREATOR);
         missionsSummary = in.readString();
-        rewards = in.readParcelable(null);
+        rewards = in.readParcelable(getClass().getClassLoader());
         isCompleted = (in.readInt() == 1);
         isAttended = (in.readInt() == 1);
         isRegisteredEpilogue = (in.readInt() == 1);
         isRegisteredAwards = (in.readInt() == 1);
-        epilogue = in.readParcelable(null);
+        epilogue = in.readParcelable(getClass().getClassLoader());
         in.readStringList(similarApps);
     }
 

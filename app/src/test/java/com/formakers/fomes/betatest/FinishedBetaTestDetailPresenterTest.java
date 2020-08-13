@@ -9,6 +9,8 @@ import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.gson.Gson;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -35,6 +37,7 @@ import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -49,8 +52,11 @@ public class FinishedBetaTestDetailPresenterTest {
     @Mock BetaTestService mockBetaTestService;
     @Mock FomesUrlHelper mockFomesUrlHelper;
     @Mock AndroidNativeHelper mockAndroidNativeHelper;
+    @Mock FirebaseRemoteConfig mockRemoteConfig;
+
     @Mock FinishedBetaTestAwardPagerAdapterContract.Model mockFinishedBetaTestAwardPagerModel;
 
+    BetaTest betaTest;
     FinishedBetaTestDetailPresenter subject;
 
     @Before
@@ -87,16 +93,18 @@ public class FinishedBetaTestDetailPresenterTest {
         );
         when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.just(awardRecords));
 
-        subject = new FinishedBetaTestDetailPresenter(mockView, mockAnalytics, mockImageLoader, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper);
+        subject = new FinishedBetaTestDetailPresenter(mockView, mockAnalytics, mockImageLoader, mockBetaTestService, mockFomesUrlHelper, mockAndroidNativeHelper, mockRemoteConfig);
+
+        betaTest = getDummyBetaTestDetail(); // TODO :종료된 테스트 데이터로 변경 필요
+        subject.setBetaTest(betaTest);
         subject.setFinishedBetaTestAwardPagerAdapterModel(mockFinishedBetaTestAwardPagerModel);
     }
 
     @Test
-    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보를_요청하고__뷰에_바인딩한다() {
+    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보가_있으면__뷰에_바인딩한다() {
         subject.requestEpilogueAndAwards("betaTestId");
 
         verify(mockBetaTestService).getEpilogue("betaTestId");
-        verify(mockBetaTestService).getAwardRecords("betaTestId");
 
         ArgumentCaptor<BetaTest.Epilogue> epilogueArgumentCaptor = ArgumentCaptor.forClass(BetaTest.Epilogue.class);
         verify(mockView).bindEpilogueView(epilogueArgumentCaptor.capture());
@@ -109,20 +117,8 @@ public class FinishedBetaTestDetailPresenterTest {
     }
 
     @Test
-    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보가_없으면__뷰를_비활성화한다() {
-        when(mockBetaTestService.getEpilogue("betaTestId"))
-                .thenReturn(Single.error(new HttpException(Response.error(404, ResponseBody.create(null, "")))));
-
+    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보가_있으면__시상식정보를_요청하고_뷰에_셋팅한다() {
         subject.requestEpilogueAndAwards("betaTestId");
-
-        verify(mockBetaTestService).getEpilogue("betaTestId");
-        verify(mockView).disableEpilogueView();
-        verify(mockView).bindAwardRecordsWithRewardItems();
-    }
-
-    @Test
-    public void requestAwardRecords_호출시__해당_베타테스트의_수상_정보를_요청하고__뷰에_바인딩한다() {
-        subject.requestAwardRecords("betaTestId");
 
         verify(mockBetaTestService).getAwardRecords("betaTestId");
 
@@ -151,11 +147,32 @@ public class FinishedBetaTestDetailPresenterTest {
     }
 
     @Test
+    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보가_없으면__뷰를_비활성화한다() {
+        when(mockBetaTestService.getEpilogue("betaTestId"))
+                .thenReturn(Single.error(new HttpException(Response.error(404, ResponseBody.create(null, "")))));
+
+        subject.requestEpilogueAndAwards("betaTestId");
+
+        verify(mockBetaTestService).getEpilogue("betaTestId");
+        verify(mockView).disableEpilogueView();
+    }
+
+    @Test
+    public void requestEpilogueAndAwards_호출시__해당_베타테스트의_에필로그_정보가_없으면__시상식대신_리워드정보를_띄운다() {
+        when(mockBetaTestService.getEpilogue("betaTestId"))
+                .thenReturn(Single.error(new HttpException(Response.error(404, ResponseBody.create(null, "")))));
+
+        subject.requestEpilogueAndAwards("betaTestId");
+
+        verify(mockView).bindAwardRecordsWithRewardItems(anyList());
+    }
+
+    @Test
     public void requestAwardRecord_호출시__NoSuchElementException이_발생하면__수상_정보를_뷰에서_숨긴다() {
         when(mockBetaTestService.getAwardRecords("betaTestId")).thenReturn(Single.error(new NoSuchElementException()));
         List<BetaTest.Rewards.RewardItem> mockRewardItems = Mockito.mock(List.class);
 
-        subject.requestAwardRecords("betaTestId");
+        subject.requestEpilogueAndAwards("betaTestId");
 
         verify(mockBetaTestService).getAwardRecords("betaTestId");
         verify(mockView).hideAwardsView();
@@ -199,5 +216,114 @@ public class FinishedBetaTestDetailPresenterTest {
                 eq(R.drawable.notice_recheck_my_answer),
                 eq(R.string.finished_betatest_recheck_my_answer_popup_positive_button_text),
                 any());
+    }
+
+    private BetaTest getDummyBetaTestDetail() {
+        String json = "{" +
+                "  \"_id\": \"5d1c5e695c20ca481f27a4ab\",\n" +
+                "  \"title\": \"[이리와 고양아] 게임 테스트\",\n" +
+                "  \"description\": \"\uD83D\uDC31 퍼즐을 풀어 냥줍한 고양이들과 함께하는 즐거운 시간!!\",\n" +
+                "  \"purpose\": null,\n" +
+                "  \"tags\": [\n" +
+                "    \"냥줍\",\n" +
+                "    \"퍼즐\",\n" +
+                "    \"고양이\",\n" +
+                "    \"귀여움\",\n" +
+                "    \"수집\",\n" +
+                "    \"육성\",\n" +
+                "    \"시뮬레이션\"\n" +
+                "  ],\n" +
+                "  \"coverImageUrl\": \"https://i.imgur.com/Savbd4p.png\",\n" +
+                "  \"iconImageUrl\": \"https://i.imgur.com/8yd6RCh.png\",\n" +
+                "  \"openDate\": \"2019-07-04T00:00:00.000Z\",\n" +
+                "  \"closeDate\": \"2119-07-10T14:59:59.998Z\",\n" +
+                "  \"rewards\": {\n" +
+                "    \"list\": [\n" +
+                "      {\n" +
+                "        \"order\": 2,\n" +
+                "        \"iconImageUrl\": \"https://i.imgur.com/6RaZ7vI.png\",\n" +
+                "        \"title\": \"테스트 성실상(20명)\",\n" +
+                "        \"content\": \"문상 1천원\",\n" +
+                "        \"userIds\": []\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"order\": 3,\n" +
+                "        \"iconImageUrl\": \"https://i.imgur.com/6RaZ7vI.png\",\n" +
+                "        \"title\": \"테스트 성실상333(30명)\",\n" +
+                "        \"content\": \"문상 3천원\",\n" +
+                "        \"userIds\": []\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"order\": 1,\n" +
+                "        \"iconImageUrl\": \"https://i.imgur.com/ybuI732.png\",\n" +
+                "        \"title\": \"테스트 수석(1명)\",\n" +
+                "        \"content\": \"문상 5천원\",\n" +
+                "        \"userIds\": []\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  \"missions\": [\n" +
+                "    {\n" +
+                "      \"order\": 2,\n" +
+                "      \"description\": \"[이리와 고양아] 플레이 인증\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "        \"type\": \"survey\",\n" +
+                "      \"guide\": \"* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다.\",\n" +
+                "        \"title\": \"스샷 인증하라!\",\n" +
+                "        \"actionType\": \"internal_web\",\n" +
+                "        \"action\": \"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&entry.1042588232={email}\",\n" +
+                "        \"_id\": \"5d1ec8254400311578e996be\",\n" +
+                "        \"isCompleted\": false,\n" +
+                "        \"isRepeatable\": true,\n" +
+                "        \"isMandatory\": true\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"order\": 1,\n" +
+                "      \"description\": \"[이리와 고양아] 게임을 30분 이상 플레이해주세요.\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"guide\": \"* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
+                "      \"_id\": \"5d1ec8024400311578e996bb\",\n" +
+                "        \"type\": \"install\",\n" +
+                "        \"title\": \"게임을 플레이 하라!\",\n" +
+                "        \"actionType\": \"link\",\n" +
+                "        \"action\": \"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty\",\n" +
+                "       \"packageName\": \"com.goodcircle.comeonkitty\"," +
+                "        \"_id\": \"5d1ec8194400311578e996bd\",\n" +
+                "        \"isCompleted\": true\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"order\": 3,\n" +
+                "      \"title\": \"3단계 미션\",\n" +
+                "      \"description\": \"[이리와 고양아] 두번째 설문\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"guide\": \"* 위 버튼을 누르면, 테스트 대상 게임 무단배포 금지에 동의로 간주합니다.\",\n" +
+                "      \"_id\": \"5d1ec8024400311578e996bb\",\n" +
+                "        \"type\": \"play\",\n" +
+                "        \"title\": \"게임을 플레이 하라!\",\n" +
+                "        \"actionType\": \"link\",\n" +
+                "        \"action\": \"https://play.google.com/store/apps/details?id=com.goodcircle.comeonkitty\",\n" +
+                "        \"_id\": \"5d1ec8194400311578e996b1\",\n" +
+                "        \"isCompleted\": false\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"order\": 5,\n" +
+                "      \"description\": \"[이리와 고양아] 세번째 설문\",\n" +
+                "      \"descriptionImageUrl\": \"\",\n" +
+                "      \"guide\": \"* 솔직하고 구체적으로 의견을 적어주시는게 제일 중요합니다!\\n* 불성실한 응답은 보상지급 대상자에서 제외될 수 있습니다.\",\n" +
+                "      \"_id\": \"5d1ec8094400311578e996bc\",\n" +
+                "        \"title\": \"의견을 작성하라!\",\n" +
+                "        \"actionType\": \"link\",\n" +
+                "        \"action\": \"https://docs.google.com/forms/d/e/1FAIpQLSdxI2s694nLTVk4i7RMkkrtr-K_0s7pSKfUnRusr7348nQpJg/viewform?usp=pp_url&internal_web=true&entry.1042588232={email}\",\n" +
+                "        \"_id\": \"5d1ec8254400311578e996b3\",\n" +
+                "        \"isCompleted\": false,\n" +
+                "        \"isRepeatable\": true,\n" +
+                "        \"isMandatory\": true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"currentDate\": \"2019-08-14T09:52:23.879Z\",\n" +
+                "  \"isAttended\": true\n" +
+                "}";
+
+        return new Gson().fromJson(json, BetaTest.class);
     }
 }

@@ -14,8 +14,8 @@ import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 @FinishedBetaTestDetailDagger.Scope
 class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.Presenter {
@@ -35,6 +36,9 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     private BetaTestService betaTestService;
     private FomesUrlHelper fomesUrlHelper;
     private AndroidNativeHelper androidNativeHelper;
+    private FirebaseRemoteConfig remoteConfig;
+
+    private BetaTest betaTest;
     private FinishedBetaTestAwardPagerAdapterContract.Model finishedBetaTestAwardPagerModel;
 
     @Inject
@@ -43,13 +47,15 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
                                            ImageLoader imageLoader,
                                            BetaTestService betaTestService,
                                            FomesUrlHelper fomesUrlHelper,
-                                           AndroidNativeHelper androidNativeHelper) {
+                                           AndroidNativeHelper androidNativeHelper,
+                                           FirebaseRemoteConfig remoteConfig) {
         this.view = view;
         this.analytics = analytics;
         this.imageLoader = imageLoader;
         this.betaTestService = betaTestService;
         this.fomesUrlHelper = fomesUrlHelper;
         this.androidNativeHelper = androidNativeHelper;
+        this.remoteConfig = remoteConfig;
     }
 
     @Override
@@ -68,37 +74,34 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
     }
 
     @Override
-    public void requestAwardRecords(String betaTestId) {
-        this.betaTestService.getAwardRecords(betaTestId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(awardRecords -> {
-                    this.finishedBetaTestAwardPagerModel.addAll(awardRecords);
-                    this.view.refreshAwardPagerView();
-                }, e -> {
-                    Log.e(TAG, "requestAwardRecordOfBest) " + e);
-                    if (e instanceof NoSuchElementException) {
-                        this.view.hideAwardsView();
-                    }
-                });
+    public void setBetaTest(BetaTest betaTest) {
+        this.betaTest = betaTest;
     }
 
     @Override
     public void requestEpilogueAndAwards(String betaTestId) {
         this.betaTestService.getEpilogue(betaTestId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(epilogue -> {
-                    this.view.bindEpilogueView(epilogue);
-                    requestAwardRecords(betaTestId);
-                }, e -> {
-                    Log.e(TAG, String.valueOf(e));
-                    if (e instanceof HttpException) {
-                        HttpException httpException = (HttpException) e;
-                        if (httpException.code() == 404) {
-                            this.view.disableEpilogueView();
-                            this.view.bindAwardRecordsWithRewardItems();
-                        }
-                    }
-                });
+                .doOnSuccess(epilogue -> this.view.bindEpilogueView(epilogue))
+                .observeOn(Schedulers.io())
+                .flatMap(epilogue -> this.betaTestService.getAwardRecords(betaTestId))
+                .doOnSuccess(awardRecords -> this.finishedBetaTestAwardPagerModel.addAll(awardRecords))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(awardRecords -> this.view.refreshAwardPagerView(),
+                        e -> {
+                            Log.e(TAG, String.valueOf(e));
+
+                            if (e instanceof HttpException && ((HttpException) e).code() == 404) {
+                                this.view.disableEpilogueView();
+                                this.view.bindAwardRecordsWithRewardItems(betaTest.getRewards().getList());
+                            }
+
+                            if (e instanceof NoSuchElementException ||
+                                    betaTest.getRewards().getList() == null
+                                    || betaTest.getRewards().getList().size() <= 0) {
+                                this.view.hideAwardsView();
+                            }
+                        });
     }
 
     @Override
@@ -124,6 +127,11 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
                 R.drawable.notice_recheck_my_answer,
                 R.string.finished_betatest_recheck_my_answer_popup_positive_button_text,
                 v -> processMissionItemAction(mission));
+    }
+
+    @Override
+    public boolean isActivatedPointSystem() {
+        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
     }
 
     private void processMissionItemAction(Mission missionItem) {

@@ -30,7 +30,6 @@ import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.main.MainActivity;
-import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 
@@ -95,15 +94,7 @@ public class FinishedBetaTestFragment extends BaseFragment implements MainActivi
             Intent intent = new Intent(context, FinishedBetaTestDetailActivity.class);
             BetaTest betaTest = presenter.getItem(position);
 
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID,betaTest.getId());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL, betaTest.getCoverImageUrl());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_TITLE, betaTest.getTitle());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_SUBTITLE, betaTest.getDisplayDescription());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_PLAN, betaTest.getPlanStringResId());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS, Lists.newArrayList(betaTest.getRewards().getList()));
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, betaTest.isPremiumPlan());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, betaTest.isCompleted());
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_TAG_LIST, Lists.newArrayList(betaTest.getTags()));
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_BETA_TEST, betaTest);
 
             startActivity(intent);
         });

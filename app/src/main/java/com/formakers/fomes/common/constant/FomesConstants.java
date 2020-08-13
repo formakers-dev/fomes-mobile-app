@@ -36,6 +36,7 @@ public interface FomesConstants {
     }
 
     interface BetaTest {
+        String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
         String EXTRA_ID = "EXTRA_ID";
         String EXTRA_REMAIN_DAYS = "EXTRA_REMAIN_DAYS";
         String EXTRA_COVER_IMAGE_URL = "EXTRA_COVER_IMAGE_URL";

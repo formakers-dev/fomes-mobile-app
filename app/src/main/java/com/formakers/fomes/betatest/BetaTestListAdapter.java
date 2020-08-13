@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 import com.google.android.material.chip.Chip;
@@ -133,12 +132,10 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             try {
                 BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
-                viewHolder.minRewardTextView.setText(getRewardText(minRewardItem,
-                        res.getString(R.string.betatest_main_tag_min_reward), res.getString(R.string.betatest_main_tag_min_reward_point)));
+                viewHolder.minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
 
                 BetaTest.Rewards.RewardItem maxRewardItem = betaTest.getRewards().getMaxReward();
-                viewHolder.maxRewardTextView.setText(getRewardText(maxRewardItem,
-                        res.getString(R.string.betatest_main_tag_max_reward), res.getString(R.string.betatest_main_tag_max_reward_point)));
+                viewHolder.maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
             } catch (Exception e) {
                 viewHolder.minRewardTextView.setVisibility(View.GONE);
                 viewHolder.maxRewardTextView.setVisibility(View.GONE);
@@ -176,14 +173,6 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.myStatusTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,  new ContextThemeWrapper(context, myStatusStyleResId).getTheme()));
 
         viewHolder.shareButton.setOnClickListener(v -> presenter.shareToKaKao(betaTest));
-    }
-
-    private String getRewardText(BetaTest.Rewards.RewardItem rewardItem, String defaultTextFormat, String pointTextFormat) {
-        if (FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType())) {
-            return String.format(pointTextFormat, rewardItem.getPrice());
-        } else {
-            return String.format(defaultTextFormat, rewardItem.getPaymentTypeDisplayString());
-        }
     }
 
     @Override

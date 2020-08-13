@@ -1,6 +1,7 @@
 package com.formakers.fomes.betatest;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
@@ -34,7 +34,6 @@ import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,6 +47,8 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
 
     @BindView(R.id.action_bar) Toolbar actionBar;
     @BindView(R.id.betatest_overview_imageview) ImageView coverImageView;
+    @BindView(R.id.betatest_reward_min) TextView minRewardTextView;
+    @BindView(R.id.betatest_reward_max) TextView maxRewardTextView;
     @BindView(R.id.betatest_plan) TextView planTextView;
     @BindView(R.id.betatest_my_status) TextView myStatusTextView;
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
@@ -103,16 +104,21 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         setAwardPagerAdapter();
 
         Bundle bundle = getIntent().getExtras();
-        bind(bundle);
+        BetaTest betaTest = bundle.getParcelable(FomesConstants.BetaTest.EXTRA_BETA_TEST);
+
+        if (betaTest == null) {
+            Log.e(TAG, "betaTest is null!");
+            return;
+        }
+
+        bind(betaTest);
 
         setActionBar();
-
-        String betaTestId = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
-
         initViews();
 
-        this.presenter.requestEpilogueAndAwards(betaTestId);
-        this.presenter.requestRecheckableMissions(betaTestId);
+        this.presenter.setBetaTest(betaTest);
+        this.presenter.requestEpilogueAndAwards(betaTest.getId());
+        this.presenter.requestRecheckableMissions(betaTest.getId());
     }
 
     private void setAwardPagerAdapter() {
@@ -146,60 +152,73 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         disableMyAnswersView();
     }
 
-    public void bind(Bundle bundle) {
+    public void bind(BetaTest betaTest) {
         if (isUnavailableViewControl()) {
             return;
         }
 
-        // 프레젠터로 데이터 넘기고 뷰에서 표출해줘야 하지 않으려나.. 싶긴함
-        String id = bundle.getString(FomesConstants.BetaTest.EXTRA_ID);
-        String title = bundle.getString(FomesConstants.BetaTest.EXTRA_TITLE);
-        String subTitle = bundle.getString(FomesConstants.BetaTest.EXTRA_SUBTITLE);
-        String coverImageUrl = bundle.getString(FomesConstants.BetaTest.EXTRA_COVER_IMAGE_URL);
-        @StringRes int planStringResId = bundle.getInt(FomesConstants.BetaTest.EXTRA_PLAN);
-        boolean isPremiumPlan = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_PREMIUM_PLAN, false);
-        boolean isCompleted = bundle.getBoolean(FomesConstants.BetaTest.EXTRA_IS_COMPLETED, false);
-        ArrayList<String> tagList = bundle.getStringArrayList(FomesConstants.BetaTest.EXTRA_TAG_LIST);
+        Resources res = this.getResources();
 
         if (actionBar != null) {
-            actionBar.setTitle(title);
+            actionBar.setTitle(betaTest.getTitle());
         }
 
-        presenter.getImageLoader().loadImage(coverImageView, coverImageUrl);
-        titleTextView.setText(title);
-        subTitleTextView.setText(subTitle);
+        presenter.getImageLoader().loadImage(coverImageView, betaTest.getCoverImageUrl());
+        titleTextView.setText(betaTest.getTitle());
+        subTitleTextView.setText(betaTest.getDisplayDescription());
 
         // 태그
         tagViewGroup.removeAllViews();
-        for (String tag : tagList) {
+        for (String tag : betaTest.getTags()) {
             Chip tagView = (Chip) getLayoutInflater().inflate(R.layout.item_betatest_tag, null);
             tagView.setText(tag);
             tagViewGroup.addView(tagView);
         }
 
-        @StyleRes int planStyleResId;
-        @ColorRes int planNameColorId;
-        if (isPremiumPlan) {
-            planStyleResId = R.style.BetaTestTheme_Plan_Premium;
-            planNameColorId = R.color.fomes_orange;
+        if (this.presenter.isActivatedPointSystem()) {
+            planTextView.setVisibility(View.GONE);
+            minRewardTextView.setVisibility(View.VISIBLE);
+            maxRewardTextView.setVisibility(View.VISIBLE);
+
+            try {
+                BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
+                minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
+
+                BetaTest.Rewards.RewardItem maxRewardItem = betaTest.getRewards().getMaxReward();
+                maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
+            } catch (Exception e) {
+                minRewardTextView.setVisibility(View.GONE);
+                maxRewardTextView.setVisibility(View.GONE);
+            }
+
         } else {
-            planStyleResId = R.style.BetaTestTheme_Plan_Lite;
-            planNameColorId = R.color.colorPrimary;
+            minRewardTextView.setVisibility(View.GONE);
+            maxRewardTextView.setVisibility(View.GONE);
+
+            @StyleRes int planStyleResId;
+            @ColorRes int planNameColorId;
+            if (betaTest.isPremiumPlan()) {
+                planStyleResId = R.style.BetaTestTheme_Plan_Premium;
+                planNameColorId = R.color.fomes_orange;
+            } else {
+                planStyleResId = R.style.BetaTestTheme_Plan_Lite;
+                planNameColorId = R.color.colorPrimary;
+            }
+
+            planTextView.setText(betaTest.getPlanStringResId());
+            planTextView.setTextColor(getResources().getColor(planNameColorId));
+            planTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background, new ContextThemeWrapper(this, planStyleResId).getTheme()));
         }
 
-        planTextView.setText(planStringResId);
-        planTextView.setTextColor(getResources().getColor(planNameColorId));
-        planTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background, new ContextThemeWrapper(this, planStyleResId).getTheme()));
+        myStatusTextView.setVisibility(betaTest.isCompleted() ? View.VISIBLE : View.GONE);
 
-        myStatusTextView.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
+        myResultSubTitleTextView.setText(String.format(getString(betaTest.isCompleted() ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), betaTest.getTitle()));
 
-        myResultSubTitleTextView.setText(String.format(getString(isCompleted ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), title));
-
-        certificateButton.setEnabled(isCompleted);
+        certificateButton.setEnabled(betaTest.isCompleted());
 
         certificateButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, BetaTestCertificateActivity.class);
-            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, id);
+            intent.putExtra(FomesConstants.BetaTest.EXTRA_ID, betaTest.getId());
             startActivity(intent);
         });
     }
@@ -253,14 +272,12 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
     }
 
     @Override
-    public void bindAwardRecordsWithRewardItems() {
+    public void bindAwardRecordsWithRewardItems(List<BetaTest.Rewards.RewardItem> rewardItemList) {
         if (isUnavailableViewControl()) {
             return;
         }
 
-        Bundle bundle = getIntent().getExtras();
-        awardPagerAdapter.addAllFromRewardItems(
-                bundle.getParcelableArrayList(FomesConstants.BetaTest.EXTRA_REWARD_ITEMS));
+        awardPagerAdapter.addAllFromRewardItems(rewardItemList);
 
         refreshAwardPagerView();
     }

@@ -9,7 +9,6 @@ import androidx.annotation.StringRes;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.ImageLoader;
 import com.formakers.fomes.common.mvp.BaseView;
-import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.Mission;
 
@@ -19,24 +18,23 @@ import rx.subscriptions.CompositeSubscription;
 
 public interface FinishedBetaTestDetailContract {
     interface Presenter {
-        void requestAwardRecords(String betaTestId);
+        void setBetaTest(BetaTest betaTest);
         void requestEpilogueAndAwards(String betaTestId);
         void requestRecheckableMissions(String betaTestId);
 
+        void emitRecheckMyAnswer(Mission mission);
+        void setFinishedBetaTestAwardPagerAdapterModel(FinishedBetaTestAwardPagerAdapterContract.Model model);
+        boolean isActivatedPointSystem();
+
         //Base
         AnalyticsModule.Analytics getAnalytics();
-
         ImageLoader getImageLoader();
-
-        void emitRecheckMyAnswer(Mission mission);
-
-        void setFinishedBetaTestAwardPagerAdapterModel(FinishedBetaTestAwardPagerAdapterContract.Model model);
     }
 
     interface View extends BaseView<Presenter> {
         void bindEpilogueView(BetaTest.Epilogue epilogue);
         void bindMyAnswersView(List<Mission> missions);
-        void bindAwardRecordsWithRewardItems();
+        void bindAwardRecordsWithRewardItems(List<BetaTest.Rewards.RewardItem> rewardItemList);
 
         void startWebViewActivity(String title, String url);
         void startByDeeplink(Uri parse);

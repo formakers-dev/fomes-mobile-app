@@ -175,9 +175,7 @@
     <string name="betatest_progress_attend_label_doing">참여 중</string>
     <string name="betatest_plan_premium">프리미엄 테스트</string>
     <string name="betatest_plan_lite">간단 테스트</string>
-    <string name="betatest_main_tag_min_reward_point">최소 %dP</string>
     <string name="betatest_main_tag_min_reward">최소 %s</string>
-    <string name="betatest_main_tag_max_reward_point">최대 %dP</string>
     <string name="betatest_main_tag_max_reward">최대 %s</string>
     <string name="betatest_my_status_completed">참여 완료</string>
     <string name="betatest_my_status_attend">참여 중</string>
