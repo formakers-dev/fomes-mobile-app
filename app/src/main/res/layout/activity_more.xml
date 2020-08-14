@@ -171,15 +171,41 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/mission_guide"
+                android:id="@+id/point_dashboard_guide_1"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:textSize="@dimen/betatest_detail_guide_text_size"
                 android:textColor="@color/colorPrimary"
-                android:text="@string/point_exchange_limit_guide"
+                tools:text="@string/point_exchange_limit_guide"
                 app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintTop_toBottomOf="@+id/my_available_point_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/point_dashboard_guide_2"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/betatest_detail_guide_text_size"
+                android:textColor="@color/fomes_white_alpha_75"
+                tools:text="@string/point_dashboard_save_guide"
+                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/point_dashboard_guide_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/point_dashboard_guide_3"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/betatest_detail_guide_text_size"
+                android:textColor="@color/fomes_white_alpha_75"
+                tools:text="@string/point_dashboard_exchange_guide"
+                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/point_dashboard_guide_2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

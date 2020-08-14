@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,9 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     @BindView(R.id.my_point_layout) ViewGroup pointLayout;
     @BindView(R.id.my_available_point) TextView availablePointTextView;
     @BindView(R.id.point_history_button) TextView pointHistoryButton;
+    @BindView(R.id.point_dashboard_guide_1) TextView pointGuide1TextView;
+    @BindView(R.id.point_dashboard_guide_2) TextView pointGuide2TextView;
+    @BindView(R.id.point_dashboard_guide_3) TextView pointGuide3TextView;
     @BindView(R.id.more_menu_list) RecyclerView menuListView;
     @BindView(R.id.exchange_point_button) TextView exchangePointButton;
     @BindView(R.id.my_point_refresh_button) View myPointRefreshButton;
@@ -87,6 +91,10 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
 
         availablePointTextView.setOnClickListener(v -> this.startPointHistoryActivity());
         pointHistoryButton.setOnClickListener(v -> this.startPointHistoryActivity());
+
+        pointGuide1TextView.setText(Html.fromHtml(getString(R.string.point_dashboard_save_guide)));
+        pointGuide2TextView.setText(Html.fromHtml(getString(R.string.point_exchange_limit_guide)));
+        pointGuide3TextView.setText(Html.fromHtml(getString(R.string.point_dashboard_exchange_guide)));
 
         exchangePointButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, PointExchangeActivity.class);
