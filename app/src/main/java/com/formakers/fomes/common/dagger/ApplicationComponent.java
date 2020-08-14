@@ -16,6 +16,7 @@ import com.formakers.fomes.common.network.AppStatService;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.ConfigService;
 import com.formakers.fomes.common.network.EventLogService;
+import com.formakers.fomes.common.network.PointService;
 import com.formakers.fomes.common.network.PostService;
 import com.formakers.fomes.common.network.RecommendService;
 import com.formakers.fomes.common.network.UserService;
@@ -44,6 +45,7 @@ public interface ApplicationComponent {
     BetaTestService requestService();
     EventLogService eventLogService();
     PostService postService();
+    PointService pointService();
     FomesUrlHelper fomesUrlHelper();
 
     GoogleSignInAPIHelper googleSignInAPIHelper();

@@ -2,6 +2,7 @@ package com.formakers.fomes.betatest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -58,6 +59,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @BindView(R.id.betatest_overview_info) ViewGroup betatestOverviewInfoViewGroup;
     @BindView(R.id.betatest_overview_imageview) ImageView overviewImageView;
 //    @BindView(R.id.betatest_detail_app_icon) ImageView iconImageView;
+    @BindView(R.id.betatest_reward_min) TextView minRewardTextView;
+    @BindView(R.id.betatest_reward_max) TextView maxRewardTextView;
     @BindView(R.id.betatest_plan) TextView planTextView;
     @BindView(R.id.betatest_my_status) TextView myStatusTextView;
     @BindView(R.id.betatest_title_textview) TextView titleTextView;
@@ -174,6 +177,8 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
     @Override
     public void bind(BetaTest betaTest) {
+        Resources res = this.getResources();
+
         this.presenter.getImageLoader().loadImage(overviewImageView, betaTest.getCoverImageUrl(),
                 new RequestOptions().centerCrop());
 
@@ -198,21 +203,43 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
             tagViewGroup.addView(tagView);
         }
 
-        //플랜 표시
-        @StyleRes int planStyleResId;
-        @ColorRes int planNameColorId;
-        if (betaTest.isPremiumPlan()) {
-            planStyleResId = R.style.BetaTestTheme_Plan_Premium;
-            planNameColorId = R.color.fomes_orange;
-        } else {
-            planStyleResId = R.style.BetaTestTheme_Plan_Lite;
-            planNameColorId = R.color.colorPrimary;
-        }
+        // 메인 태그 부분 (중복로직 : BetaTestListAdapter, BetaTestDetailActivity, FinishedBetaTestDetailActivity)
+        // 메인 태그 부분
+        if (this.presenter.isActivatedPointSystem()) {
+            planTextView.setVisibility(View.GONE);
+            minRewardTextView.setVisibility(View.VISIBLE);
+            maxRewardTextView.setVisibility(View.VISIBLE);
 
-        planTextView.setText(betaTest.getPlanStringResId());
-        planTextView.setTextColor(getResources().getColor(planNameColorId));
-        planTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new androidx.appcompat.view.ContextThemeWrapper(this, planStyleResId).getTheme()));
+            try {
+                BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
+                minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
+
+                BetaTest.Rewards.RewardItem maxRewardItem = betaTest.getRewards().getMaxReward();
+                maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
+            } catch (Exception e) {
+                minRewardTextView.setVisibility(View.GONE);
+                maxRewardTextView.setVisibility(View.GONE);
+            }
+        } else {
+            minRewardTextView.setVisibility(View.GONE);
+            maxRewardTextView.setVisibility(View.GONE);
+            planTextView.setVisibility(View.VISIBLE);
+
+            @StyleRes int planStyleResId;
+            @ColorRes int planNameColorId;
+            if (betaTest.isPremiumPlan()) {
+                planStyleResId = R.style.BetaTestTheme_Plan_Premium;
+                planNameColorId = R.color.fomes_orange;
+            } else {
+                planStyleResId = R.style.BetaTestTheme_Plan_Lite;
+                planNameColorId = R.color.colorPrimary;
+            }
+
+            planTextView.setText(betaTest.getPlanStringResId());
+            planTextView.setTextColor(res.getColor(planNameColorId));
+            planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                    new androidx.appcompat.view.ContextThemeWrapper(this, planStyleResId).getTheme()));
+        }
 
         // 참여정보 표시 정책
         int myStatusVisibility = betaTest.isAttended() ? View.VISIBLE : View.GONE;

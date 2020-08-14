@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 
@@ -96,24 +97,55 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.subTitleTextView.setTextColor(normalTextColor);
         }
 
-        @StyleRes int planStyleResId;
-        @ColorRes int planNameColorId;
-        if (item.isPremiumPlan()) {
-            planStyleResId = R.style.BetaTestTheme_Plan_Premium;
-            planNameColorId = R.color.fomes_orange;
-        } else {
-            planStyleResId = R.style.BetaTestTheme_Plan_Lite;
-            planNameColorId = R.color.colorPrimary;
-        }
+        //메인 태그
+        if (this.presenter.isActivatedPointSystem()) {
+            viewHolder.planTextView.setVisibility(View.GONE);
+            viewHolder.minRewardTextView.setVisibility(View.VISIBLE);
+            viewHolder.maxRewardTextView.setVisibility(View.VISIBLE);
 
-        viewHolder.planTextView.setText(item.getPlanStringResId());
-        viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
-        viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                new ContextThemeWrapper(context, planStyleResId).getTheme()));
+            try {
+                BetaTest.Rewards.RewardItem minRewardItem = item.getRewards().getMinReward();
+                viewHolder.minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
+
+                BetaTest.Rewards.RewardItem maxRewardItem = item.getRewards().getMaxReward();
+                viewHolder.maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
+            } catch (Exception e) {
+                viewHolder.minRewardTextView.setVisibility(View.GONE);
+                viewHolder.maxRewardTextView.setVisibility(View.GONE);
+            }
+
+        } else {
+            viewHolder.minRewardTextView.setVisibility(View.GONE);
+            viewHolder.maxRewardTextView.setVisibility(View.GONE);
+
+            @StyleRes int planStyleResId;
+            @ColorRes int planNameColorId;
+            if (item.isPremiumPlan()) {
+                planStyleResId = R.style.BetaTestTheme_Plan_Premium;
+                planNameColorId = R.color.fomes_orange;
+            } else {
+                planStyleResId = R.style.BetaTestTheme_Plan_Lite;
+                planNameColorId = R.color.colorPrimary;
+            }
+
+            viewHolder.planTextView.setVisibility(View.VISIBLE);
+            viewHolder.planTextView.setText(item.getPlanStringResId());
+            viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
+            viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
+                    new ContextThemeWrapper(context, planStyleResId).getTheme()));
+        }
 
         viewHolder.itemView.setOnClickListener(v -> {
             itemClickListener.onItemClick(position);
         });
+    }
+
+    private String getRewardText(BetaTest.Rewards.RewardItem rewardItem, String defaultTextFormat, String pointTextFormat) {
+        if (FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType())) {
+            return String.format(pointTextFormat, rewardItem.getPrice());
+        } else {
+            return String.format(defaultTextFormat, rewardItem.getPaymentTypeDisplayString());
+        }
     }
 
     @Override
@@ -171,6 +203,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageView iconImageView;
         TextView titleTextView;
         TextView subTitleTextView;
+        TextView minRewardTextView;
+        TextView maxRewardTextView;
         TextView planTextView;
         TextView myStatusTextView;
         View progressDivider;
@@ -182,6 +216,8 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             titleTextView = itemView.findViewById(R.id.betatest_title_textview);
             iconImageView = itemView.findViewById(R.id.betatest_icon_imageview);
             subTitleTextView = itemView.findViewById(R.id.betatest_subtitle_textview);
+            minRewardTextView = itemView.findViewById(R.id.finished_betatest_reward_min);
+            maxRewardTextView = itemView.findViewById(R.id.finished_betatest_reward_max);
             planTextView = itemView.findViewById(R.id.betatest_plan);
             myStatusTextView = itemView.findViewById(R.id.betatest_my_status);
             progressDivider = itemView.findViewById(R.id.betatest_finished_progress_divider);

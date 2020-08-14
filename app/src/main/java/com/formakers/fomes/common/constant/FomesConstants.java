@@ -36,6 +36,7 @@ public interface FomesConstants {
     }
 
     interface BetaTest {
+        String EXTRA_BETA_TEST = "EXTRA_BETA_TEST";
         String EXTRA_ID = "EXTRA_ID";
         String EXTRA_REMAIN_DAYS = "EXTRA_REMAIN_DAYS";
         String EXTRA_COVER_IMAGE_URL = "EXTRA_COVER_IMAGE_URL";
@@ -66,6 +67,12 @@ public interface FomesConstants {
             String TYPE_DEFAULT = "default";
 
             String ACTION_TYPE_INTERNAL_WEB = "internal_web";
+        }
+
+        interface Reward {
+            String PAYMENT_TYPE_POINT = "point";
+            String PAYMENT_TYPE_GAME_ITEM = "game-item";
+            String PAYMENT_TYPE_ETC = "etc";
         }
     }
 
@@ -150,6 +157,8 @@ public interface FomesConstants {
     }
 
     interface RemoteConfig {
+        String FEATURE_POINT_SYSTEM = "feature_point_system";
+
         String SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE ="signup_analysis_screen_is_visible";
         String FEATURE_CALCULATE_PLAYTIME = "feature_calculate_playtime";
 

@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import rx.Observable;
+import rx.Single;
+import rx.observables.MathObservable;
+
 public class BetaTest implements Parcelable {
     @SerializedName("_id") String id;
 
@@ -35,7 +39,7 @@ public class BetaTest implements Parcelable {
 
     BugReport bugReport;
 
-    List<Mission> missions;
+    List<Mission> missions = new ArrayList<>();
     String missionsSummary;
 
     Rewards rewards;
@@ -299,7 +303,7 @@ public class BetaTest implements Parcelable {
 
     public static class Rewards implements Parcelable {
         Integer minimumDelay;
-        List<RewardItem> list;
+        List<RewardItem> list = new ArrayList<>();
 
         public static class RewardItem implements Parcelable {
             Integer order;
@@ -309,6 +313,8 @@ public class BetaTest implements Parcelable {
             @Deprecated String type;
             Integer typeCode;
             Integer count;
+            Integer price;
+            String paymentType;
 
             public Integer getOrder() {
                 return order == null ? 0 : order;
@@ -375,6 +381,67 @@ public class BetaTest implements Parcelable {
                 return this;
             }
 
+            public Integer getPrice() {
+                return price;
+            }
+
+            public RewardItem setPrice(Integer price) {
+                this.price = price;
+                return this;
+            }
+
+            public String getPaymentType() {
+                return paymentType;
+            }
+
+            public RewardItem setPaymentType(String paymentType) {
+                this.paymentType = paymentType;
+                return this;
+            }
+
+            public String getPaymentTypeDisplayString() {
+                if (TextUtils.isEmpty(this.paymentType)) {
+                    return "문화상품권";
+                }
+
+                switch(this.paymentType) {
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT:
+                        return "포인트";
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_GAME_ITEM:
+                        return "게임아이템";
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_ETC:
+                        return "기타 보상";
+                    default:
+                        return "문화상품권";
+                }
+            }
+
+            public int getPaymentTypeDisplayOrder() {
+                if (TextUtils.isEmpty(this.paymentType)) {
+                    return -1;
+                }
+
+                switch(this.paymentType) {
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT:
+                        return 900;
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_GAME_ITEM:
+                        return 500;
+                    case FomesConstants.BetaTest.Reward.PAYMENT_TYPE_ETC:
+                        return 100;
+                    default:
+                        return -1;
+                }
+            }
+
+            // TODO : 더 좋은 네이밍 없을까?ㅠㅠ
+            public String getSummaryString() {
+                if (FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(getPaymentType())) {
+                    return getPrice() + "P";
+                } else {
+                    return getPaymentTypeDisplayString();
+                }
+            }
+
             @Override
             public String toString() {
                 return "RewardItem{" +
@@ -385,6 +452,8 @@ public class BetaTest implements Parcelable {
                         ", type='" + type + '\'' +
                         ", typeCode=" + typeCode +
                         ", count=" + count +
+                        ", price=" + price +
+                        ", paymentType='" + paymentType + '\'' +
                         '}';
             }
 
@@ -403,8 +472,10 @@ public class BetaTest implements Parcelable {
                 dest.writeString(title);
                 dest.writeString(content);
                 dest.writeString(type);
-                dest.writeInt(typeCode);
+                dest.writeInt(typeCode == null ? 0 : typeCode);
                 dest.writeInt(count == null ? 0 : count);
+                dest.writeInt(price == null ? 0 : price);
+                dest.writeString(paymentType);
             }
 
             private void readFromParcel(Parcel in) {
@@ -415,6 +486,8 @@ public class BetaTest implements Parcelable {
                 type = in.readString();
                 typeCode = in.readInt();
                 count = in.readInt();
+                price = in.readInt();
+                paymentType = in.readString();
             }
 
             @Override
@@ -451,6 +524,47 @@ public class BetaTest implements Parcelable {
             return this;
         }
 
+        public RewardItem getMaxRewardForEveryone() {
+            Observable<RewardItem> rewards = Observable.from(this.list);
+            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> rewardItem.getCount() == null || rewardItem.getCount() <= 0);
+
+            return getMaxRewardItemByTypeCode(pointRewards)
+                    .onErrorResumeNext(e -> getMaxRewardItemByTypeCode(rewards))
+                    .toBlocking().value();
+        }
+
+        public RewardItem getMinReward() {
+            Observable<RewardItem> rewards = Observable.from(this.list);
+//            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType()));
+//
+//            return getMinRewardItemByTypeCode(pointRewards)
+//                    .onErrorResumeNext(e -> getMinRewardItemByTypeCode(rewards))
+//                    .toBlocking().value();
+
+            return getMinRewardItemByTypeCode(rewards).toBlocking().value();
+        }
+
+        private Single<RewardItem> getMinRewardItemByTypeCode(Observable<RewardItem> rewards) {
+            return MathObservable.from(rewards)
+                    .min((a, b) -> Integer.compare(a.getTypeCode(), b.getTypeCode()))
+                    .toSingle();
+        }
+
+        public RewardItem getMaxReward() {
+            Observable<RewardItem> rewards = Observable.from(this.list);
+            Observable<RewardItem> pointRewards = rewards.filter(rewardItem -> FomesConstants.BetaTest.Reward.PAYMENT_TYPE_POINT.equals(rewardItem.getPaymentType()));
+
+            return getMaxRewardItemByTypeCode(pointRewards)
+                    .onErrorResumeNext(e -> getMaxRewardItemByTypeCode(rewards))
+                    .toBlocking().value();
+        }
+
+        private Single<RewardItem> getMaxRewardItemByTypeCode(Observable<RewardItem> rewards) {
+            return MathObservable.from(rewards)
+                    .max((a, b) -> Integer.compare(a.getTypeCode(), b.getTypeCode()))
+                    .toSingle();
+        }
+
         @Override
         public String toString() {
             return "Rewards{" +
@@ -469,12 +583,15 @@ public class BetaTest implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(minimumDelay);
+            dest.writeInt(minimumDelay == null ? -1 : minimumDelay);
             dest.writeTypedList(list);
         }
 
         private void readFromParcel(Parcel in) {
-            minimumDelay = in.readInt();
+            int minDelay = in.readInt();
+            if (minDelay >= 0) {
+                minimumDelay = minDelay;
+            }
             in.readTypedList(list, RewardItem.CREATOR);
         }
 
@@ -824,20 +941,20 @@ public class BetaTest implements Parcelable {
         plan = in.readString();
         status = in.readString();
         purpose = in.readString();
-        progressText = in.readParcelable(null);
+        progressText = in.readParcelable(getClass().getClassLoader());
         in.readStringList(tags);
         openDate = new Date(in.readLong());
         closeDate = new Date(in.readLong());
         currentDate = new Date(in.readLong());
-        bugReport = in.readParcelable(null);
+        bugReport = in.readParcelable(getClass().getClassLoader());
         in.readTypedList(missions, Mission.CREATOR);
         missionsSummary = in.readString();
-        rewards = in.readParcelable(null);
+        rewards = in.readParcelable(getClass().getClassLoader());
         isCompleted = (in.readInt() == 1);
         isAttended = (in.readInt() == 1);
         isRegisteredEpilogue = (in.readInt() == 1);
         isRegisteredAwards = (in.readInt() == 1);
-        epilogue = in.readParcelable(null);
+        epilogue = in.readParcelable(getClass().getClassLoader());
         in.readStringList(similarApps);
     }
 

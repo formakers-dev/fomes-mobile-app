@@ -81,34 +81,57 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="오늘\n종료" />
 
-            <TextView
-                android:id="@+id/betatest_plan"
-                android:layout_width="wrap_content"
+            <LinearLayout android:id="@+id/betatest_main_tags_layout"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/betatest_list_item_content_margin_top_bottom"
-                android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.Plan.Premium"
-                android:textColor="@color/fomes_orange"
-                style="@style/BetaTestTheme.TypeTag"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview"
-                app:layout_constraintStart_toStartOf="@+id/betatest_overview_imageview"
-                tools:text="프리미엄 테스트"/>
+                android:divider="@drawable/betatest_card_main_tag_divider"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                app:layout_constraintStart_toStartOf="@+id/betatest_title_textview"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_overview_imageview">
 
-            <TextView
-                android:id="@+id/betatest_my_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/item_rect_rounded_corner_background"
-                android:theme="@style/BetaTestTheme.MyStatus"
-                android:textColor="@color/fomes_white_alpha_75"
-                style="@style/BetaTestTheme.TypeTag"
-                app:layout_constraintTop_toTopOf="@+id/betatest_plan"
-                app:layout_constraintBottom_toBottomOf="@+id/betatest_plan"
-                app:layout_constraintStart_toEndOf="@+id/betatest_plan"
-                tools:text="내가 참여중"/>
+                <TextView
+                    android:id="@+id/betatest_reward_min"
+                    style="@style/BetaTestTheme.TypeTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:textColor="@color/fomes_blush_pink"
+                    android:theme="@style/BetaTestTheme.MainTag.BlushPink"
+                    tools:text="최소 1000P" />
 
+                <TextView
+                    android:id="@+id/betatest_reward_max"
+                    style="@style/BetaTestTheme.TypeTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:textColor="@color/colorPrimary"
+                    android:theme="@style/BetaTestTheme.MainTag.Primary"
+                    tools:text="최대 30000P" />
+
+                <TextView
+                    android:id="@+id/betatest_plan"
+                    style="@style/BetaTestTheme.TypeTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:textColor="@color/fomes_orange"
+                    android:theme="@style/BetaTestTheme.Plan.Premium"
+                    tools:text="프리미엄 테스트"/>
+
+                <TextView
+                    android:id="@+id/betatest_my_status"
+                    style="@style/BetaTestTheme.TypeTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_rect_rounded_corner_background"
+                    android:textColor="@color/fomes_white_alpha_75"
+                    android:theme="@style/BetaTestTheme.MyStatus"
+                    tools:text="내가 참여중" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/betatest_title_textview"
@@ -116,12 +139,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/betatest_list_item_content_margin_start_end"
                 android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/betatest_list_item_content_margin_start_end"
                 android:textColor="@color/fomes_white"
                 android:textStyle="bold"
                 android:textSize="@dimen/betatest_title_text_size"
-                app:layout_constraintStart_toStartOf="@+id/betatest_plan"
+                app:layout_constraintStart_toStartOf="@+id/betatest_overview_imageview"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/betatest_plan"
+                app:layout_constraintTop_toBottomOf="@+id/betatest_main_tags_layout"
                 tools:text="서랍에서 찾은 또 다른 설문지" />
 
             <TextView
@@ -132,7 +156,7 @@
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/fomes_white_alpha_60"
                 android:textSize="12dp"
-                app:layout_constraintStart_toStartOf="@+id/betatest_plan"
+                app:layout_constraintStart_toStartOf="@+id/betatest_title_textview"
                 app:layout_constraintEnd_toEndOf="@+id/betatest_title_textview"
                 app:layout_constraintTop_toBottomOf="@+id/betatest_title_textview"
                 tools:text="주변을 더듬거리다가 서랍을 찾아냈다. 드르륵 열어보니 설문이 놓여져 있다. 완료하면 보상이 있다는데 한번 해볼까…? " />

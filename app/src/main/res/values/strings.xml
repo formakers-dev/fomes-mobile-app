@@ -175,6 +175,8 @@
     <string name="betatest_progress_attend_label_doing">참여 중</string>
     <string name="betatest_plan_premium">프리미엄 테스트</string>
     <string name="betatest_plan_lite">간단 테스트</string>
+    <string name="betatest_main_tag_min_reward">최소 %s</string>
+    <string name="betatest_main_tag_max_reward">최대 %s</string>
     <string name="betatest_my_status_completed">참여 완료</string>
     <string name="betatest_my_status_attend">참여 중</string>
 
@@ -229,10 +231,10 @@
     <string name="betatest_detail_game_description_title">게임 소개</string>
     <string name="betatest_detail_howto_title">테스트 방법</string>
     <string name="betatest_detail_howto_description">어렵지 않아요. 게임을 즐기고 의견을 주면 끝!</string>
-    <string name="betatest_detail_howto_guide">* 종료 후 %d영업일 이내에 시상식이 열리고, 보상이 지급됩니다.\n* 시상식 내용은 메인 화면의 [시상식] 메뉴에서 확인 가능합니다.</string>
+    <string name="betatest_detail_howto_guide">* 테스트 종료 후 %d일 이내(주말, 휴일 제외)에 시상식이 열리고, 보상이 지급됩니다.\n* 시상식 내용은 메인 화면의 [시상식] 메뉴에서 확인 가능합니다.</string>
     <string name="betatest_detail_rewards_title">테스트 보상</string>
     <string name="betatest_detail_rewards_description">시상식을 통해 선정자를 안내해드립니다.</string>
-    <string name="betatest_detail_reward_date_guide">* 지급일 : 테스트 종료 후 %d영업일 이내</string>
+    <string name="betatest_detail_reward_date_guide">* 지급일 : 테스트 종료 후 %d일 이내 (주말, 휴일 제외)</string>
     <string name="betatest_detail_reward_description">%1s (%2s)</string>
     <string name="betatest_detail_mission_list_title">테스트 참여</string>
     <string name="betatest_detail_mission_list_description">당신의 게임 분석력과 통찰력을 기대할게요!</string>
@@ -276,4 +278,17 @@
     <string name="survey_back_dialog_back">뒤로 가기</string>
     <string name="survey_back_dialog_finish">설문 종료</string>
     <string name="survey_back_dialog_cancel">팝업 닫기</string>
+
+    <!-- Point -->
+    <string name="my_point">나의 포메스 포인트</string>
+    <string name="my_point_menu_history">내역</string>
+    <string name="my_point_menu_exchange">교환</string>
+    <string name="current_point">현재 포인트</string>
+    <string name="accumulated_point">누적 포인트</string>
+    <string name="point_history_empty">포인트 내역이 존재하지 않습니다</string>
+    <string name="point_exchange_limit_guide_old">※ 5,000P 부터 문화상품권으로 교환할 수 있습니다.</string>
+    <string name="point_exchange_limit_guide"><![CDATA[<b>※ 문화상품권 교환 가능 금액 :</b> <b>5,000P</b> 이상]]></string>
+    <string name="point_dashboard_save_guide"><![CDATA[<b>※ 포인트 적립 시기 :</b> 테스트 종료 후 <b>5일</b> 이내 (휴일/주말 제외)]]></string>
+    <string name="point_dashboard_exchange_guide"><![CDATA[<b>※ 문화상품권 교환 완료 시기 :</b> 교환 신청 후 <b>5일</b> 이내 MMS 발송]]></string>
+    <string name="point_exchange_guide">※ 교환 신청 후 5일 이내에 지급이 완료됩니다. (휴일/주말 제외)\n※ 핸드폰 MMS로 컬쳐랜드 문화상품권 5천원권을 신청 장 수만큼 보내드려요.</string>
 </resources>

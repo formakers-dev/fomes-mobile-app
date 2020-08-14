@@ -15,6 +15,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.network.vo.Mission;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     private ImageLoader imageLoader;
     private FomesUrlHelper fomesUrlHelper;
     private AndroidNativeHelper androidNativeHelper;
+    private FirebaseRemoteConfig remoteConfig;
 
     private FinishedBetaTestListAdapterContract.Model adapterModel;
     private FinishedBetaTestContract.View view;
@@ -56,7 +58,8 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                                      AnalyticsModule.Analytics analytics,
                                      ImageLoader imageLoader,
                                      FomesUrlHelper fomesUrlHelper,
-                                     AndroidNativeHelper androidNativeHelper) {
+                                     AndroidNativeHelper androidNativeHelper,
+                                     FirebaseRemoteConfig remoteConfig) {
         this.view = view;
         this.betaTestService = betaTestService;
         this.eventLogService = eventLogService;
@@ -64,6 +67,7 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
         this.imageLoader = imageLoader;
         this.fomesUrlHelper = fomesUrlHelper;
         this.androidNativeHelper = androidNativeHelper;
+        this.remoteConfig = remoteConfig;
     }
 
     @Override
@@ -203,6 +207,11 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
                         .subscribe(() -> Log.d(TAG, "sendEventLog) onSuccess = Event log is sent successfully!!"),
                                 (e) -> Log.e(TAG, "sendEventLog) onError e=" + e))
         );
+    }
+
+    @Override
+    public boolean isActivatedPointSystem() {
+        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
     }
 
     @Override

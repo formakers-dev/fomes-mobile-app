@@ -2,6 +2,7 @@ package com.formakers.fomes.betatest;
 
 import android.content.Context;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.FomesUrlHelper;
 import com.formakers.fomes.common.helper.ImageLoader;
@@ -11,6 +12,7 @@ import com.formakers.fomes.common.network.EventLogService;
 import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.network.vo.EventLog;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +44,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
     private ImageLoader imageLoader;
     private Single<String> userNickName;
     private ShareHelper shareHelper;
+    private FirebaseRemoteConfig remoteConfig;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
@@ -54,7 +57,8 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
                              FomesUrlHelper fomesUrlHelper,
                              ImageLoader imageLoader,
                              ShareHelper shareHelper,
-                             @Named("userNickName") Single<String> userNickName) {
+                             @Named("userNickName") Single<String> userNickName,
+                             FirebaseRemoteConfig remoteConfig) {
         this.context = context;
         this.view = view;
         this.betaTestService = betaTestService;
@@ -64,6 +68,7 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
         this.fomesUrlHelper = fomesUrlHelper;
         this.imageLoader = imageLoader;
         this.shareHelper = shareHelper;
+        this.remoteConfig = remoteConfig;
     }
 
     @Override
@@ -196,5 +201,10 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
         if (compositeSubscription != null) {
             compositeSubscription.clear();
         }
+    }
+
+    @Override
+    public boolean isActivatedPointSystem() {
+        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
     }
 }
