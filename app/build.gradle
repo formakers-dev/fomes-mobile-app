@@ -15,8 +15,8 @@ try {
 project.ext.set("packageID", "Fomes")
 
 def majorVersion = 0
-def minorVersion = 3
-def patchVersion = 16
+def minorVersion = 4
+def patchVersion = 0
 
 android {
     compileSdkVersion 29
@@ -26,7 +26,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode 74
+        versionCode 75
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
