@@ -211,6 +211,9 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
         }
 
         myStatusTextView.setVisibility(betaTest.isCompleted() ? View.VISIBLE : View.GONE);
+        myStatusTextView.setText(R.string.betatest_my_status_completed);
+        myStatusTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+        myStatusTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,  new androidx.appcompat.view.ContextThemeWrapper(this,  R.style.BetaTestTheme_MyStatus_Completed).getTheme()));
 
         myResultSubTitleTextView.setText(String.format(getString(betaTest.isCompleted() ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), betaTest.getTitle()));
 
