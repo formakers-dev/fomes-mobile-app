@@ -50,7 +50,6 @@ public interface BetaTestDetailContract {
         void displayMission(String missionId);
 
         boolean isPlaytimeFeatureEnabled();
-        boolean isActivatedPointSystem();
     }
 
     interface View extends BaseView<Presenter> {

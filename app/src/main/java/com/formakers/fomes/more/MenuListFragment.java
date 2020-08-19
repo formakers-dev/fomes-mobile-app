@@ -82,8 +82,6 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.pointLayout.setVisibility(this.presenter.isActivatedPointSystem() ? View.VISIBLE : View.GONE);
-
         this.presenter.bindUserInfo();
         this.presenter.bindCompletedBetaTestsCount();
         this.presenter.bindAvailablePoint();

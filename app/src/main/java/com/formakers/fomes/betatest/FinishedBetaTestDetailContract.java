@@ -24,7 +24,6 @@ public interface FinishedBetaTestDetailContract {
 
         void emitRecheckMyAnswer(Mission mission);
         void setFinishedBetaTestAwardPagerAdapterModel(FinishedBetaTestAwardPagerAdapterContract.Model model);
-        boolean isActivatedPointSystem();
 
         //Base
         AnalyticsModule.Analytics getAnalytics();

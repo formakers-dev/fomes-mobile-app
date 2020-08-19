@@ -129,11 +129,6 @@ class FinishedBetaTestDetailPresenter implements FinishedBetaTestDetailContract.
                 v -> processMissionItemAction(mission));
     }
 
-    @Override
-    public boolean isActivatedPointSystem() {
-        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
-    }
-
     private void processMissionItemAction(Mission missionItem) {
         // TODO : [중복코드] BetaTestHelper 등과 같은 로직으로 공통화 시킬 필요 있음
         String action = missionItem.getAction();

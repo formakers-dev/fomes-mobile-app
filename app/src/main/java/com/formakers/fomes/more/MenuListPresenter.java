@@ -61,19 +61,12 @@ public class MenuListPresenter implements MenuListContract.Presenter {
 
     @Override
     public void bindAvailablePoint() {
-        if (this.isActivatedPointSystem()) {
-            this.pointService.getAvailablePoint()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(() -> this.view.showAvailablePointLoading())
-                    .doAfterTerminate(() -> this.view.hideAvailablePointLoading())
-                    .subscribe(point -> {
-                        this.view.setAvailablePoint(point);
-                    }, e -> Log.e(TAG, String.valueOf(e)));
-        }
-    }
-
-    @Override
-    public boolean isActivatedPointSystem() {
-        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
+        this.pointService.getAvailablePoint()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> this.view.showAvailablePointLoading())
+                .doAfterTerminate(() -> this.view.hideAvailablePointLoading())
+                .subscribe(point -> {
+                    this.view.setAvailablePoint(point);
+                }, e -> Log.e(TAG, String.valueOf(e)));
     }
 }

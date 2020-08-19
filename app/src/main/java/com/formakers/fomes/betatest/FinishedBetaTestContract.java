@@ -29,7 +29,6 @@ public interface FinishedBetaTestContract {
         BetaTest getItem(int position);
         int getPostitionById(String id);
 
-        boolean isActivatedPointSystem();
         void unsubscribe();
     }
 

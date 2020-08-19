@@ -202,9 +202,4 @@ public class BetaTestPresenter implements BetaTestContract.Presenter {
             compositeSubscription.clear();
         }
     }
-
-    @Override
-    public boolean isActivatedPointSystem() {
-        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
-    }
 }
