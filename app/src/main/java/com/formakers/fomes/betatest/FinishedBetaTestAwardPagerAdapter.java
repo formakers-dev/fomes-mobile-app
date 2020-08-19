@@ -13,6 +13,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.AwardRecord;
 import com.formakers.fomes.common.network.vo.BetaTest;
 
@@ -46,7 +47,7 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
                         nickNames.add(awardRecord.getNickName());
 
                         awardItems.add(new AwardItem(awardRecord.getTypeCode(),
-                                null,
+                                awardRecord.getTitle(),
                                 awardRecord.getReward().getDescription(),
                                 1,
                                 nickNames));
@@ -90,8 +91,6 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
         if (context != null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.item_finish_betatest_awards, container, false);
-
-            ((TextView)view.findViewById(R.id.betatest_awards_title)).setText(awardItem.getTitle());
 
             TextView awardsTitle = view.findViewById(R.id.betatest_awards_title);
             ImageView crowdedPeopleImageView = view.findViewById(R.id.betatest_awards_crowded_people);
@@ -140,18 +139,16 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
 
     @ColorInt
     private int getTitleColor(AwardItem awardItem) {
-        switch(awardItem.typeCode) {
-            case 9000:
-                return context.getResources().getColor(R.color.colorPrimary);
+        int typeCode = (awardItem.typeCode == null) ? 0 : awardItem.typeCode;
 
-            case 7000:
-                return context.getResources().getColor(R.color.fomes_squash);
-
-            case 5000:
-                return context.getResources().getColor(R.color.fomes_blush_pink);
-
-            default:
-                return context.getResources().getColor(R.color.fomes_white);
+        if (typeCode >= FomesConstants.BetaTest.Award.TYPE_CODE_BEST) {
+            return context.getResources().getColor(R.color.colorPrimary);
+        } else if (typeCode >= FomesConstants.BetaTest.Award.TYPE_CODE_GOOD) {
+            return context.getResources().getColor(R.color.fomes_squash);
+        } else if (typeCode >= FomesConstants.BetaTest.Award.TYPE_CODE_NORMAL) {
+            return context.getResources().getColor(R.color.fomes_blush_pink);
+        } else {
+            return context.getResources().getColor(R.color.fomes_white);
         }
     }
 
@@ -190,22 +187,7 @@ public class FinishedBetaTestAwardPagerAdapter extends PagerAdapter implements F
         }
 
         public String getTitle() {
-            if(title == null) {
-                switch(typeCode) {
-                    case 9000:
-                        return "테스트 수석";
-                    case 7000:
-                        return "테스트 차석";
-                    case 5000:
-                        return "테스트 성실상";
-                    case 3000:
-                        return "참가상";
-                    default :
-                        return "기타";
-                }
-            } else {
-                return title;
-            }
+            return title;
         }
     }
 }

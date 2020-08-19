@@ -74,6 +74,15 @@ public interface FomesConstants {
             String PAYMENT_TYPE_GAME_ITEM = "game-item";
             String PAYMENT_TYPE_ETC = "etc";
         }
+
+        interface Award {
+            int TYPE_CODE_BEST = 9000;
+            int TYPE_CODE_GOOD = 7000;
+            int TYPE_CODE_NORMAL_BONUS = 5001;
+            int TYPE_CODE_NORMAL = 5000;
+            int TYPE_CODE_PARTICIPATED = 3000;
+            int TYPE_CODE_ETC = 1000;
+        }
     }
 
     interface Settings {

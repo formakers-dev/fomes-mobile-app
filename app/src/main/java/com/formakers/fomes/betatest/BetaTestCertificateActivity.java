@@ -131,46 +131,40 @@ public class BetaTestCertificateActivity extends FomesBaseActivity implements Be
             return;
         }
 
-        Integer awardTypeCode = (awardRecord != null) ? awardRecord.getTypeCode() : 0;
-        switch(awardTypeCode) {
-            case 9000 :
-                betaTestAwardsTitle.setText("수석 테스터");
-                betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.colorPrimary));
-                betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_best, betaTest.getTitle()));
-                betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
-                break;
+        int awardTypeCode = (awardRecord != null) ? awardRecord.getTypeCode().intValue() : 0;
 
-            case 7000 :
-                betaTestAwardsTitle.setText("차석 테스터");
-                betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_squash));
-                betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_good, betaTest.getTitle()));
-                betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
-                break;
+        if (awardTypeCode >= FomesConstants.BetaTest.Award.TYPE_CODE_BEST) {
+            betaTestAwardsTitle.setText(awardRecord.getCertificationTitle());
+            betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.colorPrimary));
+            betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_best, betaTest.getTitle()));
+            betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
 
-            case 5000 :
-                betaTestAwardsTitle.setText("성실 테스터");
-                betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_blush_pink));
-                betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_normal, betaTest.getTitle()));
-                betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
-                break;
+        } else if (awardTypeCode >= FomesConstants.BetaTest.Award.TYPE_CODE_GOOD) {
+            betaTestAwardsTitle.setText(awardRecord.getCertificationTitle());
+            betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_squash));
+            betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_good, betaTest.getTitle()));
+            betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
 
-            case 3000 :
-            case 1000 :
-                betaTestAwardsTitle.setText("테스터");
-                betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_warm_gray));
-                betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description, betaTest.getTitle()));
-                betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
-                break;
+        } else if (awardTypeCode >= FomesConstants.BetaTest.Award.TYPE_CODE_NORMAL) {
+            betaTestAwardsTitle.setText(awardRecord.getCertificationTitle());
+            betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_blush_pink));
+            betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description_for_normal, betaTest.getTitle()));
+            betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
 
-            default :
-                betaTestAwardsTitle.setText("테스터");
-                betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_warm_gray));
-                betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description, betaTest.getTitle()));
-                betaTestCertificateFomesFeedback.setText(
+        } else if (awardTypeCode >= FomesConstants.BetaTest.Award.TYPE_CODE_ETC) {
+            betaTestAwardsTitle.setText(awardRecord.getCertificationTitle());
+            betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_warm_gray));
+            betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description, betaTest.getTitle()));
+            betaTestCertificateFomesFeedback.setText(getString(R.string.betatest_certificate_fomes_feedback));
+
+        } else {
+            betaTestAwardsTitle.setText("테스터");
+            betaTestAwardsTitle.setTextColor(getResources().getColor(R.color.fomes_warm_gray));
+            betaTestCertificateDescription.setText(getString(R.string.betatest_certificate_description, betaTest.getTitle()));
+            betaTestCertificateFomesFeedback.setText(
                     (betaTest.getEpilogue() != null) ?
-                        getString(R.string.betatest_certificate_fomes_feedback_for_better_try) :
-                        getString(R.string.betatest_certificate_fomes_feedback));
-                break;
+                            getString(R.string.betatest_certificate_fomes_feedback_for_better_try) :
+                            getString(R.string.betatest_certificate_fomes_feedback));
         }
     }
 

@@ -3,9 +3,9 @@ package com.formakers.fomes.common.network.vo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class AwardRecord implements Parcelable {
-    public static final Integer TYPE_BEST = 9000;
+import com.formakers.fomes.common.constant.FomesConstants;
 
+public class AwardRecord implements Parcelable {
     String userId;
     String nickName;
     @Deprecated String type;
@@ -58,6 +58,38 @@ public class AwardRecord implements Parcelable {
     public AwardRecord setRewards(Reward reward) {
         this.reward = reward;
         return this;
+    }
+
+    public String getCertificationTitle() {
+        int typeCodeIntValue = (typeCode == null) ? 0 : typeCode.intValue();
+
+        if (typeCodeIntValue >= FomesConstants.BetaTest.Award.TYPE_CODE_BEST) {
+            return "수석 테스터";
+        } else if (typeCodeIntValue >= FomesConstants.BetaTest.Award.TYPE_CODE_GOOD) {
+            return "차석 테스터";
+        } else if (typeCodeIntValue >= FomesConstants.BetaTest.Award.TYPE_CODE_NORMAL) {
+            return "성실 테스터";
+        }
+
+        return "테스터";
+    }
+
+    public String getTitle() {
+        int typeCodeIntValue = (typeCode == null) ? 0 : typeCode.intValue();
+
+        if (typeCodeIntValue >= FomesConstants.BetaTest.Award.TYPE_CODE_BEST) {
+            return "테스트 수석";
+        } else if (typeCodeIntValue >= FomesConstants.BetaTest.Award.TYPE_CODE_GOOD) {
+            return "테스트 차석";
+        } else if (typeCodeIntValue == FomesConstants.BetaTest.Award.TYPE_CODE_NORMAL_BONUS) {
+            return "성실 보너스";
+        } else if (typeCodeIntValue >= FomesConstants.BetaTest.Award.TYPE_CODE_NORMAL) {
+            return "테스트 성실상";
+        } else if (typeCodeIntValue >= FomesConstants.BetaTest.Award.TYPE_CODE_PARTICIPATED) {
+            return "참가상";
+        }
+
+        return "기타";
     }
 
     public static class Reward implements Parcelable {
