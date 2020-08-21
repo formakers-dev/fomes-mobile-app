@@ -13,10 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 import androidx.viewpager.widget.ViewPager;
@@ -175,42 +172,26 @@ public class FinishedBetaTestDetailActivity extends FomesBaseActivity implements
             tagViewGroup.addView(tagView);
         }
 
-        if (this.presenter.isActivatedPointSystem()) {
-            planTextView.setVisibility(View.GONE);
-            minRewardTextView.setVisibility(View.VISIBLE);
-            maxRewardTextView.setVisibility(View.VISIBLE);
+        // 메인 태그 부분 (중복로직 : BetaTestListAdapter, BetaTestDetailActivity, FinishedBetaTestListAdapter, FinishedBetaTestDetailActivity)
+        planTextView.setVisibility(View.GONE);
+        minRewardTextView.setVisibility(View.VISIBLE);
+        maxRewardTextView.setVisibility(View.VISIBLE);
 
-            try {
-                BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
-                minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
+        try {
+            BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
+            minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
 
-                BetaTest.Rewards.RewardItem maxRewardItem = betaTest.getRewards().getMaxReward();
-                maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
-            } catch (Exception e) {
-                minRewardTextView.setVisibility(View.GONE);
-                maxRewardTextView.setVisibility(View.GONE);
-            }
-
-        } else {
+            BetaTest.Rewards.RewardItem maxRewardItem = betaTest.getRewards().getMaxReward();
+            maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
+        } catch (Exception e) {
             minRewardTextView.setVisibility(View.GONE);
             maxRewardTextView.setVisibility(View.GONE);
-
-            @StyleRes int planStyleResId;
-            @ColorRes int planNameColorId;
-            if (betaTest.isPremiumPlan()) {
-                planStyleResId = R.style.BetaTestTheme_Plan_Premium;
-                planNameColorId = R.color.fomes_orange;
-            } else {
-                planStyleResId = R.style.BetaTestTheme_Plan_Lite;
-                planNameColorId = R.color.colorPrimary;
-            }
-
-            planTextView.setText(betaTest.getPlanStringResId());
-            planTextView.setTextColor(getResources().getColor(planNameColorId));
-            planTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background, new ContextThemeWrapper(this, planStyleResId).getTheme()));
         }
 
         myStatusTextView.setVisibility(betaTest.isCompleted() ? View.VISIBLE : View.GONE);
+        myStatusTextView.setText(R.string.betatest_my_status_completed);
+        myStatusTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+        myStatusTextView.setBackground(getResources().getDrawable(R.drawable.item_rect_rounded_corner_background,  new androidx.appcompat.view.ContextThemeWrapper(this,  R.style.BetaTestTheme_MyStatus_Completed).getTheme()));
 
         myResultSubTitleTextView.setText(String.format(getString(betaTest.isCompleted() ? R.string.finished_betatest_detail_my_results_subtitle : R.string.finished_betatest_detail_my_results_subtitle_not_completed), betaTest.getTitle()));
 

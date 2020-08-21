@@ -8,8 +8,6 @@ public interface MenuListContract {
         void bindUserInfo();
         void bindCompletedBetaTestsCount();
         void bindAvailablePoint();
-
-        boolean isActivatedPointSystem();
     }
 
     interface View extends BaseView<Presenter> {

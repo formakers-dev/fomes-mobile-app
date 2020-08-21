@@ -210,11 +210,6 @@ public class FinishedBetaTestPresenter implements FinishedBetaTestContract.Prese
     }
 
     @Override
-    public boolean isActivatedPointSystem() {
-        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
-    }
-
-    @Override
     public void unsubscribe() {
         if (compositeSubscription != null) {
             compositeSubscription.clear();

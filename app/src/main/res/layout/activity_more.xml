@@ -84,11 +84,9 @@
             android:paddingStart="22dp"
             android:paddingEnd="22dp"
             android:background="@color/fomes_deep_dark_gray"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_divider"
-            tools:visibility="visible"
             >
             <TextView
                 android:id="@+id/my_point_title"

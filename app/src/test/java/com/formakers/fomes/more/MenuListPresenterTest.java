@@ -1,6 +1,5 @@
 package com.formakers.fomes.more;
 
-import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.BetaTestService;
 import com.formakers.fomes.common.network.PointService;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -19,19 +18,21 @@ import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class MenuListPresenterTest {
 
-    @Mock MenuListContract.View mockView;
-    @Mock BetaTestService mockBetaTestService;
-    @Mock PointService mockPointService;
-    @Mock FirebaseRemoteConfig mockRemoteConfig;
+    @Mock
+    MenuListContract.View mockView;
+    @Mock
+    BetaTestService mockBetaTestService;
+    @Mock
+    PointService mockPointService;
+    @Mock
+    FirebaseRemoteConfig mockRemoteConfig;
 
     MenuListPresenter subject;
 
@@ -78,19 +79,8 @@ public class MenuListPresenterTest {
 
     @Test
     public void bindAvailablePoint_호출시__포인트시스템_ON이면__총_가용_포인트를_가져와서__뷰에_셋팅한다() {
-        when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM)).thenReturn(true);
-
         subject.bindAvailablePoint();
 
         verify(this.mockView).setAvailablePoint(3000L);
-    }
-
-    @Test
-    public void bindAvailablePoint_호출시__포인트시스템_OFF이면__아무것도_하지않는다() {
-        when(mockRemoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM)).thenReturn(false);
-
-        subject.bindAvailablePoint();
-
-        verify(this.mockView, never()).setAvailablePoint(anyLong());
     }
 }

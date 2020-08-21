@@ -9,10 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -97,42 +94,20 @@ public class FinishedBetaTestListAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.subTitleTextView.setTextColor(normalTextColor);
         }
 
-        //메인 태그
-        if (this.presenter.isActivatedPointSystem()) {
-            viewHolder.planTextView.setVisibility(View.GONE);
-            viewHolder.minRewardTextView.setVisibility(View.VISIBLE);
-            viewHolder.maxRewardTextView.setVisibility(View.VISIBLE);
+        // 메인 태그 부분 (중복로직 : BetaTestListAdapter, BetaTestDetailActivity, FinishedBetaTestListAdapter, FinishedBetaTestDetailActivity)
+        viewHolder.planTextView.setVisibility(View.GONE);
+        viewHolder.minRewardTextView.setVisibility(View.VISIBLE);
+        viewHolder.maxRewardTextView.setVisibility(View.VISIBLE);
 
-            try {
-                BetaTest.Rewards.RewardItem minRewardItem = item.getRewards().getMinReward();
-                viewHolder.minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
+        try {
+            BetaTest.Rewards.RewardItem minRewardItem = item.getRewards().getMinReward();
+            viewHolder.minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
 
-                BetaTest.Rewards.RewardItem maxRewardItem = item.getRewards().getMaxReward();
-                viewHolder.maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
-            } catch (Exception e) {
-                viewHolder.minRewardTextView.setVisibility(View.GONE);
-                viewHolder.maxRewardTextView.setVisibility(View.GONE);
-            }
-
-        } else {
+            BetaTest.Rewards.RewardItem maxRewardItem = item.getRewards().getMaxReward();
+            viewHolder.maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
+        } catch (Exception e) {
             viewHolder.minRewardTextView.setVisibility(View.GONE);
             viewHolder.maxRewardTextView.setVisibility(View.GONE);
-
-            @StyleRes int planStyleResId;
-            @ColorRes int planNameColorId;
-            if (item.isPremiumPlan()) {
-                planStyleResId = R.style.BetaTestTheme_Plan_Premium;
-                planNameColorId = R.color.fomes_orange;
-            } else {
-                planStyleResId = R.style.BetaTestTheme_Plan_Lite;
-                planNameColorId = R.color.colorPrimary;
-            }
-
-            viewHolder.planTextView.setVisibility(View.VISIBLE);
-            viewHolder.planTextView.setText(item.getPlanStringResId());
-            viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
-            viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                    new ContextThemeWrapper(context, planStyleResId).getTheme()));
         }
 
         viewHolder.itemView.setOnClickListener(v -> {

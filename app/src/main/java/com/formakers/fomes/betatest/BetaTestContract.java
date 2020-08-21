@@ -29,8 +29,6 @@ public interface BetaTestContract {
         void sendEventLog(String code, String ref);
         void shareToKaKao(BetaTest betaTest);
 
-        boolean isActivatedPointSystem();
-
         void unsubscribe();
     }
 

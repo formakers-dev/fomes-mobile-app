@@ -177,11 +177,6 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     }
 
     @Override
-    public boolean isActivatedPointSystem() {
-        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_POINT_SYSTEM);
-    }
-
-    @Override
     public void updateMissionProgress(String missionId) {
         if (this.betaTest == null) {
             return;

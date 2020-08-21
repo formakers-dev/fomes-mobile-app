@@ -124,41 +124,20 @@ public class BetaTestListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.titleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_title_text_color));
         viewHolder.subTitleTextView.setTextColor(betaTest.isCompleted() ? res.getColor(R.color.colorPrimary) : res.getColor(R.color.fomes_content_card_subtitle_text_color));
 
-        // 메인 태그 부분
-        if (this.presenter.isActivatedPointSystem()) {
-            viewHolder.planTextView.setVisibility(View.GONE);
-            viewHolder.minRewardTextView.setVisibility(View.VISIBLE);
-            viewHolder.maxRewardTextView.setVisibility(View.VISIBLE);
+        // 메인 태그 부분 (중복로직 : BetaTestListAdapter, BetaTestDetailActivity, FinishedBetaTestDetailActivity)
+        viewHolder.planTextView.setVisibility(View.GONE);
+        viewHolder.minRewardTextView.setVisibility(View.VISIBLE);
+        viewHolder.maxRewardTextView.setVisibility(View.VISIBLE);
 
-            try {
-                BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
-                viewHolder.minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
+        try {
+            BetaTest.Rewards.RewardItem minRewardItem = betaTest.getRewards().getMinReward();
+            viewHolder.minRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_min_reward), minRewardItem.getSummaryString()));
 
-                BetaTest.Rewards.RewardItem maxRewardItem = betaTest.getRewards().getMaxReward();
-                viewHolder.maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
-            } catch (Exception e) {
-                viewHolder.minRewardTextView.setVisibility(View.GONE);
-                viewHolder.maxRewardTextView.setVisibility(View.GONE);
-            }
-        } else {
+            BetaTest.Rewards.RewardItem maxRewardItem = betaTest.getRewards().getMaxReward();
+            viewHolder.maxRewardTextView.setText(String.format(res.getString(R.string.betatest_main_tag_max_reward), maxRewardItem.getSummaryString()));
+        } catch (Exception e) {
             viewHolder.minRewardTextView.setVisibility(View.GONE);
             viewHolder.maxRewardTextView.setVisibility(View.GONE);
-            viewHolder.planTextView.setVisibility(View.VISIBLE);
-
-            @StyleRes int planStyleResId;
-            @ColorRes int planNameColorId;
-            if (betaTest.isPremiumPlan()) {
-                planStyleResId = R.style.BetaTestTheme_Plan_Premium;
-                planNameColorId = R.color.fomes_orange;
-            } else {
-                planStyleResId = R.style.BetaTestTheme_Plan_Lite;
-                planNameColorId = R.color.colorPrimary;
-            }
-
-            viewHolder.planTextView.setText(betaTest.getPlanStringResId());
-            viewHolder.planTextView.setTextColor(res.getColor(planNameColorId));
-            viewHolder.planTextView.setBackground(res.getDrawable(R.drawable.item_rect_rounded_corner_background,
-                    new ContextThemeWrapper(context, planStyleResId).getTheme()));
         }
 
         // 참여정보 표시 정책
