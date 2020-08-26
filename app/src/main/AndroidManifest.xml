@@ -49,6 +49,11 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="${kakaoAppKey}" />
 
+        <!-- AdMob -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
     <!-- 백그라운드 앱의 알림 수신 -->
         <service android:name=".common.noti.MessagingService"
             android:exported="true">
@@ -88,6 +93,7 @@
         </activity>
         <activity android:name=".settings.SettingsActivity"/>
         <activity android:name=".settings.MyInfoActivity"/>
+        <activity android:name=".advertising.AdvertisingActivity"/>
         <activity android:name=".wishList.WishListActivity"/>
         <activity android:name=".common.view.webview.WebViewActivity"
             android:parentActivityName=".main.MainActivity"

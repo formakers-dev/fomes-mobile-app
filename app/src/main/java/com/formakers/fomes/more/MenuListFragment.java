@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.advertising.AdvertisingActivity;
 import com.formakers.fomes.analysis.RecentAnalysisReportActivity;
 import com.formakers.fomes.common.constant.FomesConstants.More;
 import com.formakers.fomes.common.util.Log;
@@ -148,6 +149,7 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
         menuItemList.add(new MenuItem(More.MENU_GAME_ANALYSIS, MenuItem.MENU_TYPE_PLAIN).setTitle("게임 성향 분석").setIconImageDrawable(context.getDrawable(R.drawable.icon_my_recent_analysis)));
         menuItemList.add(new MenuItem(More.MENU_WISH_LIST, MenuItem.MENU_TYPE_PLAIN).setTitle("관심 게임 리스트").setIconImageDrawable(context.getDrawable(R.drawable.icon_bookmark)));
         menuItemList.add(new MenuItem(More.MENU_SETTINGS, MenuItem.MENU_TYPE_PLAIN).setTitle("설정").setIconImageDrawable(context.getDrawable(R.drawable.icon_settings)));
+        menuItemList.add(new MenuItem(More.MENU_ADVERTISING, MenuItem.MENU_TYPE_PLAIN).setTitle("광고보고 포메스 후원하기!").setIconImageDrawable(context.getDrawable(R.drawable.icon_coffee)));
 
         return menuItemList;
     }
@@ -227,6 +229,10 @@ public class MenuListFragment extends BaseFragment implements MenuListContract.V
             }
             case More.MENU_SETTINGS: {
                 intent.setClass(context, SettingsActivity.class);
+                break;
+            }
+            case More.MENU_ADVERTISING: {
+                intent.setClass(context, AdvertisingActivity.class);
                 break;
             }
         }
