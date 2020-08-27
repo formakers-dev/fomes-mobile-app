@@ -32,6 +32,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.FomesCharacterDialog;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.google.android.material.chip.Chip;
@@ -403,5 +404,18 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Override
     public CompositeSubscription getCompositeSubscription() {
         return compositeSubscription;
+    }
+
+    @Override
+    public void showPlayTimeErrorPopup() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "게임을 플레이하고\n다시 측정해주라멍!");
+        bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_happy);
+        bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어!");
+
+        FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
+        fomesCharacterDialog.setArguments(bundle);
+        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeErrorPopup");
     }
 }

@@ -233,7 +233,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     .subscribe(() -> this.displayMission(mission.getId()),
                             e -> {
                                 Log.e(TAG, String.valueOf(e));
-                                this.view.showToast("플레이 시간이 측정되지 않아요!");
+                                this.view.showPlayTimeErrorPopup();
                             });
             return;
         }
@@ -299,7 +299,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName) {
         if (!TextUtils.isEmpty(packageName)) {
-            return Feature.CALCULATE_PLAY_TIME ? getPlayTimeAndRefreshMissionView(missionItemId, packageName)
+            return Feature.CALCULATE_PLAY_TIME_VIEW ? getPlayTimeAndRefreshMissionView(missionItemId, packageName)
                     : getPlayTime(packageName);
         } else {
             return Single.error(new IllegalArgumentException("packageName is null"));
@@ -312,7 +312,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     if (playTime > 0) {
                         return playTime;
                     } else {
-                        throw new IllegalStateException("playtime is under than 0");
+                        throw new IllegalStateException("playtime is or less than 0");
                     }
                 })
                 .toSingle();

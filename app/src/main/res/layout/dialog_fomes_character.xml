@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    android:theme="@style/FomesTheme"
+    tools:background="@color/fomes_black_alpha_75">
+
+    <LinearLayout android:id="@+id/dialog_contents"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/fomes_white_alpha_75"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:text="가입 완료" />
+
+        <TextView
+            android:id="@+id/dialog_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingTop="25dp"
+            android:paddingBottom="25dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:background="@drawable/item_rect_rounded_corner_background"
+            android:theme="@style/RoundedBackgroundTheme.White_Radius_20"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="@color/colorPrimary"
+            tools:text="포메스에서는\n1) 신작 게임 플레이\n2) 게임 개선 의견 주기\n3) 보상 수령이 가능하다! 멍!"/>
+
+        <ImageView
+            android:id="@+id/dialog_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/fomes_happy"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/dialog_button"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/item_rect_rounded_corner_background"
+            android:foreground="@drawable/ripple"
+            android:theme="@style/RoundedBackgroundTheme.Primary_Radius_10"
+            android:text="내 답변 다시보러 가기"
+            android:textColor="@color/fomes_white"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            tools:visibility="visible"
+            tools:text="아하, 그렇구나."/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

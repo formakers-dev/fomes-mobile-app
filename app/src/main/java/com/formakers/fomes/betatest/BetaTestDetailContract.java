@@ -67,5 +67,7 @@ public interface BetaTestDetailContract {
 
         // TODO : BaseView 로 이동 고려
         CompositeSubscription getCompositeSubscription();
+
+        void showPlayTimeErrorPopup();
     }
 }
