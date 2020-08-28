@@ -227,7 +227,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
             this.updatePlayTime(mission.getId(), mission.getPackageName())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMapCompletable(playTime -> {
-                        this.view.showToast(DateUtil.convertDurationToString(playTime));
+                        this.view.showPlayTimeSuccessPopup(DateUtil.convertDurationToString(playTime));
                         return requestToCompleteMission(mission);
                     })
                     .subscribeOn(Schedulers.io())
@@ -246,6 +246,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                             });
             return;
         }
+
 
         // below condition logic should be move to URL Manager(or Parser and so on..)
         if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())) {

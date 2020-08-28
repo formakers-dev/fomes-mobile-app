@@ -407,6 +407,19 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
+    public void showPlayTimeSuccessPopup(String playTimeString) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : " + playTimeString);
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "게임 플레이 인증이 완료되었다멍!\n이제 설문을 진행하러 가자멍!\n물론 계속 게임을 즐겨도 된다멍!");
+        bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_congratulation);
+        bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "헤헤, 알았어!");
+
+        FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
+        fomesCharacterDialog.setArguments(bundle);
+        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeSuccessPopup");
+    }
+
+    @Override
     public void showPlayTimeZeroPopup() {
         Bundle bundle = new Bundle();
         bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
@@ -416,7 +429,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
 
         FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
         fomesCharacterDialog.setArguments(bundle);
-        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeErrorPopup");
+        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeZeroPopup");
     }
 
     @Override
