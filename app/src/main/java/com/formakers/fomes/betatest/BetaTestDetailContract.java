@@ -50,6 +50,10 @@ public interface BetaTestDetailContract {
         void displayMission(String missionId);
 
         boolean isPlaytimeFeatureEnabled();
+
+        void increasePlayTimeErrorCount();
+        boolean isLimitPlayTimeErrorCount();
+        void initPlayTimeErrorCount();
     }
 
     interface View extends BaseView<Presenter> {
@@ -68,6 +72,7 @@ public interface BetaTestDetailContract {
         // TODO : BaseView 로 이동 고려
         CompositeSubscription getCompositeSubscription();
 
-        void showPlayTimeErrorPopup();
+        void showPlayTimeZeroPopup();
+        void showPlayTimeErrorPopup(String missionId, String title, String url);
     }
 }

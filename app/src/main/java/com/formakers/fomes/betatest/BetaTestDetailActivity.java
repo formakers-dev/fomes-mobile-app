@@ -407,7 +407,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     }
 
     @Override
-    public void showPlayTimeErrorPopup() {
+    public void showPlayTimeZeroPopup() {
         Bundle bundle = new Bundle();
         bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
         bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "게임을 플레이하고\n다시 측정해주라멍!");
@@ -415,6 +415,20 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어!");
 
         FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
+        fomesCharacterDialog.setArguments(bundle);
+        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeErrorPopup");
+    }
+
+    @Override
+    public void showPlayTimeErrorPopup(String missionId, String title, String url) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "혹시 게임을 플레이했는데도\n제대로 측정되지 않냐멍?\n그럼 플레이 스샷을 올려주면\n우리가 체크해주겠다멍!");
+        bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_search);
+        bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어! 스샷 올릴게!");
+
+        FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
+        fomesCharacterDialog.setPositiveButtonClickListener(v -> startSurveyWebViewActivity(missionId, title, url));
         fomesCharacterDialog.setArguments(bundle);
         fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeErrorPopup");
     }

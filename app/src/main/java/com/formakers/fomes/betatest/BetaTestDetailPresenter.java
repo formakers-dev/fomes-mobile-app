@@ -42,6 +42,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     private static final String TAG = "BetaTestDetailPresenter";
 
+    public static final int PLAY_TIME_ERROR_COUNT_LIMIT = 2;
+
     private AnalyticsModule.Analytics analytics;
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
@@ -55,6 +57,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private MissionListAdapterContract.Model missionListAdapterModel;
 
     BetaTest betaTest;
+    private int playTimeErrorCount = 0;
 
     @Inject
     public BetaTestDetailPresenter(BetaTestDetailContract.View view,
@@ -173,7 +176,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public boolean isPlaytimeFeatureEnabled() {
-        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_CALCULATE_PLAYTIME);
+        return true;
+//        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_CALCULATE_PLAYTIME);
     }
 
     @Override
@@ -233,7 +237,12 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     .subscribe(() -> this.displayMission(mission.getId()),
                             e -> {
                                 Log.e(TAG, String.valueOf(e));
-                                this.view.showPlayTimeErrorPopup();
+                                if (this.isLimitPlayTimeErrorCount()) {
+                                    this.view.showPlayTimeErrorPopup(mission.getId(), mission.getTitle(), url);
+                                } else {
+                                    this.increasePlayTimeErrorCount();
+                                    this.view.showPlayTimeZeroPopup();
+                                }
                             });
             return;
         }
@@ -370,5 +379,20 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
                     return Observable.from(reducedMissionList);
                 });
+    }
+
+    @Override
+    public void increasePlayTimeErrorCount() {
+        this.playTimeErrorCount++;
+    }
+
+    @Override
+    public boolean isLimitPlayTimeErrorCount() {
+        return this.playTimeErrorCount > PLAY_TIME_ERROR_COUNT_LIMIT;
+    }
+
+    @Override
+    public void initPlayTimeErrorCount() {
+        this.playTimeErrorCount = 0;
     }
 }
