@@ -2,6 +2,7 @@ package com.formakers.fomes.common.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class FomesCharacterDialog extends DialogFragment {
         String buttonText = bundle.getString(EXTRA_BUTTON_TEXT);
 
         titleTextView.setText(title);
-        subTitleTextView.setText(subTitle);
+        subTitleTextView.setText(Html.fromHtml(subTitle.replace("\n", "<br>")));
         imageView.setImageResource(imageRestId);
         okButton.setText(buttonText);
 

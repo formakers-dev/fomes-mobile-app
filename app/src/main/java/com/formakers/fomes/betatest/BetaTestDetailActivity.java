@@ -410,7 +410,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     public void showPlayTimeSuccessPopup(String playTimeString) {
         Bundle bundle = new Bundle();
         bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : " + playTimeString);
-        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "게임 플레이 인증이 완료되었다멍!\n이제 설문을 진행하러 가자멍!\n물론 계속 게임을 즐겨도 된다멍!");
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "<b>[플레이 인증 완료]</b>\n이제 설문하러 가자멍!\n물론 계속 게임을 즐겨도 된다멍!");
         bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_congratulation);
         bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "헤헤, 알았어!");
 
@@ -436,7 +436,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     public void showPlayTimeErrorPopup(String missionId, String title, String url) {
         Bundle bundle = new Bundle();
         bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
-        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "혹시 게임을 플레이했는데도\n제대로 측정되지 않냐멍?\n그럼 플레이 스샷을 올려주면\n우리가 체크해주겠다멍!");
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "<b>[플레이 스샷 필요]</b>\n혹시 플레이 시간이 측정되지 않냐멍?\n플레이 스샷을 올려주면\n우리가 체크해주겠다멍!");
         bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_search);
         bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어! 스샷 올릴게!");
 
