@@ -22,10 +22,12 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
     private static final String TAG = "AdvertisingActivity";
 
     private RewardedVideoAd mRewardedVideoAd;
+    private boolean isRewardSuccess = false;
 
     @BindView(R.id.advertising_loading) View advertisingLoading;
     @BindView(R.id.advertising_thanks_layout) ViewGroup advertisingThanksLayout;
     @BindView(R.id.advertising_failure_layout) ViewGroup advertisingFailureLayout;
+    @BindView(R.id.advertising_load_failure_layout) ViewGroup advertisingLoadFailureLayout;
     @BindView(R.id.load_new_advertising) View loadNewAdvertisingButton;
 
     @Override
@@ -58,6 +60,7 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
         advertisingLoading.setVisibility(View.VISIBLE);
         advertisingThanksLayout.setVisibility(View.GONE);
         advertisingFailureLayout.setVisibility(View.GONE);
+        advertisingLoadFailureLayout.setVisibility(View.GONE);
         loadNewAdvertisingButton.setVisibility(View.GONE);
     }
 
@@ -65,6 +68,7 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
         advertisingLoading.setVisibility(View.GONE);
         advertisingThanksLayout.setVisibility(View.VISIBLE);
         advertisingFailureLayout.setVisibility(View.GONE);
+        advertisingLoadFailureLayout.setVisibility(View.GONE);
         loadNewAdvertisingButton.setVisibility(View.VISIBLE);
     }
 
@@ -72,6 +76,15 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
         advertisingLoading.setVisibility(View.GONE);
         advertisingThanksLayout.setVisibility(View.GONE);
         advertisingFailureLayout.setVisibility(View.VISIBLE);
+        advertisingLoadFailureLayout.setVisibility(View.GONE);
+        loadNewAdvertisingButton.setVisibility(View.VISIBLE);
+    }
+
+    private void showLoadFailureLayout() {
+        advertisingLoading.setVisibility(View.GONE);
+        advertisingThanksLayout.setVisibility(View.GONE);
+        advertisingFailureLayout.setVisibility(View.GONE);
+        advertisingLoadFailureLayout.setVisibility(View.VISIBLE);
         loadNewAdvertisingButton.setVisibility(View.VISIBLE);
     }
 
@@ -85,30 +98,36 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
     @Override
     public void onRewarded(RewardItem rewardItem) {
         Log.d(TAG, "onRewarded");
-        showThanksLayout();
+        isRewardSuccess = true;
     }
 
     @Override
     public void onRewardedVideoAdLeftApplication() {
         Log.d(TAG, "onRewardedVideoAdLeftApplication");
-        showFailureLayout();
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
         Log.d(TAG, "onRewardedVideoAdClosed");
+
+        if (isRewardSuccess) {
+            showThanksLayout();
+        } else {
+            showFailureLayout();
+        }
     }
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
         Log.d(TAG, "onRewardedVideoAdFailedToLoad");
-        showFailureLayout();
+        showLoadFailureLayout();
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
         Log.d(TAG, "onRewardedVideoAdLoaded");
         if(mRewardedVideoAd.isLoaded()) {
+            isRewardSuccess = false;
             mRewardedVideoAd.show();
         }
     }
@@ -121,13 +140,11 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
     @Override
     public void onRewardedVideoStarted() {
         Log.d(TAG, "onRewardedVideoStarted");
-        showFailureLayout();
     }
 
     @Override
     public void onRewardedVideoCompleted() {
         Log.d(TAG, "onRewardedVideoCompleted");
-        showThanksLayout();
     }
 
     @Override

@@ -78,12 +78,45 @@
 
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/advertising_load_failure_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fomes_face_cry"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="@dimen/main_tab_title_text_size"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="광고 로딩에 실패했어요.ㅠㅜ\n아래 버튼을 눌러 다시 시도해 주세요."
+            />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/load_new_advertising"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="40dp"
         android:layout_marginTop="28dp"
-        android:text="새로운 광고 보고 한 번 더 후원하기"
+        android:text="새로운 광고보고 후원하기"
         android:textSize="14dp"
         android:textColor="@color/fomes_white"
         android:textStyle="bold"
