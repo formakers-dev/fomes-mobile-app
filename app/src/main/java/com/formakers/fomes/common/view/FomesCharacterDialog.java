@@ -3,6 +3,7 @@ package com.formakers.fomes.common.view;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,13 @@ public class FomesCharacterDialog extends DialogFragment {
     public static final String EXTRA_TITLE = "extra_title";
     public static final String EXTRA_SUBTITLE = "extra_subtitle";
     public static final String EXTRA_IMAGE_RES_ID = "extra_image_res_id";
+    public static final String EXTRA_GUIDE = "extra_guide";
     public static final String EXTRA_BUTTON_TEXT = "extra_button_text";
 
     @BindView(R.id.dialog_title) TextView titleTextView;
     @BindView(R.id.dialog_subtitle) TextView subTitleTextView;
     @BindView(R.id.dialog_image) ImageView imageView;
+    @BindView(R.id.dialog_guide) TextView guideTextView;
     @BindView(R.id.dialog_button) Button okButton;
 
     private View.OnClickListener positiveButtonClickListener;
@@ -64,11 +67,20 @@ public class FomesCharacterDialog extends DialogFragment {
         String title = bundle.getString(EXTRA_TITLE);
         String subTitle = bundle.getString(EXTRA_SUBTITLE);
         @DrawableRes int imageRestId = bundle.getInt(EXTRA_IMAGE_RES_ID);
+        String guideText = bundle.getString(EXTRA_GUIDE);
         String buttonText = bundle.getString(EXTRA_BUTTON_TEXT);
 
         titleTextView.setText(title);
         subTitleTextView.setText(Html.fromHtml(subTitle.replace("\n", "<br>")));
         imageView.setImageResource(imageRestId);
+
+        if (TextUtils.isEmpty(guideText)) {
+            guideTextView.setVisibility(View.GONE);
+        } else {
+            guideTextView.setText(Html.fromHtml(guideText.replace("\n", "<br>")));
+            guideTextView.setVisibility(View.VISIBLE);
+        }
+
         okButton.setText(buttonText);
 
         okButton.setOnClickListener(this::onOkClickButton);

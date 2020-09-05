@@ -436,9 +436,10 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     public void showPlayTimeErrorPopup(String missionId, String title, String url) {
         Bundle bundle = new Bundle();
         bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
-        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "<b>[플레이 스샷 필요]</b>\n혹시 플레이 시간이 측정되지 않냐멍?\n플레이 스샷을 올려주면\n우리가 체크해주겠다멍!");
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "<b>[플레이 스샷 필요]</b>\n시간 측정이 제대로 안되냐멍?\n플레이 스샷을 올려주면\n우리가 체크해주겠다멍!");
         bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_search);
         bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어! 스샷 올릴게!");
+        bundle.putString(FomesCharacterDialog.EXTRA_GUIDE, "잘못된 스샷은 문제될 수 있으니 주의바란다멍!");
 
         FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
         fomesCharacterDialog.setPositiveButtonClickListener(v -> startSurveyWebViewActivity(missionId, title, url));
