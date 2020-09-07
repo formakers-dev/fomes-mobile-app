@@ -43,7 +43,7 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/main_tab_title_text_size"
             android:textStyle="bold"
-            android:text="여러분의 후원에 감사드려요!"
+            android:text="여러분의 후원에 감사하다멍!"
             />
     </LinearLayout>
 
@@ -73,7 +73,7 @@
             android:textColor="@color/fomes_greyish_brown"
             android:textSize="@dimen/main_tab_title_text_size"
             android:textStyle="bold"
-            android:text="광고를 끝까지 시청해주세요.ㅠㅜ"
+            android:text="광고를 끝까지 봐야 한다멍.ㅠㅜ"
             />
 
     </LinearLayout>
@@ -106,7 +106,7 @@
             android:textSize="@dimen/main_tab_title_text_size"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:text="광고 로딩에 실패했어요.ㅠㅜ\n아래 버튼을 눌러 다시 시도해 주세요."
+            android:text="광고 로딩에 실패했다멍.ㅠㅜ\n아래 버튼을 눌러 다시 시도해 달라멍."
             />
 
     </LinearLayout>
