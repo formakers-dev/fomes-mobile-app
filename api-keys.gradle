@@ -3,4 +3,12 @@ ext {
             debug  : "cd256f9691948b7bdf7ffb58e6155151",
             release: "f6a13c6b574afb1c67d9864054032de9"
     ]
+    admobAppId = [
+            debug  : "ca-app-pub-3940256099942544~3347511713",
+            release: "ca-app-pub-7545759958941098~3426780595"
+    ]
+    admobUnitId = [
+            debug  : "ca-app-pub-3940256099942544/5224354917",
+            release: "ca-app-pub-7545759958941098/7263111496"
+    ]
 };

@@ -52,7 +52,7 @@
         <!-- AdMob -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="${admobAppId}"/>
 
     <!-- 백그라운드 앱의 알림 수신 -->
         <service android:name=".common.noti.MessagingService"

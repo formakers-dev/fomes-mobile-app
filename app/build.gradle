@@ -30,6 +30,10 @@ android {
         versionName "${majorVersion}.${minorVersion}.${patchVersion}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${String.valueOf(System.getenv("YOUTUBE_API_KEY"))}\""
+
+        // Admob
+        buildConfigField 'String', 'ADMOB_APP_ID', "\"${rootProject.ext.admobAppId.debug}\""
+        buildConfigField 'String', 'ADMOB_UNIT_ID', "\"${rootProject.ext.admobUnitId.debug}\""
     }
     signingConfigs {
         debug {
@@ -54,6 +58,7 @@ android {
             manifestPlaceholders = [
                     enableCrashReporting:"false",
                     kakaoAppKey: rootProject.ext.kakaoApiKey.debug,
+                    admobAppId: rootProject.ext.admobAppId.debug,
             ]
 
             // crashlytics 플러그인을 사용하지 않음
@@ -74,6 +79,7 @@ android {
             manifestPlaceholders = [
                     enableCrashReporting:"true",
                     kakaoAppKey: rootProject.ext.kakaoApiKey.debug,
+                    admobAppId: rootProject.ext.admobAppId.debug,
             ]
         }
         // STG
@@ -87,6 +93,7 @@ android {
             manifestPlaceholders = [
                     enableCrashReporting:"false",
                     kakaoAppKey: rootProject.ext.kakaoApiKey.debug,
+                    admobAppId: rootProject.ext.admobAppId.debug,
             ]
         }
         // PRD
@@ -95,10 +102,16 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_BASE_URL', '"https://appbee.xyz/"'
+
+            // Admob
+            buildConfigField 'String', 'ADMOB_APP_ID', "\"${rootProject.ext.admobAppId.release}\""
+            buildConfigField 'String', 'ADMOB_UNIT_ID', "\"${rootProject.ext.admobUnitId.release}\""
+
             signingConfig signingConfigs.release
             manifestPlaceholders = [
                     enableCrashReporting:"true",
                     kakaoAppKey: rootProject.ext.kakaoApiKey.release,
+                    admobAppId: rootProject.ext.admobAppId.release,
             ]
         }
     }

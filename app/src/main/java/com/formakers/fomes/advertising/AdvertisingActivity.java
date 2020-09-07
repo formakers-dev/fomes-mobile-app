@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
+import com.formakers.fomes.BuildConfig;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
@@ -40,7 +41,7 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this, BuildConfig.ADMOB_APP_ID);
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
     }
@@ -91,8 +92,7 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
     private void loadRewardedVideoAd() {
         showLoading();
 
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-                new AdRequest.Builder().build());
+        mRewardedVideoAd.loadAd(BuildConfig.ADMOB_UNIT_ID, new AdRequest.Builder().build());
     }
 
     @Override
