@@ -33,6 +33,7 @@ public interface FomesConstants {
         int MENU_GAME_ANALYSIS = 3;
         int MENU_WISH_LIST = 4;
         int MENU_SETTINGS = 5;
+        int MENU_ADVERTISING = 6;
     }
 
     interface BetaTest {

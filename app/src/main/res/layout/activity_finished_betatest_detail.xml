@@ -288,7 +288,7 @@
                 android:padding="8dp"
                 android:background="@drawable/betatest_mission_item_button_selector"
                 android:foreground="@drawable/ripple"
-                android:drawableStart="@drawable/icon_new_selector"
+                android:drawableStart="@drawable/icon_certification_selector"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:text="@string/finished_betatest_detail_go_to_certificates"

@@ -42,6 +42,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     private static final String TAG = "BetaTestDetailPresenter";
 
+    public static final int PLAY_TIME_ERROR_COUNT_LIMIT = 2;
+
     private AnalyticsModule.Analytics analytics;
     private BetaTestService betaTestService;
     private EventLogService eventLogService;
@@ -55,6 +57,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     private MissionListAdapterContract.Model missionListAdapterModel;
 
     BetaTest betaTest;
+    private int playTimeErrorCount = 0;
 
     @Inject
     public BetaTestDetailPresenter(BetaTestDetailContract.View view,
@@ -173,7 +176,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public boolean isPlaytimeFeatureEnabled() {
-        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_CALCULATE_PLAYTIME);
+        return true;
+//        return this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_CALCULATE_PLAYTIME);
     }
 
     @Override
@@ -223,7 +227,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
             this.updatePlayTime(mission.getId(), mission.getPackageName())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMapCompletable(playTime -> {
-                        this.view.showToast(DateUtil.convertDurationToString(playTime));
+                        this.view.showPlayTimeSuccessPopup(DateUtil.convertDurationToString(playTime));
                         return requestToCompleteMission(mission);
                     })
                     .subscribeOn(Schedulers.io())
@@ -233,10 +237,16 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     .subscribe(() -> this.displayMission(mission.getId()),
                             e -> {
                                 Log.e(TAG, String.valueOf(e));
-                                this.view.showToast("플레이 시간이 측정되지 않아요!");
+                                if (this.isLimitPlayTimeErrorCount()) {
+                                    this.view.showPlayTimeErrorPopup(mission.getId(), mission.getTitle(), url);
+                                } else {
+                                    this.increasePlayTimeErrorCount();
+                                    this.view.showPlayTimeZeroPopup();
+                                }
                             });
             return;
         }
+
 
         // below condition logic should be move to URL Manager(or Parser and so on..)
         if (FomesConstants.BetaTest.Mission.ACTION_TYPE_INTERNAL_WEB.equals(mission.getActionType())) {
@@ -299,7 +309,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName) {
         if (!TextUtils.isEmpty(packageName)) {
-            return Feature.CALCULATE_PLAY_TIME ? getPlayTimeAndRefreshMissionView(missionItemId, packageName)
+            return Feature.CALCULATE_PLAY_TIME_VIEW ? getPlayTimeAndRefreshMissionView(missionItemId, packageName)
                     : getPlayTime(packageName);
         } else {
             return Single.error(new IllegalArgumentException("packageName is null"));
@@ -312,7 +322,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
                     if (playTime > 0) {
                         return playTime;
                     } else {
-                        throw new IllegalStateException("playtime is under than 0");
+                        throw new IllegalStateException("playtime is or less than 0");
                     }
                 })
                 .toSingle();
@@ -370,5 +380,20 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
                     return Observable.from(reducedMissionList);
                 });
+    }
+
+    @Override
+    public void increasePlayTimeErrorCount() {
+        this.playTimeErrorCount++;
+    }
+
+    @Override
+    public boolean isLimitPlayTimeErrorCount() {
+        return this.playTimeErrorCount > PLAY_TIME_ERROR_COUNT_LIMIT;
+    }
+
+    @Override
+    public void initPlayTimeErrorCount() {
+        this.playTimeErrorCount = 0;
     }
 }

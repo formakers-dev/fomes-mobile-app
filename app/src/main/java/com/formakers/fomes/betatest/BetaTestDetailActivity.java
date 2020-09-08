@@ -32,6 +32,7 @@ import com.formakers.fomes.common.network.vo.BetaTest;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.FomesCharacterDialog;
 import com.formakers.fomes.common.view.custom.decorator.ContentDividerItemDecoration;
 import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.google.android.material.chip.Chip;
@@ -403,5 +404,46 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
     @Override
     public CompositeSubscription getCompositeSubscription() {
         return compositeSubscription;
+    }
+
+    @Override
+    public void showPlayTimeSuccessPopup(String playTimeString) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : " + playTimeString);
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "<b>[플레이 인증 완료]</b>\n이제 설문하러 가자멍!\n물론 계속 게임을 즐겨도 된다멍!");
+        bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_congratulation);
+        bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "헤헤, 알았어!");
+
+        FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
+        fomesCharacterDialog.setArguments(bundle);
+        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeSuccessPopup");
+    }
+
+    @Override
+    public void showPlayTimeZeroPopup() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "게임을 플레이하고\n다시 측정해주라멍!");
+        bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_happy);
+        bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어!");
+
+        FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
+        fomesCharacterDialog.setArguments(bundle);
+        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeZeroPopup");
+    }
+
+    @Override
+    public void showPlayTimeErrorPopup(String missionId, String title, String url) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesCharacterDialog.EXTRA_TITLE, "플레이 시간 : 0초");
+        bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "<b>[플레이 스샷 필요]</b>\n시간 측정이 제대로 안되냐멍?\n플레이 스샷을 올려주면\n우리가 체크해주겠다멍!");
+        bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_search);
+        bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어! 스샷 올릴게!");
+        bundle.putString(FomesCharacterDialog.EXTRA_GUIDE, "잘못된 스샷은 문제될 수 있으니 주의바란다멍!");
+
+        FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
+        fomesCharacterDialog.setPositiveButtonClickListener(v -> startSurveyWebViewActivity(missionId, title, url));
+        fomesCharacterDialog.setArguments(bundle);
+        fomesCharacterDialog.show(getSupportFragmentManager(), "PlayTimeErrorPopup");
     }
 }

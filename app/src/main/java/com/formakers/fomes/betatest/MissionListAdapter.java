@@ -141,7 +141,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder.itemButton.setText(mission.isCompleted() ? "플레이 인증 완료" : "플레이 인증하기");
                 Long playtime = mission.getTotalPlayTime();
 
-                if (Feature.CALCULATE_PLAY_TIME) {
+                if (Feature.CALCULATE_PLAY_TIME_VIEW) {
                     if (playtime != null) {
                         viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
                         viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
@@ -207,8 +207,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     boolean isDisableRefreshButton(Mission mission) {
-        return (this.presenter.isPlaytimeFeatureEnabled() && FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType()))
-                || mission.isCompleted()
+        return mission.isCompleted()
                 || mission.isLoading();
     }
 
@@ -224,7 +223,7 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     // TODO : Adapter Presenter 나오면 분리
     private Completable refreshMissionProgress(Mission mission) {
-        if (Feature.CALCULATE_PLAY_TIME) {
+        if (Feature.CALCULATE_PLAY_TIME_VIEW) {
             if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
                 return presenter.updatePlayTime(mission.getId(), mission.getPackageName())
                         .doOnSuccess(playTime -> Toast.makeText(context, "플레이 시간이 더해졌다! : " + playTime, Toast.LENGTH_SHORT).show())
