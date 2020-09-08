@@ -69,4 +69,16 @@ public class MenuListPresenter implements MenuListContract.Presenter {
                     this.view.setAvailablePoint(point);
                 }, e -> Log.e(TAG, String.valueOf(e)));
     }
+
+    //TODO : 광고 피처 제거시 조건부 로직 삭제 필요
+    @Override
+    public boolean isActivatedAdvertising() {
+        if (this.remoteConfig.getBoolean(FomesConstants.RemoteConfig.FEATURE_ADVERTISING)) {
+            return true;
+        }
+
+        String email = userEmail.toBlocking().value();
+
+        return "sryu99@gmail.com".equals(email) || "yenarue@gmail.com".equals(email);
+    }
 }

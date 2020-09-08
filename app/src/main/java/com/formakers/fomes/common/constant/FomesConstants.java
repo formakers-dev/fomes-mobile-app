@@ -169,6 +169,7 @@ public interface FomesConstants {
     interface RemoteConfig {
         String SIGNUP_ALALYSIS_SCREEN_IS_VISIBLE ="signup_analysis_screen_is_visible";
         String FEATURE_CALCULATE_PLAYTIME = "feature_calculate_playtime";
+        String FEATURE_ADVERTISING = "feature_advertising";
 
         String MIGRATION_NOTICE ="migration_notice";
     }
