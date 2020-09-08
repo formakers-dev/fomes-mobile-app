@@ -8,6 +8,9 @@ public interface MenuListContract {
         void bindUserInfo();
         void bindCompletedBetaTestsCount();
         void bindAvailablePoint();
+
+        //TODO : 광고 피처 제거시 조건부 로직 삭제 필요
+        boolean isActivatedAdvertising();
     }
 
     interface View extends BaseView<Presenter> {
