@@ -54,7 +54,8 @@ public class MyInfoPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         userInfo = new User().setNickName("닉네임").setBirthday(1991).setJob(1000).setGender("female").setLifeApps(Lists.newArrayList("최애겜"));
-        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(userInfo));
+        when(mockUserService.getUser()).thenReturn(Single.just(userInfo));
+        //when(mockUserDAO.getUserInfo()).thenReturn(Single.just(userInfo));
 
         subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService);
     }
@@ -118,7 +119,7 @@ public class MyInfoPresenterTest {
         subject.loadUserInfo();
         subject.updateUserInfo(1991, 2000, "female", "최애겜");
 
-        verify(mockUserDAO, times(2)).getUserInfo();
+        verify(mockUserService, times(2)).getUser();
         verify(mockView, times(2)).bind(any(User.class));
     }
 

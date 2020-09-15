@@ -21,7 +21,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     private MyInfoContract.View view;
     private UserDAO userDAO;
     private UserService userService;
-    private User originalUserUnfo;
+    private User originalUserInfo;
 
     @Inject
     public MyInfoPresenter(MyInfoContract.View view, UserDAO userDAO, UserService userService) {
@@ -32,11 +32,18 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
 
     @Override
     public void loadUserInfo() {
-        userDAO.getUserInfo()
+//        userDAO.getUserInfo()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(userInfo -> {
+//                    this.originalUserUnfo = userInfo;
+//                    this.view.bind(this.originalUserUnfo);
+//                }, e -> Log.e(TAG, String.valueOf(e)));
+
+        userService.getUser()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userInfo -> {
-                    this.originalUserUnfo = userInfo;
-                    this.view.bind(this.originalUserUnfo);
+                .subscribe(user -> {
+                    this.originalUserInfo = user;
+                    this.view.bind(this.originalUserInfo);
                 }, e -> Log.e(TAG, String.valueOf(e)));
     }
 
@@ -61,19 +68,19 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     @Override
     public boolean isUpdated(Integer birthday, Integer job, String gender, String lifeApp) {
         Log.v(TAG, "isUpdated) " + birthday + " " + job + " " + gender + " " + lifeApp);
-        Log.v(TAG, "isUpdated) origianl=" + originalUserUnfo);
+        Log.v(TAG, "isUpdated) origianl=" + originalUserInfo);
 
-        boolean isUpdated =  !Objects.equals(originalUserUnfo.getBirthday(), birthday)
-                || !Objects.equals(originalUserUnfo.getJob(), job)
-                || !Objects.equals(originalUserUnfo.getGender(), gender)
-                || !Objects.equals(originalUserUnfo.getLifeApps(), Collections.singletonList(lifeApp));
+        boolean isUpdated =  !Objects.equals(originalUserInfo.getBirthday(), birthday)
+                || !Objects.equals(originalUserInfo.getJob(), job)
+                || !Objects.equals(originalUserInfo.getGender(), gender)
+                || !Objects.equals(originalUserInfo.getLifeApps(), Collections.singletonList(lifeApp));
 
         Log.i(TAG, "isUpdated = " + isUpdated);
         return isUpdated;
     }
 
     private User getDiffWithUpdatableFields(User userInfo) {
-        Log.v(TAG, "original = " + originalUserUnfo );
+        Log.v(TAG, "original = " + originalUserInfo );
         Log.v(TAG, "update = " + userInfo );
 
         Integer birthday = null;
@@ -81,19 +88,19 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
         String gender = null;
         List<String> lifeApps = null;
 
-        if (!Objects.equals(originalUserUnfo.getBirthday(), userInfo.getBirthday())) {
+        if (!Objects.equals(originalUserInfo.getBirthday(), userInfo.getBirthday())) {
             birthday = userInfo.getBirthday();
         }
 
-        if (!Objects.equals(originalUserUnfo.getJob(), userInfo.getJob())) {
+        if (!Objects.equals(originalUserInfo.getJob(), userInfo.getJob())) {
             job = userInfo.getJob();
         }
 
-        if (!Objects.equals(originalUserUnfo.getGender(), userInfo.getGender())) {
+        if (!Objects.equals(originalUserInfo.getGender(), userInfo.getGender())) {
             gender = userInfo.getGender();
         }
 
-        if (!Objects.equals(originalUserUnfo.getLifeApps(), userInfo.getLifeApps())) {
+        if (!Objects.equals(originalUserInfo.getLifeApps(), userInfo.getLifeApps())) {
             lifeApps = userInfo.getLifeApps();
         }
 
