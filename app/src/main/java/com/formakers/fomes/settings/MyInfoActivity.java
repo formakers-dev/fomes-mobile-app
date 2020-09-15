@@ -35,6 +35,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     private static final String TAG = "MyInfoActivity";
 
+    @BindView(R.id.my_info_nickname_content_edittext) EditText nickNameEditText;
     @BindView(R.id.my_info_life_game_content_edittext) EditText lifeGameEditText;
     @BindView(R.id.my_info_birth_spinner) Spinner birthSpinner;
     @BindView(R.id.my_info_job_spinner) Spinner jobSpinner;
@@ -86,6 +87,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     @Override
     public void bind(User userInfo) {
+        nickNameEditText.setText(userInfo.getNickName());
         lifeGameEditText.setText(userInfo.getLifeApps() != null && userInfo.getLifeApps().size() > 0 ? userInfo.getLifeApps().get(0) : "");
         birthSpinner.setSelection(Arrays.asList(this.getResources().getStringArray(R.array.birth_items)).indexOf(String.valueOf(userInfo.getBirthday())));
         jobSpinner.setSelection(((ArrayAdapter<String>) jobSpinner.getAdapter()).getPosition(User.JobCategory.get(userInfo.getJob()).getName()));
@@ -111,13 +113,20 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     @OnClick(R.id.my_info_submit_button)
     public void onSubmitButtonClicked() {
+        String nickName = nickNameEditText.getText().toString();
         String lifeApp = lifeGameEditText.getText().toString();
         int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
         User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
         int job = jobCategory != null ? jobCategory.getCode() : 0;
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.my_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
 
-        this.presenter.updateUserInfo(birth, job, gender, lifeApp);
+        this.presenter.updateUserInfo(nickName, birth, job, gender, lifeApp);
+    }
+
+    @OnTextChanged(value = R.id.my_info_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onNickNameTextChanged(CharSequence text, int start, int before, int count) {
+        Log.v(TAG, "onNickNameTextChanged) " + text + " start=" + start + ", before=" + before + ", count=" + count);
+        emitFilledUpEvent();
     }
 
     @OnTextChanged(value = R.id.my_info_life_game_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
@@ -166,9 +175,11 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     }
 
     private boolean verifyEnableToSubmit(@IdRes int checkedRadioButtonId) {
+        String nickName = nickNameEditText.getText().toString();
         String lifeApp = lifeGameEditText.getText().toString();
 
-        if (lifeApp.length() > 0
+        if (nickName.length() > 0
+                && lifeApp.length() > 0
                 && birthSpinner.getSelectedItemPosition() > 0
                 && jobSpinner.getSelectedItemPosition() > 0
                 && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
@@ -179,7 +190,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
             String gender = checkedRadioButtonId == R.id.my_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
             Log.d(TAG, "gender=" + gender);
 
-            if (this.presenter.isUpdated(birth, job, gender, lifeApp)) {
+            if (this.presenter.isUpdated(nickName, birth, job, gender, lifeApp)) {
                 return true;
             }
         }

@@ -72,12 +72,13 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜");
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserService).updateUserInfo(userArgumentCaptor.capture());
         User requestedUserInfo = userArgumentCaptor.getValue();
 
+        assertThat(requestedUserInfo.getNickName()).isNull();
         assertThat(requestedUserInfo.getBirthday()).isNull();
         assertThat(requestedUserInfo.getJob()).isEqualTo(2000);
         assertThat(requestedUserInfo.getGender()).isNull();
@@ -89,12 +90,13 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜");
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
         User requestedUserInfo = userArgumentCaptor.getValue();
 
+        assertThat(requestedUserInfo.getNickName()).isNull();
         assertThat(requestedUserInfo.getBirthday()).isNull();
         assertThat(requestedUserInfo.getJob()).isEqualTo(2000);
         assertThat(requestedUserInfo.getGender()).isNull();
@@ -107,7 +109,7 @@ public class MyInfoPresenterTest {
                 .thenReturn(Completable.error(new Exception()));
 
         subject.loadUserInfo();
-        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜");
 
         verify(mockUserDAO, never()).updateUserInfo(any(User.class));
     }
@@ -117,7 +119,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        subject.updateUserInfo(1991, 2000, "female", "최애겜");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜");
 
         verify(mockUserService, times(2)).getUser();
         verify(mockView, times(2)).bind(any(User.class));
@@ -126,11 +128,12 @@ public class MyInfoPresenterTest {
     @Test
     public void isUpdated_호출시__기존정보에서_업데이트되었는지_체크한다() {
         subject.loadUserInfo();
-        assertThat(subject.isUpdated(1991, 1000, "female", "최애겜")).isFalse();
-        assertThat(subject.isUpdated(1992, 1000, "female", "최애겜")).isTrue();
-        assertThat(subject.isUpdated(1991, 2000, "female", "최애겜")).isTrue();
-        assertThat(subject.isUpdated(1991, 1000, "male", "최애겜")).isTrue();
-        assertThat(subject.isUpdated(1991, 1000, "female", "노잼겜")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "최애겜")).isFalse();
+        assertThat(subject.isUpdated("닉네임99", 1991, 1000, "female", "최애겜")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1992, 1000, "female", "최애겜")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 2000, "female", "최애겜")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "male", "최애겜")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "노잼겜")).isTrue();
 
     }
 }

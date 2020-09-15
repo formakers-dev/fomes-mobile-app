@@ -48,8 +48,9 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     }
 
     @Override
-    public void updateUserInfo(Integer birthday, Integer job, String gender, String lifeApp) {
-        User filledUserInfo = new User().setBirthday(birthday).setJob(job).setGender(gender)
+    public void updateUserInfo(String nickName, Integer birthday, Integer job, String gender, String lifeApp) {
+        User filledUserInfo = new User().setNickName(nickName)
+                .setBirthday(birthday).setJob(job).setGender(gender)
                 .setLifeApps(Collections.singletonList(lifeApp));
 
         User updatedUserInfo = getDiffWithUpdatableFields(filledUserInfo);
@@ -66,11 +67,12 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     }
 
     @Override
-    public boolean isUpdated(Integer birthday, Integer job, String gender, String lifeApp) {
-        Log.v(TAG, "isUpdated) " + birthday + " " + job + " " + gender + " " + lifeApp);
-        Log.v(TAG, "isUpdated) origianl=" + originalUserInfo);
+    public boolean isUpdated(String nickName, Integer birthday, Integer job, String gender, String lifeApp) {
+        Log.v(TAG, "isUpdated) " + nickName + " " + birthday + " " + job + " " + gender + " " + lifeApp);
+        Log.v(TAG, "isUpdated) original=" + originalUserInfo);
 
-        boolean isUpdated =  !Objects.equals(originalUserInfo.getBirthday(), birthday)
+        boolean isUpdated = !Objects.equals(originalUserInfo.getNickName(), nickName)
+                || !Objects.equals(originalUserInfo.getBirthday(), birthday)
                 || !Objects.equals(originalUserInfo.getJob(), job)
                 || !Objects.equals(originalUserInfo.getGender(), gender)
                 || !Objects.equals(originalUserInfo.getLifeApps(), Collections.singletonList(lifeApp));
@@ -83,10 +85,15 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
         Log.v(TAG, "original = " + originalUserInfo );
         Log.v(TAG, "update = " + userInfo );
 
+        String nickName = null;
         Integer birthday = null;
         Integer job = null ;
         String gender = null;
         List<String> lifeApps = null;
+
+        if (!Objects.equals(originalUserInfo.getNickName(), userInfo.getNickName())) {
+            nickName = userInfo.getNickName();
+        }
 
         if (!Objects.equals(originalUserInfo.getBirthday(), userInfo.getBirthday())) {
             birthday = userInfo.getBirthday();
@@ -104,11 +111,13 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
             lifeApps = userInfo.getLifeApps();
         }
 
-        if (birthday == null && job == null && gender == null && lifeApps == null) {
+        if (nickName == null && birthday == null && job == null && gender == null && lifeApps == null) {
             return null;
         }
 
-        return new User().setBirthday(birthday)
+        return new User()
+                .setNickName(nickName)
+                .setBirthday(birthday)
                 .setJob(job)
                 .setGender(gender)
                 .setLifeApps(lifeApps)

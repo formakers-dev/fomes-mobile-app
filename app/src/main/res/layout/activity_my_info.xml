@@ -15,6 +15,45 @@
         android:paddingStart="@dimen/provision_padding_start_end">
 
         <TextView
+            android:id="@+id/my_info_nickname_content_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:text="@string/provision_nickname_content_title"
+            android:textSize="@dimen/provision_content_title_text_size"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/my_info_nickname_content_edittext"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/my_info_nickname_content_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:inputType="textPersonName"
+            android:hint="@string/provision_nickname_content_hint"
+            android:textColorHint="@color/fomes_warm_gray_2"
+            android:textSize="@dimen/provision_content_title_text_size"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/my_info_nickname_content_title_textview"
+            app:layout_constraintBaseline_toBaselineOf="@id/my_info_nickname_content_title_textview"/>
+
+
+        <View
+            android:id="@+id/my_info_content_divider_0"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_nickname_content_title_textview" />
+
+
+        <TextView
             android:id="@+id/my_info_life_game_content_title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +64,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/my_info_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_0"/>
 
         <EditText
             android:id="@+id/my_info_life_game_content_edittext"
