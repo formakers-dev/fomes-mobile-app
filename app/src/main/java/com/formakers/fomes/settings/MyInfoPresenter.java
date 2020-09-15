@@ -2,6 +2,7 @@ package com.formakers.fomes.settings;
 
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.UserService;
+import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 
 @MyInfoDagger.Scope
@@ -32,13 +34,6 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
 
     @Override
     public void loadUserInfo() {
-//        userDAO.getUserInfo()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(userInfo -> {
-//                    this.originalUserUnfo = userInfo;
-//                    this.view.bind(this.originalUserUnfo);
-//                }, e -> Log.e(TAG, String.valueOf(e)));
-
         userService.getUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
@@ -55,7 +50,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
 
         User updatedUserInfo = getDiffWithUpdatableFields(filledUserInfo);
 
-        Log.i(TAG, "user informations will be updated = " + updatedUserInfo);
+        Log.i(TAG, "user information will be updated = " + updatedUserInfo);
 
         userService.updateUserInfo(updatedUserInfo)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -63,7 +58,14 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
                     userDAO.updateUserInfo(updatedUserInfo);
                     loadUserInfo();
                     this.view.showToast("프로필 수정이 완료되었습니다");
-                    }, e -> Log.e(TAG, String.valueOf(e)));
+                    }, e -> {
+                    Log.e(TAG, String.valueOf(e));
+                    if (((HttpException) e).code() == UserAPI.StatusCode.DUPLICATED_NICK_NAME) {
+                        this.view.showDuplicatedNickNameWarning();
+                    } else {
+                        this.view.showToast("오류가 발생하였습니다. 재시도 부탁드립니다.");
+                    }
+                });
     }
 
     @Override

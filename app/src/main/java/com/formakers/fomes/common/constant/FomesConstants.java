@@ -19,6 +19,11 @@ public interface FomesConstants {
             int INTRO = 1;
             int PERMISSION = 2;
         }
+
+        interface NICK_NAME_REGEX {
+            String CORRECT = "[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\\\\^\\\\*☆★♡♥_-]{2,10}";
+            String WRONG = "[\\\\^\\\\*☆★♡♥_-]{2,10}";
+        }
     }
 
     interface Main {

@@ -2,6 +2,7 @@ package com.formakers.fomes.settings;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -9,19 +10,23 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -36,6 +41,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     private static final String TAG = "MyInfoActivity";
 
     @BindView(R.id.my_info_nickname_content_edittext) EditText nickNameEditText;
+    @BindView(R.id.my_info_nickname_format_warning_textview) TextView nickNameWarningTextView;
     @BindView(R.id.my_info_life_game_content_edittext) EditText lifeGameEditText;
     @BindView(R.id.my_info_birth_spinner) Spinner birthSpinner;
     @BindView(R.id.my_info_job_spinner) Spinner jobSpinner;
@@ -126,7 +132,26 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     @OnTextChanged(value = R.id.my_info_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
     public void onNickNameTextChanged(CharSequence text, int start, int before, int count) {
         Log.v(TAG, "onNickNameTextChanged) " + text + " start=" + start + ", before=" + before + ", count=" + count);
+
+        boolean isWrong = Pattern.matches(FomesConstants.PROVISIONING.NICK_NAME_REGEX.WRONG, text);
+
+        if (isWrong) {
+            setVisibilityNickNameWarningView(true, R.string.provision_nickname_format_special_string_warning);
+        } else {
+            boolean isMatched = Pattern.matches(FomesConstants.PROVISIONING.NICK_NAME_REGEX.CORRECT, text);
+            setVisibilityNickNameWarningView(!isMatched, R.string.provision_nickname_format_warning);
+        }
+
         emitFilledUpEvent();
+    }
+
+    private void setVisibilityNickNameWarningView(boolean isVisible, @StringRes int stringResId) {
+        if (isVisible) {
+            nickNameWarningTextView.setText(getString(stringResId));
+            nickNameWarningTextView.setVisibility(View.VISIBLE);
+        } else {
+            nickNameWarningTextView.setVisibility(View.GONE);
+        }
     }
 
     @OnTextChanged(value = R.id.my_info_life_game_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
@@ -172,6 +197,11 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         } else {
             submitButton.setEnabled(false);
         }
+    }
+
+    @Override
+    public void showDuplicatedNickNameWarning() {
+        setVisibilityNickNameWarningView(true, R.string.provision_nickname_already_exist_warning);
     }
 
     private boolean verifyEnableToSubmit(@IdRes int checkedRadioButtonId) {
