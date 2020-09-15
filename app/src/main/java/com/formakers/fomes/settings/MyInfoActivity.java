@@ -2,6 +2,7 @@ package com.formakers.fomes.settings;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.constraintlayout.widget.Group;
 
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
@@ -40,6 +42,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     private static final String TAG = "MyInfoActivity";
 
+    @BindView(R.id.my_info_nickname_content_group) Group nickNameContentGroup;
     @BindView(R.id.my_info_nickname_content_edittext) EditText nickNameEditText;
     @BindView(R.id.my_info_nickname_format_warning_textview) TextView nickNameWarningTextView;
     @BindView(R.id.my_info_life_game_content_edittext) EditText lifeGameEditText;
@@ -94,9 +97,14 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     @Override
     public void bind(User userInfo) {
         nickNameEditText.setText(userInfo.getNickName());
+        nickNameContentGroup.setVisibility((TextUtils.isEmpty(userInfo.getNickName()))? View.VISIBLE : View.GONE);
+
         lifeGameEditText.setText(userInfo.getLifeApps() != null && userInfo.getLifeApps().size() > 0 ? userInfo.getLifeApps().get(0) : "");
         birthSpinner.setSelection(Arrays.asList(this.getResources().getStringArray(R.array.birth_items)).indexOf(String.valueOf(userInfo.getBirthday())));
-        jobSpinner.setSelection(((ArrayAdapter<String>) jobSpinner.getAdapter()).getPosition(User.JobCategory.get(userInfo.getJob()).getName()));
+
+        if (userInfo.getJob() != null) {
+            jobSpinner.setSelection(((ArrayAdapter<String>) jobSpinner.getAdapter()).getPosition(User.JobCategory.get(userInfo.getJob()).getName()));
+        }
 
         if (User.GENDER_MALE.equals(userInfo.getGender())) {
             maleRadioButton.toggle();

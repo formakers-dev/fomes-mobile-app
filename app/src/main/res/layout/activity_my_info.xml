@@ -14,6 +14,14 @@
         android:paddingEnd="@dimen/provision_padding_start_end"
         android:paddingStart="@dimen/provision_padding_start_end">
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/my_info_nickname_content_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="my_info_nickname_content_title_textview,my_info_nickname_content_edittext,my_info_content_divider_0"
+            />
+
         <TextView
             android:id="@+id/my_info_nickname_content_title_textview"
             android:layout_width="wrap_content"

@@ -58,7 +58,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
                     userDAO.updateUserInfo(updatedUserInfo);
                     loadUserInfo();
                     this.view.showToast("프로필 수정이 완료되었습니다");
-                    }, e -> {
+                }, e -> {
                     Log.e(TAG, String.valueOf(e));
                     if (((HttpException) e).code() == UserAPI.StatusCode.DUPLICATED_NICK_NAME) {
                         this.view.showDuplicatedNickNameWarning();
