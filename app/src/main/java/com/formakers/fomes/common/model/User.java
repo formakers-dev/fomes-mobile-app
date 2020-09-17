@@ -93,6 +93,7 @@ public class User {
     private List<String> lifeApps;
     private String appVersion;
     private DeviceInfo device = new User.DeviceInfo();
+    private String monthlyPayment;
 
     // for ResponseVO (signIn / signUp)
     private String accessToken;
@@ -209,6 +210,15 @@ public class User {
         return User.GENDER_MALE.equals(this.gender) ? R.string.common_male : R.string.common_female;
     }
 
+    public String getMonthlyPayment() {
+        return monthlyPayment;
+    }
+
+    public User setMonthlyPayment(String monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+        return this;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -251,6 +261,7 @@ public class User {
                 ", lifeApps=" + lifeApps +
                 ", appVersion='" + appVersion + '\'' +
                 ", device=" + device +
+                ", monthlyPayment='" + monthlyPayment + '\'' +
                 '}';
     }
 

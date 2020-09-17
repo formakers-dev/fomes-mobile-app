@@ -43,10 +43,11 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     }
 
     @Override
-    public void updateUserInfo(String nickName, Integer birthday, Integer job, String gender, String lifeApp) {
+    public void updateUserInfo(String nickName, Integer birthday, Integer job, String gender, String lifeApp, String monthlyPayment) {
         User filledUserInfo = new User().setNickName(nickName)
                 .setBirthday(birthday).setJob(job).setGender(gender)
-                .setLifeApps(Collections.singletonList(lifeApp));
+                .setLifeApps(Collections.singletonList(lifeApp))
+                .setMonthlyPayment(monthlyPayment);
 
         User updatedUserInfo = getDiffWithUpdatableFields(filledUserInfo);
 
@@ -69,15 +70,16 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     }
 
     @Override
-    public boolean isUpdated(String nickName, Integer birthday, Integer job, String gender, String lifeApp) {
-        Log.v(TAG, "isUpdated) " + nickName + " " + birthday + " " + job + " " + gender + " " + lifeApp);
+    public boolean isUpdated(String nickName, Integer birthday, Integer job, String gender, String lifeApp, String monthlyPayment) {
+        Log.v(TAG, "isUpdated) " + nickName + " " + birthday + " " + job + " " + gender + " " + lifeApp + " " + monthlyPayment);
         Log.v(TAG, "isUpdated) original=" + originalUserInfo);
 
         boolean isUpdated = !Objects.equals(originalUserInfo.getNickName(), nickName)
                 || !Objects.equals(originalUserInfo.getBirthday(), birthday)
                 || !Objects.equals(originalUserInfo.getJob(), job)
                 || !Objects.equals(originalUserInfo.getGender(), gender)
-                || !Objects.equals(originalUserInfo.getLifeApps(), Collections.singletonList(lifeApp));
+                || !Objects.equals(originalUserInfo.getLifeApps(), Collections.singletonList(lifeApp))
+                || !Objects.equals(originalUserInfo.getMonthlyPayment(), monthlyPayment);
 
         Log.i(TAG, "isUpdated = " + isUpdated);
         return isUpdated;
@@ -92,6 +94,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
         Integer job = null ;
         String gender = null;
         List<String> lifeApps = null;
+        String monthlyPayment = null;
 
         if (!Objects.equals(originalUserInfo.getNickName(), userInfo.getNickName())) {
             nickName = userInfo.getNickName();
@@ -113,7 +116,11 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
             lifeApps = userInfo.getLifeApps();
         }
 
-        if (nickName == null && birthday == null && job == null && gender == null && lifeApps == null) {
+        if (!Objects.equals(originalUserInfo.getMonthlyPayment(), userInfo.getMonthlyPayment())) {
+            monthlyPayment = userInfo.getMonthlyPayment();
+        }
+
+        if (nickName == null && birthday == null && job == null && gender == null && lifeApps == null && monthlyPayment == null) {
             return null;
         }
 
@@ -123,6 +130,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
                 .setJob(job)
                 .setGender(gender)
                 .setLifeApps(lifeApps)
-                .setDevice(null);
+                .setDevice(null)
+                .setMonthlyPayment(monthlyPayment);
     }
 }

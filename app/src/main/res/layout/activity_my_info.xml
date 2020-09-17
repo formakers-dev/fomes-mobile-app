@@ -239,10 +239,63 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            app:layout_goneMarginTop="19dp"
             android:background="@color/fomes_pale_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_info_gender_title_textview" />
+
+
+        <TextView
+            android:id="@+id/my_info_monthly_payment_content_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:text="@string/provision_monthly_payment_content_title"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="@dimen/provision_content_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/my_info_monthly_payment_content_edittext"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_4"/>
+
+        <EditText
+            android:id="@+id/my_info_monthly_payment_content_edittext"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:backgroundTint="@android:color/transparent"
+            android:hint="000"
+            android:inputType="number"
+            android:textColorHint="@color/textColorHint"
+            android:textSize="@dimen/provision_content_text_size"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBaseline_toBaselineOf="@+id/my_info_monthly_payment_content_title_textview"
+            app:layout_constraintEnd_toStartOf="@+id/my_info_monthly_payment_content_suffix_textview"
+            app:layout_constraintStart_toEndOf="@+id/my_info_monthly_payment_content_title_textview" />
+
+        <TextView
+            android:id="@+id/my_info_monthly_payment_content_suffix_textview"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="만원"
+            android:backgroundTint="@android:color/transparent"
+            android:textColorHint="@color/textColorHint"
+            android:textSize="@dimen/provision_content_text_size"
+            app:layout_constraintBaseline_toBaselineOf="@+id/my_info_monthly_payment_content_title_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/my_info_monthly_payment_content_edittext" />
+
+        <View
+            android:id="@+id/my_info_content_divider_5"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_monthly_payment_content_title_textview" />
 
         <Button
             android:id="@+id/my_info_submit_button"
@@ -259,7 +312,7 @@
             android:theme="@style/SubmitButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_4"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_5"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

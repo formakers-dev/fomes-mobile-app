@@ -51,6 +51,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     @BindView(R.id.my_info_gender_radiogroup) RadioGroup genderRadioGroup;
     @BindView(R.id.my_info_male_radiobutton) RadioButton maleRadioButton;
     @BindView(R.id.my_info_female_radiobutton) RadioButton femaleRadioButton;
+    @BindView(R.id.my_info_monthly_payment_content_edittext) EditText monthlyPaymentEditText;
     @BindView(R.id.my_info_submit_button) Button submitButton;
 
     @Inject MyInfoContract.Presenter presenter;
@@ -101,6 +102,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
         lifeGameEditText.setText(userInfo.getLifeApps() != null && userInfo.getLifeApps().size() > 0 ? userInfo.getLifeApps().get(0) : "");
         birthSpinner.setSelection(Arrays.asList(this.getResources().getStringArray(R.array.birth_items)).indexOf(String.valueOf(userInfo.getBirthday())));
+        monthlyPaymentEditText.setText(userInfo.getMonthlyPayment());
 
         if (userInfo.getJob() != null) {
             jobSpinner.setSelection(((ArrayAdapter<String>) jobSpinner.getAdapter()).getPosition(User.JobCategory.get(userInfo.getJob()).getName()));
@@ -133,8 +135,9 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
         int job = jobCategory != null ? jobCategory.getCode() : 0;
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.my_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
+        String monthlyPayment = monthlyPaymentEditText.getText().toString();
 
-        this.presenter.updateUserInfo(nickName, birth, job, gender, lifeApp);
+        this.presenter.updateUserInfo(nickName, birth, job, gender, lifeApp, monthlyPayment);
     }
 
     @OnTextChanged(value = R.id.my_info_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
@@ -191,6 +194,12 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         }
     }
 
+    @OnTextChanged(value = R.id.my_info_monthly_payment_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onMonthlyPaymentTextChanged(CharSequence text, int start, int before, int count) {
+        Log.v(TAG, "onLifeGameTextChanged) " + text + " start=" + start + ", before=" + before + ", count=" + count);
+        emitFilledUpEvent();
+    }
+
     @SuppressLint("ResourceType")
     private void emitFilledUpEvent() {
         this.emitFilledUpEvent(genderRadioGroup.getCheckedRadioButtonId());
@@ -217,13 +226,15 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     private boolean verifyEnableToSubmit(@IdRes int checkedRadioButtonId) {
         String nickName = nickNameEditText.getText().toString();
         String lifeApp = lifeGameEditText.getText().toString();
+        String monthlyPayment = monthlyPaymentEditText.getText().toString();
 
         if (nickName.length() > 0
                 && nickNameWarningTextView.getVisibility() != View.VISIBLE
                 && lifeApp.length() > 0
                 && birthSpinner.getSelectedItemPosition() > 0
                 && jobSpinner.getSelectedItemPosition() > 0
-                && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())) {
+                && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())
+                && monthlyPayment.length() > 0) {
 
             int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
             User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
@@ -231,7 +242,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
             String gender = checkedRadioButtonId == R.id.my_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
             Log.d(TAG, "gender=" + gender);
 
-            if (this.presenter.isUpdated(nickName, birth, job, gender, lifeApp)) {
+            if (this.presenter.isUpdated(nickName, birth, job, gender, lifeApp, monthlyPayment)) {
                 return true;
             }
         }
