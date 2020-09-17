@@ -143,7 +143,9 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
         boolean isWrong = Pattern.matches(FomesConstants.PROVISIONING.NICK_NAME_REGEX.WRONG, text);
 
-        if (isWrong) {
+        if (TextUtils.isEmpty(text)) {
+            setVisibilityNickNameWarningView(false, R.string.provision_nickname_format_warning);
+        } else if (isWrong) {
             setVisibilityNickNameWarningView(true, R.string.provision_nickname_format_special_string_warning);
         } else {
             boolean isMatched = Pattern.matches(FomesConstants.PROVISIONING.NICK_NAME_REGEX.CORRECT, text);
@@ -217,6 +219,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         String lifeApp = lifeGameEditText.getText().toString();
 
         if (nickName.length() > 0
+                && nickNameWarningTextView.getVisibility() != View.VISIBLE
                 && lifeApp.length() > 0
                 && birthSpinner.getSelectedItemPosition() > 0
                 && jobSpinner.getSelectedItemPosition() > 0
