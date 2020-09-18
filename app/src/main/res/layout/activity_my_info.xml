@@ -297,6 +297,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_info_monthly_payment_content_title_textview" />
 
+        <TextView
+            android:id="@+id/my_info_favorite_genre_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:text="@string/provision_user_info_favorite_genre_title"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="@dimen/provision_content_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/my_info_favorite_genre_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_5" />
+
+        <Spinner
+            android:id="@+id/my_info_favorite_genre_spinner"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="13dp"
+            android:backgroundTint="@color/fomes_warm_gray_2"
+            android:spinnerMode="dialog"
+            android:prompt="@string/provision_user_info_favorite_genre_title"
+            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/my_info_favorite_genre_title_textview"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_5" />
+
+        <View
+            android:id="@+id/my_info_content_divider_6"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_favorite_genre_title_textview" />
+
         <Button
             android:id="@+id/my_info_submit_button"
             android:layout_width="@dimen/match_constraint"
@@ -312,7 +348,7 @@
             android:theme="@style/SubmitButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_5"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_6"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

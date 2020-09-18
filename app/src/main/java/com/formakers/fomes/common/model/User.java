@@ -83,6 +83,60 @@ public class User {
         }
     }
 
+    public enum GenreCategory {
+        ACTION("액션", "action"),
+        ADVENTURE("어드벤처", "adventure"),
+        ARCADE("아케이드", "arcade"),
+        BOARD("보드", "board"),
+        CARD("카드", "card"),
+        CASINO("카지노", "casino"),
+        CASUAL("캐주얼", "casual"),
+        EDUCATIONAL("교육", "educational"),
+        MUSIC("음악", "music"),
+        PUZZLE("퍼즐", "puzzle"),
+        RACING("레이싱", "racing"),
+        ROLE_PLAYING("롤플레잉", "rolePlaying"),
+        SIMULATION("시뮬레이션", "simulation"),
+        SPORTS("스포츠", "sports"),
+        STRATEGY("전략", "strategy"),
+        TRIVIA("퀴즈", "trivia"),
+        WORD("단어", "word");
+
+        final private String name;
+        final private String code;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        GenreCategory(String name, String code) {
+            this.name = name;
+            this.code = code;
+        }
+
+        private static Map<String, GenreCategory> genreCategoryMap = new HashMap<>();
+
+        public static GenreCategory get(String code) {
+            if (genreCategoryMap.size() == 0) {
+                for (User.GenreCategory genre : User.GenreCategory.values())
+                    genreCategoryMap.put(genre.getCode(), genre);
+            }
+
+            return genreCategoryMap.get(code);
+        }
+
+        public static GenreCategory getByName(String name) {
+            for (GenreCategory genre : GenreCategory.values())
+                if (genre.getName().equals(name))
+                    return genre;
+            return null;
+        }
+    }
+
     private String name;
     private String nickName;
     private String email;
@@ -94,6 +148,7 @@ public class User {
     private String appVersion;
     private DeviceInfo device = new User.DeviceInfo();
     private String monthlyPayment;
+    private List<String> favoriteGenres;
 
     // for ResponseVO (signIn / signUp)
     private String accessToken;
@@ -219,6 +274,15 @@ public class User {
         return this;
     }
 
+    public List<String> getFavoriteGenres() {
+        return favoriteGenres;
+    }
+
+    public User setFavoriteGenres(List<String> favoriteGenres) {
+        this.favoriteGenres = favoriteGenres;
+        return this;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -262,6 +326,7 @@ public class User {
                 ", appVersion='" + appVersion + '\'' +
                 ", device=" + device +
                 ", monthlyPayment='" + monthlyPayment + '\'' +
+                ", favoriteGenres=" + favoriteGenres +
                 '}';
     }
 

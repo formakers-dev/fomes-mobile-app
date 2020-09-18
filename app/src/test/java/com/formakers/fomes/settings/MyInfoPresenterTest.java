@@ -53,7 +53,14 @@ public class MyInfoPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        userInfo = new User().setNickName("닉네임").setBirthday(1991).setJob(1000).setGender("female").setLifeApps(Lists.newArrayList("최애겜")).setMonthlyPayment("5");
+        userInfo = new User()
+                .setNickName("닉네임")
+                .setBirthday(1991)
+                .setJob(1000)
+                .setGender("female")
+                .setLifeApps(Lists.newArrayList("최애겜"))
+                .setMonthlyPayment("5")
+                .setFavoriteGenres(Lists.newArrayList("arcade"));
         when(mockUserService.getUser()).thenReturn(Single.just(userInfo));
         //when(mockUserDAO.getUserInfo()).thenReturn(Single.just(userInfo));
 
@@ -72,7 +79,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5", "arcade");
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserService).updateUserInfo(userArgumentCaptor.capture());
@@ -84,6 +91,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getGender()).isNull();
         assertThat(requestedUserInfo.getLifeApps()).isNull();
         assertThat(requestedUserInfo.getMonthlyPayment()).isNull();
+        assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
     }
 
     @Test
@@ -91,7 +99,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5", "arcade");
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserDAO).updateUserInfo(userArgumentCaptor.capture());
@@ -103,6 +111,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getGender()).isNull();
         assertThat(requestedUserInfo.getLifeApps()).isNull();
         assertThat(requestedUserInfo.getMonthlyPayment()).isNull();
+        assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
     }
 
     @Test
@@ -111,7 +120,7 @@ public class MyInfoPresenterTest {
                 .thenReturn(Completable.error(new Exception()));
 
         subject.loadUserInfo();
-        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5", "arcade");
 
         verify(mockUserDAO, never()).updateUserInfo(any(User.class));
     }
@@ -121,7 +130,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5");
+        subject.updateUserInfo("닉네임", 1991, 2000, "female", "최애겜", "5", "arcade");
 
         verify(mockUserService, times(2)).getUser();
         verify(mockView, times(2)).bind(any(User.class));
@@ -130,12 +139,13 @@ public class MyInfoPresenterTest {
     @Test
     public void isUpdated_호출시__기존정보에서_업데이트되었는지_체크한다() {
         subject.loadUserInfo();
-        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "최애겜", "5")).isFalse();
-        assertThat(subject.isUpdated("닉네임99", 1991, 1000, "female", "최애겜", "5")).isTrue();
-        assertThat(subject.isUpdated("닉네임", 1992, 1000, "female", "최애겜", "5")).isTrue();
-        assertThat(subject.isUpdated("닉네임", 1991, 2000, "female", "최애겜", "5")).isTrue();
-        assertThat(subject.isUpdated("닉네임", 1991, 1000, "male", "최애겜", "5")).isTrue();
-        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "노잼겜", "5")).isTrue();
-        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "최애겜", "10")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "최애겜", "5", "arcade")).isFalse();
+        assertThat(subject.isUpdated("닉네임99", 1991, 1000, "female", "최애겜", "5", "arcade")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1992, 1000, "female", "최애겜", "5", "arcade")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 2000, "female", "최애겜", "5", "arcade")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "male", "최애겜", "5", "arcade")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "노잼겜", "5", "arcade")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "최애겜", "10", "arcade")).isTrue();
+        assertThat(subject.isUpdated("닉네임", 1991, 1000, "female", "최애겜", "5", "puzzle")).isTrue();
     }
 }
