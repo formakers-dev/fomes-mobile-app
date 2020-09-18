@@ -28,6 +28,7 @@ import com.formakers.fomes.common.view.FomesBaseActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -123,7 +124,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
             femaleRadioButton.toggle();
         }
 
-        if (userInfo.getFavoriteGenres() != null) {
+        if (userInfo.getFavoriteGenres() != null && userInfo.getFavoriteGenres().size() > 0) {
             favoriteGenreSpinner.setSelection(((ArrayAdapter<String>) favoriteGenreSpinner.getAdapter()).getPosition(User.GenreCategory.get(userInfo.getFavoriteGenres().get(0)).getName()));
         }
     }
@@ -153,7 +154,15 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         User.GenreCategory genreCategory = User.GenreCategory.getByName(favoriteGenreSpinner.getSelectedItem().toString());
         String favoriteGenre = genreCategory != null ? genreCategory.getCode() : null;
 
-        this.presenter.updateUserInfo(nickName, birth, job, gender, lifeApp, monthlyPayment, favoriteGenre);
+        User filledUserInfo = new User().setNickName(nickName)
+                .setBirthday(birth)
+                .setJob(job)
+                .setGender(gender)
+                .setLifeApps(Collections.singletonList(lifeApp))
+                .setMonthlyPayment(monthlyPayment)
+                .setFavoriteGenres(Collections.singletonList(favoriteGenre));
+
+        this.presenter.updateUserInfo(filledUserInfo);
     }
 
     @OnTextChanged(value = R.id.my_info_nickname_content_edittext, callback = OnTextChanged.Callback.TEXT_CHANGED)
@@ -268,7 +277,15 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
             User.GenreCategory genreCategory = User.GenreCategory.getByName(favoriteGenreSpinner.getSelectedItem().toString());
             String favoriteGenre = genreCategory != null ? genreCategory.getCode() : null;
 
-            if (this.presenter.isUpdated(nickName, birth, job, gender, lifeApp, monthlyPayment, favoriteGenre)) {
+            User filledUserInfo = new User().setNickName(nickName)
+                    .setBirthday(birth)
+                    .setJob(job)
+                    .setGender(gender)
+                    .setLifeApps(Collections.singletonList(lifeApp))
+                    .setMonthlyPayment(monthlyPayment)
+                    .setFavoriteGenres(Collections.singletonList(favoriteGenre));
+
+            if (this.presenter.isUpdated(filledUserInfo)) {
                 return true;
             }
         }

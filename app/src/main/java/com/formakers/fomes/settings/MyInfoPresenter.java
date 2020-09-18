@@ -6,7 +6,6 @@ import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,13 +42,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     }
 
     @Override
-    public void updateUserInfo(String nickName, Integer birthday, Integer job, String gender, String lifeApp, String monthlyPayment, String favoriteGenre) {
-        User filledUserInfo = new User().setNickName(nickName)
-                .setBirthday(birthday).setJob(job).setGender(gender)
-                .setLifeApps(Collections.singletonList(lifeApp))
-                .setMonthlyPayment(monthlyPayment)
-                .setFavoriteGenres(Collections.singletonList(favoriteGenre));
-
+    public void updateUserInfo(User filledUserInfo) {
         User updatedUserInfo = getDiffWithUpdatableFields(filledUserInfo);
 
         Log.i(TAG, "user information will be updated = " + updatedUserInfo);
@@ -71,17 +64,11 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     }
 
     @Override
-    public boolean isUpdated(String nickName, Integer birthday, Integer job, String gender, String lifeApp, String monthlyPayment, String favoriteGenre) {
-        Log.v(TAG, "isUpdated) " + nickName + " " + birthday + " " + job + " " + gender + " " + lifeApp + " " + monthlyPayment + " " + favoriteGenre);
+    public boolean isUpdated(User filledUserInfo) {
+        Log.v(TAG, "isUpdated) filled=" + filledUserInfo);
         Log.v(TAG, "isUpdated) original=" + originalUserInfo);
 
-        boolean isUpdated = !Objects.equals(originalUserInfo.getNickName(), nickName)
-                || !Objects.equals(originalUserInfo.getBirthday(), birthday)
-                || !Objects.equals(originalUserInfo.getJob(), job)
-                || !Objects.equals(originalUserInfo.getGender(), gender)
-                || !Objects.equals(originalUserInfo.getLifeApps(), Collections.singletonList(lifeApp))
-                || !Objects.equals(originalUserInfo.getMonthlyPayment(), monthlyPayment)
-                || !Objects.equals(originalUserInfo.getFavoriteGenres(), Collections.singletonList(favoriteGenre));
+        boolean isUpdated = getDiffWithUpdatableFields(filledUserInfo) != null;
 
         Log.i(TAG, "isUpdated = " + isUpdated);
         return isUpdated;
