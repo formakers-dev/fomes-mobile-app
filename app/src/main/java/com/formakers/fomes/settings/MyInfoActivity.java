@@ -19,16 +19,20 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.Group;
 
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
 import com.formakers.fomes.FomesApplication;
 import com.formakers.fomes.R;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.custom.MultiSelectionSpinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -53,7 +57,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     @BindView(R.id.my_info_male_radiobutton) RadioButton maleRadioButton;
     @BindView(R.id.my_info_female_radiobutton) RadioButton femaleRadioButton;
     @BindView(R.id.my_info_monthly_payment_content_edittext) EditText monthlyPaymentEditText;
-    @BindView(R.id.my_info_favorite_genre_spinner) Spinner favoriteGenreSpinner;
+    @BindView(R.id.my_info_favorite_genre_spinner) MultiSelectionSpinner favoriteGenreSpinner;
     @BindView(R.id.my_info_submit_button) Button submitButton;
 
     @Inject MyInfoContract.Presenter presenter;
@@ -94,12 +98,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         jobSpinner.setAdapter(jobAdapter);
 
         ArrayList<String> genreItems = new ArrayList<>();
-        genreItems.add(getResources().getString(R.string.favorite_genre_spinner_hint));
         for (User.GenreCategory genre : User.GenreCategory.values()) {
             genreItems.add(genre.getName());
         }
-        ArrayAdapter<String> genreAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genreItems);
-        favoriteGenreSpinner.setAdapter(genreAdapter);
+        favoriteGenreSpinner.setItems(genreItems);
 
         submitButton.setEnabled(false);
         this.presenter.loadUserInfo();
@@ -125,7 +127,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         }
 
         if (userInfo.getFavoriteGenres() != null && userInfo.getFavoriteGenres().size() > 0) {
-            favoriteGenreSpinner.setSelection(((ArrayAdapter<String>) favoriteGenreSpinner.getAdapter()).getPosition(User.GenreCategory.get(userInfo.getFavoriteGenres().get(0)).getName()));
+            List<String> favoriteGenreNames = Stream.of(userInfo.getFavoriteGenres())
+                    .map((genreCode) -> User.GenreCategory.get(genreCode).getName())
+                    .collect(Collectors.toList());
+            favoriteGenreSpinner.setSelections(favoriteGenreNames);
         }
     }
 
@@ -151,8 +156,9 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.my_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
         String monthlyPayment = monthlyPaymentEditText.getText().toString();
 
-        User.GenreCategory genreCategory = User.GenreCategory.getByName(favoriteGenreSpinner.getSelectedItem().toString());
-        String favoriteGenre = genreCategory != null ? genreCategory.getCode() : null;
+        List<String> favoriteGenres = Stream.of(favoriteGenreSpinner.getSelectedItems())
+                .map((genreName) -> User.GenreCategory.getByName(genreName).getCode())
+                .collect(Collectors.toList());
 
         User filledUserInfo = new User().setNickName(nickName)
                 .setBirthday(birth)
@@ -160,7 +166,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
                 .setGender(gender)
                 .setLifeApps(Collections.singletonList(lifeApp))
                 .setMonthlyPayment(monthlyPayment)
-                .setFavoriteGenres(Collections.singletonList(favoriteGenre));
+                .setFavoriteGenres(favoriteGenres);
 
         this.presenter.updateUserInfo(filledUserInfo);
     }
@@ -226,8 +232,8 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     }
 
     @OnItemSelected(R.id.my_info_favorite_genre_spinner)
-    public void onFavoriteGenreSpinnerItemSeletected(Spinner spinner, int position) {
-        Log.v(TAG, "onFavoriteGenreSpinnerItemSeletected) " + spinner.getItemAtPosition(position));
+    public void onFavoriteGenreSpinnerItemSelected(Spinner spinner, int position) {
+        Log.v(TAG, "onFavoriteGenreSpinnerItemSelected) " + spinner.getItemAtPosition(position));
         emitFilledUpEvent();
     }
 
@@ -258,6 +264,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         String nickName = nickNameEditText.getText().toString();
         String lifeApp = lifeGameEditText.getText().toString();
         String monthlyPayment = monthlyPaymentEditText.getText().toString();
+        List<String> selectedFavoriteGenres = favoriteGenreSpinner.getSelectedItems();
 
         if (nickName.length() > 0
                 && nickNameWarningTextView.getVisibility() != View.VISIBLE
@@ -266,16 +273,16 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
                 && jobSpinner.getSelectedItemPosition() > 0
                 && (maleRadioButton.isChecked() || femaleRadioButton.isChecked())
                 && monthlyPayment.length() > 0
-                && favoriteGenreSpinner.getSelectedItemPosition() > 0) {
+                && selectedFavoriteGenres.size() > 0) {
 
             int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
             User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
             int job = jobCategory != null ? jobCategory.getCode() : 0;
             String gender = checkedRadioButtonId == R.id.my_info_male_radiobutton ? User.GENDER_MALE : User.GENDER_FEMALE;
-            Log.d(TAG, "gender=" + gender);
 
-            User.GenreCategory genreCategory = User.GenreCategory.getByName(favoriteGenreSpinner.getSelectedItem().toString());
-            String favoriteGenre = genreCategory != null ? genreCategory.getCode() : null;
+            List<String> favoriteGenres = Stream.of(selectedFavoriteGenres)
+                    .map((genreName) -> User.GenreCategory.getByName(genreName).getCode())
+                    .collect(Collectors.toList());
 
             User filledUserInfo = new User().setNickName(nickName)
                     .setBirthday(birth)
@@ -283,7 +290,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
                     .setGender(gender)
                     .setLifeApps(Collections.singletonList(lifeApp))
                     .setMonthlyPayment(monthlyPayment)
-                    .setFavoriteGenres(Collections.singletonList(favoriteGenre));
+                    .setFavoriteGenres(favoriteGenres);
 
             if (this.presenter.isUpdated(filledUserInfo)) {
                 return true;

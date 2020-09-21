@@ -310,14 +310,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_5" />
 
-        <Spinner
+        <com.formakers.fomes.common.view.custom.MultiSelectionSpinner
             android:id="@+id/my_info_favorite_genre_spinner"
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_marginStart="13dp"
             android:backgroundTint="@color/fomes_warm_gray_2"
             android:spinnerMode="dialog"
-            android:prompt="@string/provision_user_info_favorite_genre_title"
+            android:prompt="@string/favorite_genre_spinner_hint"
             app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/my_info_favorite_genre_title_textview"

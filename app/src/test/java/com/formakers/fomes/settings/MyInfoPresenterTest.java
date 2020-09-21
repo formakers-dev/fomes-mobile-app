@@ -62,7 +62,6 @@ public class MyInfoPresenterTest {
                 .setMonthlyPayment("5")
                 .setFavoriteGenres(Lists.newArrayList("arcade"));
         when(mockUserService.getUser()).thenReturn(Single.just(userInfo));
-        //when(mockUserDAO.getUserInfo()).thenReturn(Single.just(userInfo));
 
         subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService);
     }
@@ -242,6 +241,6 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("puzzle")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade", "puzzle")))).isTrue();
     }
 }
