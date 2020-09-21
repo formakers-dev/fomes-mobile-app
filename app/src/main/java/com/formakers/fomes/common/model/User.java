@@ -149,6 +149,7 @@ public class User {
     private DeviceInfo device = new User.DeviceInfo();
     private String monthlyPayment;
     private List<String> favoriteGenres;
+    private List<String> leastFavoriteGenres;
 
     // for ResponseVO (signIn / signUp)
     private String accessToken;
@@ -283,6 +284,15 @@ public class User {
         return this;
     }
 
+    public List<String> getLeastFavoriteGenres() {
+        return leastFavoriteGenres;
+    }
+
+    public User setLeastFavoriteGenres(List<String> leastFavoriteGenres) {
+        this.leastFavoriteGenres = leastFavoriteGenres;
+        return this;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -327,6 +337,7 @@ public class User {
                 ", device=" + device +
                 ", monthlyPayment='" + monthlyPayment + '\'' +
                 ", favoriteGenres=" + favoriteGenres +
+                ", leastFavoriteGenres=" + leastFavoriteGenres +
                 '}';
     }
 

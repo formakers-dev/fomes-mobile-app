@@ -60,7 +60,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"));
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
         when(mockUserService.getUser()).thenReturn(Single.just(userInfo));
 
         subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService);
@@ -85,7 +86,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"));
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
         subject.updateUserInfo(filledUserInfo);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -99,6 +101,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getLifeApps()).isNull();
         assertThat(requestedUserInfo.getMonthlyPayment()).isNull();
         assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
+        assertThat(requestedUserInfo.getLeastFavoriteGenres()).isNull();
     }
 
     @Test
@@ -113,7 +116,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"));
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
         subject.updateUserInfo(filledUserInfo);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -127,6 +131,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getLifeApps()).isNull();
         assertThat(requestedUserInfo.getMonthlyPayment()).isNull();
         assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
+        assertThat(requestedUserInfo.getLeastFavoriteGenres()).isNull();
     }
 
     @Test
@@ -142,7 +147,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"));
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
         subject.updateUserInfo(filledUserInfo);
 
         verify(mockUserDAO, never()).updateUserInfo(any(User.class));
@@ -160,7 +166,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"));
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
 
         subject.updateUserInfo(filledUserInfo);
 
@@ -178,7 +185,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade")))).isFalse();
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isFalse();
 
         assertThat(subject.isUpdated(new User()
                 .setNickName("닉네임99")
@@ -187,7 +195,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
 
         assertThat(subject.isUpdated(new User()
                 .setNickName("닉네임")
@@ -196,7 +205,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
 
         assertThat(subject.isUpdated(new User()
                 .setNickName("닉네임")
@@ -205,7 +215,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
 
         assertThat(subject.isUpdated(new User()
                 .setNickName("닉네임")
@@ -214,7 +225,8 @@ public class MyInfoPresenterTest {
                 .setGender("male")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
 
         assertThat(subject.isUpdated(new User()
                 .setNickName("닉네임")
@@ -223,7 +235,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("노잼겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
 
         assertThat(subject.isUpdated(new User()
                 .setNickName("닉네임")
@@ -232,7 +245,8 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("10")
-                .setFavoriteGenres(Lists.newArrayList("arcade")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
 
         assertThat(subject.isUpdated(new User()
                 .setNickName("닉네임")
@@ -241,6 +255,17 @@ public class MyInfoPresenterTest {
                 .setGender("female")
                 .setLifeApps(Lists.newArrayList("최애겜"))
                 .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade", "puzzle")))).isTrue();
+                .setFavoriteGenres(Lists.newArrayList("arcade", "puzzle"))
+                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
+
+        assertThat(subject.isUpdated(new User()
+                .setNickName("닉네임")
+                .setBirthday(1991)
+                .setJob(1000)
+                .setGender("female")
+                .setLifeApps(Lists.newArrayList("최애겜"))
+                .setMonthlyPayment("5")
+                .setFavoriteGenres(Lists.newArrayList("arcade"))
+                .setLeastFavoriteGenres(Lists.newArrayList("action")))).isTrue();
     }
 }

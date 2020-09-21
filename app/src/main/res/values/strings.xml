@@ -66,7 +66,9 @@
     <string name="job_spinner_hint">당신의 직업을 선택해주세요.</string>
     <string name="provision_monthly_payment_content_title">월평균 과금</string>
     <string name="provision_user_info_favorite_genre_title">선호 장르</string>
-    <string name="favorite_genre_spinner_hint">선호하는 게임 장르를 선택해주세요.</string>
+    <string name="favorite_genre_spinner_hint">선호 게임 장르를 선택해주세요.</string>
+    <string name="provision_user_info_least_favorite_genre_title">비선호 장르</string>
+    <string name="least_favorite_genre_spinner_hint">비선호 게임 장르를 선택해주세요.</string>
     <string name="provision_nickname_title">반가워요! 포메스가 앞으로 당신을 어떻게 부르면 될까요?</string>
     <string name="provision_nickname_subtitle">닉네임은 2글자에서 10글자 사이로 작성해주세요.</string>
     <string name="provision_nickname_content_title">닉네임</string>
