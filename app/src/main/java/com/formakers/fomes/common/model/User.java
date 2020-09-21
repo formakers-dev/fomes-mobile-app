@@ -86,21 +86,21 @@ public class User {
     public enum GenreCategory {
         ACTION("액션", "action"),
         ADVENTURE("어드벤처", "adventure"),
+        ROLE_PLAYING("롤플레잉", "rolePlaying"),
+        STRATEGY("전략", "strategy"),
+        SIMULATION("시뮬레이션", "simulation"),
         ARCADE("아케이드", "arcade"),
+        CASUAL("캐주얼", "casual"),
+        PUZZLE("퍼즐", "puzzle"),
+        TRIVIA("퀴즈", "trivia"),
         BOARD("보드", "board"),
         CARD("카드", "card"),
-        CASINO("카지노", "casino"),
-        CASUAL("캐주얼", "casual"),
-        EDUCATIONAL("교육", "educational"),
-        MUSIC("음악", "music"),
-        PUZZLE("퍼즐", "puzzle"),
-        RACING("레이싱", "racing"),
-        ROLE_PLAYING("롤플레잉", "rolePlaying"),
-        SIMULATION("시뮬레이션", "simulation"),
+        WORD("단어", "word"),
         SPORTS("스포츠", "sports"),
-        STRATEGY("전략", "strategy"),
-        TRIVIA("퀴즈", "trivia"),
-        WORD("단어", "word");
+        RACING("레이싱", "racing"),
+        MUSIC("음악", "music"),
+        EDUCATIONAL("교육", "educational"),
+        CASINO("카지노", "casino");
 
         final private String name;
         final private String code;
