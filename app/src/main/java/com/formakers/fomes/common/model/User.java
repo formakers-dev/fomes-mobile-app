@@ -137,6 +137,46 @@ public class User {
         }
     }
 
+    public enum PlatformCategory {
+        MOBILE("모바일", "mobile"),
+        PC("PC", "pc"),
+        CONSOLE("콘솔", "console");
+
+        final private String name;
+        final private String code;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        PlatformCategory(String name, String code) {
+            this.name = name;
+            this.code = code;
+        }
+
+        private static Map<String, PlatformCategory> platformCategoryMap = new HashMap<>();
+
+        public static PlatformCategory get(String code) {
+            if (platformCategoryMap.size() == 0) {
+                for (User.PlatformCategory platform : User.PlatformCategory.values())
+                    platformCategoryMap.put(platform.getCode(), platform);
+            }
+
+            return platformCategoryMap.get(code);
+        }
+
+        public static PlatformCategory getByName(String name) {
+            for (PlatformCategory platform : PlatformCategory.values())
+                if (platform.getName().equals(name))
+                    return platform;
+            return null;
+        }
+    }
+
     private String name;
     private String nickName;
     private String email;
@@ -148,6 +188,7 @@ public class User {
     private String appVersion;
     private DeviceInfo device = new User.DeviceInfo();
     private String monthlyPayment;
+    private List<String> favoritePlatforms;
     private List<String> favoriteGenres;
     private List<String> leastFavoriteGenres;
 
@@ -275,6 +316,15 @@ public class User {
         return this;
     }
 
+    public List<String> getFavoritePlatforms() {
+        return favoritePlatforms;
+    }
+
+    public User setFavoritePlatforms(List<String> favoritePlatforms) {
+        this.favoritePlatforms = favoritePlatforms;
+        return this;
+    }
+
     public List<String> getFavoriteGenres() {
         return favoriteGenres;
     }
@@ -336,6 +386,7 @@ public class User {
                 ", appVersion='" + appVersion + '\'' +
                 ", device=" + device +
                 ", monthlyPayment='" + monthlyPayment + '\'' +
+                ", favoritePlatforms=" + favoritePlatforms +
                 ", favoriteGenres=" + favoriteGenres +
                 ", leastFavoriteGenres=" + leastFavoriteGenres +
                 '}';

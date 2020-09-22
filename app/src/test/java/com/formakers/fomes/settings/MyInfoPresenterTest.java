@@ -11,6 +11,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
 import rx.Completable;
 import rx.Scheduler;
 import rx.Single;
@@ -53,15 +55,7 @@ public class MyInfoPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        userInfo = new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
+        userInfo = createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
         when(mockUserService.getUser()).thenReturn(Single.just(userInfo));
 
         subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService);
@@ -79,15 +73,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        User filledUserInfo = new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(2000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
         subject.updateUserInfo(filledUserInfo);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -100,6 +86,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getGender()).isNull();
         assertThat(requestedUserInfo.getLifeApps()).isNull();
         assertThat(requestedUserInfo.getMonthlyPayment()).isNull();
+        assertThat(requestedUserInfo.getFavoritePlatforms()).isNull();
         assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
         assertThat(requestedUserInfo.getLeastFavoriteGenres()).isNull();
     }
@@ -109,15 +96,8 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        User filledUserInfo = new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(2000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
+
         subject.updateUserInfo(filledUserInfo);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -130,6 +110,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getGender()).isNull();
         assertThat(requestedUserInfo.getLifeApps()).isNull();
         assertThat(requestedUserInfo.getMonthlyPayment()).isNull();
+        assertThat(requestedUserInfo.getFavoritePlatforms()).isNull();
         assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
         assertThat(requestedUserInfo.getLeastFavoriteGenres()).isNull();
     }
@@ -140,15 +121,7 @@ public class MyInfoPresenterTest {
                 .thenReturn(Completable.error(new Exception()));
 
         subject.loadUserInfo();
-        User filledUserInfo = new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(2000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
         subject.updateUserInfo(filledUserInfo);
 
         verify(mockUserDAO, never()).updateUserInfo(any(User.class));
@@ -159,15 +132,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        User filledUserInfo = new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(2000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
 
         subject.updateUserInfo(filledUserInfo);
 
@@ -178,94 +143,29 @@ public class MyInfoPresenterTest {
     @Test
     public void isUpdated_호출시__기존정보에서_업데이트되었는지_체크한다() {
         subject.loadUserInfo();
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isFalse();
 
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임99")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isFalse();
+        assertThat(subject.isUpdated(createUser("닉네임99", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1999, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "male", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "노잼겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "10", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("mobile"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("puzzle"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("card")))).isTrue();
+    }
 
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1999)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
-
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(2000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
-
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("male")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
-
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("노잼겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
-
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("10")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
-
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade", "puzzle"))
-                .setLeastFavoriteGenres(Lists.newArrayList("rolePlaying", "card")))).isTrue();
-
-        assertThat(subject.isUpdated(new User()
-                .setNickName("닉네임")
-                .setBirthday(1991)
-                .setJob(1000)
-                .setGender("female")
-                .setLifeApps(Lists.newArrayList("최애겜"))
-                .setMonthlyPayment("5")
-                .setFavoriteGenres(Lists.newArrayList("arcade"))
-                .setLeastFavoriteGenres(Lists.newArrayList("action")))).isTrue();
+    private User createUser(String nickName, int birth, int job, String gender, String lifeApp, String monthlyPayment, List<String> favoritePlatforms, List<String> favoriteGenres, List<String> leastFavoriteGenres) {
+        return new User()
+            .setNickName(nickName)
+            .setBirthday(birth)
+            .setJob(job)
+            .setGender(gender)
+            .setLifeApps(Lists.newArrayList(lifeApp))
+            .setMonthlyPayment(monthlyPayment)
+            .setFavoritePlatforms(favoritePlatforms)
+            .setFavoriteGenres(favoriteGenres)
+            .setLeastFavoriteGenres(leastFavoriteGenres);
     }
 }

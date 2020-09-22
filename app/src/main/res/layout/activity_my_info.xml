@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="my_info_nickname_content_title_textview,my_info_nickname_content_edittext,my_info_content_divider_0"
+            app:constraint_referenced_ids="my_info_nickname_content_title_textview,my_info_nickname_content_edittext,my_info_nickname_content_divider"
             />
 
         <TextView
@@ -64,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/my_info_nickname_content_edittext" />
 
         <View
-            android:id="@+id/my_info_content_divider_0"
+            android:id="@+id/my_info_nickname_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -86,7 +86,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/my_info_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_0"/>
+            app:layout_constraintTop_toBottomOf="@+id/my_info_nickname_content_divider"/>
 
         <EditText
             android:id="@+id/my_info_life_game_content_edittext"
@@ -104,7 +104,7 @@
 
 
         <View
-            android:id="@+id/my_info_content_divider_1"
+            android:id="@+id/my_info_life_game_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -124,7 +124,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_title_textview"
             app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_1" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_life_game_content_divider" />
 
         <Spinner
             android:id="@+id/my_info_birth_spinner"
@@ -134,13 +134,13 @@
             android:entries="@array/birth_items"
             android:spinnerMode="dialog"
             android:prompt="@string/provision_user_info_birth_title"
-            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_2"
+            app:layout_constraintBottom_toTopOf="@+id/my_info_birth_content_divider"
             app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_edittext"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_1" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_life_game_content_divider" />
 
         <View
-            android:id="@+id/my_info_content_divider_2"
+            android:id="@+id/my_info_birth_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -161,7 +161,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_title_textview"
             app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_2" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_birth_content_divider" />
 
         <Spinner
             android:id="@+id/my_info_job_spinner"
@@ -170,13 +170,13 @@
             android:backgroundTint="@color/fomes_warm_gray_2"
             android:spinnerMode="dialog"
             android:prompt="@string/provision_user_info_job_title"
-            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_3"
+            app:layout_constraintBottom_toTopOf="@+id/my_info_job_content_divider"
             app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_edittext"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_2" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_birth_content_divider" />
 
         <View
-            android:id="@+id/my_info_content_divider_3"
+            android:id="@+id/my_info_job_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -196,7 +196,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_title_textview"
             app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_3" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_job_content_divider" />
 
         <RadioGroup
             android:id="@+id/my_info_gender_radiogroup"
@@ -206,10 +206,10 @@
             android:orientation="horizontal"
             android:showDividers="middle"
             android:theme="@style/ProvisioningTheme.RadioGroup"
-            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_4"
+            app:layout_constraintBottom_toTopOf="@+id/my_info_gender_content_divider"
             app:layout_constraintEnd_toEndOf="@+id/my_info_life_game_content_edittext"
             app:layout_constraintStart_toStartOf="@+id/my_info_life_game_content_edittext"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_3">
+            app:layout_constraintTop_toBottomOf="@+id/my_info_job_content_divider">
 
             <RadioButton
                 android:id="@+id/my_info_male_radiobutton"
@@ -235,7 +235,7 @@
         </RadioGroup>
 
         <View
-            android:id="@+id/my_info_content_divider_4"
+            android:id="@+id/my_info_gender_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -257,7 +257,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/my_info_monthly_payment_content_edittext"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_4"/>
+            app:layout_constraintTop_toBottomOf="@+id/my_info_gender_content_divider"/>
 
         <EditText
             android:id="@+id/my_info_monthly_payment_content_edittext"
@@ -288,7 +288,7 @@
             app:layout_constraintStart_toEndOf="@+id/my_info_monthly_payment_content_edittext" />
 
         <View
-            android:id="@+id/my_info_content_divider_5"
+            android:id="@+id/my_info_monthly_payment_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -296,6 +296,42 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_info_monthly_payment_content_title_textview" />
+
+        <TextView
+            android:id="@+id/my_info_favorite_platform_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:text="@string/provision_user_info_favorite_platform_title"
+            android:textColor="@color/fomes_greyish_brown"
+            android:textSize="@dimen/provision_content_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/my_info_favorite_platform_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_monthly_payment_content_divider" />
+
+        <com.formakers.fomes.common.view.custom.MultiSelectionSpinner
+            android:id="@+id/my_info_favorite_platform_spinner"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="13dp"
+            android:backgroundTint="@color/fomes_warm_gray_2"
+            android:spinnerMode="dialog"
+            android:prompt="@string/favorite_platform_spinner_hint"
+            app:layout_constraintBottom_toTopOf="@+id/my_info_favorite_platform_content_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/my_info_favorite_platform_title_textview"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_monthly_payment_content_divider" />
+
+        <View
+            android:id="@+id/my_info_favorite_platform_content_divider"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
+            android:background="@color/fomes_pale_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_favorite_platform_title_textview" />
 
         <TextView
             android:id="@+id/my_info_favorite_genre_title_textview"
@@ -308,7 +344,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/my_info_favorite_genre_spinner"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_5" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_favorite_platform_content_divider" />
 
         <com.formakers.fomes.common.view.custom.MultiSelectionSpinner
             android:id="@+id/my_info_favorite_genre_spinner"
@@ -318,13 +354,13 @@
             android:backgroundTint="@color/fomes_warm_gray_2"
             android:spinnerMode="dialog"
             android:prompt="@string/favorite_genre_spinner_hint"
-            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_6"
+            app:layout_constraintBottom_toTopOf="@+id/my_info_favorite_genre_content_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/my_info_favorite_genre_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_5" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_favorite_platform_content_divider" />
 
         <View
-            android:id="@+id/my_info_content_divider_6"
+            android:id="@+id/my_info_favorite_genre_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -344,7 +380,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/my_info_least_favorite_genre_spinner"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_6" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_favorite_genre_content_divider" />
 
         <com.formakers.fomes.common.view.custom.MultiSelectionSpinner
             android:id="@+id/my_info_least_favorite_genre_spinner"
@@ -354,13 +390,13 @@
             android:backgroundTint="@color/fomes_warm_gray_2"
             android:spinnerMode="dialog"
             android:prompt="@string/least_favorite_genre_spinner_hint"
-            app:layout_constraintBottom_toTopOf="@+id/my_info_content_divider_7"
+            app:layout_constraintBottom_toTopOf="@+id/my_info_least_favorite_genre_content_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/my_info_least_favorite_genre_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_6" />
+            app:layout_constraintTop_toBottomOf="@+id/my_info_favorite_genre_content_divider" />
 
         <View
-            android:id="@+id/my_info_content_divider_7"
+            android:id="@+id/my_info_least_favorite_genre_content_divider"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/provision_content_divider_margin_top_bottom"
@@ -374,6 +410,7 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="40dp"
             android:layout_marginTop="28dp"
+            android:layout_marginBottom="20dp"
             android:enabled="false"
             android:text="@string/common_modify_complete"
             android:textSize="13dp"
@@ -384,7 +421,8 @@
             android:theme="@style/SubmitButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_info_content_divider_7"
+            app:layout_constraintTop_toBottomOf="@+id/my_info_least_favorite_genre_content_divider"
+            app:layout_constraintBottom_toBottomOf="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
