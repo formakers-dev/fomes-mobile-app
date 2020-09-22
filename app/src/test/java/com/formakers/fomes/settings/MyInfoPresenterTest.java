@@ -55,7 +55,7 @@ public class MyInfoPresenterTest {
 
         MockitoAnnotations.initMocks(this);
 
-        userInfo = createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
+        userInfo = createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical"));
         when(mockUserService.getUser()).thenReturn(Single.just(userInfo));
 
         subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService);
@@ -73,7 +73,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical"));
         subject.updateUserInfo(filledUserInfo);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -89,6 +89,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getFavoritePlatforms()).isNull();
         assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
         assertThat(requestedUserInfo.getLeastFavoriteGenres()).isNull();
+        assertThat(requestedUserInfo.getFeedbackStyles()).isNull();
     }
 
     @Test
@@ -96,7 +97,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical"));
 
         subject.updateUserInfo(filledUserInfo);
 
@@ -113,6 +114,7 @@ public class MyInfoPresenterTest {
         assertThat(requestedUserInfo.getFavoritePlatforms()).isNull();
         assertThat(requestedUserInfo.getFavoriteGenres()).isNull();
         assertThat(requestedUserInfo.getLeastFavoriteGenres()).isNull();
+        assertThat(requestedUserInfo.getFeedbackStyles()).isNull();
     }
 
     @Test
@@ -121,7 +123,7 @@ public class MyInfoPresenterTest {
                 .thenReturn(Completable.error(new Exception()));
 
         subject.loadUserInfo();
-        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical"));
         subject.updateUserInfo(filledUserInfo);
 
         verify(mockUserDAO, never()).updateUserInfo(any(User.class));
@@ -132,7 +134,7 @@ public class MyInfoPresenterTest {
         when(mockUserService.updateUserInfo(any(User.class))).thenReturn(Completable.complete());
 
         subject.loadUserInfo();
-        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"));
+        User filledUserInfo = createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical"));
 
         subject.updateUserInfo(filledUserInfo);
 
@@ -144,19 +146,20 @@ public class MyInfoPresenterTest {
     public void isUpdated_호출시__기존정보에서_업데이트되었는지_체크한다() {
         subject.loadUserInfo();
 
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isFalse();
-        assertThat(subject.isUpdated(createUser("닉네임99", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1999, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "male", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "노잼겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "10", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("mobile"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("puzzle"), Lists.newArrayList("rolePlaying", "card")))).isTrue();
-        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("card")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isFalse();
+        assertThat(subject.isUpdated(createUser("닉네임99", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1999, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 2000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "male", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "노잼겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "10", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("mobile"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("puzzle"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("card"), Lists.newArrayList("logical")))).isTrue();
+        assertThat(subject.isUpdated(createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical", "critical")))).isTrue();
     }
 
-    private User createUser(String nickName, int birth, int job, String gender, String lifeApp, String monthlyPayment, List<String> favoritePlatforms, List<String> favoriteGenres, List<String> leastFavoriteGenres) {
+    private User createUser(String nickName, int birth, int job, String gender, String lifeApp, String monthlyPayment, List<String> favoritePlatforms, List<String> favoriteGenres, List<String> leastFavoriteGenres, List<String> feedbackStyles) {
         return new User()
             .setNickName(nickName)
             .setBirthday(birth)
@@ -166,6 +169,7 @@ public class MyInfoPresenterTest {
             .setMonthlyPayment(monthlyPayment)
             .setFavoritePlatforms(favoritePlatforms)
             .setFavoriteGenres(favoriteGenres)
-            .setLeastFavoriteGenres(leastFavoriteGenres);
+            .setLeastFavoriteGenres(leastFavoriteGenres)
+            .setFeedbackStyles(feedbackStyles);
     }
 }

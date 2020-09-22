@@ -87,6 +87,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
         List<String> favoritePlatforms = null;
         List<String> favoriteGenres = null;
         List<String> leastFavoriteGenres = null;
+        List<String> feedbackStyles = null;
 
         if (!Objects.equals(originalUserInfo.getNickName(), userInfo.getNickName())) {
             nickName = userInfo.getNickName();
@@ -124,7 +125,11 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
             leastFavoriteGenres = userInfo.getLeastFavoriteGenres();
         }
 
-        if (nickName == null && birthday == null && job == null && gender == null && lifeApps == null && monthlyPayment == null && favoritePlatforms == null && favoriteGenres == null && leastFavoriteGenres == null) {
+        if (!Objects.equals(originalUserInfo.getFeedbackStyles(), userInfo.getFeedbackStyles())) {
+            feedbackStyles = userInfo.getFeedbackStyles();
+        }
+
+        if (nickName == null && birthday == null && job == null && gender == null && lifeApps == null && monthlyPayment == null && favoritePlatforms == null && favoriteGenres == null && leastFavoriteGenres == null && feedbackStyles == null) {
             return null;
         }
 
@@ -138,6 +143,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
                 .setMonthlyPayment(monthlyPayment)
                 .setFavoritePlatforms(favoritePlatforms)
                 .setFavoriteGenres(favoriteGenres)
-                .setLeastFavoriteGenres(leastFavoriteGenres);
+                .setLeastFavoriteGenres(leastFavoriteGenres)
+                .setFeedbackStyles(feedbackStyles);
     }
 }

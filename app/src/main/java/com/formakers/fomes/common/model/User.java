@@ -177,6 +177,50 @@ public class User {
         }
     }
 
+    public enum FeedbackStyleCategory {
+        ANALYTICAL("분석적", "analytical"),
+        POSITIVE("칭찬봇", "positive"),
+        CRITICAL("비판적", "critical"),
+        CORRECTIVE("발전적", "corrective"),
+        IDEA("아이디어뱅크", "idea"),
+        LOGICAL("논리적", "logical"),
+        SIMPLICITY("간단명료", "simplicity");
+
+        final private String name;
+        final private String code;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        FeedbackStyleCategory(String name, String code) {
+            this.name = name;
+            this.code = code;
+        }
+
+        private static Map<String, FeedbackStyleCategory> feedbackStyleCategoryMap = new HashMap<>();
+
+        public static FeedbackStyleCategory get(String code) {
+            if (feedbackStyleCategoryMap.size() == 0) {
+                for (User.FeedbackStyleCategory feedbackStyle : User.FeedbackStyleCategory.values())
+                    feedbackStyleCategoryMap.put(feedbackStyle.getCode(), feedbackStyle);
+            }
+
+            return feedbackStyleCategoryMap.get(code);
+        }
+
+        public static FeedbackStyleCategory getByName(String name) {
+            for (FeedbackStyleCategory feedbackStyle : FeedbackStyleCategory.values())
+                if (feedbackStyle.getName().equals(name))
+                    return feedbackStyle;
+            return null;
+        }
+    }
+
     private String name;
     private String nickName;
     private String email;
@@ -191,6 +235,7 @@ public class User {
     private List<String> favoritePlatforms;
     private List<String> favoriteGenres;
     private List<String> leastFavoriteGenres;
+    private List<String> feedbackStyles;
 
     // for ResponseVO (signIn / signUp)
     private String accessToken;
@@ -343,6 +388,15 @@ public class User {
         return this;
     }
 
+    public List<String> getFeedbackStyles() {
+        return feedbackStyles;
+    }
+
+    public User setFeedbackStyles(List<String> feedbackStyles) {
+        this.feedbackStyles = feedbackStyles;
+        return this;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -389,6 +443,7 @@ public class User {
                 ", favoritePlatforms=" + favoritePlatforms +
                 ", favoriteGenres=" + favoriteGenres +
                 ", leastFavoriteGenres=" + leastFavoriteGenres +
+                ", feedbackStyles=" + feedbackStyles +
                 '}';
     }
 

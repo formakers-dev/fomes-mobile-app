@@ -60,6 +60,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
     @BindView(R.id.my_info_favorite_platform_spinner) MultiSelectionSpinner favoritePlatformSpinner;
     @BindView(R.id.my_info_favorite_genre_spinner) MultiSelectionSpinner favoriteGenreSpinner;
     @BindView(R.id.my_info_least_favorite_genre_spinner) MultiSelectionSpinner leastFavoriteGenreSpinner;
+    @BindView(R.id.my_info_feedback_style_spinner) MultiSelectionSpinner feedbackStyleSpinner;
     @BindView(R.id.my_info_submit_button) Button submitButton;
 
     @Inject MyInfoContract.Presenter presenter;
@@ -112,6 +113,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         favoriteGenreSpinner.setItems(genreItems);
         leastFavoriteGenreSpinner.setItems(genreItems);
 
+        ArrayList<String> feedbackItems = new ArrayList<>();
+        Stream.of(User.FeedbackStyleCategory.values()).forEach((feedbackStyle) -> feedbackItems.add(feedbackStyle.getName()));
+        feedbackStyleSpinner.setItems(feedbackItems);
+
         submitButton.setEnabled(false);
         this.presenter.loadUserInfo();
     }
@@ -151,6 +156,13 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
             List<String> leastFavoriteGenreNames = getGenreNamesByCodes(userInfo.getLeastFavoriteGenres());
             leastFavoriteGenreSpinner.setSelections(leastFavoriteGenreNames);
         }
+
+        if (userInfo.getFeedbackStyles() != null && userInfo.getFeedbackStyles().size() > 0) {
+            List<String> feedbackStyles = Stream.of(userInfo.getFeedbackStyles())
+                    .map((code) -> User.FeedbackStyleCategory.get(code).getName())
+                    .collect(Collectors.toList());;
+            feedbackStyleSpinner.setSelections(feedbackStyles);
+        }
     }
 
     @Override
@@ -182,6 +194,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         List<String> favoriteGenres = getGenreCodesByNames(favoriteGenreSpinner.getSelectedItems());
         List<String> leastFavoriteGenres = getGenreCodesByNames(leastFavoriteGenreSpinner.getSelectedItems());
 
+        List<String> feedbackStyles = Stream.of(feedbackStyleSpinner.getSelectedItems())
+                .map((name) -> User.FeedbackStyleCategory.getByName(name).getCode())
+                .collect(Collectors.toList());
+
         User filledUserInfo = new User().setNickName(nickName)
                 .setBirthday(birth)
                 .setJob(job)
@@ -190,7 +206,8 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
                 .setMonthlyPayment(monthlyPayment)
                 .setFavoritePlatforms(favoritePlatforms)
                 .setFavoriteGenres(favoriteGenres)
-                .setLeastFavoriteGenres(leastFavoriteGenres);
+                .setLeastFavoriteGenres(leastFavoriteGenres)
+                .setFeedbackStyles(feedbackStyles);
 
         this.presenter.updateUserInfo(filledUserInfo);
     }
@@ -273,6 +290,12 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         emitFilledUpEvent();
     }
 
+    @OnItemSelected(R.id.my_info_feedback_style_spinner)
+    public void onFeedbackStyleSpinnerItemSelected(Spinner spinner, int position) {
+        Log.v(TAG, "onFeedbackStyleSpinnerItemSelected) ");
+        emitFilledUpEvent();
+    }
+
     @SuppressLint("ResourceType")
     private void emitFilledUpEvent() {
         this.emitFilledUpEvent(genderRadioGroup.getCheckedRadioButtonId());
@@ -303,6 +326,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         List<String> selectedFavoritePlatforms = favoritePlatformSpinner.getSelectedItems();
         List<String> selectedFavoriteGenres = favoriteGenreSpinner.getSelectedItems();
         List<String> selectedLeastFavoriteGenres = leastFavoriteGenreSpinner.getSelectedItems();
+        List<String> selectedFeedbackStyles = feedbackStyleSpinner.getSelectedItems();
 
         if (nickName.length() > 0
                 && nickNameWarningTextView.getVisibility() != View.VISIBLE
@@ -313,7 +337,8 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
                 && monthlyPayment.length() > 0
                 && selectedFavoritePlatforms.size() > 0
                 && selectedFavoriteGenres.size() > 0
-                && selectedLeastFavoriteGenres.size() > 0) {
+                && selectedLeastFavoriteGenres.size() > 0
+                && selectedFeedbackStyles.size() > 0) {
 
             int birth = Integer.parseInt(birthSpinner.getSelectedItem().toString());
             User.JobCategory jobCategory = User.JobCategory.get(jobSpinner.getSelectedItem().toString());
@@ -327,6 +352,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
             List<String> favoriteGenres = getGenreCodesByNames(selectedFavoriteGenres);
             List<String> leastFavoriteGenres = getGenreCodesByNames(selectedLeastFavoriteGenres);
 
+            List<String> feedbackStyles = Stream.of(selectedFeedbackStyles)
+                    .map((name) -> User.FeedbackStyleCategory.getByName(name).getCode())
+                    .collect(Collectors.toList());
+
             User filledUserInfo = new User().setNickName(nickName)
                     .setBirthday(birth)
                     .setJob(job)
@@ -335,7 +364,8 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
                     .setMonthlyPayment(monthlyPayment)
                     .setFavoritePlatforms(favoritePlatforms)
                     .setFavoriteGenres(favoriteGenres)
-                    .setLeastFavoriteGenres(leastFavoriteGenres);
+                    .setLeastFavoriteGenres(leastFavoriteGenres)
+                    .setFeedbackStyles(feedbackStyles);
 
             if (this.presenter.isUpdated(filledUserInfo)) {
                 return true;
