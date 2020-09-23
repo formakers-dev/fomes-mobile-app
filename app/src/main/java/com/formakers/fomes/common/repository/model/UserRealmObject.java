@@ -24,6 +24,12 @@ public class UserRealmObject extends RealmObject {
     private String gender;
     private RealmList<String> lifeApps;
 
+    private String monthlyPayment;
+    private RealmList<String> favoritePlatforms;
+    private RealmList<String> favoriteGenres;
+    private RealmList<String> leastFavoriteGenres;
+    private RealmList<String> feedbackStyles;
+
     public String getName() {
         return name;
     }
@@ -87,6 +93,51 @@ public class UserRealmObject extends RealmObject {
         return this;
     }
 
+    public String getMonthlyPayment() {
+        return monthlyPayment;
+    }
+
+    public UserRealmObject setMonthlyPayment(String monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+        return this;
+    }
+
+    public RealmList<String> getFavoritePlatforms() {
+        return favoritePlatforms;
+    }
+
+    public UserRealmObject setFavoritePlatforms(RealmList<String> favoritePlatforms) {
+        this.favoritePlatforms = favoritePlatforms;
+        return this;
+    }
+
+    public RealmList<String> getFavoriteGenres() {
+        return favoriteGenres;
+    }
+
+    public UserRealmObject setFavoriteGenres(RealmList<String> favoriteGenres) {
+        this.favoriteGenres = favoriteGenres;
+        return this;
+    }
+
+    public RealmList<String> getLeastFavoriteGenres() {
+        return leastFavoriteGenres;
+    }
+
+    public UserRealmObject setLeastFavoriteGenres(RealmList<String> leastFavoriteGenres) {
+        this.leastFavoriteGenres = leastFavoriteGenres;
+        return this;
+    }
+
+    public RealmList<String> getFeedbackStyles() {
+        return feedbackStyles;
+    }
+
+    public UserRealmObject setFeedbackStyles(RealmList<String> feedbackStyles) {
+        this.feedbackStyles = feedbackStyles;
+        return this;
+    }
+
     public static void migration(RealmSchema realmSchema, long oldVersion, long newVersion) {
         Log.d(TAG, "migration) oldVersion=" + oldVersion + ", newVersion=" + newVersion);
 
@@ -95,6 +146,14 @@ public class UserRealmObject extends RealmObject {
         if (oldVersion <= 0) {
             schema.removePrimaryKey().removeField("userId");
             schema.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
+        }
+
+        if (oldVersion == 1) {
+            schema.addField("monthlyPayment", String.class);
+            schema.addRealmListField("favoritePlatforms", String.class);
+            schema.addRealmListField("favoriteGenres", String.class);
+            schema.addRealmListField("leastFavoriteGenres", String.class);
+            schema.addRealmListField("feedbackStyles", String.class);
         }
     }
 
@@ -108,6 +167,11 @@ public class UserRealmObject extends RealmObject {
                 ", job='" + job + '\'' +
                 ", gender='" + gender + '\'' +
                 ", lifeApps=" + lifeApps +
+                ", monthlyPayment='" + monthlyPayment + '\'' +
+                ", favoritePlatforms=" + favoritePlatforms +
+                ", favoriteGenres=" + favoriteGenres +
+                ", leastFavoriteGenres=" + leastFavoriteGenres +
+                ", feedbackStyles=" + feedbackStyles +
                 '}';
     }
 }
