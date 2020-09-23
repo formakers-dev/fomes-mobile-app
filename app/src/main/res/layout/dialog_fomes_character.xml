@@ -66,6 +66,7 @@
             android:visibility="gone"
             android:textSize="14dp"
             android:textColor="@color/colorPrimary"
+            android:clickable="true"
             tools:visibility="visible"
             tools:text="잘못된 스샷은 문제될 수 있으니 주의바란다멍!"/>
 
