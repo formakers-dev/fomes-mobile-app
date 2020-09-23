@@ -27,6 +27,7 @@ import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.FomesBaseActivity;
+import com.formakers.fomes.common.view.FomesNoticeDialog;
 import com.formakers.fomes.common.view.custom.MultiSelectionSpinner;
 
 import java.util.ArrayList;
@@ -118,7 +119,6 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         feedbackStyleSpinner.setItems(feedbackItems);
 
         submitButton.setEnabled(false);
-        this.presenter.loadUserInfoUpdateVersion();
         this.presenter.loadUserInfo();
     }
 
@@ -386,5 +386,23 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         return Stream.of(genreNames)
                 .map((genreName) -> User.GenreCategory.getByName(genreName).getCode())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void showPointRewardEventDialog() {
+        FomesNoticeDialog migrationNoticeDialog = new FomesNoticeDialog();
+
+        String positiveButtonText = "확인";
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FomesNoticeDialog.EXTRA_TITLE, "\uD83D\uDCB0 포인트 보상 이벤트 \uD83D\uDCB0");
+        bundle.putString(FomesNoticeDialog.EXTRA_SUBTITLE, "\n[ 프로필 수정하고 포인트 받자! ]");
+        bundle.putString(FomesNoticeDialog.EXTRA_DESCRIPTION, "지금 바로 프로필을 수정하고 저장하시면,\n포인트 100P를 즉시 지급해드려요.\n\n* 놓치지 말고 지금 바로 참여하세요!\n");
+        bundle.putString("POSITIVE_BUTTON_TEXT", positiveButtonText);
+
+        migrationNoticeDialog.setArguments(bundle);
+        migrationNoticeDialog.setPositiveButton(positiveButtonText, view -> {});
+
+        migrationNoticeDialog.show(getSupportFragmentManager(), "UserInfoUpdateEventDialog");
     }
 }

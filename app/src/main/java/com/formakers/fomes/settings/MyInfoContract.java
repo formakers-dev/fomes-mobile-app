@@ -5,7 +5,6 @@ import com.formakers.fomes.common.mvp.BaseView;
 
 public interface MyInfoContract {
     interface Presenter {
-        void loadUserInfoUpdateVersion();
         void loadUserInfo();
         void updateUserInfo(User filledUserInfo);
         boolean isUpdated(User filledUserInfo);
@@ -15,5 +14,6 @@ public interface MyInfoContract {
         void bind(User userInfo);
         void showToast(String message);
         void showDuplicatedNickNameWarning();
+        void showPointRewardEventDialog();
     }
 }

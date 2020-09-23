@@ -27,7 +27,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     private User originalUserInfo;
     private FirebaseRemoteConfig remoteConfig;
 
-    private long remoteConfigUserInfoUpdateVersion;
+    private Long remoteConfigUserInfoUpdateVersion;
 
     @Inject
     public MyInfoPresenter(MyInfoContract.View view, UserDAO userDAO, UserService userService, FirebaseRemoteConfig remoteConfig) {
@@ -38,17 +38,23 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     }
 
     @Override
-    public void loadUserInfoUpdateVersion() {
-        remoteConfigUserInfoUpdateVersion = this.remoteConfig.getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION);
-    }
-
-    @Override
     public void loadUserInfo() {
+        if (remoteConfigUserInfoUpdateVersion == null) {
+            remoteConfigUserInfoUpdateVersion = this.remoteConfig.getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION);
+        }
+
         userService.getUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
                     this.originalUserInfo = user;
                     this.view.bind(this.originalUserInfo);
+
+                    long remoteConfigVersion = (remoteConfigUserInfoUpdateVersion != null)? remoteConfigUserInfoUpdateVersion : 0L;
+                    long originalUserInfoUpdateVersion = (originalUserInfo.getUserInfoUpdateVersion() != null)? originalUserInfo.getUserInfoUpdateVersion() : 0L;
+
+                    if (remoteConfigVersion > originalUserInfoUpdateVersion) {
+                        this.view.showPointRewardEventDialog();
+                    }
                 }, e -> Log.e(TAG, String.valueOf(e)));
     }
 

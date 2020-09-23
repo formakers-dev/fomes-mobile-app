@@ -65,17 +65,27 @@ public class MyInfoPresenterTest {
     }
 
     @Test
-    public void loadUserInfoUpdateVersion_호출시__리모트_컨피그의_버전정보를_로드한다() {
-        subject.loadUserInfoUpdateVersion();
+    public void loadUserInfo_호출시__유저정보를_로드하고__뷰에_바인딩한다() {
+        subject.loadUserInfo();
+
+        verify(mockView).bind(eq(userInfo));
+    }
+
+    @Test
+    public void loadUserInfo_호출시__리모트_컨피그의_버전정보를_로드한다() {
+        subject.loadUserInfo();
 
         verify(mockFirebaseRemoteConfig).getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION);
     }
 
     @Test
-    public void loadUserInfo_호출시__유저정보를_로드하고__뷰에_바인딩한다() {
+    public void loadUserInfo_호출시__유저정보가_리모트_컨피그의_버전정보보다_낮은_버전인_경우_포인트보상이벤트_다이얼로그를_호출한다() {
+        when(mockFirebaseRemoteConfig.getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION)).thenReturn(999L);
+        when(mockUserService.getUser()).thenReturn(Single.just(new User().setUserInfoUpdateVersion(1L)));
+
         subject.loadUserInfo();
 
-        verify(mockView).bind(eq(userInfo));
+        verify(mockView).showPointRewardEventDialog();
     }
 
     @Test
