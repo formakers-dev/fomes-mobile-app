@@ -15,5 +15,7 @@ public interface MyInfoContract {
         void showToast(String message);
         void showDuplicatedNickNameWarning();
         void showPointRewardEventDialog();
+        void showLoading();
+        void hideLoading();
     }
 }

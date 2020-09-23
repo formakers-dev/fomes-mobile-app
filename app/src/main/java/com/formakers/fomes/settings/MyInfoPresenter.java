@@ -39,6 +39,8 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
 
     @Override
     public void loadUserInfo() {
+        this.view.showLoading();
+
         if (remoteConfigUserInfoUpdateVersion == null) {
             remoteConfigUserInfoUpdateVersion = this.remoteConfig.getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION);
         }
@@ -47,6 +49,7 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
                     this.originalUserInfo = user;
+                    this.view.hideLoading();
                     this.view.bind(this.originalUserInfo);
 
                     long remoteConfigVersion = (remoteConfigUserInfoUpdateVersion != null)? remoteConfigUserInfoUpdateVersion : 0L;

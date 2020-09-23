@@ -48,6 +48,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     private static final String TAG = "MyInfoActivity";
 
+    @BindView(R.id.my_info_loading) View myInfoLoading;
     @BindView(R.id.my_info_nickname_content_group) Group nickNameContentGroup;
     @BindView(R.id.my_info_nickname_content_edittext) EditText nickNameEditText;
     @BindView(R.id.my_info_nickname_format_warning_textview) TextView nickNameWarningTextView;
@@ -404,5 +405,15 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         migrationNoticeDialog.setPositiveButton(positiveButtonText, view -> {});
 
         migrationNoticeDialog.show(getSupportFragmentManager(), "UserInfoUpdateEventDialog");
+    }
+
+    @Override
+    public void showLoading() {
+        myInfoLoading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        myInfoLoading.setVisibility(View.GONE);
     }
 }
