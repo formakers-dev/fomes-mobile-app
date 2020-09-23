@@ -118,6 +118,7 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
         feedbackStyleSpinner.setItems(feedbackItems);
 
         submitButton.setEnabled(false);
+        this.presenter.loadUserInfoUpdateVersion();
         this.presenter.loadUserInfo();
     }
 

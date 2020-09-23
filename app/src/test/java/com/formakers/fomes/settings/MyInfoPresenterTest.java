@@ -1,8 +1,10 @@
 package com.formakers.fomes.settings;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.repository.dao.UserDAO;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -34,6 +36,7 @@ public class MyInfoPresenterTest {
     @Mock MyInfoContract.View mockView;
     @Mock UserDAO mockUserDAO;
     @Mock UserService mockUserService;
+    @Mock FirebaseRemoteConfig mockFirebaseRemoteConfig;
 
     User userInfo;
     MyInfoPresenter subject;
@@ -58,7 +61,14 @@ public class MyInfoPresenterTest {
         userInfo = createUser("닉네임", 1991, 1000, "female", "최애겜", "5", Lists.newArrayList("pc"), Lists.newArrayList("arcade"), Lists.newArrayList("rolePlaying", "card"), Lists.newArrayList("logical"));
         when(mockUserService.getUser()).thenReturn(Single.just(userInfo));
 
-        subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService);
+        subject = new MyInfoPresenter(mockView, mockUserDAO, mockUserService, mockFirebaseRemoteConfig);
+    }
+
+    @Test
+    public void loadUserInfoUpdateVersion_호출시__리모트_컨피그의_버전정보를_로드한다() {
+        subject.loadUserInfoUpdateVersion();
+
+        verify(mockFirebaseRemoteConfig).getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION);
     }
 
     @Test

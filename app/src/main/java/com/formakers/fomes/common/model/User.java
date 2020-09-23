@@ -236,6 +236,7 @@ public class User {
     private List<String> favoriteGenres;
     private List<String> leastFavoriteGenres;
     private List<String> feedbackStyles;
+    private Long userInfoUpdateVersion;
 
     // for ResponseVO (signIn / signUp)
     private String accessToken;
@@ -397,6 +398,15 @@ public class User {
         return this;
     }
 
+    public Long getUserInfoUpdateVersion() {
+        return userInfoUpdateVersion;
+    }
+
+    public User setUserInfoUpdateVersion(Long userInfoUpdateVersion) {
+        this.userInfoUpdateVersion = userInfoUpdateVersion;
+        return this;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -444,6 +454,7 @@ public class User {
                 ", favoriteGenres=" + favoriteGenres +
                 ", leastFavoriteGenres=" + leastFavoriteGenres +
                 ", feedbackStyles=" + feedbackStyles +
+                ", userInfoUpdateVersion=" + userInfoUpdateVersion +
                 '}';
     }
 

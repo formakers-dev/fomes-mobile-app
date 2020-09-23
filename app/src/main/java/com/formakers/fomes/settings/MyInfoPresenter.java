@@ -1,10 +1,12 @@
 package com.formakers.fomes.settings;
 
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.Log;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,12 +25,21 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
     private UserDAO userDAO;
     private UserService userService;
     private User originalUserInfo;
+    private FirebaseRemoteConfig remoteConfig;
+
+    private long remoteConfigUserInfoUpdateVersion;
 
     @Inject
-    public MyInfoPresenter(MyInfoContract.View view, UserDAO userDAO, UserService userService) {
+    public MyInfoPresenter(MyInfoContract.View view, UserDAO userDAO, UserService userService, FirebaseRemoteConfig remoteConfig) {
         this.view = view;
         this.userDAO = userDAO;
         this.userService = userService;
+        this.remoteConfig = remoteConfig;
+    }
+
+    @Override
+    public void loadUserInfoUpdateVersion() {
+        remoteConfigUserInfoUpdateVersion = this.remoteConfig.getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION);
     }
 
     @Override
@@ -46,6 +57,8 @@ public class MyInfoPresenter implements MyInfoContract.Presenter {
         User updatedUserInfo = getDiffWithUpdatableFields(filledUserInfo);
 
         Log.i(TAG, "user information will be updated = " + updatedUserInfo);
+
+        updatedUserInfo.setUserInfoUpdateVersion(remoteConfigUserInfoUpdateVersion);
 
         userService.updateUserInfo(updatedUserInfo)
                 .observeOn(AndroidSchedulers.mainThread())

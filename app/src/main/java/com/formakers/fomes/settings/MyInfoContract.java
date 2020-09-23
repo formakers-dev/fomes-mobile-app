@@ -5,6 +5,7 @@ import com.formakers.fomes.common.mvp.BaseView;
 
 public interface MyInfoContract {
     interface Presenter {
+        void loadUserInfoUpdateVersion();
         void loadUserInfo();
         void updateUserInfo(User filledUserInfo);
         boolean isUpdated(User filledUserInfo);

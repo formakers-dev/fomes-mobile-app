@@ -141,6 +141,28 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public void checkNeedToUpdateUserInfo() {
+        long userInfoUpdateVersion = this.remoteConfig.getLong(FomesConstants.RemoteConfig.USER_INFO_UPDATE_VERSION);
+
+        Log.v(TAG, "[RemoteConfig] USER_INFO_UPDATE_VERSION=" + userInfoUpdateVersion);
+
+        if (userInfoUpdateVersion < 1) {
+            return;
+        }
+
+        compositeSubscription.add(
+            userService.getUser()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((user) -> {
+                        long currentUserInfoUpdateVersion = (user.getUserInfoUpdateVersion() != null) ? user.getUserInfoUpdateVersion() : 0L;
+                        if (userInfoUpdateVersion > currentUserInfoUpdateVersion) {
+                            this.view.moveToUserUpdate();
+                        }
+                    }, (e) -> Log.e(TAG, String.valueOf(e)))
+        );
+    }
+
+    @Override
     public void sendEventLog(String code) {
         compositeSubscription.add(
             eventLogService.sendEventLog(new EventLog().setCode(code))

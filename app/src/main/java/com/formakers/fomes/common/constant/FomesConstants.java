@@ -177,6 +177,8 @@ public interface FomesConstants {
         String FEATURE_ADVERTISING = "feature_advertising";
 
         String MIGRATION_NOTICE ="migration_notice";
+
+        String USER_INFO_UPDATE_VERSION ="user_info_update_version";
     }
 
     interface DeepLink {
