@@ -10,6 +10,7 @@ import com.formakers.fomes.common.helper.AppUsageDataHelper;
 import com.formakers.fomes.common.model.ShortTermStat;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.common.network.vo.Usage;
@@ -52,7 +53,7 @@ public class RecentAnalysisReportPresenterTest {
     @Inject AppUsageDataHelper mockAppUsageDataHelper;
     @Inject AppStatService mockAppStatService;
     @Inject RequestManager mockRequestManager;
-    @Inject UserDAO mockUserDAO;
+    @Inject UserService mockUserService;
 
     @Mock RecentAnalysisReportContract.View mockView;
 
@@ -87,9 +88,9 @@ public class RecentAnalysisReportPresenterTest {
         when(mockUser.getGender()).thenReturn(User.GENDER_MALE);
         when(mockUser.getBirthday()).thenReturn(1989);
         when(mockUser.getJob()).thenReturn(3);
-        when(mockUserDAO.getUserInfo()).thenReturn(Single.just(mockUser));
+        when(mockUserService.getUser()).thenReturn(Single.just(mockUser));
 
-        subject = new RecentAnalysisReportPresenter(mockView, mockAppUsageDataHelper, mockAppStatService, mockRequestManager, mockUserDAO);
+        subject = new RecentAnalysisReportPresenter(mockView, mockAppUsageDataHelper, mockAppStatService, mockRequestManager, mockUserService);
     }
 
     @After
@@ -143,7 +144,7 @@ public class RecentAnalysisReportPresenterTest {
         // requestPostUsages - 7일간의_앱_누적_사용시간을_서버에_전송한다
         verify(mockAppUsageDataHelper).getAppUsages();
         verify(mockAppStatService).sendAppUsages(eq(mockAppUsageDataHelper.getAppUsages()));
-        verify(mockUserDAO).getUserInfo();
+        verify(mockUserService).getUser();
 
         // 분석 결과 요청
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
