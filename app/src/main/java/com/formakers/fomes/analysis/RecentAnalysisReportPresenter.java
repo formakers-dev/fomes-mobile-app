@@ -6,11 +6,11 @@ import com.bumptech.glide.RequestManager;
 import com.formakers.fomes.common.helper.AppUsageDataHelper;
 import com.formakers.fomes.common.model.User;
 import com.formakers.fomes.common.network.AppStatService;
+import com.formakers.fomes.common.network.UserService;
 import com.formakers.fomes.common.network.vo.Rank;
 import com.formakers.fomes.common.network.vo.RecentReport;
 import com.formakers.fomes.common.network.vo.Usage;
 import com.formakers.fomes.common.network.vo.UsageGroup;
-import com.formakers.fomes.common.repository.dao.UserDAO;
 import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 
@@ -35,24 +35,24 @@ public class RecentAnalysisReportPresenter implements RecentAnalysisReportContra
     private AppUsageDataHelper appUsageDataHelper;
     private AppStatService appStatService;
     private RequestManager requestManager;
-    private UserDAO userDAO;
+    private UserService userService;
 
     User user;
 
     RecentAnalysisReportContract.View view;
 
     @Inject
-    RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view, AppUsageDataHelper appUsageDataHelper, AppStatService appStatService, RequestManager requestManager, UserDAO userDAO) {
+    RecentAnalysisReportPresenter(RecentAnalysisReportContract.View view, AppUsageDataHelper appUsageDataHelper, AppStatService appStatService, RequestManager requestManager, UserService userService) {
         this.view = view;
         this.appUsageDataHelper = appUsageDataHelper;
         this.appStatService = appStatService;
         this.requestManager = requestManager;
-        this.userDAO = userDAO;
+        this.userService = userService;
     }
 
     private Completable initData() {
         return Completable.create(emitter -> {
-            userDAO.getUserInfo()
+            userService.getUser()
                     .observeOn(Schedulers.io())
                     .subscribe(userInfo -> {
                 this.user = userInfo;

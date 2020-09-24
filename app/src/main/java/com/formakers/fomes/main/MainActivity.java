@@ -30,6 +30,7 @@ import com.formakers.fomes.common.view.webview.WebViewActivity;
 import com.formakers.fomes.more.MenuListFragment;
 import com.formakers.fomes.provisioning.login.LoginActivity;
 import com.formakers.fomes.recommend.RecommendFragment;
+import com.formakers.fomes.settings.MyInfoActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -112,6 +113,7 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
         super.onPostCreate(savedInstanceState);
         Log.v(TAG,"onPostCreate");
 
+        this.presenter.checkNeedToUpdateUserInfo();
         this.presenter.checkNeedToShowMigrationDialog();
 
         boolean isRegisteredSendDataJob = presenter.checkRegisteredSendDataJob();
@@ -428,6 +430,11 @@ public class MainActivity extends FomesBaseActivity implements MainContract.View
                 contentsViewPager.getAdapter().notifyDataSetChanged();
             }, 100);
         }
+    }
+
+    @Override
+    public void moveToUserUpdate() {
+        startActivity(MyInfoActivity.class);
     }
 
     // TODO : go to common/utils

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.formakers.fomes.R;
+import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.api.UserAPI;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.BaseFragment;
@@ -26,9 +27,6 @@ import rx.android.schedulers.AndroidSchedulers;
 public class ProvisioningNickNameFragment extends BaseFragment implements ProvisioningActivity.FragmentCommunicator {
 
     public static final String TAG = ProvisioningNickNameFragment.class.getSimpleName();
-
-    private static final String NICKNAME_REGEX = "[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\\\\^\\\\*☆★♡♥_-]{2,10}";
-    private static final String NICKNAME_WRONG_REGEX = "[\\\\^\\\\*☆★♡♥_-]{2,10}";
 
     @BindView(R.id.provision_nickname_content_edittext) EditText nickNameEditText;
     @BindView(R.id.provision_nickname_format_warning_textview) TextView nickNameWarningTextView;
@@ -96,12 +94,12 @@ public class ProvisioningNickNameFragment extends BaseFragment implements Provis
     public void onNickNameTextChanged(CharSequence text, int start, int before, int count) {
         Log.v(TAG, text + " start=" + start + ", before=" + before + ", count=" + count);
 
-        boolean isWrong = Pattern.matches(NICKNAME_WRONG_REGEX, text);
+        boolean isWrong = Pattern.matches(FomesConstants.PROVISIONING.NICK_NAME_REGEX.WRONG, text);
 
         if (isWrong) {
             setVisibilityWarningView(true, R.string.provision_nickname_format_special_string_warning);
         } else {
-            boolean isMatched = Pattern.matches(NICKNAME_REGEX, text);
+            boolean isMatched = Pattern.matches(FomesConstants.PROVISIONING.NICK_NAME_REGEX.CORRECT, text);
             setVisibilityWarningView(!isMatched, R.string.provision_nickname_format_warning);
         }
     }
