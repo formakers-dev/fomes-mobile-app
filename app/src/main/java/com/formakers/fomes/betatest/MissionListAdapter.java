@@ -9,17 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.formakers.fomes.R;
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.network.vo.Mission;
-import com.formakers.fomes.common.util.DateUtil;
 import com.formakers.fomes.common.util.Log;
 import com.formakers.fomes.common.view.custom.adapter.listener.OnRecyclerItemClickListener;
 
@@ -139,27 +136,27 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             case FomesConstants.BetaTest.Mission.TYPE_PLAY: {
                 viewHolder.itemButton.setText(mission.isCompleted() ? "플레이 인증 완료" : "플레이 인증하기");
-                Long playtime = mission.getTotalPlayTime();
+//                Long playtime = mission.getTotalPlayTime();
 
-                if (Feature.CALCULATE_PLAY_TIME_VIEW) {
-                    if (playtime != null) {
-                        viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
-                        viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
-                        viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
-                    }
-
-                    // 플레이 시간 측정
-                    if (!mission.isLocked()) {
-                        refreshMissionProgress(mission);
-                    }
-                } else {
-                    viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
-                }
+//                if (Feature.CALCULATE_PLAY_TIME_VIEW) {
+//                    if (playtime != null) {
+//                        viewHolder.missionPlayTimeLayout.setVisibility(View.VISIBLE);
+//                        viewHolder.missionPlayTimeTextView.setText(DateUtil.convertDurationToString(playtime));
+//                        viewHolder.missionPlayTimeDescriptionTextView.setText(playtime <= 0L ? R.string.betatest_detail_mission_play_time_desc_ready : R.string.betatest_detail_mission_play_time_desc_playing);
+//                    }
+//
+//                    // 플레이 시간 측정
+//                    if (!mission.isLocked()) {
+//                        refreshMissionProgress(mission);
+//                    }
+//                } else {
+//                  viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
+//                }
 
                 break;
             }
             default: {
-                viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
+//                viewHolder.missionPlayTimeLayout.setVisibility(View.GONE);
 
                 if (!mission.isCompleted()) {
                     viewHolder.itemButton.setText("참여하기");
@@ -181,8 +178,10 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         });
 
         // 디스크립션 레이아웃 - Visibility 처리 (이미지나 플레이타임이 보여질때만 보여진다)
-        viewHolder.descriptionLayout.setVisibility((viewHolder.descriptionImageView.getVisibility() == View.VISIBLE
-                || viewHolder.missionPlayTimeLayout.getVisibility() == View.VISIBLE) ? View.VISIBLE : View.GONE);
+        viewHolder.descriptionLayout.setVisibility((
+                viewHolder.descriptionImageView.getVisibility() == View.VISIBLE
+//                || viewHolder.missionPlayTimeLayout.getVisibility() == View.VISIBLE
+        ) ? View.VISIBLE : View.GONE);
 
         // 미션 아이템 버튼
         viewHolder.itemButton.setOnClickListener(v -> {
@@ -223,19 +222,19 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     // TODO : Adapter Presenter 나오면 분리
     private Completable refreshMissionProgress(Mission mission) {
-        if (Feature.CALCULATE_PLAY_TIME_VIEW) {
-            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
-                return presenter.updatePlayTime(mission.getId(), mission.getPackageName())
-                        .doOnSuccess(playTime -> Toast.makeText(context, "플레이 시간이 더해졌다! : " + playTime, Toast.LENGTH_SHORT).show())
-                        .doOnError(e -> {
-                            if (e instanceof IllegalStateException) {
-                                Toast.makeText(context, "추가 플레이 시간이 없다멍!🐶\n게임을 플레이하고 새로고침 버튼을 눌러라멍!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(context, "새로고침 시 문제가 발생했다멍!🐶\n계속 발생하면 우체통에 문의주라멍!📮", Toast.LENGTH_SHORT).show();
-                            }
-                        }).toCompletable();
-            }
-        }
+//        if (Feature.CALCULATE_PLAY_TIME_VIEW) {
+//            if (FomesConstants.BetaTest.Mission.TYPE_PLAY.equals(mission.getType())) {
+//                return presenter.updatePlayTime(mission.getId(), mission.getPackageName())
+//                        .doOnSuccess(playTime -> Toast.makeText(context, "플레이 시간이 더해졌다! : " + playTime, Toast.LENGTH_SHORT).show())
+//                        .doOnError(e -> {
+//                            if (e instanceof IllegalStateException) {
+//                                Toast.makeText(context, "추가 플레이 시간이 없다멍!🐶\n게임을 플레이하고 새로고침 버튼을 눌러라멍!", Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(context, "새로고침 시 문제가 발생했다멍!🐶\n계속 발생하면 우체통에 문의주라멍!📮", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }).toCompletable();
+//            }
+//        }
 
         Single<Mission> getMissionProgressSingle = presenter.getMissionProgress(mission.getId());
 
@@ -355,9 +354,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         // Description Layout
         ViewGroup descriptionLayout;
         ImageView descriptionImageView;
-        ViewGroup missionPlayTimeLayout;
-        TextView missionPlayTimeTextView;
-        TextView missionPlayTimeDescriptionTextView;
+//        ViewGroup missionPlayTimeLayout;
+//        TextView missionPlayTimeTextView;
+//        TextView missionPlayTimeDescriptionTextView;
 
         // Lock Layout
         View lockView;
@@ -374,9 +373,9 @@ public class MissionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             descriptionTextView = itemView.findViewById(R.id.mission_description);
             descriptionLayout = itemView.findViewById(R.id.mission_description_layout);
             descriptionImageView = itemView.findViewById(R.id.mission_description_image);
-            missionPlayTimeLayout = itemView.findViewById(R.id.mission_play_time_layout);
-            missionPlayTimeTextView = itemView.findViewById(R.id.mission_play_time_textview);
-            missionPlayTimeDescriptionTextView = itemView.findViewById(R.id.mission_play_time_desc_textview);
+//            missionPlayTimeLayout = itemView.findViewById(R.id.mission_play_time_layout);
+//            missionPlayTimeTextView = itemView.findViewById(R.id.mission_play_time_textview);
+//            missionPlayTimeDescriptionTextView = itemView.findViewById(R.id.mission_play_time_desc_textview);
             missionCompletedImageView = itemView.findViewById(R.id.mission_completed_imageview);
             guideTextView = itemView.findViewById(R.id.mission_guide);
             lockView = itemView.findViewById(R.id.betatest_lock_layout);
