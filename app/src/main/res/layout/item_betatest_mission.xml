@@ -123,37 +123,37 @@
                     tools:src="@drawable/analysis_rank_medal"
                     tools:visibility="visible"/>
 
-                <LinearLayout android:id="@+id/mission_play_time_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="gone"
-                    android:orientation="vertical"
-                    tools:visibility="visible">
+<!--                <LinearLayout android:id="@+id/mission_play_time_layout"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_marginBottom="10dp"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:orientation="vertical"-->
+<!--                    tools:visibility="visible">-->
 
-                    <TextView
-                        android:id="@+id/mission_play_time_textview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:textColor="@color/fomes_light_pale_gray"
-                        android:textSize="38dp"
-                        android:textStyle="bold"
-                        tools:text="2분 32초" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/mission_play_time_textview"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="5dp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:textColor="@color/fomes_light_pale_gray"-->
+<!--                        android:textSize="38dp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        tools:text="2분 32초" />-->
 
-                    <TextView
-                        android:id="@+id/mission_play_time_desc_textview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/fomes_warm_gray_2"
-                        android:textSize="12dp"
-                        android:textStyle="bold"
-                        android:text="플레이 하셨어요. 화이팅!" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/mission_play_time_desc_textview"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="center"-->
+<!--                        android:textColor="@color/fomes_warm_gray_2"-->
+<!--                        android:textSize="12dp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:text="플레이 하셨어요. 화이팅!" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
             </LinearLayout>
 
             <TextView

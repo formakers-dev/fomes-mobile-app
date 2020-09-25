@@ -9,7 +9,6 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.formakers.fomes.common.constant.Feature;
 import com.formakers.fomes.common.constant.FomesConstants;
 import com.formakers.fomes.common.dagger.AnalyticsModule;
 import com.formakers.fomes.common.helper.AndroidNativeHelper;
@@ -309,8 +308,8 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
     @Override
     public Single<Long> updatePlayTime(@NonNull String missionItemId, @NonNull String packageName) {
         if (!TextUtils.isEmpty(packageName)) {
-            return Feature.CALCULATE_PLAY_TIME_VIEW ? getPlayTimeAndRefreshMissionView(missionItemId, packageName)
-                    : getPlayTime(packageName);
+//            return Feature.CALCULATE_PLAY_TIME_VIEW ? getPlayTimeAndRefreshMissionView(missionItemId, packageName) : getPlayTime(packageName);
+            return getPlayTime(packageName);
         } else {
             return Single.error(new IllegalArgumentException("packageName is null"));
         }

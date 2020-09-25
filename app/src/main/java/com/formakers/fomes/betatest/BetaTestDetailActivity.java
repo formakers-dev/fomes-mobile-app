@@ -426,6 +426,7 @@ public class BetaTestDetailActivity extends FomesBaseActivity implements BetaTes
         bundle.putString(FomesCharacterDialog.EXTRA_SUBTITLE, "게임을 플레이하고\n다시 측정해주라멍!");
         bundle.putInt(FomesCharacterDialog.EXTRA_IMAGE_RES_ID, R.drawable.fomes_happy);
         bundle.putString(FomesCharacterDialog.EXTRA_BUTTON_TEXT, "알았어!");
+        bundle.putString(FomesCharacterDialog.EXTRA_GUIDE, "플레이 시간 측정이 잘 안된다면 <a href='https://www.notion.so/formakers/FAQ-c9e86f394eac4ff5870c6c71421137eb'>이 문서</a>를 읽어보라멍");
 
         FomesCharacterDialog fomesCharacterDialog = new FomesCharacterDialog();
         fomesCharacterDialog.setArguments(bundle);

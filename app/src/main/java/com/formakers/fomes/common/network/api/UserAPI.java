@@ -45,6 +45,9 @@ public interface UserAPI {
     @PATCH("/user/info")
     Observable<Void> updateUserInfo(@Header("x-access-token") String accessToken, @Body User userInfo);
 
+    @GET("/user/info")
+    Single<User> getUserInfo(@Header("x-access-token") String accessToken);
+
     @POST("/user/wishlist")
     Observable<Void> postWishList(@Header("x-access-token") String accessToken, @Body HashMap<String, Object> wishListMap);
 

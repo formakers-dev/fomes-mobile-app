@@ -53,6 +53,12 @@ public class UserService extends AbstractService {
         return updateUser(userWithOtherInfo);
     }
 
+    public Single<User> getUser() {
+        return userAPI.getUserInfo(SharedPreferencesHelper.getAccessToken())
+                .doOnError(this::logError)
+                .subscribeOn(Schedulers.io());
+    }
+
     @Deprecated
     public Completable updateUser(User user) {
         return Observable.defer(() -> userAPI.update(SharedPreferencesHelper.getAccessToken(), user))

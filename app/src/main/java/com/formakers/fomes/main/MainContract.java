@@ -25,6 +25,7 @@ public interface MainContract {
         int registerSendDataJob();
         boolean checkRegisteredSendDataJob();
         void checkNeedToShowMigrationDialog();
+        void checkNeedToUpdateUserInfo();
 
         void unsubscribe();
     }
@@ -33,5 +34,6 @@ public interface MainContract {
         void refreshEventPager();
         void showMigrationNoticeDialog(Bundle migrationNoticeDialogBundle, android.view.View.OnClickListener onClickListener);
         void moveToPlayStore();
+        void moveToUserUpdate();
     }
 }

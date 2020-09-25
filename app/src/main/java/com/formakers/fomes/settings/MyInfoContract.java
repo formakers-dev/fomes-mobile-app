@@ -6,12 +6,16 @@ import com.formakers.fomes.common.mvp.BaseView;
 public interface MyInfoContract {
     interface Presenter {
         void loadUserInfo();
-        void updateUserInfo(Integer birthday, Integer job, String gender, String lifeApp);
-        boolean isUpdated(Integer birthday, Integer job, String gender, String lifeApp);
+        void updateUserInfo(User filledUserInfo);
+        boolean isUpdated(User filledUserInfo);
     }
 
     interface View extends BaseView<Presenter> {
         void bind(User userInfo);
         void showToast(String message);
+        void showDuplicatedNickNameWarning();
+        void showPointRewardEventDialog();
+        void showLoading();
+        void hideLoading();
     }
 }

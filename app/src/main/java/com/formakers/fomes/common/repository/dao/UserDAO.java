@@ -76,6 +76,34 @@ public class UserDAO {
                     userRealmObject.setLifeApps(lifeApps);
                 }
 
+                if (!TextUtils.isEmpty(userInfo.getMonthlyPayment())) {
+                    userRealmObject.setMonthlyPayment(userInfo.getMonthlyPayment());
+                }
+
+                if (userInfo.getFavoritePlatforms() != null && userInfo.getFavoritePlatforms().size() > 0) {
+                    RealmList<String> favoritePlatforms = new RealmList<>();
+                    favoritePlatforms.addAll(userInfo.getFavoritePlatforms());
+                    userRealmObject.setFavoritePlatforms(favoritePlatforms);
+                }
+
+                if (userInfo.getFavoriteGenres() != null && userInfo.getFavoriteGenres().size() > 0) {
+                    RealmList<String> favoriteGenres = new RealmList<>();
+                    favoriteGenres.addAll(userInfo.getFavoriteGenres());
+                    userRealmObject.setFavoriteGenres(favoriteGenres);
+                }
+
+                if (userInfo.getLeastFavoriteGenres() != null && userInfo.getLeastFavoriteGenres().size() > 0) {
+                    RealmList<String> leastFavoriteGenres = new RealmList<>();
+                    leastFavoriteGenres.addAll(userInfo.getLeastFavoriteGenres());
+                    userRealmObject.setLeastFavoriteGenres(leastFavoriteGenres);
+                }
+
+                if (userInfo.getFeedbackStyles() != null && userInfo.getFeedbackStyles().size() > 0) {
+                    RealmList<String> feedbackStyles = new RealmList<>();
+                    feedbackStyles.addAll(userInfo.getFeedbackStyles());
+                    userRealmObject.setFeedbackStyles(feedbackStyles);
+                }
+
                 Log.d(TAG, "[Realm] Update UserInfo=" + userRealmObject);
                 realm.copyToRealmOrUpdate(userRealmObject);
             });

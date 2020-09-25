@@ -136,14 +136,11 @@ public class SendDataJobServiceTest {
     }
 
     @Test
-    public void onStartJob_실행시__유저정보와_유저의_현재앱버전과_FCM토큰을__서버로_올린다() {
+    public void onStartJob_실행시__유저의_현재앱버전과_FCM토큰을__서버로_올린다() {
         subject_onStartJob();
 
-        // 유저정보
-        verify(mockUserDAO).getUserInfo();
-
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(mockUserService).updateUser(userArgumentCaptor.capture());
+        verify(mockUserService).updateUserInfo(userArgumentCaptor.capture());
 
         // 현재 앱버전 셋팅했는지
         User requestedUser = userArgumentCaptor.getValue();

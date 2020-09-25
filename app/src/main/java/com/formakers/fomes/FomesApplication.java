@@ -48,7 +48,7 @@ public class FomesApplication extends Application {
 
         RealmConfiguration config = builder
                 .name("appbeeDB")
-                .schemaVersion(1)
+                .schemaVersion(2)
                 .migration((realm, oldVersion, newVersion) -> {
                     UserRealmObject.migration(realm.getSchema(), oldVersion, newVersion);
                 })

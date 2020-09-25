@@ -67,18 +67,13 @@ public class SendDataJobService extends JobService {
             channelManager.subscribeTopic(FomesConstants.Notification.TOPIC_NOTICE_ALL);
         }
 
-        // 2. 백업용 : 유저정보 서버로 올리기
-        completableList.add(userDAO.getUserInfo().map(user -> {
-            // 2-0. 유저 닉네임 정보 임시 저장 (임시코드라 테스트코드 작성X)
-            sharedPreferencesHelper.setUserNickName(user.getNickName());
-            // 2-1. 버전 정보 올리기
-            user.setAppVersion(BuildConfig.VERSION_NAME);
-            // 2-2. FCM Token 업로드하기
-            user.setRegistrationToken(sharedPreferencesHelper.getUserRegistrationToken());
-            // 2-3. 디바이스 정보 올리기
-            user.setDevice(new User.DeviceInfo());
-            return user;
-        }).observeOn(Schedulers.io()).flatMapCompletable(user -> userService.updateUser(user)));
+        // 2. 유저 부가 정보 서버로 올리기 : 앱버전, FCM토큰, 디바이스 정보
+        User user = new User()
+                .setAppVersion(BuildConfig.VERSION_NAME)
+                .setRegistrationToken(sharedPreferencesHelper.getUserRegistrationToken())
+                .setDevice(new User.DeviceInfo());
+
+        completableList.add(userService.updateUserInfo(user));
 
         // 3. 앱 사용 정보 접근 권한이 있을 때 : 앱 사용 데이터를 서버로 보낸다
         if (androidNativeHelper.hasUsageStatsPermission()) {

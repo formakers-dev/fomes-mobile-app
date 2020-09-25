@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,7 @@ public class FomesCharacterDialog extends DialogFragment {
         } else {
             guideTextView.setText(Html.fromHtml(guideText.replace("\n", "<br>")));
             guideTextView.setVisibility(View.VISIBLE);
+            guideTextView.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         okButton.setText(buttonText);

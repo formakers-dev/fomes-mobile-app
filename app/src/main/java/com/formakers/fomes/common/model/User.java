@@ -83,6 +83,144 @@ public class User {
         }
     }
 
+    public enum GenreCategory {
+        ACTION("액션", "action"),
+        ADVENTURE("어드벤처", "adventure"),
+        ROLE_PLAYING("롤플레잉", "rolePlaying"),
+        STRATEGY("전략", "strategy"),
+        SIMULATION("시뮬레이션", "simulation"),
+        ARCADE("아케이드", "arcade"),
+        CASUAL("캐주얼", "casual"),
+        PUZZLE("퍼즐", "puzzle"),
+        TRIVIA("퀴즈", "trivia"),
+        BOARD("보드", "board"),
+        CARD("카드", "card"),
+        WORD("단어", "word"),
+        SPORTS("스포츠", "sports"),
+        RACING("레이싱", "racing"),
+        MUSIC("음악", "music"),
+        EDUCATIONAL("교육", "educational"),
+        CASINO("카지노", "casino");
+
+        final private String name;
+        final private String code;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        GenreCategory(String name, String code) {
+            this.name = name;
+            this.code = code;
+        }
+
+        private static Map<String, GenreCategory> genreCategoryMap = new HashMap<>();
+
+        public static GenreCategory get(String code) {
+            if (genreCategoryMap.size() == 0) {
+                for (User.GenreCategory genre : User.GenreCategory.values())
+                    genreCategoryMap.put(genre.getCode(), genre);
+            }
+
+            return genreCategoryMap.get(code);
+        }
+
+        public static GenreCategory getByName(String name) {
+            for (GenreCategory genre : GenreCategory.values())
+                if (genre.getName().equals(name))
+                    return genre;
+            return null;
+        }
+    }
+
+    public enum PlatformCategory {
+        MOBILE("모바일", "mobile"),
+        PC("PC", "pc"),
+        CONSOLE("콘솔", "console");
+
+        final private String name;
+        final private String code;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        PlatformCategory(String name, String code) {
+            this.name = name;
+            this.code = code;
+        }
+
+        private static Map<String, PlatformCategory> platformCategoryMap = new HashMap<>();
+
+        public static PlatformCategory get(String code) {
+            if (platformCategoryMap.size() == 0) {
+                for (User.PlatformCategory platform : User.PlatformCategory.values())
+                    platformCategoryMap.put(platform.getCode(), platform);
+            }
+
+            return platformCategoryMap.get(code);
+        }
+
+        public static PlatformCategory getByName(String name) {
+            for (PlatformCategory platform : PlatformCategory.values())
+                if (platform.getName().equals(name))
+                    return platform;
+            return null;
+        }
+    }
+
+    public enum FeedbackStyleCategory {
+        ANALYTICAL("분석적", "analytical"),
+        POSITIVE("칭찬봇", "positive"),
+        CRITICAL("비판적", "critical"),
+        CORRECTIVE("발전적", "corrective"),
+        IDEA("아이디어뱅크", "idea"),
+        LOGICAL("논리적", "logical"),
+        SIMPLICITY("간단명료", "simplicity");
+
+        final private String name;
+        final private String code;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        FeedbackStyleCategory(String name, String code) {
+            this.name = name;
+            this.code = code;
+        }
+
+        private static Map<String, FeedbackStyleCategory> feedbackStyleCategoryMap = new HashMap<>();
+
+        public static FeedbackStyleCategory get(String code) {
+            if (feedbackStyleCategoryMap.size() == 0) {
+                for (User.FeedbackStyleCategory feedbackStyle : User.FeedbackStyleCategory.values())
+                    feedbackStyleCategoryMap.put(feedbackStyle.getCode(), feedbackStyle);
+            }
+
+            return feedbackStyleCategoryMap.get(code);
+        }
+
+        public static FeedbackStyleCategory getByName(String name) {
+            for (FeedbackStyleCategory feedbackStyle : FeedbackStyleCategory.values())
+                if (feedbackStyle.getName().equals(name))
+                    return feedbackStyle;
+            return null;
+        }
+    }
+
     private String name;
     private String nickName;
     private String email;
@@ -93,6 +231,12 @@ public class User {
     private List<String> lifeApps;
     private String appVersion;
     private DeviceInfo device = new User.DeviceInfo();
+    private String monthlyPayment;
+    private List<String> favoritePlatforms;
+    private List<String> favoriteGenres;
+    private List<String> leastFavoriteGenres;
+    private List<String> feedbackStyles;
+    private Long userInfoUpdateVersion;
 
     // for ResponseVO (signIn / signUp)
     private String accessToken;
@@ -209,6 +353,60 @@ public class User {
         return User.GENDER_MALE.equals(this.gender) ? R.string.common_male : R.string.common_female;
     }
 
+    public String getMonthlyPayment() {
+        return monthlyPayment;
+    }
+
+    public User setMonthlyPayment(String monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+        return this;
+    }
+
+    public List<String> getFavoritePlatforms() {
+        return favoritePlatforms;
+    }
+
+    public User setFavoritePlatforms(List<String> favoritePlatforms) {
+        this.favoritePlatforms = favoritePlatforms;
+        return this;
+    }
+
+    public List<String> getFavoriteGenres() {
+        return favoriteGenres;
+    }
+
+    public User setFavoriteGenres(List<String> favoriteGenres) {
+        this.favoriteGenres = favoriteGenres;
+        return this;
+    }
+
+    public List<String> getLeastFavoriteGenres() {
+        return leastFavoriteGenres;
+    }
+
+    public User setLeastFavoriteGenres(List<String> leastFavoriteGenres) {
+        this.leastFavoriteGenres = leastFavoriteGenres;
+        return this;
+    }
+
+    public List<String> getFeedbackStyles() {
+        return feedbackStyles;
+    }
+
+    public User setFeedbackStyles(List<String> feedbackStyles) {
+        this.feedbackStyles = feedbackStyles;
+        return this;
+    }
+
+    public Long getUserInfoUpdateVersion() {
+        return userInfoUpdateVersion;
+    }
+
+    public User setUserInfoUpdateVersion(Long userInfoUpdateVersion) {
+        this.userInfoUpdateVersion = userInfoUpdateVersion;
+        return this;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -251,6 +449,12 @@ public class User {
                 ", lifeApps=" + lifeApps +
                 ", appVersion='" + appVersion + '\'' +
                 ", device=" + device +
+                ", monthlyPayment='" + monthlyPayment + '\'' +
+                ", favoritePlatforms=" + favoritePlatforms +
+                ", favoriteGenres=" + favoriteGenres +
+                ", leastFavoriteGenres=" + leastFavoriteGenres +
+                ", feedbackStyles=" + feedbackStyles +
+                ", userInfoUpdateVersion=" + userInfoUpdateVersion +
                 '}';
     }
 
