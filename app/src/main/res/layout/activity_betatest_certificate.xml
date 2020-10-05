@@ -13,37 +13,35 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/betatest_certificate_error_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_gravity="center"
+        android:padding="@dimen/provision_padding_start_end"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/betatest_certificate_error_icon"
-            android:layout_width="38dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="@dimen/provision_padding_start_end"
-            android:layout_marginTop="37dp"
-            android:src="@drawable/fomes_face_cry_colored"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fomes_cry" />
 
         <TextView
-            android:layout_width="@dimen/match_constraint"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="@dimen/provision_padding_start_end"
+            android:gravity="center"
             android:lineSpacingExtra="6dp"
             android:text="@string/betatest_certificate_error_message"
             android:textColor="@color/colorPrimary"
             android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/betatest_certificate_error_icon"
-            app:layout_constraintStart_toStartOf="@id/betatest_certificate_error_icon"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:textStyle="bold"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/betatest_certificate_layout"

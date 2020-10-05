@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/fomes_black_alpha_75"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="18dp"
-        android:textColor="@color/fomes_greyish_brown"
+        android:textColor="@color/fomes_white"
         android:textAlignment="center"
         android:lineSpacingExtra="2dp"
         android:text="@string/recommend_error_description"
@@ -32,10 +34,10 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
-        android:layout_width="67dp"
-        android:layout_height="73dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="19dp"
-        android:src="@drawable/recommend_fomes_face_cry"
+        android:src="@drawable/fomes_cry"
         app:layout_constraintTop_toBottomOf="@+id/recommend_error_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

@@ -74,14 +74,14 @@ public class AdvertisingActivity extends FomesBaseActivity implements RewardedVi
 
     private void showFailureLayout() {
         advertisingLoading.setVisibility(View.GONE);
-        contentImageView.setImageResource(R.drawable.fomes_face_cry);
+        contentImageView.setImageResource(R.drawable.fomes_cry);
         contentTextView.setText("후원을 위해서는\n광고를 끝까지 봐야한다멍ㅠㅠ");
         loadNewAdvertisingButton.setVisibility(View.VISIBLE);
     }
 
     private void showLoadFailureLayout() {
         advertisingLoading.setVisibility(View.GONE);
-        contentImageView.setImageResource(R.drawable.fomes_face_cry);
+        contentImageView.setImageResource(R.drawable.fomes_cry);
         contentTextView.setText("광고 로딩에 실패했다멍ㅠㅜ\n아래 버튼을 눌러 다시 시도해 달라멍🙏");
         loadNewAdvertisingButton.setVisibility(View.VISIBLE);
     }

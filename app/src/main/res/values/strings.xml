@@ -123,7 +123,7 @@
     <string name="analysis_a_lifegame">A. 더 정확한 분석을 위해 데이터를 수집 중입니다.\n충분한 데이터가 모이면 최대한 빠르게 인생게임에 대한 분석 &amp; 추천을 오픈하고 알려드리겠습니다! :-)</string>
     <string name="analysis_error_not_enough_data">정보가 부족해서\n알 수 없어요</string>
     <string name="analysis_error_unknown">당신의 게임 성향을 분석하는데 문제가 생겼습니다…\n\n에러가 발생한 것 같습니다.\n빠른 시일내에 대처하겠습니다.\n죄송합니다.</string>
-    <string name="analysis_error_not_enough_data_even_others">흑흑.. 게임 성향 분석을 위한 플레이 정보가 부족해요.\n\n지금 사용중인 모바일 기기에서의 게임 플레이 기록이 있어야 성향 분석이 가능합니다.</string>
+    <string name="analysis_error_not_enough_data_even_others">흑흑.. 게임 성향 분석을 위한\n플레이 정보가 부족해요.\n\n지금 사용중인 모바일 기기에서의\n게임 플레이 기록이 있어야\n성향 분석이 가능합니다.</string>
     <string name="analysis_error_not_enough_data_even_others_subtitle">* 최근 게임 플레이를 했는데 이 화면이 보여서 놀라셨나요? 안심하세요! 게임 정보 동기화에 다소 시간이 걸릴 수 있어요. (최대 1일)</string>
     <string name="analysis_cannot_know_yet">아직 알 수 없어요</string>
     <string name="analysis_game_suggestion_without_1_2_3">앗! 아직 1/2/3위가 없으시네요. 오늘 모바일 게임 한판 어때요?</string>
@@ -279,7 +279,7 @@
     <string name="betatest_certificate_description">포메스의 %s에 참여하여 게임사에 피드백을 전달해주셨습니다!</string>
     <string name="betatest_certificate_fomes_feedback">앞으로도 좋은 피드백 기대할게요❤️</string>
     <string name="betatest_certificate_fomes_feedback_for_better_try">아쉽게도 수상은 못하셨지만,\n다음 테스트에서 좋은 결과 기대할게요❤️</string>
-    <string name="betatest_certificate_error_message">테스트 참여 정보 조회에 문제가 발생했습니다.\n\n테스트의 참여 완료 확인 후, 다시 시도해주세요.️</string>
+    <string name="betatest_certificate_error_message">테스트 참여 정보 조회에\n문제가 발생했습니다\n\n테스트의 참여 완료 확인 후,\n다시 시도해주세요</string>
 
     <!-- Survey -->
     <string name="survey_back_dialog_title">화면을 이동하시겠어요?</string>
