@@ -125,6 +125,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     @Override
     public void bind(User userInfo) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         nickNameEditText.setText(userInfo.getNickName());
         nickNameContentGroup.setVisibility((TextUtils.isEmpty(userInfo.getNickName()))? View.VISIBLE : View.GONE);
 
@@ -164,18 +168,6 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
                     .map((code) -> User.FeedbackStyleCategory.get(code).getName())
                     .collect(Collectors.toList());;
             feedbackStyleSpinner.setSelections(feedbackStyles);
-        }
-    }
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void setPresenter(MyInfoContract.Presenter presenter) {
-        if (this.presenter == null) {
-            this.presenter = presenter;
         }
     }
 
@@ -318,6 +310,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     @Override
     public void showDuplicatedNickNameWarning() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         setVisibilityNickNameWarningView(true, R.string.provision_nickname_already_exist_warning);
     }
 
@@ -391,6 +387,10 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     @Override
     public void showPointRewardEventDialog() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         FomesNoticeDialog migrationNoticeDialog = new FomesNoticeDialog();
 
         String positiveButtonText = "확인";
@@ -409,11 +409,35 @@ public class MyInfoActivity extends FomesBaseActivity implements MyInfoContract.
 
     @Override
     public void showLoading() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         myInfoLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
         myInfoLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToast(String message) {
+        if (isUnavailableViewControl()) {
+            return;
+        }
+
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setPresenter(MyInfoContract.Presenter presenter) {
+        if (this.presenter == null) {
+            this.presenter = presenter;
+        }
     }
 }
