@@ -388,7 +388,7 @@ public class BetaTestDetailPresenter implements BetaTestDetailContract.Presenter
 
     @Override
     public boolean isLimitPlayTimeErrorCount() {
-        return this.playTimeErrorCount > PLAY_TIME_ERROR_COUNT_LIMIT;
+        return this.playTimeErrorCount >= PLAY_TIME_ERROR_COUNT_LIMIT;
     }
 
     @Override
